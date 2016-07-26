@@ -47,6 +47,168 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			Assert.AreEqual(5, boat.BoatScore);
 		}
 
+		[TestMethod]
+		public void PerfectBoatWithFriendlyCrew()
+		{
+			List<CrewMember> crew = CreateCrew();
+			var skip = crew.Single(c => c.Name == "Skippy Skip");
+			var nav = crew.Single(c => c.Name == "Wise Nav");
+			var bow = crew.Single(c => c.Name == "Dim Wobnam");
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = nav,
+				Opinion = 5
+			});
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = bow,
+				Opinion = 5
+			});
+			nav.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = skip,
+				Opinion = 5
+			});
+			nav.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = bow,
+				Opinion = 5
+			});
+			bow.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = nav,
+				Opinion = 5
+			});
+			bow.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = skip,
+				Opinion = 5
+			});
+			Boat boat = SetUpBoat();
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
+			Assert.AreEqual(10, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
+			Assert.AreEqual(30, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Mid-Bowman"), crew.Single(c => c.Name == "Dim Wobnam"));
+			Assert.AreEqual(45, boat.BoatScore);
+		}
+
+		[TestMethod]
+		public void PerfectBoatWithUnfriendlyCrew()
+		{
+			List<CrewMember> crew = CreateCrew();
+			var skip = crew.Single(c => c.Name == "Skippy Skip");
+			var nav = crew.Single(c => c.Name == "Wise Nav");
+			var bow = crew.Single(c => c.Name == "Dim Wobnam");
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = nav,
+				Opinion = -5
+			});
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = bow,
+				Opinion = -5
+			});
+			nav.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = skip,
+				Opinion = -5
+			});
+			nav.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = bow,
+				Opinion = -5
+			});
+			bow.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = nav,
+				Opinion = -5
+			});
+			bow.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = skip,
+				Opinion = -5
+			});
+			Boat boat = SetUpBoat();
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
+			Assert.AreEqual(10, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
+			Assert.AreEqual(10, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Mid-Bowman"), crew.Single(c => c.Name == "Dim Wobnam"));
+			Assert.AreEqual(15, boat.BoatScore);
+		}
+
+		[TestMethod]
+		public void PerfectBoatWithMixedOpinionCrew()
+		{
+			List<CrewMember> crew = CreateCrew();
+			var skip = crew.Single(c => c.Name == "Skippy Skip");
+			var nav = crew.Single(c => c.Name == "Wise Nav");
+			var bow = crew.Single(c => c.Name == "Dim Wobnam");
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = nav,
+				Opinion = 3
+			});
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = bow,
+				Opinion = 2
+			});
+			nav.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = skip,
+				Opinion = -2
+			});
+			nav.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = bow,
+				Opinion = -4
+			});
+			bow.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = nav,
+				Opinion = 1
+			});
+			bow.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = skip,
+				Opinion = 5
+			});
+			Boat boat = SetUpBoat();
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
+			Assert.AreEqual(10, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
+			Assert.AreEqual(21, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Mid-Bowman"), crew.Single(c => c.Name == "Dim Wobnam"));
+			Assert.AreEqual(32, boat.BoatScore);
+		}
+
+		[TestMethod]
+		public void PerfectBoatWithUnfriendlySkip()
+		{
+			List<CrewMember> crew = CreateCrew();
+			var skip = crew.Single(c => c.Name == "Skippy Skip");
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = crew.Single(c => c.Name == "Wise Nav"),
+				Opinion = -5
+			});
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				CrewMember = crew.Single(c => c.Name == "Dim Wobnam"),
+				Opinion = -5
+			});
+			Boat boat = SetUpBoat();
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
+			Assert.AreEqual(10, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
+			Assert.AreEqual(15, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Mid-Bowman"), crew.Single(c => c.Name == "Dim Wobnam"));
+			Assert.AreEqual(25, boat.BoatScore);
+		}
+
 		public List<CrewMember> CreateCrew()
 		{
 			List<CrewMember> crew = new List<CrewMember>();

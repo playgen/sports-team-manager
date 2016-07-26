@@ -17,5 +17,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int Quickness { get; set; }
 		public int Wisdom { get; set; }
 		public int Willpower { get; set; }
+		public List<CrewOpinion> CrewOpinions { get; set; } = new List<CrewOpinion>();
 	}
 }
