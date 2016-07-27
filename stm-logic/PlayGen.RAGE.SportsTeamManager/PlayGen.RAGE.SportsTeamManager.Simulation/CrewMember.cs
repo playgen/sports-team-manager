@@ -15,5 +15,33 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int Wisdom { get; set; }
 		public int Willpower { get; set; }
 		public List<CrewOpinion> CrewOpinions { get; set; } = new List<CrewOpinion>();
+		public event EventHandler OpinionChange = delegate { };
+
+		public void AddOrUpdateOpinion(Person person, int change)
+		{
+			var cw = CrewOpinions.SingleOrDefault(op => op.Person == person);
+			if (cw != null)
+			{
+				cw.Opinion += change;
+			} else
+			{
+
+				cw = new CrewOpinion
+				{
+					Person = person,
+					Opinion = change
+				};
+				CrewOpinions.Add(cw);
+			}
+			if (cw.Opinion < -5)
+			{
+				cw.Opinion = -5;
+			}
+			if (cw.Opinion > 5)
+			{
+				cw.Opinion = 5;
+			}
+			OpinionChange(this, new EventArgs());
+		}
 	}
 }
