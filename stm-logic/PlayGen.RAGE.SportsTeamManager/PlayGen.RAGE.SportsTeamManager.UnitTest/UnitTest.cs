@@ -56,32 +56,32 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var bow = crew.Single(c => c.Name == "Dim Wobnam");
 			skip.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = nav,
+				Person = nav,
 				Opinion = 5
 			});
 			skip.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = bow,
+				Person = bow,
 				Opinion = 5
 			});
 			nav.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = skip,
+				Person = skip,
 				Opinion = 5
 			});
 			nav.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = bow,
+				Person = bow,
 				Opinion = 5
 			});
 			bow.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = nav,
+				Person = nav,
 				Opinion = 5
 			});
 			bow.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = skip,
+				Person = skip,
 				Opinion = 5
 			});
 			Boat boat = SetUpBoat();
@@ -102,32 +102,32 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var bow = crew.Single(c => c.Name == "Dim Wobnam");
 			skip.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = nav,
+				Person = nav,
 				Opinion = -5
 			});
 			skip.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = bow,
+				Person = bow,
 				Opinion = -5
 			});
 			nav.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = skip,
+				Person = skip,
 				Opinion = -5
 			});
 			nav.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = bow,
+				Person = bow,
 				Opinion = -5
 			});
 			bow.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = nav,
+				Person = nav,
 				Opinion = -5
 			});
 			bow.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = skip,
+				Person = skip,
 				Opinion = -5
 			});
 			Boat boat = SetUpBoat();
@@ -148,32 +148,32 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var bow = crew.Single(c => c.Name == "Dim Wobnam");
 			skip.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = nav,
+				Person = nav,
 				Opinion = 3
 			});
 			skip.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = bow,
+				Person = bow,
 				Opinion = 2
 			});
 			nav.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = skip,
+				Person = skip,
 				Opinion = -2
 			});
 			nav.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = bow,
+				Person = bow,
 				Opinion = -4
 			});
 			bow.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = nav,
+				Person = nav,
 				Opinion = 1
 			});
 			bow.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = skip,
+				Person = skip,
 				Opinion = 5
 			});
 			Boat boat = SetUpBoat();
@@ -192,12 +192,12 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var skip = crew.Single(c => c.Name == "Skippy Skip");
 			skip.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = crew.Single(c => c.Name == "Wise Nav"),
+				Person = crew.Single(c => c.Name == "Wise Nav"),
 				Opinion = -5
 			});
 			skip.CrewOpinions.Add(new CrewOpinion
 			{
-				CrewMember = crew.Single(c => c.Name == "Dim Wobnam"),
+				Person = crew.Single(c => c.Name == "Dim Wobnam"),
 				Opinion = -5
 			});
 			Boat boat = SetUpBoat();
@@ -207,6 +207,193 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			Assert.AreEqual(15, boat.BoatScore);
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Mid-Bowman"), crew.Single(c => c.Name == "Dim Wobnam"));
 			Assert.AreEqual(25, boat.BoatScore);
+		}
+
+		[TestMethod]
+		public void PerfectBoatWithManagerOpinions()
+		{
+			List<CrewMember> crew = CreateCrew();
+			Person manager = new CrewMember
+			{
+				Name = "Player Manager"
+			};
+			var skip = crew.Single(c => c.Name == "Skippy Skip");
+			var nav = crew.Single(c => c.Name == "Wise Nav");
+			var bow = crew.Single(c => c.Name == "Dim Wobnam");
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = manager,
+				Opinion = 3
+			});
+			nav.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = manager,
+				Opinion = -5
+			});
+			bow.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = manager,
+				Opinion = -4
+			});
+			Boat boat = SetUpBoat();
+			boat.Manager = manager;
+			Assert.AreEqual(0, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
+			Assert.AreEqual(13, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
+			Assert.AreEqual(18, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Mid-Bowman"), crew.Single(c => c.Name == "Dim Wobnam"));
+			Assert.AreEqual(24, boat.BoatScore);
+		}
+
+		[TestMethod]
+		public void PerfectBoatWithManagerAndCrewOpinions()
+		{
+			List<CrewMember> crew = CreateCrew();
+			Person manager = new CrewMember
+			{
+				Name = "Player Manager"
+			};
+			var skip = crew.Single(c => c.Name == "Skippy Skip");
+			var nav = crew.Single(c => c.Name == "Wise Nav");
+			var bow = crew.Single(c => c.Name == "Dim Wobnam");
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = manager,
+				Opinion = 3
+			});
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = nav,
+				Opinion = 4
+			});
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = bow,
+				Opinion = 1
+			});
+			nav.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = manager,
+				Opinion = -5
+			});
+			nav.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = skip,
+				Opinion = -3
+			});
+			nav.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = bow,
+				Opinion = -1
+			});
+			bow.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = manager,
+				Opinion = -2
+			});
+			bow.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = nav,
+				Opinion = 3
+			});
+			bow.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = skip,
+				Opinion = 5
+			});
+			Boat boat = SetUpBoat();
+			boat.Manager = manager;
+			Assert.AreEqual(0, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
+			Assert.AreEqual(13, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
+			Assert.AreEqual(19, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Mid-Bowman"), crew.Single(c => c.Name == "Dim Wobnam"));
+			Assert.AreEqual(30, boat.BoatScore);
+		}
+
+		[TestMethod]
+		public void PerfectBoatWithOpinionsOnUnused()
+		{
+			List<CrewMember> crew = CreateCrew();
+			Person manager = new CrewMember
+			{
+				Name = "Player Manager"
+			};
+			var skip = crew.Single(c => c.Name == "Skippy Skip");
+			var nav = crew.Single(c => c.Name == "Wise Nav");
+			var bow = crew.Single(c => c.Name == "Dim Wobnam");
+			var unused = crew.Single(c => c.Name == "Nick Pony");
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = manager,
+				Opinion = 3
+			});
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = nav,
+				Opinion = 4
+			});
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = bow,
+				Opinion = 1
+			});
+			skip.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = unused,
+				Opinion = 3
+			});
+			nav.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = manager,
+				Opinion = -5
+			});
+			nav.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = skip,
+				Opinion = -3
+			});
+			nav.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = bow,
+				Opinion = -1
+			});
+			nav.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = unused,
+				Opinion = 5
+			});
+			bow.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = manager,
+				Opinion = -2
+			});
+			bow.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = nav,
+				Opinion = 3
+			});
+			bow.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = skip,
+				Opinion = 5
+			});
+			bow.CrewOpinions.Add(new CrewOpinion
+			{
+				Person = unused,
+				Opinion = -4
+			});
+			Boat boat = SetUpBoat();
+			boat.Manager = manager;
+			Assert.AreEqual(0, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
+			Assert.AreEqual(13, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
+			Assert.AreEqual(19, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Mid-Bowman"), crew.Single(c => c.Name == "Dim Wobnam"));
+			Assert.AreEqual(30, boat.BoatScore);
 		}
 
 		public List<CrewMember> CreateCrew()
@@ -321,8 +508,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 					new BoatPosition
 					{
 						Position = midbow,
-					}
-				}
+					},
+				},
 			};
 
 			return boat;

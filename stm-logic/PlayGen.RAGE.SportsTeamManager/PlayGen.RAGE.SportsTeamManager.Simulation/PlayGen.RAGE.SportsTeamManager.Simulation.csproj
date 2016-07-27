@@ -44,6 +44,7 @@
     <Compile Include="BoatPosition.cs" />
     <Compile Include="CrewMember.cs" />
     <Compile Include="CrewOpinion.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

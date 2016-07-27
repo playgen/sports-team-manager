@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	public class CrewMember
+	public class CrewMember : Person
 	{
-		public string Name { get; set; }
-		public int Age { get; set; }
-		public string Gender { get; set; }
 		public int Body { get; set; }
 		public int Charisma { get; set; }
 		public int Perception { get; set; }

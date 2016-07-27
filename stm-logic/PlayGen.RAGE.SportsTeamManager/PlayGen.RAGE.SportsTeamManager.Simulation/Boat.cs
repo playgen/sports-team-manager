@@ -11,6 +11,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string Name { get; set; }
 		public List<BoatPosition> BoatPositions { get; set; } = new List<BoatPosition>();
 		public int BoatScore { get; set; }
+		public Person Manager { get; set; }
 
 		public void AssignCrew(BoatPosition boatPosition, CrewMember crewMember)
 		{
@@ -84,15 +85,25 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 			int opinion = 0;
 			int opinionCount = 0;
+			int managerOpinion = 0;
 			if (boatPosition.CrewMember.CrewOpinions != null && boatPosition.CrewMember.CrewOpinions.Count > 0)
 			{
 				foreach (BoatPosition bp in BoatPositions)
 				{
 					if (bp != boatPosition && bp.CrewMember != null)
 					{
-						opinion += boatPosition.CrewMember.CrewOpinions.SingleOrDefault(op => op.CrewMember == bp.CrewMember).Opinion;
+						var crewMember = boatPosition.CrewMember.CrewOpinions.SingleOrDefault(op => op.Person == bp.CrewMember);
+						if (crewMember != null)
+						{
+							opinion += crewMember.Opinion;
+						}
 						opinionCount++;
 					}
+				}
+				var manager = boatPosition.CrewMember.CrewOpinions.SingleOrDefault(op => op.Person == Manager);
+				if (manager != null)
+				{
+					managerOpinion += manager.Opinion;
 				}
 			}
 
@@ -101,6 +112,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				opinion = opinion / opinionCount;
 			}
 			crewScore += opinion;
+
+			crewScore += managerOpinion;
 
 			boatPosition.PositionScore = crewScore;
 		}
