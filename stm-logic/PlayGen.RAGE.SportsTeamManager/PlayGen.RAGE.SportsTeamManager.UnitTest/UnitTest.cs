@@ -15,6 +15,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		{
 			List<CrewMember> crew = CreateCrew();
 			Boat boat = SetUpBoat();
+			crew.ForEach(c => boat.AddCrew(c));
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
 			Assert.AreEqual(10, boat.BoatScore);
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
@@ -28,6 +29,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		{
 			List<CrewMember> crew = CreateCrew();
 			Boat boat = SetUpBoat();
+			crew.ForEach(c => boat.AddCrew(c));
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Nick Pony"));
 			Assert.AreEqual(4, boat.BoatScore);
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Rav Age"));
@@ -41,6 +43,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		{
 			List<CrewMember> crew = CreateCrew();
 			Boat boat = SetUpBoat();
+			crew.ForEach(c => boat.AddCrew(c));
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Rav Age"));
 			Assert.AreEqual(5, boat.BoatScore);
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Rav Age"));
@@ -63,6 +66,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			bow.AddOrUpdateOpinion(skip, 5);
 			bow.AddOrUpdateOpinion(nav, 5);
 			Boat boat = SetUpBoat();
+			crew.ForEach(c => boat.AddCrew(c));
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
 			Assert.AreEqual(10, boat.BoatScore);
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
@@ -85,6 +89,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			bow.AddOrUpdateOpinion(skip, -5);
 			bow.AddOrUpdateOpinion(nav, -5);
 			Boat boat = SetUpBoat();
+			crew.ForEach(c => boat.AddCrew(c));
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
 			Assert.AreEqual(10, boat.BoatScore);
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
@@ -107,6 +112,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			bow.AddOrUpdateOpinion(skip, 1);
 			bow.AddOrUpdateOpinion(nav, 5);
 			Boat boat = SetUpBoat();
+			crew.ForEach(c => boat.AddCrew(c));
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
 			Assert.AreEqual(10, boat.BoatScore);
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
@@ -125,6 +131,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			skip.AddOrUpdateOpinion(nav, -5);
 			skip.AddOrUpdateOpinion(bow, -5);
 			Boat boat = SetUpBoat();
+			crew.ForEach(c => boat.AddCrew(c));
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
 			Assert.AreEqual(10, boat.BoatScore);
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
@@ -148,6 +155,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			nav.AddOrUpdateOpinion(manager, -5);
 			bow.AddOrUpdateOpinion(manager, -4);
 			Boat boat = SetUpBoat();
+			crew.ForEach(c => boat.AddCrew(c));
 			boat.Manager = manager;
 			Assert.AreEqual(0, boat.BoatScore);
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
@@ -179,6 +187,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			bow.AddOrUpdateOpinion(skip, 5);
 			bow.AddOrUpdateOpinion(nav, 3);
 			Boat boat = SetUpBoat();
+			crew.ForEach(c => boat.AddCrew(c));
 			boat.Manager = manager;
 			Assert.AreEqual(0, boat.BoatScore);
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
@@ -214,6 +223,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			bow.AddOrUpdateOpinion(nav, 3);
 			bow.AddOrUpdateOpinion(unused, 4);
 			Boat boat = SetUpBoat();
+			crew.ForEach(c => boat.AddCrew(c));
 			boat.Manager = manager;
 			Assert.AreEqual(0, boat.BoatScore);
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
@@ -245,6 +255,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			bow.AddOrUpdateOpinion(skip, 5);
 			bow.AddOrUpdateOpinion(nav, 3);
 			Boat boat = SetUpBoat();
+			crew.ForEach(c => boat.AddCrew(c));
 			boat.Manager = manager;
 			Assert.AreEqual(0, boat.BoatScore);
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
@@ -278,7 +289,27 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				Gender = "Male"
 			};
 			Boat boat = SetUpBoat();
-			DataLoader.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat.Name, crew, manager);
+			crew.ForEach(c => boat.AddCrew(c));
+			DataLoader.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat, crew, manager);
+		}
+
+		[TestMethod]
+		public void CreateAndLoadNewBoat()
+		{
+			List<CrewMember> crew = CreateCrew();
+			Person manager = new CrewMember
+			{
+				Name = "Player Manager",
+				Age = 18,
+				Gender = "Male"
+			};
+			Boat boat = SetUpBoat();
+			DataLoader.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat, crew, manager);
+
+			Boat loadedBoat = DataLoader.LoadBoat(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat.Name);
+
+			Assert.AreEqual(boat.Name, loadedBoat.Name);
+			Assert.AreEqual(manager.Name, loadedBoat.Manager.Name);
 		}
 
 		public List<CrewMember> CreateCrew()

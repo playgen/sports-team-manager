@@ -10,8 +10,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	{
 		public string Name { get; set; }
 		public List<BoatPosition> BoatPositions { get; set; } = new List<BoatPosition>();
+		public List<CrewMember> UnassignedCrew { get; set; } = new List<CrewMember>();
 		public int BoatScore { get; set; }
 		public Person Manager { get; set; }
+
+		public void AddCrew(CrewMember crewMember)
+		{
+			var current = BoatPositions.SingleOrDefault(bp => bp.CrewMember == crewMember);
+			if (current != null)
+			{
+				return;
+			}
+			UnassignedCrew.Add(crewMember);
+			UpdateBoatScore();
+		}
 
 		public void AssignCrew(BoatPosition boatPosition, CrewMember crewMember)
 		{
@@ -22,6 +34,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			if (boatPosition != null)
 			{
+				if (UnassignedCrew.Contains(crewMember))
+				{
+					UnassignedCrew.Remove(crewMember);
+				}
 				boatPosition.CrewMember = crewMember;
 				crewMember.OpinionChange += new EventHandler(OnOpinionChange);
 			}
@@ -31,6 +47,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void RemoveCrew(BoatPosition boatPosition)
 		{
 			boatPosition.CrewMember.OpinionChange -= new EventHandler(OnOpinionChange);
+			UnassignedCrew.Add(boatPosition.CrewMember);
 			boatPosition.CrewMember = null;
 		}
 
@@ -50,7 +67,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void UpdateCrewMemberScore(BoatPosition boatPosition)
 		{
-			if (boatPosition.CrewMember == null)
+			if (boatPosition.CrewMember == null || boatPosition.Position == null)
 			{
 				boatPosition.PositionScore = 0;
 				return;

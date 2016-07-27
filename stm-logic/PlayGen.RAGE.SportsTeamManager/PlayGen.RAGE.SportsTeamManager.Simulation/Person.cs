@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using RolePlayCharacter;
+
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	public class Person
@@ -11,5 +13,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string Name { get; set; }
 		public int Age { get; set; }
 		public string Gender { get; set; }
+
+		public RolePlayCharacterAsset RolePlayCharacter { get; set; }
 	}
 }
