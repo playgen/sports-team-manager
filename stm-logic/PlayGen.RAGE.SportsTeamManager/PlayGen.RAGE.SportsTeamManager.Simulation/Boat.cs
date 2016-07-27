@@ -12,7 +12,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public List<BoatPosition> BoatPositions { get; set; } = new List<BoatPosition>();
 		public int BoatScore { get; set; }
 		public Person Manager { get; set; }
-		public event EventHandler OpinionEvent;
 
 		public void AssignCrew(BoatPosition boatPosition, CrewMember crewMember)
 		{
@@ -31,6 +30,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void RemoveCrew(BoatPosition boatPosition)
 		{
+			boatPosition.CrewMember.OpinionChange -= new EventHandler(OnOpinionChange);
 			boatPosition.CrewMember = null;
 		}
 

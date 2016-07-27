@@ -2,6 +2,8 @@
 using System.Linq;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using GAIPS.Rage;
+using System.IO;
 
 namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 {
@@ -265,12 +267,28 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			Assert.AreEqual(34, boat.BoatScore);
 		}
 
+		[TestMethod]
+		public void CreateAndSaveNewBoat()
+		{
+			List<CrewMember> crew = CreateCrew();
+			Person manager = new CrewMember
+			{
+				Name = "Player Manager",
+				Age = 18,
+				Gender = "Male"
+			};
+			Boat boat = SetUpBoat();
+			DataLoader.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat.Name, crew, manager);
+		}
+
 		public List<CrewMember> CreateCrew()
 		{
 			List<CrewMember> crew = new List<CrewMember>();
 			CrewMember member1 = new CrewMember
 			{
 				Name = "Skippy Skip",
+				Age = 35,
+				Gender = "Male",
 				Body = 2,
 				Charisma = 10,
 				Perception = 2,
@@ -282,6 +300,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			CrewMember member2 = new CrewMember
 			{
 				Name = "Wise Nav",
+				Age = 28,
+				Gender = "Male",
 				Body = 2,
 				Charisma = 2,
 				Perception = 10,
@@ -293,6 +313,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			CrewMember member3 = new CrewMember
 			{
 				Name = "Dim Wobnam",
+				Age = 19,
+				Gender = "Male",
 				Body = 10,
 				Charisma = 2,
 				Perception = 2,
@@ -304,6 +326,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			CrewMember member4 = new CrewMember
 			{
 				Name = "Rav Age",
+				Age = 25,
+				Gender = "Male",
 				Body = 5,
 				Charisma = 5,
 				Perception = 5,
@@ -315,6 +339,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			CrewMember member5 = new CrewMember
 			{
 				Name = "Nick Pony",
+				Age = 32,
+				Gender = "Male",
 				Body = 7,
 				Charisma = 7,
 				Perception = 7,
