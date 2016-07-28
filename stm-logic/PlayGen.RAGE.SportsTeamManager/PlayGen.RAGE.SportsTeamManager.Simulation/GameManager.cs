@@ -60,29 +60,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 
 			crewList.ForEach(cm => boat.AddCrew(cm));
-
-			foreach (CrewMember crewMember in crewList)
-			{
-				if (crewMember.EmotionalAppraisal.GetBeliefValue("Value(Position)") != "null")
-				{
-					var boatPosition = boat.BoatPositions.SingleOrDefault(bp => bp.Position.Name == crewMember.EmotionalAppraisal.GetBeliefValue("Value(Position)"));
-					if (boatPosition != null)
-					{
-						boat.AssignCrew(boatPosition, crewMember);
-					}
-				}
-				foreach (CrewMember otherMember in crewList)
-				{
-					if (crewMember.EmotionalAppraisal.BeliefExists($"Opinion({otherMember.Name.Replace(" ", "")})"))
-					{
-						crewMember.AddOrUpdateOpinion(otherMember, int.Parse(crewMember.EmotionalAppraisal.GetBeliefValue($"Opinion({otherMember.Name.Replace(" ", "")})")));
-					}
-				}
-				if (crewMember.EmotionalAppraisal.BeliefExists($"Opinion({boat.Manager.Name.Replace(" ", "")})"))
-				{
-					crewMember.AddOrUpdateOpinion(boat.Manager, int.Parse(crewMember.EmotionalAppraisal.GetBeliefValue($"Opinion({boat.Manager.Name.Replace(" ", "")})")));
-				}
-			}
+			crewList.ForEach(cm => cm.LoadBeliefs(boat, storagePorvider, cm.RolePlayCharacter));
 
 			return boat;
 		}

@@ -81,19 +81,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void ConfirmChanges()
 		{
+			List<Person> boatPeople = new List<Person>();
 			foreach (CrewMember crewMember in UnassignedCrew)
 			{
-				crewMember.EmotionalAppraisal.SaveToFile(LocalStorageProvider.Instance, crewMember.EmotionalAppraisal.AssetFilePath);
+				boatPeople.Add(crewMember);
 			}
 			foreach (BoatPosition boatPosition in BoatPositions)
 			{
 				if (boatPosition.CrewMember != null)
 				{
-					var crewMember = boatPosition.CrewMember;
-					crewMember.EmotionalAppraisal.SaveToFile(LocalStorageProvider.Instance, crewMember.EmotionalAppraisal.AssetFilePath);
+					boatPeople.Add(boatPosition.CrewMember);
 				}
 			}
-			Manager.EmotionalAppraisal.SaveToFile(LocalStorageProvider.Instance, Manager.EmotionalAppraisal.AssetFilePath);
+			boatPeople.Add(Manager);
+			boatPeople.ForEach(p => p.SaveStatus(this));
 		}
 	}
 }

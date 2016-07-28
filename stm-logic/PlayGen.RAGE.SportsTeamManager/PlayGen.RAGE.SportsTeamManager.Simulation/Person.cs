@@ -76,5 +76,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				});
 			}
 		}
+
+		public virtual void SaveStatus(Boat boat = null)
+		{
+			EmotionalAppraisal.SaveToFile(LocalStorageProvider.Instance, EmotionalAppraisal.AssetFilePath);
+		}
 	}
 }

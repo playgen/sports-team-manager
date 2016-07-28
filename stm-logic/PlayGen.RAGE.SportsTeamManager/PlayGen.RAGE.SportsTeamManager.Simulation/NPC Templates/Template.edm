@@ -3,7 +3,21 @@
 		{
 			"classId": 0,
 			"DefaultActionPriority": 2,
-			"ActionTendencies": []
+			"ActionTendencies": [
+				{
+					"Action": "Updated",
+					"Conditions":
+						{
+							"m_conditions":
+								{
+									"_items": ["EventElapsedTime([id]) = 0", "LastEventId(Action, *, UpdateCrew, *) = [id]", null, null],
+									"_size": 2,
+									"_version": 2
+								},
+							"Set": ["EventElapsedTime([id]) = 0", "LastEventId(Action, *, UpdateCrew, *) = [id]"]
+						},
+					"Priority": 0
+				}]
 		},
 	"types": [
 		{

@@ -30,12 +30,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public CrewMember(IStorageProvider savedStorage, RolePlayCharacterAsset rpc) : base(savedStorage, rpc)
 		{
-			Body = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Body)"));
-			Charisma = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Charisma)"));
-			Perception = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Perception)"));
-			Quickness = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Quickness)"));
-			Wisdom = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Wisdom)"));
-			Willpower = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Willpower)"));
+
 		}
 
 		public override void UpdateBeliefs(string position = null)
@@ -53,15 +48,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
-		public void AddOrUpdateOpinion(Person person, int change)
+		public void AddOrUpdateOpinion(Person person, int change, bool replace = false)
 		{
 			var cw = CrewOpinions.SingleOrDefault(op => op.Person == person);
 			if (cw != null)
 			{
-				cw.Opinion += change;
+				if (replace)
+				{
+					cw.Opinion = change;
+				} else
+				{
+					cw.Opinion += change;
+				}
 			} else
 			{
-
 				cw = new CrewOpinion
 				{
 					Person = person,
@@ -81,6 +81,42 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			OpinionChange(this, new EventArgs());
 		}
 
+		public void LoadBeliefs(Boat boat, IStorageProvider savedStorage, RolePlayCharacterAsset rpc)
+		{
+			Body = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Body)"));
+			Charisma = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Charisma)"));
+			Perception = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Perception)"));
+			Quickness = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Quickness)"));
+			Wisdom = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Wisdom)"));
+			Willpower = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Willpower)"));
+			if (EmotionalAppraisal.GetBeliefValue("Value(Position)") != "null")
+			{
+				var boatPosition = boat.BoatPositions.SingleOrDefault(bp => bp.Position.Name == EmotionalAppraisal.GetBeliefValue("Value(Position)"));
+				if (boatPosition != null)
+				{
+					boat.AssignCrew(boatPosition, this);
+				}
+			}
+			foreach (CrewMember otherMember in boat.UnassignedCrew)
+			{
+				if (EmotionalAppraisal.BeliefExists($"Opinion({otherMember.Name.Replace(" ", "")})"))
+				{
+					AddOrUpdateOpinion(otherMember, int.Parse(EmotionalAppraisal.GetBeliefValue($"Opinion({otherMember.Name.Replace(" ", "")})")), true);
+				}
+			}
+			foreach (BoatPosition position in boat.BoatPositions)
+			{
+				if (position.CrewMember != null && EmotionalAppraisal.BeliefExists($"Opinion({position.CrewMember.Name.Replace(" ", "")})"))
+				{
+					AddOrUpdateOpinion(position.CrewMember, int.Parse(EmotionalAppraisal.GetBeliefValue($"Opinion({position.CrewMember.Name.Replace(" ", "")})")), true);
+				}
+			}
+			if (EmotionalAppraisal.BeliefExists($"Opinion({boat.Manager.Name.Replace(" ", "")})"))
+			{
+				AddOrUpdateOpinion(boat.Manager, int.Parse(EmotionalAppraisal.GetBeliefValue($"Opinion({boat.Manager.Name.Replace(" ", "")})")), true);
+			}
+		}
+
 		public int GetMood()
 		{
 			int mood = 0;
@@ -90,6 +126,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				mood = (int)Math.Round(rpc.Mood);
 			}
 			return mood;
+		}
+
+		public override void SaveStatus(Boat boat)
+		{
+			base.SaveStatus();
+			var actionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { "Event(Action,Player,UpdateCrew,*)" }).FirstOrDefault();
+			RolePlayCharacter.Update();
+			if (actionRpc != null)
+			{
+				var actionKey = actionRpc.ActionName.ToString();
+				LoadBeliefs(boat, LocalStorageProvider.Instance,RolePlayCharacter);
+			}
 		}
 	}
 }
