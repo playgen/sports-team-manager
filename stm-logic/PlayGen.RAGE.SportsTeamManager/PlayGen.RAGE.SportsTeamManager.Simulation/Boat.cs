@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using GAIPS.Rage;
+
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	public class Boat
@@ -16,7 +18,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void AddCrew(CrewMember crewMember)
 		{
-			var current = BoatPositions.SingleOrDefault(bp => bp.CrewMember == crewMember);
+			var currentPosition = BoatPositions.SingleOrDefault(bp => bp.CrewMember == crewMember);
+			var current = currentPosition == null ? null : currentPosition.CrewMember;
+			if (current != null)
+			{
+				return;
+			}
+			current = UnassignedCrew.SingleOrDefault(c => c == crewMember);
 			if (current != null)
 			{
 				return;
@@ -45,7 +53,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				boatPosition.CrewMember = crewMember;
 				crewMember.OpinionChange += new EventHandler(OnOpinionChange);
 			}
-			DataLoader.UpdateCrew(crewMember, boatPosition.Position.Name);
+			crewMember.UpdateBeliefs(boatPosition.Position.Name);
 			UpdateBoatScore();
 		}
 
@@ -53,13 +61,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			boatPosition.CrewMember.OpinionChange -= new EventHandler(OnOpinionChange);
 			UnassignedCrew.Add(boatPosition.CrewMember);
-			DataLoader.UpdateCrew(boatPosition.CrewMember, "null");
+			boatPosition.CrewMember.UpdateBeliefs("null");
 			boatPosition.CrewMember = null;
 		}
 
 		void OnOpinionChange(object sender, EventArgs e)
 		{
-			DataLoader.UpdateCrew(sender as CrewMember);
 			UpdateBoatScore();
 		}
 
@@ -67,88 +74,26 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			foreach (BoatPosition bp in BoatPositions)
 			{
-				UpdateCrewMemberScore(bp);
+				bp.UpdateCrewMemberScore(this);
 			}
 			BoatScore = BoatPositions.Sum(bp => bp.PositionScore);
 		}
 
-		public void UpdateCrewMemberScore(BoatPosition boatPosition)
+		public void ConfirmChanges()
 		{
-			if (boatPosition.CrewMember == null || boatPosition.Position == null)
+			foreach (CrewMember crewMember in UnassignedCrew)
 			{
-				boatPosition.PositionScore = 0;
-				return;
+				crewMember.EmotionalAppraisal.SaveToFile(LocalStorageProvider.Instance, crewMember.EmotionalAppraisal.AssetFilePath);
 			}
-			int positionCount = 0;
-			int crewScore = 0;
-			if (boatPosition.Position.RequiresBody)
+			foreach (BoatPosition boatPosition in BoatPositions)
 			{
-				crewScore += boatPosition.CrewMember.Body;
-				positionCount++;
-			}
-			if (boatPosition.Position.RequiresCharisma)
-			{
-				crewScore += boatPosition.CrewMember.Charisma;
-				positionCount++;
-			}
-			if (boatPosition.Position.RequiresPerception)
-			{
-				crewScore += boatPosition.CrewMember.Perception;
-				positionCount++;
-			}
-			if (boatPosition.Position.RequiresQuickness)
-			{
-				crewScore += boatPosition.CrewMember.Quickness;
-				positionCount++;
-			}
-			if (boatPosition.Position.RequiresWillpower)
-			{
-				crewScore += boatPosition.CrewMember.Willpower;
-				positionCount++;
-			}
-			if (boatPosition.Position.RequiresWisdom)
-			{
-				crewScore += boatPosition.CrewMember.Wisdom;
-				positionCount++;
-			}
-
-			crewScore = crewScore / positionCount;
-
-			int opinion = 0;
-			int opinionCount = 0;
-			int managerOpinion = 0;
-			if (boatPosition.CrewMember.CrewOpinions != null && boatPosition.CrewMember.CrewOpinions.Count > 0)
-			{
-				foreach (BoatPosition bp in BoatPositions)
+				if (boatPosition.CrewMember != null)
 				{
-					if (bp != boatPosition && bp.CrewMember != null)
-					{
-						var crewMember = boatPosition.CrewMember.CrewOpinions.SingleOrDefault(op => op.Person == bp.CrewMember);
-						if (crewMember != null)
-						{
-							opinion += crewMember.Opinion;
-						}
-						opinionCount++;
-					}
-				}
-				var manager = boatPosition.CrewMember.CrewOpinions.SingleOrDefault(op => op.Person == Manager);
-				if (manager != null)
-				{
-					managerOpinion += manager.Opinion;
+					var crewMember = boatPosition.CrewMember;
+					crewMember.EmotionalAppraisal.SaveToFile(LocalStorageProvider.Instance, crewMember.EmotionalAppraisal.AssetFilePath);
 				}
 			}
-
-			if (opinionCount > 0)
-			{
-				opinion = opinion / opinionCount;
-			}
-			crewScore += opinion;
-
-			crewScore += managerOpinion;
-
-			crewScore += DataLoader.GetMood(boatPosition.CrewMember);
-
-			boatPosition.PositionScore = crewScore;
+			Manager.EmotionalAppraisal.SaveToFile(LocalStorageProvider.Instance, Manager.EmotionalAppraisal.AssetFilePath);
 		}
 	}
 }

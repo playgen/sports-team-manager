@@ -77,7 +77,7 @@
     <Compile Include="BoatPosition.cs" />
     <Compile Include="CrewMember.cs" />
     <Compile Include="CrewOpinion.cs" />
-    <Compile Include="DataLoader.cs" />
+    <Compile Include="GameManager.cs" />
     <Compile Include="Dinghy.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Position.cs" />
