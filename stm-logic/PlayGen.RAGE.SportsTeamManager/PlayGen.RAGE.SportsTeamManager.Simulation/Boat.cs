@@ -38,9 +38,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					UnassignedCrew.Remove(crewMember);
 				}
+				if (boatPosition.CrewMember != null)
+				{
+					RemoveCrew(boatPosition);
+				}
 				boatPosition.CrewMember = crewMember;
 				crewMember.OpinionChange += new EventHandler(OnOpinionChange);
 			}
+			DataLoader.UpdateCrew(crewMember, boatPosition.Position.Name);
 			UpdateBoatScore();
 		}
 
@@ -48,11 +53,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			boatPosition.CrewMember.OpinionChange -= new EventHandler(OnOpinionChange);
 			UnassignedCrew.Add(boatPosition.CrewMember);
+			DataLoader.UpdateCrew(boatPosition.CrewMember, "null");
 			boatPosition.CrewMember = null;
 		}
 
 		void OnOpinionChange(object sender, EventArgs e)
 		{
+			DataLoader.UpdateCrew(sender as CrewMember);
 			UpdateBoatScore();
 		}
 
@@ -138,6 +145,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewScore += opinion;
 
 			crewScore += managerOpinion;
+
+			crewScore += DataLoader.GetMood(boatPosition.CrewMember);
 
 			boatPosition.PositionScore = crewScore;
 		}

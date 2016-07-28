@@ -310,6 +310,142 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 
 			Assert.AreEqual(boat.Name, loadedBoat.Name);
 			Assert.AreEqual(manager.Name, loadedBoat.Manager.Name);
+			Assert.AreEqual(crew.Count, loadedBoat.UnassignedCrew.Count);
+		}
+
+		[TestMethod]
+		public void CreateUpdateAndLoadBoat()
+		{
+			List<CrewMember> crew = CreateCrew();
+			Person manager = new CrewMember
+			{
+				Name = "Player Manager",
+				Age = 18,
+				Gender = "Male"
+			};
+			Boat boat = SetUpBoat();
+			DataLoader.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat, crew, manager);
+
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
+			Assert.AreEqual(10, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
+			Assert.AreEqual(20, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Mid-Bowman"), crew.Single(c => c.Name == "Dim Wobnam"));
+			Assert.AreEqual(30, boat.BoatScore);
+
+			Boat loadedBoat = DataLoader.LoadBoat(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat.Name);
+
+			Assert.AreEqual(boat.Name, loadedBoat.Name);
+			Assert.AreEqual(manager.Name, loadedBoat.Manager.Name);
+			Assert.AreEqual(crew.Count - loadedBoat.BoatPositions.Count, loadedBoat.UnassignedCrew.Count);
+			Assert.AreEqual(30, loadedBoat.BoatScore);
+		}
+
+		[TestMethod]
+		public void CreateUpdateAndLoadBoatWithOpinions()
+		{
+			List<CrewMember> crew = CreateCrew();
+			Person manager = new CrewMember
+			{
+				Name = "Player Manager",
+				Age = 18,
+				Gender = "Male"
+			};
+
+			var skip = crew.Single(c => c.Name == "Skippy Skip");
+			var nav = crew.Single(c => c.Name == "Wise Nav");
+			var bow = crew.Single(c => c.Name == "Dim Wobnam");
+			skip.AddOrUpdateOpinion(manager, 5);
+			skip.AddOrUpdateOpinion(nav, 1);
+			skip.AddOrUpdateOpinion(bow, -3);
+			nav.AddOrUpdateOpinion(manager, -3);
+			nav.AddOrUpdateOpinion(skip, 1);
+			nav.AddOrUpdateOpinion(bow, -1);
+			bow.AddOrUpdateOpinion(manager, -5);
+			bow.AddOrUpdateOpinion(skip, -3);
+			bow.AddOrUpdateOpinion(nav, -5);
+
+			Boat boat = SetUpBoat();
+
+			DataLoader.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat, crew, manager);
+
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
+			Assert.AreEqual(15, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
+			Assert.AreEqual(24, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Mid-Bowman"), crew.Single(c => c.Name == "Dim Wobnam"));
+			Assert.AreEqual(22, boat.BoatScore);
+
+			Boat loadedBoat = DataLoader.LoadBoat(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat.Name);
+
+			Assert.AreEqual(boat.Name, loadedBoat.Name);
+			Assert.AreEqual(manager.Name, loadedBoat.Manager.Name);
+			Assert.AreEqual(crew.Count - loadedBoat.BoatPositions.Count, loadedBoat.UnassignedCrew.Count);
+			Assert.AreEqual(22, loadedBoat.BoatScore);
+		}
+
+		[TestMethod]
+		public void CreateUpdateAndLoadBoatWithUpdatingOpinions()
+		{
+			List<CrewMember> crew = CreateCrew();
+			Person manager = new CrewMember
+			{
+				Name = "Player Manager",
+				Age = 18,
+				Gender = "Male"
+			};
+
+			var skip = crew.Single(c => c.Name == "Skippy Skip");
+			var nav = crew.Single(c => c.Name == "Wise Nav");
+			var bow = crew.Single(c => c.Name == "Dim Wobnam");
+			skip.AddOrUpdateOpinion(manager, 5);
+			skip.AddOrUpdateOpinion(nav, 1);
+			skip.AddOrUpdateOpinion(bow, -3);
+			nav.AddOrUpdateOpinion(manager, -3);
+			nav.AddOrUpdateOpinion(skip, 1);
+			nav.AddOrUpdateOpinion(bow, -1);
+			bow.AddOrUpdateOpinion(manager, -5);
+			bow.AddOrUpdateOpinion(skip, -3);
+			bow.AddOrUpdateOpinion(nav, -5);
+
+			Boat boat = SetUpBoat();
+
+			DataLoader.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat, crew, manager);
+
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Skipper"), crew.Single(c => c.Name == "Skippy Skip"));
+			Assert.AreEqual(15, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Navigator"), crew.Single(c => c.Name == "Wise Nav"));
+			Assert.AreEqual(24, boat.BoatScore);
+			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Mid-Bowman"), crew.Single(c => c.Name == "Dim Wobnam"));
+			Assert.AreEqual(22, boat.BoatScore);
+
+			Boat loadedBoat = DataLoader.LoadBoat(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat.Name);
+
+			Assert.AreEqual(boat.Name, loadedBoat.Name);
+			Assert.AreEqual(manager.Name, loadedBoat.Manager.Name);
+			Assert.AreEqual(crew.Count - loadedBoat.BoatPositions.Count, loadedBoat.UnassignedCrew.Count);
+			Assert.AreEqual(22, loadedBoat.BoatScore);
+
+			skip = loadedBoat.BoatPositions.Single(c => c.CrewMember.Name == "Skippy Skip").CrewMember;
+			nav = loadedBoat.BoatPositions.Single(c => c.CrewMember.Name == "Wise Nav").CrewMember;
+			bow = loadedBoat.BoatPositions.Single(c => c.CrewMember.Name == "Dim Wobnam").CrewMember;
+
+			skip.AddOrUpdateOpinion(loadedBoat.Manager, 2);
+			skip.AddOrUpdateOpinion(nav, 2);
+			skip.AddOrUpdateOpinion(bow, 2);
+			Assert.AreEqual(24, loadedBoat.BoatScore);
+			nav.AddOrUpdateOpinion(loadedBoat.Manager, -1);
+			nav.AddOrUpdateOpinion(skip, 2);
+			nav.AddOrUpdateOpinion(bow, -3);
+			Assert.AreEqual(23, loadedBoat.BoatScore);
+			bow.AddOrUpdateOpinion(loadedBoat.Manager, 1);
+			bow.AddOrUpdateOpinion(skip, 1);
+			bow.AddOrUpdateOpinion(nav, -2);
+			Assert.AreEqual(25, loadedBoat.BoatScore);
+
+			Boat updatedBoat = DataLoader.LoadBoat(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat.Name);
+
+			Assert.AreEqual(25, updatedBoat.BoatScore);
 		}
 
 		public List<CrewMember> CreateCrew()
@@ -385,57 +521,9 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 
 		public Boat SetUpBoat()
 		{
-			Position skipper = new Position
-			{
-				Name = "Skipper",
-				RequiresBody = false,
-				RequiresCharisma = true,
-				RequiresPerception = false,
-				RequiresQuickness = false,
-				RequiresWillpower = true,
-				RequiresWisdom = true
-			};
-
-			Position navigator = new Position
-			{
-				Name = "Navigator",
-				RequiresBody = false,
-				RequiresCharisma = false,
-				RequiresPerception = true,
-				RequiresQuickness = false,
-				RequiresWillpower = false,
-				RequiresWisdom = true
-			};
-
-			Position midbow = new Position
-			{
-				Name = "Mid-Bowman",
-				RequiresBody = true,
-				RequiresCharisma = false,
-				RequiresPerception = false,
-				RequiresQuickness = true,
-				RequiresWillpower = true,
-				RequiresWisdom = false
-			};
-
-			Boat boat = new Boat
+			Dinghy boat = new Dinghy()
 			{
 				Name = "Testy McTestFace",
-				BoatPositions = new List<BoatPosition>()
-				{
-					new BoatPosition
-					{
-						Position = skipper,
-					},
-					new BoatPosition
-					{
-						Position = navigator,
-					},
-					new BoatPosition
-					{
-						Position = midbow,
-					},
-				},
 			};
 
 			return boat;

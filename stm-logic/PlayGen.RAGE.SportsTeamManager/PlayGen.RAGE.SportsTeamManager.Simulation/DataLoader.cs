@@ -4,6 +4,7 @@ using EmotionalDecisionMaking;
 using GAIPS.Rage;
 using IntegratedAuthoringTool;
 using RolePlayCharacter;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				ea.AddOrUpdateBelief(new BeliefDTO
 				{
 					Name = "Value(Gender)",
-					Value = member.Gender.ToString(),
+					Value = member.Gender,
 					Perspective = "SELF"
 				});
 				ea.AddOrUpdateBelief(new BeliefDTO
@@ -78,6 +79,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					Value = "null",
 					Perspective = "SELF"
 				});
+				foreach (CrewOpinion co in member.CrewOpinions)
+				{
+					ea.AddOrUpdateBelief(new BeliefDTO
+					{
+						Name = $"Opinion({co.Person.Name.Replace(" ", "")})",
+						Value = co.Opinion.ToString(),
+						Perspective = "SELF"
+					});
+				}
 				templateRpc.CharacterName = member.Name;
 				var noSpaceName = templateRpc.CharacterName.Replace(" ", "");
 				ea.SetPerspective("NPC" + noSpaceName);
@@ -102,7 +112,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			ea.AddOrUpdateBelief(new BeliefDTO
 			{
 				Name = "Value(Gender)",
-				Value = manager.Gender.ToString(),
+				Value = manager.Gender,
 				Perspective = "SELF"
 			});
 			ea.AddOrUpdateBelief(new BeliefDTO
@@ -127,6 +137,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			templateRpc.SaveToFile(storagePorvider, Path.Combine(storageLocation, noSpaceManagerName + ".rpc"));
 			iat.AddCharacter(templateRpc);
 			manager.RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(storagePorvider, Path.Combine(storageLocation, noSpaceManagerName + ".rpc"));
+			boat.Manager = manager;
 
 			var noSpaceBoatName = boat.Name.Replace(" ", "");
 			iat.SaveToFile(storagePorvider, Path.Combine(storageLocation, noSpaceBoatName + ".iat"));
@@ -137,10 +148,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile(storagePorvider, Path.Combine(storageLocation, boatName.Replace(" ", "") + ".iat"));
 			var rpcList = iat.GetAllCharacters();
 
-			Boat boat = new Boat
-			{
-				Name = iat.ScenarioName
-			};
+			Boat boat = new Boat();
+			List<CrewMember> crewList = new List<CrewMember>();
 
 			foreach (RolePlayCharacterAsset rpc in rpcList)
 			{
@@ -158,30 +167,30 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				string position = ea.GetBeliefValue("Value(Position)");
 				if (position == "Manager")
 				{
+					boat = (Boat)Activator.CreateInstance(Type.GetType(ea.GetBeliefValue("Value(BoatType)")));
+					boat.Name = iat.ScenarioName;
 					boat.Manager = person;
-					//get boat positions
-					break;
+					continue;
 				}
-				else
+				CrewMember crewMember = new CrewMember
 				{
-					CrewMember crewMember = new CrewMember
-					{
-						Name = person.Name,
-						Age = person.Age,
-						Gender = person.Gender,
-						RolePlayCharacter = person.RolePlayCharacter,
-						Body = int.Parse(ea.GetBeliefValue("Value(Body)")),
-						Charisma = int.Parse(ea.GetBeliefValue("Value(Charisma)")),
-						Perception = int.Parse(ea.GetBeliefValue("Value(Perception)")),
-						Quickness = int.Parse(ea.GetBeliefValue("Value(Quickness)")),
-						Wisdom = int.Parse(ea.GetBeliefValue("Value(Wisdom)")),
-						Willpower = int.Parse(ea.GetBeliefValue("Value(Willpower)"))
-					};
-					boat.AddCrew(crewMember);
-				}
+					Name = person.Name,
+					Age = person.Age,
+					Gender = person.Gender,
+					RolePlayCharacter = person.RolePlayCharacter,
+					Body = int.Parse(ea.GetBeliefValue("Value(Body)")),
+					Charisma = int.Parse(ea.GetBeliefValue("Value(Charisma)")),
+					Perception = int.Parse(ea.GetBeliefValue("Value(Perception)")),
+					Quickness = int.Parse(ea.GetBeliefValue("Value(Quickness)")),
+					Wisdom = int.Parse(ea.GetBeliefValue("Value(Wisdom)")),
+					Willpower = int.Parse(ea.GetBeliefValue("Value(Willpower)"))
+				};
+				crewList.Add(crewMember);
 			}
 
-			foreach (CrewMember crewMember in boat.UnassignedCrew)
+			crewList.ForEach(cm => boat.AddCrew(cm));
+
+			foreach (CrewMember crewMember in crewList)
 			{
 				var eaSource = crewMember.RolePlayCharacter.EmotionalAppraisalAssetSource;
 				var ea = EmotionalAppraisalAsset.LoadFromFile(storagePorvider, Path.Combine(storageLocation, eaSource));
@@ -193,9 +202,108 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						boat.AssignCrew(boatPosition, crewMember);
 					}
 				}
+				foreach (CrewMember otherMember in crewList)
+				{
+					if (ea.BeliefExists($"Opinion({otherMember.Name.Replace(" ", "")})"))
+					{
+						crewMember.AddOrUpdateOpinion(otherMember, int.Parse(ea.GetBeliefValue($"Opinion({otherMember.Name.Replace(" ", "")})")));
+					}
+				}
+				if (ea.BeliefExists($"Opinion({boat.Manager.Name.Replace(" ", "")})"))
+				{
+					crewMember.AddOrUpdateOpinion(boat.Manager, int.Parse(ea.GetBeliefValue($"Opinion({boat.Manager.Name.Replace(" ", "")})")));
+				}
 			}
 
 			return boat;
+		}
+
+		public static void UpdateCrew(CrewMember crewMember, string position = null)
+		{
+			if (crewMember.RolePlayCharacter != null)
+			{
+				var rpc = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, crewMember.RolePlayCharacter.AssetFilePath);
+				var ea = EmotionalAppraisalAsset.LoadFromFile(LocalStorageProvider.Instance, rpc.EmotionalAppraisalAssetSource);
+				var edm = EmotionalDecisionMakingAsset.LoadFromFile(LocalStorageProvider.Instance, rpc.EmotionalDecisionMakingSource);
+				ea.AddOrUpdateBelief(new BeliefDTO
+				{
+					Name = "Value(Age)",
+					Value = crewMember.Age.ToString(),
+					Perspective = "SELF"
+				});
+				ea.AddOrUpdateBelief(new BeliefDTO
+				{
+					Name = "Value(Gender)",
+					Value = crewMember.Gender,
+					Perspective = "SELF"
+				});
+				ea.AddOrUpdateBelief(new BeliefDTO
+				{
+					Name = "Value(Body)",
+					Value = crewMember.Body.ToString(),
+					Perspective = "SELF"
+				});
+				ea.AddOrUpdateBelief(new BeliefDTO
+				{
+					Name = "Value(Charisma)",
+					Value = crewMember.Charisma.ToString(),
+					Perspective = "SELF"
+				});
+				ea.AddOrUpdateBelief(new BeliefDTO
+				{
+					Name = "Value(Perception)",
+					Value = crewMember.Perception.ToString(),
+					Perspective = "SELF"
+				});
+				ea.AddOrUpdateBelief(new BeliefDTO
+				{
+					Name = "Value(Quickness)",
+					Value = crewMember.Quickness.ToString(),
+					Perspective = "SELF"
+				});
+				ea.AddOrUpdateBelief(new BeliefDTO
+				{
+					Name = "Value(Willpower)",
+					Value = crewMember.Willpower.ToString(),
+					Perspective = "SELF"
+				});
+				ea.AddOrUpdateBelief(new BeliefDTO
+				{
+					Name = "Value(Wisdom)",
+					Value = crewMember.Wisdom.ToString(),
+					Perspective = "SELF"
+				});
+				if (!string.IsNullOrEmpty(position))
+				{
+					ea.AddOrUpdateBelief(new BeliefDTO
+					{
+						Name = "Value(Position)",
+						Value = position,
+						Perspective = "SELF"
+					});
+				}
+				foreach (CrewOpinion co in crewMember.CrewOpinions)
+				{
+					ea.AddOrUpdateBelief(new BeliefDTO
+					{
+						Name = $"Opinion({co.Person.Name.Replace(" ", "")})",
+						Value = co.Opinion.ToString(),
+						Perspective = "SELF"
+					});
+				}
+				ea.SaveToFile(LocalStorageProvider.Instance, rpc.EmotionalAppraisalAssetSource);
+			}
+		}
+
+		public static int GetMood(CrewMember crewMember)
+		{
+			int mood = 0;
+			if (crewMember.RolePlayCharacter != null)
+			{
+				var rpc = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, crewMember.RolePlayCharacter.AssetFilePath);
+				mood = (int)Math.Round(rpc.Mood);
+			}
+			return mood;
 		}
 	}
 }

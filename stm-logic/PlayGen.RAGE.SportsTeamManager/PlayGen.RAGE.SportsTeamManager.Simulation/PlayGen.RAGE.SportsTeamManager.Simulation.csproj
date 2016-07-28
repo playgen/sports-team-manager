@@ -78,6 +78,7 @@
     <Compile Include="CrewMember.cs" />
     <Compile Include="CrewOpinion.cs" />
     <Compile Include="DataLoader.cs" />
+    <Compile Include="Dinghy.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
