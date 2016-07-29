@@ -95,6 +95,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			boatPeople.ForEach(p => p.DecisionFeedback(this));
 			Manager.SaveStatus();
+			UpdateBoatScore();
 		}
 	}
 }

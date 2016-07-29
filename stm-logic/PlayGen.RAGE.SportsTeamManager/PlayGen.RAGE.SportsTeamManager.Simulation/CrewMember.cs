@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using EmotionalAppraisal.DTOs;
-
+using AutobiographicMemory.DTOs;
 using GAIPS.Rage;
-
 using RolePlayCharacter;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
@@ -81,7 +76,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			OpinionChange(this, new EventArgs());
 		}
 
-		public void LoadBeliefs(Boat boat, IStorageProvider savedStorage, RolePlayCharacterAsset rpc)
+		public void LoadBeliefs(Boat boat, IStorageProvider savedStorage)
 		{
 			Body = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Body)"));
 			Charisma = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Charisma)"));
@@ -120,19 +115,22 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int GetMood()
 		{
 			int mood = 0;
-			if (RolePlayCharacter != null)
+			if (EmotionalAppraisal != null)
 			{
-				var rpc = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, RolePlayCharacter.AssetFilePath);
-				mood = (int)Math.Round(rpc.Mood);
+				mood = (int)Math.Round(EmotionalAppraisal.Mood);
 			}
 			return mood;
 		}
 
 		public void DecisionFeedback(Boat boat)
 		{
+			SaveStatus();
+			var spacelessName = EmotionalAppraisal.Perspective;
+			var eventBase = "Event(Action,Player,{0},{1})";
 			var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
 			int positionScore = currentPosition != null ? currentPosition.Position.GetPositionRating(this) : 0;
-			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { $"Event(Action,Player,PositionRating({positionScore}),NPC{Name.Replace(" ", "")})" }).FirstOrDefault();
+			var eventString = $"PositionRating({positionScore})";
+			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) }).FirstOrDefault();
 			RolePlayCharacter.Update();
 			if (positionRpc != null)
 			{
@@ -149,12 +147,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						AddOrUpdateOpinion(boat.Manager, -2);
 						break;
 				}
-				
 			}
+
 			var managerOpinion = CrewOpinions.SingleOrDefault(op => op.Person == boat.Manager);
 			var managerOpinionRating = managerOpinion != null ? managerOpinion.Opinion : 0;
-			var managerRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { $"Event(Action,Player,OpinionCheck({managerOpinionRating}),NPC{Name.Replace(" ", "")})" }).FirstOrDefault();
+			eventString = $"OpinionCheck({managerOpinionRating})";
+			RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName)}).FirstOrDefault();
 			RolePlayCharacter.Update();
+
 			foreach (BoatPosition boatPosition in boat.BoatPositions)
 			{
 				if (boatPosition.CrewMember != null && boatPosition.CrewMember != this)
@@ -162,13 +162,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var opinion = CrewOpinions.SingleOrDefault(op => op.Person == boatPosition.CrewMember);
 					var opinionRating = opinion != null ? opinion.Opinion : 0;
 					int possiblePositionScore = boatPosition.Position.GetPositionRating(this);
-					var opinionRpcString = $"Event(Action,Player,OpinionCheck({opinionRating},{possiblePositionScore},{positionScore}),NPC{Name.Replace(" ", "")})";
+					eventString = $"OpinionCheck({opinionRating},{possiblePositionScore},{positionScore})";
 					if (positionScore == 0)
 					{
 						int theirPositionScore = boatPosition.Position.GetPositionRating(boatPosition.CrewMember);
-						opinionRpcString = $"Event(Action,Player,OpinionCheck({opinionRating},{possiblePositionScore},{theirPositionScore}),NPC{Name.Replace(" ", "")})";
+						eventString = $"OpinionCheck({opinionRating},{possiblePositionScore},{theirPositionScore})";
 					}
-					var opinionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { opinionRpcString }).FirstOrDefault();
+					var opinionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName)}).FirstOrDefault();
 					RolePlayCharacter.Update();
 					if (opinionRpc != null)
 					{
@@ -183,8 +183,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 				}
 			}
+			var events = EmotionalAppraisal.EventRecords;
+			foreach (var ev in events)
+			{
+				EmotionalAppraisal.AddEventRecord(ev);
+			}
+			
 			SaveStatus();
-			LoadBeliefs(boat, LocalStorageProvider.Instance, RolePlayCharacter);
+			LoadBeliefs(boat, LocalStorageProvider.Instance);
 		}
 	}
 }

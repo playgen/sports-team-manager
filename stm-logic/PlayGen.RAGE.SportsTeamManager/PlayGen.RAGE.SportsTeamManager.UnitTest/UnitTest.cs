@@ -336,13 +336,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Mid-Bowman"), crew.Single(c => c.Name == "Dim Wobnam"));
 			Assert.AreEqual(30, boat.BoatScore);
 			boat.ConfirmChanges();
+			Assert.AreEqual(39, boat.BoatScore);
 
 			Boat loadedBoat = gameManager.LoadGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat.Name);
 
 			Assert.AreEqual(boat.Name, loadedBoat.Name);
 			Assert.AreEqual(manager.Name, loadedBoat.Manager.Name);
 			Assert.AreEqual(crew.Count - loadedBoat.BoatPositions.Count, loadedBoat.UnassignedCrew.Count);
-			Assert.AreEqual(33, loadedBoat.BoatScore);
+			Assert.AreEqual(39, loadedBoat.BoatScore);
 		}
 
 		[TestMethod]
@@ -381,14 +382,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Mid-Bowman"), crew.Single(c => c.Name == "Dim Wobnam"));
 			Assert.AreEqual(22, boat.BoatScore);
 			boat.ConfirmChanges();
-			Assert.AreEqual(24, boat.BoatScore);
+			Assert.AreEqual(30, boat.BoatScore);
 
 			Boat loadedBoat = gameManager.LoadGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat.Name);
 
 			Assert.AreEqual(boat.Name, loadedBoat.Name);
 			Assert.AreEqual(manager.Name, loadedBoat.Manager.Name);
 			Assert.AreEqual(crew.Count - loadedBoat.BoatPositions.Count, loadedBoat.UnassignedCrew.Count);
-			Assert.AreEqual(24, loadedBoat.BoatScore);
+			Assert.AreEqual(30, loadedBoat.BoatScore);
 		}
 
 		[TestMethod]
@@ -427,14 +428,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			boat.AssignCrew(boat.BoatPositions.Single(bp => bp.Position.Name == "Mid-Bowman"), crew.Single(c => c.Name == "Dim Wobnam"));
 			Assert.AreEqual(22, boat.BoatScore);
 			boat.ConfirmChanges();
-			Assert.AreEqual(24, boat.BoatScore);
+			Assert.AreEqual(30, boat.BoatScore);
 
 			Boat loadedBoat = gameManager.LoadGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat.Name);
 
 			Assert.AreEqual(boat.Name, loadedBoat.Name);
 			Assert.AreEqual(manager.Name, loadedBoat.Manager.Name);
 			Assert.AreEqual(crew.Count - loadedBoat.BoatPositions.Count, loadedBoat.UnassignedCrew.Count);
-			Assert.AreEqual(24, loadedBoat.BoatScore);
+			Assert.AreEqual(30, loadedBoat.BoatScore);
 
 			skip = loadedBoat.BoatPositions.Single(c => c.CrewMember.Name == "Skippy Skip").CrewMember;
 			nav = loadedBoat.BoatPositions.Single(c => c.CrewMember.Name == "Wise Nav").CrewMember;
@@ -443,20 +444,21 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			skip.AddOrUpdateOpinion(loadedBoat.Manager, 2);
 			skip.AddOrUpdateOpinion(nav, 2);
 			skip.AddOrUpdateOpinion(bow, 2);
-			Assert.AreEqual(26, loadedBoat.BoatScore);
+			Assert.AreEqual(32, loadedBoat.BoatScore);
 			nav.AddOrUpdateOpinion(loadedBoat.Manager, -1);
 			nav.AddOrUpdateOpinion(skip, 2);
 			nav.AddOrUpdateOpinion(bow, -3);
-			Assert.AreEqual(25, loadedBoat.BoatScore);
+			Assert.AreEqual(31, loadedBoat.BoatScore);
 			bow.AddOrUpdateOpinion(loadedBoat.Manager, 1);
 			bow.AddOrUpdateOpinion(skip, 1);
 			bow.AddOrUpdateOpinion(nav, -2);
-			Assert.AreEqual(27, loadedBoat.BoatScore);
+			Assert.AreEqual(33, loadedBoat.BoatScore);
 			loadedBoat.ConfirmChanges();
+			Assert.AreEqual(41, loadedBoat.BoatScore);
 
 			Boat updatedBoat = gameManager.LoadGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), boat.Name);
 
-			Assert.AreEqual(27, updatedBoat.BoatScore);
+			Assert.AreEqual(41, updatedBoat.BoatScore);
 		}
 
 		[TestMethod]

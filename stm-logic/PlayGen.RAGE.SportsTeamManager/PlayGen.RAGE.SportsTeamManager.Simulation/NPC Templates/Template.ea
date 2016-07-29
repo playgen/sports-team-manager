@@ -39,7 +39,124 @@
 			"AppraisalRules":
 				{
 					"AppraisalWeight": 1,
-					"Rules": []
+					"Rules": [
+						{
+							"EventName": "Event(Action, Player, OpinionCheck([score]), Self)",
+							"Conditions":
+								{
+									"m_conditions":
+										{
+											"_items": ["[score] < -2", null, null, null],
+											"_size": 1,
+											"_version": 1
+										},
+									"Set": ["[score] < -2"]
+								},
+							"Desirability": -2,
+							"Praiseworthiness": -2
+						}, 
+						{
+							"EventName": "Event(Action, Player, OpinionCheck([score]), Self)",
+							"Conditions":
+								{
+									"m_conditions":
+										{
+											"_items": ["[score] > -2", null, null, null],
+											"_size": 1,
+											"_version": 1
+										},
+									"Set": ["[score] > -2"]
+								},
+							"Desirability": 2,
+							"Praiseworthiness": 2
+						}, 
+						{
+							"EventName": "Event(Action, Player, PositionRating([score]), Self)",
+							"Conditions":
+								{
+									"m_conditions":
+										{
+											"_items": ["[score] > 7"],
+											"_size": 1
+										},
+									"Set": ["[score] > 7"]
+								},
+							"Desirability": 3,
+							"Praiseworthiness": 3
+						}, 
+						{
+							"EventName": "Event(Action, Player, PositionRating([score]), Self)",
+							"Conditions":
+								{
+									"m_conditions":
+										{
+											"_items": ["[score] != 0", "[score] < 4"],
+											"_size": 2
+										},
+									"Set": ["[score] != 0", "[score] < 4"]
+								},
+							"Desirability": -2,
+							"Praiseworthiness": -2
+						}, 
+						{
+							"EventName": "Event(Action, Player, PositionRating([score]), Self)",
+							"Conditions":
+								{
+									"m_conditions":
+										{
+											"_items": ["0 = [score]"],
+											"_size": 1
+										},
+									"Set": ["0 = [score]"]
+								},
+							"Desirability": -4,
+							"Praiseworthiness": -4
+						}, 
+						{
+							"EventName": "Event(Action, Player, OpinionCheck([score], [x], [y]), Self)",
+							"Conditions":
+								{
+									"m_conditions":
+										{
+											"_items": ["[score] > 2", null, null, null],
+											"_size": 1,
+											"_version": 1
+										},
+									"Set": ["[score] > 2"]
+								},
+							"Desirability": 3,
+							"Praiseworthiness": 3
+						}, 
+						{
+							"EventName": "Event(Action, Player, OpinionCheck([score], [x], [y]), Self)",
+							"Conditions":
+								{
+									"m_conditions":
+										{
+											"_items": ["[x] >= [y]", "[score] < -2", null, null],
+											"_size": 2,
+											"_version": 2
+										},
+									"Set": ["[x] >= [y]", "[score] < -2"]
+								},
+							"Desirability": -2,
+							"Praiseworthiness": -2
+						}, 
+						{
+							"EventName": "Event(Action, Player, OpinionCheck([score], [x], [y]), Self)",
+							"Conditions":
+								{
+									"m_conditions":
+										{
+											"_items": ["[score] < -2", null, null, null],
+											"_size": 1,
+											"_version": 1
+										},
+									"Set": ["[score] < -2"]
+								},
+							"Desirability": -2,
+							"Praiseworthiness": -2
+						}]
 				}
 		}],
 	"types": [

@@ -80,6 +80,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void SaveStatus()
 		{
 			EmotionalAppraisal.SaveToFile(LocalStorageProvider.Instance, EmotionalAppraisal.AssetFilePath);
+			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, RolePlayCharacter.AssetFilePath);
+			EmotionalAppraisal = EmotionalAppraisalAsset.LoadFromFile(LocalStorageProvider.Instance, EmotionalAppraisal.AssetFilePath);
 		}
 	}
 }

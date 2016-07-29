@@ -24,15 +24,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.CreateFile(iat, templateStorage, storagePorvider, storageLocation);
 				boat.AddCrew(member);
 				member.UpdateBeliefs("null");
+				member.SaveStatus();
 			}
 			manager.CreateFile(iat, templateStorage, storagePorvider, storageLocation);
 			manager.UpdateBeliefs("Manager");
 			manager.UpdateSingleBelief("Value(BoatType)", boat.GetType().ToString(), "SELF");
 			boat.Manager = manager;
+			manager.SaveStatus();
 
 			var noSpaceBoatName = boat.Name.Replace(" ", "");
 			iat.SaveToFile(storagePorvider, Path.Combine(storageLocation, noSpaceBoatName + ".iat"));
-			boat.ConfirmChanges();
+			//boat.ConfirmChanges();
 		}
 
 		public Boat LoadGame(IStorageProvider storagePorvider, string storageLocation, string boatName)
@@ -60,7 +62,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 
 			crewList.ForEach(cm => boat.AddCrew(cm));
-			crewList.ForEach(cm => cm.LoadBeliefs(boat, storagePorvider, cm.RolePlayCharacter));
+			crewList.ForEach(cm => cm.LoadBeliefs(boat, storagePorvider));
 
 			return boat;
 		}
