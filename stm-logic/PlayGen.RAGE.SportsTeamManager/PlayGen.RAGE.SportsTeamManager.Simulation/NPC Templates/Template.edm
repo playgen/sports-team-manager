@@ -5,16 +5,58 @@
 			"DefaultActionPriority": 2,
 			"ActionTendencies": [
 				{
-					"Action": "Updated",
+					"Action": "RatingFeedback(Good)",
 					"Conditions":
 						{
 							"m_conditions":
 								{
-									"_items": ["EventElapsedTime([id]) = 0", "LastEventId(Action, *, UpdateCrew, *) = [id]", null, null],
-									"_size": 2,
+									"_items": ["EventElapsedTime([id]) = 0", "LastEventId(Action, *, PositionRating([x]), SELF) = [id]", "[x] > 7"],
+									"_size": 3,
 									"_version": 2
 								},
-							"Set": ["EventElapsedTime([id]) = 0", "LastEventId(Action, *, UpdateCrew, *) = [id]"]
+							"Set": ["EventElapsedTime([id]) = 0", "LastEventId(Action, *, PositionRating([x]), SELF) = [id]", "[x] > 7"]
+						},
+					"Priority": 0
+				},
+				{
+					"Action": "RatingFeedback(Bad)",
+					"Conditions":
+						{
+							"m_conditions":
+								{
+									"_items": ["EventElapsedTime([id]) = 0", "LastEventId(Action, *, PositionRating([x]), SELF) = [id]", "[x] < 4", "[x] != 0"],
+									"_size": 4,
+									"_version": 2
+								},
+							"Set": ["EventElapsedTime([id]) = 0", "LastEventId(Action, *, PositionRating([x]), SELF) = [id]", "[x] < 4", "[x] != 0"]
+						},
+					"Priority": 0
+				},
+				{
+					"Action": "RatingFeedback(VeryBad)",
+					"Conditions":
+						{
+							"m_conditions":
+								{
+									"_items": ["EventElapsedTime([id]) = 0", "LastEventId(Action, *, PositionRating([x]), SELF) = [id]", "[x] = 0"],
+									"_size": 3,
+									"_version": 2
+								},
+							"Set": ["EventElapsedTime([id]) = 0", "LastEventId(Action, *, PositionRating([x]), SELF) = [id]", "[x] = 0"]
+						},
+					"Priority": 0
+				},
+				{
+					"Action": "OpinionFeedback(DislikedInBetter)",
+					"Conditions":
+						{
+							"m_conditions":
+								{
+									"_items": ["EventElapsedTime([id]) = 0", "LastEventId(Action, *, OpinionCheck([x],[y],[z]), SELF) = [id]", "[y] >= [z]", "[x] < -2"],
+									"_size": 4,
+									"_version": 2
+								},
+							"Set": ["EventElapsedTime([id]) = 0", "LastEventId(Action, *, OpinionCheck([x],[y],[z]), SELF) = [id]", "[y] >= [z]", "[x] < -2"]
 						},
 					"Priority": 0
 				}]

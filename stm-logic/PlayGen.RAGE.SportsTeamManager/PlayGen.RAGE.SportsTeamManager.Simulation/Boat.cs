@@ -81,7 +81,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void ConfirmChanges()
 		{
-			List<Person> boatPeople = new List<Person>();
+			List<CrewMember> boatPeople = new List<CrewMember>();
 			foreach (CrewMember crewMember in UnassignedCrew)
 			{
 				boatPeople.Add(crewMember);
@@ -93,8 +93,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					boatPeople.Add(boatPosition.CrewMember);
 				}
 			}
-			boatPeople.Add(Manager);
-			boatPeople.ForEach(p => p.SaveStatus(this));
+			boatPeople.ForEach(p => p.DecisionFeedback(this));
+			Manager.SaveStatus();
 		}
 	}
 }

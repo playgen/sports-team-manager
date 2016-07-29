@@ -128,16 +128,63 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return mood;
 		}
 
-		public override void SaveStatus(Boat boat)
+		public void DecisionFeedback(Boat boat)
 		{
-			base.SaveStatus();
-			var actionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { "Event(Action,Player,UpdateCrew,*)" }).FirstOrDefault();
+			var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
+			int positionScore = currentPosition != null ? currentPosition.Position.GetPositionRating(this) : 0;
+			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { $"Event(Action,Player,PositionRating({positionScore}),NPC{Name.Replace(" ", "")})" }).FirstOrDefault();
 			RolePlayCharacter.Update();
-			if (actionRpc != null)
+			if (positionRpc != null)
 			{
-				var actionKey = actionRpc.ActionName.ToString();
-				LoadBeliefs(boat, LocalStorageProvider.Instance,RolePlayCharacter);
+				var positionKey = positionRpc.Parameters.FirstOrDefault().GetPrimitiveValue().ToString();
+				switch (positionKey)
+				{
+					case "Good":
+						AddOrUpdateOpinion(boat.Manager, 1);
+						break;
+					case "Bad":
+						AddOrUpdateOpinion(boat.Manager, -1);
+						break;
+					case "VeryBad":
+						AddOrUpdateOpinion(boat.Manager, -2);
+						break;
+				}
+				
 			}
+			var managerOpinion = CrewOpinions.SingleOrDefault(op => op.Person == boat.Manager);
+			var managerOpinionRating = managerOpinion != null ? managerOpinion.Opinion : 0;
+			var managerRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { $"Event(Action,Player,OpinionCheck({managerOpinionRating}),NPC{Name.Replace(" ", "")})" }).FirstOrDefault();
+			RolePlayCharacter.Update();
+			foreach (BoatPosition boatPosition in boat.BoatPositions)
+			{
+				if (boatPosition.CrewMember != null && boatPosition.CrewMember != this)
+				{
+					var opinion = CrewOpinions.SingleOrDefault(op => op.Person == boatPosition.CrewMember);
+					var opinionRating = opinion != null ? opinion.Opinion : 0;
+					int possiblePositionScore = boatPosition.Position.GetPositionRating(this);
+					var opinionRpcString = $"Event(Action,Player,OpinionCheck({opinionRating},{possiblePositionScore},{positionScore}),NPC{Name.Replace(" ", "")})";
+					if (positionScore == 0)
+					{
+						int theirPositionScore = boatPosition.Position.GetPositionRating(boatPosition.CrewMember);
+						opinionRpcString = $"Event(Action,Player,OpinionCheck({opinionRating},{possiblePositionScore},{theirPositionScore}),NPC{Name.Replace(" ", "")})";
+					}
+					var opinionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { opinionRpcString }).FirstOrDefault();
+					RolePlayCharacter.Update();
+					if (opinionRpc != null)
+					{
+						var opinionKey = opinionRpc.Parameters.FirstOrDefault().GetPrimitiveValue().ToString();
+						switch (opinionKey)
+						{
+							case "DislikedInBetter":
+								AddOrUpdateOpinion(boatPosition.CrewMember, -1);
+								AddOrUpdateOpinion(boat.Manager, -1);
+								break;
+						}
+					}
+				}
+			}
+			SaveStatus();
+			LoadBeliefs(boat, LocalStorageProvider.Instance, RolePlayCharacter);
 		}
 	}
 }

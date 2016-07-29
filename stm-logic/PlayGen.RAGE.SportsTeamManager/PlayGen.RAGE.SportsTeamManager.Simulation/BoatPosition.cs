@@ -19,40 +19,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				PositionScore = 0;
 				return;
 			}
-			int positionCount = 0;
-			int crewScore = 0;
-			if (Position.RequiresBody)
-			{
-				crewScore += CrewMember.Body;
-				positionCount++;
-			}
-			if (Position.RequiresCharisma)
-			{
-				crewScore += CrewMember.Charisma;
-				positionCount++;
-			}
-			if (Position.RequiresPerception)
-			{
-				crewScore += CrewMember.Perception;
-				positionCount++;
-			}
-			if (Position.RequiresQuickness)
-			{
-				crewScore += CrewMember.Quickness;
-				positionCount++;
-			}
-			if (Position.RequiresWillpower)
-			{
-				crewScore += CrewMember.Willpower;
-				positionCount++;
-			}
-			if (Position.RequiresWisdom)
-			{
-				crewScore += CrewMember.Wisdom;
-				positionCount++;
-			}
-
-			crewScore = crewScore / positionCount;
+			int crewScore = Position.GetPositionRating(CrewMember);
 
 			int opinion = 0;
 			int opinionCount = 0;
