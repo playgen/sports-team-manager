@@ -86,28 +86,28 @@
 							"Praiseworthiness": -2
 						}, 
 						{
-							"EventName": "Event(Action-Start, Player, OpinionCheck([score], [x], [y]), Self)",
+							"EventName": "Event(Action-Start, Player, OpinionCheck([member], [x], [y]), Self)",
 							"Conditions":
 								{
-									"Set": ["[x] >= [y]", "[score] < -2"]
+									"Set": ["[x] >= [y]", "Opinion([member]) < -2"]
 								},
 							"Desirability": -4,
 							"Praiseworthiness": -4
 						}, 
 						{
-							"EventName": "Event(Action-Start, Player, OpinionCheck([score], [x], [y]), Self)",
+							"EventName": "Event(Action-Start, Player, OpinionCheck([member], [x], [y]), Self)",
 							"Conditions":
 								{
-									"Set": ["[score] > 2"]
+									"Set": ["Opinion([member]) > 2"]
 								},
 							"Desirability": 3,
 							"Praiseworthiness": 3
 						}, 
 						{
-							"EventName": "Event(Action-Start, Player, OpinionCheck([score], [x], [y]), Self)",
+							"EventName": "Event(Action-Start, Player, OpinionCheck([member], [x], [y]), Self)",
 							"Conditions":
 								{
-									"Set": ["[score] < -2"]
+									"Set": ["Opinion([member]) < -2"]
 								},
 							"Desirability": -2,
 							"Praiseworthiness": -2

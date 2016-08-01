@@ -150,10 +150,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				RolePlayCharacter.ActionFinished(positionRpc);
 			}
 			
-
-			var managerOpinion = CrewOpinions.SingleOrDefault(op => op.Person == boat.Manager);
-			var managerOpinionRating = managerOpinion != null ? managerOpinion.Opinion : 0;
-			eventString = $"ManagerOpinionCheck({managerOpinionRating})";
+			eventString = $"ManagerOpinionCheck({boat.Manager.Name.Replace(" ", "")})";
 			var managerOpinionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName)});
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			if (managerOpinionRpc != null)
@@ -165,14 +162,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				if (boatPosition.CrewMember != null && boatPosition.CrewMember != this)
 				{
-					var opinion = CrewOpinions.SingleOrDefault(op => op.Person == boatPosition.CrewMember);
-					var opinionRating = opinion != null ? opinion.Opinion : 0;
 					int possiblePositionScore = boatPosition.Position.GetPositionRating(this);
-					eventString = $"OpinionCheck({opinionRating},{possiblePositionScore},{positionScore})";
+					eventString = $"OpinionCheck({boatPosition.CrewMember.Name.Replace(" ", "")},{possiblePositionScore},{positionScore})";
 					if (positionScore == 0)
 					{
 						int theirPositionScore = boatPosition.Position.GetPositionRating(boatPosition.CrewMember);
-						eventString = $"OpinionCheck({opinionRating},{possiblePositionScore},{theirPositionScore})";
+						eventString = $"OpinionCheck({boatPosition.CrewMember.Name.Replace(" ", "")},{possiblePositionScore},{theirPositionScore})";
 					}
 					var opinionRpc = RolePlayCharacter.PerceptionActionLoop(new [] { string.Format(eventBase, eventString, spacelessName)});
 					EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
