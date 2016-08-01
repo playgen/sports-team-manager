@@ -35,6 +35,30 @@
 							"Set": ["EventElapsedTime([id]) = 0", "EventId(Action-Start, *, OpinionCheck([x], [y], [z]), SELF) = [id]", "[y] >= [z]", "Opinion([x]) < -2"]
 						},
 					"Priority": 0
+				}, 
+				{
+					"Action": "RandomManagerEvent(Neutral)",
+					"Conditions":
+						{
+							"Set": ["EventElapsedTime([id]) = 0", "EventId(Action-Start, *, RandomEvent(Manager, [x]), SELF) = [id]", "Opinion([x]) >= -2", "Opinion([x]) <= -2"]
+						},
+					"Priority": 0
+				}, 
+				{
+					"Action": "RandomManagerEvent(Good)",
+					"Conditions":
+						{
+							"Set": ["EventElapsedTime([id]) = 0", "EventId(Action-Start, *, RandomEvent(Manager, [x]), SELF) = [id]", "Opinion([x]) > 2"]
+						},
+					"Priority": 0
+				}, 
+				{
+					"Action": "RandomManagerEvent(Bad)",
+					"Conditions":
+						{
+							"Set": ["EventElapsedTime([id]) = 0", "EventId(Action-Start, *, RandomEvent(Manager, [x]), SELF) = [id]", "Opinion([x]) < -2"]
+						},
+					"Priority": 0
 				}]
 		},
 	"types": [

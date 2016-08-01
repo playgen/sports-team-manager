@@ -16,6 +16,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int BoatScore { get; set; }
 		public Person Manager { get; set; }
 
+		public List<CrewMember> GetAllCrewMembers()
+		{
+			List<CrewMember> crew = new List<CrewMember>();
+			foreach (CrewMember crewMember in UnassignedCrew)
+			{
+				crew.Add(crewMember);
+			}
+			foreach (BoatPosition boatPosition in BoatPositions)
+			{
+				if (boatPosition.CrewMember != null)
+				{
+					crew.Add(boatPosition.CrewMember);
+				}
+			}
+			return crew;
+		}
+
 		public void AddCrew(CrewMember crewMember)
 		{
 			var currentPosition = BoatPositions.SingleOrDefault(bp => bp.CrewMember == crewMember);
@@ -81,20 +98,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void ConfirmChanges()
 		{
-			List<CrewMember> boatPeople = new List<CrewMember>();
-			foreach (CrewMember crewMember in UnassignedCrew)
-			{
-				boatPeople.Add(crewMember);
-			}
-			foreach (BoatPosition boatPosition in BoatPositions)
-			{
-				if (boatPosition.CrewMember != null)
-				{
-					boatPeople.Add(boatPosition.CrewMember);
-				}
-			}
-			boatPeople = boatPeople.OrderBy(p => p.Name).ToList();
-			boatPeople.ForEach(p => p.DecisionFeedback(this));
+			List<CrewMember> crew = GetAllCrewMembers();
+			crew = crew.OrderBy(p => p.Name).ToList();
+			crew.ForEach(p => p.DecisionFeedback(this));
 			Manager.SaveStatus();
 			UpdateBoatScore();
 		}

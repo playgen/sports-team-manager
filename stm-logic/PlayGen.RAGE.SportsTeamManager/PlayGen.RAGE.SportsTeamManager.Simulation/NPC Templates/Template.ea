@@ -41,19 +41,19 @@
 					"AppraisalWeight": 1,
 					"Rules": [
 						{
-							"EventName": "Event(Action-Start, Player, ManagerOpinionCheck([score]), Self)",
+							"EventName": "Event(Action-Start, Player, ManagerOpinionCheck([manager]), Self)",
 							"Conditions":
 								{
-									"Set": ["[score] < -2"]
+									"Set": ["Opinion([manager]) < -2"]
 								},
 							"Desirability": -2,
 							"Praiseworthiness": -2
 						}, 
 						{
-							"EventName": "Event(Action-Start, Player, ManagerOpinionCheck([score]), Self)",
+							"EventName": "Event(Action-Start, Player, ManagerOpinionCheck([manager]), Self)",
 							"Conditions":
 								{
-									"Set": ["[score] > 2"]
+									"Set": ["Opinion([manager]) > 2"]
 								},
 							"Desirability": 2,
 							"Praiseworthiness": 2
