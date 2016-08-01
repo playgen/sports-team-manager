@@ -125,14 +125,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void DecisionFeedback(Boat boat)
 		{
 			SaveStatus();
-			
 			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
 			int positionScore = currentPosition != null ? currentPosition.Position.GetPositionRating(this) : 0;
 			var eventString = $"PositionRating({positionScore})";
 			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
-			RolePlayCharacter.Update();
+			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			if (positionRpc != null)
 			{
 				var positionKey = positionRpc.Parameters.FirstOrDefault().GetValue().ToString();
@@ -154,15 +153,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 			var managerOpinion = CrewOpinions.SingleOrDefault(op => op.Person == boat.Manager);
 			var managerOpinionRating = managerOpinion != null ? managerOpinion.Opinion : 0;
-			eventString = $"OpinionCheck({managerOpinionRating})";
+			eventString = $"ManagerOpinionCheck({managerOpinionRating})";
 			var managerOpinionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName)});
-			RolePlayCharacter.Update();
+			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			if (managerOpinionRpc != null)
 			{
 				RolePlayCharacter.ActionFinished(managerOpinionRpc);
 			}
 
-			foreach (BoatPosition boatPosition in boat.BoatPositions)
+			foreach (BoatPosition boatPosition in boat.BoatPositions.OrderBy(b => b.Position.Name))
 			{
 				if (boatPosition.CrewMember != null && boatPosition.CrewMember != this)
 				{
@@ -176,7 +175,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						eventString = $"OpinionCheck({opinionRating},{possiblePositionScore},{theirPositionScore})";
 					}
 					var opinionRpc = RolePlayCharacter.PerceptionActionLoop(new [] { string.Format(eventBase, eventString, spacelessName)});
-					RolePlayCharacter.Update();
+					EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 					if (opinionRpc != null)
 					{
 						var opinionKey = opinionRpc.Parameters.FirstOrDefault().GetValue().ToString();
@@ -191,13 +190,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 				}
 			}
-			//EmotionalAppraisal.Mood = RolePlayCharacter.Mood;
-			var events = EmotionalAppraisal.EventRecords;
-			foreach (var ev in events)
-			{
-				EmotionalAppraisal.AddEventRecord(ev);
-			}
-			
 			SaveStatus();
 			LoadBeliefs(boat, LocalStorageProvider.Instance);
 		}

@@ -93,6 +93,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					boatPeople.Add(boatPosition.CrewMember);
 				}
 			}
+			boatPeople = boatPeople.OrderBy(p => p.Name).ToList();
 			boatPeople.ForEach(p => p.DecisionFeedback(this));
 			Manager.SaveStatus();
 			UpdateBoatScore();

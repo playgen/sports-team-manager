@@ -21,7 +21,7 @@
 				},
 			"AutobiographicMemory":
 				{
-					"Tick": 0,
+					"Tick": 1,
 					"records": []
 				},
 			"EmotionalState":
@@ -41,7 +41,7 @@
 					"AppraisalWeight": 1,
 					"Rules": [
 						{
-							"EventName": "Event(Action-Start, Player, OpinionCheck([score]), Self)",
+							"EventName": "Event(Action-Start, Player, ManagerOpinionCheck([score]), Self)",
 							"Conditions":
 								{
 									"Set": ["[score] < -2"]
@@ -50,7 +50,7 @@
 							"Praiseworthiness": -2
 						}, 
 						{
-							"EventName": "Event(Action-Start, Player, OpinionCheck([score]), Self)",
+							"EventName": "Event(Action-Start, Player, ManagerOpinionCheck([score]), Self)",
 							"Conditions":
 								{
 									"Set": ["[score] > 2"]
