@@ -8,55 +8,31 @@
 					"Action": "RatingFeedback(Good)",
 					"Conditions":
 						{
-							"m_conditions":
-								{
-									"_items": ["EventElapsedTime([id]) = 0", "EventId(Action, *, PositionRating([x]), SELF) = [id]", "[x] > 7"],
-									"_size": 3,
-									"_version": 2
-								},
-							"Set": ["EventElapsedTime([id]) = 0", "EventId(Action, *, PositionRating([x]), SELF) = [id]", "[x] > 7"]
+							"Set": ["EventElapsedTime([id]) = 0", "EventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "[x] > 7"]
 						},
 					"Priority": 0
-				},
+				}, 
 				{
 					"Action": "RatingFeedback(Bad)",
 					"Conditions":
 						{
-							"m_conditions":
-								{
-									"_items": ["EventElapsedTime([id]) = 0", "EventId(Action, *, PositionRating([x]), SELF) = [id]", "[x] < 4", "[x] != 0"],
-									"_size": 4,
-									"_version": 2
-								},
-							"Set": ["EventElapsedTime([id]) = 0", "EventId(Action, *, PositionRating([x]), SELF) = [id]", "[x] < 4", "[x] != 0"]
+							"Set": ["EventElapsedTime([id]) = 0", "EventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "[x] < 4", "[x] != 0"]
 						},
 					"Priority": 0
-				},
+				}, 
 				{
 					"Action": "RatingFeedback(VeryBad)",
 					"Conditions":
 						{
-							"m_conditions":
-								{
-									"_items": ["EventElapsedTime([id]) = 0", "EventId(Action, *, PositionRating([x]), SELF) = [id]", "[x] = 0"],
-									"_size": 3,
-									"_version": 2
-								},
-							"Set": ["EventElapsedTime([id]) = 0", "EventId(Action, *, PositionRating([x]), SELF) = [id]", "[x] = 0"]
+							"Set": ["EventElapsedTime([id]) = 0", "EventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "0 = [x]"]
 						},
 					"Priority": 0
-				},
+				}, 
 				{
 					"Action": "OpinionFeedback(DislikedInBetter)",
 					"Conditions":
 						{
-							"m_conditions":
-								{
-									"_items": ["EventElapsedTime([id]) = 0", "EventId(Action, *, OpinionCheck([x],[y],[z]), SELF) = [id]", "[y] >= [z]", "[x] < -2"],
-									"_size": 4,
-									"_version": 2
-								},
-							"Set": ["EventElapsedTime([id]) = 0", "EventId(Action, *, OpinionCheck([x],[y],[z]), SELF) = [id]", "[y] >= [z]", "[x] < -2"]
+							"Set": ["EventElapsedTime([id]) = 0", "EventId(Action-Start, *, OpinionCheck([x], [y], [z]), SELF) = [id]", "[y] >= [z]", "[x] < -2"]
 						},
 					"Priority": 0
 				}]

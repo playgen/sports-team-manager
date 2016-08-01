@@ -2,10 +2,10 @@
 	"root":
 		{
 			"classId": 0,
-			"EmotionalAppraisalAssetSource": "Template.ea",
-			"EmotionalDecisionMakingAssetSource": "Template.edm",
-			"CharacterName": "Template",
-			"BodyName": "Template"
+			"_emotionalAppraisalAssetSource": "Template.ea",
+			"_emotionalDecisionMakingAssetSource": "Template.edm",
+			"BodyName": "Template",
+			"CharacterName": "Template"
 		},
 	"types": [
 		{

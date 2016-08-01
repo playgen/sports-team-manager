@@ -36,6 +36,9 @@
     <Reference Include="AutobiographicMemory">
       <HintPath>..\..\RAGE Assets\AutobiographicMemory.dll</HintPath>
     </Reference>
+    <Reference Include="Conditions">
+      <HintPath>..\..\RAGE Assets\Conditions.dll</HintPath>
+    </Reference>
     <Reference Include="EmotionalAppraisal">
       <HintPath>..\..\RAGE Assets\EmotionalAppraisal.dll</HintPath>
     </Reference>
@@ -60,6 +63,9 @@
     <Reference Include="RolePlayCharacter">
       <HintPath>..\..\RAGE Assets\RolePlayCharacter.dll</HintPath>
     </Reference>
+    <Reference Include="SocialImportanceAsset">
+      <HintPath>..\..\RAGE Assets\SocialImportanceAsset.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -70,6 +76,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="Utilities">
       <HintPath>..\..\RAGE Assets\Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="WellFormedNames">
+      <HintPath>..\..\RAGE Assets\WellFormedNames.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

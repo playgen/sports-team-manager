@@ -28,7 +28,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			manager.CreateFile(iat, templateStorage, storagePorvider, storageLocation);
 			manager.UpdateBeliefs("Manager");
-			manager.UpdateSingleBelief("Value(BoatType)", boat.GetType().ToString(), "SELF");
+			manager.UpdateSingleBelief("Value(BoatType)", boat.GetType().Name, "SELF");
 			boat.Manager = manager;
 			manager.SaveStatus();
 
@@ -52,7 +52,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (position == "Manager")
 				{
 					Person person = new Person(storagePorvider, rpc);
-					boat = (Boat)Activator.CreateInstance(Type.GetType(person.EmotionalAppraisal.GetBeliefValue("Value(BoatType)")));
+					boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + person.EmotionalAppraisal.GetBeliefValue("Value(BoatType)")));
 					boat.Name = iat.ScenarioName;
 					boat.Manager = person;
 					continue;

@@ -125,16 +125,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void DecisionFeedback(Boat boat)
 		{
 			SaveStatus();
+			
 			var spacelessName = EmotionalAppraisal.Perspective;
-			var eventBase = "Event(Action,Player,{0},{1})";
+			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
 			int positionScore = currentPosition != null ? currentPosition.Position.GetPositionRating(this) : 0;
 			var eventString = $"PositionRating({positionScore})";
-			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) }).FirstOrDefault();
+			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			RolePlayCharacter.Update();
 			if (positionRpc != null)
 			{
-				var positionKey = positionRpc.Parameters.FirstOrDefault().GetPrimitiveValue().ToString();
+				var positionKey = positionRpc.Parameters.FirstOrDefault().GetValue().ToString();
 				switch (positionKey)
 				{
 					case "Good":
@@ -147,13 +148,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						AddOrUpdateOpinion(boat.Manager, -2);
 						break;
 				}
+				RolePlayCharacter.ActionFinished(positionRpc);
 			}
+			
 
 			var managerOpinion = CrewOpinions.SingleOrDefault(op => op.Person == boat.Manager);
 			var managerOpinionRating = managerOpinion != null ? managerOpinion.Opinion : 0;
 			eventString = $"OpinionCheck({managerOpinionRating})";
-			RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName)}).FirstOrDefault();
+			var managerOpinionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName)});
 			RolePlayCharacter.Update();
+			if (managerOpinionRpc != null)
+			{
+				RolePlayCharacter.ActionFinished(managerOpinionRpc);
+			}
 
 			foreach (BoatPosition boatPosition in boat.BoatPositions)
 			{
@@ -168,11 +175,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						int theirPositionScore = boatPosition.Position.GetPositionRating(boatPosition.CrewMember);
 						eventString = $"OpinionCheck({opinionRating},{possiblePositionScore},{theirPositionScore})";
 					}
-					var opinionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName)}).FirstOrDefault();
+					var opinionRpc = RolePlayCharacter.PerceptionActionLoop(new [] { string.Format(eventBase, eventString, spacelessName)});
 					RolePlayCharacter.Update();
 					if (opinionRpc != null)
 					{
-						var opinionKey = opinionRpc.Parameters.FirstOrDefault().GetPrimitiveValue().ToString();
+						var opinionKey = opinionRpc.Parameters.FirstOrDefault().GetValue().ToString();
 						switch (opinionKey)
 						{
 							case "DislikedInBetter":
@@ -180,9 +187,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 								AddOrUpdateOpinion(boat.Manager, -1);
 								break;
 						}
+						RolePlayCharacter.ActionFinished(opinionRpc);
 					}
 				}
 			}
+			//EmotionalAppraisal.Mood = RolePlayCharacter.Mood;
 			var events = EmotionalAppraisal.EventRecords;
 			foreach (var ev in events)
 			{
