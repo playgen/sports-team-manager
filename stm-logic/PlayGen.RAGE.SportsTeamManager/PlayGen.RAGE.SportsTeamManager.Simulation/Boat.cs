@@ -30,6 +30,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					crew.Add(boatPosition.CrewMember);
 				}
 			}
+			crew = crew.OrderBy(c => c.Name).ToList();
 			return crew;
 		}
 

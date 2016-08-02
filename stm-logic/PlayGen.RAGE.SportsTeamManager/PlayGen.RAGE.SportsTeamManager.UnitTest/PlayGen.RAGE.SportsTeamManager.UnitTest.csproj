@@ -38,6 +38,10 @@
     <Reference Include="GAIPS.Rage">
       <HintPath>..\..\RAGE Assets\GAIPS.Rage.dll</HintPath>
     </Reference>
+    <Reference Include="IntegratedAuthoringTool, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RAGE Assets\IntegratedAuthoringTool.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>

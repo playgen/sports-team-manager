@@ -2,7 +2,25 @@
 	"root":
 		{
 			"classId": 0,
-			"ScenarioName": "Template"
+			"ScenarioName": "Template",
+			"PlayerDialogues": [
+				{
+					"Id": "ec9b2259-b7cb-40bd-8456-67f98b7bd331",
+					"CurrentState": "PreRace",
+					"NextState": "-",
+					"Meaning": "Team",
+					"Style": "Encouraging",
+					"Utterance": "Encouraging message to the whole crew"
+				}],
+			"AgentDialogues": [
+				{
+					"Id": "8c96c967-e61a-4739-ae09-03f077c2e0e9",
+					"CurrentState": "Encouraged",
+					"NextState": "Encouraged",
+					"Meaning": "Encouraged",
+					"Style": "Encouraged",
+					"Utterance": "Message that says that they're encouraged!"
+				}]
 		},
 	"types": [
 		{

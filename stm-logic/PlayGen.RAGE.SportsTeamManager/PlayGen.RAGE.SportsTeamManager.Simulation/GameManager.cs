@@ -9,11 +9,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using IntegratedAuthoringTool.DTOs;
+
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	public class GameManager
 	{
 		public Boat Boat { get; set; }
+		public EventController EventController { get; set; }
 
 		public void NewGame(IStorageProvider storagePorvider, string storageLocation, string boatName, string managerName, string managerAge, string managerGender)
 		{
@@ -47,6 +50,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 			var noSpaceBoatName = Boat.Name.Replace(" ", "");
 			iat.SaveToFile(storagePorvider, Path.Combine(storageLocation, noSpaceBoatName + ".iat"));
+			EventController = new EventController(iat);
 		}
 
 		public List<CrewMember> CreateInitialCrew()
@@ -142,7 +146,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 
 			crewList.ForEach(cm => Boat.AddCrew(cm));
-			crewList.ForEach(cm => cm.LoadBeliefs(Boat, storagePorvider));
+			crewList.ForEach(cm => cm.LoadBeliefs(Boat));
+			EventController = new EventController(iat);
 		}
 
 		public void UnloadGame()
@@ -158,6 +163,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				Boat.AssignCrew(position, crewMember);
 			}
+		}
+
+		public void ConfirmLineUp()
+		{
+			Boat.ConfirmChanges();
+		}
+
+		public string[] SendEvent(DialogueStateActionDTO selected)
+		{
+			var replies = EventController.SelectEvent(selected, Boat);
+			Boat.UpdateBoatScore();
+			return replies.ToArray();
 		}
 	}
 }

@@ -42,8 +42,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void CreateFile(IntegratedAuthoringToolAsset iat, IStorageProvider templateStorage, IStorageProvider savedStorage, string storageLocation)
 		{
 			var templateRpc = RolePlayCharacterAsset.LoadFromFile(templateStorage, "template_rpc");
-			var ea = EmotionalAppraisalAsset.LoadFromFile(templateStorage, "template_ea");
-			var edm = EmotionalDecisionMakingAsset.LoadFromFile(templateStorage, "template_edm");
+			var ea = EmotionalAppraisalAsset.LoadFromFile(templateStorage, templateRpc.EmotionalAppraisalAssetSource);
+			var edm = EmotionalDecisionMakingAsset.LoadFromFile(templateStorage, templateRpc.EmotionalDecisionMakingSource);
 			templateRpc.CharacterName = Name;
 			var noSpaceName = templateRpc.CharacterName.Replace(" ", "");
 			ea.SetPerspective("NPC" + noSpaceName);
@@ -81,7 +81,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			EmotionalAppraisal.SaveToFile(LocalStorageProvider.Instance, EmotionalAppraisal.AssetFilePath);
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, RolePlayCharacter.AssetFilePath);
-			EmotionalAppraisal = EmotionalAppraisalAsset.LoadFromFile(LocalStorageProvider.Instance, EmotionalAppraisal.AssetFilePath);
 		}
 	}
 }

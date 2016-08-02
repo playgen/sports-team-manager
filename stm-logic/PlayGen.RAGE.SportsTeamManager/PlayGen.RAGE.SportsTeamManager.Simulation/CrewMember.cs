@@ -2,7 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutobiographicMemory.DTOs;
+
+using EmotionalAppraisal;
+
 using GAIPS.Rage;
+
+using IntegratedAuthoringTool;
+using IntegratedAuthoringTool.DTOs;
+
 using RolePlayCharacter;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
@@ -76,7 +83,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			OpinionChange(this, new EventArgs());
 		}
 
-		public void LoadBeliefs(Boat boat, IStorageProvider savedStorage)
+		public void LoadBeliefs(Boat boat)
 		{
 			Body = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Body)"));
 			Charisma = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Charisma)"));
@@ -92,18 +99,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					boat.AssignCrew(boatPosition, this);
 				}
 			}
-			foreach (CrewMember otherMember in boat.UnassignedCrew)
+			foreach (CrewMember member in boat.GetAllCrewMembers())
 			{
-				if (EmotionalAppraisal.BeliefExists($"Opinion({otherMember.Name.Replace(" ", "")})"))
+				if (EmotionalAppraisal.BeliefExists($"Opinion({member.Name.Replace(" ", "")})"))
 				{
-					AddOrUpdateOpinion(otherMember, int.Parse(EmotionalAppraisal.GetBeliefValue($"Opinion({otherMember.Name.Replace(" ", "")})")), true);
-				}
-			}
-			foreach (BoatPosition position in boat.BoatPositions)
-			{
-				if (position.CrewMember != null && EmotionalAppraisal.BeliefExists($"Opinion({position.CrewMember.Name.Replace(" ", "")})"))
-				{
-					AddOrUpdateOpinion(position.CrewMember, int.Parse(EmotionalAppraisal.GetBeliefValue($"Opinion({position.CrewMember.Name.Replace(" ", "")})")), true);
+					AddOrUpdateOpinion(member, int.Parse(EmotionalAppraisal.GetBeliefValue($"Opinion({member.Name.Replace(" ", "")})")), true);
 				}
 			}
 			if (EmotionalAppraisal.BeliefExists($"Opinion({boat.Manager.Name.Replace(" ", "")})"))
@@ -149,7 +149,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				RolePlayCharacter.ActionFinished(positionRpc);
 			}
-			
+
 			eventString = $"ManagerOpinionCheck({boat.Manager.Name.Replace(" ", "")})";
 			var managerOpinionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName)});
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
@@ -186,7 +186,34 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			SaveStatus();
-			LoadBeliefs(boat, LocalStorageProvider.Instance);
+			LoadBeliefs(boat);
+		}
+
+		public string SendEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Boat boat, CrewMember crewMember = null)
+		{
+			var spacelessName = EmotionalAppraisal.Perspective;
+			var eventBase = "Event(Action-Start,Player,{0},{1})";
+			var eventString = $"{selected.CurrentState}({selected.Style})";
+			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
+			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
+			string reply = null;
+			if (eventRpc != null)
+			{
+				var eventKey = eventRpc.ActionName.ToString();
+				var options = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey);
+				if (options != null && options.Count() > 0)
+				{
+					reply = RolePlayCharacter.CharacterName + ": " + options.OrderBy(o => Guid.NewGuid()).First().Utterance;
+				}
+				switch (eventKey)
+				{
+					
+				}
+				RolePlayCharacter.ActionFinished(eventRpc);
+			}
+			SaveStatus();
+			LoadBeliefs(boat);
+			return reply;
 		}
 	}
 }
