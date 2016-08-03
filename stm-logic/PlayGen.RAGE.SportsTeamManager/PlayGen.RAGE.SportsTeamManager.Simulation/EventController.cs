@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 
@@ -13,12 +9,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	{
 		public IntegratedAuthoringToolAsset IntegratedAuthoringTool { get; set; }
 
-		public DialogueStateActionDTO[] PreRaceEvents { get; }
-		public DialogueStateActionDTO[] MidRaceEvents { get; }
-		public DialogueStateActionDTO[] PostRaceEvents { get; }
-		public DialogueStateActionDTO[] SoloInterviewEvents { get; }
-		public DialogueStateActionDTO[] PairedInterviewEvents { get; }
-		public DialogueStateActionDTO[] TeamInterviewEvents { get; }
+		public DialogueStateActionDTO[] PreRaceEvents { get; set; }
+		public DialogueStateActionDTO[] MidRaceEvents { get; set; }
+		public DialogueStateActionDTO[] PostRaceEvents { get; set; }
+		public DialogueStateActionDTO[] SoloInterviewEvents { get; set; }
+		public DialogueStateActionDTO[] PairedInterviewEvents { get; set; }
+		public DialogueStateActionDTO[] TeamInterviewEvents { get; set; }
 
 		public EventController(IntegratedAuthoringToolAsset iat)
 		{

@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutobiographicMemory.DTOs;
-
-using EmotionalAppraisal;
-
 using GAIPS.Rage;
-
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
-
 using RolePlayCharacter;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
@@ -22,17 +16,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int Quickness { get; set; }
 		public int Wisdom { get; set; }
 		public int Willpower { get; set; }
-		public List<CrewOpinion> CrewOpinions { get; set; } = new List<CrewOpinion>();
+		public List<CrewOpinion> CrewOpinions { get; set; }
 		public event EventHandler OpinionChange = delegate { };
 
 		public CrewMember()
 		{
-
+			CrewOpinions = new List<CrewOpinion>();
 		}
 
 		public CrewMember(IStorageProvider savedStorage, RolePlayCharacterAsset rpc) : base(savedStorage, rpc)
 		{
-
+			CrewOpinions = new List<CrewOpinion>();
 		}
 
 		public override void UpdateBeliefs(string position = null)
@@ -46,7 +40,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UpdateSingleBelief("Value(Wisdom)", Wisdom.ToString(), "SELF");
 			foreach (CrewOpinion co in CrewOpinions)
 			{
-				UpdateSingleBelief($"Opinion({co.Person.Name.Replace(" ", "")})", co.Opinion.ToString(), "SELF");
+				UpdateSingleBelief(String.Format("Opinion({0})", co.Person.Name.Replace(" ", "")), co.Opinion.ToString(), "SELF");
 			}
 		}
 
@@ -58,11 +52,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (replace)
 				{
 					cw.Opinion = change;
-				} else
+				}
+				else
 				{
 					cw.Opinion += change;
 				}
-			} else
+			}
+			else
 			{
 				cw = new CrewOpinion
 				{
@@ -101,14 +97,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			foreach (CrewMember member in boat.GetAllCrewMembers())
 			{
-				if (EmotionalAppraisal.BeliefExists($"Opinion({member.Name.Replace(" ", "")})"))
+				if (EmotionalAppraisal.BeliefExists(String.Format("Opinion({0})", member.Name.Replace(" ", ""))))
 				{
-					AddOrUpdateOpinion(member, int.Parse(EmotionalAppraisal.GetBeliefValue($"Opinion({member.Name.Replace(" ", "")})")), true);
+					AddOrUpdateOpinion(member, int.Parse(EmotionalAppraisal.GetBeliefValue(String.Format("Opinion({0})", member.Name.Replace(" ", "")))), true);
 				}
 			}
-			if (EmotionalAppraisal.BeliefExists($"Opinion({boat.Manager.Name.Replace(" ", "")})"))
+			if (EmotionalAppraisal.BeliefExists(String.Format("Opinion({0})", boat.Manager.Name.Replace(" ", ""))))
 			{
-				AddOrUpdateOpinion(boat.Manager, int.Parse(EmotionalAppraisal.GetBeliefValue($"Opinion({boat.Manager.Name.Replace(" ", "")})")), true);
+				AddOrUpdateOpinion(boat.Manager, int.Parse(EmotionalAppraisal.GetBeliefValue(String.Format("Opinion({0})", boat.Manager.Name.Replace(" ", "")))), true);
 			}
 		}
 
@@ -129,7 +125,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
 			int positionScore = currentPosition != null ? currentPosition.Position.GetPositionRating(this) : 0;
-			var eventString = $"PositionRating({positionScore})";
+			var eventString = String.Format("PositionRating({0})", positionScore);
 			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			if (positionRpc != null)
@@ -150,8 +146,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				RolePlayCharacter.ActionFinished(positionRpc);
 			}
 
-			eventString = $"ManagerOpinionCheck({boat.Manager.Name.Replace(" ", "")})";
-			var managerOpinionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName)});
+			eventString = String.Format("ManagerOpinionCheck({0})", boat.Manager.Name.Replace(" ", ""));
+			var managerOpinionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			if (managerOpinionRpc != null)
 			{
@@ -163,13 +159,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (boatPosition.CrewMember != null && boatPosition.CrewMember != this)
 				{
 					int possiblePositionScore = boatPosition.Position.GetPositionRating(this);
-					eventString = $"OpinionCheck({boatPosition.CrewMember.Name.Replace(" ", "")},{possiblePositionScore},{positionScore})";
+					eventString = String.Format("OpinionCheck({0},{1},{2})", boatPosition.CrewMember.Name.Replace(" ", ""), possiblePositionScore, positionScore);
 					if (positionScore == 0)
 					{
 						int theirPositionScore = boatPosition.Position.GetPositionRating(boatPosition.CrewMember);
-						eventString = $"OpinionCheck({boatPosition.CrewMember.Name.Replace(" ", "")},{possiblePositionScore},{theirPositionScore})";
+						eventString = String.Format("OpinionCheck({0},{1},{2})", boatPosition.CrewMember.Name.Replace(" ", ""), possiblePositionScore, theirPositionScore);
 					}
-					var opinionRpc = RolePlayCharacter.PerceptionActionLoop(new [] { string.Format(eventBase, eventString, spacelessName)});
+					var opinionRpc = RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
 					EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 					if (opinionRpc != null)
 					{
@@ -193,7 +189,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			var eventString = $"{selected.CurrentState}({selected.Style})";
+			var eventString = String.Format("{0}({1})", selected.CurrentState, selected.Style);
 			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			string reply = null;
@@ -205,10 +201,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					reply = RolePlayCharacter.CharacterName + ": " + options.OrderBy(o => Guid.NewGuid()).First().Utterance;
 				}
-				switch (eventKey)
+				/*switch (eventKey)
 				{
-					
-				}
+
+				}*/
 				RolePlayCharacter.ActionFinished(eventRpc);
 			}
 			SaveStatus();

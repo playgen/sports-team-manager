@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using GAIPS.Rage;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	public class Boat
 	{
 		public string Name { get; set; }
-		public List<BoatPosition> BoatPositions { get; set; } = new List<BoatPosition>();
-		public List<CrewMember> UnassignedCrew { get; set; } = new List<CrewMember>();
+		public List<BoatPosition> BoatPositions { get; set; }
+		public List<CrewMember> UnassignedCrew { get; set; }
 		public int BoatScore { get; set; }
 		public Person Manager { get; set; }
+
+		public Boat()
+		{
+			BoatPositions = new List<BoatPosition>();
+			UnassignedCrew = new List<CrewMember>();
+		}
 
 		public List<CrewMember> GetAllCrewMembers()
 		{

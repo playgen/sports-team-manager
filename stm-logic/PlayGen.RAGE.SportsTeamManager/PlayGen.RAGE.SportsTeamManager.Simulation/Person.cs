@@ -1,14 +1,9 @@
 ﻿using System.IO;
-
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
-
 using EmotionalDecisionMaking;
-
 using GAIPS.Rage;
-
 using IntegratedAuthoringTool;
-
 using RolePlayCharacter;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation

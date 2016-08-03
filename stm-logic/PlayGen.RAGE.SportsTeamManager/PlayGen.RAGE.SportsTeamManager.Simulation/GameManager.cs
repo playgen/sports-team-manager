@@ -1,6 +1,4 @@
 ﻿using EmotionalAppraisal;
-using EmotionalAppraisal.DTOs;
-using EmotionalDecisionMaking;
 using GAIPS.Rage;
 using IntegratedAuthoringTool;
 using RolePlayCharacter;
@@ -8,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
 using IntegratedAuthoringTool.DTOs;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
@@ -20,6 +17,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void NewGame(IStorageProvider storagePorvider, string storageLocation, string boatName, string managerName, string managerAge, string managerGender)
 		{
+			var noSpaceBoatName = boatName.Replace(" ", "");
+			storageLocation = Path.Combine(storageLocation, noSpaceBoatName);
+			Directory.CreateDirectory(storageLocation);
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile(templateStorage, "template_iat");
 			Boat = new Dinghy();
@@ -48,7 +48,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat.Manager = manager;
 			manager.SaveStatus();
 
-			var noSpaceBoatName = Boat.Name.Replace(" ", "");
 			iat.SaveToFile(storagePorvider, Path.Combine(storageLocation, noSpaceBoatName + ".iat"));
 			EventController = new EventController(iat);
 		}
@@ -120,10 +119,32 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return crew.ToList();
 		}
 
+		public List<string> GetGameNames(string storageLocation)
+		{
+			var folders = Directory.GetDirectories(storageLocation);
+			List<string> gameNames = new List<string>();
+			foreach (var folder in folders)
+			{
+				var files = Directory.GetFiles(folder, "*.iat");
+				foreach(var file in files)
+				{
+					var name = IntegratedAuthoringToolAsset.LoadFromFile(LocalStorageProvider.Instance, file).ScenarioName;
+					gameNames.Add(name);
+				}
+			}
+			return gameNames;
+		}
+
+		public bool CheckIfGameExists(string storageLocation, string gameName)
+		{
+			return Directory.Exists(Path.Combine(storageLocation, gameName.Replace(" ", "")));
+		}
+
 		public void LoadGame(IStorageProvider storagePorvider, string storageLocation, string boatName)
 		{
 			UnloadGame();
 			Boat = new Boat();
+			storageLocation = Path.Combine(storageLocation, boatName.Replace(" ", ""));
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile(storagePorvider, Path.Combine(storageLocation, boatName.Replace(" ", "") + ".iat"));
 			var rpcList = iat.GetAllCharacters();
 
