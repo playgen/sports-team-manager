@@ -85,6 +85,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			boatPosition.CrewMember = null;
 		}
 
+		public void RemoveAllCrew()
+		{
+			foreach (BoatPosition boatPosition in BoatPositions)
+			{
+				if (boatPosition.CrewMember != null)
+				{
+					RemoveCrew(boatPosition);
+				}
+			}
+		}
+
 		void OnOpinionChange(object sender, EventArgs e)
 		{
 			UpdateBoatScore();

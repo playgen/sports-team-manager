@@ -8,6 +8,8 @@ public class UIStateManager : MonoBehaviour {
 	private GameObject _newGame;
 	[SerializeField]
 	private GameObject _loadGame;
+	[SerializeField]
+	private GameObject _teamSelection;
 
 	public void MenuToNewGame()
 	{
@@ -25,5 +27,11 @@ public class UIStateManager : MonoBehaviour {
 	{
 		go.SetActive(false);
 		_mainMenu.SetActive(true);
+	}
+
+	public void GoToGame(GameObject go)
+	{
+		go.SetActive(false);
+		_teamSelection.SetActive(true);
 	}
 }

@@ -83,7 +83,7 @@ public class NewGameUI : MonoBehaviour {
 			bool success = _newGame.CreateNewGame(_boatName.text, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text);
 			if (success)
 			{
-				print("Game created");
+				_stateManager.GoToGame(gameObject);
 			} else
 			{
 				_errorText.text = "Game not created. Please try again.";

@@ -180,10 +180,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			BoatPosition position = Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == positionName);
 			CrewMember crewMember = Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == crewName);
-			if (position != null && crewMember != null)
+			if (crewMember != null)
 			{
 				Boat.AssignCrew(position, crewMember);
 			}
+		}
+
+		public void RemoveAllCrew()
+		{
+			Boat.RemoveAllCrew();
 		}
 
 		public void ConfirmLineUp()
