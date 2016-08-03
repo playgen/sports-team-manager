@@ -16,12 +16,21 @@ public class LoadGame : MonoBehaviour
 	public List<string> GetGames()
 	{
 		_selectedName = null;
+		if (_gameManager == null)
+		{
+			_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+		}
 		return _gameManager.GetGameNames(Application.streamingAssetsPath);
 	}
 
 	public void SetSelected(string name)
 	{
 		_selectedName = name;
+	}
+
+	public string GetSelected()
+	{
+		return _selectedName;
 	}
 
 	public bool ExistingGameCheck()

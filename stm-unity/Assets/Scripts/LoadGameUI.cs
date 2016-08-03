@@ -8,9 +8,15 @@ public class LoadGameUI : MonoBehaviour
 	private LoadGame _loadGame;
 	private UIStateManager _stateManager;
 	[SerializeField]
+	private Button _loadButton;
+	[SerializeField]
+	private GameObject _selectedIcon;
+	[SerializeField]
 	private GameObject _gameButtonPrefab;
 	[SerializeField]
 	private GameObject _gameContainer;
+	[SerializeField]
+	private Text _errorText;
 
 	void Awake()
 	{
@@ -18,9 +24,24 @@ public class LoadGameUI : MonoBehaviour
 		_loadGame = GetComponent<LoadGame>();
 	}
 
-	void Start()
+	void OnEnable()
 	{
 		GetGames();
+		_errorText.text = "";
+	}
+
+	void Update()
+	{
+		if (_loadGame.GetSelected() == null && _loadButton.interactable)
+		{
+			_loadButton.interactable = false;
+			_selectedIcon.SetActive(false);
+		}
+		else if(_loadGame.GetSelected() != null && !_loadButton.interactable)
+		{
+			_loadButton.interactable = true;
+			_selectedIcon.SetActive(true);
+		}
 	}
 
 	void GetGames()
@@ -36,19 +57,21 @@ public class LoadGameUI : MonoBehaviour
 			gameButton.transform.SetParent(_gameContainer.transform, false);
 			gameButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -gameButton.GetComponent<RectTransform>().sizeDelta.y * (i + 0.5f));
 			gameButton.GetComponentInChildren<Text>().text = gameNames[i];
-			var gameName = gameNames[i];
-			gameButton.GetComponent<Button>().onClick.AddListener(() => SelectGame(gameName));
+			gameButton.GetComponent<Button>().onClick.AddListener(() => SelectGame(gameButton.GetComponentInChildren<Text>()));
 			gameButton.name = _gameButtonPrefab.name;
 		}
 	}
 
-	public void SelectGame(string name)
+	public void SelectGame(Text name)
 	{
-		_loadGame.SetSelected(name);
+		_errorText.text = "";
+		_loadGame.SetSelected(name.text);
+		_selectedIcon.transform.position = name.transform.position;
 	}
 
 	public void LoadGame()
 	{
+		_errorText.text = "";
 		bool exists = _loadGame.ExistingGameCheck();
 		if (exists)
 		{
@@ -59,12 +82,12 @@ public class LoadGameUI : MonoBehaviour
 			}
 			else
 			{
-				print("Game not loaded");
+				_errorText.text = "Game was not loaded. Please try again.";
 			}
 		}
 		else
 		{
-			print("Game does not exist");
+			_errorText.text = "Game does not exist. Please try loading a different game.";
 			GetGames();
 		}
 		

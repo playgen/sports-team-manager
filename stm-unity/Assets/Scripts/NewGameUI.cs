@@ -15,19 +15,46 @@ public class NewGameUI : MonoBehaviour {
 	private InputField _managerAge;
 	[SerializeField]
 	private Dropdown _managerGender;
+	[SerializeField]
+	private GameObject _overwritePopUp;
+	[SerializeField]
+	private Text _errorText;
 
 	void Awake()
 	{
 		_stateManager = FindObjectOfType(typeof(UIStateManager)) as UIStateManager;
 		_newGame = GetComponent<NewGame>();
+		_overwritePopUp.SetActive(false);
+	}
+
+	void OnEnable()
+	{
+		WarningDisable();
+		_boatName.text = "";
+		_managerName.text = "";
+		_managerAge.text = "";
+	}
+
+	void WarningDisable()
+	{
+		_errorText.text = "";
+		_boatName.transform.Find("Required Warning").gameObject.SetActive(false);
+		_managerName.transform.Find("Required Warning").gameObject.SetActive(false);
+		_managerAge.transform.Find("Required Warning").gameObject.SetActive(false);
 	}
 
 	public void ExistingGameCheck()
 	{
+		WarningDisable();
+		if (string.IsNullOrEmpty(_boatName.text))
+		{
+			_boatName.transform.Find("Required Warning").gameObject.SetActive(true);
+			return;
+		} 
 		bool exists = _newGame.ExistingGameCheck(_boatName.text);
 		if (exists)
 		{
-			print("Game already exists");
+			_overwritePopUp.SetActive(true);
 		} else
 		{
 			NewGame();
@@ -39,18 +66,18 @@ public class NewGameUI : MonoBehaviour {
 		var valid = true;
 		if (string.IsNullOrEmpty(_boatName.text))
 		{
-			print("Team name must be provided!");
 			valid = false;
+			_boatName.transform.Find("Required Warning").gameObject.SetActive(true);
 		}
 		if (string.IsNullOrEmpty(_managerName.text))
 		{
-			print("Manager name must be provided!");
 			valid = false;
+			_managerName.transform.Find("Required Warning").gameObject.SetActive(true);
 		}
 		if (string.IsNullOrEmpty(_managerAge.text))
 		{
-			print("Manager age must be provided!");
 			valid = false;
+			_managerAge.transform.Find("Required Warning").gameObject.SetActive(true);
 		}
 		if (valid) {
 			bool success = _newGame.CreateNewGame(_boatName.text, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text);
@@ -59,7 +86,7 @@ public class NewGameUI : MonoBehaviour {
 				print("Game created");
 			} else
 			{
-				print("Game not created");
+				_errorText.text = "Game not created. Please try again.";
 			}
 		}
 	}
