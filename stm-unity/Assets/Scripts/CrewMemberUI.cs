@@ -1,17 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class CrewMemberUI : MonoBehaviour {
 
-	private TeamSelectionUI _teamSelectionUI;
+	private TeamSelection _teamSelection;
 	[SerializeField]
 	private Text _scoreText;
 	private CrewMember _crewMember;
 	private bool _beingDragged;
 	private Vector2 _dragPosition;
+
+	private Vector2 _defaultPosition;
+	private Vector2 _defaultSize;
+	public event EventHandler ReplacedEvent = delegate { };
 
 	void Start()
 	{
@@ -25,11 +31,13 @@ public class CrewMemberUI : MonoBehaviour {
 		drop.eventID = EventTriggerType.PointerUp;
 		drop.callback.AddListener((data) => { EndDrag(); });
 		trigger.triggers.Add(drop);
+		_defaultSize = GetComponent<RectTransform>().sizeDelta;
+		_defaultPosition = GetComponent<RectTransform>().position;
 	}
 
-	public void SetUp(TeamSelectionUI tsui, CrewMember crewMember)
+	public void SetUp(TeamSelection teamSelection, CrewMember crewMember)
 	{
-		_teamSelectionUI = tsui;
+		_teamSelection = teamSelection;
 		_crewMember = crewMember;
 	}
 
@@ -37,6 +45,7 @@ public class CrewMemberUI : MonoBehaviour {
 	{
 		_beingDragged = true;
 		_dragPosition = Input.mousePosition - transform.position;
+		transform.SetAsLastSibling();
 	}
 
 	void Update ()
@@ -49,14 +58,34 @@ public class CrewMemberUI : MonoBehaviour {
 
 	void EndDrag()
 	{
+		ReplacedEvent(this, new EventArgs());
 		_beingDragged = false;
-		GetComponent<CanvasGroup>().blocksRaycasts = false;
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		RaycastHit mouseOver;
-		if (Physics.Raycast(ray, out mouseOver))
+		var raycastResults = new List<RaycastResult>();
+		EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
+		bool placed = false;
+		foreach (var result in raycastResults)
 		{
-			print("Hit!");
+			if (result.gameObject.name == "Position")
+			{
+				RectTransform positionTransform = result.gameObject.GetComponent<RectTransform>();
+				GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
+				GetComponent<RectTransform>().position = positionTransform.position;
+				result.gameObject.GetComponent<PositionUI>().LinkCrew(this);
+				_teamSelection.AssignCrew(_crewMember.Name, result.gameObject.GetComponent<PositionUI>().GetName());
+				placed = true;
+				break;
+			}
 		}
-		GetComponent<CanvasGroup>().blocksRaycasts = true;
+		if (!placed)
+		{
+			Reset();
+			_teamSelection.RemoveCrew(_crewMember.Name);
+		}
+	}
+
+	public void Reset()
+	{
+		GetComponent<RectTransform>().sizeDelta = _defaultSize;
+		GetComponent<RectTransform>().position = _defaultPosition;
 	}
 }

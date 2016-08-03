@@ -19,4 +19,16 @@ public class TeamSelection : MonoBehaviour {
 		_gameManager.RemoveAllCrew();
 		return _gameManager.Boat;
 	}
+
+	public void AssignCrew(string crewMember, string position)
+	{
+		_gameManager.AssignCrew(position, crewMember);
+		print(_gameManager.Boat.BoatScore);
+	}
+
+	public void RemoveCrew(string crewMember)
+	{
+		_gameManager.AssignCrew(null, crewMember);
+		print(_gameManager.Boat.BoatScore);
+	}
 }

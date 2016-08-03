@@ -55,10 +55,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void AssignCrew(BoatPosition boatPosition, CrewMember crewMember)
 		{
-			var current = BoatPositions.SingleOrDefault(bp => bp.CrewMember == crewMember);
-			if (current != null)
+			if (crewMember != null)
 			{
-				RemoveCrew(current);
+				var current = BoatPositions.SingleOrDefault(bp => bp.CrewMember == crewMember);
+				if (current != null)
+				{
+					RemoveCrew(current);
+				}
 			}
 			if (boatPosition != null)
 			{
@@ -71,9 +74,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					RemoveCrew(boatPosition);
 				}
 				boatPosition.CrewMember = crewMember;
-				crewMember.OpinionChange += new EventHandler(OnOpinionChange);
+				if (boatPosition.CrewMember != null)
+				{
+					crewMember.OpinionChange += new EventHandler(OnOpinionChange);
+				}
 			}
-			crewMember.UpdateBeliefs(boatPosition.Position.Name);
+			if (crewMember != null && boatPosition != null)
+			{
+				crewMember.UpdateBeliefs(boatPosition.Position.Name);
+			}
 			UpdateBoatScore();
 		}
 
