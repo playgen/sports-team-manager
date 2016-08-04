@@ -88,4 +88,10 @@ public class CrewMemberUI : MonoBehaviour {
 		GetComponent<RectTransform>().sizeDelta = _defaultSize;
 		GetComponent<RectTransform>().position = _defaultPosition;
 	}
+
+	public void RevealScore(int score)
+	{
+		_scoreText.enabled = true;
+		_scoreText.text = score.ToString();
+	}
 }

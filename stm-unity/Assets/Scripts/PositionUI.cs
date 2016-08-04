@@ -5,14 +5,14 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 
 public class PositionUI : MonoBehaviour {
 
-	private TeamSelection _teamSelection;
+	private TeamSelectionUI _teamSelectionUI;
 	[SerializeField]
 	private Position _position;
 	private CrewMemberUI _crewMemberUI;
 
-	public void SetUp(TeamSelection teamSelection, Position position)
+	public void SetUp(TeamSelectionUI teamSelectionUI, Position position)
 	{
-		_teamSelection = teamSelection;
+		_teamSelectionUI = teamSelectionUI;
 		_position = position;
 	}
 
@@ -20,9 +20,12 @@ public class PositionUI : MonoBehaviour {
 	{
 		if (_crewMemberUI != null)
 		{
+			_crewMemberUI.ReplacedEvent -= new EventHandler(OnReset);
 			_crewMemberUI.Reset();
+			_teamSelectionUI.PositionChange(-1);
 		}
 		_crewMemberUI = crewmember;
+		_teamSelectionUI.PositionChange(1);
 		crewmember.ReplacedEvent += new EventHandler(OnReset);
 	}
 
@@ -35,5 +38,16 @@ public class PositionUI : MonoBehaviour {
 	{
 		_crewMemberUI.ReplacedEvent -= new EventHandler(OnReset);
 		_crewMemberUI = null;
+		_teamSelectionUI.PositionChange(-1);
+	}
+
+	public void LockPosition(int score)
+	{
+		if (_crewMemberUI != null)
+		{
+			_crewMemberUI.RevealScore(score);
+			_crewMemberUI.transform.SetParent(transform, false);
+			_crewMemberUI.transform.position = transform.position;
+		}
 	}
 }
