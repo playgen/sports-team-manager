@@ -46,6 +46,7 @@ public class LoadGameUI : MonoBehaviour
 
 	void GetGames()
 	{
+		_selectedIcon.transform.SetParent(transform, false);
 		foreach (Transform child in _gameContainer.transform)
 		{
 			Destroy(child.gameObject);

@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class TeamSelectionUI : MonoBehaviour {
 
 	private TeamSelection _teamSelection;
-	private UIStateManager _stateManager;
 
 	[SerializeField]
 	private GameObject _boatContainer;
@@ -30,7 +29,6 @@ public class TeamSelectionUI : MonoBehaviour {
 
 	void Awake()
 	{
-		_stateManager = FindObjectOfType(typeof(UIStateManager)) as UIStateManager;
 		_teamSelection = GetComponent<TeamSelection>();
 	}
 
@@ -60,7 +58,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var position = boat.BoatPositions.Select(p => p.Position).ToList();
 		GameObject boatContainer = Instantiate(_boatPrefab);
 		boatContainer.transform.SetParent(_boatContainer.transform, false);
-		var boatContainerHeight = _boatContainer.GetComponent<RectTransform>().rect.height * 0.3333f;
+		var boatContainerHeight = _boatContainer.GetComponent<RectTransform>().rect.height * 0.2f;
 		if (_boatHistory.Count > 0)
 		{
 			boatContainerHeight = _boatHistory[0].GetComponent<RectTransform>().rect.height;
@@ -69,7 +67,13 @@ public class TeamSelectionUI : MonoBehaviour {
 		boatContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(boatContainer.GetComponent<RectTransform>().sizeDelta.x * 0.5f, boatContainerHeight * 0.5f);
 		boatContainer.name = _boatPrefab.name;
 		var stageText = boatContainer.transform.Find("Stage").GetComponent<Text>();
-		stageText.text = "Stage\n" + _teamSelection.GetStage();
+		var stageNumber = _teamSelection.GetStage();
+		if (stageNumber == 5) {
+			stageText.text = "Race\nDay!";
+		} else
+		{
+			stageText.text = "Practice\n" + stageNumber;
+		}
 		_boatContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(_boatContainer.GetComponent<RectTransform>().sizeDelta.x, boatContainerHeight * (_boatHistory.Count - 2));
 		_boatContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
 

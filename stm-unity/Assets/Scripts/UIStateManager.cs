@@ -9,6 +9,16 @@ public class UIStateManager : MonoBehaviour {
 	[SerializeField]
 	private GameObject _loadGame;
 	[SerializeField]
+	private GameObject _topDetails;
+	[SerializeField]
+	private GameObject _sideMenu;
+	[SerializeField]
+	private GameObject _teamManagement;
+	[SerializeField]
+	private GameObject _seasonStandings;
+	[SerializeField]
+	private GameObject _helpPages;
+	[SerializeField]
 	private GameObject _teamSelection;
 
 	public void MenuToNewGame()
@@ -26,12 +36,49 @@ public class UIStateManager : MonoBehaviour {
 	public void BackToMenu(GameObject go)
 	{
 		go.SetActive(false);
+		_topDetails.SetActive(false);
+		_sideMenu.SetActive(false);
 		_mainMenu.SetActive(true);
 	}
 
 	public void GoToGame(GameObject go)
 	{
 		go.SetActive(false);
+		_topDetails.SetActive(true);
+		_sideMenu.SetActive(true);
+		GoToTeamManagement();
+	}
+
+	public void GoToTeamManagement()
+	{
+		_teamManagement.SetActive(true);
+		_seasonStandings.SetActive(false);
+		_helpPages.SetActive(false);
+		(FindObjectOfType(typeof(ScreenSideUI)) as ScreenSideUI).ChangeSelected(0);
+	}
+
+	public void GoToSeasonStandings()
+	{
+		_teamManagement.SetActive(false);
+		_seasonStandings.SetActive(true);
+		_helpPages.SetActive(false);
+		(FindObjectOfType(typeof(ScreenSideUI)) as ScreenSideUI).ChangeSelected(1);
+	}
+
+	public void GoToHelpPages()
+	{
+		_teamManagement.SetActive(false);
+		_seasonStandings.SetActive(false);
+		_helpPages.SetActive(true);
+		(FindObjectOfType(typeof(ScreenSideUI)) as ScreenSideUI).ChangeSelected(2);
+	}
+
+	public void GoToTeamSelection()
+	{
+		_teamManagement.SetActive(false);
+		_seasonStandings.SetActive(false);
+		_helpPages.SetActive(false);
 		_teamSelection.SetActive(true);
+		_sideMenu.SetActive(false);
 	}
 }
