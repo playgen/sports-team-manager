@@ -46,8 +46,6 @@ public class PositionUI : MonoBehaviour {
 		if (_crewMemberUI != null)
 		{
 			_crewMemberUI.RevealScore(score);
-			_crewMemberUI.transform.SetParent(transform, false);
-			_crewMemberUI.transform.position = transform.position;
 		}
 	}
 }

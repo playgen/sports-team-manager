@@ -17,6 +17,7 @@ public class CrewMemberUI : MonoBehaviour {
 
 	private Vector2 _defaultPosition;
 	private Vector2 _defaultSize;
+	private Transform _defaultParent;
 	public event EventHandler ReplacedEvent = delegate { };
 
 	void Start()
@@ -33,6 +34,7 @@ public class CrewMemberUI : MonoBehaviour {
 		trigger.triggers.Add(drop);
 		_defaultSize = GetComponent<RectTransform>().sizeDelta;
 		_defaultPosition = GetComponent<RectTransform>().position;
+		_defaultParent = transform.parent;
 	}
 
 	public void SetUp(TeamSelection teamSelection, CrewMember crewMember)
@@ -45,6 +47,7 @@ public class CrewMemberUI : MonoBehaviour {
 	{
 		_beingDragged = true;
 		_dragPosition = Input.mousePosition - transform.position;
+		transform.SetParent(_defaultParent, false);
 		transform.SetAsLastSibling();
 	}
 
@@ -68,6 +71,7 @@ public class CrewMemberUI : MonoBehaviour {
 			if (result.gameObject.name == "Position")
 			{
 				RectTransform positionTransform = result.gameObject.GetComponent<RectTransform>();
+				transform.SetParent(positionTransform, false);
 				GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
 				GetComponent<RectTransform>().position = positionTransform.position;
 				result.gameObject.GetComponent<PositionUI>().LinkCrew(this);
@@ -85,6 +89,7 @@ public class CrewMemberUI : MonoBehaviour {
 
 	public void Reset()
 	{
+		transform.SetParent(_defaultParent, false);
 		GetComponent<RectTransform>().sizeDelta = _defaultSize;
 		GetComponent<RectTransform>().position = _defaultPosition;
 	}

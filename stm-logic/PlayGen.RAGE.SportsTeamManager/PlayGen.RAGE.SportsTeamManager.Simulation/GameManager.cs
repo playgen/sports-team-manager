@@ -4,6 +4,7 @@ using IntegratedAuthoringTool;
 using RolePlayCharacter;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using IntegratedAuthoringTool.DTOs;
@@ -14,6 +15,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	{
 		public Boat Boat { get; set; }
 		public EventController EventController { get; set; }
+
+		public List<Boat> LineUpHistory { get; set; }
 
 		public void NewGame(IStorageProvider storagePorvider, string storageLocation, string boatName, string managerName, string managerAge, string managerGender)
 		{
@@ -50,6 +53,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 			iat.SaveToFile(storagePorvider, Path.Combine(storageLocation, noSpaceBoatName + ".iat"));
 			EventController = new EventController(iat);
+			LineUpHistory = new List<Boat>();
 		}
 
 		public List<CrewMember> CreateInitialCrew()
@@ -169,6 +173,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewList.ForEach(cm => Boat.AddCrew(cm));
 			crewList.ForEach(cm => cm.LoadBeliefs(Boat));
 			EventController = new EventController(iat);
+			LoadLineUpHistory();
 		}
 
 		public void UnloadGame()
@@ -186,6 +191,56 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void RemoveAllCrew()
 		{
 			Boat.RemoveAllCrew();
+		}
+
+		public void LoadLineUpHistory()
+		{
+			LineUpHistory = new List<Boat>();
+			var managerEvents = Boat.Manager.EmotionalAppraisal.EventRecords;
+			var lineUpEvents = managerEvents.Where(e => e.Event.Contains("SelectedLineUp")).Select(e => e.Event);
+			foreach (var lineup in lineUpEvents)
+			{
+				var splitAfter = lineup.Split('(')[2];
+				splitAfter = splitAfter.Split(')')[0];
+				var subjectSplit = splitAfter.Split(',');
+				Boat boat = new Boat();
+				boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + subjectSplit[0]));
+				for (int i = 0; i < boat.BoatPositions.Count; i++)
+				{
+					boat.BoatPositions[i].CrewMember = Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name.Replace(" ", "") == subjectSplit[((i + 1) * 2) - 1].Replace(" ", ""));
+					boat.BoatPositions[i].PositionScore = int.Parse(subjectSplit[(i + 1) * 2]);
+				}
+				LineUpHistory.Add(boat);
+			}
+		}
+
+		public void SaveLineUp()
+		{
+			var manager = Boat.Manager;
+			var spacelessName = manager.EmotionalAppraisal.Perspective;
+			var eventBase = "Event(Action-Start,Player,{0},{1})";
+			var eventStringUnformatted = "SelectedLineUp({0},{1})";
+			var boatType = Boat.GetType().Name;
+			var crew = "";
+			foreach (var boatPosition in Boat.BoatPositions)
+			{
+				if (!string.IsNullOrEmpty(crew))
+				{
+					crew += ",";
+				}
+				if (boatPosition.CrewMember != null)
+				{
+					crew += boatPosition.CrewMember.Name.Replace(" ", "");
+					crew += "," + boatPosition.PositionScore;
+				} else
+				{
+					crew += "null,0";
+				}
+			}
+			var eventString = String.Format(eventStringUnformatted, boatType, crew);
+			manager.EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
+			manager.SaveStatus();
+			LineUpHistory.Add(Boat);
 		}
 
 		public void ConfirmLineUp()

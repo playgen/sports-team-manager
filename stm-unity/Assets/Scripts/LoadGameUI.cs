@@ -16,8 +16,6 @@ public class LoadGameUI : MonoBehaviour
 	[SerializeField]
 	private GameObject _gameContainer;
 	[SerializeField]
-	private Scrollbar _scrollbar;
-	[SerializeField]
 	private Text _errorText;
 
 	void Awake()
@@ -64,20 +62,13 @@ public class LoadGameUI : MonoBehaviour
 		}
 		_gameContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(_gameContainer.GetComponent<RectTransform>().sizeDelta.x, gameNames.Count * _gameButtonPrefab.GetComponent<RectTransform>().sizeDelta.y);
 		_gameContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -_gameContainer.GetComponent<RectTransform>().sizeDelta.y * 0.5f);
-		var scrollSize = _gameContainer.GetComponent<RectTransform>().sizeDelta.y != 0 ? _gameContainer.GetComponent<RectTransform>().sizeDelta.y : 1;
-		_scrollbar.size = Mathf.Abs(_gameContainer.transform.parent.GetComponent<RectTransform>().rect.height)/scrollSize;
-	}
-
-	public void Scroll()
-	{
-		var scrollAmount = (_gameContainer.GetComponent<RectTransform>().sizeDelta.y - Mathf.Abs(_gameContainer.transform.parent.GetComponent<RectTransform>().rect.height));
-		_gameContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -_gameContainer.GetComponent<RectTransform>().sizeDelta.y * 0.5f + (scrollAmount * _scrollbar.value));
 	}
 
 	public void SelectGame(Text name)
 	{
 		_errorText.text = "";
 		_loadGame.SetSelected(name.text);
+		_selectedIcon.transform.SetParent(name.transform, false);
 		_selectedIcon.transform.position = name.transform.position;
 	}
 

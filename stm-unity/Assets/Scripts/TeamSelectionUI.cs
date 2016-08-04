@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
+using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -23,8 +23,6 @@ public class TeamSelectionUI : MonoBehaviour {
 	private GameObject _crewPrefab;
 	[SerializeField]
 	private Button _raceButton;
-	[SerializeField]
-	private Scrollbar _scrollbar;
 
 	private GameObject _currentBoat;
 	private List<GameObject> _boatHistory = new List<GameObject>();
@@ -38,7 +36,11 @@ public class TeamSelectionUI : MonoBehaviour {
 
 	void Start()
 	{
-		CreateBoat();
+		foreach (var boat in _teamSelection.GetLineUpHistory())
+		{
+			CreateHistoricalBoat(boat);
+		}
+		CreateNewBoat();
 	}
 
 	void Update()
@@ -53,32 +55,23 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 	}
 
-	private void CreateBoat()
+	public GameObject CreateBoat(Boat boat)
 	{
-		var boat = _teamSelection.LoadCrew();
-		var crew = boat.GetAllCrewMembers();
 		var position = boat.BoatPositions.Select(p => p.Position).ToList();
-		for (int i = 0; i < crew.Count; i++)
-		{
-			GameObject crewMember = Instantiate(_crewPrefab);
-			crewMember.transform.SetParent(_crewContainer.transform, false);
-			var containerHeight = _crewContainer.GetComponent<RectTransform>().rect.height * 0.8f;
-			crewMember.GetComponent<RectTransform>().sizeDelta = new Vector2(containerHeight, containerHeight);
-			crewMember.GetComponent<RectTransform>().anchoredPosition = new Vector2((containerHeight * 0.2f) + crewMember.GetComponent<RectTransform>().sizeDelta.x * (0.5f + (i * 1.05f)), 0);
-			crewMember.transform.Find("Name").GetComponent<Text>().text = crew[i].Name;
-			crewMember.name = _crewPrefab.name;
-			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, crew[i]);
-		}
-
 		GameObject boatContainer = Instantiate(_boatPrefab);
 		boatContainer.transform.SetParent(_boatContainer.transform, false);
 		var boatContainerHeight = _boatContainer.GetComponent<RectTransform>().rect.height * 0.3333f;
+		if (_boatHistory.Count > 0)
+		{
+			boatContainerHeight = _boatHistory[0].GetComponent<RectTransform>().rect.height;
+		}
 		boatContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(0, boatContainerHeight);
 		boatContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(boatContainer.GetComponent<RectTransform>().sizeDelta.x * 0.5f, boatContainerHeight * 0.5f);
 		boatContainer.name = _boatPrefab.name;
-		_raceButton.transform.SetParent(boatContainer.transform, false);
-		_raceButton.transform.position = new Vector2(_raceButton.transform.position.x, boatContainer.transform.position.y);
-		_currentBoat = boatContainer;
+		var stageText = boatContainer.transform.Find("Stage").GetComponent<Text>();
+		stageText.text = "Stage\n" + _teamSelection.GetStage();
+		_boatContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(_boatContainer.GetComponent<RectTransform>().sizeDelta.x, boatContainerHeight * (_boatHistory.Count - 2));
+		_boatContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
 
 		for (int i = 0; i < position.Count; i++)
 		{
@@ -91,17 +84,75 @@ public class TeamSelectionUI : MonoBehaviour {
 			positionObject.name = _positionPrefab.name;
 			positionObject.GetComponent<PositionUI>().SetUp(this, position[i]);
 		}
-
 		_positionsEmpty = position.Count;
-
-		var scrollSize = boatContainerHeight * (_boatHistory.Count + 1);
-		_scrollbar.size = Mathf.Abs(_boatContainer.transform.parent.GetComponent<RectTransform>().rect.height) / scrollSize;
+		foreach (var b in _boatHistory)
+		{
+			b.GetComponent<RectTransform>().anchoredPosition += new Vector2(0, b.GetComponent<RectTransform>().sizeDelta.y);
+		}
+		return boatContainer;
 	}
 
-	public void Scroll()
+	private void CreateNewBoat()
 	{
-		var scrollAmount = -Mathf.Abs(_boatContainer.transform.parent.GetComponent<RectTransform>().rect.height) * ((1 / _scrollbar.size) - 1);
-		_boatContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(_boatContainer.GetComponent<RectTransform>().anchoredPosition.x, -_boatContainer.GetComponent<RectTransform>().sizeDelta.y * 0.5f + (scrollAmount * _scrollbar.value));
+		var boat = _teamSelection.LoadCrew();
+		var crew = boat.GetAllCrewMembers();
+		for (int i = 0; i < crew.Count; i++)
+		{
+			GameObject crewMember = Instantiate(_crewPrefab);
+			crewMember.transform.SetParent(_crewContainer.transform, false);
+			var containerHeight = _crewContainer.GetComponent<RectTransform>().rect.height * 0.8f;
+			crewMember.GetComponent<RectTransform>().sizeDelta = new Vector2(containerHeight, containerHeight);
+			crewMember.GetComponent<RectTransform>().anchoredPosition = new Vector2((containerHeight * 0.2f) + crewMember.GetComponent<RectTransform>().sizeDelta.x * (0.5f + (i * 1.05f)), 0);
+			crewMember.transform.Find("Name").GetComponent<Text>().text = crew[i].Name;
+			crewMember.name = _crewPrefab.name;
+			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, crew[i]);
+		}
+		var boatContainer = CreateBoat(boat);
+		_raceButton.transform.SetParent(boatContainer.transform, false);
+		_raceButton.transform.position = new Vector2(_raceButton.transform.position.x, boatContainer.transform.position.y);
+		_currentBoat = boatContainer;
+	}
+
+	public void CreateHistoricalBoat(Boat boat)
+	{
+		var boatContainer = CreateBoat(boat);
+		var teamScore = boat.BoatPositions.Sum(bp => bp.PositionScore);
+		var scoreText = boatContainer.transform.Find("Score").GetComponent<Text>();
+		scoreText.text = teamScore.ToString();
+		for (int i = 0; i < boat.BoatPositions.Count; i++)
+		{
+			GameObject crewMember = Instantiate(_crewPrefab);
+			var nameText = crewMember.transform.Find("Name").GetComponent<Text>();
+			nameText.enabled = false;
+			if (boat.BoatPositions[i].CrewMember != null)
+			{
+				crewMember.transform.Find("Name").GetComponent<Text>().text = boat.BoatPositions[i].CrewMember.Name;
+			}
+			crewMember.name = _crewPrefab.name;
+			foreach (var position in boatContainer.GetComponentsInChildren<PositionUI>())
+			{
+				var boatPosition = position.GetName();
+				if (boatPosition == boat.BoatPositions[i].Position.Name)
+				{
+					RectTransform positionTransform = position.gameObject.GetComponent<RectTransform>();
+					crewMember.transform.SetParent(positionTransform, false);
+					crewMember.GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
+					crewMember.GetComponent<RectTransform>().position = positionTransform.position;
+					position.LinkCrew(crewMember.GetComponent<CrewMemberUI>());
+					crewMember.GetComponent<CrewMemberUI>().RevealScore(boat.BoatPositions[i].PositionScore);
+					nameText.enabled = true;
+					Destroy(position);
+					Destroy(crewMember.GetComponent<CrewMemberUI>());
+					Destroy(crewMember.GetComponent<EventTrigger>());
+				}
+			}
+			if (!nameText.enabled)
+			{
+				Destroy(crewMember);
+			}
+		}
+		_boatHistory.Add(boatContainer);
+		_teamSelection.ConfirmLineUp(true);
 	}
 
 	public void PositionChange(int change)
@@ -111,10 +162,8 @@ public class TeamSelectionUI : MonoBehaviour {
 
 	public void ConfirmLineUp()
 	{
-		_scrollbar.value = 0;
-		Scroll();
 		var teamScore = _teamSelection.ConfirmLineUp();
-		var scoreText = _currentBoat.GetComponentInChildren<Text>();
+		var scoreText = _currentBoat.transform.Find("Score").GetComponent<Text>();
 		scoreText.text = teamScore.ToString();
 		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
 		{
@@ -136,13 +185,8 @@ public class TeamSelectionUI : MonoBehaviour {
 				Destroy(crewMember.GetComponent<EventTrigger>());
 			}
 		}
-
-		_currentBoat.GetComponent<RectTransform>().anchoredPosition += new Vector2(0, _currentBoat.GetComponent<RectTransform>().sizeDelta.y);
-		foreach (var boat in _boatHistory)
-		{
-			boat.GetComponent<RectTransform>().anchoredPosition += new Vector2(0, boat.GetComponent<RectTransform>().sizeDelta.y);
-		}
+		
 		_boatHistory.Add(_currentBoat);
-		CreateBoat();
+		CreateNewBoat();
 	}
 }

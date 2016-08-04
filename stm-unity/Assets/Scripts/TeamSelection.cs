@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 
 using PlayGen.RAGE.SportsTeamManager.Simulation;
+using System.Collections.Generic;
 
 public class TeamSelection : MonoBehaviour {
 	private GameManager _gameManager;
@@ -11,6 +12,11 @@ public class TeamSelection : MonoBehaviour {
 	void Start()
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+	}
+
+	public List<Boat> GetLineUpHistory()
+	{
+		return _gameManager.LineUpHistory;
 	}
 
 	public Boat LoadCrew()
@@ -33,13 +39,29 @@ public class TeamSelection : MonoBehaviour {
 		_gameManager.AssignCrew(null, crewMember);
 	}
 
-	public int ConfirmLineUp()
+	public int GetStage()
+	{
+		return _confirmCount + 1;
+	}
+
+	public int ConfirmLineUp(bool historical = false)
 	{
 		_confirmCount++;
-		if (_confirmCount >= 5)
+		if (historical)
 		{
-
-			_confirmCount = 0;
+			if (_confirmCount >= 5)
+			{
+				_confirmCount -= 5;
+			}
+		}
+		else
+		{
+			if (_confirmCount >= 5)
+			{
+				_gameManager.ConfirmLineUp();
+				_confirmCount -= 5;
+			}
+			_gameManager.SaveLineUp();
 		}
 		return _gameManager.Boat.BoatScore;
 	}
