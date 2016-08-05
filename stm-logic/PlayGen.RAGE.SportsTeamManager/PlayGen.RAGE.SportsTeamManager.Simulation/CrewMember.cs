@@ -162,6 +162,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return mood;
 		}
 
+		public string GetPosition(Boat boat)
+		{
+			string position = "";
+			var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
+			if (currentPosition != null)
+			{
+				position = currentPosition.Position.Name;
+			}
+			return position;
+		}
+
 		public void DecisionFeedback(Boat boat)
 		{
 			SaveStatus();
@@ -189,6 +200,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				RolePlayCharacter.ActionFinished(positionRpc);
 			}
+			RolePlayCharacter.Update();
 
 			eventString = String.Format("ManagerOpinionCheck({0})", boat.Manager.Name.Replace(" ", ""));
 			var managerOpinionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
@@ -197,6 +209,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				RolePlayCharacter.ActionFinished(managerOpinionRpc);
 			}
+			RolePlayCharacter.Update();
 
 			foreach (BoatPosition boatPosition in boat.BoatPositions.OrderBy(b => b.Position.Name))
 			{
@@ -223,6 +236,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						RolePlayCharacter.ActionFinished(opinionRpc);
 					}
+					RolePlayCharacter.Update();
 				}
 			}
 			SaveStatus();
@@ -251,6 +265,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}*/
 				RolePlayCharacter.ActionFinished(eventRpc);
 			}
+			RolePlayCharacter.Update();
 			SaveStatus();
 			LoadBeliefs(boat);
 			boat.UpdateBoatScore();

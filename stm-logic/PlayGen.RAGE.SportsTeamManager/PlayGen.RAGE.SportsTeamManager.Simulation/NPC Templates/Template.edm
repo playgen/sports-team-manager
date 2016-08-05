@@ -8,7 +8,7 @@
 					"Action": "RatingFeedback(Good)",
 					"Conditions":
 						{
-							"Set": ["EventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "[x] >= 6"]
+							"Set": ["EventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "[x] >= 6", "EventElapsedTime([id]) < 1"]
 						},
 					"Priority": 0
 				}, 
@@ -16,7 +16,7 @@
 					"Action": "RatingFeedback(Bad)",
 					"Conditions":
 						{
-							"Set": ["EventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "[x] <= 3", "[x] != 0"]
+							"Set": ["EventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "[x] <= 3", "[x] != 0", "EventElapsedTime([id]) < 1"]
 						},
 					"Priority": 0
 				}, 
@@ -24,7 +24,7 @@
 					"Action": "RatingFeedback(VeryBad)",
 					"Conditions":
 						{
-							"Set": ["EventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "0 = [x]"]
+							"Set": ["EventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "0 = [x]", "EventElapsedTime([id]) < 1"]
 						},
 					"Priority": 0
 				}, 
@@ -32,7 +32,7 @@
 					"Action": "OpinionFeedback(DislikedInBetter)",
 					"Conditions":
 						{
-							"Set": ["EventId(Action-Start, *, OpinionCheck([x], [y], [z]), SELF) = [id]", "[z] <= [y]", "Opinion([x]) < -2"]
+							"Set": ["EventId(Action-Start, *, OpinionCheck([x], [y], [z]), SELF) = [id]", "[z] <= [y]", "Opinion([x]) < -2", "EventElapsedTime([id]) < 1"]
 						},
 					"Priority": 0
 				}, 
@@ -40,7 +40,7 @@
 					"Action": "Encouraged",
 					"Conditions":
 						{
-							"Set": ["EventId(Action-Start, *, PreRace(Encouraging), SELF) = [id]"]
+							"Set": ["EventId(Action-Start, *, PreRace(Encouraging), SELF) = [id]", "EventElapsedTime([id]) < 1"]
 						},
 					"Priority": 0
 				}]
