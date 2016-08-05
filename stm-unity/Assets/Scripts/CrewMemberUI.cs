@@ -20,6 +20,7 @@ public class CrewMemberUI : MonoBehaviour {
 	private Vector2 _defaultPosition;
 	private Vector2 _defaultSize;
 	private Transform _defaultParent;
+	private Vector2 _currentPositon;
 	public event EventHandler ReplacedEvent = delegate { };
 
 	void Start()
@@ -63,9 +64,19 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 		if (_beingClicked)
 		{
-			if (Vector2.Distance(Input.mousePosition, _defaultPosition + _dragPosition) > 25)
+			if (_currentPositon != Vector2.zero)
 			{
-				_beingClicked = false;
+				if (Vector2.Distance(Input.mousePosition, _currentPositon + _dragPosition) > 15)
+				{
+					_beingClicked = false;
+				}
+			}
+			else
+			{
+				if (Vector2.Distance(Input.mousePosition, _defaultPosition + _dragPosition) > 15)
+				{
+					_beingClicked = false;
+				}
 			}
 		}
 	}
@@ -85,7 +96,14 @@ public class CrewMemberUI : MonoBehaviour {
 	void ShowPopUp()
 	{
 		_teamSelectionUI.DisplayCrewPopUp(_crewMember);
-		Reset();
+		if (_currentPositon != Vector2.zero)
+		{
+			GetComponent<RectTransform>().position = _currentPositon;
+		}
+		else
+		{
+			Reset();
+		}
 	}
 
 	void CheckPlacement()
@@ -102,6 +120,7 @@ public class CrewMemberUI : MonoBehaviour {
 				transform.SetParent(positionTransform, false);
 				GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
 				GetComponent<RectTransform>().position = positionTransform.position;
+				_currentPositon = positionTransform.position;
 				result.gameObject.GetComponent<PositionUI>().LinkCrew(this);
 				_teamSelection.AssignCrew(_crewMember.Name, result.gameObject.GetComponent<PositionUI>().GetName());
 				placed = true;
@@ -120,6 +139,7 @@ public class CrewMemberUI : MonoBehaviour {
 		transform.SetParent(_defaultParent, false);
 		GetComponent<RectTransform>().sizeDelta = _defaultSize;
 		GetComponent<RectTransform>().position = _defaultPosition;
+		_currentPositon = Vector2.zero;
 	}
 
 	public void RevealScore(int score)

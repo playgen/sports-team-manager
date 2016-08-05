@@ -30,6 +30,12 @@ public class TeamSelectionUI : MonoBehaviour {
 	private Image[] _crewPopUpBars;
 	[SerializeField]
 	private GameObject _positionPopUp;
+	[SerializeField]
+	private Text[] _positionPopUpText;
+	[SerializeField]
+	private GameObject _positionPopUpHistoryContainer;
+	[SerializeField]
+	private GameObject _positionPopUpHistoryPrefab;
 
 	private GameObject _currentBoat;
 	private List<GameObject> _boatHistory = new List<GameObject>();
@@ -191,7 +197,10 @@ public class TeamSelectionUI : MonoBehaviour {
 
 	public void DisplayPositionPopUp(Position position)
 	{
-
+		_positionPopUp.SetActive(true);
+		_positionPopUpText[0].text = position.Name;
+		_positionPopUpText[1].text = "";
+		_positionPopUpText[2].text = _teamSelection.GetPositionCrewMember(position);
 	}
 
 	public void ConfirmLineUp()

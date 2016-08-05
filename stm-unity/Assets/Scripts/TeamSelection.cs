@@ -71,6 +71,11 @@ public class TeamSelection : MonoBehaviour {
 		return crewMember.GetPosition(_gameManager.Boat);
 	}
 
+	public string GetPositionCrewMember(Position position)
+	{
+		return position.GetCrewMember(_gameManager.Boat);
+	}
+
 	public int GetPositionScore(string positionName)
 	{
 		var boatPosition = _gameManager.Boat.BoatPositions.SingleOrDefault(bp => bp.Position.Name == positionName);

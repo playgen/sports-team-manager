@@ -1,4 +1,6 @@
-﻿namespace PlayGen.RAGE.SportsTeamManager.Simulation
+﻿using System.Linq;
+
+namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	public class Position
 	{
@@ -48,6 +50,21 @@
 			crewScore = crewScore / positionCount;
 
 			return crewScore;
+		}
+
+		public string GetCrewMember(Boat boat)
+		{
+			string crewMember = "";
+			var boatPosition = boat.BoatPositions.SingleOrDefault(bp => bp.Position == this);
+			if (boatPosition != null)
+			{
+				var currentMember = boatPosition.CrewMember;
+				if (currentMember != null)
+				{
+					crewMember = currentMember.Name;
+				}
+			}
+			return crewMember;
 		}
 	}
 }
