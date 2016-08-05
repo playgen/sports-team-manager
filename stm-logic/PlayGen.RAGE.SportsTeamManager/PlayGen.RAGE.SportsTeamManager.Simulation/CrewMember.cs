@@ -253,6 +253,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			SaveStatus();
 			LoadBeliefs(boat);
+			boat.UpdateBoatScore();
 			return reply;
 		}
 

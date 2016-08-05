@@ -74,7 +74,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			stageText.text = "Practice\n" + stageNumber;
 		}
-		_boatContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(_boatContainer.GetComponent<RectTransform>().sizeDelta.x, boatContainerHeight * (_boatHistory.Count - 2));
+		_boatContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(_boatContainer.GetComponent<RectTransform>().sizeDelta.x, boatContainerHeight * (_boatHistory.Count - 4));
 		_boatContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
 
 		for (int i = 0; i < position.Count; i++)

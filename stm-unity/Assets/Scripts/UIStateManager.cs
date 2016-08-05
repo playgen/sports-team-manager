@@ -18,8 +18,6 @@ public class UIStateManager : MonoBehaviour {
 	private GameObject _seasonStandings;
 	[SerializeField]
 	private GameObject _helpPages;
-	[SerializeField]
-	private GameObject _teamSelection;
 
 	public void MenuToNewGame()
 	{
@@ -39,6 +37,9 @@ public class UIStateManager : MonoBehaviour {
 		_topDetails.SetActive(false);
 		_sideMenu.SetActive(false);
 		_mainMenu.SetActive(true);
+		_teamManagement.SetActive(false);
+		_seasonStandings.SetActive(false);
+		_helpPages.SetActive(false);
 	}
 
 	public void GoToGame(GameObject go)
@@ -71,14 +72,5 @@ public class UIStateManager : MonoBehaviour {
 		_seasonStandings.SetActive(false);
 		_helpPages.SetActive(true);
 		(FindObjectOfType(typeof(ScreenSideUI)) as ScreenSideUI).ChangeSelected(2);
-	}
-
-	public void GoToTeamSelection()
-	{
-		_teamManagement.SetActive(false);
-		_seasonStandings.SetActive(false);
-		_helpPages.SetActive(false);
-		_teamSelection.SetActive(true);
-		_sideMenu.SetActive(false);
 	}
 }
