@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
+using UnityEngine.EventSystems;
 
 public class PositionUI : MonoBehaviour {
 
@@ -14,6 +15,11 @@ public class PositionUI : MonoBehaviour {
 	{
 		_teamSelectionUI = teamSelectionUI;
 		_position = position;
+	}
+
+	public void ShowPopUp()
+	{
+		_teamSelectionUI.DisplayPositionPopUp(_position);
 	}
 
 	public void LinkCrew(CrewMemberUI crewmember)

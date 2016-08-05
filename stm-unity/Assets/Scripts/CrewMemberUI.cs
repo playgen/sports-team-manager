@@ -9,9 +9,11 @@ using System.Collections.Generic;
 public class CrewMemberUI : MonoBehaviour {
 
 	private TeamSelection _teamSelection;
+	private TeamSelectionUI _teamSelectionUI;
 	[SerializeField]
 	private Text _scoreText;
 	private CrewMember _crewMember;
+	private bool _beingClicked;
 	private bool _beingDragged;
 	private Vector2 _dragPosition;
 
@@ -37,15 +39,17 @@ public class CrewMemberUI : MonoBehaviour {
 		_defaultParent = transform.parent;
 	}
 
-	public void SetUp(TeamSelection teamSelection, CrewMember crewMember)
+	public void SetUp(TeamSelection teamSelection, TeamSelectionUI teamSelectionUI, CrewMember crewMember)
 	{
 		_teamSelection = teamSelection;
+		_teamSelectionUI = teamSelectionUI;
 		_crewMember = crewMember;
 	}
 
 	void BeginDrag()
 	{
 		_beingDragged = true;
+		_beingClicked = true;
 		_dragPosition = Input.mousePosition - transform.position;
 		transform.SetParent(_defaultParent, false);
 		transform.SetAsLastSibling();
@@ -57,12 +61,36 @@ public class CrewMemberUI : MonoBehaviour {
 		{
 			transform.position = (Vector2)Input.mousePosition - _dragPosition;	
 		}
+		if (_beingClicked)
+		{
+			if (Vector2.Distance(Input.mousePosition, _defaultPosition + _dragPosition) > 25)
+			{
+				_beingClicked = false;
+			}
+		}
 	}
 
 	void EndDrag()
 	{
-		ReplacedEvent(this, new EventArgs());
 		_beingDragged = false;
+		if (_beingClicked) {
+			ShowPopUp();
+		} else
+		{
+			CheckPlacement();
+		}
+		_beingClicked = false;
+	}
+
+	void ShowPopUp()
+	{
+		_teamSelectionUI.DisplayCrewPopUp(_crewMember);
+		Reset();
+	}
+
+	void CheckPlacement()
+	{
+		ReplacedEvent(this, new EventArgs());
 		var raycastResults = new List<RaycastResult>();
 		EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
 		bool placed = false;

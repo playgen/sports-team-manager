@@ -22,6 +22,14 @@ public class TeamSelectionUI : MonoBehaviour {
 	private GameObject _crewPrefab;
 	[SerializeField]
 	private Button _raceButton;
+	[SerializeField]
+	private GameObject _crewPopUp;
+	[SerializeField]
+	private Text[] _crewPopUpText;
+	[SerializeField]
+	private Image[] _crewPopUpBars;
+	[SerializeField]
+	private GameObject _positionPopUp;
 
 	private GameObject _currentBoat;
 	private List<GameObject> _boatHistory = new List<GameObject>();
@@ -58,7 +66,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var position = boat.BoatPositions.Select(p => p.Position).ToList();
 		GameObject boatContainer = Instantiate(_boatPrefab);
 		boatContainer.transform.SetParent(_boatContainer.transform, false);
-		var boatContainerHeight = _boatContainer.GetComponent<RectTransform>().rect.height * 0.2f;
+		var boatContainerHeight = _boatContainer.GetComponent<RectTransform>().rect.height * 0.3333f;
 		if (_boatHistory.Count > 0)
 		{
 			boatContainerHeight = _boatHistory[0].GetComponent<RectTransform>().rect.height;
@@ -74,7 +82,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			stageText.text = "Practice\n" + stageNumber;
 		}
-		_boatContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(_boatContainer.GetComponent<RectTransform>().sizeDelta.x, boatContainerHeight * (_boatHistory.Count - 4));
+		_boatContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(_boatContainer.GetComponent<RectTransform>().sizeDelta.x, boatContainerHeight * (_boatHistory.Count - 2));
 		_boatContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
 
 		for (int i = 0; i < position.Count; i++)
@@ -109,7 +117,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			crewMember.GetComponent<RectTransform>().anchoredPosition = new Vector2((containerHeight * 0.2f) + crewMember.GetComponent<RectTransform>().sizeDelta.x * (0.5f + (i * 1.05f)), 0);
 			crewMember.transform.Find("Name").GetComponent<Text>().text = crew[i].Name;
 			crewMember.name = _crewPrefab.name;
-			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, crew[i]);
+			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, this, crew[i]);
 		}
 		var boatContainer = CreateBoat(boat);
 		_raceButton.transform.SetParent(boatContainer.transform, false);
@@ -162,6 +170,28 @@ public class TeamSelectionUI : MonoBehaviour {
 	public void PositionChange(int change)
 	{
 		_positionsEmpty -= change;
+	}
+
+	public void DisplayCrewPopUp(CrewMember crewMember)
+	{
+		_crewPopUp.SetActive(true);
+		_crewPopUpText[0].text = "Name: " + crewMember.Name;
+		_crewPopUpText[1].text = "";
+		_crewPopUpText[2].text = "Age: " + crewMember.Age;
+		_crewPopUpText[3].text = "Role: " + _teamSelection.GetCrewMemberPosition(crewMember);
+		_crewPopUpBars[0].fillAmount = crewMember.Body * 0.1f;
+		_crewPopUpBars[1].fillAmount = crewMember.Charisma * 0.1f;
+		_crewPopUpBars[2].fillAmount = crewMember.Perception * 0.1f;
+		_crewPopUpBars[3].fillAmount = crewMember.Quickness * 0.1f;
+		_crewPopUpBars[4].fillAmount = crewMember.Willpower * 0.1f;
+		_crewPopUpBars[5].fillAmount = crewMember.Wisdom * 0.1f;
+		_crewPopUpBars[6].fillAmount = -crewMember.GetMood() * 0.1f;
+		_crewPopUpBars[7].fillAmount = crewMember.GetMood() * 0.1f;
+	}
+
+	public void DisplayPositionPopUp(Position position)
+	{
+
 	}
 
 	public void ConfirmLineUp()

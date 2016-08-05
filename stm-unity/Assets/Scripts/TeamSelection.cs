@@ -49,21 +49,26 @@ public class TeamSelection : MonoBehaviour {
 		_confirmCount++;
 		if (historical)
 		{
-			if (_confirmCount >= 5)
+			if (_confirmCount >= 3)
 			{
-				_confirmCount -= 5;
+				_confirmCount -= 3;
 			}
 		}
 		else
 		{
-			if (_confirmCount >= 5)
+			if (_confirmCount >= 3)
 			{
 				_gameManager.ConfirmLineUp();
-				_confirmCount -= 5;
+				_confirmCount -= 3;
 			}
 			_gameManager.SaveLineUp();
 		}
 		return _gameManager.Boat.BoatScore;
+	}
+
+	public string GetCrewMemberPosition(CrewMember crewMember)
+	{
+		return crewMember.GetPosition(_gameManager.Boat);
 	}
 
 	public int GetPositionScore(string positionName)
