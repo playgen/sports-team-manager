@@ -7228,7 +7228,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nameText: {fileID: 480332864}
   _scoreText: {fileID: 1938620891}
-  _selected: {fileID: 0}
+  _selected: {fileID: 937972400}
 --- !u!1 &2000621981
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,7 +18,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public List<Boat> LineUpHistory { get; set; }
 
-		public void NewGame(IStorageProvider storagePorvider, string storageLocation, string boatName, string managerName, string managerAge, string managerGender)
+		public void NewGame(IStorageProvider storagePorvider, string storageLocation, string boatName, string managerName, string managerAge, string managerGender, List<CrewMember> crew = null)
 		{
 			var noSpaceBoatName = boatName.Replace(" ", "");
 			storageLocation = Path.Combine(storageLocation, noSpaceBoatName);
@@ -28,7 +28,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat = new Dinghy();
 			Boat.Name = boatName;
 			iat.ScenarioName = Boat.Name;
-			List<CrewMember> crew = CreateInitialCrew();
+			if (crew == null)
+			{
+				crew = CreateInitialCrew();
+			}
 
 			foreach (CrewMember member in crew)
 			{
@@ -58,12 +61,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public List<CrewMember> CreateInitialCrew()
 		{
+			Random random = new Random();
 			CrewMember[] crew = {
-			new CrewMember
+			new CrewMember (random)
 			{
-				Name = "Skippy Skip",
-				Age = 35,
-				Gender = "Male",
 				Body = 2,
 				Charisma = 10,
 				Perception = 2,
@@ -71,11 +72,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Wisdom = 10,
 				Willpower = 10
 			},
-			new CrewMember
+			new CrewMember (random)
 			{
-				Name = "Wise Nav",
-				Age = 28,
-				Gender = "Male",
 				Body = 2,
 				Charisma = 2,
 				Perception = 10,
@@ -83,11 +81,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Wisdom = 10,
 				Willpower = 2
 			},
-			new CrewMember
+			new CrewMember (random)
 			{
-				Name = "Dim Wobnam",
-				Age = 19,
-				Gender = "Male",
 				Body = 10,
 				Charisma = 2,
 				Perception = 2,
@@ -95,11 +90,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Wisdom = 2,
 				Willpower = 10
 			},
-			new CrewMember
+			new CrewMember (random)
 			{
-				Name = "Rav Age",
-				Age = 25,
-				Gender = "Male",
 				Body = 5,
 				Charisma = 5,
 				Perception = 5,
@@ -107,11 +99,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Wisdom = 5,
 				Willpower = 5
 			},
-			new CrewMember
+			new CrewMember (random)
 			{
-				Name = "Nick Pony",
-				Age = 32,
-				Gender = "Male",
 				Body = 7,
 				Charisma = 7,
 				Perception = 7,
