@@ -172,7 +172,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				CrewMember crewMember = new CrewMember(storagePorvider, rpc);
 				crewList.Add(crewMember);
 			}
-
 			crewList.ForEach(cm => Boat.AddCrew(cm));
 			crewList.ForEach(cm => cm.LoadBeliefs(Boat));
 			EventController = new EventController(iat);
@@ -210,7 +209,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + subjectSplit[0]));
 				for (int i = 0; i < boat.BoatPositions.Count; i++)
 				{
-					boat.BoatPositions[i].CrewMember = Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name.Replace(" ", "") == subjectSplit[((i + 1) * 2) - 1].Replace(" ", ""));
+					boat.BoatPositions[i].CrewMember = Boat.GetAllCrewMembersIncludingRetired().SingleOrDefault(c => c.Name.Replace(" ", "") == subjectSplit[((i + 1) * 2) - 1].Replace(" ", ""));
 					boat.BoatPositions[i].PositionScore = int.Parse(subjectSplit[(i + 1) * 2]);
 				}
 				LineUpHistory.Add(boat);

@@ -143,6 +143,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				AddOrUpdateOpinion(boat.Manager, int.Parse(EmotionalAppraisal.GetBeliefValue(String.Format("Opinion({0})", boat.Manager.Name.Replace(" ", "")))), true);
 			}
+			if (EmotionalAppraisal.BeliefExists(String.Format("Status(Retired)")))
+			{
+				if (EmotionalAppraisal.GetBeliefValue("Status(Retired)").ToLower() == "true")
+				{
+					boat.RetireCrew(this);
+				}
+			}
 		}
 
 		public int GetMood()
@@ -247,6 +254,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			SaveStatus();
 			LoadBeliefs(boat);
 			return reply;
+		}
+
+		public void Retire()
+		{
+			UpdateSingleBelief("Status(Retired)", "True", "SELF");
+			var spacelessName = EmotionalAppraisal.Perspective;
+			var eventBase = "Event(Action-Start,Player,Status(Retired),{0})";
+			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, spacelessName) });
+			SaveStatus();
 		}
 	}
 }

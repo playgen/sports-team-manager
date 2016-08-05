@@ -9,6 +9,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string Name { get; set; }
 		public List<BoatPosition> BoatPositions { get; set; }
 		public List<CrewMember> UnassignedCrew { get; set; }
+		public List<CrewMember> RetiredCrew { get; set; }
 		public int BoatScore { get; set; }
 		public Person Manager { get; set; }
 
@@ -16,6 +17,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			BoatPositions = new List<BoatPosition>();
 			UnassignedCrew = new List<CrewMember>();
+			RetiredCrew = new List<CrewMember>();
 		}
 
 		public List<CrewMember> GetAllCrewMembers()
@@ -36,15 +38,25 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return crew;
 		}
 
+		public List<CrewMember> GetAllCrewMembersIncludingRetired()
+		{
+			List<CrewMember> crew = GetAllCrewMembers();
+			foreach (CrewMember crewMember in RetiredCrew)
+			{
+				crew.Add(crewMember);
+			}
+			crew = crew.OrderBy(c => c.Name).ToList();
+			return crew;
+		}
+
 		public void AddCrew(CrewMember crewMember)
 		{
 			var currentPosition = BoatPositions.SingleOrDefault(bp => bp.CrewMember == crewMember);
-			var current = currentPosition == null ? null : currentPosition.CrewMember;
-			if (current != null)
+			if (currentPosition != null)
 			{
 				return;
 			}
-			current = UnassignedCrew.SingleOrDefault(c => c == crewMember);
+			var current = UnassignedCrew.SingleOrDefault(c => c == crewMember);
 			if (current != null)
 			{
 				return;
@@ -103,6 +115,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					RemoveCrew(boatPosition);
 				}
 			}
+		}
+
+		public void RetireCrew(CrewMember crewMember)
+		{
+			var currentPosition = BoatPositions.SingleOrDefault(bp => bp.CrewMember == crewMember);
+			if (currentPosition != null)
+			{
+				RemoveCrew(currentPosition);
+			}
+			var current = UnassignedCrew.SingleOrDefault(c => c == crewMember);
+			if (current != null)
+			{
+				UnassignedCrew.Remove(crewMember);
+			}
+			RetiredCrew.Add(crewMember);
+			crewMember.Retire();
+			UpdateBoatScore();
 		}
 
 		void OnOpinionChange(object sender, EventArgs e)
