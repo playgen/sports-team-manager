@@ -30,7 +30,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			iat.ScenarioName = Boat.Name;
 			if (crew == null)
 			{
-				crew = CreateInitialCrew();
+				crew = CreateInitialCrew(managerName);
 			}
 
 			foreach (CrewMember member in crew)
@@ -59,7 +59,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			LineUpHistory = new List<Boat>();
 		}
 
-		public List<CrewMember> CreateInitialCrew()
+		public List<CrewMember> CreateInitialCrew(string managerName)
 		{
 			Random random = new Random();
 			CrewMember[] crew = {
@@ -109,6 +109,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Willpower = 3
 			}
 			};
+			foreach (var crewMember in crew)
+			{
+				bool unqiue = false;
+				while (!unqiue)
+				{
+					if (crew.Count(c => c.Name == crewMember.Name) > 1 || crewMember.Name == managerName)
+					{
+						crewMember.Name = crewMember.SelectNewName(crewMember.Gender, random);
+					} else
+					{
+						unqiue = true;
+					}
+				}
+			}
 			return crew.ToList();
 		}
 

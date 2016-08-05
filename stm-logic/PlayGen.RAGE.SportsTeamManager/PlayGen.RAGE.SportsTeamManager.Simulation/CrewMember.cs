@@ -42,6 +42,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return random.Next(0, 1000) % 2 == 0 ? "Male" : "Female";
 		}
 
+		public string SelectNewName(string gender, Random random)
+		{
+			return SelectRandomName(gender, random);
+		}
+
 		private string SelectRandomName(string gender, Random random)
 		{
 			var name = "";
@@ -56,7 +61,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				name += names[random.Next(0, names.Length)];
 			}
 			name += " ";
-			var surnames = new string[] {"Smith", "Jones", "Taylor", "Brown", "Williams", "Wilson", "Johnson", "Davies", "Robinson", "Wright", "Thompson", "Evans", "Walker", "White", "Roberts", "Green", "Hall", "Wood", "Jackson", "Clarke"};
+			var surnames = new string[] {"Smith", "Jones", "Williams", "Taylor", "Brown", "Davies", "Evans", "Thomas", "Wilson", "Johnson", "Roberts", "Robinson", "Thompson", "Wright", "Walker", "White", "Edwards", "Hughes", "Green", "Hall", "Lewis", "Harris", "Clarke", "Patel", "Jackson", "Wood", "Turner", "Martin", "Cooper", "Hill", "Morris", "Ward", "Moore", "Clark", "Baker", "Harrison", "King", "Morgan", "Lee", "Allen", "James", "Phillips", "Scott", "Watson", "Davis", "Parker", "Bennett", "Price", "Griffiths", "Young"};
 			name += surnames[random.Next(0, surnames.Length)];
 			return name;
 		}
