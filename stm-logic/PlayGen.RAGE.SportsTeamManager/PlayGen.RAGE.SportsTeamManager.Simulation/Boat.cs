@@ -13,6 +13,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int BoatScore { get; set; }
 		public Person Manager { get; set; }
 
+		/// <summary>
+		/// Boat constructor
+		/// </summary>
 		public Boat()
 		{
 			BoatPositions = new List<BoatPosition>();
@@ -20,6 +23,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RetiredCrew = new List<CrewMember>();
 		}
 
+		/// <summary>
+		/// Get a list of all the CrewMember assigned to this Boat, including those currently not in a position
+		/// </summary>
 		public List<CrewMember> GetAllCrewMembers()
 		{
 			List<CrewMember> crew = new List<CrewMember>();
@@ -38,6 +44,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return crew;
 		}
 
+		/// <summary>
+		/// Get a list of all CrewMembers assigned to this boat, including those marked as 'retired' and thus cannot go into a position
+		/// </summary>
 		public List<CrewMember> GetAllCrewMembersIncludingRetired()
 		{
 			List<CrewMember> crew = GetAllCrewMembers();
@@ -49,6 +58,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return crew;
 		}
 
+		/// <summary>
+		/// Add a CrewMember to the list of UnassignedCrew
+		/// </summary>
 		public void AddCrew(CrewMember crewMember)
 		{
 			var currentPosition = BoatPositions.SingleOrDefault(bp => bp.CrewMember == crewMember);
@@ -65,6 +77,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UpdateBoatScore();
 		}
 
+		/// <summary>
+		/// Assign a CrewMember to a BoatPosition
+		/// </summary>
 		public void AssignCrew(BoatPosition boatPosition, CrewMember crewMember)
 		{
 			if (crewMember != null)
@@ -98,6 +113,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UpdateBoatScore();
 		}
 
+		/// <summary>
+		/// Remove a Crewmember from their BoatPosition and add them to the list of UnassignedCrew
+		/// </summary>
 		public void RemoveCrew(BoatPosition boatPosition)
 		{
 			boatPosition.CrewMember.OpinionChange -= new EventHandler(OnOpinionChange);
@@ -106,6 +124,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			boatPosition.CrewMember = null;
 		}
 
+		/// <summary>
+		/// Remove all assigned CrewMembers
+		/// </summary>
 		public void RemoveAllCrew()
 		{
 			foreach (BoatPosition boatPosition in BoatPositions)
@@ -117,6 +138,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Retire a CrewMember, meaning they can no longer be assigned to a position (used for historical positions)
+		/// </summary>
 		public void RetireCrew(CrewMember crewMember)
 		{
 			var currentPosition = BoatPositions.SingleOrDefault(bp => bp.CrewMember == crewMember);
@@ -134,11 +158,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UpdateBoatScore();
 		}
 
+		/// <summary>
+		/// Triggered when a Crewmember's opinion on a Person changes in order to update the Boat's score to an accurate value
+		/// </summary>
 		void OnOpinionChange(object sender, EventArgs e)
 		{
 			UpdateBoatScore();
 		}
 
+		/// <summary>
+		/// Update the score in each BoatPosition in order to get the score for this Boat
+		/// </summary>
 		public void UpdateBoatScore()
 		{
 			foreach (BoatPosition bp in BoatPositions)
@@ -148,6 +178,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			BoatScore = BoatPositions.Sum(bp => bp.PositionScore);
 		}
 
+		/// <summary>
+		/// Save the current status of each CrewMember for this Boat
+		/// </summary>
 		public void ConfirmChanges()
 		{
 			List<CrewMember> crew = GetAllCrewMembers();

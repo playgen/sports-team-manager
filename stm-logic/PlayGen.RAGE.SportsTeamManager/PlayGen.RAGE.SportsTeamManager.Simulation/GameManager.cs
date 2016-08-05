@@ -18,6 +18,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public List<Boat> LineUpHistory { get; set; }
 
+		/// <summary>
+		/// Create a new game
+		/// </summary>
 		public void NewGame(IStorageProvider storagePorvider, string storageLocation, string boatName, string managerName, string managerAge, string managerGender, List<CrewMember> crew = null)
 		{
 			var noSpaceBoatName = boatName.Replace(" ", "");
@@ -59,6 +62,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			LineUpHistory = new List<Boat>();
 		}
 
+		/// <summary>
+		/// Create the CrewMember for the start of every game
+		/// </summary>
 		public List<CrewMember> CreateInitialCrew(string managerName)
 		{
 			Random random = new Random();
@@ -126,6 +132,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return crew.ToList();
 		}
 
+		/// <summary>
+		/// Get the ScenarioName from every .iat file stored in the directory provided
+		/// </summary>
 		public List<string> GetGameNames(string storageLocation)
 		{
 			var folders = Directory.GetDirectories(storageLocation);
@@ -142,11 +151,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return gameNames;
 		}
 
+		/// <summary>
+		/// Check if the information provided contains an existing game
+		/// </summary>
 		public bool CheckIfGameExists(string storageLocation, string gameName)
 		{
 			return Directory.Exists(Path.Combine(storageLocation, gameName.Replace(" ", "")));
 		}
 
+		/// <summary>
+		/// Load an existing game
+		/// </summary>
 		public void LoadGame(IStorageProvider storagePorvider, string storageLocation, string boatName)
 		{
 			UnloadGame();
@@ -178,11 +193,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			LoadLineUpHistory();
 		}
 
+		/// <summary>
+		/// Unload the current game
+		/// </summary>
 		public void UnloadGame()
 		{
 			Boat = null;
 		}
 
+		/// <summary>
+		/// Assign the CrewMember with the name provided to the Position with the name provided
+		/// </summary>
 		public void AssignCrew(string positionName, string crewName)
 		{
 			BoatPosition position = Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == positionName);
@@ -190,11 +211,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat.AssignCrew(position, crewMember);
 		}
 
+		/// <summary>
+		/// Remove all CrewMember from their Position
+		/// </summary>
 		public void RemoveAllCrew()
 		{
 			Boat.RemoveAllCrew();
 		}
 
+		/// <summary>
+		/// Load the history of line-ups from the manager's EA file
+		/// </summary>
 		public void LoadLineUpHistory()
 		{
 			LineUpHistory = new List<Boat>();
@@ -216,6 +243,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Save the current boat line-up to the manager's EA file
+		/// </summary>
 		public void SaveLineUp()
 		{
 			var manager = Boat.Manager;
@@ -245,11 +275,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			LineUpHistory.Add(Boat);
 		}
 
+		/// <summary>
+		/// Save current line-up and update Crewmember's opinions and mood based on this line-up
+		/// </summary>
 		public void ConfirmLineUp()
 		{
 			Boat.ConfirmChanges();
 		}
 
+		/// <summary>
+		/// Send an event to the EventController
+		/// </summary>
 		public string[] SendEvent(DialogueStateActionDTO selected)
 		{
 			var replies = EventController.SelectEvent(selected, Boat);

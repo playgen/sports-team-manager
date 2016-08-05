@@ -23,6 +23,9 @@ public class CrewMemberUI : MonoBehaviour {
 	private Vector2 _currentPositon;
 	public event EventHandler ReplacedEvent = delegate { };
 
+	/// <summary>
+	/// Get event listeners for click down and up
+	/// </summary>
 	void Start()
 	{
 		_scoreText.enabled = false;
@@ -47,6 +50,9 @@ public class CrewMemberUI : MonoBehaviour {
 		_crewMember = crewMember;
 	}
 
+	/// <summary>
+	/// MouseDown start the current drag
+	/// </summary>
 	void BeginDrag()
 	{
 		_beingDragged = true;
@@ -56,6 +62,9 @@ public class CrewMemberUI : MonoBehaviour {
 		transform.SetAsLastSibling();
 	}
 
+	/// <summary>
+	/// Have this UI element follow the mouse when being dragged, toggle beingClicked to false if dragged too far
+	/// </summary>
 	void Update ()
 	{
 		if (_beingDragged)
@@ -81,6 +90,9 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// MouseUp ends the current drag. If beingClicked is true, the CrewMember pop-up is displayed. Otherwise, check if the Crewmember has been placed into a position.
+	/// </summary>
 	void EndDrag()
 	{
 		_beingDragged = false;
@@ -93,6 +105,9 @@ public class CrewMemberUI : MonoBehaviour {
 		_beingClicked = false;
 	}
 
+	/// <summary>
+	/// Display the CrewMember pop-up and reset the UI position
+	/// </summary>
 	void ShowPopUp()
 	{
 		_teamSelectionUI.DisplayCrewPopUp(_crewMember);
@@ -106,6 +121,9 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Check if the drag stopped over a Position UI element.
+	/// </summary>
 	void CheckPlacement()
 	{
 		ReplacedEvent(this, new EventArgs());
@@ -134,6 +152,9 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Reset this UI back to its defaults.
+	/// </summary>
 	public void Reset()
 	{
 		transform.SetParent(_defaultParent, false);
@@ -142,6 +163,9 @@ public class CrewMemberUI : MonoBehaviour {
 		_currentPositon = Vector2.zero;
 	}
 
+	/// <summary>
+	/// Display the score for this CrewMember in the position it is in
+	/// </summary>
 	public void RevealScore(int score)
 	{
 		_scoreText.enabled = true;

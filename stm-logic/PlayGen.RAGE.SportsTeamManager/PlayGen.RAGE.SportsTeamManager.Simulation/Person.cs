@@ -17,11 +17,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public EmotionalAppraisalAsset EmotionalAppraisal { get; set; }
 		public RolePlayCharacterAsset RolePlayCharacter { get; set; }
 
+		/// <summary>
+		/// Constructor for creating a Person
+		/// </summary>
 		public Person()
 		{
 			
 		}
 
+		/// <summary>
+		/// Constructor for creating a Person from a saved game
+		/// </summary>
 		public Person(IStorageProvider savedStorage, RolePlayCharacterAsset rpc)
 		{
 			var ea = EmotionalAppraisalAsset.LoadFromFile(savedStorage, rpc.EmotionalAppraisalAssetSource);
@@ -34,6 +40,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RolePlayCharacter = rpc;
 		}
 
+		/// <summary>
+		/// Create the required files for this Person
+		/// </summary>
 		public void CreateFile(IntegratedAuthoringToolAsset iat, IStorageProvider templateStorage, IStorageProvider savedStorage, string storageLocation)
 		{
 			var templateRpc = RolePlayCharacterAsset.LoadFromFile(templateStorage, "template_rpc");
@@ -52,6 +61,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(savedStorage, Path.Combine(storageLocation, noSpaceName + ".rpc"));
 		}
 
+		/// <summary>
+		/// Update the base information for this Person
+		/// </summary>
 		public virtual void UpdateBeliefs(string position = null)
 		{
 			UpdateSingleBelief("Value(Age)", Age.ToString(), "SELF");
@@ -59,6 +71,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UpdateSingleBelief("Value(Position)", position, "SELF");
 		}
 
+		/// <summary>
+		/// Update the stored information to match what is passed here or add if it doesn't already exist
+		/// </summary>
 		public void UpdateSingleBelief(string name, string value, string perspective)
 		{
 			if (EmotionalAppraisal != null && name != null && value != null && perspective != null)
@@ -72,6 +87,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Save the Person's mood, emotions and events to the EmotionalAppraisal file
+		/// </summary>
 		public void SaveStatus()
 		{
 			EmotionalAppraisal.SaveToFile(LocalStorageProvider.Instance, EmotionalAppraisal.AssetFilePath);

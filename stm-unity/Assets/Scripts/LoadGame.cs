@@ -13,6 +13,9 @@ public class LoadGame : MonoBehaviour
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 	}
 
+	/// <summary>
+	/// Get a list of the current games available to load
+	/// </summary>
 	public List<string> GetGames()
 	{
 		_selectedName = null;
@@ -23,16 +26,25 @@ public class LoadGame : MonoBehaviour
 		return _gameManager.GetGameNames(Application.streamingAssetsPath);
 	}
 
+	/// <summary>
+	/// Set the name of the game selected to load
+	/// </summary>
 	public void SetSelected(string name)
 	{
 		_selectedName = name;
 	}
 
+	/// <summary>
+	/// Return the name of the selected game
+	/// </summary>
 	public string GetSelected()
 	{
 		return _selectedName;
 	}
 
+	/// <summary>
+	/// Check if the selected game exists
+	/// </summary>
 	public bool ExistingGameCheck()
 	{
 		if (_selectedName != null)
@@ -42,6 +54,9 @@ public class LoadGame : MonoBehaviour
 		return false;
 	}
 
+	/// <summary>
+	/// Load the selected game
+	/// </summary>
 	public bool LoadSelectedGame()
 	{
 		if (_selectedName != null)

@@ -12,6 +12,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public bool RequiresWisdom { get; set; }
 		public bool RequiresWillpower { get; set; }
 
+		/// <summary>
+		/// Get a rating for this CrewMember in this Position
+		/// </summary>
 		public int GetPositionRating(CrewMember crewMember)
 		{
 			int positionCount = 0;
@@ -52,6 +55,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return crewScore;
 		}
 
+		/// <summary>
+		/// Get the CrewMember (if any) for this Position for the Boat provided
+		/// </summary>
 		public string GetCrewMember(Boat boat)
 		{
 			string crewMember = "";

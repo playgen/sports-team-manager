@@ -19,11 +19,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public List<CrewOpinion> CrewOpinions { get; set; }
 		public event EventHandler OpinionChange = delegate { };
 
+		/// <summary>
+		/// Constructor for creating a CrewMember with a non-random age/gender/name
+		/// </summary>
 		public CrewMember()
 		{
 			CrewOpinions = new List<CrewOpinion>();
 		}
 
+		/// <summary>
+		/// Constructor for creating a CrewMember with a random age/gender/name
+		/// </summary>
 		public CrewMember(Random random)
 		{
 			Gender = SelectGender(random);
@@ -32,21 +38,33 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			CrewOpinions = new List<CrewOpinion>();
 		}
 
+		/// <summary>
+		/// Constructor for creating a CrewMember from a saved game
+		/// </summary>
 		public CrewMember(IStorageProvider savedStorage, RolePlayCharacterAsset rpc) : base(savedStorage, rpc)
 		{
 			CrewOpinions = new List<CrewOpinion>();
 		}
 
+		/// <summary>
+		/// Randomly selected the gender of the CrewMember
+		/// </summary>
 		private string SelectGender(Random random)
 		{
 			return random.Next(0, 1000) % 2 == 0 ? "Male" : "Female";
 		}
 
+		/// <summary>
+		/// Randomly select a new name for this CrewMember
+		/// </summary>
 		public string SelectNewName(string gender, Random random)
 		{
 			return SelectRandomName(gender, random);
 		}
 
+		/// <summary>
+		/// Randomly seect a name for this CrewMember
+		/// </summary>
 		private string SelectRandomName(string gender, Random random)
 		{
 			var name = "";
@@ -66,6 +84,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return name;
 		}
 
+		/// <summary>
+		/// Update the EA file for this CrewMember with updated stats and opinions
+		/// </summary>
 		public override void UpdateBeliefs(string position = null)
 		{
 			base.UpdateBeliefs(position);
@@ -81,6 +102,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Adjust or overwrite an opinion on another Person
+		/// </summary>
 		public void AddOrUpdateOpinion(Person person, int change, bool replace = false)
 		{
 			var cw = CrewOpinions.SingleOrDefault(op => op.Person == person);
@@ -116,6 +140,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			OpinionChange(this, new EventArgs());
 		}
 
+		/// <summary>
+		/// Get the saved stats, position, opinions and retirement status for this CrewMember
+		/// </summary>
 		public void LoadBeliefs(Boat boat)
 		{
 			Body = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Body)"));
@@ -152,6 +179,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Get the current mood of this CrewMember
+		/// </summary>
 		public int GetMood()
 		{
 			int mood = 0;
@@ -162,6 +192,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return mood;
 		}
 
+		/// <summary>
+		/// Get the current position on this Boat (if any) for this CrewMember
+		/// </summary>
 		public string GetPosition(Boat boat)
 		{
 			string position = "";
@@ -173,6 +206,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return position;
 		}
 
+		/// <summary>
+		/// Pass events to see what this CrewMember thinks of the current crew line-up and save these and any other changes
+		/// </summary>
 		public void DecisionFeedback(Boat boat)
 		{
 			SaveStatus();
@@ -243,6 +279,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			LoadBeliefs(boat);
 		}
 
+		/// <summary>
+		/// Send an event to the EA/EDM to get the CrewMember's reaction and mood change as a result
+		/// </summary>
 		public string SendEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Boat boat, CrewMember crewMember = null)
 		{
 			var spacelessName = EmotionalAppraisal.Perspective;
@@ -268,10 +307,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RolePlayCharacter.Update();
 			SaveStatus();
 			LoadBeliefs(boat);
-			boat.UpdateBoatScore();
 			return reply;
 		}
 
+		/// <summary>
+		/// Retire this CrewMember
+		/// </summary>
 		public void Retire()
 		{
 			UpdateSingleBelief("Status(Retired)", "True", "SELF");

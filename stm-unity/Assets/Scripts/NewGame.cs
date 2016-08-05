@@ -9,11 +9,17 @@ public class NewGame : MonoBehaviour {
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 	}
 
+	/// <summary>
+	/// Check if a game with this name already exists
+	/// </summary>
 	public bool ExistingGameCheck(string boatName)
 	{
 		return _gameManager.CheckIfGameExists(Application.streamingAssetsPath, boatName);
 	}
-	
+
+	/// <summary>
+	/// Create a new game
+	/// </summary>
 	public bool CreateNewGame(string boatName, string managerName, string managerAge, string managerGender)
 	{
 		_gameManager.NewGame(LocalStorageProvider.Instance, Application.streamingAssetsPath, boatName, managerName, managerAge, managerGender);

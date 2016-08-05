@@ -13,6 +13,9 @@ public class ScreenSideUI : MonoBehaviour {
 	[SerializeField]
 	private GameObject _selected;
 
+	/// <summary>
+	/// Set the information displayed at the top of the screen
+	/// </summary>
 	void OnEnable()
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
@@ -20,6 +23,9 @@ public class ScreenSideUI : MonoBehaviour {
 		_scoreText.text = "00";
 	}
 
+	/// <summary>
+	/// Change the position of the selected object to match the current UI screen
+	/// </summary>
 	public void ChangeSelected(int position)
 	{
 		_selected.GetComponent<RectTransform>().anchorMax = new Vector2(0.4f + (0.15f * position), 0.15f);

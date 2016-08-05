@@ -2,12 +2,18 @@
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	/// <summary>
+	/// Used to store CrewMember for a Position and the current score for that Position
+	/// </summary>
 	public class BoatPosition
 	{
 		public Position Position { get; set; }
 		public CrewMember CrewMember { get; set; }
 		public int PositionScore { get; set; }
 
+		/// <summary>
+		/// Get the current score for this Position on this boat for this CrewMember
+		/// </summary>
 		public void UpdateCrewMemberScore(Boat boat)
 		{
 			if (CrewMember == null || Position == null)

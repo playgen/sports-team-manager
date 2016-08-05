@@ -2,6 +2,9 @@
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	/// <summary>
+	/// Type of Boat
+	/// </summary>
 	public class Dinghy : Boat
 	{
 		public Dinghy()

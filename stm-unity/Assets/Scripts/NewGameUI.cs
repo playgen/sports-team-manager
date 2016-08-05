@@ -27,6 +27,9 @@ public class NewGameUI : MonoBehaviour {
 		_overwritePopUp.SetActive(false);
 	}
 
+	/// <summary>
+	/// Wipe all errors and provided information
+	/// </summary>
 	void OnEnable()
 	{
 		WarningDisable();
@@ -35,6 +38,9 @@ public class NewGameUI : MonoBehaviour {
 		_managerAge.text = "";
 	}
 
+	/// <summary>
+	/// Hide all warnings for missing information
+	/// </summary>
 	void WarningDisable()
 	{
 		_errorText.text = "";
@@ -43,6 +49,9 @@ public class NewGameUI : MonoBehaviour {
 		_managerAge.transform.Find("Required Warning").gameObject.SetActive(false);
 	}
 
+	/// <summary>
+	/// Triggered by button click. Check if game with name provided already exists, display overwrite pop-up if one does, create new game if not
+	/// </summary>
 	public void ExistingGameCheck()
 	{
 		WarningDisable();
@@ -61,6 +70,9 @@ public class NewGameUI : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Check if information provided is valid
+	/// </summary>
 	public void NewGame()
 	{
 		var valid = true;
@@ -91,6 +103,9 @@ public class NewGameUI : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Send message to UIStateManager to reset UI panels back to the Main Menu
+	/// </summary>
 	public void BackToMenu()
 	{
 		_stateManager.BackToMenu(gameObject);

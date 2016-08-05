@@ -17,11 +17,17 @@ public class PositionUI : MonoBehaviour {
 		_position = position;
 	}
 
+	/// <summary>
+	/// Display the information pop-up for Positions
+	/// </summary>
 	public void ShowPopUp()
 	{
 		_teamSelectionUI.DisplayPositionPopUp(_position);
 	}
 
+	/// <summary>
+	/// Store a reference to the CrewMemberUI for the CrewMember currently attached to this PositionUI's Position
+	/// </summary>
 	public void LinkCrew(CrewMemberUI crewmember)
 	{
 		if (_crewMemberUI != null)
@@ -35,11 +41,17 @@ public class PositionUI : MonoBehaviour {
 		crewmember.ReplacedEvent += new EventHandler(OnReset);
 	}
 
+	/// <summary>
+	/// Return the name of this position
+	/// </summary>
 	public string GetName()
 	{
 		return _position.Name;
 	}
 
+	/// <summary>
+	/// Triggered by a CrewMember being removed from the position. Removes listener and updates number of currently empty positions
+	/// </summary>
 	private void OnReset(object sender, EventArgs e)
 	{
 		_crewMemberUI.ReplacedEvent -= new EventHandler(OnReset);
@@ -47,6 +59,9 @@ public class PositionUI : MonoBehaviour {
 		_teamSelectionUI.PositionChange(-1);
 	}
 
+	/// <summary>
+	/// Pass the current PositionScore to the CrewMember in this position
+	/// </summary>
 	public void LockPosition(int score)
 	{
 		if (_crewMemberUI != null)

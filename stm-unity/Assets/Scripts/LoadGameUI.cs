@@ -30,6 +30,9 @@ public class LoadGameUI : MonoBehaviour
 		_errorText.text = "";
 	}
 
+	/// <summary>
+	/// Update the position of the selected icon and if the load button should be enabled according to whether a game is selected or not
+	/// </summary>
 	void Update()
 	{
 		if (_loadGame.GetSelected() == null && _loadButton.interactable)
@@ -44,6 +47,9 @@ public class LoadGameUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Get a list of the current game and instantiate a new button for each one
+	/// </summary>
 	void GetGames()
 	{
 		_selectedIcon.transform.SetParent(transform, false);
@@ -65,6 +71,9 @@ public class LoadGameUI : MonoBehaviour
 		_gameContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -_gameContainer.GetComponent<RectTransform>().sizeDelta.y * 0.5f);
 	}
 
+	/// <summary>
+	/// Triggered by button click. Set clicked to be selected game
+	/// </summary>
 	public void SelectGame(Text name)
 	{
 		_errorText.text = "";
@@ -73,6 +82,9 @@ public class LoadGameUI : MonoBehaviour
 		_selectedIcon.transform.position = name.transform.position;
 	}
 
+	/// <summary>
+	/// Triggered by button click. Load currently selected game.
+	/// </summary>
 	public void LoadGame()
 	{
 		_errorText.text = "";
@@ -97,6 +109,9 @@ public class LoadGameUI : MonoBehaviour
 		
 	}
 
+	/// <summary>
+	/// Send message to UIStateManager to reset UI panels back to the Main Menu
+	/// </summary>
 	public void BackToMenu()
 	{
 		_stateManager.BackToMenu(gameObject);

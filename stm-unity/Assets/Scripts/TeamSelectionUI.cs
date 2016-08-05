@@ -46,6 +46,9 @@ public class TeamSelectionUI : MonoBehaviour {
 		_teamSelection = GetComponent<TeamSelection>();
 	}
 
+	/// <summary>
+	/// Create UI for all of the previous line-ups and one for the next line-up
+	/// </summary>
 	void Start()
 	{
 		foreach (var boat in _teamSelection.GetLineUpHistory())
@@ -55,6 +58,9 @@ public class TeamSelectionUI : MonoBehaviour {
 		CreateNewBoat();
 	}
 
+	/// <summary>
+	/// Toggle the raceButton by whether all the positions for this Boat have been filled or not
+	/// </summary>
 	void Update()
 	{
 		if (_positionsEmpty > 0 && _raceButton.interactable)
@@ -67,6 +73,9 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Instantiate a new UI object for a Boat line-up, adjust container size, position and position of all other similar elements accordingly
+	/// </summary>
 	public GameObject CreateBoat(Boat boat)
 	{
 		var position = boat.BoatPositions.Select(p => p.Position).ToList();
@@ -110,6 +119,9 @@ public class TeamSelectionUI : MonoBehaviour {
 		return boatContainer;
 	}
 
+	/// <summary>
+	/// Instantiate CrewMember UI for a new boat (aka, no line-up) and set the position of the raceButton
+	/// </summary>
 	private void CreateNewBoat()
 	{
 		var boat = _teamSelection.LoadCrew();
@@ -131,6 +143,9 @@ public class TeamSelectionUI : MonoBehaviour {
 		_currentBoat = boatContainer;
 	}
 
+	/// <summary>
+	/// Instantiate and position UI for an existing boat (aka, line-up already selected in the past)
+	/// </summary>
 	public void CreateHistoricalBoat(Boat boat)
 	{
 		var boatContainer = CreateBoat(boat);
@@ -173,11 +188,17 @@ public class TeamSelectionUI : MonoBehaviour {
 		_teamSelection.ConfirmLineUp(true);
 	}
 
+	/// <summary>
+	/// Adjust the number of positions on the currentBoat that has not been given a CrewMember
+	/// </summary>
 	public void PositionChange(int change)
 	{
 		_positionsEmpty -= change;
 	}
 
+	/// <summary>
+	/// Display and set the information for the pop-up for CrewMember details
+	/// </summary>
 	public void DisplayCrewPopUp(CrewMember crewMember)
 	{
 		_crewPopUp.SetActive(true);
@@ -195,6 +216,9 @@ public class TeamSelectionUI : MonoBehaviour {
 		_crewPopUpBars[7].fillAmount = crewMember.GetMood() * 0.1f;
 	}
 
+	/// <summary>
+	/// Display and set the information for the pop-up for Position details
+	/// </summary>
 	public void DisplayPositionPopUp(Position position)
 	{
 		_positionPopUp.SetActive(true);
@@ -203,6 +227,9 @@ public class TeamSelectionUI : MonoBehaviour {
 		_positionPopUpText[2].text = _teamSelection.GetPositionCrewMember(position);
 	}
 
+	/// <summary>
+	/// Confirm the current line-up
+	/// </summary>
 	public void ConfirmLineUp()
 	{
 		var teamScore = _teamSelection.ConfirmLineUp();
