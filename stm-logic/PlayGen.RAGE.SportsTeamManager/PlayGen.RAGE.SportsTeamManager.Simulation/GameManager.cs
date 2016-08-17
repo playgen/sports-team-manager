@@ -290,6 +290,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			var replies = EventController.SelectEvent(selected, Boat.GetAllCrewMembers(), Boat);
 			Boat.UpdateBoatScore();
+			Boat.GetIdealCrew();
 			return replies.ToArray();
 		}
 
@@ -308,6 +309,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			var replies = EventController.SelectEvent(selected, currentMembers, Boat);
 			Boat.UpdateBoatScore();
+			Boat.GetIdealCrew();
 			return replies.ToArray();
 		}
 
@@ -318,6 +320,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			var replies = EventController.SelectEvent(selected, Boat.UnassignedCrew, Boat);
 			Boat.UpdateBoatScore();
+			Boat.GetIdealCrew();
 			return replies.ToArray();
 		}
 
@@ -328,6 +331,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			var replies = EventController.SelectEvent(selected, members, Boat);
 			Boat.UpdateBoatScore();
+			Boat.GetIdealCrew();
 			return replies.ToArray();
 		}
 
@@ -338,6 +342,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			var replies = EventController.SelectEvent(selected, members, Boat);
 			Boat.UpdateBoatScore();
+			Boat.GetIdealCrew();
 			return replies.ToArray();
 		}
 	}

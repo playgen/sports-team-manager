@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,6 +9,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	{
 		public string Name { get; set; }
 		public List<BoatPosition> BoatPositions { get; set; }
+		public List<BoatPosition> IdealCrew { get; set; }
 		public List<CrewMember> UnassignedCrew { get; set; }
 		public List<CrewMember> RetiredCrew { get; set; }
 		public int BoatScore { get; set; }
@@ -178,6 +180,41 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			BoatScore = BoatPositions.Sum(bp => bp.PositionScore);
 		}
 
+		public void GetIdealCrew()
+		{
+			Boat tempBoat = (Boat)Activator.CreateInstance(this.GetType());
+			tempBoat.Manager = Manager;
+			IEnumerable<IEnumerable<CrewMember>> crewCombos = GetPermutations(GetAllCrewMembers(), BoatPositions.Count - 1);
+			int bestScore = 0;
+			List<BoatPosition> bestCrew = new List<BoatPosition>();
+			for (int i = 0; i < tempBoat.BoatPositions.Count; i++)
+			{
+				bestCrew.Add(new BoatPosition
+				{
+					Position = tempBoat.BoatPositions[i].Position
+				});
+			}
+			foreach (IEnumerable<CrewMember> possibleCrew in crewCombos)
+			{
+				List<CrewMember> crewList = possibleCrew.ToList();
+				for (int i = 0; i < tempBoat.BoatPositions.Count; i++)
+				{
+					tempBoat.BoatPositions[i].CrewMember = crewList[i];
+				}
+				tempBoat.UpdateBoatScore();
+				if (tempBoat.BoatScore > bestScore)
+				{
+					for (int i = 0; i < tempBoat.BoatPositions.Count; i++)
+					{
+						bestCrew[i].CrewMember = tempBoat.BoatPositions[i].CrewMember;
+						bestCrew[i].PositionScore = tempBoat.BoatPositions[i].PositionScore;
+					}
+					bestScore = tempBoat.BoatScore;
+				}
+			}
+			IdealCrew = bestCrew;
+		}
+
 		/// <summary>
 		/// Save the current status of each CrewMember for this Boat
 		/// </summary>
@@ -188,6 +225,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crew.ForEach(p => p.DecisionFeedback(this));
 			Manager.SaveStatus();
 			UpdateBoatScore();
+			GetIdealCrew();
+		}
+
+		private IEnumerable<IEnumerable<T>>GetPermutations<T>(IEnumerable<T> list, int length)
+		{
+			if (length == 0)
+			{
+				return list.Select(t => new T[] { t }.AsEnumerable());
+				
+			}
+			return GetPermutations(list, length - 1)
+				.SelectMany(t => list.Where(o => !t.Contains(o)),
+					(t1, t2) => t1.Concat(new T[] { t2 }));
 		}
 	}
 }
