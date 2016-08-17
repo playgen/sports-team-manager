@@ -112,4 +112,9 @@ public class TeamSelection : MonoBehaviour {
 		}
 		return 0;
 	}
+
+	public float IdealCheck()
+	{
+		return _gameManager.Boat.IdealMatchScore;
+	}
 }

@@ -13,6 +13,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public List<CrewMember> UnassignedCrew { get; set; }
 		public List<CrewMember> RetiredCrew { get; set; }
 		public int BoatScore { get; set; }
+		public float IdealMatchScore { get; set; }
 		public Person Manager { get; set; }
 
 		/// <summary>
@@ -23,6 +24,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			BoatPositions = new List<BoatPosition>();
 			UnassignedCrew = new List<CrewMember>();
 			RetiredCrew = new List<CrewMember>();
+			IdealCrew = new List<BoatPosition>();
 		}
 
 		/// <summary>
@@ -178,6 +180,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				bp.UpdateCrewMemberScore(this);
 			}
 			BoatScore = BoatPositions.Sum(bp => bp.PositionScore);
+			if (IdealCrew.Count == BoatPositions.Count)
+			{
+				UpdateIdealScore();
+			}
 		}
 
 		public void GetIdealCrew()
@@ -213,6 +219,29 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			IdealCrew = bestCrew;
+			UpdateIdealScore();
+		}
+
+		public void UpdateIdealScore()
+		{
+			IdealMatchScore = 0;
+			for (int i = 0; i < IdealCrew.Count; i++)
+			{
+				if (IdealCrew[i].CrewMember == BoatPositions[i].CrewMember)
+				{
+					IdealMatchScore++;
+				}
+				else
+				{
+					foreach (BoatPosition ideal in IdealCrew)
+					{
+						if (ideal.CrewMember == BoatPositions[i].CrewMember)
+						{
+							IdealMatchScore += 0.1f;
+						}
+					}
+				}
+			}
 		}
 
 		/// <summary>

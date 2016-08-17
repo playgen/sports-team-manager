@@ -91,7 +91,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		boatContainer.name = _boatPrefab.name;
 		var stageText = boatContainer.transform.Find("Stage").GetComponent<Text>();
 		var stageNumber = _teamSelection.GetStage();
-		if (stageNumber == 5) {
+		if (stageNumber == 3) {
 			stageText.text = "Race\nDay!";
 		} else
 		{
@@ -151,7 +151,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var boatContainer = CreateBoat(boat);
 		var teamScore = boat.BoatPositions.Sum(bp => bp.PositionScore);
 		var scoreText = boatContainer.transform.Find("Score").GetComponent<Text>();
-		scoreText.text = teamScore.ToString();
+		scoreText.text = boat.IdealMatchScore.ToString();
 		for (int i = 0; i < boat.BoatPositions.Count; i++)
 		{
 			GameObject crewMember = Instantiate(_crewPrefab);
@@ -234,7 +234,9 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		var teamScore = _teamSelection.ConfirmLineUp();
 		var scoreText = _currentBoat.transform.Find("Score").GetComponent<Text>();
-		scoreText.text = teamScore.ToString();
+		//scoreText.text = teamScore.ToString();
+		float correctCount = _teamSelection.IdealCheck();
+		scoreText.text = correctCount.ToString();
 		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
 		{
 			var boatPosition = position.GetName();

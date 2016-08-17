@@ -60,6 +60,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			iat.SaveToFile(storagePorvider, Path.Combine(storageLocation, noSpaceBoatName + ".iat"));
 			EventController = new EventController(iat);
 			LineUpHistory = new List<Boat>();
+			Boat.GetIdealCrew();
 		}
 
 		/// <summary>
@@ -191,6 +192,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewList.ForEach(cm => cm.LoadBeliefs(Boat));
 			EventController = new EventController(iat);
 			LoadLineUpHistory();
+			Boat.GetIdealCrew();
 		}
 
 		/// <summary>
@@ -239,6 +241,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					boat.BoatPositions[i].CrewMember = Boat.GetAllCrewMembersIncludingRetired().SingleOrDefault(c => c.Name.Replace(" ", "") == subjectSplit[((i + 1) * 2) - 1].Replace(" ", ""));
 					boat.BoatPositions[i].PositionScore = int.Parse(subjectSplit[(i + 1) * 2]);
 				}
+				boat.IdealMatchScore = float.Parse(subjectSplit[subjectSplit.Length - 1]);
 				LineUpHistory.Add(boat);
 			}
 		}
@@ -269,6 +272,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					crew += "null,0";
 				}
 			}
+			crew += "," + Boat.IdealMatchScore;
 			var eventString = String.Format(eventStringUnformatted, boatType, crew);
 			manager.EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			manager.SaveStatus();
