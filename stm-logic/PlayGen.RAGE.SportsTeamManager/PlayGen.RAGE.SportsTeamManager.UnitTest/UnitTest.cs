@@ -10,6 +10,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 	[TestClass]
 	public class UnitTest
 	{
+		int _testCount = 25;
+
 		[TestMethod]
 		public void PerfectBoat()
 		{
@@ -282,7 +284,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void CreateUpdateAndLoadBoat()
 		{
-			for (int i = 0; i < 25; i++)
+			for (int i = 0; i < _testCount; i++)
 			{
 				List<CrewMember> crew = CreateInitialCrew();
 				GameManager gameManager = new GameManager();
@@ -309,7 +311,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void CreateUpdateAndLoadBoatWithOpinions()
 		{
-			for (int i = 0; i < 25; i++)
+			for (int i = 0; i < _testCount; i++)
 			{
 				List<CrewMember> crew = CreateInitialCrew();
 				GameManager gameManager = new GameManager();
@@ -349,7 +351,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void CreateUpdateAndLoadBoatWithUpdatingOpinions()
 		{
-			for (int i = 0; i < 25; i++)
+			for (int i = 0; i < _testCount; i++)
 			{
 				List<CrewMember> crew = CreateInitialCrew();
 				GameManager gameManager = new GameManager();
@@ -401,18 +403,18 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				bow.AddOrUpdateOpinion(nav, -2);
 				Assert.AreEqual(36, gameManager.Boat.BoatScore);
 				gameManager.ConfirmLineUp();
-				Assert.AreEqual(55, gameManager.Boat.BoatScore);
+				Assert.AreEqual(53, gameManager.Boat.BoatScore);
 
 				gameManager.LoadGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace");
 
-				Assert.AreEqual(55, gameManager.Boat.BoatScore);
+				Assert.AreEqual(53, gameManager.Boat.BoatScore);
 			}
 		}
 
 		[TestMethod]
 		public void CreateUpdateAndLoadBoatWithIncorrectPositions()
 		{
-			for (int i = 0; i < 25; i++)
+			for (int i = 0; i < _testCount; i++)
 			{
 				List<CrewMember> crew = CreateInitialCrew();
 				GameManager gameManager = new GameManager();
@@ -445,23 +447,24 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void SendPreRaceEncouragement()
 		{
-			for (int i = 0; i < 25; i++)
+			for (int i = 0; i < _testCount; i++)
 			{
 				List<CrewMember> crew = CreateInitialCrew();
 				GameManager gameManager = new GameManager();
 				gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 
 				gameManager.AssignCrew("Skipper", "Skippy Skip");
-				//Assert.AreEqual(10, gameManager.Boat.BoatScore);
+				Assert.AreEqual(10, gameManager.Boat.BoatScore);
 				gameManager.AssignCrew("Navigator", "Wise Nav");
-				//Assert.AreEqual(20, gameManager.Boat.BoatScore);
+				Assert.AreEqual(20, gameManager.Boat.BoatScore);
 				gameManager.AssignCrew("Mid-Bowman", "Dim Wobnam");
-				//Assert.AreEqual(30, gameManager.Boat.BoatScore);
+				Assert.AreEqual(30, gameManager.Boat.BoatScore);
 				gameManager.ConfirmLineUp();
-				//Assert.AreEqual(39, gameManager.Boat.BoatScore);
+				Assert.AreEqual(39, gameManager.Boat.BoatScore);
 
 				var replies = gameManager.SendEvent(gameManager.EventController.PreRaceEvents.First());
 				Assert.AreEqual(gameManager.Boat.GetAllCrewMembers().Count, replies.Count());
+				Assert.AreEqual(48, gameManager.Boat.BoatScore);
 			}
 		}
 

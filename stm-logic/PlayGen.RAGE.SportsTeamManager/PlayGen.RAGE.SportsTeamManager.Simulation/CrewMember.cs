@@ -236,7 +236,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				RolePlayCharacter.ActionFinished(positionRpc);
 			}
-			RolePlayCharacter.Update();
+			EmotionalAppraisal.Update();
 
 			eventString = String.Format("ManagerOpinionCheck({0})", boat.Manager.Name.Replace(" ", ""));
 			var managerOpinionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
@@ -245,7 +245,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				RolePlayCharacter.ActionFinished(managerOpinionRpc);
 			}
-			RolePlayCharacter.Update();
+			EmotionalAppraisal.Update();
 
 			foreach (BoatPosition boatPosition in boat.BoatPositions.OrderBy(b => b.Position.Name))
 			{
@@ -272,7 +272,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						RolePlayCharacter.ActionFinished(opinionRpc);
 					}
-					RolePlayCharacter.Update();
+					EmotionalAppraisal.Update();
 				}
 			}
 			SaveStatus();
@@ -298,13 +298,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					reply = RolePlayCharacter.CharacterName + ": " + options.OrderBy(o => Guid.NewGuid()).First().Utterance;
 				}
-				/*switch (eventKey)
+				switch (eventKey)
 				{
-
-				}*/
+					case "Encouraged":
+						AddOrUpdateOpinion(boat.Manager, 1);
+						break;
+				}
 				RolePlayCharacter.ActionFinished(eventRpc);
 			}
-			RolePlayCharacter.Update();
+			EmotionalAppraisal.Update();
 			SaveStatus();
 			LoadBeliefs(boat);
 			return reply;
