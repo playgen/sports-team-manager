@@ -28,10 +28,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			TeamInterviewEvents = IntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, "TeamInterview").ToArray();
 		}
 
-		public List<string> SelectEvent(DialogueStateActionDTO selected, Boat boat)
+		public List<string> SelectEvent(DialogueStateActionDTO selected, List<CrewMember> crewMembers, Boat boat)
 		{
 			List<string> replies = new List<string>();
-			foreach (CrewMember member in boat.GetAllCrewMembers())
+			foreach (CrewMember member in crewMembers)
 			{
 				var reply = member.SendEvent(IntegratedAuthoringTool, selected, boat);
 				if (reply != null)

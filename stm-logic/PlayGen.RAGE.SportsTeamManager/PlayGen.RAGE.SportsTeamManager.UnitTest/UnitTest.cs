@@ -445,7 +445,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		}
 
 		[TestMethod]
-		public void SendPreRaceEncouragement()
+		public void SendPreRaceEncouragementToAllCrew()
 		{
 			for (int i = 0; i < _testCount; i++)
 			{
@@ -462,9 +462,81 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				gameManager.ConfirmLineUp();
 				Assert.AreEqual(39, gameManager.Boat.BoatScore);
 
-				var replies = gameManager.SendEvent(gameManager.EventController.PreRaceEvents.First());
+				var replies = gameManager.SendCrewEvent(gameManager.EventController.PreRaceEvents.First());
 				Assert.AreEqual(gameManager.Boat.GetAllCrewMembers().Count, replies.Count());
 				Assert.AreEqual(48, gameManager.Boat.BoatScore);
+			}
+		}
+
+		[TestMethod]
+		public void SendPreRaceEncouragementToAssignedCrew()
+		{
+			for (int i = 0; i < _testCount; i++)
+			{
+				List<CrewMember> crew = CreateInitialCrew();
+				GameManager gameManager = new GameManager();
+				gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
+
+				gameManager.AssignCrew("Skipper", "Skippy Skip");
+				Assert.AreEqual(10, gameManager.Boat.BoatScore);
+				gameManager.AssignCrew("Navigator", "Wise Nav");
+				Assert.AreEqual(20, gameManager.Boat.BoatScore);
+				gameManager.AssignCrew("Mid-Bowman", "Dim Wobnam");
+				Assert.AreEqual(30, gameManager.Boat.BoatScore);
+				gameManager.ConfirmLineUp();
+				Assert.AreEqual(39, gameManager.Boat.BoatScore);
+
+				var replies = gameManager.SendAssignedCrewEvent(gameManager.EventController.PreRaceEvents.First());
+				Assert.AreEqual(gameManager.Boat.BoatPositions.Count, replies.Count());
+				Assert.AreEqual(48, gameManager.Boat.BoatScore);
+			}
+		}
+
+		[TestMethod]
+		public void SendPreRaceEncouragementToUnassignedCrew()
+		{
+			for (int i = 0; i < _testCount; i++)
+			{
+				List<CrewMember> crew = CreateInitialCrew();
+				GameManager gameManager = new GameManager();
+				gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
+
+				gameManager.AssignCrew("Skipper", "Skippy Skip");
+				Assert.AreEqual(10, gameManager.Boat.BoatScore);
+				gameManager.AssignCrew("Navigator", "Wise Nav");
+				Assert.AreEqual(20, gameManager.Boat.BoatScore);
+				gameManager.AssignCrew("Mid-Bowman", "Dim Wobnam");
+				Assert.AreEqual(30, gameManager.Boat.BoatScore);
+				gameManager.ConfirmLineUp();
+				Assert.AreEqual(39, gameManager.Boat.BoatScore);
+
+				var replies = gameManager.SendUnassignedCrewEvent(gameManager.EventController.PreRaceEvents.First());
+				Assert.AreEqual(gameManager.Boat.UnassignedCrew.Count, replies.Count());
+				Assert.AreEqual(39, gameManager.Boat.BoatScore);
+			}
+		}
+
+		[TestMethod]
+		public void SendPreRaceEncouragementToSelectedCrew()
+		{
+			for (int i = 0; i < _testCount; i++)
+			{
+				List<CrewMember> crew = CreateInitialCrew();
+				GameManager gameManager = new GameManager();
+				gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
+
+				gameManager.AssignCrew("Skipper", "Skippy Skip");
+				Assert.AreEqual(10, gameManager.Boat.BoatScore);
+				gameManager.AssignCrew("Navigator", "Wise Nav");
+				Assert.AreEqual(20, gameManager.Boat.BoatScore);
+				gameManager.AssignCrew("Mid-Bowman", "Dim Wobnam");
+				Assert.AreEqual(30, gameManager.Boat.BoatScore);
+				gameManager.ConfirmLineUp();
+				Assert.AreEqual(39, gameManager.Boat.BoatScore);
+
+				var replies = gameManager.SendBoatMembersEvent(gameManager.EventController.PreRaceEvents.First(), new List<CrewMember>() {gameManager.Boat.BoatPositions[0].CrewMember});
+				Assert.AreEqual(1, replies.Count());
+				Assert.AreEqual(42, gameManager.Boat.BoatScore);
 			}
 		}
 

@@ -282,7 +282,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send an event to the EA/EDM to get the CrewMember's reaction and mood change as a result
 		/// </summary>
-		public string SendEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Boat boat, CrewMember crewMember = null)
+		public string SendEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Boat boat)
 		{
 			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";

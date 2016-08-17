@@ -284,11 +284,59 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Send an event to the EventController
+		/// Send an event to the EventController that'll be triggered for all crew for this boat
 		/// </summary>
-		public string[] SendEvent(DialogueStateActionDTO selected)
+		public string[] SendCrewEvent(DialogueStateActionDTO selected)
 		{
-			var replies = EventController.SelectEvent(selected, Boat);
+			var replies = EventController.SelectEvent(selected, Boat.GetAllCrewMembers(), Boat);
+			Boat.UpdateBoatScore();
+			return replies.ToArray();
+		}
+
+		/// <summary>
+		/// Send an event to the EventController that'll be triggered for all assigned crew on this boat
+		/// </summary>
+		public string[] SendAssignedCrewEvent(DialogueStateActionDTO selected)
+		{
+			List<CrewMember> currentMembers = new List<CrewMember>();
+			foreach (BoatPosition bp in Boat.BoatPositions)
+			{
+				if (bp.CrewMember != null)
+				{
+					currentMembers.Add(bp.CrewMember);
+				}
+			}
+			var replies = EventController.SelectEvent(selected, currentMembers, Boat);
+			Boat.UpdateBoatScore();
+			return replies.ToArray();
+		}
+
+		/// <summary>
+		/// Send an event to the EventController that'll be triggered for all unassigned crew on this boat
+		/// </summary>
+		public string[] SendUnassignedCrewEvent(DialogueStateActionDTO selected)
+		{
+			var replies = EventController.SelectEvent(selected, Boat.UnassignedCrew, Boat);
+			Boat.UpdateBoatScore();
+			return replies.ToArray();
+		}
+
+		/// <summary>
+		/// Send an event to the EventController that'll be triggered for all crew within the list
+		/// </summary>
+		public string[] SendBoatMembersEvent(DialogueStateActionDTO selected, List<CrewMember> members)
+		{
+			var replies = EventController.SelectEvent(selected, members, Boat);
+			Boat.UpdateBoatScore();
+			return replies.ToArray();
+		}
+
+		/// <summary>
+		/// Send an event to the EventController that'll be triggered for all crew within the list
+		/// </summary>
+		public string[] SendRecruitMembersEvent(DialogueStateActionDTO selected, List<CrewMember> members)
+		{
+			var replies = EventController.SelectEvent(selected, members, Boat);
 			Boat.UpdateBoatScore();
 			return replies.ToArray();
 		}
