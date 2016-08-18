@@ -39,8 +39,9 @@ public class CrewMemberUI : MonoBehaviour {
 		drop.callback.AddListener((data) => { EndDrag(); });
 		trigger.triggers.Add(drop);
 		_defaultSize = GetComponent<RectTransform>().sizeDelta;
-		_defaultPosition = GetComponent<RectTransform>().position;
+		_defaultPosition = GetComponent<RectTransform>().anchoredPosition;
 		_defaultParent = transform.parent;
+		_currentPositon = transform.position;
 	}
 
 	public void SetUp(TeamSelection teamSelection, TeamSelectionUI teamSelectionUI, CrewMember crewMember)
@@ -76,13 +77,6 @@ public class CrewMemberUI : MonoBehaviour {
 			if (_currentPositon != Vector2.zero)
 			{
 				if (Vector2.Distance(Input.mousePosition, _currentPositon + _dragPosition) > 15)
-				{
-					_beingClicked = false;
-				}
-			}
-			else
-			{
-				if (Vector2.Distance(Input.mousePosition, _defaultPosition + _dragPosition) > 15)
 				{
 					_beingClicked = false;
 				}
@@ -159,8 +153,8 @@ public class CrewMemberUI : MonoBehaviour {
 	{
 		transform.SetParent(_defaultParent, false);
 		GetComponent<RectTransform>().sizeDelta = _defaultSize;
-		GetComponent<RectTransform>().position = _defaultPosition;
-		_currentPositon = Vector2.zero;
+		GetComponent<RectTransform>().anchoredPosition = _defaultPosition;
+		_currentPositon = transform.position;
 	}
 
 	/// <summary>

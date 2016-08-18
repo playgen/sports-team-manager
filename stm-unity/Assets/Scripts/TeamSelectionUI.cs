@@ -126,13 +126,14 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		var boat = _teamSelection.LoadCrew();
 		var crew = boat.GetAllCrewMembers();
+		var containerHeight = _crewContainer.GetComponent<RectTransform>().rect.height * 0.8f;
 		for (int i = 0; i < crew.Count; i++)
 		{
 			GameObject crewMember = Instantiate(_crewPrefab);
 			crewMember.transform.SetParent(_crewContainer.transform, false);
-			var containerHeight = _crewContainer.GetComponent<RectTransform>().rect.height * 0.8f;
 			crewMember.GetComponent<RectTransform>().sizeDelta = new Vector2(containerHeight, containerHeight);
 			crewMember.GetComponent<RectTransform>().anchoredPosition = new Vector2((containerHeight * 0.2f) + crewMember.GetComponent<RectTransform>().sizeDelta.x * (0.5f + (i * 1.05f)), 0);
+			_crewContainer.GetComponent<RectTransform>().sizeDelta = new Vector2((containerHeight * 0.2f) + crewMember.GetComponent<RectTransform>().sizeDelta.x * (0.5f + ((i + 1) * 1.05f)), _crewContainer.GetComponent<RectTransform>().sizeDelta.y);
 			crewMember.transform.Find("Name").GetComponent<Text>().text = crew[i].Name;
 			crewMember.name = _crewPrefab.name;
 			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, this, crew[i]);
