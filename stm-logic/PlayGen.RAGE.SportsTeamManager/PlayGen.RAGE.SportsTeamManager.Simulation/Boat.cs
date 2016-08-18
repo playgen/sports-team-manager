@@ -159,6 +159,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			RetiredCrew.Add(crewMember);
 			crewMember.Retire();
+			GetIdealCrew();
 			UpdateBoatScore();
 		}
 

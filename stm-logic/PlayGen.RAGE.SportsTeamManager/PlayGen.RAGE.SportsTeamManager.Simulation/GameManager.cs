@@ -31,18 +31,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat = new Dinghy();
 			Boat.Name = boatName;
 			iat.ScenarioName = Boat.Name;
+			bool initialCrew = false;
 			if (crew == null)
 			{
+				initialCrew = true;
 				crew = CreateInitialCrew(managerName);
 			}
 
-			foreach (CrewMember member in crew)
-			{
-				member.CreateFile(iat, templateStorage, storagePorvider, storageLocation);
-				Boat.AddCrew(member);
-				member.UpdateBeliefs("null");
-				member.SaveStatus();
-			}
+			Random rand = new Random();
 
 			Person manager = new Person
 			{
@@ -56,6 +52,25 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			manager.UpdateSingleBelief("Value(BoatType)", Boat.GetType().Name, "SELF");
 			Boat.Manager = manager;
 			manager.SaveStatus();
+
+			foreach (CrewMember member in crew)
+			{
+				member.CreateFile(iat, templateStorage, storagePorvider, storageLocation);
+				Boat.AddCrew(member);
+				if (initialCrew)
+				{
+					foreach (CrewMember otherMember in crew)
+					{
+						if (member != otherMember)
+						{
+							member.AddOrUpdateOpinion(otherMember, rand.Next(-4, 5));
+						}
+						member.AddOrUpdateOpinion(Boat.Manager, rand.Next(-3, 4));
+					}
+				}
+				member.UpdateBeliefs("null");
+				member.SaveStatus();
+			}
 
 			iat.SaveToFile(storagePorvider, Path.Combine(storageLocation, noSpaceBoatName + ".iat"));
 			EventController = new EventController(iat);

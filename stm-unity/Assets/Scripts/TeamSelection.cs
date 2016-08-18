@@ -67,17 +67,17 @@ public class TeamSelection : MonoBehaviour {
 		_confirmCount++;
 		if (historical)
 		{
-			if (_confirmCount >= 3)
+			if (_confirmCount >= 5)
 			{
-				_confirmCount -= 3;
+				_confirmCount -= 5;
 			}
 		}
 		else
 		{
-			if (_confirmCount >= 3)
+			if (_confirmCount >= 5)
 			{
 				_gameManager.ConfirmLineUp();
-				_confirmCount -= 3;
+				_confirmCount -= 5;
 			}
 			_gameManager.SaveLineUp();
 		}
@@ -116,5 +116,10 @@ public class TeamSelection : MonoBehaviour {
 	public float IdealCheck()
 	{
 		return _gameManager.Boat.IdealMatchScore;
+	}
+
+	public void FireCrewMember(CrewMember crewMember)
+	{
+		_gameManager.Boat.RetireCrew(crewMember);
 	}
 }

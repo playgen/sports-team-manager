@@ -74,7 +74,7 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 		if (_beingClicked)
 		{
-			if (_currentPositon != Vector2.zero)
+			if (_currentPositon != _defaultPosition)
 			{
 				if (Vector2.Distance(Input.mousePosition, _currentPositon + _dragPosition) > 15)
 				{
@@ -105,14 +105,7 @@ public class CrewMemberUI : MonoBehaviour {
 	void ShowPopUp()
 	{
 		_teamSelectionUI.DisplayCrewPopUp(_crewMember);
-		if (_currentPositon != Vector2.zero)
-		{
-			GetComponent<RectTransform>().position = _currentPositon;
-		}
-		else
-		{
-			Reset();
-		}
+		GetComponent<RectTransform>().position = _currentPositon;
 	}
 
 	/// <summary>

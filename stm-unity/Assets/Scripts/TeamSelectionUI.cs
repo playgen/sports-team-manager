@@ -41,8 +41,13 @@ public class TeamSelectionUI : MonoBehaviour {
 	private List<GameObject> _boatHistory = new List<GameObject>();
 	private int _positionsEmpty;
 
+	[SerializeField]
+	private GameObject _fireWarningPopUp;
+	private CrewMember _currentDisplayedCrewMember;
+
 	void Awake()
 	{
+		_fireWarningPopUp.SetActive(false);
 		_teamSelection = GetComponent<TeamSelection>();
 	}
 
@@ -81,7 +86,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var position = boat.BoatPositions.Select(p => p.Position).ToList();
 		GameObject boatContainer = Instantiate(_boatPrefab);
 		boatContainer.transform.SetParent(_boatContainer.transform, false);
-		var boatContainerHeight = _boatContainer.GetComponent<RectTransform>().rect.height * 0.3333f;
+		var boatContainerHeight = _boatContainer.GetComponent<RectTransform>().rect.height * 0.2f;
 		if (_boatHistory.Count > 0)
 		{
 			boatContainerHeight = _boatHistory[0].GetComponent<RectTransform>().rect.height;
@@ -91,7 +96,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		boatContainer.name = _boatPrefab.name;
 		var stageText = boatContainer.transform.Find("Stage").GetComponent<Text>();
 		var stageNumber = _teamSelection.GetStage();
-		if (stageNumber == 3) {
+		if (stageNumber == 5) {
 			stageText.text = "Race\nDay!";
 		} else
 		{
@@ -125,6 +130,16 @@ public class TeamSelectionUI : MonoBehaviour {
 	private void CreateNewBoat()
 	{
 		var boat = _teamSelection.LoadCrew();
+		var boatContainer = CreateBoat(boat);
+		_raceButton.transform.SetParent(boatContainer.transform, false);
+		_raceButton.transform.position = new Vector2(_raceButton.transform.position.x, boatContainer.transform.position.y);
+		_currentBoat = boatContainer;
+		CreateCrew();
+	}
+
+	private void CreateCrew()
+	{
+		var boat = _teamSelection.LoadCrew();
 		var crew = boat.GetAllCrewMembers();
 		var containerHeight = _crewContainer.GetComponent<RectTransform>().rect.height * 0.8f;
 		for (int i = 0; i < crew.Count; i++)
@@ -138,10 +153,6 @@ public class TeamSelectionUI : MonoBehaviour {
 			crewMember.name = _crewPrefab.name;
 			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, this, crew[i]);
 		}
-		var boatContainer = CreateBoat(boat);
-		_raceButton.transform.SetParent(boatContainer.transform, false);
-		_raceButton.transform.position = new Vector2(_raceButton.transform.position.x, boatContainer.transform.position.y);
-		_currentBoat = boatContainer;
 	}
 
 	/// <summary>
@@ -215,6 +226,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		_crewPopUpBars[5].fillAmount = crewMember.Wisdom * 0.1f;
 		_crewPopUpBars[6].fillAmount = -crewMember.GetMood() * 0.1f;
 		_crewPopUpBars[7].fillAmount = crewMember.GetMood() * 0.1f;
+		_currentDisplayedCrewMember = crewMember;
 	}
 
 	/// <summary>
@@ -261,5 +273,20 @@ public class TeamSelectionUI : MonoBehaviour {
 		
 		_boatHistory.Add(_currentBoat);
 		CreateNewBoat();
+	}
+
+	public void FireCrewWarning()
+	{
+		_fireWarningPopUp.SetActive(true);
+	}
+
+	public void FireCrew()
+	{
+		_teamSelection.FireCrewMember(_currentDisplayedCrewMember);
+		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
+		{
+			Destroy(crewMember.gameObject);
+		}
+		CreateCrew();
 	}
 }
