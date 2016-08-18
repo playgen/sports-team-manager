@@ -46,14 +46,23 @@
 								{
 									"Set": ["Opinion([manager]) < -2"]
 								},
-							"Desirability": -2,
-							"Praiseworthiness": -2
+							"Desirability": -1,
+							"Praiseworthiness": -1
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, ManagerOpinionCheck([manager]), Self)",
 							"Conditions":
 								{
 									"Set": ["Opinion([manager]) > 2"]
+								},
+							"Desirability": 1,
+							"Praiseworthiness": 1
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PositionRating([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["[score] > 6"]
 								},
 							"Desirability": 2,
 							"Praiseworthiness": 2
@@ -62,37 +71,28 @@
 							"EventName": "Event(Action-Start, Player, PositionRating([score]), Self)",
 							"Conditions":
 								{
-									"Set": ["[score] > 7"]
-								},
-							"Desirability": 3,
-							"Praiseworthiness": 3
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, PositionRating([score]), Self)",
-							"Conditions":
-								{
 									"Set": ["0 = [score]"]
 								},
-							"Desirability": -4,
-							"Praiseworthiness": -4
+							"Desirability": -3,
+							"Praiseworthiness": -3
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, PositionRating([score]), Self)",
 							"Conditions":
 								{
-									"Set": ["[score] != 0", "[score] < 4"]
+									"Set": ["[score] != 0", "[score] < 5"]
 								},
-							"Desirability": -2,
-							"Praiseworthiness": -2
+							"Desirability": -1,
+							"Praiseworthiness": -1
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, OpinionCheck([member], [x], [y]), Self)",
 							"Conditions":
 								{
-									"Set": ["[x] >= [y]", "Opinion([member]) < -2"]
+									"Set": ["[x] > [y]", "Opinion([member]) < -2"]
 								},
-							"Desirability": -4,
-							"Praiseworthiness": -4
+							"Desirability": -3,
+							"Praiseworthiness": -3
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, OpinionCheck([member], [x], [y]), Self)",
@@ -100,8 +100,8 @@
 								{
 									"Set": ["Opinion([member]) > 2"]
 								},
-							"Desirability": 3,
-							"Praiseworthiness": 3
+							"Desirability": 2,
+							"Praiseworthiness": 2
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, OpinionCheck([member], [x], [y]), Self)",
@@ -109,8 +109,8 @@
 								{
 									"Set": ["Opinion([member]) < -2"]
 								},
-							"Desirability": -2,
-							"Praiseworthiness": -2
+							"Desirability": -1,
+							"Praiseworthiness": -1
 						}, 
 						{
 							"EventName": "Event(Action-Start, *, PreRace(Encouraging), Self)",
@@ -118,8 +118,8 @@
 								{
 									"Set": []
 								},
-							"Desirability": 3,
-							"Praiseworthiness": 2
+							"Desirability": 2,
+							"Praiseworthiness": 1
 						}]
 				}
 		}],
