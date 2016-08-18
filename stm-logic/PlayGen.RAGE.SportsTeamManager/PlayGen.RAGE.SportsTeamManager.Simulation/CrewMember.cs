@@ -18,6 +18,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int Willpower { get; set; }
 		public List<CrewOpinion> CrewOpinions { get; set; }
 		public event EventHandler OpinionChange = delegate { };
+		public int restCount { get; set; }
 
 		/// <summary>
 		/// Constructor for creating a CrewMember with a non-random age/gender/name
@@ -170,6 +171,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				AddOrUpdateOpinion(boat.Manager, int.Parse(EmotionalAppraisal.GetBeliefValue(String.Format("Opinion({0})", boat.Manager.Name.Replace(" ", "")))), true);
 			}
+			if (EmotionalAppraisal.BeliefExists(String.Format("Race(Rest)")))
+			{
+				restCount = int.Parse(EmotionalAppraisal.GetBeliefValue("Race(Rest)"));
+			}
 			if (EmotionalAppraisal.BeliefExists(String.Format("Status(Retired)")))
 			{
 				if (EmotionalAppraisal.GetBeliefValue("Status(Retired)").ToLower() == "true")
@@ -280,6 +285,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			SaveStatus();
 			LoadBeliefs(boat);
+		}
+
+		public void RaceRest(bool assigned)
+		{
+			restCount--;
+			if (assigned)
+			{
+				restCount = 1;
+			}
+			UpdateSingleBelief("Race(Rest)", restCount.ToString(), "SELF");
+			SaveStatus();
 		}
 
 		/// <summary>

@@ -329,6 +329,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat.ConfirmChanges();
 		}
 
+		public void PostRaceRest()
+		{
+			Boat.PostRaceRest();
+		}
+
 		/// <summary>
 		/// Send an event to the EventController that'll be triggered for all crew for this boat
 		/// </summary>

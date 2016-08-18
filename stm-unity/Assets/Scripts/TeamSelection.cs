@@ -84,6 +84,14 @@ public class TeamSelection : MonoBehaviour {
 		return _gameManager.Boat.BoatScore;
 	}
 
+	public void PostRaceRest()
+	{
+		if (_confirmCount == 0)
+		{
+			_gameManager.PostRaceRest();
+		}
+	}
+
 	/// <summary>
 	/// Get the current position (if any) of a CrewMember
 	/// </summary>

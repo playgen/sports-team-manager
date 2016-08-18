@@ -30,14 +30,24 @@ public class CrewMemberUI : MonoBehaviour {
 	{
 		_scoreText.enabled = false;
 		EventTrigger trigger = GetComponent<EventTrigger>();
-		EventTrigger.Entry drag = new EventTrigger.Entry();
-		drag.eventID = EventTriggerType.PointerDown;
-		drag.callback.AddListener((data) => { BeginDrag(); });
-		trigger.triggers.Add(drag);
-		EventTrigger.Entry drop = new EventTrigger.Entry();
-		drop.eventID = EventTriggerType.PointerUp;
-		drop.callback.AddListener((data) => { EndDrag(); });
-		trigger.triggers.Add(drop);
+		if (_crewMember.restCount <= 0)
+		{
+			EventTrigger.Entry drag = new EventTrigger.Entry();
+			drag.eventID = EventTriggerType.PointerDown;
+			drag.callback.AddListener((data) => { BeginDrag(); });
+			trigger.triggers.Add(drag);
+			EventTrigger.Entry drop = new EventTrigger.Entry();
+			drop.eventID = EventTriggerType.PointerUp;
+			drop.callback.AddListener((data) => { EndDrag(); });
+			trigger.triggers.Add(drop);
+		} else
+		{
+			GetComponentInChildren<Image>().color = Color.gray;
+			EventTrigger.Entry click = new EventTrigger.Entry();
+			click.eventID = EventTriggerType.PointerClick;
+			click.callback.AddListener((data) => { ShowPopUp(); });
+			trigger.triggers.Add(click);
+		}
 		_defaultSize = GetComponent<RectTransform>().sizeDelta;
 		_defaultPosition = GetComponent<RectTransform>().anchoredPosition;
 		_defaultParent = transform.parent;

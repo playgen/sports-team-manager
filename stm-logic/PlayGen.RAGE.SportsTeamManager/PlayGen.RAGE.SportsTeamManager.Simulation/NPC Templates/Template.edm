@@ -24,7 +24,7 @@
 					"Action": "RatingFeedback(VeryBad)",
 					"Conditions":
 						{
-							"Set": ["EventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "0 = [x]", "EventElapsedTime([id]) < 1"]
+							"Set": ["EventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "0 = [x]", "Race(Rest) < 1", "EventElapsedTime([id]) < 1"]
 						},
 					"Priority": 0
 				}, 

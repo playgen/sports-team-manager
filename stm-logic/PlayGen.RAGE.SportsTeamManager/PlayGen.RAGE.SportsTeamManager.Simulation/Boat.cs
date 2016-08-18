@@ -191,7 +191,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			Boat tempBoat = (Boat)Activator.CreateInstance(this.GetType());
 			tempBoat.Manager = Manager;
-			IEnumerable<IEnumerable<CrewMember>> crewCombos = GetPermutations(GetAllCrewMembers(), BoatPositions.Count - 1);
+			IEnumerable<CrewMember> availableCrew = GetAllCrewMembers().Where(cm => cm.restCount <= 0);
+			IEnumerable<IEnumerable<CrewMember>> crewCombos = GetPermutations(availableCrew, BoatPositions.Count - 1);
 			int bestScore = 0;
 			List<BoatPosition> bestCrew = new List<BoatPosition>();
 			for (int i = 0; i < tempBoat.BoatPositions.Count; i++)
@@ -255,6 +256,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crew.ForEach(p => p.DecisionFeedback(this));
 			Manager.SaveStatus();
 			UpdateBoatScore();
+		}
+
+		public void PostRaceRest()
+		{
+			List<CrewMember> crew = GetAllCrewMembers();
+			crew.ForEach(p => p.RaceRest(BoatPositions.SingleOrDefault(bp => bp.CrewMember == p) != null));
 			GetIdealCrew();
 		}
 

@@ -270,7 +270,7 @@ public class TeamSelectionUI : MonoBehaviour {
 				Destroy(crewMember.GetComponent<EventTrigger>());
 			}
 		}
-		
+		_teamSelection.PostRaceRest();
 		_boatHistory.Add(_currentBoat);
 		CreateNewBoat();
 	}

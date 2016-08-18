@@ -2781,7 +2781,7 @@ RectTransform:
   m_Children:
   - {fileID: 1869191673}
   m_Father: {fileID: 1197197872}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -3669,7 +3669,7 @@ RectTransform:
   m_Children:
   - {fileID: 1500588851}
   m_Father: {fileID: 1197197872}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -4184,7 +4184,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 25
   m_Viewport: {fileID: 1589073827}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 1985377220}
@@ -4866,7 +4866,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 25
   m_Viewport: {fileID: 192315671}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 777707396}
@@ -6240,9 +6240,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 1209884637}
   - {fileID: 647337278}
   - {fileID: 396577619}
-  - {fileID: 1209884637}
   m_Father: {fileID: 1334125064}
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 0}
@@ -6274,7 +6274,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 25
   m_Viewport: {fileID: 647337278}
   m_HorizontalScrollbar: {fileID: 396577620}
   m_VerticalScrollbar: {fileID: 0}
@@ -6316,7 +6316,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1197197872}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1.01}
   m_AnchoredPosition: {x: -0.000030517578, y: 0}
@@ -7338,7 +7338,7 @@ MonoBehaviour:
   _positionPopUpHistoryContainer: {fileID: 847425285}
   _positionPopUpHistoryPrefab: {fileID: 113862, guid: f0192a7a0741f464291924100e2fb956,
     type: 2}
-  _fireWarningPopUp: {fileID: 0}
+  _fireWarningPopUp: {fileID: 351043587}
 --- !u!114 &1334125066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7755,7 +7755,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 25
   m_Viewport: {fileID: 1486988289}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 364134958}
@@ -8496,6 +8496,17 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 351043587}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 797134865}
         m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:

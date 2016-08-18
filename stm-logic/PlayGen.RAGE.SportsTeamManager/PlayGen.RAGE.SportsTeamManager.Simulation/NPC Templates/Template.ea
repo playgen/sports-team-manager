@@ -71,7 +71,7 @@
 							"EventName": "Event(Action-Start, Player, PositionRating([score]), Self)",
 							"Conditions":
 								{
-									"Set": ["0 = [score]"]
+									"Set": ["0 = [score]", "Race(Rest) < 1"]
 								},
 							"Desirability": -3,
 							"Praiseworthiness": -3
