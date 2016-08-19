@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIStateManager : MonoBehaviour {
@@ -48,12 +49,12 @@ public class UIStateManager : MonoBehaviour {
 	public void BackToMenu(GameObject go)
 	{
 		go.SetActive(false);
-		_topDetails.SetActive(false);
-		_sideMenu.SetActive(false);
 		_mainMenu.SetActive(true);
-		_teamManagement.SetActive(false);
-		_seasonStandings.SetActive(false);
-		_helpPages.SetActive(false);
+	}
+
+	public void ReloadScene()
+	{
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 
 	/// <summary>

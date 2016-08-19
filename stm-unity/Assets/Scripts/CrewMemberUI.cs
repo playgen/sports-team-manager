@@ -17,8 +17,6 @@ public class CrewMemberUI : MonoBehaviour {
 	private bool _beingDragged;
 	private Vector2 _dragPosition;
 
-	private Vector2 _defaultPosition;
-	private Vector2 _defaultSize;
 	private Transform _defaultParent;
 	private Vector2 _currentPositon;
 	public event EventHandler ReplacedEvent = delegate { };
@@ -48,8 +46,6 @@ public class CrewMemberUI : MonoBehaviour {
 			click.callback.AddListener((data) => { ShowPopUp(); });
 			trigger.triggers.Add(click);
 		}
-		_defaultSize = GetComponent<RectTransform>().sizeDelta;
-		_defaultPosition = GetComponent<RectTransform>().anchoredPosition;
 		_defaultParent = transform.parent;
 		_currentPositon = transform.position;
 	}
@@ -84,12 +80,9 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 		if (_beingClicked)
 		{
-			if (_currentPositon != _defaultPosition)
+			if (Vector2.Distance(Input.mousePosition, _currentPositon + _dragPosition) > 15)
 			{
-				if (Vector2.Distance(Input.mousePosition, _currentPositon + _dragPosition) > 15)
-				{
-					_beingClicked = false;
-				}
+				_beingClicked = false;
 			}
 		}
 	}
@@ -134,7 +127,7 @@ public class CrewMemberUI : MonoBehaviour {
 				RectTransform positionTransform = result.gameObject.GetComponent<RectTransform>();
 				transform.SetParent(positionTransform, false);
 				GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
-				GetComponent<RectTransform>().position = positionTransform.position;
+				GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);
 				_currentPositon = positionTransform.position;
 				result.gameObject.GetComponent<PositionUI>().LinkCrew(this);
 				_teamSelection.AssignCrew(_crewMember.Name, result.gameObject.GetComponent<PositionUI>().GetName());
@@ -154,9 +147,16 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	public void Reset()
 	{
-		transform.SetParent(_defaultParent, false);
-		GetComponent<RectTransform>().sizeDelta = _defaultSize;
-		GetComponent<RectTransform>().anchoredPosition = _defaultPosition;
+		transform.SetParent(_defaultParent, true);
+		transform.SetAsLastSibling();
+		for (int i = 0; i < transform.parent.childCount; i++)
+		{
+			if (transform.parent.GetChild(i).name != name && String.Compare(name, transform.parent.GetChild(i).name) < 0)
+			{
+				transform.SetSiblingIndex(transform.parent.GetChild(i).GetSiblingIndex());
+				break;
+			}
+		}
 		_currentPositon = transform.position;
 	}
 
