@@ -335,47 +335,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Send an event to the EventController that'll be triggered for all crew for this boat
-		/// </summary>
-		public string[] SendCrewEvent(DialogueStateActionDTO selected)
-		{
-			var replies = EventController.SelectEvent(selected, Boat.GetAllCrewMembers(), Boat);
-			Boat.UpdateBoatScore();
-			Boat.GetIdealCrew();
-			return replies.ToArray();
-		}
-
-		/// <summary>
-		/// Send an event to the EventController that'll be triggered for all assigned crew on this boat
-		/// </summary>
-		public string[] SendAssignedCrewEvent(DialogueStateActionDTO selected)
-		{
-			List<CrewMember> currentMembers = new List<CrewMember>();
-			foreach (BoatPosition bp in Boat.BoatPositions)
-			{
-				if (bp.CrewMember != null)
-				{
-					currentMembers.Add(bp.CrewMember);
-				}
-			}
-			var replies = EventController.SelectEvent(selected, currentMembers, Boat);
-			Boat.UpdateBoatScore();
-			Boat.GetIdealCrew();
-			return replies.ToArray();
-		}
-
-		/// <summary>
-		/// Send an event to the EventController that'll be triggered for all unassigned crew on this boat
-		/// </summary>
-		public string[] SendUnassignedCrewEvent(DialogueStateActionDTO selected)
-		{
-			var replies = EventController.SelectEvent(selected, Boat.UnassignedCrew, Boat);
-			Boat.UpdateBoatScore();
-			Boat.GetIdealCrew();
-			return replies.ToArray();
-		}
-
-		/// <summary>
 		/// Send an event to the EventController that'll be triggered for all crew within the list
 		/// </summary>
 		public string[] SendBoatMembersEvent(DialogueStateActionDTO selected, List<CrewMember> members)
@@ -386,8 +345,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return replies.ToArray();
 		}
 
+		public string[] SendBoatMembersEvent(string eventType, string eventName, List<CrewMember> members)
+		{
+			var replies = EventController.SelectEvent(eventType, eventName, members, Boat);
+			Boat.UpdateBoatScore();
+			Boat.GetIdealCrew();
+			return replies.ToArray();
+		}
+
 		/// <summary>
-		/// Send an event to the EventController that'll be triggered for all crew within the list
+		/// Send an event to the EventController that'll be triggered for all members within the list
 		/// </summary>
 		public string[] SendRecruitMembersEvent(DialogueStateActionDTO selected, List<CrewMember> members)
 		{

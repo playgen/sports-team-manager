@@ -127,6 +127,8 @@
     <Compile Include="Assets\Scripts\GameManagerObject.cs" />
     <Compile Include="Assets\Scripts\LoadGame.cs" />
     <Compile Include="Assets\Scripts\LoadGameUI.cs" />
+    <Compile Include="Assets\Scripts\MemberMeeting.cs" />
+    <Compile Include="Assets\Scripts\MemberMeetingUI.cs" />
     <Compile Include="Assets\Scripts\NewGame.cs" />
     <Compile Include="Assets\Scripts\NewGameUI.cs" />
     <Compile Include="Assets\Scripts\PositionUI.cs" />

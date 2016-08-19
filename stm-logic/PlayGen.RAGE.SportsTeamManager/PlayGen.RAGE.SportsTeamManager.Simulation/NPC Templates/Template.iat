@@ -5,21 +5,85 @@
 			"ScenarioName": "Template",
 			"PlayerDialogues": [
 				{
-					"Id": "ec9b2259-b7cb-40bd-8456-67f98b7bd331",
-					"CurrentState": "PreRace",
+					"Id": "5056350d-38dd-4725-8ca2-d02644ca0a3d",
+					"CurrentState": "SoloInterview",
 					"NextState": "-",
-					"Meaning": "Team",
-					"Style": "Encouraging",
-					"Utterance": "Encouraging message to the whole crew"
+					"Meaning": "RoleReveal",
+					"Style": "RoleReveal",
+					"Utterance": "What role do you think you can do well in?"
+				}, 
+				{
+					"Id": "2551ad0d-04f5-4232-9e84-26366a2bfa02",
+					"CurrentState": "SoloInterview",
+					"NextState": "-",
+					"Meaning": "StatReveal",
+					"Style": "StatReveal",
+					"Utterance": "Tell me more about your skillset"
+				}, 
+				{
+					"Id": "b1243843-ab00-47eb-9595-397fb1238dcf",
+					"CurrentState": "SoloInterview",
+					"NextState": "-",
+					"Meaning": "OpinionRevealPositive",
+					"Style": "OpinionRevealPositive",
+					"Utterance": "Are you getting on well with any of your teammates?"
+				}, 
+				{
+					"Id": "894b09d7-a422-4cff-a2d1-54df14a993e2",
+					"CurrentState": "SoloInterview",
+					"NextState": "-",
+					"Meaning": "OpinionRevealNegative",
+					"Style": "OpinionRevealNegative",
+					"Utterance": "Is there any conflict between you and someome else on the team?"
 				}],
 			"AgentDialogues": [
 				{
-					"Id": "8c96c967-e61a-4739-ae09-03f077c2e0e9",
-					"CurrentState": "Encouraged",
-					"NextState": "Encouraged",
-					"Meaning": "Encouraged",
-					"Style": "Encouraged",
-					"Utterance": "Message that says that they're encouraged!"
+					"Id": "fd0f54c7-38b2-436b-b8d9-ec5ddf50667b",
+					"CurrentState": "StatRevealBad",
+					"NextState": "-",
+					"Meaning": "StatRevealBad",
+					"Style": "StatRevealBad",
+					"Utterance": "My {0} is one of my weaknesses."
+				}, 
+				{
+					"Id": "7dfcf660-8739-4e61-89d7-439f4486239f",
+					"CurrentState": "StatRevealMiddle",
+					"NextState": "-",
+					"Meaning": "StatRevealMiddle",
+					"Style": "StatRevealMiddle",
+					"Utterance": "My {0} is fairly average."
+				}, 
+				{
+					"Id": "b2fac4a6-998a-4598-97b9-66a9e9d7d574",
+					"CurrentState": "StatRevealGood",
+					"NextState": "-",
+					"Meaning": "StatRevealGood",
+					"Style": "StatRevealGood",
+					"Utterance": "My {0} is one of my strongest areas."
+				}, 
+				{
+					"Id": "0009a7a2-b1fd-4ae0-8ffd-dd41f1d35b05",
+					"CurrentState": "RoleRevealGood",
+					"NextState": "-",
+					"Meaning": "RoleRevealGood",
+					"Style": "RoleRevealGood",
+					"Utterance": "{0} is one of my better roles, so feel free to consider me for that place."
+				}, 
+				{
+					"Id": "68cc7de6-5a97-4125-8039-5838b7850145",
+					"CurrentState": "InterviewIntro",
+					"NextState": "-",
+					"Meaning": "InterviewIntro",
+					"Style": "InterviewIntro",
+					"Utterance": "You wanted to see me?"
+				}, 
+				{
+					"Id": "ffdc8072-43e3-4128-b2cf-f69236938e7b",
+					"CurrentState": "RoleRevealBad",
+					"NextState": "-",
+					"Meaning": "RoleRevealBad",
+					"Style": "RoleRevealBad",
+					"Utterance": "You don't want to put me in as {0}, I won't do very well."
 				}]
 		},
 	"types": [

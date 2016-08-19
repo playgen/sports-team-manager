@@ -171,7 +171,7 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	public void RevealScore(int score)
 	{
-		//_scoreText.enabled = true;
-		//_scoreText.text = score.ToString();
+		_scoreText.enabled = true;
+		_scoreText.text = score.ToString();
 	}
 }

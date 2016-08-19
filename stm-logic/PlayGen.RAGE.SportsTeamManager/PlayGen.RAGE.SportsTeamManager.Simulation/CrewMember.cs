@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GAIPS.Rage;
@@ -17,6 +18,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int Wisdom { get; set; }
 		public int Willpower { get; set; }
 		public List<CrewOpinion> CrewOpinions { get; set; }
+
+		public int RevealedBody { get; set; }
+		public int RevealedCharisma { get; set; }
+		public int RevealedPerception { get; set; }
+		public int RevealedQuickness { get; set; }
+		public int RevealedWisdom { get; set; }
+		public int RevealedWillpower { get; set; }
+		public List<CrewOpinion> RevealedCrewOpinions { get; set; }
+
 		public event EventHandler OpinionChange = delegate { };
 		public int restCount { get; set; }
 
@@ -26,6 +36,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public CrewMember()
 		{
 			CrewOpinions = new List<CrewOpinion>();
+			RevealedCrewOpinions = new List<CrewOpinion>();
 		}
 
 		/// <summary>
@@ -37,6 +48,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Age = random.Next(18, 45);
 			Name = SelectRandomName(Gender, random);
 			CrewOpinions = new List<CrewOpinion>();
+			RevealedCrewOpinions = new List<CrewOpinion>();
 		}
 
 		/// <summary>
@@ -45,6 +57,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public CrewMember(IStorageProvider savedStorage, RolePlayCharacterAsset rpc) : base(savedStorage, rpc)
 		{
 			CrewOpinions = new List<CrewOpinion>();
+			RevealedCrewOpinions = new List<CrewOpinion>();
 		}
 
 		/// <summary>
@@ -101,6 +114,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				UpdateSingleBelief(String.Format("Opinion({0})", co.Person.Name.Replace(" ", "")), co.Opinion.ToString(), "SELF");
 			}
+			foreach (CrewOpinion co in RevealedCrewOpinions)
+			{
+				UpdateSingleBelief(String.Format("RevealedOpinion({0})", co.Person.Name.Replace(" ", "")), co.Opinion.ToString(), "SELF");
+			}
 		}
 
 		/// <summary>
@@ -141,6 +158,33 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			OpinionChange(this, new EventArgs());
 		}
 
+		public void AddOrUpdateRevealedOpinion(Person person, int change)
+		{
+			var cw = RevealedCrewOpinions.SingleOrDefault(op => op.Person == person);
+			if (cw != null)
+			{
+				cw.Opinion = change;
+			}
+			else
+			{
+				cw = new CrewOpinion
+				{
+					Person = person,
+					Opinion = change
+				};
+				RevealedCrewOpinions.Add(cw);
+			}
+			if (cw.Opinion < -5)
+			{
+				cw.Opinion = -5;
+			}
+			if (cw.Opinion > 5)
+			{
+				cw.Opinion = 5;
+			}
+			UpdateBeliefs();
+		}
+
 		/// <summary>
 		/// Get the saved stats, position, opinions and retirement status for this CrewMember
 		/// </summary>
@@ -152,6 +196,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Quickness = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Quickness)"));
 			Wisdom = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Wisdom)"));
 			Willpower = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Willpower)"));
+			RevealedBody = EmotionalAppraisal.BeliefExists("RevealedValue(Body)") ? int.Parse(EmotionalAppraisal.GetBeliefValue("RevealedValue(Body)")) : 0;
+			RevealedCharisma = EmotionalAppraisal.BeliefExists("RevealedValue(Charisma)") ? int.Parse(EmotionalAppraisal.GetBeliefValue("RevealedValue(Charisma)")) : 0;
+			RevealedPerception = EmotionalAppraisal.BeliefExists("RevealedValue(Perception)") ? int.Parse(EmotionalAppraisal.GetBeliefValue("RevealedValue(Perception)")) : 0;
+			RevealedQuickness = EmotionalAppraisal.BeliefExists("RevealedValue(Quickness)") ? int.Parse(EmotionalAppraisal.GetBeliefValue("RevealedValue(Quickness)")) : 0;
+			RevealedWisdom = EmotionalAppraisal.BeliefExists("RevealedValue(Wisdom)") ? int.Parse(EmotionalAppraisal.GetBeliefValue("RevealedValue(Wisdom)")) : 0;
+			RevealedWillpower = EmotionalAppraisal.BeliefExists("RevealedValue(Willpower)") ? int.Parse(EmotionalAppraisal.GetBeliefValue("RevealedValue(Willpower)")) : 0;
 			if (EmotionalAppraisal.GetBeliefValue("Value(Position)") != "null")
 			{
 				var boatPosition = boat.BoatPositions.SingleOrDefault(bp => bp.Position.Name == EmotionalAppraisal.GetBeliefValue("Value(Position)"));
@@ -170,6 +220,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (EmotionalAppraisal.BeliefExists(String.Format("Opinion({0})", boat.Manager.Name.Replace(" ", ""))))
 			{
 				AddOrUpdateOpinion(boat.Manager, int.Parse(EmotionalAppraisal.GetBeliefValue(String.Format("Opinion({0})", boat.Manager.Name.Replace(" ", "")))), true);
+			}
+			foreach (CrewMember member in boat.GetAllCrewMembers())
+			{
+				if (EmotionalAppraisal.BeliefExists(String.Format("RevealedOpinion({0})", member.Name.Replace(" ", ""))))
+				{
+					AddOrUpdateRevealedOpinion(member, int.Parse(EmotionalAppraisal.GetBeliefValue(String.Format("RevealedOpinion({0})", member.Name.Replace(" ", "")))));
+				}
+			}
+			if (EmotionalAppraisal.BeliefExists(String.Format("RevealedOpinion({0})", boat.Manager.Name.Replace(" ", ""))))
+			{
+				AddOrUpdateRevealedOpinion(boat.Manager, int.Parse(EmotionalAppraisal.GetBeliefValue(String.Format("RevealedOpinion({0})", boat.Manager.Name.Replace(" ", "")))));
 			}
 			if (EmotionalAppraisal.BeliefExists(String.Format("Race(Rest)")))
 			{
@@ -301,26 +362,102 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send an event to the EA/EDM to get the CrewMember's reaction and mood change as a result
 		/// </summary>
-		public string SendEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Boat boat)
+		public string SendEvent(IntegratedAuthoringToolAsset iat, string state, string style, Boat boat)
 		{
 			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			var eventString = String.Format("{0}({1})", selected.CurrentState, selected.Style);
+			var eventString = String.Format("{0}({1})", state, style);
 			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			string reply = null;
 			if (eventRpc != null)
 			{
 				var eventKey = eventRpc.ActionName.ToString();
-				var options = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey);
-				if (options != null && options.Count() > 0)
-				{
-					reply = RolePlayCharacter.CharacterName + ": " + options.OrderBy(o => Guid.NewGuid()).First().Utterance;
-				}
+				Random rand = new Random();
+				IEnumerable<DialogueStateActionDTO> dialogueOptions = Enumerable.Empty<DialogueStateActionDTO>();
 				switch (eventKey)
 				{
-					case "Encouraged":
-						AddOrUpdateOpinion(boat.Manager, 1);
+					case "StatReveal":
+						int randomStat = rand.Next(0, 6);
+						string statName = "";
+						int statValue = 0;
+						switch (randomStat)
+						{
+							case 0:
+								statName = "Body";
+								statValue = Body;
+								RevealedBody = Body;
+								break;
+							case 1:
+								statName = "Charisma";
+								statValue = Charisma;
+								RevealedCharisma = Charisma;
+								break;
+							case 2:
+								statName = "Perception";
+								statValue = Perception;
+								RevealedPerception = Perception;
+								break;
+							case 3:
+								statName = "Quickness";
+								statValue = Quickness;
+								RevealedQuickness = Quickness;
+								break;
+							case 4:
+								statName = "Willpower";
+								statValue = Willpower;
+								RevealedWillpower = Willpower;
+								break;
+							case 5:
+								statName = "Wisdom";
+								statValue = Wisdom;
+								RevealedWisdom = Wisdom;
+								break;
+						}
+						if (statValue <= 3)
+						{
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "Bad");
+						}
+						else if (statValue >= 8)
+						{
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "Good");
+						} else
+						{
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "Middle");
+						}
+						if (dialogueOptions != null && dialogueOptions.Count() > 0)
+						{
+							reply = String.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, statName);
+						}
+						UpdateSingleBelief("RevealedValue(" + statName + ")", statValue.ToString(), "SELF");
+						break;
+					case "RoleReveal":
+						Position pos = boat.BoatPositions[rand.Next(0, boat.BoatPositions.Count)].Position;
+						if (pos.GetPositionRating(this) <= 5)
+						{
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "Bad");
+						} else if (pos.GetPositionRating(this) >= 6)
+						{
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "Good");
+						}
+						if (dialogueOptions != null && dialogueOptions.Count() > 0)
+						{
+							reply = String.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pos.Name);
+						}
+						break;
+					case "OpinionRevealPositive":
+						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey);
+						if (dialogueOptions != null && dialogueOptions.Count() > 0)
+						{
+							reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+						}
+						break;
+					case "OpinionRevealNegative":
+						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey);
+						if (dialogueOptions != null && dialogueOptions.Count() > 0)
+						{
+							reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+						}
 						break;
 				}
 				RolePlayCharacter.ActionFinished(eventRpc);

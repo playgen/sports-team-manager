@@ -8,6 +8,7 @@ using System.Collections.Generic;
 public class TeamSelection : MonoBehaviour {
 	private GameManager _gameManager;
 	private int _confirmCount;
+	private int _eventCount;
 
 	void Start()
 	{
@@ -78,6 +79,7 @@ public class TeamSelection : MonoBehaviour {
 			{
 				_gameManager.ConfirmLineUp();
 				_confirmCount -= 5;
+				_eventCount = 10;
 			}
 			_gameManager.SaveLineUp();
 		}

@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class TeamSelectionUI : MonoBehaviour {
 
 	private TeamSelection _teamSelection;
-
 	[SerializeField]
 	private GameObject _boatContainer;
 	[SerializeField]
@@ -138,7 +137,6 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		var boat = _teamSelection.LoadCrew();
 		var crew = boat.GetAllCrewMembers();
-		var containerHeight = _crewContainer.GetComponent<RectTransform>().rect.height * 0.8f;
 		for (int i = 0; i < crew.Count; i++)
 		{
 			GameObject crewMember = Instantiate(_crewPrefab);
@@ -157,7 +155,8 @@ public class TeamSelectionUI : MonoBehaviour {
 		var boatContainer = CreateBoat(boat);
 		var teamScore = boat.BoatPositions.Sum(bp => bp.PositionScore);
 		var scoreText = boatContainer.transform.Find("Score").GetComponent<Text>();
-		scoreText.text = boat.IdealMatchScore.ToString();
+		scoreText.text = teamScore.ToString();
+		//scoreText.text = boat.IdealMatchScore.ToString();
 		for (int i = 0; i < boat.BoatPositions.Count; i++)
 		{
 			GameObject crewMember = Instantiate(_crewPrefab);
@@ -215,12 +214,12 @@ public class TeamSelectionUI : MonoBehaviour {
 		_crewPopUpText[1].text = "";
 		_crewPopUpText[2].text = "Age: " + crewMember.Age;
 		_crewPopUpText[3].text = "Role: " + _teamSelection.GetCrewMemberPosition(crewMember);
-		_crewPopUpBars[0].fillAmount = crewMember.Body * 0.1f;
-		_crewPopUpBars[1].fillAmount = crewMember.Charisma * 0.1f;
-		_crewPopUpBars[2].fillAmount = crewMember.Perception * 0.1f;
-		_crewPopUpBars[3].fillAmount = crewMember.Quickness * 0.1f;
-		_crewPopUpBars[4].fillAmount = crewMember.Willpower * 0.1f;
-		_crewPopUpBars[5].fillAmount = crewMember.Wisdom * 0.1f;
+		_crewPopUpBars[0].fillAmount = crewMember.RevealedBody * 0.1f;
+		_crewPopUpBars[1].fillAmount = crewMember.RevealedCharisma * 0.1f;
+		_crewPopUpBars[2].fillAmount = crewMember.RevealedPerception * 0.1f;
+		_crewPopUpBars[3].fillAmount = crewMember.RevealedQuickness * 0.1f;
+		_crewPopUpBars[4].fillAmount = crewMember.RevealedWillpower * 0.1f;
+		_crewPopUpBars[5].fillAmount = crewMember.RevealedWisdom * 0.1f;
 		_crewPopUpBars[6].fillAmount = -crewMember.GetMood() * 0.1f;
 		_crewPopUpBars[7].fillAmount = crewMember.GetMood() * 0.1f;
 		_currentDisplayedCrewMember = crewMember;
@@ -244,9 +243,9 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		var teamScore = _teamSelection.ConfirmLineUp();
 		var scoreText = _currentBoat.transform.Find("Score").GetComponent<Text>();
-		//scoreText.text = teamScore.ToString();
-		float correctCount = _teamSelection.IdealCheck();
-		scoreText.text = correctCount.ToString();
+		scoreText.text = teamScore.ToString();
+		//float correctCount = _teamSelection.IdealCheck();
+		//scoreText.text = correctCount.ToString();
 		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
 		{
 			var boatPosition = position.GetName();
@@ -285,5 +284,10 @@ public class TeamSelectionUI : MonoBehaviour {
 			Destroy(crewMember.gameObject);
 		}
 		CreateCrew();
+	}
+
+	public CrewMember GetCurrentCrewMember()
+	{
+		return _currentDisplayedCrewMember;
 	}
 }

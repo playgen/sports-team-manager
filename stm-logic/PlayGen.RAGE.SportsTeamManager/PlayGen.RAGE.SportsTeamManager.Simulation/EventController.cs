@@ -9,23 +9,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	{
 		public IntegratedAuthoringToolAsset IntegratedAuthoringTool { get; set; }
 
-		public DialogueStateActionDTO[] PreRaceEvents { get; set; }
 		public DialogueStateActionDTO[] MidRaceEvents { get; set; }
 		public DialogueStateActionDTO[] PostRaceEvents { get; set; }
-		public DialogueStateActionDTO[] SoloInterviewEvents { get; set; }
-		public DialogueStateActionDTO[] PairedInterviewEvents { get; set; }
-		public DialogueStateActionDTO[] TeamInterviewEvents { get; set; }
+		public DialogueStateActionDTO[] RecruitInterviewEvents { get; set; }
 
 		public EventController(IntegratedAuthoringToolAsset iat)
 		{
 			IntegratedAuthoringTool = iat;
 
-			PreRaceEvents = IntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, "PreRace").ToArray();
 			MidRaceEvents = IntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, "MidRace").ToArray();
 			PostRaceEvents = IntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, "PostRace").ToArray();
-			SoloInterviewEvents = IntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, "SoloInterview").ToArray();
-			PairedInterviewEvents = IntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, "PairedInterview").ToArray();
-			TeamInterviewEvents = IntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, "TeamInterview").ToArray();
+			RecruitInterviewEvents = IntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, "RecruitInterview").ToArray();
 		}
 
 		public List<string> SelectEvent(DialogueStateActionDTO selected, List<CrewMember> crewMembers, Boat boat)
@@ -33,7 +27,21 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			List<string> replies = new List<string>();
 			foreach (CrewMember member in crewMembers)
 			{
-				var reply = member.SendEvent(IntegratedAuthoringTool, selected, boat);
+				var reply = member.SendEvent(IntegratedAuthoringTool, selected.CurrentState, selected.Style, boat);
+				if (reply != null)
+				{
+					replies.Add(reply);
+				}
+			}
+			return replies;
+		}
+
+		public List<string> SelectEvent(string eventType, string eventName, List<CrewMember> crewMembers, Boat boat)
+		{
+			List<string> replies = new List<string>();
+			foreach (CrewMember member in crewMembers)
+			{
+				var reply = member.SendEvent(IntegratedAuthoringTool, eventType, eventName, boat);
 				if (reply != null)
 				{
 					replies.Add(reply);
