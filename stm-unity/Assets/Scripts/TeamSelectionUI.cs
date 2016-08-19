@@ -109,9 +109,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			GameObject positionObject = Instantiate(_positionPrefab);
 			positionObject.transform.SetParent(boatContainer.transform.Find("Position Container"), false);
-			var containerHeight = boatContainer.GetComponent<RectTransform>().rect.height * 0.8f;
-			//positionObject.GetComponent<RectTransform>().sizeDelta = new Vector2(containerHeight, containerHeight);
-			//positionObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(positionObject.GetComponent<RectTransform>().sizeDelta.x * (0.5f + ((i * 1.05f) - (position.Count * 0.5f))), 0);
 			positionObject.transform.Find("Name").GetComponent<Text>().text = position[i].Name;
 			positionObject.name = _positionPrefab.name;
 			positionObject.GetComponent<PositionUI>().SetUp(this, position[i]);
@@ -146,9 +143,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			GameObject crewMember = Instantiate(_crewPrefab);
 			crewMember.transform.SetParent(_crewContainer.transform, false);
-			//crewMember.GetComponent<RectTransform>().sizeDelta = new Vector2(containerHeight, containerHeight);
-			//crewMember.GetComponent<RectTransform>().anchoredPosition = new Vector2((containerHeight * 0.2f) + crewMember.GetComponent<RectTransform>().sizeDelta.x * (0.5f + (i * 1.05f)), 0);
-			//_crewContainer.GetComponent<RectTransform>().sizeDelta = new Vector2((containerHeight * 0.2f) + crewMember.GetComponent<RectTransform>().sizeDelta.x * (0.5f + ((i + 1) * 1.05f)), _crewContainer.GetComponent<RectTransform>().sizeDelta.y);
 			crewMember.transform.Find("Name").GetComponent<Text>().text = crew[i].Name;
 			crewMember.name = crew[i].Name;
 			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, this, crew[i]);

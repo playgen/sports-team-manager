@@ -62,6 +62,7 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	void BeginDrag()
 	{
+		transform.parent.GetComponent<HorizontalLayoutGroup>().enabled = false;
 		_beingDragged = true;
 		_beingClicked = true;
 		_dragPosition = Input.mousePosition - transform.position;
@@ -92,6 +93,7 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	void EndDrag()
 	{
+		transform.parent.GetComponent<HorizontalLayoutGroup>().enabled = true;
 		_beingDragged = false;
 		if (_beingClicked) {
 			ShowPopUp();
@@ -109,6 +111,10 @@ public class CrewMemberUI : MonoBehaviour {
 	{
 		_teamSelectionUI.DisplayCrewPopUp(_crewMember);
 		GetComponent<RectTransform>().position = _currentPositon;
+		if (transform.parent == _defaultParent)
+		{
+			Reset();
+		}
 	}
 
 	/// <summary>
