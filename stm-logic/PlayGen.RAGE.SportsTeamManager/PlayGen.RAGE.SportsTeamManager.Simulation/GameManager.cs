@@ -18,6 +18,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public EventController EventController { get; set; }
 
 		public List<Boat> LineUpHistory { get; set; }
+		public int ActionAllowance { get; set; } = 20;
 
 		/// <summary>
 		/// Create a new game
@@ -51,6 +52,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			manager.CreateFile(iat, templateStorage, storagePorvider, storageLocation);
 			manager.UpdateBeliefs("Manager");
 			manager.UpdateSingleBelief("Value(BoatType)", Boat.GetType().Name, "SELF");
+			manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
 			Boat.Manager = manager;
 			manager.SaveStatus();
 
@@ -248,6 +250,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					Person person = new Person(storagePorvider, rpc);
 					Boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + person.EmotionalAppraisal.GetBeliefValue("Value(BoatType)")));
+					ActionAllowance = int.Parse(person.EmotionalAppraisal.GetBeliefValue("Action(Allowance)"));
 					Boat.Name = iat.ScenarioName;
 					Boat.Manager = person;
 					continue;
@@ -352,6 +355,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void ConfirmLineUp()
 		{
 			Boat.ConfirmChanges();
+			ActionAllowance = 20;
+			Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
+			Boat.Manager.SaveStatus();
 		}
 
 		public void PostRaceRest()
@@ -367,20 +373,34 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send an event to the EventController that'll be triggered for all crew within the list
 		/// </summary>
-		public string[] SendBoatMembersEvent(DialogueStateActionDTO selected, List<CrewMember> members)
+		public string[] SendBoatMembersEvent(DialogueStateActionDTO selected, List<CrewMember> members, int cost)
 		{
-			var replies = EventController.SelectEvent(selected, members, Boat);
-			Boat.UpdateBoatScore();
-			Boat.GetIdealCrew();
-			return replies.ToArray();
+			if (cost <= ActionAllowance)
+			{
+				var replies = EventController.SelectEvent(selected, members, Boat);
+				Boat.UpdateBoatScore();
+				Boat.GetIdealCrew();
+				ActionAllowance -= cost;
+				Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
+				Boat.Manager.SaveStatus();
+				return replies.ToArray();
+			}
+			return new string[0];
 		}
 
-		public string[] SendBoatMembersEvent(string eventType, string eventName, List<CrewMember> members)
+		public string[] SendBoatMembersEvent(string eventType, string eventName, List<CrewMember> members, int cost)
 		{
-			var replies = EventController.SelectEvent(eventType, eventName, members, Boat);
-			Boat.UpdateBoatScore();
-			Boat.GetIdealCrew();
-			return replies.ToArray();
+			if (cost <= ActionAllowance)
+			{
+				var replies = EventController.SelectEvent(eventType, eventName, members, Boat);
+				Boat.UpdateBoatScore();
+				Boat.GetIdealCrew();
+				ActionAllowance -= cost;
+				Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
+				Boat.Manager.SaveStatus();
+				return replies.ToArray();
+			}
+			return new string[0];
 		}
 
 		/// <summary>

@@ -14,11 +14,15 @@ public class TeamSelectionUI : MonoBehaviour {
 	[SerializeField]
 	private GameObject _crewContainer;
 	[SerializeField]
+	private GameObject _opinionContainer;
+	[SerializeField]
 	private GameObject _boatPrefab;
 	[SerializeField]
 	private GameObject _positionPrefab;
 	[SerializeField]
 	private GameObject _crewPrefab;
+	[SerializeField]
+	private GameObject _opinionPrefab;
 	[SerializeField]
 	private Button _raceButton;
 	[SerializeField]
@@ -220,9 +224,45 @@ public class TeamSelectionUI : MonoBehaviour {
 		_crewPopUpBars[3].fillAmount = crewMember.RevealedSkills[CrewMemberSkill.Quickness] * 0.1f;
 		_crewPopUpBars[4].fillAmount = crewMember.RevealedSkills[CrewMemberSkill.Wisdom] * 0.1f;
 		_crewPopUpBars[5].fillAmount = crewMember.RevealedSkills[CrewMemberSkill.Willpower] * 0.1f;
-		_crewPopUpBars[6].fillAmount = -crewMember.GetMood() * 0.1f;
-		_crewPopUpBars[7].fillAmount = crewMember.GetMood() * 0.1f;
 		_currentDisplayedCrewMember = crewMember;
+		foreach (Transform child in _opinionContainer.transform)
+		{
+			Destroy(child.gameObject);
+		}
+		foreach (CrewOpinion opinion in crewMember.CrewOpinions)
+		{
+			GameObject knownOpinion = Instantiate(_opinionPrefab);
+			knownOpinion.transform.SetParent(_opinionContainer.transform, false);
+			knownOpinion.transform.Find("Member/Name").GetComponent<Text>().text = opinion.Person.Name;
+			CrewMember opinionMember = _teamSelection.PersonToCrewMember(opinion.Person);
+			if (opinionMember != null)
+			{
+				knownOpinion.transform.Find("Member").GetComponent<Button>().onClick.AddListener(delegate { DisplayCrewPopUp(opinionMember); });
+			} else
+			{
+				knownOpinion.transform.Find("Member").GetComponent<Button>().interactable = false;
+			}
+			Image firstLight = knownOpinion.transform.Find("First").GetComponent<Image>();
+			Image secondLight = knownOpinion.transform.Find("Second").GetComponent<Image>();
+			firstLight.color = Color.yellow;
+			secondLight.color = new Color(0, 0, 0, 0);
+			if (opinion.Opinion > 1)
+			{
+				firstLight.color = Color.green;
+				if (opinion.Opinion > 3)
+				{
+					secondLight.color = Color.green;
+				}
+			}
+			if (opinion.Opinion < -1)
+			{
+				firstLight.color = Color.red;
+				if (opinion.Opinion < -3)
+				{
+					secondLight.color = Color.red;
+				}
+			}
+		}
 	}
 
 	/// <summary>
@@ -289,15 +329,5 @@ public class TeamSelectionUI : MonoBehaviour {
 	public CrewMember GetCurrentCrewMember()
 	{
 		return _currentDisplayedCrewMember;
-	}
-
-	public int QuestionAllownace()
-	{
-		return _teamSelection.GetEventCount();
-	}
-
-	public void QuestionAsked(int cost)
-	{
-		_teamSelection.UpdateEventCount(cost);
 	}
 }

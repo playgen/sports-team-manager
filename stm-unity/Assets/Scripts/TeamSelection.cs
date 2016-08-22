@@ -8,12 +8,10 @@ using System.Collections.Generic;
 public class TeamSelection : MonoBehaviour {
 	private GameManager _gameManager;
 	private int _confirmCount;
-	public int _eventCount;
 
 	void Start()
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
-		_eventCount = 10;
 	}
 
 	/// <summary>
@@ -80,7 +78,6 @@ public class TeamSelection : MonoBehaviour {
 			{
 				_gameManager.ConfirmLineUp();
 				_confirmCount -= 5;
-				_eventCount = 10;
 			}
 			_gameManager.SaveLineUp();
 		}
@@ -134,13 +131,8 @@ public class TeamSelection : MonoBehaviour {
 		_gameManager.Boat.RetireCrew(crewMember);
 	}
 
-	public int GetEventCount()
+	public CrewMember PersonToCrewMember(Person person)
 	{
-		return _eventCount;
-	}
-
-	public void UpdateEventCount(int cost)
-	{
-		_eventCount -= cost;
+		return _gameManager.Boat.GetAllCrewMembers().Where(cm => cm.Name == person.Name).FirstOrDefault();
 	}
 }
