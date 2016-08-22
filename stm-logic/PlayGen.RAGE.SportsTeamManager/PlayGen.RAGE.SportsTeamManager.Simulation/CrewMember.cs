@@ -9,6 +9,7 @@ using RolePlayCharacter;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	//Decision Feedback functionality to adjust opinions/mood based on placement currently commented out
 	public class CrewMember : Person
 	{
 		public int Body { get; set; }
@@ -278,7 +279,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void DecisionFeedback(Boat boat)
 		{
 			SaveStatus();
-			var spacelessName = EmotionalAppraisal.Perspective;
+			/*var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
 			int positionScore = currentPosition != null ? currentPosition.Position.GetPositionRating(this) : 0;
@@ -344,7 +345,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					RolePlayCharacter.Update();
 				}
 			}
-			SaveStatus();
+			SaveStatus();*/
 			LoadBeliefs(boat);
 		}
 
@@ -427,7 +428,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						if (dialogueOptions != null && dialogueOptions.Count() > 0)
 						{
-							reply = String.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, statName);
+							reply = String.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, statName.ToLower());
 						}
 						UpdateSingleBelief("RevealedValue(" + statName + ")", statValue.ToString(), "SELF");
 						break;
@@ -446,17 +447,58 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						break;
 					case "OpinionRevealPositive":
-						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey);
-						if (dialogueOptions != null && dialogueOptions.Count() > 0)
+						var opinionsPositive = CrewOpinions.Where(co => co.Opinion > 1);
+						var pickedOpinionPositive = opinionsPositive.OrderBy(o => Guid.NewGuid()).FirstOrDefault();
+						if (pickedOpinionPositive != null) {
+							if (pickedOpinionPositive.Opinion > 3)
+							{
+								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "High");
+							}
+							else
+							{
+								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey);
+							}
+							if (dialogueOptions != null && dialogueOptions.Count() > 0)
+							{
+								reply = String.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionPositive.Person.Name);
+							}
+							UpdateSingleBelief("RevealedOpinion(" + pickedOpinionPositive.Person.Name.Replace(" ", "") + ")", pickedOpinionPositive.Opinion.ToString(), "SELF");
+						}
+						else
 						{
-							reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "None");
+							if (dialogueOptions != null && dialogueOptions.Count() > 0)
+							{
+								reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+							}
 						}
 						break;
 					case "OpinionRevealNegative":
-						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey);
-						if (dialogueOptions != null && dialogueOptions.Count() > 0)
+						var opinionsNegative = CrewOpinions.Where(co => co.Opinion < -1);
+						var pickedOpinionNegative = opinionsNegative.OrderBy(o => Guid.NewGuid()).FirstOrDefault();
+						if (pickedOpinionNegative != null)
 						{
-							reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+							if (pickedOpinionNegative.Opinion < -3)
+							{
+								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "High");
+							}
+							else
+							{
+								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey);
+							}
+							if (dialogueOptions != null && dialogueOptions.Count() > 0)
+							{
+								reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+							}
+							UpdateSingleBelief("RevealedOpinion(" + pickedOpinionNegative.Person.Name.Replace(" ", "") + ")", pickedOpinionNegative.Opinion.ToString(), "SELF");
+						}
+						else
+						{
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "None");
+							if (dialogueOptions != null && dialogueOptions.Count() > 0)
+							{
+								reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+							}
 						}
 						break;
 				}

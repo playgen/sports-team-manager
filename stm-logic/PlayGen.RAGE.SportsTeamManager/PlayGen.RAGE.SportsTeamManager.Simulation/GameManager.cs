@@ -11,6 +11,7 @@ using IntegratedAuthoringTool.DTOs;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	//Two starting crew members and random starting opinions currently commented out
 	public class GameManager
 	{
 		public Boat Boat { get; set; }
@@ -57,7 +58,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				member.CreateFile(iat, templateStorage, storagePorvider, storageLocation);
 				Boat.AddCrew(member);
-				if (initialCrew)
+				/*if (initialCrew)
 				{
 					foreach (CrewMember otherMember in crew)
 					{
@@ -67,7 +68,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						member.AddOrUpdateOpinion(Boat.Manager, rand.Next(-3, 4));
 					}
-				}
+				}*/
 				member.UpdateBeliefs("null");
 				member.SaveStatus();
 			}
@@ -121,7 +122,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Wisdom = random.Next(4, 8),
 				Willpower = random.Next(4, 8)
 			},
-			new CrewMember (random)
+			/*new CrewMember (random)
 			{
 				Body = random.Next(4, 8),
 				Charisma = random.Next(4, 8),
@@ -129,7 +130,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Quickness = random.Next(4, 8),
 				Wisdom = random.Next(4, 8),
 				Willpower = random.Next(4, 8)
-			},
+			},*/
 			new CrewMember (random)
 			{
 				Body = random.Next(6, 10),
@@ -148,7 +149,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Wisdom = random.Next(6, 10),
 				Willpower = random.Next(6, 10)
 			},
-			new CrewMember (random)
+			/*new CrewMember (random)
 			{
 				Body = random.Next(2, 5),
 				Charisma = random.Next(2, 5),
@@ -156,7 +157,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Quickness = random.Next(2, 5),
 				Wisdom = random.Next(8, 11),
 				Willpower = random.Next(8, 11)
-			}
+			}*/
 			};
 			foreach (var crewMember in crew)
 			{
@@ -332,6 +333,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void PostRaceRest()
 		{
 			Boat.PostRaceRest();
+		}
+
+		public string[] GetEventStrings(string eventKey)
+		{
+			return EventController.GetEventStrings(eventKey);
 		}
 
 		/// <summary>

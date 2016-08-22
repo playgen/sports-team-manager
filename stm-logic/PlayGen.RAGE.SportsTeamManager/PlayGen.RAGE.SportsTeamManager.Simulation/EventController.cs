@@ -22,6 +22,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RecruitInterviewEvents = IntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, "RecruitInterview").ToArray();
 		}
 
+		public string[] GetEventStrings(string eventKey)
+		{
+			IEnumerable<DialogueStateActionDTO> dialogueOptions = IntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey);
+			return dialogueOptions.Select(dia => dia.Utterance).ToArray();
+		}
+
 		public List<string> SelectEvent(DialogueStateActionDTO selected, List<CrewMember> crewMembers, Boat boat)
 		{
 			List<string> replies = new List<string>();

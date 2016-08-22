@@ -5,32 +5,32 @@
 			"ScenarioName": "Template",
 			"PlayerDialogues": [
 				{
-					"Id": "5056350d-38dd-4725-8ca2-d02644ca0a3d",
-					"CurrentState": "SoloInterview",
+					"Id": "0373149f-a1d3-43aa-9909-2d7bc4c37087",
+					"CurrentState": "RoleReveal",
 					"NextState": "-",
 					"Meaning": "RoleReveal",
 					"Style": "RoleReveal",
 					"Utterance": "What role do you think you can do well in?"
 				}, 
 				{
-					"Id": "2551ad0d-04f5-4232-9e84-26366a2bfa02",
-					"CurrentState": "SoloInterview",
+					"Id": "b6aec58f-d1b1-42a1-bfa9-b4ff8176f41b",
+					"CurrentState": "StatReveal",
 					"NextState": "-",
 					"Meaning": "StatReveal",
 					"Style": "StatReveal",
 					"Utterance": "Tell me more about your skillset"
 				}, 
 				{
-					"Id": "b1243843-ab00-47eb-9595-397fb1238dcf",
-					"CurrentState": "SoloInterview",
+					"Id": "34c51647-25ef-487c-925d-dff2b90c2d61",
+					"CurrentState": "OpinionRevealPositive",
 					"NextState": "-",
 					"Meaning": "OpinionRevealPositive",
 					"Style": "OpinionRevealPositive",
 					"Utterance": "Are you getting on well with any of your teammates?"
 				}, 
 				{
-					"Id": "894b09d7-a422-4cff-a2d1-54df14a993e2",
-					"CurrentState": "SoloInterview",
+					"Id": "029332c5-8739-4612-a16c-0c6a62892158",
+					"CurrentState": "OpinionRevealNegative",
 					"NextState": "-",
 					"Meaning": "OpinionRevealNegative",
 					"Style": "OpinionRevealNegative",
@@ -84,6 +84,54 @@
 					"Meaning": "RoleRevealBad",
 					"Style": "RoleRevealBad",
 					"Utterance": "You don't want to put me in as {0}, I won't do very well."
+				}, 
+				{
+					"Id": "8c071a09-00b0-42b1-a7b2-15e4204a8794",
+					"CurrentState": "OpinionRevealPositive",
+					"NextState": "-",
+					"Meaning": "OpinionRevealPositive",
+					"Style": "OpinionRevealPositive",
+					"Utterance": "I somewhat get along with {0}."
+				}, 
+				{
+					"Id": "396be72b-0a13-452c-b898-2b7d39bc3f5d",
+					"CurrentState": "OpinionRevealNegative",
+					"NextState": "-",
+					"Meaning": "OpinionRevealNegative",
+					"Style": "OpinionRevealNegative",
+					"Utterance": "Myself and {0} aren't on the best of terms."
+				}, 
+				{
+					"Id": "ec159e53-1e48-437a-95ed-4a56186b7727",
+					"CurrentState": "OpinionRevealPositiveHigh",
+					"NextState": "-",
+					"Meaning": "OpinionRevealPositiveHigh",
+					"Style": "OpinionRevealPositiveHigh",
+					"Utterance": "I'm good friends with {0}."
+				}, 
+				{
+					"Id": "518d1fe5-06e6-46ab-aa1f-72d9b8743c17",
+					"CurrentState": "OpinionRevealNegativeHigh",
+					"NextState": "-",
+					"Meaning": "OpinionRevealNegativeHigh",
+					"Style": "OpinionRevealNegativeHigh",
+					"Utterance": "I don't get along with {0} at all."
+				}, 
+				{
+					"Id": "91143cfd-c98a-4f7c-8892-fd7962102dee",
+					"CurrentState": "OpinionRevealNegativeNone",
+					"NextState": "-",
+					"Meaning": "OpinionRevealNegativeNone",
+					"Style": "OpinionRevealNegativeNone",
+					"Utterance": "None come to mind, thankfully."
+				}, 
+				{
+					"Id": "950c15fc-1669-4f5a-9e94-e42e0764a3a8",
+					"CurrentState": "OpinionRevealPositiveNone",
+					"NextState": "-",
+					"Meaning": "OpinionRevealPositiveNone",
+					"Style": "OpinionRevealPositiveNone",
+					"Utterance": "Nobody comes to mind."
 				}]
 		},
 	"types": [

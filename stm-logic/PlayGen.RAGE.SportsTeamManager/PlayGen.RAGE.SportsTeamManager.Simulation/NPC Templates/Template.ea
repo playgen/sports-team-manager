@@ -111,15 +111,6 @@
 								},
 							"Desirability": -1,
 							"Praiseworthiness": -1
-						}, 
-						{
-							"EventName": "Event(Action-Start, *, PreRace(Encouraging), Self)",
-							"Conditions":
-								{
-									"Set": []
-								},
-							"Desirability": 2,
-							"Praiseworthiness": 1
 						}]
 				}
 		}],
