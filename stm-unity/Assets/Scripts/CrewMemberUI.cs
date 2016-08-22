@@ -62,11 +62,15 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	void BeginDrag()
 	{
-		transform.parent.GetComponent<HorizontalLayoutGroup>().enabled = false;
+		if (transform.parent.GetComponent<HorizontalLayoutGroup>())
+		{
+			transform.parent.GetComponent<HorizontalLayoutGroup>().enabled = false;
+		}
 		_beingDragged = true;
 		_beingClicked = true;
 		_dragPosition = Input.mousePosition - transform.position;
 		transform.SetParent(_defaultParent, false);
+		transform.position = (Vector2)Input.mousePosition - _dragPosition;
 		transform.SetAsLastSibling();
 	}
 
@@ -93,13 +97,14 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	void EndDrag()
 	{
-		transform.parent.GetComponent<HorizontalLayoutGroup>().enabled = true;
+		if (transform.parent.GetComponent<HorizontalLayoutGroup>())
+		{
+			transform.parent.GetComponent<HorizontalLayoutGroup>().enabled = true;
+		}
 		_beingDragged = false;
+		CheckPlacement();
 		if (_beingClicked) {
 			ShowPopUp();
-		} else
-		{
-			CheckPlacement();
 		}
 		_beingClicked = false;
 	}
@@ -110,11 +115,7 @@ public class CrewMemberUI : MonoBehaviour {
 	void ShowPopUp()
 	{
 		_teamSelectionUI.DisplayCrewPopUp(_crewMember);
-		GetComponent<RectTransform>().position = _currentPositon;
-		if (transform.parent == _defaultParent)
-		{
-			Reset();
-		}
+		
 	}
 
 	/// <summary>
@@ -134,7 +135,7 @@ public class CrewMemberUI : MonoBehaviour {
 				transform.SetParent(positionTransform, false);
 				GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
 				GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);
-				_currentPositon = positionTransform.position;
+				_currentPositon = transform.position;
 				result.gameObject.GetComponent<PositionUI>().LinkCrew(this);
 				_teamSelection.AssignCrew(_crewMember.Name, result.gameObject.GetComponent<PositionUI>().GetName());
 				placed = true;

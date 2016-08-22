@@ -9,28 +9,18 @@ public class MemberMeeting : MonoBehaviour
 {
 	private GameManager _gameManager;
 
-	void Start()
+	void Awake()
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 	}
 
-	public string[] AskStatQuestion(CrewMember crewMember)
+	public string[] GetEventText(string eventKey)
 	{
-		return _gameManager.SendBoatMembersEvent("SoloInterview", "StatReveal", new List<CrewMember>() { crewMember });
+		return _gameManager.GetEventStrings(eventKey);
 	}
 
-	public string[] AskRoleQuestion(CrewMember crewMember)
+	public string[] AskQuestion(string context, string eventKey, CrewMember crewMember)
 	{
-		return _gameManager.SendBoatMembersEvent("SoloInterview", "RoleReveal", new List<CrewMember>() { crewMember });
-	}
-
-	public string[] AskOpinionPositiveQuestion(CrewMember crewMember)
-	{
-		return new string[0];
-	}
-
-	public string[] AskOpinionNegativeQuestion(CrewMember crewMember)
-	{
-		return new string[0];
+		return _gameManager.SendBoatMembersEvent(context, eventKey, new List<CrewMember>() { crewMember });
 	}
 }

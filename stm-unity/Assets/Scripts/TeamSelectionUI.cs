@@ -290,4 +290,14 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		return _currentDisplayedCrewMember;
 	}
+
+	public int QuestionAllownace()
+	{
+		return _teamSelection.GetEventCount();
+	}
+
+	public void QuestionAsked(int cost)
+	{
+		_teamSelection.UpdateEventCount(cost);
+	}
 }
