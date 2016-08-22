@@ -16,12 +16,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					Position = new Position
 					{
 						Name = "Skipper",
-						RequiresBody = false,
-						RequiresCharisma = true,
-						RequiresPerception = false,
-						RequiresQuickness = false,
-						RequiresWillpower = true,
-						RequiresWisdom = true
+						RequiredSkills = new List<CrewMemberSkill>
+						{
+							CrewMemberSkill.Charisma,
+							CrewMemberSkill.Willpower,
+							CrewMemberSkill.Wisdom
+						}
 					}
 				},
 				new BoatPosition
@@ -29,12 +29,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					Position = new Position
 					{
 						Name = "Navigator",
-						RequiresBody = false,
-						RequiresCharisma = false,
-						RequiresPerception = true,
-						RequiresQuickness = false,
-						RequiresWillpower = false,
-						RequiresWisdom = true
+						RequiredSkills = new List<CrewMemberSkill>
+						{
+							CrewMemberSkill.Perception,
+							CrewMemberSkill.Wisdom
+						}
 					}
 				},
 				new BoatPosition
@@ -42,12 +41,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					Position = new Position
 					{
 						Name = "Mid-Bowman",
-						RequiresBody = true,
-						RequiresCharisma = false,
-						RequiresPerception = false,
-						RequiresQuickness = true,
-						RequiresWillpower = true,
-						RequiresWisdom = false
+						RequiredSkills = new List<CrewMemberSkill>
+						{
+							CrewMemberSkill.Body,
+							CrewMemberSkill.Quickness,
+							CrewMemberSkill.Willpower
+						}
 					}
 				}
 			};

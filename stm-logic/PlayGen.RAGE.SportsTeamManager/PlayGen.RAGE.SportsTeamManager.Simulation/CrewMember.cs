@@ -12,22 +12,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	//Decision Feedback functionality to adjust opinions/mood based on placement currently commented out
 	public class CrewMember : Person
 	{
-		public int Body { get; set; }
-		public int Charisma { get; set; }
-		public int Perception { get; set; }
-		public int Quickness { get; set; }
-		public int Wisdom { get; set; }
-		public int Willpower { get; set; }
+		public Dictionary<CrewMemberSkill, int> Skills { get; set; }
+		public Dictionary<CrewMemberSkill, int> RevealedSkills { get; set; }
 		public List<CrewOpinion> CrewOpinions { get; set; }
-
-		public int RevealedBody { get; set; }
-		public int RevealedCharisma { get; set; }
-		public int RevealedPerception { get; set; }
-		public int RevealedQuickness { get; set; }
-		public int RevealedWisdom { get; set; }
-		public int RevealedWillpower { get; set; }
 		public List<CrewOpinion> RevealedCrewOpinions { get; set; }
-
 		public event EventHandler OpinionChange = delegate { };
 		public int restCount { get; set; }
 
@@ -36,6 +24,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public CrewMember()
 		{
+			RevealedSkills = new Dictionary<CrewMemberSkill, int>();
+			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
+			{
+				RevealedSkills.Add(skill, 0);
+			}
 			CrewOpinions = new List<CrewOpinion>();
 			RevealedCrewOpinions = new List<CrewOpinion>();
 		}
@@ -48,6 +41,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Gender = SelectGender(random);
 			Age = random.Next(18, 45);
 			Name = SelectRandomName(Gender, random);
+			RevealedSkills = new Dictionary<CrewMemberSkill, int>();
+			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
+			{
+				RevealedSkills.Add(skill, 0);
+			}
 			CrewOpinions = new List<CrewOpinion>();
 			RevealedCrewOpinions = new List<CrewOpinion>();
 		}
@@ -57,6 +55,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public CrewMember(IStorageProvider savedStorage, RolePlayCharacterAsset rpc) : base(savedStorage, rpc)
 		{
+			Skills = new Dictionary<CrewMemberSkill, int>();
+			RevealedSkills = new Dictionary<CrewMemberSkill, int>();
+			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
+			{
+				Skills.Add(skill, 0);
+				RevealedSkills.Add(skill, 0);
+			}
 			CrewOpinions = new List<CrewOpinion>();
 			RevealedCrewOpinions = new List<CrewOpinion>();
 		}
@@ -105,12 +110,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public override void UpdateBeliefs(string position = null)
 		{
 			base.UpdateBeliefs(position);
-			UpdateSingleBelief("Value(Body)", Body.ToString(), "SELF");
-			UpdateSingleBelief("Value(Charisma)", Charisma.ToString(), "SELF");
-			UpdateSingleBelief("Value(Perception)", Perception.ToString(), "SELF");
-			UpdateSingleBelief("Value(Quickness)", Quickness.ToString(), "SELF");
-			UpdateSingleBelief("Value(Willpower)", Willpower.ToString(), "SELF");
-			UpdateSingleBelief("Value(Wisdom)", Wisdom.ToString(), "SELF");
+			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
+			{
+				UpdateSingleBelief("Value(" + skill + ")", Skills[skill].ToString(), "SELF");
+			}
 			foreach (CrewOpinion co in CrewOpinions)
 			{
 				UpdateSingleBelief(String.Format("Opinion({0})", co.Person.Name.Replace(" ", "")), co.Opinion.ToString(), "SELF");
@@ -191,18 +194,26 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void LoadBeliefs(Boat boat)
 		{
-			Body = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Body)"));
-			Charisma = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Charisma)"));
-			Perception = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Perception)"));
-			Quickness = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Quickness)"));
-			Wisdom = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Wisdom)"));
-			Willpower = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(Willpower)"));
-			RevealedBody = EmotionalAppraisal.BeliefExists("RevealedValue(Body)") ? int.Parse(EmotionalAppraisal.GetBeliefValue("RevealedValue(Body)")) : 0;
-			RevealedCharisma = EmotionalAppraisal.BeliefExists("RevealedValue(Charisma)") ? int.Parse(EmotionalAppraisal.GetBeliefValue("RevealedValue(Charisma)")) : 0;
-			RevealedPerception = EmotionalAppraisal.BeliefExists("RevealedValue(Perception)") ? int.Parse(EmotionalAppraisal.GetBeliefValue("RevealedValue(Perception)")) : 0;
-			RevealedQuickness = EmotionalAppraisal.BeliefExists("RevealedValue(Quickness)") ? int.Parse(EmotionalAppraisal.GetBeliefValue("RevealedValue(Quickness)")) : 0;
-			RevealedWisdom = EmotionalAppraisal.BeliefExists("RevealedValue(Wisdom)") ? int.Parse(EmotionalAppraisal.GetBeliefValue("RevealedValue(Wisdom)")) : 0;
-			RevealedWillpower = EmotionalAppraisal.BeliefExists("RevealedValue(Willpower)") ? int.Parse(EmotionalAppraisal.GetBeliefValue("RevealedValue(Willpower)")) : 0;
+			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
+			{
+				if (Skills.ContainsKey(skill))
+				{
+					Skills[skill] = int.Parse(EmotionalAppraisal.GetBeliefValue("Value(" + skill + ")"));
+				} else
+				{
+					Skills.Add(skill, 0);
+				}
+				if (RevealedSkills.ContainsKey(skill))
+				{
+					if (EmotionalAppraisal.BeliefExists("RevealedValue(" + skill + ")"))
+					{
+						RevealedSkills[skill] = int.Parse(EmotionalAppraisal.GetBeliefValue("RevealedValue(" + skill + ")"));
+					}
+				}
+				else {
+					RevealedSkills.Add(skill, 0);
+				}
+			}
 			if (EmotionalAppraisal.GetBeliefValue("Value(Position)") != "null")
 			{
 				var boatPosition = boat.BoatPositions.SingleOrDefault(bp => bp.Position.Name == EmotionalAppraisal.GetBeliefValue("Value(Position)"));
@@ -379,42 +390,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				switch (eventKey)
 				{
 					case "StatReveal":
-						int randomStat = rand.Next(0, 6);
-						string statName = "";
-						int statValue = 0;
-						switch (randomStat)
-						{
-							case 0:
-								statName = "Body";
-								statValue = Body;
-								RevealedBody = Body;
-								break;
-							case 1:
-								statName = "Charisma";
-								statValue = Charisma;
-								RevealedCharisma = Charisma;
-								break;
-							case 2:
-								statName = "Perception";
-								statValue = Perception;
-								RevealedPerception = Perception;
-								break;
-							case 3:
-								statName = "Quickness";
-								statValue = Quickness;
-								RevealedQuickness = Quickness;
-								break;
-							case 4:
-								statName = "Willpower";
-								statValue = Willpower;
-								RevealedWillpower = Willpower;
-								break;
-							case 5:
-								statName = "Wisdom";
-								statValue = Wisdom;
-								RevealedWisdom = Wisdom;
-								break;
-						}
+						int randomStat = rand.Next(0, Skills.Count);
+						string statName = ((CrewMemberSkill)randomStat).ToString();
+						int statValue = Skills[(CrewMemberSkill)randomStat];
+						RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
 						if (statValue <= 3)
 						{
 							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "Bad");

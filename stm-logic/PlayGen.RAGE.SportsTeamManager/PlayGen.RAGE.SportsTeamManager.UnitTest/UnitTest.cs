@@ -465,60 +465,75 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				Name = "Skippy Skip",
 				Age = 35,
 				Gender = "Male",
-				Body = 2,
-				Charisma = 10,
-				Perception = 2,
-				Quickness = 2,
-				Wisdom = 10,
-				Willpower = 10
+				Skills = new Dictionary<CrewMemberSkill, int>()
+				{
+					{CrewMemberSkill.Body, 2},
+					{CrewMemberSkill.Charisma, 10},
+					{CrewMemberSkill.Perception, 2},
+					{CrewMemberSkill.Quickness, 2},
+					{CrewMemberSkill.Wisdom, 10},
+					{CrewMemberSkill.Willpower, 10}
+				}
 			},
 			new CrewMember
 			{
 				Name = "Wise Nav",
 				Age = 28,
 				Gender = "Male",
-				Body = 2,
-				Charisma = 2,
-				Perception = 10,
-				Quickness = 2,
-				Wisdom = 10,
-				Willpower = 2
+				Skills = new Dictionary<CrewMemberSkill, int>()
+				{
+					{CrewMemberSkill.Body, 2},
+					{CrewMemberSkill.Charisma, 2},
+					{CrewMemberSkill.Perception, 10},
+					{CrewMemberSkill.Quickness, 2},
+					{CrewMemberSkill.Wisdom, 10},
+					{CrewMemberSkill.Willpower, 2}
+				}
 			},
 			new CrewMember
 			{
 				Name = "Dim Wobnam",
 				Age = 19,
 				Gender = "Male",
-				Body = 10,
-				Charisma = 2,
-				Perception = 2,
-				Quickness = 10,
-				Wisdom = 2,
-				Willpower = 10
+				Skills = new Dictionary<CrewMemberSkill, int>()
+				{
+					{CrewMemberSkill.Body, 10},
+					{CrewMemberSkill.Charisma, 2},
+					{CrewMemberSkill.Perception, 2},
+					{CrewMemberSkill.Quickness, 10},
+					{CrewMemberSkill.Wisdom, 2},
+					{CrewMemberSkill.Willpower, 10}
+				}
 			},
 			new CrewMember
 			{
 				Name = "Rav Age",
 				Age = 25,
 				Gender = "Male",
-				Body = 5,
-				Charisma = 5,
-				Perception = 5,
-				Quickness = 5,
-				Wisdom = 5,
-				Willpower = 5
+				Skills = new Dictionary<CrewMemberSkill, int>()
+				{
+					{CrewMemberSkill.Body, 5},
+					{CrewMemberSkill.Charisma, 5},
+					{CrewMemberSkill.Perception, 5},
+					{CrewMemberSkill.Quickness, 5},
+					{CrewMemberSkill.Wisdom, 5},
+					{CrewMemberSkill.Willpower, 5}
+				}
 			},
 			new CrewMember
 			{
 				Name = "Nick Pony",
 				Age = 32,
 				Gender = "Male",
-				Body = 7,
-				Charisma = 7,
-				Perception = 7,
-				Quickness = 3,
-				Wisdom = 3,
-				Willpower = 3
+				Skills = new Dictionary<CrewMemberSkill, int>()
+				{
+					{CrewMemberSkill.Body, 7},
+					{CrewMemberSkill.Charisma, 7},
+					{CrewMemberSkill.Perception, 7},
+					{CrewMemberSkill.Quickness, 3},
+					{CrewMemberSkill.Wisdom, 3},
+					{CrewMemberSkill.Willpower, 3}
+				}
 			}
 			};
 			return crew.ToList();

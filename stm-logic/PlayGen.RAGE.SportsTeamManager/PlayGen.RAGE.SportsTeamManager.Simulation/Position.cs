@@ -1,16 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	public class Position
 	{
 		public string Name { get; set; }
-		public bool RequiresBody { get; set; }
-		public bool RequiresCharisma { get; set; }
-		public bool RequiresPerception { get; set; }
-		public bool RequiresQuickness { get; set; }
-		public bool RequiresWisdom { get; set; }
-		public bool RequiresWillpower { get; set; }
+		public List<CrewMemberSkill> RequiredSkills { get; set; }
 
 		/// <summary>
 		/// Get a rating for this CrewMember in this Position
@@ -19,34 +15,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			int positionCount = 0;
 			int crewScore = 0;
-			if (RequiresBody)
+			foreach (CrewMemberSkill skill in RequiredSkills)
 			{
-				crewScore += crewMember.Body;
-				positionCount++;
-			}
-			if (RequiresCharisma)
-			{
-				crewScore += crewMember.Charisma;
-				positionCount++;
-			}
-			if (RequiresPerception)
-			{
-				crewScore += crewMember.Perception;
-				positionCount++;
-			}
-			if (RequiresQuickness)
-			{
-				crewScore += crewMember.Quickness;
-				positionCount++;
-			}
-			if (RequiresWillpower)
-			{
-				crewScore += crewMember.Willpower;
-				positionCount++;
-			}
-			if (RequiresWisdom)
-			{
-				crewScore += crewMember.Wisdom;
+				crewScore += crewMember.Skills[skill];
 				positionCount++;
 			}
 

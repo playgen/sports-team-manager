@@ -88,75 +88,99 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			CrewMember[] crew = {
 			new CrewMember (random)
 			{
-				Body = random.Next(1, 4),
-				Perception = random.Next(1, 4),
-				Quickness = random.Next(1, 4),
-				Charisma = random.Next(7, 11),
-				Wisdom = random.Next(7, 11),
-				Willpower = random.Next(7, 11)
+				Skills = new Dictionary<CrewMemberSkill, int>()
+				{
+					{CrewMemberSkill.Body, random.Next(1, 4)},
+					{CrewMemberSkill.Perception, random.Next(1, 4)},
+					{CrewMemberSkill.Quickness, random.Next(1, 4)},
+					{CrewMemberSkill.Charisma, random.Next(7, 11)},
+					{CrewMemberSkill.Wisdom, random.Next(7, 11)},
+					{CrewMemberSkill.Willpower, random.Next(7, 11)}
+				},
 			},
 			new CrewMember (random)
 			{
-				Body = random.Next(2, 6),
-				Charisma = random.Next(2, 6),
-				Quickness = random.Next(2, 6),
-				Willpower = random.Next(2, 6),
-				Perception = random.Next(8, 11),
-				Wisdom = random.Next(8, 11)
+				Skills = new Dictionary<CrewMemberSkill, int>()
+				{
+					{CrewMemberSkill.Body, random.Next(2, 6)},
+					{CrewMemberSkill.Charisma, random.Next(2, 6)},
+					{CrewMemberSkill.Quickness, random.Next(2, 6)},
+					{CrewMemberSkill.Willpower, random.Next(2, 6)},
+					{CrewMemberSkill.Perception, random.Next(8, 11)},
+					{CrewMemberSkill.Wisdom, random.Next(8, 11)}
+				}
 			},
 			new CrewMember (random)
 			{
-				Charisma = random.Next(1, 4),
-				Perception = random.Next(1, 4),
-				Wisdom = random.Next(1, 4),
-				Body = random.Next(7, 11),
-				Quickness = random.Next(7, 11),
-				Willpower = random.Next(7, 11)
+				Skills = new Dictionary<CrewMemberSkill, int>()
+				{
+					{CrewMemberSkill.Charisma, random.Next(1, 4)},
+					{CrewMemberSkill.Perception, random.Next(1, 4)},
+					{CrewMemberSkill.Wisdom, random.Next(1, 4)},
+					{CrewMemberSkill.Body, random.Next(7, 11)},
+					{CrewMemberSkill.Quickness, random.Next(7, 11)},
+					{CrewMemberSkill.Willpower, random.Next(7, 11)}
+				}
 			},
 			new CrewMember (random)
 			{
-				Body = random.Next(4, 8),
-				Charisma = random.Next(4, 8),
-				Perception = random.Next(4, 8),
-				Quickness = random.Next(4, 8),
-				Wisdom = random.Next(4, 8),
-				Willpower = random.Next(4, 8)
+				Skills = new Dictionary<CrewMemberSkill, int>()
+				{
+					{CrewMemberSkill.Body, random.Next(4, 8)},
+					{CrewMemberSkill.Charisma, random.Next(4, 8)},
+					{CrewMemberSkill.Perception, random.Next(4, 8)},
+					{CrewMemberSkill.Quickness, random.Next(4, 8)},
+					{CrewMemberSkill.Wisdom, random.Next(4, 8)},
+					{CrewMemberSkill.Willpower, random.Next(4, 8)}
+				}
 			},
 			/*new CrewMember (random)
 			{
-				Body = random.Next(4, 8),
-				Charisma = random.Next(4, 8),
-				Perception = random.Next(4, 8),
-				Quickness = random.Next(4, 8),
-				Wisdom = random.Next(4, 8),
-				Willpower = random.Next(4, 8)
+				Skills = new Dictionary<CrewMemberSkill, int>()
+				{
+					{CrewMemberSkill.Body, random.Next(4, 8)},
+					{CrewMemberSkill.Charisma, random.Next(4, 8)},
+					{CrewMemberSkill.Perception, random.Next(4, 8)},
+					{CrewMemberSkill.Quickness, random.Next(4, 8)},
+					{CrewMemberSkill.Wisdom, random.Next(4, 8)},
+					{CrewMemberSkill.Willpower, random.Next(4, 8)}
+				}
 			},*/
 			new CrewMember (random)
 			{
-				Body = random.Next(6, 10),
-				Charisma = random.Next(6, 10),
-				Perception = random.Next(6, 10),
-				Quickness = random.Next(2, 6),
-				Wisdom = random.Next(2, 6),
-				Willpower = random.Next(2, 6)
+				Skills = new Dictionary<CrewMemberSkill, int>()
+				{
+					{CrewMemberSkill.Body, random.Next(6, 10)},
+					{CrewMemberSkill.Charisma, random.Next(6, 10)},
+					{CrewMemberSkill.Perception, random.Next(6, 10)},
+					{CrewMemberSkill.Quickness, random.Next(2, 6)},
+					{CrewMemberSkill.Wisdom, random.Next(2, 6)},
+					{CrewMemberSkill.Willpower, random.Next(2, 6)}
+				}
 			},
 			new CrewMember (random)
 			{
-				Body = random.Next(2, 6),
-				Charisma = random.Next(2, 6),
-				Perception = random.Next(2, 6),
-				Quickness = random.Next(6, 10),
-				Wisdom = random.Next(6, 10),
-				Willpower = random.Next(6, 10)
+				Skills = new Dictionary<CrewMemberSkill, int>()
+				{
+					{CrewMemberSkill.Body, random.Next(2, 6)},
+					{CrewMemberSkill.Charisma, random.Next(2, 6)},
+					{CrewMemberSkill.Perception, random.Next(2, 6)},
+					{CrewMemberSkill.Quickness, random.Next(6, 10)},
+					{CrewMemberSkill.Wisdom, random.Next(6, 10)},
+					{CrewMemberSkill.Willpower, random.Next(6, 10)}
+				}
 			},
 			/*new CrewMember (random)
 			{
-				Body = random.Next(2, 5),
-				Charisma = random.Next(2, 5),
-				Perception = random.Next(2, 5),
-				Quickness = random.Next(2, 5),
-				Wisdom = random.Next(8, 11),
-				Willpower = random.Next(8, 11)
+				Skills = new Dictionary<CrewMemberSkill, int>()
+				{
+					{CrewMemberSkill.Body, random.Next(2, 5)},
+					{CrewMemberSkill.Charisma, random.Next(2, 5)},
+					{CrewMemberSkill.Perception, random.Next(2, 5)},
+					{CrewMemberSkill.Quickness, random.Next(2, 5)},
+					{CrewMemberSkill.Wisdom, random.Next(8, 11)},
+					{CrewMemberSkill.Willpower, random.Next(8, 11)}
+				}
 			}*/
 			};
 			foreach (var crewMember in crew)
