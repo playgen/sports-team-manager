@@ -48,6 +48,9 @@ public class TeamSelectionUI : MonoBehaviour {
 	private GameObject _fireWarningPopUp;
 	private CrewMember _currentDisplayedCrewMember;
 
+	[SerializeField]
+	private GameObject _recuritmentPopUp;
+
 	void Awake()
 	{
 		_fireWarningPopUp.SetActive(false);
@@ -322,6 +325,11 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		Tracker.T.trackedGameObject.Interacted("Fired Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 		_teamSelection.FireCrewMember(_currentDisplayedCrewMember);
+		ResetCrew();
+	}
+
+	public void ResetCrew()
+	{
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
 			Destroy(crewMember.gameObject);

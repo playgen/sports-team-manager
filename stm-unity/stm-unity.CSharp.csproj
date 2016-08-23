@@ -132,6 +132,8 @@
     <Compile Include="Assets\Scripts\NewGame.cs" />
     <Compile Include="Assets\Scripts\NewGameUI.cs" />
     <Compile Include="Assets\Scripts\PositionUI.cs" />
+    <Compile Include="Assets\Scripts\RecruitMember.cs" />
+    <Compile Include="Assets\Scripts\RecruitMemberUI.cs" />
     <Compile Include="Assets\Scripts\ScreenSideUI.cs" />
     <Compile Include="Assets\Scripts\TeamSelection.cs" />
     <Compile Include="Assets\Scripts\TeamSelectionUI.cs" />
