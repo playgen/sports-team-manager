@@ -80,6 +80,7 @@ public class LoadGameUI : MonoBehaviour
 		_loadGame.SetSelected(name.text);
 		_selectedIcon.transform.SetParent(name.transform, false);
 		_selectedIcon.transform.position = name.transform.position;
+		Tracker.T.alternative.Selected("Load Game", "Selected Game", AlternativeTracker.Alternative.Menu);
 	}
 
 	/// <summary>
@@ -87,6 +88,7 @@ public class LoadGameUI : MonoBehaviour
 	/// </summary>
 	public void LoadGame()
 	{
+		Tracker.T.alternative.Selected("Load Game", "Loaded Game", AlternativeTracker.Alternative.Menu);
 		_errorText.text = "";
 		bool exists = _loadGame.ExistingGameCheck();
 		if (exists)
@@ -95,6 +97,7 @@ public class LoadGameUI : MonoBehaviour
 			if (success)
 			{
 				_stateManager.GoToGame(gameObject);
+				Tracker.T.completable.Initialized("Loaded Game", CompletableTracker.Completable.Game);
 			}
 			else
 			{

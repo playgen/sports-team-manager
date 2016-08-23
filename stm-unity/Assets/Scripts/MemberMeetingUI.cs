@@ -28,6 +28,8 @@ public class MemberMeetingUI : MonoBehaviour
 	private Text _opinionNegativeQuestion;
 	[SerializeField]
 	private Text _closeText;
+	[SerializeField]
+	private Text _remainingText;
 
 	void Awake()
 	{
@@ -36,6 +38,7 @@ public class MemberMeetingUI : MonoBehaviour
 
 	void OnEnable()
 	{
+		Tracker.T.alternative.Selected("Crew Member", "Meeting", AlternativeTracker.Alternative.Menu);
 		ResetDisplay();
 	}
 
@@ -44,11 +47,12 @@ public class MemberMeetingUI : MonoBehaviour
 		_meetingPopUp.SetActive(true);
 		_dialogueText.text = "You wanted to see me?";
 		_meetingNameText.text = "What do you want to ask " + _teamSelectionUI.GetCurrentCrewMember().Name + " ?";
-		_statQuestion.text = _memberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).FirstOrDefault();
-		_roleQuestion.text = _memberMeeting.GetEventText("RoleReveal").OrderBy(s => Guid.NewGuid()).FirstOrDefault();
-		_opinionPositiveQuestion.text = _memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).FirstOrDefault();
-		_opinionNegativeQuestion.text = _memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).FirstOrDefault();
+		_statQuestion.text = _memberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).FirstOrDefault() + " (1)";
+		_roleQuestion.text = _memberMeeting.GetEventText("RoleReveal").OrderBy(s => Guid.NewGuid()).FirstOrDefault() + " (3)";
+		_opinionPositiveQuestion.text = _memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).FirstOrDefault() + " (1)";
+		_opinionNegativeQuestion.text = _memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).FirstOrDefault() + " (2)";
 		int allowance = _memberMeeting.QuestionAllownace();
+		_remainingText.text = "Talk Time Left: " + allowance;
 		_statQuestion.GetComponentInParent<Button>().interactable = true;
 		_roleQuestion.GetComponentInParent<Button>().interactable = true;
 		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = true;
@@ -75,24 +79,28 @@ public class MemberMeetingUI : MonoBehaviour
 
 	public void AskStatQuestion()
 	{
+		Tracker.T.alternative.Selected("Crew Member Meeting", "Stat Reveal", AlternativeTracker.Alternative.Question);
 		string[] reply = _memberMeeting.AskQuestion("SoloInterview", "StatReveal", _teamSelectionUI.GetCurrentCrewMember(), 1);
 		AnswerUpdate(reply, 1);
 	}
 
 	public void AskRoleQuestion()
 	{
+		Tracker.T.alternative.Selected("Crew Member Meeting", "Role Reveal", AlternativeTracker.Alternative.Question);
 		string[] reply = _memberMeeting.AskQuestion("SoloInterview", "RoleReveal", _teamSelectionUI.GetCurrentCrewMember(), 3);
 		AnswerUpdate(reply, 3);
 	}
 
 	public void AskOpinionPositiveQuestion()
 	{
+		Tracker.T.alternative.Selected("Crew Member Meeting", "Positive Opinion Reveal", AlternativeTracker.Alternative.Question);
 		string[] reply = _memberMeeting.AskQuestion("SoloInterview", "OpinionRevealPositive", _teamSelectionUI.GetCurrentCrewMember(), 1);
 		AnswerUpdate(reply, 1);
 	}
 
 	public void AskOpinionNegativeQuestion()
 	{
+		Tracker.T.alternative.Selected("Crew Member Meeting", "Negative Opinion Reveal", AlternativeTracker.Alternative.Question);
 		string[] reply = _memberMeeting.AskQuestion("SoloInterview", "OpinionRevealNegative", _teamSelectionUI.GetCurrentCrewMember(), 2);
 		AnswerUpdate(reply, 2);
 	}

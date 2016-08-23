@@ -75,6 +75,7 @@ public class NewGameUI : MonoBehaviour {
 	/// </summary>
 	public void NewGame()
 	{
+		Tracker.T.alternative.Selected("New Game", "Created Game", AlternativeTracker.Alternative.Menu);
 		var valid = true;
 		if (string.IsNullOrEmpty(_boatName.text))
 		{
@@ -96,6 +97,7 @@ public class NewGameUI : MonoBehaviour {
 			if (success)
 			{
 				_stateManager.GoToGame(gameObject);
+				Tracker.T.completable.Initialized("Created New Game", CompletableTracker.Completable.Game);
 			} else
 			{
 				_errorText.text = "Game not created. Please try again.";

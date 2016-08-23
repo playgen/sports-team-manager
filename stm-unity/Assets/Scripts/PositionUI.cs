@@ -30,15 +30,20 @@ public class PositionUI : MonoBehaviour {
 	/// </summary>
 	public void LinkCrew(CrewMemberUI crewmember)
 	{
-		if (_crewMemberUI != null)
+		if (crewmember != _crewMemberUI)
 		{
-			_crewMemberUI.ReplacedEvent -= new EventHandler(OnReset);
-			_crewMemberUI.Reset();
-			_teamSelectionUI.PositionChange(-1);
+			Tracker.T.trackedGameObject.Interacted("Positioned Crew Member", GameObjectTracker.TrackedGameObject.Npc);
+			if (_crewMemberUI != null)
+			{
+				Tracker.T.trackedGameObject.Interacted("Unpositioned Crew Member", GameObjectTracker.TrackedGameObject.Npc);
+				_crewMemberUI.ReplacedEvent -= new EventHandler(OnReset);
+				_crewMemberUI.Reset();
+				_teamSelectionUI.PositionChange(-1);
+			}
+			_crewMemberUI = crewmember;
+			_teamSelectionUI.PositionChange(1);
+			crewmember.ReplacedEvent += new EventHandler(OnReset);
 		}
-		_crewMemberUI = crewmember;
-		_teamSelectionUI.PositionChange(1);
-		crewmember.ReplacedEvent += new EventHandler(OnReset);
 	}
 
 	/// <summary>

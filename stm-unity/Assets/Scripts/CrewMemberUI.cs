@@ -115,7 +115,7 @@ public class CrewMemberUI : MonoBehaviour {
 	void ShowPopUp()
 	{
 		_teamSelectionUI.DisplayCrewPopUp(_crewMember);
-		
+		Tracker.T.trackedGameObject.Interacted("Viewed Crew Member Information", GameObjectTracker.TrackedGameObject.Npc);
 	}
 
 	/// <summary>
@@ -163,6 +163,10 @@ public class CrewMemberUI : MonoBehaviour {
 				transform.SetSiblingIndex(transform.parent.GetChild(i).GetSiblingIndex());
 				break;
 			}
+		}
+		if (_currentPositon != (Vector2)transform.position)
+		{
+			Tracker.T.trackedGameObject.Interacted("Unpositioned Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 		}
 		_currentPositon = transform.position;
 	}

@@ -71,6 +71,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						member.AddOrUpdateOpinion(Boat.Manager, rand.Next(-3, 4));
 					}
 				}*/
+				foreach (CrewMember otherMember in crew)
+				{
+					if (member != otherMember)
+					{
+						member.AddOrUpdateOpinion(otherMember, 0);
+						member.AddOrUpdateRevealedOpinion(otherMember, 0);
+					}
+					member.AddOrUpdateOpinion(Boat.Manager, 0);
+					member.AddOrUpdateRevealedOpinion(Boat.Manager, 0);
+				}
 				member.UpdateBeliefs("null");
 				member.SaveStatus();
 			}

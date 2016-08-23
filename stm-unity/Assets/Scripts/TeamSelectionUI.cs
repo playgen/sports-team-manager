@@ -229,7 +229,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			Destroy(child.gameObject);
 		}
-		foreach (CrewOpinion opinion in crewMember.CrewOpinions)
+		foreach (CrewOpinion opinion in crewMember.RevealedCrewOpinions)
 		{
 			GameObject knownOpinion = Instantiate(_opinionPrefab);
 			knownOpinion.transform.SetParent(_opinionContainer.transform, false);
@@ -281,6 +281,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// </summary>
 	public void ConfirmLineUp()
 	{
+		Tracker.T.completable.Completed("Crew Confirmed", CompletableTracker.Completable.Stage);
 		var teamScore = _teamSelection.ConfirmLineUp();
 		var scoreText = _currentBoat.transform.Find("Score").GetComponent<Text>();
 		scoreText.text = teamScore.ToString();
@@ -313,11 +314,13 @@ public class TeamSelectionUI : MonoBehaviour {
 
 	public void FireCrewWarning()
 	{
+		Tracker.T.alternative.Selected("Crew Member", "Fire", AlternativeTracker.Alternative.Menu);
 		_fireWarningPopUp.SetActive(true);
 	}
 
 	public void FireCrew()
 	{
+		Tracker.T.trackedGameObject.Interacted("Fired Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 		_teamSelection.FireCrewMember(_currentDisplayedCrewMember);
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
