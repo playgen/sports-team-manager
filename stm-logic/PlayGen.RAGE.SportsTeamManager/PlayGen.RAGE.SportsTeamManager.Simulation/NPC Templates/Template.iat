@@ -35,6 +35,54 @@
 					"Meaning": "OpinionRevealNegative",
 					"Style": "OpinionRevealNegative",
 					"Utterance": "Is there any conflict between you and someome else on the team?"
+				}, 
+				{
+					"Id": "e7b45eae-f678-4d36-9898-03f0201247e3",
+					"CurrentState": "RecruitBody",
+					"NextState": "-",
+					"Meaning": "RecruitBody",
+					"Style": "RecruitBody",
+					"Utterance": "Body"
+				}, 
+				{
+					"Id": "ff6196c0-35e0-4f14-b0a7-c3b48638a5a9",
+					"CurrentState": "RecruitCharisma",
+					"NextState": "-",
+					"Meaning": "RecruitCharisma",
+					"Style": "RecruitCharisma",
+					"Utterance": "Charisma"
+				}, 
+				{
+					"Id": "46462e1c-c719-4e34-9a94-7a8b31664d5f",
+					"CurrentState": "RecruitPerception",
+					"NextState": "-",
+					"Meaning": "RecruitPerception",
+					"Style": "RecruitPerception",
+					"Utterance": "Perception"
+				}, 
+				{
+					"Id": "61aee5c8-5d77-42c5-aaca-4149dea80a0e",
+					"CurrentState": "RecruitQuickness",
+					"NextState": "-",
+					"Meaning": "RecruitQuickness",
+					"Style": "RecruitQuickness",
+					"Utterance": "Quickness"
+				}, 
+				{
+					"Id": "5456a592-29a6-4e82-9357-027703214b78",
+					"CurrentState": "RecruitWillpower",
+					"NextState": "-",
+					"Meaning": "RecruitWillpower",
+					"Style": "RecruitWillpower",
+					"Utterance": "Willpower"
+				}, 
+				{
+					"Id": "48bab8f4-7596-4c1d-9083-02869dd3888a",
+					"CurrentState": "RecruitWisdom",
+					"NextState": "-",
+					"Meaning": "RecruitWisdom",
+					"Style": "RecruitWisdom",
+					"Utterance": "Wisdom"
 				}],
 			"AgentDialogues": [
 				{
@@ -132,6 +180,46 @@
 					"Meaning": "OpinionRevealPositiveNone",
 					"Style": "OpinionRevealPositiveNone",
 					"Utterance": "Nobody comes to mind."
+				}, 
+				{
+					"Id": "2f59b11f-a644-4541-a1d3-2072feeb50c9",
+					"CurrentState": "StrongAgree",
+					"NextState": "-",
+					"Meaning": "StrongAgree",
+					"Style": "StrongAgree",
+					"Utterance": "Strongly Agree"
+				}, 
+				{
+					"Id": "1a4ccb49-0381-4368-b129-ba85aed50a18",
+					"CurrentState": "Agree",
+					"NextState": "-",
+					"Meaning": "Agree",
+					"Style": "Agree",
+					"Utterance": "Agree"
+				}, 
+				{
+					"Id": "943be5fe-a207-4175-ad1f-f6cce5753e12",
+					"CurrentState": "Neither",
+					"NextState": "-",
+					"Meaning": "Neither",
+					"Style": "Neither",
+					"Utterance": "Neither agree or disagree"
+				}, 
+				{
+					"Id": "a0ef3253-fffe-4356-aed0-8c92ddcd586c",
+					"CurrentState": "Disagree",
+					"NextState": "-",
+					"Meaning": "Disagree",
+					"Style": "Disagree",
+					"Utterance": "Disagree"
+				}, 
+				{
+					"Id": "12c469ce-138c-47f8-999b-af023f5c4f71",
+					"CurrentState": "StrongDisagree",
+					"NextState": "-",
+					"Meaning": "StrongDisagree",
+					"Style": "StrongDisagree",
+					"Utterance": "Strongly Disagree"
 				}]
 		},
 	"types": [

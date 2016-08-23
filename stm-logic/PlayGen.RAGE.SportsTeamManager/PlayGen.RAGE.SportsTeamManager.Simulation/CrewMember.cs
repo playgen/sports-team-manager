@@ -374,7 +374,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send an event to the EA/EDM to get the CrewMember's reaction and mood change as a result
 		/// </summary>
-		public string SendEvent(IntegratedAuthoringToolAsset iat, string state, string style, Boat boat)
+		public string SendBoatMemberEvent(IntegratedAuthoringToolAsset iat, string state, string style, Boat boat)
 		{
 			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
@@ -487,6 +487,34 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RolePlayCharacter.Update();
 			SaveStatus();
 			LoadBeliefs(boat);
+			return reply;
+		}
+
+		public string SendRecruitEvent(IntegratedAuthoringToolAsset iat, CrewMemberSkill skill)
+		{
+			string reply = null;
+			IEnumerable<DialogueStateActionDTO> dialogueOptions = Enumerable.Empty<DialogueStateActionDTO>();
+			if (Skills[skill] >= 9)
+			{
+				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "StrongAgree");
+			}
+			else if (Skills[skill] >= 7)
+			{
+				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Agree");
+			}
+			else if (Skills[skill] >= 5)
+			{
+				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Neither");
+			}
+			else if (Skills[skill] >= 3)
+			{
+				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Disagree");
+			}
+			else
+			{
+				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "StrongDisagree");
+			}
+			reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
 			return reply;
 		}
 

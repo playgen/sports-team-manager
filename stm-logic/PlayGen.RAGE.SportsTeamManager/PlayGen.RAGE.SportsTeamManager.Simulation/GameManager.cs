@@ -20,6 +20,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public List<Boat> LineUpHistory { get; set; }
 		public int ActionAllowance { get; set; } = 20;
 
+		private IntegratedAuthoringToolAsset _iat { get; set; }
+		private IStorageProvider _storagePorvider;
+		private string _storageLocation;
+
 		/// <summary>
 		/// Create a new game
 		/// </summary>
@@ -39,8 +43,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				initialCrew = true;
 				crew = CreateInitialCrew(managerName);
 			}
-
-			Random rand = new Random();
 
 			Person manager = new Person
 			{
@@ -86,7 +88,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 
 			iat.SaveToFile(storagePorvider, Path.Combine(storageLocation, noSpaceBoatName + ".iat"));
-			EventController = new EventController(iat);
+			EventController = new EventController();
+			_iat = iat;
+			_storageLocation = storageLocation;
+			_storagePorvider = storagePorvider;
 			LineUpHistory = new List<Boat>();
 			Boat.GetIdealCrew();
 		}
@@ -102,9 +107,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				Skills = new Dictionary<CrewMemberSkill, int>()
 				{
-					{CrewMemberSkill.Body, random.Next(1, 4)},
-					{CrewMemberSkill.Perception, random.Next(1, 4)},
-					{CrewMemberSkill.Quickness, random.Next(1, 4)},
+					{CrewMemberSkill.Body, random.Next(1, 5)},
+					{CrewMemberSkill.Perception, random.Next(1, 5)},
+					{CrewMemberSkill.Quickness, random.Next(1, 5)},
 					{CrewMemberSkill.Charisma, random.Next(7, 11)},
 					{CrewMemberSkill.Wisdom, random.Next(7, 11)},
 					{CrewMemberSkill.Willpower, random.Next(7, 11)}
@@ -118,17 +123,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{CrewMemberSkill.Charisma, random.Next(2, 6)},
 					{CrewMemberSkill.Quickness, random.Next(2, 6)},
 					{CrewMemberSkill.Willpower, random.Next(2, 6)},
-					{CrewMemberSkill.Perception, random.Next(8, 11)},
-					{CrewMemberSkill.Wisdom, random.Next(8, 11)}
+					{CrewMemberSkill.Perception, random.Next(7, 11)},
+					{CrewMemberSkill.Wisdom, random.Next(7, 11)}
 				}
 			},
 			new CrewMember (random)
 			{
 				Skills = new Dictionary<CrewMemberSkill, int>()
 				{
-					{CrewMemberSkill.Charisma, random.Next(1, 4)},
-					{CrewMemberSkill.Perception, random.Next(1, 4)},
-					{CrewMemberSkill.Wisdom, random.Next(1, 4)},
+					{CrewMemberSkill.Charisma, random.Next(1, 5)},
+					{CrewMemberSkill.Perception, random.Next(1, 5)},
+					{CrewMemberSkill.Wisdom, random.Next(1, 5)},
 					{CrewMemberSkill.Body, random.Next(7, 11)},
 					{CrewMemberSkill.Quickness, random.Next(7, 11)},
 					{CrewMemberSkill.Willpower, random.Next(7, 11)}
@@ -186,12 +191,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				Skills = new Dictionary<CrewMemberSkill, int>()
 				{
-					{CrewMemberSkill.Body, random.Next(2, 5)},
-					{CrewMemberSkill.Charisma, random.Next(2, 5)},
-					{CrewMemberSkill.Perception, random.Next(2, 5)},
-					{CrewMemberSkill.Quickness, random.Next(2, 5)},
-					{CrewMemberSkill.Wisdom, random.Next(8, 11)},
-					{CrewMemberSkill.Willpower, random.Next(8, 11)}
+					{CrewMemberSkill.Body, random.Next(2, 6)},
+					{CrewMemberSkill.Charisma, random.Next(2, 6)},
+					{CrewMemberSkill.Perception, random.Next(2, 6)},
+					{CrewMemberSkill.Quickness, random.Next(2, 6)},
+					{CrewMemberSkill.Wisdom, random.Next(7, 11)},
+					{CrewMemberSkill.Willpower, random.Next(7, 11)}
 				}
 			}*/
 			};
@@ -270,7 +275,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			crewList.ForEach(cm => Boat.AddCrew(cm));
 			crewList.ForEach(cm => cm.LoadBeliefs(Boat));
-			EventController = new EventController(iat);
+			EventController = new EventController();
+			_iat = iat;
+			_storageLocation = storageLocation;
+			_storagePorvider = storagePorvider;
 			LoadLineUpHistory();
 			Boat.GetIdealCrew();
 		}
@@ -375,9 +383,87 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat.PostRaceRest();
 		}
 
+		public void CreateRecruits(int amount)
+		{
+			if (Boat.Recruits != null)
+			{
+				Boat.Recruits.Clear();
+			} else
+			{
+				Boat.Recruits = new List<CrewMember>();
+			}
+			Random rand = new Random();
+			for (int i = 0; i < amount; i++)
+			{
+				CrewMember newMember = new CrewMember(rand);
+				bool unqiue = false;
+				while (!unqiue)
+				{
+					if (Boat.GetAllCrewMembers().Count(c => c.Name == newMember.Name) > 1 || newMember.Name == Boat.Manager.Name)
+					{
+						newMember.Name = newMember.SelectNewName(newMember.Gender, rand);
+					}
+					else
+					{
+						unqiue = true;
+					}
+				}
+				int positionValue = rand.Next(0, Boat.BoatPositions.Count + 1);
+				Position selectedPerferred = positionValue < Boat.BoatPositions.Count ? Boat.BoatPositions[positionValue].Position : null;
+				newMember.Skills = new Dictionary<CrewMemberSkill, int>();
+				foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
+				{
+					if (selectedPerferred != null)
+					{
+						if (selectedPerferred.RequiredSkills.Contains(skill))
+						{
+							newMember.Skills.Add(skill,rand.Next(7, 11));
+						}
+						else
+						{
+							newMember.Skills.Add(skill, rand.Next(1, 5));
+						}
+					}
+					else
+					{
+						newMember.Skills.Add(skill, rand.Next(3, 9));
+					}
+				}
+				Boat.Recruits.Add(newMember);
+			}
+		}
+
+		public void AddRecruit(CrewMember member, int cost)
+		{
+			if (cost <= ActionAllowance)
+			{
+				TemplateStorageProvider templateStorage = new TemplateStorageProvider();
+				member.CreateFile(_iat, templateStorage, _storagePorvider, _storageLocation);
+				Boat.AddCrew(member);
+				foreach (CrewMember otherMember in Boat.GetAllCrewMembers())
+				{
+					if (member != otherMember)
+					{
+						member.AddOrUpdateOpinion(otherMember, 0);
+						member.AddOrUpdateRevealedOpinion(otherMember, 0);
+						otherMember.AddOrUpdateOpinion(member, 0);
+						otherMember.AddOrUpdateRevealedOpinion(member, 0);
+					}
+					member.AddOrUpdateOpinion(Boat.Manager, 0);
+					member.AddOrUpdateRevealedOpinion(Boat.Manager, 0);
+				}
+				member.UpdateBeliefs("null");
+				member.SaveStatus();
+				ActionAllowance -= cost;
+				Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
+				Boat.Manager.SaveStatus();
+				_iat.SaveToFile(_storagePorvider, _iat.AssetFilePath);
+			}
+		}
+
 		public string[] GetEventStrings(string eventKey)
 		{
-			return EventController.GetEventStrings(eventKey);
+			return EventController.GetEventStrings(_iat, eventKey);
 		}
 
 		/// <summary>
@@ -387,7 +473,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			if (cost <= ActionAllowance)
 			{
-				var replies = EventController.SelectEvent(selected, members, Boat);
+				var replies = EventController.SelectBoatMemberEvent(_iat, selected, members, Boat);
 				Boat.UpdateBoatScore();
 				Boat.GetIdealCrew();
 				ActionAllowance -= cost;
@@ -402,7 +488,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			if (cost <= ActionAllowance)
 			{
-				var replies = EventController.SelectEvent(eventType, eventName, members, Boat);
+				var replies = EventController.SelectBoatMemberEvent(_iat, eventType, eventName, members, Boat);
 				Boat.UpdateBoatScore();
 				Boat.GetIdealCrew();
 				ActionAllowance -= cost;
@@ -416,12 +502,25 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send an event to the EventController that'll be triggered for all members within the list
 		/// </summary>
-		public string[] SendRecruitMembersEvent(DialogueStateActionDTO selected, List<CrewMember> members)
+		public Dictionary<CrewMember, string> SendRecruitMembersEvent(CrewMemberSkill skill, List<CrewMember> members, int cost)
 		{
-			var replies = EventController.SelectEvent(selected, members, Boat);
-			Boat.UpdateBoatScore();
-			Boat.GetIdealCrew();
-			return replies.ToArray();
+			if (cost <= ActionAllowance)
+			{
+				var replies = EventController.SelectRecruitEvent(_iat, skill, members);
+				ActionAllowance -= cost;
+				Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
+				Boat.Manager.SaveStatus();
+				return replies;
+			}
+			else
+			{
+				Dictionary<CrewMember, string> replies = new Dictionary<CrewMember, string>();
+				foreach (CrewMember member in members)
+				{
+					replies.Add(member, "");
+				}
+				return replies;
+			}
 		}
 	}
 }
