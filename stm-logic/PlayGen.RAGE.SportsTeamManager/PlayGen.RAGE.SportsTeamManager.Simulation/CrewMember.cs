@@ -248,13 +248,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				restCount = int.Parse(EmotionalAppraisal.GetBeliefValue("Race(Rest)"));
 			}
-			if (EmotionalAppraisal.BeliefExists(String.Format("Status(Retired)")))
-			{
-				if (EmotionalAppraisal.GetBeliefValue("Status(Retired)").ToLower() == "true")
-				{
-					boat.RetireCrew(this);
-				}
-			}
 		}
 
 		/// <summary>
@@ -523,7 +516,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void Retire()
 		{
-			UpdateSingleBelief("Status(Retired)", "True", "SELF");
+			UpdateSingleBelief("Value(Position)", "Retired", "SELF");
 			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,Status(Retired),{0})";
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, spacelessName) });

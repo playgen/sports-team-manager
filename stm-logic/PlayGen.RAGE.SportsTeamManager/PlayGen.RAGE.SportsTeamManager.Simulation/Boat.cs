@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using GAIPS.Rage;
+using IntegratedAuthoringTool;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
@@ -26,6 +29,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UnassignedCrew = new List<CrewMember>();
 			RetiredCrew = new List<CrewMember>();
 			IdealCrew = new List<BoatPosition>();
+			Recruits = new List<CrewMember>();
 		}
 
 		/// <summary>
@@ -141,6 +145,61 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					RemoveCrew(boatPosition);
 				}
 			}
+		}
+
+		public void CreateRecruits(IntegratedAuthoringToolAsset iat, IStorageProvider templateStorage, IStorageProvider savedStorage, string storageLocation)
+		{
+			for (int i = 0; i < Recruits.Count; i++)
+			{
+				iat.RemoveCharacters(new List<string>() { Recruits[i].Name });
+			}
+			int amount = BoatPositions.Count + 1 - Recruits.Count;
+			Random rand = new Random();
+			for (int i = 0; i < amount; i++)
+			{
+				CrewMember newMember = new CrewMember(rand);
+				bool unqiue = false;
+				while (!unqiue)
+				{
+					if (GetAllCrewMembers().Count(c => c.Name == newMember.Name) > 1 || Recruits.Count(c => c.Name == newMember.Name) > 1 || newMember.Name == Manager.Name)
+					{
+						newMember.Name = newMember.SelectNewName(newMember.Gender, rand);
+					}
+					else
+					{
+						unqiue = true;
+					}
+				}
+				int positionValue = rand.Next(0, BoatPositions.Count + 1);
+				Position selectedPerferred = positionValue < BoatPositions.Count ? BoatPositions[positionValue].Position : null;
+				newMember.Skills = new Dictionary<CrewMemberSkill, int>();
+				foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
+				{
+					if (selectedPerferred != null)
+					{
+						if (selectedPerferred.RequiredSkills.Contains(skill))
+						{
+							newMember.Skills.Add(skill, rand.Next(7, 11));
+						}
+						else
+						{
+							newMember.Skills.Add(skill, rand.Next(1, 5));
+						}
+					}
+					else
+					{
+						newMember.Skills.Add(skill, rand.Next(3, 9));
+					}
+				}
+				Recruits.Add(newMember);
+			}
+			for (int i = 0; i < Recruits.Count; i++)
+			{
+				Recruits[i].CreateFile(iat, templateStorage, savedStorage, storageLocation, "Recruit" + i);
+				Recruits[i].UpdateBeliefs("Recruit");
+				Recruits[i].SaveStatus();
+			}
+			iat.SaveToFile(savedStorage, iat.AssetFilePath);
 		}
 
 		/// <summary>

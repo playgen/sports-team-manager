@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Linq;
+
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using EmotionalDecisionMaking;
@@ -43,22 +45,26 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create the required files for this Person
 		/// </summary>
-		public void CreateFile(IntegratedAuthoringToolAsset iat, IStorageProvider templateStorage, IStorageProvider savedStorage, string storageLocation)
+		public void CreateFile(IntegratedAuthoringToolAsset iat, IStorageProvider templateStorage, IStorageProvider savedStorage, string storageLocation, string fileName = "")
 		{
 			var templateRpc = RolePlayCharacterAsset.LoadFromFile(templateStorage, "template_rpc");
 			var ea = EmotionalAppraisalAsset.LoadFromFile(templateStorage, templateRpc.EmotionalAppraisalAssetSource);
 			var edm = EmotionalDecisionMakingAsset.LoadFromFile(templateStorage, templateRpc.EmotionalDecisionMakingSource);
 			templateRpc.CharacterName = Name;
 			var noSpaceName = templateRpc.CharacterName.Replace(" ", "");
+			if (string.IsNullOrEmpty(fileName))
+			{
+				fileName = noSpaceName;
+			}
 			ea.SetPerspective("NPC" + noSpaceName);
-			ea.SaveToFile(savedStorage, Path.Combine(storageLocation, noSpaceName + ".ea"));
-			edm.SaveToFile(savedStorage, Path.Combine(storageLocation, noSpaceName + ".edm"));
-			templateRpc.EmotionalAppraisalAssetSource = Path.Combine(storageLocation, noSpaceName + ".ea");
-			templateRpc.EmotionalDecisionMakingSource = Path.Combine(storageLocation, noSpaceName + ".edm");
-			templateRpc.SaveToFile(savedStorage, Path.Combine(storageLocation, noSpaceName + ".rpc"));
+			ea.SaveToFile(savedStorage, Path.Combine(storageLocation, fileName + ".ea"));
+			edm.SaveToFile(savedStorage, Path.Combine(storageLocation, fileName + ".edm"));
+			templateRpc.EmotionalAppraisalAssetSource = Path.Combine(storageLocation, fileName + ".ea");
+			templateRpc.EmotionalDecisionMakingSource = Path.Combine(storageLocation, fileName + ".edm");
+			templateRpc.SaveToFile(savedStorage, Path.Combine(storageLocation, fileName + ".rpc"));
 			iat.AddCharacter(templateRpc);
-			EmotionalAppraisal = EmotionalAppraisalAsset.LoadFromFile(savedStorage, Path.Combine(storageLocation, noSpaceName + ".ea"));
-			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(savedStorage, Path.Combine(storageLocation, noSpaceName + ".rpc"));
+			EmotionalAppraisal = EmotionalAppraisalAsset.LoadFromFile(savedStorage, Path.Combine(storageLocation, fileName + ".ea"));
+			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(savedStorage, Path.Combine(storageLocation, fileName + ".rpc"));
 		}
 
 		/// <summary>

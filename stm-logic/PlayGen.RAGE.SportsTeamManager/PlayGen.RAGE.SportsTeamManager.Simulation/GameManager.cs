@@ -98,6 +98,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			_storagePorvider = storagePorvider;
 			LineUpHistory = new List<Boat>();
 			Boat.GetIdealCrew();
+			Boat.CreateRecruits(iat, templateStorage, storagePorvider, storageLocation);
 		}
 
 		/// <summary>
@@ -276,6 +277,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					continue;
 				}
 				CrewMember crewMember = new CrewMember(storagePorvider, rpc);
+				if (position == "Retired")
+				{
+					Boat.RetireCrew(crewMember);
+					continue;
+				}
+				if (position == "Recruit")
+				{
+					Boat.Recruits.Add(crewMember);
+					continue;
+				}
 				crewList.Add(crewMember);
 			}
 			crewList.ForEach(cm => Boat.AddCrew(cm));
@@ -378,6 +389,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void ConfirmLineUp()
 		{
 			Boat.ConfirmChanges();
+			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
+			Boat.CreateRecruits(_iat, templateStorage, _storagePorvider, _storageLocation);
 			ResetActionAllowance(20);
 			ResetCrewEditAllowance();
 		}
@@ -419,56 +432,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			AllowanceUpdated(this, new EventArgs());
 		}
 
-		public void CreateRecruits(int amount)
-		{
-			if (Boat.Recruits != null)
-			{
-				Boat.Recruits.Clear();
-			} else
-			{
-				Boat.Recruits = new List<CrewMember>();
-			}
-			Random rand = new Random();
-			for (int i = 0; i < amount; i++)
-			{
-				CrewMember newMember = new CrewMember(rand);
-				bool unqiue = false;
-				while (!unqiue)
-				{
-					if (Boat.GetAllCrewMembers().Count(c => c.Name == newMember.Name) > 1 || newMember.Name == Boat.Manager.Name)
-					{
-						newMember.Name = newMember.SelectNewName(newMember.Gender, rand);
-					}
-					else
-					{
-						unqiue = true;
-					}
-				}
-				int positionValue = rand.Next(0, Boat.BoatPositions.Count + 1);
-				Position selectedPerferred = positionValue < Boat.BoatPositions.Count ? Boat.BoatPositions[positionValue].Position : null;
-				newMember.Skills = new Dictionary<CrewMemberSkill, int>();
-				foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
-				{
-					if (selectedPerferred != null)
-					{
-						if (selectedPerferred.RequiredSkills.Contains(skill))
-						{
-							newMember.Skills.Add(skill,rand.Next(7, 11));
-						}
-						else
-						{
-							newMember.Skills.Add(skill, rand.Next(1, 5));
-						}
-					}
-					else
-					{
-						newMember.Skills.Add(skill, rand.Next(3, 9));
-					}
-				}
-				Boat.Recruits.Add(newMember);
-			}
-		}
-
 		public bool CanAddToCrew()
 		{
 			if (Boat.GetAllCrewMembers().Count + 1 > (Boat.BoatPositions.Count + 1) * 2)
@@ -482,6 +445,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			if (cost <= ActionAllowance && CrewEditAllowance > 0 && CanAddToCrew())
 			{
+				_iat.RemoveCharacters(new List<string>() { member.Name });
 				TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 				member.CreateFile(_iat, templateStorage, _storagePorvider, _storageLocation);
 				Boat.AddCrew(member);
@@ -500,6 +464,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.UpdateBeliefs("null");
 				member.SaveStatus();
 				DeductCost(cost);
+				Boat.Recruits.Remove(member);
 				_iat.SaveToFile(_storagePorvider, _iat.AssetFilePath);
 				DeductCrewEditAllowance();
 			}

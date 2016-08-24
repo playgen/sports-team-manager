@@ -27,14 +27,13 @@ public class RecruitMemberUI : MonoBehaviour
 	void OnEnable()
 	{
 		Tracker.T.alternative.Selected("Recruitment", "Recruitment", AlternativeTracker.Alternative.Menu);
-		_recruitMember.CreateNewRecruits();
 		ResetDisplay();
 	}
 
 	void ResetDisplay()
 	{
 		SetDialogueText("");
-		List<CrewMember> recruits = _recruitMember.GetRecruits();
+		List<CrewMember> recruits = _recruitMember.GetRecruits().OrderBy(r => Guid.NewGuid()).ToList();
 		for (int i = 0; i < _recruitUI.Length; i++)
 		{
 			if (recruits.Count <= i)
