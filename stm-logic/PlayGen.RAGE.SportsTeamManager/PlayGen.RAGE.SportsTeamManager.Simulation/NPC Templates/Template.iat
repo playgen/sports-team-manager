@@ -37,52 +37,52 @@
 					"Utterance": "Is there any conflict between you and someome else on the team?"
 				}, 
 				{
-					"Id": "e7b45eae-f678-4d36-9898-03f0201247e3",
+					"Id": "e1c74e29-f6db-4e2f-bd66-d579343add40",
 					"CurrentState": "RecruitBody",
 					"NextState": "-",
 					"Meaning": "RecruitBody",
 					"Style": "RecruitBody",
-					"Utterance": "Body"
+					"Utterance": "You excel at exercise"
 				}, 
 				{
-					"Id": "ff6196c0-35e0-4f14-b0a7-c3b48638a5a9",
-					"CurrentState": "RecruitCharisma",
-					"NextState": "-",
-					"Meaning": "RecruitCharisma",
-					"Style": "RecruitCharisma",
-					"Utterance": "Charisma"
-				}, 
-				{
-					"Id": "46462e1c-c719-4e34-9a94-7a8b31664d5f",
+					"Id": "1485be38-b4b5-498a-a029-d60b7c0a9dea",
 					"CurrentState": "RecruitPerception",
 					"NextState": "-",
 					"Meaning": "RecruitPerception",
 					"Style": "RecruitPerception",
-					"Utterance": "Perception"
+					"Utterance": "You are aware of your surroundings"
 				}, 
 				{
-					"Id": "61aee5c8-5d77-42c5-aaca-4149dea80a0e",
+					"Id": "4f741c29-d081-4f49-b6d3-df3fff7054b0",
 					"CurrentState": "RecruitQuickness",
 					"NextState": "-",
 					"Meaning": "RecruitQuickness",
 					"Style": "RecruitQuickness",
-					"Utterance": "Quickness"
+					"Utterance": "You are the first to react in a situation"
 				}, 
 				{
-					"Id": "5456a592-29a6-4e82-9357-027703214b78",
+					"Id": "f2f44ad0-f494-448e-bfe6-772e0c766c70",
 					"CurrentState": "RecruitWillpower",
 					"NextState": "-",
 					"Meaning": "RecruitWillpower",
 					"Style": "RecruitWillpower",
-					"Utterance": "Willpower"
+					"Utterance": "You keep calm whilst under heavy pressure"
 				}, 
 				{
-					"Id": "48bab8f4-7596-4c1d-9083-02869dd3888a",
+					"Id": "b28fe6fa-3d7d-459a-9ed8-184173ccd325",
 					"CurrentState": "RecruitWisdom",
 					"NextState": "-",
 					"Meaning": "RecruitWisdom",
 					"Style": "RecruitWisdom",
-					"Utterance": "Wisdom"
+					"Utterance": "You are the one people look toward for decisions"
+				}, 
+				{
+					"Id": "0f744b1a-b0af-4062-b661-a89eea7a3215",
+					"CurrentState": "RecruitCharisma",
+					"NextState": "-",
+					"Meaning": "RecruitCharisma",
+					"Style": "RecruitCharisma",
+					"Utterance": "You talk and others listen to every word"
 				}],
 			"AgentDialogues": [
 				{

@@ -19,6 +19,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public List<Boat> LineUpHistory { get; set; }
 		public int ActionAllowance { get; set; } = 20;
+		public event EventHandler AllowanceUpdated = delegate { };
 
 		private IntegratedAuthoringToolAsset _iat { get; set; }
 		private IStorageProvider _storagePorvider;
@@ -373,14 +374,28 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void ConfirmLineUp()
 		{
 			Boat.ConfirmChanges();
-			ActionAllowance = 20;
-			Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
-			Boat.Manager.SaveStatus();
+			ResetActionAllowance(20);
 		}
 
 		public void PostRaceRest()
 		{
 			Boat.PostRaceRest();
+		}
+
+		void DeductCost(int cost)
+		{
+			ActionAllowance -= cost;
+			Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
+			Boat.Manager.SaveStatus();
+			AllowanceUpdated(this, new EventArgs());
+		}
+
+		void ResetActionAllowance(int amount)
+		{
+			ActionAllowance = amount;
+			Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
+			Boat.Manager.SaveStatus();
+			AllowanceUpdated(this, new EventArgs());
 		}
 
 		public void CreateRecruits(int amount)
@@ -454,10 +469,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				member.UpdateBeliefs("null");
 				member.SaveStatus();
-				ActionAllowance -= cost;
-				Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
-				Boat.Manager.SaveStatus();
+				DeductCost(cost);
 				_iat.SaveToFile(_storagePorvider, _iat.AssetFilePath);
+			}
+		}
+
+		public void RetireCrewMember(CrewMember crewMember, int cost)
+		{
+			if (cost <= ActionAllowance)
+			{
+				Boat.RetireCrew(crewMember);
+				DeductCost(cost);
 			}
 		}
 
@@ -476,9 +498,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				var replies = EventController.SelectBoatMemberEvent(_iat, selected, members, Boat);
 				Boat.UpdateBoatScore();
 				Boat.GetIdealCrew();
-				ActionAllowance -= cost;
-				Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
-				Boat.Manager.SaveStatus();
+				DeductCost(cost);
 				return replies.ToArray();
 			}
 			return new string[0];
@@ -491,9 +511,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				var replies = EventController.SelectBoatMemberEvent(_iat, eventType, eventName, members, Boat);
 				Boat.UpdateBoatScore();
 				Boat.GetIdealCrew();
-				ActionAllowance -= cost;
-				Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
-				Boat.Manager.SaveStatus();
+				DeductCost(cost);
 				return replies.ToArray();
 			}
 			return new string[0];
@@ -507,9 +525,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (cost <= ActionAllowance)
 			{
 				var replies = EventController.SelectRecruitEvent(_iat, skill, members);
-				ActionAllowance -= cost;
-				Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
-				Boat.Manager.SaveStatus();
+				DeductCost(cost);
 				return replies;
 			}
 			else

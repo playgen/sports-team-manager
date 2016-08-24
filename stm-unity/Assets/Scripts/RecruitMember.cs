@@ -38,7 +38,7 @@ public class RecruitMember : MonoBehaviour {
 		_gameManager.AddRecruit(crewMember, cost);
 	}
 
-	public int QuestionAllownace()
+	public int QuestionAllowance()
 	{
 		return _gameManager.ActionAllowance;
 	}

@@ -126,13 +126,18 @@ public class TeamSelection : MonoBehaviour {
 		return _gameManager.Boat.IdealMatchScore;
 	}
 
-	public void FireCrewMember(CrewMember crewMember)
+	public void FireCrewMember(CrewMember crewMember, int cost)
 	{
-		_gameManager.Boat.RetireCrew(crewMember);
+		_gameManager.RetireCrewMember(crewMember, cost);
 	}
 
 	public CrewMember PersonToCrewMember(Person person)
 	{
 		return _gameManager.Boat.GetAllCrewMembers().Where(cm => cm.Name == person.Name).FirstOrDefault();
+	}
+
+	public int QuestionAllowance()
+	{
+		return _gameManager.ActionAllowance;
 	}
 }

@@ -47,7 +47,6 @@ public class CrewMemberUI : MonoBehaviour {
 			trigger.triggers.Add(click);
 		}
 		_defaultParent = transform.parent;
-		_currentPositon = transform.position;
 	}
 
 	public void SetUp(TeamSelection teamSelection, TeamSelectionUI teamSelectionUI, CrewMember crewMember)
@@ -62,14 +61,12 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	void BeginDrag()
 	{
-		if (transform.parent.GetComponent<HorizontalLayoutGroup>())
-		{
-			transform.parent.GetComponent<HorizontalLayoutGroup>().enabled = false;
-		}
+		_currentPositon = transform.position;
 		_beingDragged = true;
 		_beingClicked = true;
 		_dragPosition = Input.mousePosition - transform.position;
 		transform.SetParent(_defaultParent, false);
+		transform.parent.GetComponent<HorizontalLayoutGroup>().enabled = false;
 		transform.position = (Vector2)Input.mousePosition - _dragPosition;
 		transform.SetAsLastSibling();
 	}
@@ -135,7 +132,6 @@ public class CrewMemberUI : MonoBehaviour {
 				transform.SetParent(positionTransform, false);
 				GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
 				GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);
-				_currentPositon = transform.position;
 				result.gameObject.GetComponent<PositionUI>().LinkCrew(this);
 				_teamSelection.AssignCrew(_crewMember.Name, result.gameObject.GetComponent<PositionUI>().GetName());
 				placed = true;
@@ -168,7 +164,6 @@ public class CrewMemberUI : MonoBehaviour {
 		{
 			Tracker.T.trackedGameObject.Interacted("Unpositioned Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 		}
-		_currentPositon = transform.position;
 	}
 
 	/// <summary>

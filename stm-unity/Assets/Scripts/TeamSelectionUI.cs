@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
@@ -26,6 +27,8 @@ public class TeamSelectionUI : MonoBehaviour {
 	[SerializeField]
 	private Button _raceButton;
 	[SerializeField]
+	private Button _recruitButton;
+	[SerializeField]
 	private GameObject _crewPopUp;
 	[SerializeField]
 	private Text[] _crewPopUpText;
@@ -46,6 +49,10 @@ public class TeamSelectionUI : MonoBehaviour {
 
 	[SerializeField]
 	private GameObject _fireWarningPopUp;
+	[SerializeField]
+	private Button _fireButton;
+	[SerializeField]
+	private Button _meetingButton;
 	private CrewMember _currentDisplayedCrewMember;
 
 	[SerializeField]
@@ -82,6 +89,36 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			_raceButton.interactable = true;
 		}
+		if (_teamSelection.QuestionAllowance() < 2 && _recruitButton.IsInteractable())
+		{
+			_recruitButton.interactable = false;
+		}
+		else if (_teamSelection.QuestionAllowance() >= 2 && !_recruitButton.IsInteractable())
+		{
+			_recruitButton.interactable = true;
+		}
+	}
+
+	string SplitName(string original, bool newLine = false)
+	{
+		string[] splitName = original.Split(' ');
+		string name = splitName.Last() + ",";
+		if (newLine)
+		{
+			name += "\n";
+		} else
+		{
+			name += " ";
+		}
+		foreach (string split in splitName)
+		{
+			if (split != splitName.Last())
+			{
+				name += split + " ";
+			}
+		}
+		name = name.Remove(name.Length - 1, 1);
+		return name;
 	}
 
 	/// <summary>
@@ -148,9 +185,19 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			GameObject crewMember = Instantiate(_crewPrefab);
 			crewMember.transform.SetParent(_crewContainer.transform, false);
-			crewMember.transform.Find("Name").GetComponent<Text>().text = crew[i].Name;
-			crewMember.name = crew[i].Name;
+			crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(crew[i].Name, true);
+			crewMember.name = SplitName(crew[i].Name);
 			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, this, crew[i]);
+		}
+		List<Transform> sortedCrew = new List<Transform>();
+		foreach (Transform child in _crewContainer.transform)
+		{
+			sortedCrew.Add(child);
+		}
+		sortedCrew = sortedCrew.OrderBy(c => c.name).ToList();
+		for (int i = 0; i < sortedCrew.Count; i++)
+		{
+			sortedCrew[i].SetAsLastSibling();
 		}
 	}
 
@@ -171,7 +218,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			nameText.enabled = false;
 			if (boat.BoatPositions[i].CrewMember != null)
 			{
-				crewMember.transform.Find("Name").GetComponent<Text>().text = boat.BoatPositions[i].CrewMember.Name;
+				crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(boat.BoatPositions[i].CrewMember.Name, true);
 			}
 			crewMember.name = _crewPrefab.name;
 			foreach (var position in boatContainer.GetComponentsInChildren<PositionUI>())
@@ -217,7 +264,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	public void DisplayCrewPopUp(CrewMember crewMember)
 	{
 		_crewPopUp.SetActive(true);
-		_crewPopUpText[0].text = "Name: " + crewMember.Name;
+		_crewPopUpText[0].text = "Name: " + SplitName(crewMember.Name);
 		_crewPopUpText[1].text = "";
 		_crewPopUpText[2].text = "Age: " + crewMember.Age;
 		_crewPopUpText[3].text = "Role: " + _teamSelection.GetCrewMemberPosition(crewMember);
@@ -228,6 +275,16 @@ public class TeamSelectionUI : MonoBehaviour {
 		_crewPopUpBars[4].fillAmount = crewMember.RevealedSkills[CrewMemberSkill.Wisdom] * 0.1f;
 		_crewPopUpBars[5].fillAmount = crewMember.RevealedSkills[CrewMemberSkill.Willpower] * 0.1f;
 		_currentDisplayedCrewMember = crewMember;
+		_fireButton.interactable = true;
+		_meetingButton.interactable = true;
+		if (_teamSelection.QuestionAllowance() < 2)
+		{
+			_fireButton.interactable = false;
+		}
+		if (_teamSelection.QuestionAllowance() < 1)
+		{
+			_meetingButton.interactable = false;
+		}
 		foreach (Transform child in _opinionContainer.transform)
 		{
 			Destroy(child.gameObject);
@@ -236,7 +293,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			GameObject knownOpinion = Instantiate(_opinionPrefab);
 			knownOpinion.transform.SetParent(_opinionContainer.transform, false);
-			knownOpinion.transform.Find("Member/Name").GetComponent<Text>().text = opinion.Person.Name;
+			knownOpinion.transform.Find("Member/Name").GetComponent<Text>().text = SplitName(opinion.Person.Name);
 			CrewMember opinionMember = _teamSelection.PersonToCrewMember(opinion.Person);
 			if (opinionMember != null)
 			{
@@ -324,7 +381,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	public void FireCrew()
 	{
 		Tracker.T.trackedGameObject.Interacted("Fired Crew Member", GameObjectTracker.TrackedGameObject.Npc);
-		_teamSelection.FireCrewMember(_currentDisplayedCrewMember);
+		_teamSelection.FireCrewMember(_currentDisplayedCrewMember, 2);
 		ResetCrew();
 	}
 

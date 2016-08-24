@@ -28,8 +28,6 @@ public class MemberMeetingUI : MonoBehaviour
 	private Text _opinionNegativeQuestion;
 	[SerializeField]
 	private Text _closeText;
-	[SerializeField]
-	private Text _remainingText;
 
 	void Awake()
 	{
@@ -51,8 +49,7 @@ public class MemberMeetingUI : MonoBehaviour
 		_roleQuestion.text = _memberMeeting.GetEventText("RoleReveal").OrderBy(s => Guid.NewGuid()).FirstOrDefault() + " (3)";
 		_opinionPositiveQuestion.text = _memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).FirstOrDefault() + " (1)";
 		_opinionNegativeQuestion.text = _memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).FirstOrDefault() + " (2)";
-		int allowance = _memberMeeting.QuestionAllownace();
-		_remainingText.text = "Talk Time Left: " + allowance;
+		int allowance = _memberMeeting.QuestionAllowance();
 		_statQuestion.GetComponentInParent<Button>().interactable = true;
 		_roleQuestion.GetComponentInParent<Button>().interactable = true;
 		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = true;

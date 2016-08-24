@@ -24,7 +24,7 @@ public class MemberMeeting : MonoBehaviour
 		return _gameManager.SendBoatMembersEvent(context, eventKey, new List<CrewMember>() { crewMember }, cost);
 	}
 
-	public int QuestionAllownace()
+	public int QuestionAllowance()
 	{
 		return _gameManager.ActionAllowance;
 	}

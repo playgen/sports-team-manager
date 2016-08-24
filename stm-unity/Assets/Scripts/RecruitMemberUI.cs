@@ -17,8 +17,6 @@ public class RecruitMemberUI : MonoBehaviour
 	[SerializeField]
 	private Button[] _questionButtons;
 	[SerializeField]
-	private Text _remainingText;
-	[SerializeField]
 	private Text _dialogueText;
 
 	void Awake()
@@ -46,7 +44,18 @@ public class RecruitMemberUI : MonoBehaviour
 			}
 			CrewMember thisRecruit = recruits[i];
 			_recruitUI[i].SetActive(true);
-			_recruitUI[i].transform.Find("Name").GetComponent<Text>().text = thisRecruit.Name;
+			string[] splitName = thisRecruit.Name.Split(' ');
+			string name = splitName.Last() + ",";
+			name += " ";
+			foreach (string split in splitName)
+			{
+				if (split != splitName.Last())
+				{
+					name += split + " ";
+				}
+			}
+			name = name.Remove(name.Length - 1, 1);
+			_recruitUI[i].transform.Find("Name").GetComponent<Text>().text = name;
 			_recruitUI[i].transform.Find("Name").GetComponent<Button>().interactable = true;
 			_recruitUI[i].transform.Find("Name").GetComponent<Button>().onClick.RemoveAllListeners();
 			_recruitUI[i].transform.Find("Name").GetComponent<Button>().onClick.AddListener(delegate { Recruit(thisRecruit); });
@@ -54,6 +63,7 @@ public class RecruitMemberUI : MonoBehaviour
 			_recruitUI[i].name = recruits[i].Name;
 		}
 		var skills = (CrewMemberSkill[])Enum.GetValues(typeof(CrewMemberSkill));
+		var shuffledSkills = skills.OrderBy(s => Guid.NewGuid()).ToArray();
 		for (int i = 0; i < _questionButtons.Length; i++)
 		{
 			if (skills.Length <= i)
@@ -61,10 +71,10 @@ public class RecruitMemberUI : MonoBehaviour
 				_questionButtons[i].gameObject.SetActive(false);
 				continue;
 			}
-			CrewMemberSkill selected = skills[i];
+			CrewMemberSkill selected = shuffledSkills[i];
 			_questionButtons[i].gameObject.SetActive(true);
 			_questionButtons[i].interactable = true;
-			_questionButtons[i].GetComponentInChildren<Text>().text = _recruitMember.GetQuestionText("Recruit" + selected.ToString()).OrderBy(s => Guid.NewGuid()).FirstOrDefault() + " (2)";
+			_questionButtons[i].GetComponentInChildren<Text>().text = _recruitMember.GetQuestionText("Recruit" + selected).OrderBy(s => Guid.NewGuid()).FirstOrDefault() + " (2)";
 			_questionButtons[i].onClick.RemoveAllListeners();
 			_questionButtons[i].onClick.AddListener(delegate { AskQuestion(selected); });
 			Button thisButton = _questionButtons[i];
@@ -75,8 +85,7 @@ public class RecruitMemberUI : MonoBehaviour
 
 	void CostCheck()
 	{
-		int allowance = _recruitMember.QuestionAllownace();
-		_remainingText.text = "Talk Time Left: " + allowance;
+		int allowance = _recruitMember.QuestionAllowance();
 		if (allowance < 2)
 		{
 			for (int i = 0; i < _questionButtons.Length; i++)
