@@ -198,14 +198,6 @@
 					"Utterance": "Agree"
 				}, 
 				{
-					"Id": "943be5fe-a207-4175-ad1f-f6cce5753e12",
-					"CurrentState": "Neither",
-					"NextState": "-",
-					"Meaning": "Neither",
-					"Style": "Neither",
-					"Utterance": "Neither agree or disagree"
-				}, 
-				{
 					"Id": "a0ef3253-fffe-4356-aed0-8c92ddcd586c",
 					"CurrentState": "Disagree",
 					"NextState": "-",
@@ -220,6 +212,14 @@
 					"Meaning": "StrongDisagree",
 					"Style": "StrongDisagree",
 					"Utterance": "Strongly Disagree"
+				}, 
+				{
+					"Id": "b1606365-1605-4e95-897d-738c8b62bfa7",
+					"CurrentState": "Neither",
+					"NextState": "-",
+					"Meaning": "Neither",
+					"Style": "Neither",
+					"Utterance": "Neither"
 				}]
 		},
 	"types": [

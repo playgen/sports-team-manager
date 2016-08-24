@@ -45,8 +45,7 @@ public class RecruitMemberUI : MonoBehaviour
 			CrewMember thisRecruit = recruits[i];
 			_recruitUI[i].SetActive(true);
 			string[] splitName = thisRecruit.Name.Split(' ');
-			string name = splitName.Last() + ",";
-			name += " ";
+			string name = splitName.Last() + ",\n";
 			foreach (string split in splitName)
 			{
 				if (split != splitName.Last())
