@@ -89,11 +89,11 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			_raceButton.interactable = true;
 		}
-		if (_teamSelection.QuestionAllowance() < 2 && _recruitButton.IsInteractable())
+		if ((_teamSelection.QuestionAllowance() < 2 || _teamSelection.CrewEditAllowance() == 0 || !_teamSelection.CanAddCheck()) && _recruitButton.IsInteractable())
 		{
 			_recruitButton.interactable = false;
 		}
-		else if (_teamSelection.QuestionAllowance() >= 2 && !_recruitButton.IsInteractable())
+		else if (_teamSelection.QuestionAllowance() >= 2 && _teamSelection.CrewEditAllowance() > 0 && _teamSelection.CanAddCheck() && !_recruitButton.IsInteractable())
 		{
 			_recruitButton.interactable = true;
 		}
@@ -277,11 +277,11 @@ public class TeamSelectionUI : MonoBehaviour {
 		_currentDisplayedCrewMember = crewMember;
 		_fireButton.interactable = true;
 		_meetingButton.interactable = true;
-		if (_teamSelection.QuestionAllowance() < 2)
+		if (_teamSelection.QuestionAllowance() < 2 || _teamSelection.CrewEditAllowance() == 0 || !_teamSelection.CanRemoveCheck())
 		{
 			_fireButton.interactable = false;
 		}
-		if (_teamSelection.QuestionAllowance() < 1)
+		if (_teamSelection.QuestionAllowance() < 1 && _teamSelection.CrewEditAllowance() > 0 && _teamSelection.CanRemoveCheck())
 		{
 			_meetingButton.interactable = false;
 		}

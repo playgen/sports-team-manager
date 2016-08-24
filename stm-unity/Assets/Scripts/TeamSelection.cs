@@ -140,4 +140,19 @@ public class TeamSelection : MonoBehaviour {
 	{
 		return _gameManager.ActionAllowance;
 	}
+
+	public int CrewEditAllowance()
+	{
+		return _gameManager.CrewEditAllowance;
+	}
+
+	public bool CanAddCheck()
+	{
+		return _gameManager.CanAddToCrew();
+	}
+
+	public bool CanRemoveCheck()
+	{
+		return _gameManager.CanRemoveFromCrew();
+	}
 }

@@ -19,6 +19,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public List<Boat> LineUpHistory { get; set; }
 		public int ActionAllowance { get; set; } = 20;
+		public int CrewEditAllowance { get; set; }
 		public event EventHandler AllowanceUpdated = delegate { };
 
 		private IntegratedAuthoringToolAsset _iat { get; set; }
@@ -56,6 +57,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			manager.UpdateBeliefs("Manager");
 			manager.UpdateSingleBelief("Value(BoatType)", Boat.GetType().Name, "SELF");
 			manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
+			manager.UpdateSingleBelief("CrewEdit(Allowance)", Boat.BoatPositions.Count.ToString(), "SELF");
+			CrewEditAllowance = Boat.BoatPositions.Count;
 			Boat.Manager = manager;
 			manager.SaveStatus();
 
@@ -267,6 +270,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					Person person = new Person(storagePorvider, rpc);
 					Boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + person.EmotionalAppraisal.GetBeliefValue("Value(BoatType)")));
 					ActionAllowance = int.Parse(person.EmotionalAppraisal.GetBeliefValue("Action(Allowance)"));
+					CrewEditAllowance = int.Parse(person.EmotionalAppraisal.GetBeliefValue("CrewEdit(Allowance)"));
 					Boat.Name = iat.ScenarioName;
 					Boat.Manager = person;
 					continue;
@@ -375,6 +379,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			Boat.ConfirmChanges();
 			ResetActionAllowance(20);
+			ResetCrewEditAllowance();
 		}
 
 		public void PostRaceRest()
@@ -394,6 +399,22 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			ActionAllowance = amount;
 			Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
+			Boat.Manager.SaveStatus();
+			AllowanceUpdated(this, new EventArgs());
+		}
+
+		void DeductCrewEditAllowance(int cost = 1)
+		{
+			CrewEditAllowance -= cost;
+			Boat.Manager.UpdateSingleBelief("CrewEdit(Allowance)", CrewEditAllowance.ToString(), "SELF");
+			Boat.Manager.SaveStatus();
+			AllowanceUpdated(this, new EventArgs());
+		}
+
+		void ResetCrewEditAllowance()
+		{
+			CrewEditAllowance = Boat.BoatPositions.Count;
+			Boat.Manager.UpdateSingleBelief("CrewEdit(Allowance)", CrewEditAllowance.ToString(), "SELF");
 			Boat.Manager.SaveStatus();
 			AllowanceUpdated(this, new EventArgs());
 		}
@@ -448,9 +469,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		public bool CanAddToCrew()
+		{
+			if (Boat.GetAllCrewMembers().Count + 1 > (Boat.BoatPositions.Count + 1) * 2)
+			{
+				return false;
+			}
+			return true;
+		}
+
 		public void AddRecruit(CrewMember member, int cost)
 		{
-			if (cost <= ActionAllowance)
+			if (cost <= ActionAllowance && CrewEditAllowance > 0 && CanAddToCrew())
 			{
 				TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 				member.CreateFile(_iat, templateStorage, _storagePorvider, _storageLocation);
@@ -471,15 +501,26 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.SaveStatus();
 				DeductCost(cost);
 				_iat.SaveToFile(_storagePorvider, _iat.AssetFilePath);
+				DeductCrewEditAllowance();
 			}
+		}
+
+		public bool CanRemoveFromCrew()
+		{
+			if (Boat.GetAllCrewMembers().Count - 1 < Boat.BoatPositions.Count)
+			{
+				return false;
+			}
+			return true;
 		}
 
 		public void RetireCrewMember(CrewMember crewMember, int cost)
 		{
-			if (cost <= ActionAllowance)
+			if (cost <= ActionAllowance && CrewEditAllowance > 0 && CanRemoveFromCrew())
 			{
 				Boat.RetireCrew(crewMember);
 				DeductCost(cost);
+				DeductCrewEditAllowance();
 			}
 		}
 
