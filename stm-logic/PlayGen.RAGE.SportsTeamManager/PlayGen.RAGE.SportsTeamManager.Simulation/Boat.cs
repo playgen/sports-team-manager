@@ -149,12 +149,22 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void CreateRecruits(IntegratedAuthoringToolAsset iat, IStorageProvider templateStorage, IStorageProvider savedStorage, string storageLocation)
 		{
-			for (int i = 0; i < Recruits.Count; i++)
-			{
-				iat.RemoveCharacters(new List<string>() { Recruits[i].Name });
-			}
-			int amount = BoatPositions.Count + 1 - Recruits.Count;
 			Random rand = new Random();
+			List<CrewMember> recuritsToRemove = new List<CrewMember>();
+			foreach (CrewMember member in Recruits)
+			{
+				iat.RemoveCharacters(new List<string>() { member.Name });
+				if (rand.Next(0, 100) % 3 != 0)
+				{
+					recuritsToRemove.Add(member);
+				}
+			}
+			foreach (CrewMember member in recuritsToRemove)
+			{
+				Recruits.Remove(member);
+			}
+			
+			int amount = BoatPositions.Count + 1 - Recruits.Count;
 			for (int i = 0; i < amount; i++)
 			{
 				CrewMember newMember = new CrewMember(rand);
@@ -170,8 +180,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						unqiue = true;
 					}
 				}
-				int positionValue = rand.Next(0, BoatPositions.Count + 1);
-				Position selectedPerferred = positionValue < BoatPositions.Count ? BoatPositions[positionValue].Position : null;
+				Position selectedPerferred = null;
+				Dictionary<Position, int> positionStrength = GetPositionStrength();
+				if (positionStrength.OrderBy(kvp => kvp.Value).Last().Value - positionStrength.OrderBy(kvp => kvp.Value).First().Value == 0)
+				{
+					int positionValue = rand.Next(0, BoatPositions.Count + 1);
+					selectedPerferred = positionValue < BoatPositions.Count ? BoatPositions[positionValue].Position : null;
+				} else
+				{
+					int lowValue = positionStrength.OrderBy(kvp => kvp.Value).First().Value;
+					Position[] lowPositions = positionStrength.Where(kvp => kvp.Value == lowValue).Select(kvp => kvp.Key).ToArray();
+					selectedPerferred = lowPositions.OrderBy(p => Guid.NewGuid()).First();
+				}
 				newMember.Skills = new Dictionary<CrewMemberSkill, int>();
 				foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
 				{
@@ -200,6 +220,30 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Recruits[i].SaveStatus();
 			}
 			iat.SaveToFile(savedStorage, iat.AssetFilePath);
+		}
+
+		Dictionary<Position, int> GetPositionStrength()
+		{
+			Dictionary<Position, int> positionStrength = new Dictionary<Position, int>();
+			foreach (Position pos in BoatPositions.Select(bp => bp.Position))
+			{
+				positionStrength.Add(pos, 0);
+				foreach (CrewMember cm in GetAllCrewMembers())
+				{
+					if (pos.GetPositionRating(cm) >= 7)
+					{
+						positionStrength[pos]++;
+					}
+				}
+				foreach (CrewMember cm in Recruits)
+				{
+					if (pos.GetPositionRating(cm) >= 7)
+					{
+						positionStrength[pos]++;
+					}
+				}
+			}
+			return positionStrength;
 		}
 
 		/// <summary>
