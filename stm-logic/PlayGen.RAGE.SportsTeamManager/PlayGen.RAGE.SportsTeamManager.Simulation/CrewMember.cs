@@ -371,7 +371,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send an event to the EA/EDM to get the CrewMember's reaction and mood change as a result
 		/// </summary>
-		public string SendBoatMemberEvent(IntegratedAuthoringToolAsset iat, string state, string style, Boat boat)
+		public string SendMeetingEvent(IntegratedAuthoringToolAsset iat, string state, string style, Boat boat)
 		{
 			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
@@ -515,6 +515,91 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return reply;
 		}
 
+		public string SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Boat boat)
+		{
+			IEnumerable<DialogueStateActionDTO> dialogueOptions = Enumerable.Empty<DialogueStateActionDTO>();
+			string reply = null;
+			switch (selected.NextState)
+			{
+				case "NotPickedSkill":
+					foreach (BoatPosition bp in boat.BoatPositions)
+					{
+						if (bp.Position.GetPositionRating(this) >= bp.PositionScore)
+						{
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, selected.NextState + "Incorrect");
+						} else
+						{
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, selected.NextState);
+						}
+						break;
+					}
+					break;
+				default:
+					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, selected.NextState);
+					break;
+			}
+			if (dialogueOptions != null && dialogueOptions.Count() > 0)
+			{
+				DialogueStateActionDTO selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
+				iat.SetDialogueState("Player", selectedNext.NextState);
+				reply = selectedNext.Utterance;
+				if (selectedNext.NextState == "-")
+				{
+					PostRaceFeedback(selected.CurrentState, boat);
+				}
+			} else
+			{
+				iat.SetDialogueState("Player", "-");
+				PostRaceFeedback(selected.CurrentState, boat);
+			}
+			return reply;
+		}
+
+		void PostRaceFeedback(string lastEvent, Boat boat)
+		{
+			SaveStatus();
+			var spacelessName = EmotionalAppraisal.Perspective;
+			var eventBase = "Event(Action-Start,Player,{0},{1})";
+			var eventString = String.Format("PostRace({0})", lastEvent);
+			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
+			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
+			switch (lastEvent)
+			{
+				case "NotPickedFiredYes":
+					boat.RetireCrew(this);
+					foreach (CrewMember cm in boat.GetAllCrewMembers())
+					{
+						cm.AddOrUpdateOpinion(boat.Manager, -2);
+					}
+					break;
+				case "NotPickedFiredNo":
+					AddOrUpdateOpinion(boat.Manager, -10);
+					break;
+				case "NotPickedSkillTrain":
+					AddOrUpdateOpinion(boat.Manager, 2);
+					//improve two skills by 1
+					break;
+				case "NotPickedSkillFriends":
+					AddOrUpdateOpinion(boat.Manager, 1);
+					//improve two opinions either way by 2
+					break;
+				case "NotPickedSkillNothing":
+					AddOrUpdateOpinion(boat.Manager, -10);
+					break;
+				case "NotPickedSkillLeave":
+					boat.RetireCrew(this);
+					foreach (CrewMember cm in boat.GetAllCrewMembers())
+					{
+						cm.AddOrUpdateOpinion(boat.Manager, -1);
+					}
+					break;
+			}
+			EmotionalAppraisal.Update();
+			RolePlayCharacter.Update();
+			SaveStatus();
+			LoadBeliefs(boat);
+		}
+
 		/// <summary>
 		/// Retire this CrewMember
 		/// </summary>
@@ -528,3 +613,4 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 	}
 }
+ 

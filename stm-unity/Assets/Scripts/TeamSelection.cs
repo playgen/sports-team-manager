@@ -1,17 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+
+using UnityEngine;
 using System.Collections;
 using System.Linq;
 
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Collections.Generic;
 
+using IntegratedAuthoringTool.DTOs;
+
 public class TeamSelection : MonoBehaviour {
 	private GameManager _gameManager;
+	private int _sessionLength;
 	private int _confirmCount;
 
 	void Start()
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+		_sessionLength = _gameManager.GetRaceSessionLength();
 	}
 
 	/// <summary>
@@ -59,6 +65,11 @@ public class TeamSelection : MonoBehaviour {
 		return _confirmCount + 1;
 	}
 
+	public int GetSessionLength()
+	{
+		return _sessionLength;
+	}
+
 	/// <summary>
 	/// Confirm the line-up and get its score
 	/// </summary>
@@ -67,29 +78,45 @@ public class TeamSelection : MonoBehaviour {
 		_confirmCount++;
 		if (historical)
 		{
-			if (_confirmCount >= 5)
+			if (_confirmCount >= _sessionLength)
 			{
-				_confirmCount -= 5;
+				_confirmCount -= _sessionLength;
 			}
 		}
 		else
 		{
-			if (_confirmCount >= 5)
+			if (_confirmCount >= _sessionLength)
 			{
-				_gameManager.ConfirmLineUp();
-				_confirmCount -= 5;
+				KeyValuePair<List<CrewMember>, string> postRace = _gameManager.ConfirmLineUp();
+				print(postRace.Key[0].Name);
+				print(postRace.Value);
+				DialogueStateActionDTO[] replies = _gameManager.GetPostRaceEvents();
+				DialogueStateActionDTO selected = replies.OrderBy(r => Guid.NewGuid()).FirstOrDefault();
+				if (selected != null)
+				{
+					Dictionary<CrewMember, string> postRacePartTwo = _gameManager.SendPostRaceEvent(selected, postRace.Key);
+					foreach (KeyValuePair<CrewMember, string> kvp in postRacePartTwo)
+					{
+						print(kvp.Key);
+						print(kvp.Value);
+					}
+					DialogueStateActionDTO[] repliesTwo = _gameManager.GetPostRaceEvents();
+					DialogueStateActionDTO selectedTwo = repliesTwo.OrderBy(r => Guid.NewGuid()).FirstOrDefault();
+					if (selectedTwo != null)
+					{
+						Dictionary<CrewMember, string> postRacePartThree = _gameManager.SendPostRaceEvent(selectedTwo, postRace.Key);
+						foreach (KeyValuePair<CrewMember, string> kvp in postRacePartThree)
+						{
+							print(kvp.Key);
+							print(kvp.Value);
+						}
+					}
+				}
+				_confirmCount -= _sessionLength;
 			}
 			_gameManager.SaveLineUp();
 		}
 		return _gameManager.Boat.BoatScore;
-	}
-
-	public void PostRaceRest()
-	{
-		if (_confirmCount == 0)
-		{
-			_gameManager.PostRaceRest();
-		}
 	}
 
 	/// <summary>

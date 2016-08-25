@@ -129,7 +129,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var position = boat.BoatPositions.Select(p => p.Position).ToList();
 		GameObject boatContainer = Instantiate(_boatPrefab);
 		boatContainer.transform.SetParent(_boatContainer.transform, false);
-		var boatContainerHeight = _boatContainer.GetComponent<RectTransform>().rect.height * 0.2f;
+		var boatContainerHeight = _boatContainer.GetComponent<RectTransform>().rect.height * (1f/_teamSelection.GetSessionLength());
 		if (_boatHistory.Count > 0)
 		{
 			boatContainerHeight = _boatHistory[0].GetComponent<RectTransform>().rect.height;
@@ -139,7 +139,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		boatContainer.name = _boatPrefab.name;
 		var stageText = boatContainer.transform.Find("Stage").GetComponent<Text>();
 		var stageNumber = _teamSelection.GetStage();
-		if (stageNumber == 5) {
+		if (stageNumber == _teamSelection.GetSessionLength()) {
 			stageText.text = "Race\nDay!";
 		} else
 		{
@@ -367,7 +367,6 @@ public class TeamSelectionUI : MonoBehaviour {
 				Destroy(crewMember.GetComponent<EventTrigger>());
 			}
 		}
-		_teamSelection.PostRaceRest();
 		_boatHistory.Add(_currentBoat);
 		CreateNewBoat();
 	}

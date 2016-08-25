@@ -173,7 +173,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				bool unqiue = false;
 				while (!unqiue)
 				{
-					if (GetAllCrewMembers().Count(c => c.Name == newMember.Name) > 1 || Recruits.Count(c => c.Name == newMember.Name) > 1 || newMember.Name == Manager.Name)
+					if (GetAllCrewMembers().Count(c => c.Name == newMember.Name) > 0 || RetiredCrew.Count(c => c.Name == newMember.Name) > 0 || Recruits.Count(c => c.Name == newMember.Name) > 1 || newMember.Name == Manager.Name)
 					{
 						newMember.Name = newMember.SelectNewName(newMember.Gender, rand);
 					}

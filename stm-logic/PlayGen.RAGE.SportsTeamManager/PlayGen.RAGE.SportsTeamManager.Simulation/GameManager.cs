@@ -20,7 +20,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public List<Boat> LineUpHistory { get; set; }
 		public int ActionAllowance { get; set; }
 		public int CrewEditAllowance { get; set; }
-		public int RaceSessionLength { get; set; }
+		private int _raceSessionLength { get; set; }
 		public event EventHandler AllowanceUpdated = delegate { };
 
 		private IntegratedAuthoringToolAsset _iat { get; set; }
@@ -64,7 +64,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			};
 			ActionAllowance = (int)_config.ConfigValues[ConfigKeys.DefaultActionAllowance.ToString()] + ((int)_config.ConfigValues[ConfigKeys.ActionAllowancePerPosition.ToString()] * Boat.BoatPositions.Count);
 			CrewEditAllowance = (int)_config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition.ToString()] * Boat.BoatPositions.Count;
-			RaceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength.ToString()];
+			this._raceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength.ToString()];
 			manager.CreateFile(iat, templateStorage, storagePorvider, storageLocation);
 			manager.UpdateBeliefs("Manager");
 			manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.GetType().Name, "SELF");
@@ -282,7 +282,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					Boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.BoatType.GetDescription())), _config);
 					ActionAllowance = int.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.ActionAllowance.GetDescription()));
 					CrewEditAllowance = int.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.CrewEditAllowance.GetDescription()));
-					RaceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength.ToString()];
+					this._raceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength.ToString()];
 					Boat.Name = iat.ScenarioName;
 					Boat.Manager = person;
 					continue;
@@ -361,6 +361,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		public int GetRaceSessionLength()
+		{
+			return _raceSessionLength;
+		}
+
 		/// <summary>
 		/// Save the current boat line-up to the manager's EA file
 		/// </summary>
@@ -397,18 +402,45 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Save current line-up and update Crewmember's opinions and mood based on this line-up
 		/// </summary>
-		public void ConfirmLineUp()
+		public KeyValuePair<List<CrewMember>, string> ConfirmLineUp()
 		{
 			Boat.ConfirmChanges();
+			Boat.PostRaceRest();
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 			Boat.CreateRecruits(_iat, templateStorage, _storagePorvider, _storageLocation);
 			ResetActionAllowance();
 			ResetCrewEditAllowance();
+			DialogueStateActionDTO postRaceEvent = EventController.SelectPostRaceEvent(_iat);
+			if (postRaceEvent == null)
+			{
+				return new KeyValuePair<List<CrewMember>, string>(null, null);
+			}
+			List<CrewMember> eventMembers = new List<CrewMember>();
+			switch (postRaceEvent.Style)
+			{
+				case "NotPicked":
+					CrewMember notSelected = Boat.UnassignedCrew.OrderBy(c => Guid.NewGuid()).First();
+					eventMembers.Add(notSelected);
+					if (postRaceEvent.NextState != "-")
+					{
+						_iat.SetDialogueState("Player", postRaceEvent.NextState);
+					}
+					string reply = postRaceEvent.Utterance;
+					return new KeyValuePair<List<CrewMember>, string>(eventMembers, reply);
+				default:
+					return new KeyValuePair<List<CrewMember>, string>(null, null);
+			}
 		}
 
-		public void PostRaceRest()
+		public DialogueStateActionDTO[] GetPostRaceEvents()
 		{
-			Boat.PostRaceRest();
+			return EventController.GetEvents(_iat, _iat.GetCurrentDialogueState("Player"));
+		}
+
+		public Dictionary<CrewMember, string> SendPostRaceEvent(DialogueStateActionDTO dialogue, List<CrewMember> members)
+		{
+			var replies = EventController.SendPostRaceEvent(_iat, dialogue, members, Boat);
+			return replies;
 		}
 
 		void DeductCost(int cost)
@@ -508,29 +540,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return EventController.GetEventStrings(_iat, eventKey);
 		}
 
-		/// <summary>
-		/// Send an event to the EventController that'll be triggered for all crew within the list
-		/// </summary>
-		public string[] SendBoatMembersEvent(DialogueStateActionDTO selected, List<CrewMember> members)
-		{
-			int cost = GetQuestionCost(selected.Style);
-			if (cost <= ActionAllowance)
-			{
-				var replies = EventController.SelectBoatMemberEvent(_iat, selected, members, Boat);
-				Boat.UpdateBoatScore();
-				Boat.GetIdealCrew();
-				DeductCost(cost);
-				return replies.ToArray();
-			}
-			return new string[0];
-		}
-
-		public string[] SendBoatMembersEvent(string eventType, string eventName, List<CrewMember> members)
+		public string[] SendMeetingEvent(string eventType, string eventName, List<CrewMember> members)
 		{
 			int cost = GetQuestionCost(eventName);
 			if (cost <= ActionAllowance)
 			{
-				var replies = EventController.SelectBoatMemberEvent(_iat, eventType, eventName, members, Boat);
+				var replies = EventController.SendMeetingEvent(_iat, eventType, eventName, members, Boat);
 				Boat.UpdateBoatScore();
 				Boat.GetIdealCrew();
 				DeductCost(cost);
@@ -564,7 +579,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			int cost = (int)_config.ConfigValues[ConfigKeys.SendRecruitmentQuestionCost.ToString()];
 			if (cost <= ActionAllowance)
 			{
-				var replies = EventController.SelectRecruitEvent(_iat, skill, members);
+				var replies = EventController.SendRecruitEvent(_iat, skill, members);
 				DeductCost(cost);
 				return replies;
 			}
