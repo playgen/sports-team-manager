@@ -19,17 +19,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int BoatScore { get; set; }
 		public float IdealMatchScore { get; set; }
 		public Person Manager { get; set; }
+		private ConfigStore _config { get;}
 
 		/// <summary>
 		/// Boat constructor
 		/// </summary>
-		public Boat()
+		public Boat(ConfigStore config)
 		{
 			BoatPositions = new List<BoatPosition>();
 			UnassignedCrew = new List<CrewMember>();
 			RetiredCrew = new List<CrewMember>();
 			IdealCrew = new List<BoatPosition>();
 			Recruits = new List<CrewMember>();
+			_config = config;
 		}
 
 		/// <summary>
@@ -167,7 +169,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			int amount = BoatPositions.Count + 1 - Recruits.Count;
 			for (int i = 0; i < amount; i++)
 			{
-				CrewMember newMember = new CrewMember(rand);
+				CrewMember newMember = new CrewMember(rand, _config);
 				bool unqiue = false;
 				while (!unqiue)
 				{
@@ -199,16 +201,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						if (selectedPerferred.RequiredSkills.Contains(skill))
 						{
-							newMember.Skills.Add(skill, rand.Next(7, 11));
+							newMember.Skills.Add(skill, rand.Next((int)_config.ConfigValues[ConfigKeys.GoodPositionRating.ToString()], 11));
 						}
 						else
 						{
-							newMember.Skills.Add(skill, rand.Next(1, 5));
+							newMember.Skills.Add(skill, rand.Next(1, (int)_config.ConfigValues[ConfigKeys.BadPositionRating.ToString()] + 1));
 						}
 					}
 					else
 					{
-						newMember.Skills.Add(skill, rand.Next(3, 9));
+						newMember.Skills.Add(skill, rand.Next((int)_config.ConfigValues[ConfigKeys.RandomSkillLow.ToString()], (int)_config.ConfigValues[ConfigKeys.RandomSkillHigh.ToString()] + 1));
 					}
 				}
 				Recruits.Add(newMember);
@@ -230,14 +232,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				positionStrength.Add(pos, 0);
 				foreach (CrewMember cm in GetAllCrewMembers())
 				{
-					if (pos.GetPositionRating(cm) >= 7)
+					if (pos.GetPositionRating(cm) >= (int)_config.ConfigValues[ConfigKeys.GoodPositionRating.ToString()])
 					{
 						positionStrength[pos]++;
 					}
 				}
 				foreach (CrewMember cm in Recruits)
 				{
-					if (pos.GetPositionRating(cm) >= 7)
+					if (pos.GetPositionRating(cm) >= (int)_config.ConfigValues[ConfigKeys.GoodPositionRating.ToString()])
 					{
 						positionStrength[pos]++;
 					}
@@ -282,7 +284,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			foreach (BoatPosition bp in BoatPositions)
 			{
-				bp.UpdateCrewMemberScore(this);
+				bp.UpdateCrewMemberScore(this, _config);
 			}
 			BoatScore = BoatPositions.Sum(bp => bp.PositionScore);
 			if (IdealCrew.Count == BoatPositions.Count)
@@ -293,7 +295,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void GetIdealCrew()
 		{
-			Boat tempBoat = (Boat)Activator.CreateInstance(this.GetType());
+			Boat tempBoat = (Boat)Activator.CreateInstance(this.GetType(), _config);
 			tempBoat.Manager = Manager;
 			IEnumerable<CrewMember> availableCrew = GetAllCrewMembers().Where(cm => cm.restCount <= 0);
 			IEnumerable<IEnumerable<CrewMember>> crewCombos = GetPermutations(availableCrew, BoatPositions.Count - 1);

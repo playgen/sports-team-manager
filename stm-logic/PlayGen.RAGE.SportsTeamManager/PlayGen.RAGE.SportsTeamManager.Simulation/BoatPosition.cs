@@ -14,7 +14,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the current score for this Position on this boat for this CrewMember
 		/// </summary>
-		public void UpdateCrewMemberScore(Boat boat)
+		public void UpdateCrewMemberScore(Boat boat, ConfigStore config)
 		{
 			if (CrewMember == null || Position == null)
 			{
@@ -51,11 +51,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				opinion = opinion / opinionCount;
 			}
-			crewScore += opinion;
+			crewScore += (int)(opinion * config.ConfigValues[ConfigKeys.OpinionRatingWeighting.ToString()]);
 
-			crewScore += managerOpinion;
+			crewScore += (int)(managerOpinion * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting.ToString()]);
 
-			crewScore += CrewMember.GetMood();
+			crewScore += (int)(CrewMember.GetMood() * config.ConfigValues[ConfigKeys.MoodRatingWeighting.ToString()]);
 
 			PositionScore = crewScore;
 		}

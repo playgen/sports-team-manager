@@ -100,7 +100,7 @@ public class RecruitMemberUI : MonoBehaviour
 	public void AskQuestion(CrewMemberSkill skill)
 	{
 		Tracker.T.alternative.Selected("Recruitment", skill + " Question", AlternativeTracker.Alternative.Question);
-		Dictionary<CrewMember, string> replies = _recruitMember.AskQuestion(skill, 2);
+		Dictionary<CrewMember, string> replies = _recruitMember.AskQuestion(skill);
 		foreach (GameObject recruit in _recruitUI)
 		{
 			string reply = replies.Where(r => r.Key.Name == recruit.name).FirstOrDefault().Value;
@@ -117,7 +117,7 @@ public class RecruitMemberUI : MonoBehaviour
 	public void Recruit(CrewMember crewMember)
 	{
 		Tracker.T.trackedGameObject.Interacted("Hired Crew Member", GameObjectTracker.TrackedGameObject.Npc);
-		_recruitMember.Recruit(crewMember, 2);
+		_recruitMember.Recruit(crewMember);
 		_teamSelectionUI.ResetCrew();
 		gameObject.SetActive(false);
 	}

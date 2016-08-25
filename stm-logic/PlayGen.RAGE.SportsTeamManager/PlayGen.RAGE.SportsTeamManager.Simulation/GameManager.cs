@@ -18,32 +18,42 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public EventController EventController { get; set; }
 
 		public List<Boat> LineUpHistory { get; set; }
-		public int ActionAllowance { get; set; } = 20;
+		public int ActionAllowance { get; set; }
 		public int CrewEditAllowance { get; set; }
+		public int RaceSessionLength { get; set; }
 		public event EventHandler AllowanceUpdated = delegate { };
 
 		private IntegratedAuthoringToolAsset _iat { get; set; }
-		private IStorageProvider _storagePorvider;
-		private string _storageLocation;
+		private IStorageProvider _storagePorvider { get; set; }
+		private string _storageLocation { get; set; }
+
+		private ConfigStore _config { get; set; }
+
+		public GameManager()
+		{
+			_config = new ConfigStore();
+		}
 
 		/// <summary>
 		/// Create a new game
 		/// </summary>
 		public void NewGame(IStorageProvider storagePorvider, string storageLocation, string boatName, string managerName, string managerAge, string managerGender, List<CrewMember> crew = null)
 		{
+			UnloadGame();
 			var noSpaceBoatName = boatName.Replace(" ", "");
 			storageLocation = Path.Combine(storageLocation, noSpaceBoatName);
 			Directory.CreateDirectory(storageLocation);
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile(templateStorage, "template_iat");
-			Boat = new Dinghy();
+			Boat = new Dinghy(_config);
 			Boat.Name = boatName;
 			iat.ScenarioName = Boat.Name;
+			Random random = new Random();
 			bool initialCrew = false;
 			if (crew == null)
 			{
 				initialCrew = true;
-				crew = CreateInitialCrew(managerName);
+				crew = CreateInitialCrew(managerName, random);
 			}
 
 			Person manager = new Person
@@ -52,13 +62,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Age = int.Parse(managerAge),
 				Gender = managerGender
 			};
-
+			ActionAllowance = (int)_config.ConfigValues[ConfigKeys.DefaultActionAllowance.ToString()] + ((int)_config.ConfigValues[ConfigKeys.ActionAllowancePerPosition.ToString()] * Boat.BoatPositions.Count);
+			CrewEditAllowance = (int)_config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition.ToString()] * Boat.BoatPositions.Count;
+			RaceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength.ToString()];
 			manager.CreateFile(iat, templateStorage, storagePorvider, storageLocation);
 			manager.UpdateBeliefs("Manager");
-			manager.UpdateSingleBelief("Value(BoatType)", Boat.GetType().Name, "SELF");
-			manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
-			manager.UpdateSingleBelief("CrewEdit(Allowance)", Boat.BoatPositions.Count.ToString(), "SELF");
-			CrewEditAllowance = Boat.BoatPositions.Count;
+			manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.GetType().Name, "SELF");
+			manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString(), "SELF");
+			manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString(), "SELF");
 			Boat.Manager = manager;
 			manager.SaveStatus();
 
@@ -81,11 +92,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					if (member != otherMember)
 					{
-						member.AddOrUpdateOpinion(otherMember, 0);
-						member.AddOrUpdateRevealedOpinion(otherMember, 0);
+						member.AddOrUpdateOpinion(otherMember, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+						member.AddOrUpdateRevealedOpinion(otherMember, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
 					}
-					member.AddOrUpdateOpinion(Boat.Manager, 0);
-					member.AddOrUpdateRevealedOpinion(Boat.Manager, 0);
+					member.AddOrUpdateOpinion(Boat.Manager, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+					member.AddOrUpdateRevealedOpinion(Boat.Manager, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
 				}
 				member.UpdateBeliefs("null");
 				member.SaveStatus();
@@ -104,11 +115,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create the CrewMember for the start of every game
 		/// </summary>
-		public List<CrewMember> CreateInitialCrew(string managerName)
+		public List<CrewMember> CreateInitialCrew(string managerName, Random random)
 		{
-			Random random = new Random();
 			CrewMember[] crew = {
-			new CrewMember (random)
+			new CrewMember (random, _config)
 			{
 				Skills = new Dictionary<CrewMemberSkill, int>()
 				{
@@ -120,7 +130,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{CrewMemberSkill.Willpower, random.Next(7, 11)}
 				},
 			},
-			new CrewMember (random)
+			new CrewMember (random, _config)
 			{
 				Skills = new Dictionary<CrewMemberSkill, int>()
 				{
@@ -132,7 +142,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{CrewMemberSkill.Wisdom, random.Next(7, 11)}
 				}
 			},
-			new CrewMember (random)
+			new CrewMember (random, _config)
 			{
 				Skills = new Dictionary<CrewMemberSkill, int>()
 				{
@@ -144,7 +154,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{CrewMemberSkill.Willpower, random.Next(7, 11)}
 				}
 			},
-			new CrewMember (random)
+			new CrewMember (random, _config)
 			{
 				Skills = new Dictionary<CrewMemberSkill, int>()
 				{
@@ -168,7 +178,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{CrewMemberSkill.Willpower, random.Next(4, 8)}
 				}
 			},*/
-			new CrewMember (random)
+			new CrewMember (random, _config)
 			{
 				Skills = new Dictionary<CrewMemberSkill, int>()
 				{
@@ -180,7 +190,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{CrewMemberSkill.Willpower, random.Next(2, 6)}
 				}
 			},
-			new CrewMember (random)
+			new CrewMember (random, _config)
 			{
 				Skills = new Dictionary<CrewMemberSkill, int>()
 				{
@@ -255,7 +265,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void LoadGame(IStorageProvider storagePorvider, string storageLocation, string boatName)
 		{
 			UnloadGame();
-			Boat = new Boat();
+			Boat = new Boat(_config);
 			storageLocation = Path.Combine(storageLocation, boatName.Replace(" ", ""));
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile(storagePorvider, Path.Combine(storageLocation, boatName.Replace(" ", "") + ".iat"));
 			var rpcList = iat.GetAllCharacters();
@@ -265,18 +275,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			foreach (RolePlayCharacterAsset rpc in rpcList)
 			{
 				var tempea = EmotionalAppraisalAsset.LoadFromFile(storagePorvider, rpc.EmotionalAppraisalAssetSource);
-				string position = tempea.GetBeliefValue("Value(Position)");
+				string position = tempea.GetBeliefValue(NPCBeliefs.Position.GetDescription());
 				if (position == "Manager")
 				{
 					Person person = new Person(storagePorvider, rpc);
-					Boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + person.EmotionalAppraisal.GetBeliefValue("Value(BoatType)")));
-					ActionAllowance = int.Parse(person.EmotionalAppraisal.GetBeliefValue("Action(Allowance)"));
-					CrewEditAllowance = int.Parse(person.EmotionalAppraisal.GetBeliefValue("CrewEdit(Allowance)"));
+					Boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.BoatType.GetDescription())), _config);
+					ActionAllowance = int.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.ActionAllowance.GetDescription()));
+					CrewEditAllowance = int.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.CrewEditAllowance.GetDescription()));
+					RaceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength.ToString()];
 					Boat.Name = iat.ScenarioName;
 					Boat.Manager = person;
 					continue;
 				}
-				CrewMember crewMember = new CrewMember(storagePorvider, rpc);
+				CrewMember crewMember = new CrewMember(storagePorvider, rpc, _config);
 				if (position == "Retired")
 				{
 					Boat.RetireCrew(crewMember);
@@ -338,8 +349,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				var splitAfter = lineup.Split('(')[2];
 				splitAfter = splitAfter.Split(')')[0];
 				var subjectSplit = splitAfter.Split(',');
-				Boat boat = new Boat();
-				boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + subjectSplit[0]));
+				Boat boat = new Boat(_config);
+				boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + subjectSplit[0]), _config);
 				for (int i = 0; i < boat.BoatPositions.Count; i++)
 				{
 					boat.BoatPositions[i].CrewMember = Boat.GetAllCrewMembersIncludingRetired().SingleOrDefault(c => c.Name.Replace(" ", "") == subjectSplit[((i + 1) * 2) - 1].Replace(" ", ""));
@@ -391,7 +402,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat.ConfirmChanges();
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 			Boat.CreateRecruits(_iat, templateStorage, _storagePorvider, _storageLocation);
-			ResetActionAllowance(20);
+			ResetActionAllowance();
 			ResetCrewEditAllowance();
 		}
 
@@ -403,31 +414,31 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		void DeductCost(int cost)
 		{
 			ActionAllowance -= cost;
-			Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
+			Boat.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString(), "SELF");
 			Boat.Manager.SaveStatus();
 			AllowanceUpdated(this, new EventArgs());
 		}
 
-		void ResetActionAllowance(int amount)
+		void ResetActionAllowance()
 		{
-			ActionAllowance = amount;
-			Boat.Manager.UpdateSingleBelief("Action(Allowance)", ActionAllowance.ToString(), "SELF");
+			ActionAllowance = (int)_config.ConfigValues[ConfigKeys.DefaultActionAllowance.ToString()] + ((int)_config.ConfigValues[ConfigKeys.ActionAllowancePerPosition.ToString()] * Boat.BoatPositions.Count);
+			Boat.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString(), "SELF");
 			Boat.Manager.SaveStatus();
 			AllowanceUpdated(this, new EventArgs());
 		}
 
-		void DeductCrewEditAllowance(int cost = 1)
+		void DeductCrewEditAllowance()
 		{
-			CrewEditAllowance -= cost;
-			Boat.Manager.UpdateSingleBelief("CrewEdit(Allowance)", CrewEditAllowance.ToString(), "SELF");
+			CrewEditAllowance--;
+			Boat.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString(), "SELF");
 			Boat.Manager.SaveStatus();
 			AllowanceUpdated(this, new EventArgs());
 		}
 
 		void ResetCrewEditAllowance()
 		{
-			CrewEditAllowance = Boat.BoatPositions.Count;
-			Boat.Manager.UpdateSingleBelief("CrewEdit(Allowance)", CrewEditAllowance.ToString(), "SELF");
+			CrewEditAllowance = (int)_config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition.ToString()] * Boat.BoatPositions.Count;
+			Boat.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString(), "SELF");
 			Boat.Manager.SaveStatus();
 			AllowanceUpdated(this, new EventArgs());
 		}
@@ -441,25 +452,27 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return true;
 		}
 
-		public void AddRecruit(CrewMember member, int cost)
+		public void AddRecruit(CrewMember member)
 		{
+			int cost = (int)_config.ConfigValues[ConfigKeys.RecruitmentCost.ToString()];
 			if (cost <= ActionAllowance && CrewEditAllowance > 0 && CanAddToCrew())
 			{
 				_iat.RemoveCharacters(new List<string>() { member.Name });
 				TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 				member.CreateFile(_iat, templateStorage, _storagePorvider, _storageLocation);
 				Boat.AddCrew(member);
+				Random random = new Random();
 				foreach (CrewMember otherMember in Boat.GetAllCrewMembers())
 				{
 					if (member != otherMember)
 					{
-						member.AddOrUpdateOpinion(otherMember, 0);
-						member.AddOrUpdateRevealedOpinion(otherMember, 0);
-						otherMember.AddOrUpdateOpinion(member, 0);
-						otherMember.AddOrUpdateRevealedOpinion(member, 0);
+						member.AddOrUpdateOpinion(otherMember, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+						member.AddOrUpdateRevealedOpinion(otherMember, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+						otherMember.AddOrUpdateOpinion(member, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+						otherMember.AddOrUpdateRevealedOpinion(member, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
 					}
-					member.AddOrUpdateOpinion(Boat.Manager, 0);
-					member.AddOrUpdateRevealedOpinion(Boat.Manager, 0);
+					member.AddOrUpdateOpinion(Boat.Manager, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+					member.AddOrUpdateRevealedOpinion(Boat.Manager, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
 				}
 				member.UpdateBeliefs("null");
 				member.SaveStatus();
@@ -479,8 +492,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return true;
 		}
 
-		public void RetireCrewMember(CrewMember crewMember, int cost)
+		public void RetireCrewMember(CrewMember crewMember)
 		{
+			int cost = (int)_config.ConfigValues[ConfigKeys.FiringCost.ToString()];
 			if (cost <= ActionAllowance && CrewEditAllowance > 0 && CanRemoveFromCrew())
 			{
 				Boat.RetireCrew(crewMember);
@@ -497,8 +511,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send an event to the EventController that'll be triggered for all crew within the list
 		/// </summary>
-		public string[] SendBoatMembersEvent(DialogueStateActionDTO selected, List<CrewMember> members, int cost)
+		public string[] SendBoatMembersEvent(DialogueStateActionDTO selected, List<CrewMember> members)
 		{
+			int cost = GetQuestionCost(selected.Style);
 			if (cost <= ActionAllowance)
 			{
 				var replies = EventController.SelectBoatMemberEvent(_iat, selected, members, Boat);
@@ -510,8 +525,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return new string[0];
 		}
 
-		public string[] SendBoatMembersEvent(string eventType, string eventName, List<CrewMember> members, int cost)
+		public string[] SendBoatMembersEvent(string eventType, string eventName, List<CrewMember> members)
 		{
+			int cost = GetQuestionCost(eventName);
 			if (cost <= ActionAllowance)
 			{
 				var replies = EventController.SelectBoatMemberEvent(_iat, eventType, eventName, members, Boat);
@@ -523,11 +539,29 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return new string[0];
 		}
 
+		public int GetQuestionCost(string eventName)
+		{
+			switch (eventName)
+			{
+				case "StatReveal":
+					return (int)_config.ConfigValues[ConfigKeys.SkillRevealCost.ToString()];
+				case "RoleReveal":
+					return (int)_config.ConfigValues[ConfigKeys.RoleRevealCost.ToString()];
+				case "OpinionRevealPositive":
+					return (int)_config.ConfigValues[ConfigKeys.OpinionPositiveRevealCost.ToString()];
+				case "OpinionRevealNegative":
+					return (int)_config.ConfigValues[ConfigKeys.OpinionNegativeRevealCost.ToString()];
+				default:
+					return 0;
+			}
+		}
+
 		/// <summary>
 		/// Send an event to the EventController that'll be triggered for all members within the list
 		/// </summary>
-		public Dictionary<CrewMember, string> SendRecruitMembersEvent(CrewMemberSkill skill, List<CrewMember> members, int cost)
+		public Dictionary<CrewMember, string> SendRecruitMembersEvent(CrewMemberSkill skill, List<CrewMember> members)
 		{
+			int cost = (int)_config.ConfigValues[ConfigKeys.SendRecruitmentQuestionCost.ToString()];
 			if (cost <= ActionAllowance)
 			{
 				var replies = EventController.SelectRecruitEvent(_iat, skill, members);

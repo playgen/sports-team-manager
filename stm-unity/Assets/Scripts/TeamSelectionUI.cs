@@ -381,7 +381,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	public void FireCrew()
 	{
 		Tracker.T.trackedGameObject.Interacted("Fired Crew Member", GameObjectTracker.TrackedGameObject.Npc);
-		_teamSelection.FireCrewMember(_currentDisplayedCrewMember, 2);
+		_teamSelection.FireCrewMember(_currentDisplayedCrewMember);
 		ResetCrew();
 	}
 

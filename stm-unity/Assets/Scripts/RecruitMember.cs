@@ -23,14 +23,14 @@ public class RecruitMember : MonoBehaviour {
 		return _gameManager.GetEventStrings(eventKey);
 	}
 
-	public Dictionary<CrewMember, string> AskQuestion(CrewMemberSkill skill, int cost)
+	public Dictionary<CrewMember, string> AskQuestion(CrewMemberSkill skill)
 	{
-		return _gameManager.SendRecruitMembersEvent(skill, _gameManager.Boat.Recruits, cost);
+		return _gameManager.SendRecruitMembersEvent(skill, _gameManager.Boat.Recruits);
 	}
 
-	public void Recruit(CrewMember crewMember, int cost)
+	public void Recruit(CrewMember crewMember)
 	{
-		_gameManager.AddRecruit(crewMember, cost);
+		_gameManager.AddRecruit(crewMember);
 	}
 
 	public int QuestionAllowance()

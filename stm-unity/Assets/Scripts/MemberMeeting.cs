@@ -19,9 +19,9 @@ public class MemberMeeting : MonoBehaviour
 		return _gameManager.GetEventStrings(eventKey);
 	}
 
-	public string[] AskQuestion(string context, string eventKey, CrewMember crewMember, int cost)
+	public string[] AskQuestion(string context, string eventKey, CrewMember crewMember)
 	{
-		return _gameManager.SendBoatMembersEvent(context, eventKey, new List<CrewMember>() { crewMember }, cost);
+		return _gameManager.SendBoatMembersEvent(context, eventKey, new List<CrewMember>() { crewMember });
 	}
 
 	public int QuestionAllowance()

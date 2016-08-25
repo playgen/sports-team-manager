@@ -15,7 +15,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoat()
 		{
-			List<CrewMember> crew = CreateInitialCrew();
+			ConfigStore config = new ConfigStore();
+			List<CrewMember> crew = CreateInitialCrew(config);
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 			gameManager.AssignCrew("Skipper", "Skippy Skip");
@@ -29,7 +30,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void BadBoat()
 		{
-			List<CrewMember> crew = CreateInitialCrew();
+			ConfigStore config = new ConfigStore();
+			List<CrewMember> crew = CreateInitialCrew(config);
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 			gameManager.AssignCrew("Skipper", "Nick Pony");
@@ -43,7 +45,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void OnePersonBoat()
 		{
-			List<CrewMember> crew = CreateInitialCrew();
+			ConfigStore config = new ConfigStore();
+			List<CrewMember> crew = CreateInitialCrew(config);
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 			gameManager.AssignCrew("Skipper", "Rav Age");
@@ -57,7 +60,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithFriendlyCrew()
 		{
-			List<CrewMember> crew = CreateInitialCrew();
+			ConfigStore config = new ConfigStore();
+			List<CrewMember> crew = CreateInitialCrew(config);
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 			var skip = gameManager.Boat.GetAllCrewMembers().Single(c => c.Name == "Skippy Skip");
@@ -80,7 +84,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithUnfriendlyCrew()
 		{
-			List<CrewMember> crew = CreateInitialCrew();
+			ConfigStore config = new ConfigStore();
+			List<CrewMember> crew = CreateInitialCrew(config);
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 			var skip = gameManager.Boat.GetAllCrewMembers().Single(c => c.Name == "Skippy Skip");
@@ -103,7 +108,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithMixedOpinionCrew()
 		{
-			List<CrewMember> crew = CreateInitialCrew();
+			ConfigStore config = new ConfigStore();
+			List<CrewMember> crew = CreateInitialCrew(config);
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 			var skip = gameManager.Boat.GetAllCrewMembers().Single(c => c.Name == "Skippy Skip");
@@ -126,7 +132,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithUnfriendlySkip()
 		{
-			List<CrewMember> crew = CreateInitialCrew();
+			ConfigStore config = new ConfigStore();
+			List<CrewMember> crew = CreateInitialCrew(config);
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 			var skip = gameManager.Boat.GetAllCrewMembers().Single(c => c.Name == "Skippy Skip");
@@ -145,7 +152,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithManagerOpinions()
 		{
-			List<CrewMember> crew = CreateInitialCrew();
+			ConfigStore config = new ConfigStore();
+			List<CrewMember> crew = CreateInitialCrew(config);
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 			var skip = gameManager.Boat.GetAllCrewMembers().Single(c => c.Name == "Skippy Skip");
@@ -166,7 +174,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithManagerAndCrewOpinions()
 		{
-			List<CrewMember> crew = CreateInitialCrew();
+			ConfigStore config = new ConfigStore();
+			List<CrewMember> crew = CreateInitialCrew(config);
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 			var skip = gameManager.Boat.GetAllCrewMembers().Single(c => c.Name == "Skippy Skip");
@@ -193,7 +202,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithOpinionsOnUnused()
 		{
-			List<CrewMember> crew = CreateInitialCrew();
+			ConfigStore config = new ConfigStore();
+			List<CrewMember> crew = CreateInitialCrew(config);
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 			var skip = gameManager.Boat.GetAllCrewMembers().Single(c => c.Name == "Skippy Skip");
@@ -224,7 +234,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithOpinionUpdates()
 		{
-			List<CrewMember> crew = CreateInitialCrew();
+			ConfigStore config = new ConfigStore();
+			List<CrewMember> crew = CreateInitialCrew(config);
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 			var skip = gameManager.Boat.GetAllCrewMembers().Single(c => c.Name == "Skippy Skip");
@@ -263,7 +274,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void CreateAndSaveNewBoat()
 		{
-			List<CrewMember> crew = CreateInitialCrew();
+			ConfigStore config = new ConfigStore();
+			List<CrewMember> crew = CreateInitialCrew(config);
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 		}
@@ -271,7 +283,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void CreateAndLoadNewBoat()
 		{
-			List<CrewMember> crew = CreateInitialCrew();
+			ConfigStore config = new ConfigStore();
+			List<CrewMember> crew = CreateInitialCrew(config);
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 			gameManager.LoadGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace");
@@ -286,7 +299,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		{
 			for (int i = 0; i < _testCount; i++)
 			{
-				List<CrewMember> crew = CreateInitialCrew();
+				ConfigStore config = new ConfigStore();
+				List<CrewMember> crew = CreateInitialCrew(config);
 				GameManager gameManager = new GameManager();
 				gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 
@@ -315,7 +329,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		{
 			for (int i = 0; i < _testCount; i++)
 			{
-				List<CrewMember> crew = CreateInitialCrew();
+				ConfigStore config = new ConfigStore();
+				List<CrewMember> crew = CreateInitialCrew(config);
 				GameManager gameManager = new GameManager();
 				gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 
@@ -357,7 +372,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		{
 			for (int i = 0; i < _testCount; i++)
 			{
-				List<CrewMember> crew = CreateInitialCrew();
+				ConfigStore config = new ConfigStore();
+				List<CrewMember> crew = CreateInitialCrew(config);
 				GameManager gameManager = new GameManager();
 				gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 
@@ -427,7 +443,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		{
 			for (int i = 0; i < _testCount; i++)
 			{
-				List<CrewMember> crew = CreateInitialCrew();
+				ConfigStore config = new ConfigStore();
+				List<CrewMember> crew = CreateInitialCrew(config);
 				GameManager gameManager = new GameManager();
 				gameManager.NewGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", "Player Manager", "18", "Male", crew);
 
@@ -457,10 +474,10 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			}
 		}
 
-		public List<CrewMember> CreateInitialCrew()
+		public List<CrewMember> CreateInitialCrew(ConfigStore config)
 		{
 			CrewMember[] crew = {
-			new CrewMember
+			new CrewMember (config)
 			{
 				Name = "Skippy Skip",
 				Age = 35,
@@ -475,7 +492,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 					{CrewMemberSkill.Willpower, 10}
 				}
 			},
-			new CrewMember
+			new CrewMember (config)
 			{
 				Name = "Wise Nav",
 				Age = 28,
@@ -490,7 +507,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 					{CrewMemberSkill.Willpower, 2}
 				}
 			},
-			new CrewMember
+			new CrewMember (config)
 			{
 				Name = "Dim Wobnam",
 				Age = 19,
@@ -505,7 +522,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 					{CrewMemberSkill.Willpower, 10}
 				}
 			},
-			new CrewMember
+			new CrewMember (config)
 			{
 				Name = "Rav Age",
 				Age = 25,
@@ -520,7 +537,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 					{CrewMemberSkill.Willpower, 5}
 				}
 			},
-			new CrewMember
+			new CrewMember (config)
 			{
 				Name = "Nick Pony",
 				Age = 32,

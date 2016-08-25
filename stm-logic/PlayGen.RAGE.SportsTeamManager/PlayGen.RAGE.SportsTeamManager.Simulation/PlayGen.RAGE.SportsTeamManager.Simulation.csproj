@@ -58,6 +58,10 @@
     <Reference Include="KnowledgeBase">
       <HintPath>..\..\RAGE Assets\KnowledgeBase.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RageAssetManager">
       <HintPath>..\..\RAGE Assets\RageAssetManager.dll</HintPath>
     </Reference>
@@ -79,12 +83,16 @@
   <ItemGroup>
     <Compile Include="Boat.cs" />
     <Compile Include="BoatPosition.cs" />
+    <Compile Include="ConfigKeys.cs" />
+    <Compile Include="ConfigStore.cs" />
     <Compile Include="CrewMember.cs" />
     <Compile Include="CrewMemberSkill.cs" />
     <Compile Include="CrewOpinion.cs" />
+    <Compile Include="EnumExtensions.cs" />
     <Compile Include="EventController.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Dinghy.cs" />
+    <Compile Include="NPCBeliefs.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,10 +104,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="config.json" />
     <None Include="NPC Templates\Template.ea" />
     <None Include="NPC Templates\Template.edm" />
     <None Include="NPC Templates\Template.iat" />
     <None Include="NPC Templates\Template.rpc" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates.resx">

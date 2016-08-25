@@ -7,7 +7,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class Dinghy : Boat
 	{
-		public Dinghy()
+		public Dinghy(ConfigStore config) : base(config)
 		{
 			BoatPositions = new List<BoatPosition>()
 			{

@@ -77,32 +77,32 @@ public class MemberMeetingUI : MonoBehaviour
 	public void AskStatQuestion()
 	{
 		Tracker.T.alternative.Selected("Crew Member Meeting", "Stat Reveal", AlternativeTracker.Alternative.Question);
-		string[] reply = _memberMeeting.AskQuestion("SoloInterview", "StatReveal", _teamSelectionUI.GetCurrentCrewMember(), 1);
-		AnswerUpdate(reply, 1);
+		string[] reply = _memberMeeting.AskQuestion("SoloInterview", "StatReveal", _teamSelectionUI.GetCurrentCrewMember());
+		AnswerUpdate(reply);
 	}
 
 	public void AskRoleQuestion()
 	{
 		Tracker.T.alternative.Selected("Crew Member Meeting", "Role Reveal", AlternativeTracker.Alternative.Question);
-		string[] reply = _memberMeeting.AskQuestion("SoloInterview", "RoleReveal", _teamSelectionUI.GetCurrentCrewMember(), 3);
-		AnswerUpdate(reply, 3);
+		string[] reply = _memberMeeting.AskQuestion("SoloInterview", "RoleReveal", _teamSelectionUI.GetCurrentCrewMember());
+		AnswerUpdate(reply);
 	}
 
 	public void AskOpinionPositiveQuestion()
 	{
 		Tracker.T.alternative.Selected("Crew Member Meeting", "Positive Opinion Reveal", AlternativeTracker.Alternative.Question);
-		string[] reply = _memberMeeting.AskQuestion("SoloInterview", "OpinionRevealPositive", _teamSelectionUI.GetCurrentCrewMember(), 1);
-		AnswerUpdate(reply, 1);
+		string[] reply = _memberMeeting.AskQuestion("SoloInterview", "OpinionRevealPositive", _teamSelectionUI.GetCurrentCrewMember());
+		AnswerUpdate(reply);
 	}
 
 	public void AskOpinionNegativeQuestion()
 	{
 		Tracker.T.alternative.Selected("Crew Member Meeting", "Negative Opinion Reveal", AlternativeTracker.Alternative.Question);
-		string[] reply = _memberMeeting.AskQuestion("SoloInterview", "OpinionRevealNegative", _teamSelectionUI.GetCurrentCrewMember(), 2);
-		AnswerUpdate(reply, 2);
+		string[] reply = _memberMeeting.AskQuestion("SoloInterview", "OpinionRevealNegative", _teamSelectionUI.GetCurrentCrewMember());
+		AnswerUpdate(reply);
 	}
 
-	private void AnswerUpdate(string[] reply, int cost)
+	private void AnswerUpdate(string[] reply)
 	{
 		ResetDisplay(true);
 		_dialogueText.text = reply.Length > 0 ? reply[0] : "";

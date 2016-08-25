@@ -61,6 +61,34 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {
+        ///	&quot;GoodPositionRating&quot;: 7,
+        ///	&quot;BadPositionRating&quot;: 4,
+        ///	&quot;RandomSkillLow&quot;: 3,
+        ///	&quot;RandomSkillHigh&quot;: 8,
+        ///	&quot;GoodSkillRating&quot;: 8,
+        ///	&quot;BadSkillRating&quot;: 3,
+        ///	&quot;OpinionStrongLike&quot;: 4,
+        ///	&quot;OpinionLike&quot;: 2,
+        ///	&quot;OpinionDislike&quot;: -2,
+        ///	&quot;OpinionStrongDislike&quot;: -4,
+        ///	&quot;DislikeInPositionOpinionRequired&quot;: -2,
+        ///	&quot;OpinionRatingWeighting&quot;: 1,
+        ///	&quot;ManagerOpinionRatingWeighting&quot;: 1,
+        ///	&quot;MoodRatingWeighting&quot;: 1,
+        ///	&quot;DefaultOpinion&quot;: 0,
+        ///	&quot;DefaultMood&quot;: 0,
+        ///	&quot;PostRaceRest&quot;: 0,
+        ///	&quot;DefaultActionAllowance&quot;: 5,
+        ///	&quot;ActionAllowancePerPosition [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string config {
+            get {
+                return ResourceManager.GetString("config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         public static byte[] template_ea {

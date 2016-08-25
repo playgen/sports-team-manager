@@ -34,10 +34,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			var ea = EmotionalAppraisalAsset.LoadFromFile(savedStorage, rpc.EmotionalAppraisalAssetSource);
 			int age;
-			int.TryParse(ea.GetBeliefValue("Value(Age)"), out age);
+			int.TryParse(ea.GetBeliefValue(NPCBeliefs.Age.GetDescription()), out age);
 			Name = rpc.CharacterName;
 			Age = age;
-			Gender = ea.GetBeliefValue("Value(Gender)");
+			Gender = ea.GetBeliefValue(NPCBeliefs.Gender.GetDescription());
 			EmotionalAppraisal = ea;
 			RolePlayCharacter = rpc;
 		}
@@ -72,9 +72,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public virtual void UpdateBeliefs(string position = null)
 		{
-			UpdateSingleBelief("Value(Age)", Age.ToString(), "SELF");
-			UpdateSingleBelief("Value(Gender)", Gender, "SELF");
-			UpdateSingleBelief("Value(Position)", position, "SELF");
+			UpdateSingleBelief(NPCBeliefs.Age.GetDescription(), Age.ToString(), "SELF");
+			UpdateSingleBelief(NPCBeliefs.Gender.GetDescription(), Gender, "SELF");
+			UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), position, "SELF");
 		}
 
 		/// <summary>

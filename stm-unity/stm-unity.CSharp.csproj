@@ -121,6 +121,9 @@
     <Reference Include="WellFormedNames">
       <HintPath>Assets\Plugins\WellFormedNames.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\Plugins\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\CrewMemberUI.cs" />
@@ -151,6 +154,9 @@
     <Compile Include="Assets\unity-tracker-master\Tracker\Storage\NetStorage.cs" />
     <Compile Include="Assets\unity-tracker-master\Tracker\Storage\Storage.cs" />
     <Compile Include="Assets\unity-tracker-master\Tracker\Tracker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Plugins\Newtonsoft.Json.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

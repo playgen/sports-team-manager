@@ -88,7 +88,7 @@ public class TeamSelection : MonoBehaviour {
 	{
 		if (_confirmCount == 0)
 		{
-			//_gameManager.PostRaceRest();
+			_gameManager.PostRaceRest();
 		}
 	}
 
@@ -126,9 +126,9 @@ public class TeamSelection : MonoBehaviour {
 		return _gameManager.Boat.IdealMatchScore;
 	}
 
-	public void FireCrewMember(CrewMember crewMember, int cost)
+	public void FireCrewMember(CrewMember crewMember)
 	{
-		_gameManager.RetireCrewMember(crewMember, cost);
+		_gameManager.RetireCrewMember(crewMember);
 	}
 
 	public CrewMember PersonToCrewMember(Person person)
