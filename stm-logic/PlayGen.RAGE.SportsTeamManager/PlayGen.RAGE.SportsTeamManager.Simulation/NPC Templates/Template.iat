@@ -318,20 +318,20 @@
 					"Utterance": "Yeah, you're right. What should I do about it?"
 				}, 
 				{
-					"Id": "04781e29-7431-405d-a15c-eb8a01d29912",
-					"CurrentState": "NotPickedSkillIncorrect",
-					"NextState": "NotPickedIncorrect1",
-					"Meaning": "NotPickedIncorrect1",
-					"Style": "NotPickedIncorrect1",
-					"Utterance": "Er, no. There was a position on that crew I would've been better in."
-				}, 
-				{
 					"Id": "afa0f59c-6ab1-41be-a01a-6048378b0414",
 					"CurrentState": "NotPickedFired",
 					"NextState": "NotPickedFiredQuestion",
 					"Meaning": "NotPickedFiredQuestion",
 					"Style": "NotPickedFiredQuestion",
 					"Utterance": "Fired?! I only asked! I mean, are you sure? The rest of the crew may not be too pleased about this!"
+				}, 
+				{
+					"Id": "08c50822-751d-44d1-8cc0-21b9f746391e",
+					"CurrentState": "NotPickedSkillIncorrect",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Er, no. There was a position on that crew I would've been better in."
 				}]
 		},
 	"types": [

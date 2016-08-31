@@ -287,9 +287,29 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void DecisionFeedback(Boat boat)
 		{
 			SaveStatus();
-			/*var spacelessName = EmotionalAppraisal.Perspective;
+			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
+			if (EmotionalAppraisal.BeliefExists(NPCBeliefs.ExpectedSelection.GetDescription()))
+			{
+				if (EmotionalAppraisal.GetBeliefValue(NPCBeliefs.ExpectedSelection.GetDescription()).ToLower() == "true")
+				{
+					if (boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this) == null)
+					{
+						AddOrUpdateOpinion(boat.Manager, -3);
+						UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "false", "SELF");
+						var eventString = "PostRace(NotPickedAfterSorry)";
+						RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
+						EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
+						EmotionalAppraisal.Update();
+						RolePlayCharacter.Update();
+					}
+					else
+					{
+						EmotionalAppraisal.RemoveBelief(NPCBeliefs.ExpectedSelection.GetDescription(), spacelessName.ToString());
+					}
+				}
+			}
+			/*var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
 			int positionScore = currentPosition != null ? currentPosition.Position.GetPositionRating(this) : 0;
 			var eventString = String.Format("PositionRating({0})", positionScore);
 			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
@@ -352,8 +372,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					EmotionalAppraisal.Update();
 					RolePlayCharacter.Update();
 				}
-			}
-			SaveStatus();*/
+			}*/
+			SaveStatus();
 			LoadBeliefs(boat);
 		}
 
@@ -521,6 +541,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			string reply = null;
 			switch (selected.NextState)
 			{
+				case "NotPickedSorry":
+					if (EmotionalAppraisal.BeliefExists(NPCBeliefs.ExpectedSelection.GetDescription()))
+					{
+						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, selected.NextState + "Again");
+					} else
+					{
+						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, selected.NextState);
+					}
+						break;
 				case "NotPickedSkill":
 					foreach (BoatPosition bp in boat.BoatPositions)
 					{
@@ -561,11 +590,21 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			var eventString = String.Format("PostRace({0})", lastEvent);
-			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
+			RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			Random rand = new Random();
 			switch (lastEvent)
 			{
+				case "NotPickedSorry":
+					AddOrUpdateOpinion(boat.Manager, 1);
+					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "true", "SELF");
+					break;
+				case "NotPickedSorryAgain":
+					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "true", "SELF");
+					break;
+				case "NotPickedSkillIncorrect":
+					AddOrUpdateOpinion(boat.Manager, -1);
+					break;
 				case "NotPickedFiredYes":
 					boat.RetireCrew(this);
 					foreach (CrewMember cm in boat.GetAllCrewMembers())

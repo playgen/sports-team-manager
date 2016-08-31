@@ -86,6 +86,60 @@
 							"Praiseworthiness": -1
 						}, 
 						{
+							"EventName": "Event(Action-Start, Player, PostRace(NotPickedAfterRace), Self)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"Desirability": -4,
+							"Praiseworthiness": -4
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace(NotPickedSkillFriends), Self)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"Desirability": 1,
+							"Praiseworthiness": 1
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace(NotPickedSkillIncorrect), Self)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"Desirability": -2,
+							"Praiseworthiness": -1
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace(NotPickedSkillNothing), Self)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"Desirability": -2,
+							"Praiseworthiness": -2
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace(NotPickedSkillTrain), Self)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"Desirability": 1,
+							"Praiseworthiness": 1
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace(NotPickedSorry), Self)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"Desirability": 2,
+							"Praiseworthiness": 2
+						}, 
+						{
 							"EventName": "Event(Action-Start, Player, OpinionCheck([member], [x], [y]), Self)",
 							"Conditions":
 								{

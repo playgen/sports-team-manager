@@ -26,5 +26,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		CrewEditAllowance,
 		[Description("Action(Allowance)")]
 		ActionAllowance,
+		[Description("Expected(Selection)")]
+		ExpectedSelection,
 	}
 }
