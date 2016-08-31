@@ -16,6 +16,8 @@ public class PostRaceEventUI : MonoBehaviour
 	[SerializeField]
 	private Text _dialogueText;
 	[SerializeField]
+	private Text _nameText;
+	[SerializeField]
 	private GameObject[] _questions;
 	[SerializeField]
 	private GameObject _closeButton;
@@ -36,6 +38,15 @@ public class PostRaceEventUI : MonoBehaviour
 		_closeButton.SetActive(false);
 		gameObject.SetActive(true);
 		KeyValuePair<List<CrewMember>, string> current = _postRaceEvent.GetCurrentEvent();
+		_nameText.text = "";
+		foreach (CrewMember cm in current.Key)
+		{
+			if (_nameText.text.Length > 0)
+			{
+				_nameText.text += " & ";
+			}
+			_nameText.text += cm.Name;
+		}
 		if (current.Key != null & current.Value != null)
 		{
 			GetComponent<CanvasGroup>().alpha = 1;

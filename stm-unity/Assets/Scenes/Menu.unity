@@ -731,6 +731,7 @@ RectTransform:
   m_Children:
   - {fileID: 1552864079}
   - {fileID: 493809187}
+  - {fileID: 2145936502}
   - {fileID: 287751462}
   - {fileID: 450588511}
   - {fileID: 667399223}
@@ -756,6 +757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dialogueText: {fileID: 190500478}
+  _nameText: {fileID: 2145936503}
   _questions:
   - {fileID: 450588510}
   - {fileID: 667399222}
@@ -2496,8 +2498,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Fired?! I only asked! I mean, are you sure? The rest of the crew may not
-    be too pleased about this!
+  m_Text: 
 --- !u!222 &190500479
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3231,7 +3232,7 @@ RectTransform:
   m_Children:
   - {fileID: 190500477}
   m_Father: {fileID: 33218446}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_AnchorMin: {x: 0.05, y: 0.8}
   m_AnchorMax: {x: 0.65, y: 0.925}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -4003,7 +4004,7 @@ RectTransform:
   m_Children:
   - {fileID: 2122490785}
   m_Father: {fileID: 33218446}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_AnchorMin: {x: 0.05, y: 0.17}
   m_AnchorMax: {x: 0.6, y: 0.3}
   m_AnchoredPosition: {x: -0.000061035156, y: 0}
@@ -4985,7 +4986,7 @@ RectTransform:
   m_Children:
   - {fileID: 1097446823}
   m_Father: {fileID: 33218446}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_AnchorMin: {x: 0.05, y: 0.62}
   m_AnchorMax: {x: 0.6, y: 0.75}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -5517,7 +5518,7 @@ RectTransform:
   m_Children:
   - {fileID: 134216199}
   m_Father: {fileID: 33218446}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_AnchorMin: {x: 0.05, y: 0.03}
   m_AnchorMax: {x: 0.6, y: 0.14}
   m_AnchoredPosition: {x: -0.000091552734, y: 0}
@@ -5565,6 +5566,17 @@ MonoBehaviour:
       - m_Target: {fileID: 33218445}
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1334125065}
+        m_MethodName: ResetCrew
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6575,7 +6587,7 @@ RectTransform:
   m_Children:
   - {fileID: 105052764}
   m_Father: {fileID: 33218446}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_AnchorMin: {x: 0.05, y: 0.47}
   m_AnchorMax: {x: 0.6, y: 0.6}
   m_AnchoredPosition: {x: -0.000030517578, y: 0}
@@ -15907,7 +15919,7 @@ RectTransform:
   m_Children:
   - {fileID: 1835099430}
   m_Father: {fileID: 33218446}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_AnchorMin: {x: 0.05, y: 0.32}
   m_AnchorMax: {x: 0.6, y: 0.45}
   m_AnchoredPosition: {x: -0.000030517578, y: 0}
@@ -18303,3 +18315,77 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2135866303}
+--- !u!1 &2145936501
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 2145936502}
+  - 222: {fileID: 2145936504}
+  - 114: {fileID: 2145936503}
+  m_Layer: 5
+  m_Name: Name
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2145936502
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2145936501}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 33218446}
+  m_RootOrder: 2
+  m_AnchorMin: {x: 0.025, y: 0.925}
+  m_AnchorMax: {x: 0.975, y: 1}
+  m_AnchoredPosition: {x: -57.751667, y: 0}
+  m_SizeDelta: {x: -146.30399, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2145936503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2145936501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 12
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 1
+    m_MaxSize: 12
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 
+--- !u!222 &2145936504
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2145936501}

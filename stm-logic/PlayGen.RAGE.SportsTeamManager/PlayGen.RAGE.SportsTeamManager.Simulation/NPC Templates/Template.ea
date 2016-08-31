@@ -86,7 +86,7 @@
 							"Praiseworthiness": -1
 						}, 
 						{
-							"EventName": "Event(Action-Start, Player, PostRace(NotPickedAfterRace), Self)",
+							"EventName": "Event(Action-Start, Player, PostRace(NotPickedAfterSorry), Self)",
 							"Conditions":
 								{
 									"Set": []
