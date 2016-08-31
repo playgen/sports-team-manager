@@ -545,12 +545,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				reply = selectedNext.Utterance;
 				if (selectedNext.NextState == "-")
 				{
-					PostRaceFeedback(selected.CurrentState, boat);
+					PostRaceFeedback(selected.NextState, boat);
 				}
 			} else
 			{
 				iat.SetDialogueState("Player", "-");
-				PostRaceFeedback(selected.CurrentState, boat);
+				PostRaceFeedback(selected.NextState, boat);
 			}
 			return reply;
 		}
@@ -563,6 +563,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var eventString = String.Format("PostRace({0})", lastEvent);
 			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
+			Random rand = new Random();
 			switch (lastEvent)
 			{
 				case "NotPickedFiredYes":
@@ -570,6 +571,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					foreach (CrewMember cm in boat.GetAllCrewMembers())
 					{
 						cm.AddOrUpdateOpinion(boat.Manager, -2);
+						cm.SaveStatus();
 					}
 					break;
 				case "NotPickedFiredNo":
@@ -577,11 +579,28 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					break;
 				case "NotPickedSkillTrain":
 					AddOrUpdateOpinion(boat.Manager, 2);
-					//improve two skills by 1
+					for (int i = 0; i < 2; i++)
+					{
+						int randomStat = rand.Next(0, Skills.Count);
+						Skills[(CrewMemberSkill)randomStat]++;
+						if (Skills[(CrewMemberSkill)randomStat] > 10)
+						{
+							Skills[(CrewMemberSkill)randomStat] = 10;
+						}
+					}
 					break;
 				case "NotPickedSkillFriends":
 					AddOrUpdateOpinion(boat.Manager, 1);
-					//improve two opinions either way by 2
+					List<CrewMember> allCrew = boat.GetAllCrewMembers();
+					allCrew.Remove(this);
+					for (int i = 0; i < 2; i++)
+					{
+						int randomCrew = rand.Next(0, allCrew.Count);
+						CrewMember cm = allCrew[randomCrew];
+						AddOrUpdateOpinion(cm, 2);
+						cm.AddOrUpdateOpinion(this, 2);
+						cm.SaveStatus();
+					}
 					break;
 				case "NotPickedSkillNothing":
 					AddOrUpdateOpinion(boat.Manager, -10);
@@ -591,6 +610,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					foreach (CrewMember cm in boat.GetAllCrewMembers())
 					{
 						cm.AddOrUpdateOpinion(boat.Manager, -1);
+						cm.SaveStatus();
 					}
 					break;
 			}
@@ -609,6 +629,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,Status(Retired),{0})";
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, spacelessName) });
+			EmotionalAppraisal.Update();
+			RolePlayCharacter.Update();
 			SaveStatus();
 		}
 	}

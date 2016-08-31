@@ -290,7 +290,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				CrewMember crewMember = new CrewMember(storagePorvider, rpc, _config);
 				if (position == "Retired")
 				{
-					Boat.RetireCrew(crewMember);
+					Boat.RetiredCrew.Add(crewMember);
 					continue;
 				}
 				if (position == "Recruit")

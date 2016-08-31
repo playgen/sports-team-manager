@@ -85,6 +85,7 @@ public class TeamSelection : MonoBehaviour {
 		}
 		else
 		{
+			_gameManager.SaveLineUp();
 			if (_confirmCount >= _sessionLength)
 			{
 				KeyValuePair<List<CrewMember>, string> postRace = _gameManager.ConfirmLineUp();
@@ -114,7 +115,6 @@ public class TeamSelection : MonoBehaviour {
 				}
 				_confirmCount -= _sessionLength;
 			}
-			_gameManager.SaveLineUp();
 		}
 		return _gameManager.Boat.BoatScore;
 	}
