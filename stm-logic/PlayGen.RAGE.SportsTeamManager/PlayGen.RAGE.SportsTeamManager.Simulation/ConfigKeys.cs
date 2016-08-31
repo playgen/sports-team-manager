@@ -32,6 +32,7 @@
 		OpinionPositiveRevealCost,
 		OpinionNegativeRevealCost,
 		SendRecruitmentQuestionCost,
-		RaceSessionLength
+		RaceSessionLength,
+		EventChance
 	}
 }

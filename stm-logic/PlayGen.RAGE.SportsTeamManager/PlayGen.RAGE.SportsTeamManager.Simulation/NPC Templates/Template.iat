@@ -332,6 +332,14 @@
 					"Meaning": "-",
 					"Style": "-",
 					"Utterance": "Er, no. There was a position on that crew I would've been better in."
+				}, 
+				{
+					"Id": "aa19fe42-013b-438e-8ad3-2dd1260d462b",
+					"CurrentState": "NotPickedSorryAgain",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "You said that last time as well, still didn't select me for the next crew..."
 				}]
 		},
 	"types": [

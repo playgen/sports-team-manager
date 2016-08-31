@@ -402,7 +402,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Save current line-up and update Crewmember's opinions and mood based on this line-up
 		/// </summary>
-		public KeyValuePair<List<CrewMember>, string> ConfirmLineUp()
+		public void ConfirmLineUp()
 		{
 			Boat.ConfirmChanges();
 			Boat.PostRaceRest();
@@ -410,7 +410,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat.CreateRecruits(_iat, templateStorage, _storagePorvider, _storageLocation);
 			ResetActionAllowance();
 			ResetCrewEditAllowance();
-			DialogueStateActionDTO postRaceEvent = EventController.SelectPostRaceEvent(_iat);
+		}
+
+		public KeyValuePair<List<CrewMember>, string> SelectPostRaceEvent()
+		{
+			DialogueStateActionDTO postRaceEvent = EventController.SelectPostRaceEvent(_iat, (int)_config.ConfigValues[ConfigKeys.EventChance.ToString()]);
 			if (postRaceEvent == null)
 			{
 				return new KeyValuePair<List<CrewMember>, string>(null, null);

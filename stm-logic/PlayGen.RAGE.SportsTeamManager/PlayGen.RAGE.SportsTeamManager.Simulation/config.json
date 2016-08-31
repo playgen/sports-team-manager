@@ -29,5 +29,6 @@
 	"OpinionPositiveRevealCost": 1,
 	"OpinionNegativeRevealCost": 2,
 	"SendRecruitmentQuestionCost": 2,
-	"RaceSessionLength": 5
+	"RaceSessionLength": 5,
+	"EventChance" : 2
 }

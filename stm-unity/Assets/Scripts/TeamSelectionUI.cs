@@ -368,6 +368,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			}
 		}
 		_boatHistory.Add(_currentBoat);
+		_teamSelection.PostRaceEvent();
 		CreateNewBoat();
 	}
 

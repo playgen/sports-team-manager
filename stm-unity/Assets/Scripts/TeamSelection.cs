@@ -11,6 +11,8 @@ using IntegratedAuthoringTool.DTOs;
 
 public class TeamSelection : MonoBehaviour {
 	private GameManager _gameManager;
+	[SerializeField]
+	private PostRaceEvent _postRaceEvent;
 	private int _sessionLength;
 	private int _confirmCount;
 
@@ -88,35 +90,19 @@ public class TeamSelection : MonoBehaviour {
 			_gameManager.SaveLineUp();
 			if (_confirmCount >= _sessionLength)
 			{
-				KeyValuePair<List<CrewMember>, string> postRace = _gameManager.ConfirmLineUp();
-				print(postRace.Key[0].Name);
-				print(postRace.Value);
-				DialogueStateActionDTO[] replies = _gameManager.GetPostRaceEvents();
-				DialogueStateActionDTO selected = replies.OrderBy(r => Guid.NewGuid()).FirstOrDefault();
-				if (selected != null)
-				{
-					Dictionary<CrewMember, string> postRacePartTwo = _gameManager.SendPostRaceEvent(selected, postRace.Key);
-					foreach (KeyValuePair<CrewMember, string> kvp in postRacePartTwo)
-					{
-						print(kvp.Key);
-						print(kvp.Value);
-					}
-					DialogueStateActionDTO[] repliesTwo = _gameManager.GetPostRaceEvents();
-					DialogueStateActionDTO selectedTwo = repliesTwo.OrderBy(r => Guid.NewGuid()).FirstOrDefault();
-					if (selectedTwo != null)
-					{
-						Dictionary<CrewMember, string> postRacePartThree = _gameManager.SendPostRaceEvent(selectedTwo, postRace.Key);
-						foreach (KeyValuePair<CrewMember, string> kvp in postRacePartThree)
-						{
-							print(kvp.Key);
-							print(kvp.Value);
-						}
-					}
-				}
+				_gameManager.ConfirmLineUp();
 				_confirmCount -= _sessionLength;
 			}
 		}
 		return _gameManager.Boat.BoatScore;
+	}
+
+	public void PostRaceEvent()
+	{
+		if (_confirmCount == 0)
+		{
+			_postRaceEvent.GetEvent();
+		}
 	}
 
 	/// <summary>

@@ -298,8 +298,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						AddOrUpdateOpinion(boat.Manager, -3);
 						UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "false", "SELF");
 						var eventString = "PostRace(NotPickedAfterSorry)";
-						RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
+						var eventRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
 						EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
+						if (eventRpc != null)
+						{
+							RolePlayCharacter.ActionFinished(eventRpc);
+						}
 						EmotionalAppraisal.Update();
 						RolePlayCharacter.Update();
 					}
@@ -458,7 +462,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							{
 								reply = String.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionPositive.Person.Name);
 							}
-							UpdateSingleBelief(String.Format(NPCBeliefs.RevealedOpinion.GetDescription(), pickedOpinionPositive.Person.Name.Replace(" ", "")), pickedOpinionPositive.Opinion.ToString(), "SELF");
+							AddOrUpdateRevealedOpinion(pickedOpinionPositive.Person, pickedOpinionPositive.Opinion);
 						}
 						else
 						{
@@ -486,7 +490,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							{
 								reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
 							}
-							UpdateSingleBelief(String.Format(NPCBeliefs.RevealedOpinion.GetDescription(), pickedOpinionNegative.Person.Name.Replace(" ", "")), pickedOpinionNegative.Opinion.ToString(), "SELF");
+							AddOrUpdateRevealedOpinion(pickedOpinionNegative.Person, pickedOpinionNegative.Opinion);
 						}
 						else
 						{
@@ -590,7 +594,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			var eventString = String.Format("PostRace({0})", lastEvent);
-			RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
+			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			Random rand = new Random();
 			switch (lastEvent)
@@ -627,6 +631,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							Skills[(CrewMemberSkill)randomStat] = 10;
 						}
 					}
+					UpdateBeliefs();
 					break;
 				case "NotPickedSkillFriends":
 					AddOrUpdateOpinion(boat.Manager, 1);
@@ -652,6 +657,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						cm.SaveStatus();
 					}
 					break;
+			}
+			if (eventRpc != null)
+			{
+				RolePlayCharacter.ActionFinished(eventRpc);
 			}
 			EmotionalAppraisal.Update();
 			RolePlayCharacter.Update();

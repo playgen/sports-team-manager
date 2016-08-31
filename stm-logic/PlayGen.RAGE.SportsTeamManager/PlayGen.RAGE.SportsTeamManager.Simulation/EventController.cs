@@ -20,14 +20,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return dialogueOptions.ToArray();
 		}
 
-		public DialogueStateActionDTO SelectPostRaceEvent(IntegratedAuthoringToolAsset iat)
+		public DialogueStateActionDTO SelectPostRaceEvent(IntegratedAuthoringToolAsset iat, int chance)
 		{
 			IEnumerable<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PostRaceEventStart");
 			if (dialogueOptions.Count() > 0)
 			{
 				Random random = new Random();
-				DialogueStateActionDTO selectedDialogue = dialogueOptions.ToArray()[random.Next(0, dialogueOptions.Count())];
-				return selectedDialogue;
+				int dialogueIndex = random.Next(0, dialogueOptions.Count() * chance);
+				if (dialogueIndex % 2 == 0)
+				{
+					DialogueStateActionDTO selectedDialogue = dialogueOptions.ToArray()[dialogueIndex / chance];
+					return selectedDialogue;
+				}
 			}
 			return null;
 		}
