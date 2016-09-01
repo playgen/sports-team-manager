@@ -120,20 +120,15 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	void CheckPlacement()
 	{
-		ReplacedEvent(this, new EventArgs());
+		PlacedEvent();
 		var raycastResults = new List<RaycastResult>();
 		EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
 		bool placed = false;
 		foreach (var result in raycastResults)
 		{
-			if (result.gameObject.name == "Position")
+			if (result.gameObject.GetComponent<PositionUI>())
 			{
-				RectTransform positionTransform = result.gameObject.GetComponent<RectTransform>();
-				transform.SetParent(positionTransform, false);
-				GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
-				GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);
-				result.gameObject.GetComponent<PositionUI>().LinkCrew(this);
-				_teamSelection.AssignCrew(_crewMember.Name, result.gameObject.GetComponent<PositionUI>().GetName());
+				Place(result.gameObject);
 				placed = true;
 				break;
 			}
@@ -143,6 +138,21 @@ public class CrewMemberUI : MonoBehaviour {
 			Reset();
 			_teamSelection.RemoveCrew(_crewMember.Name);
 		}
+	}
+
+	public void PlacedEvent()
+	{
+		ReplacedEvent(this, new EventArgs());
+	}
+
+	public void Place(GameObject position)
+	{
+		position.gameObject.GetComponent<PositionUI>().LinkCrew(this);
+		RectTransform positionTransform = position.gameObject.GetComponent<RectTransform>();
+		transform.SetParent(positionTransform, false);
+		GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
+		GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);
+		_teamSelection.AssignCrew(_crewMember.Name, position.gameObject.GetComponent<PositionUI>().GetName());
 	}
 
 	/// <summary>

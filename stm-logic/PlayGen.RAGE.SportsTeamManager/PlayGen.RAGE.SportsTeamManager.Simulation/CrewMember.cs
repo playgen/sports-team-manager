@@ -443,7 +443,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						break;
 					case "OpinionRevealPositive":
-						var opinionsPositive = CrewOpinions.Where(co => co.Opinion >= (int)_config.ConfigValues[ConfigKeys.OpinionLike.ToString()]);
+						var crewOpinionsPositive = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Person.Name));
+						var opinionsPositive = crewOpinionsPositive.Where(co => co.Opinion >= (int)_config.ConfigValues[ConfigKeys.OpinionLike.ToString()]);
 						var pickedOpinionPositive = opinionsPositive.OrderBy(o => Guid.NewGuid()).FirstOrDefault();
 						if (pickedOpinionPositive != null) {
 							if (pickedOpinionPositive.Opinion >= (int)_config.ConfigValues[ConfigKeys.OpinionStrongLike.ToString()])
@@ -470,7 +471,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						break;
 					case "OpinionRevealNegative":
-						var opinionsNegative = CrewOpinions.Where(co => co.Opinion <= (int)_config.ConfigValues[ConfigKeys.OpinionDislike.ToString()]);
+						var crewOpinionsNegative = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Person.Name));
+						var opinionsNegative = crewOpinionsNegative.Where(co => co.Opinion <= (int)_config.ConfigValues[ConfigKeys.OpinionDislike.ToString()]);
 						var pickedOpinionNegative = opinionsNegative.OrderBy(o => Guid.NewGuid()).FirstOrDefault();
 						if (pickedOpinionNegative != null)
 						{
@@ -484,7 +486,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							}
 							if (dialogueOptions != null && dialogueOptions.Count() > 0)
 							{
-								reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+								reply = String.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionNegative.Person.Name);
 							}
 							AddOrUpdateRevealedOpinion(pickedOpinionNegative.Person, pickedOpinionNegative.Opinion);
 						}

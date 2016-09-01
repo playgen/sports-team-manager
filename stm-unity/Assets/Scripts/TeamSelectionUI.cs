@@ -24,7 +24,6 @@ public class TeamSelectionUI : MonoBehaviour {
 	private GameObject _crewPrefab;
 	[SerializeField]
 	private GameObject _opinionPrefab;
-	[SerializeField]
 	private Button _raceButton;
 	[SerializeField]
 	private Button _recruitButton;
@@ -153,7 +152,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			GameObject positionObject = Instantiate(_positionPrefab);
 			positionObject.transform.SetParent(boatContainer.transform.Find("Position Container"), false);
 			positionObject.transform.Find("Name").GetComponent<Text>().text = position[i].Name;
-			positionObject.name = _positionPrefab.name;
+			positionObject.name = position[i].Name;
 			positionObject.GetComponent<PositionUI>().SetUp(this, position[i]);
 		}
 		_positionsEmpty = position.Count;
@@ -171,8 +170,8 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		var boat = _teamSelection.LoadCrew();
 		var boatContainer = CreateBoat(boat);
-		_raceButton.transform.SetParent(boatContainer.transform, false);
-		_raceButton.transform.position = new Vector2(_raceButton.transform.position.x, boatContainer.transform.position.y);
+		_raceButton = boatContainer.transform.Find("Race").GetComponent<Button>();
+		_raceButton.onClick.AddListener(delegate { ConfirmLineUp(); });
 		_currentBoat = boatContainer;
 		CreateCrew();
 	}
@@ -246,6 +245,10 @@ public class TeamSelectionUI : MonoBehaviour {
 				Destroy(crewMember);
 			}
 		}
+		_raceButton = boatContainer.transform.Find("Race").GetComponent<Button>();
+		_raceButton.onClick.RemoveAllListeners();
+		_raceButton.GetComponentInChildren<Text>().text = "Repeat";
+		_raceButton.onClick.AddListener(delegate { RepeatLineUp(boat.BoatPositions); });
 		_boatHistory.Add(boatContainer);
 		_teamSelection.ConfirmLineUp(true);
 	}
@@ -354,7 +357,6 @@ public class TeamSelectionUI : MonoBehaviour {
 			position.LockPosition(score);
 			Destroy(position);
 		}
-
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
 			if (crewMember.transform.parent.name == _crewContainer.name)
@@ -367,9 +369,43 @@ public class TeamSelectionUI : MonoBehaviour {
 				Destroy(crewMember.GetComponent<EventTrigger>());
 			}
 		}
+
+		_raceButton.onClick.RemoveAllListeners();
+		_raceButton.GetComponentInChildren<Text>().text = "Repeat";
+		List<BoatPosition> currentPositions = new List<BoatPosition>();
+		foreach (BoatPosition bp in _teamSelection.GetBoat().BoatPositions)
+		{
+			currentPositions.Add(new BoatPosition
+			{
+				Position = bp.Position,
+				CrewMember = bp.CrewMember
+			});
+		}
+		_raceButton.onClick.AddListener(() => RepeatLineUp(currentPositions));
+
 		_boatHistory.Add(_currentBoat);
 		_teamSelection.PostRaceEvent();
 		CreateNewBoat();
+	}
+
+	public void RepeatLineUp(List<BoatPosition> boatPositions)
+	{
+		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
+		{
+			BoatPosition boatPosition = boatPositions.FirstOrDefault(bp => bp.Position.Name == position.name);
+			if (boatPosition != null)
+			{
+				foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
+				{
+					if (crewMember.name == SplitName(boatPosition.CrewMember.Name))
+					{
+						crewMember.PlacedEvent();
+						crewMember.Place(position.gameObject);
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	public void FireCrewWarning()

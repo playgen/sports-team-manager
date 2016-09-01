@@ -265,6 +265,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			RetiredCrew.Add(crewMember);
 			crewMember.Retire();
+			foreach (CrewMember cm in GetAllCrewMembers())
+			{
+				CrewOpinion opinionToRemove = cm.CrewOpinions.FirstOrDefault(co => co.Person.Name == crewMember.Name);
+				if (opinionToRemove != null)
+				{
+					cm.CrewOpinions.Remove(opinionToRemove);
+				}
+				CrewOpinion revealedToRemove = cm.RevealedCrewOpinions.First(co => co.Person.Name == crewMember.Name);
+				if (opinionToRemove != null)
+				{
+					cm.RevealedCrewOpinions.Remove(revealedToRemove);
+				}
+			}
 			GetIdealCrew();
 			UpdateBoatScore();
 		}

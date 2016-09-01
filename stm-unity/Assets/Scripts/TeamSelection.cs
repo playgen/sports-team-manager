@@ -43,6 +43,11 @@ public class TeamSelection : MonoBehaviour {
 		return _gameManager.Boat;
 	}
 
+	public Boat GetBoat()
+	{
+		return _gameManager.Boat;
+	}
+
 	/// <summary>
 	/// Assign a CrewMember to a Position on the active boat
 	/// </summary>
