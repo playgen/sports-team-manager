@@ -19,6 +19,10 @@ public class NewGameUI : MonoBehaviour {
 	private GameObject _overwritePopUp;
 	[SerializeField]
 	private Text _errorText;
+	[SerializeField]
+	private Slider[] _colorSlider;
+	[SerializeField]
+	private Image _colorImage;
 
 	void Awake()
 	{
@@ -36,6 +40,21 @@ public class NewGameUI : MonoBehaviour {
 		_boatName.text = "";
 		_managerName.text = "";
 		_managerAge.text = "";
+		RandomColor();
+	}
+
+	public void RandomColor()
+	{
+		foreach (Slider s in _colorSlider)
+		{
+			s.value = Random.Range(0, 1f);
+		}
+		UpdateColor();
+	}
+
+	public void UpdateColor()
+	{
+		_colorImage.color = new Color(_colorSlider[0].value, _colorSlider[1].value, _colorSlider[2].value);
 	}
 
 	/// <summary>
@@ -93,7 +112,13 @@ public class NewGameUI : MonoBehaviour {
 			_managerAge.transform.Find("Required Warning").gameObject.SetActive(true);
 		}
 		if (valid) {
-			bool success = _newGame.CreateNewGame(_boatName.text, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text);
+			float[] colors = new float[]
+			{
+				_colorImage.color.r,
+				_colorImage.color.g,
+				_colorImage.color.b
+			};
+			bool success = _newGame.CreateNewGame(_boatName.text, colors, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text);
 			if (success)
 			{
 				_stateManager.GoToGame(gameObject);

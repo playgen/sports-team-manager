@@ -37,7 +37,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create a new game
 		/// </summary>
-		public void NewGame(IStorageProvider storagePorvider, string storageLocation, string boatName, string managerName, string managerAge, string managerGender, List<CrewMember> crew = null)
+		public void NewGame(IStorageProvider storagePorvider, string storageLocation, string boatName, float[] teamColors, string managerName, string managerAge, string managerGender, List<CrewMember> crew = null)
 		{
 			UnloadGame();
 			var noSpaceBoatName = boatName.Replace(" ", "");
@@ -47,6 +47,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile(templateStorage, "template_iat");
 			Boat = new Dinghy(_config);
 			Boat.Name = boatName;
+			Boat.TeamColors = teamColors;
 			iat.ScenarioName = Boat.Name;
 			Random random = new Random();
 			bool initialCrew = false;
@@ -70,6 +71,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.GetType().Name, "SELF");
 			manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString(), "SELF");
 			manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString(), "SELF");
+			manager.UpdateSingleBelief(NPCBeliefs.TeamColorRed.GetDescription(), teamColors[0].ToString(), "SELF");
+			manager.UpdateSingleBelief(NPCBeliefs.TeamColorGreen.GetDescription(), teamColors[1].ToString(), "SELF");
+			manager.UpdateSingleBelief(NPCBeliefs.TeamColorBlue.GetDescription(), teamColors[2].ToString(), "SELF");
 			Boat.Manager = manager;
 			manager.SaveStatus();
 
@@ -284,6 +288,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					CrewEditAllowance = int.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.CrewEditAllowance.GetDescription()));
 					this._raceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength.ToString()];
 					Boat.Name = iat.ScenarioName;
+					Boat.TeamColors = new float[3];
+					Boat.TeamColors[0] = float.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorRed.GetDescription()));
+					Boat.TeamColors[1] = float.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorGreen.GetDescription()));
+					Boat.TeamColors[2] = float.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorBlue.GetDescription()));
 					Boat.Manager = person;
 					continue;
 				}

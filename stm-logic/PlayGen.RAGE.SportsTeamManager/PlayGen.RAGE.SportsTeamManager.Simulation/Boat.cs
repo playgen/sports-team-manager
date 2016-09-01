@@ -11,6 +11,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	public class Boat
 	{
 		public string Name { get; set; }
+		public float[] TeamColors { get; set; }
 		public List<BoatPosition> BoatPositions { get; set; }
 		public List<BoatPosition> IdealCrew { get; set; }
 		public List<CrewMember> UnassignedCrew { get; set; }

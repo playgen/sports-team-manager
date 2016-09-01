@@ -32,10 +32,8 @@ public class PositionUI : MonoBehaviour {
 	{
 		if (crewmember != _crewMemberUI)
 		{
-			Tracker.T.trackedGameObject.Interacted("Positioned Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 			if (_crewMemberUI != null)
 			{
-				Tracker.T.trackedGameObject.Interacted("Unpositioned Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 				_crewMemberUI.ReplacedEvent -= new EventHandler(OnReset);
 				_crewMemberUI.Reset();
 				_teamSelectionUI.PositionChange(-1);

@@ -128,6 +128,7 @@ public class CrewMemberUI : MonoBehaviour {
 		{
 			if (result.gameObject.GetComponent<PositionUI>())
 			{
+				Tracker.T.trackedGameObject.Interacted("Positioned Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 				Place(result.gameObject);
 				placed = true;
 				break;

@@ -390,6 +390,7 @@ public class TeamSelectionUI : MonoBehaviour {
 
 	public void RepeatLineUp(List<BoatPosition> boatPositions)
 	{
+		Tracker.T.alternative.Selected("Old Crew Selection Selected", "Repeat", AlternativeTracker.Alternative.Menu);
 		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
 		{
 			BoatPosition boatPosition = boatPositions.FirstOrDefault(bp => bp.Position.Name == position.name);
