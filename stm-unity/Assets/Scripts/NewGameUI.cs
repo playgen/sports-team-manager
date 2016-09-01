@@ -20,9 +20,13 @@ public class NewGameUI : MonoBehaviour {
 	[SerializeField]
 	private Text _errorText;
 	[SerializeField]
-	private Slider[] _colorSlider;
+	private Slider[] _colorSliderPrimary;
 	[SerializeField]
-	private Image _colorImage;
+	private Slider[] _colorSliderSecondary;
+	[SerializeField]
+	private Image _colorImagePrimary;
+	[SerializeField]
+	private Image _colorImageSecondary;
 
 	void Awake()
 	{
@@ -45,7 +49,11 @@ public class NewGameUI : MonoBehaviour {
 
 	public void RandomColor()
 	{
-		foreach (Slider s in _colorSlider)
+		foreach (Slider s in _colorSliderPrimary)
+		{
+			s.value = Random.Range(0, 1f);
+		}
+		foreach (Slider s in _colorSliderSecondary)
 		{
 			s.value = Random.Range(0, 1f);
 		}
@@ -54,7 +62,8 @@ public class NewGameUI : MonoBehaviour {
 
 	public void UpdateColor()
 	{
-		_colorImage.color = new Color(_colorSlider[0].value, _colorSlider[1].value, _colorSlider[2].value);
+		_colorImagePrimary.color = new Color(_colorSliderPrimary[0].value, _colorSliderPrimary[1].value, _colorSliderPrimary[2].value);
+		_colorImageSecondary.color = new Color(_colorSliderSecondary[0].value, _colorSliderSecondary[1].value, _colorSliderSecondary[2].value);
 	}
 
 	/// <summary>
@@ -112,13 +121,19 @@ public class NewGameUI : MonoBehaviour {
 			_managerAge.transform.Find("Required Warning").gameObject.SetActive(true);
 		}
 		if (valid) {
-			float[] colors = new float[]
+			float[] colorsPri = new float[]
 			{
-				_colorImage.color.r,
-				_colorImage.color.g,
-				_colorImage.color.b
+				_colorImagePrimary.color.r,
+				_colorImagePrimary.color.g,
+				_colorImagePrimary.color.b
 			};
-			bool success = _newGame.CreateNewGame(_boatName.text, colors, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text);
+			float[] colorsSec = new float[]
+			{
+				_colorImageSecondary.color.r,
+				_colorImageSecondary.color.g,
+				_colorImageSecondary.color.b
+			};
+			bool success = _newGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text);
 			if (success)
 			{
 				_stateManager.GoToGame(gameObject);

@@ -28,11 +28,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		ActionAllowance,
 		[Description("Expected(Selection)")]
 		ExpectedSelection,
-		[Description("Color(Red)")]
-		TeamColorRed,
-		[Description("Color(Green)")]
-		TeamColorGreen,
-		[Description("Color(Blue)")]
-		TeamColorBlue,
+		[Description("ColorPrimary(Red)")]
+		TeamColorRedPrimary,
+		[Description("ColorPrimary(Green)")]
+		TeamColorGreenPrimary,
+		[Description("ColorPrimary(Blue)")]
+		TeamColorBluePrimary,
+		[Description("ColorSecondary(Red)")]
+		TeamColorRedSecondary,
+		[Description("ColorSecondary(Green)")]
+		TeamColorGreenSecondary,
+		[Description("ColorSecondary(Blue)")]
+		TeamColorBlueSecondary,
 	}
 }
