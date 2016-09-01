@@ -101,5 +101,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			EmotionalAppraisal.SaveToFile(LocalStorageProvider.Instance, EmotionalAppraisal.AssetFilePath);
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, RolePlayCharacter.AssetFilePath);
 		}
+
+		public void TickUpdate(int amount = 1)
+		{
+			for (int i = 0; i < amount; i++)
+			{
+				EmotionalAppraisal.Update();
+				RolePlayCharacter.Update();
+			}
+		}
 	}
 }

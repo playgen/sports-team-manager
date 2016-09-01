@@ -304,13 +304,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						{
 							RolePlayCharacter.ActionFinished(eventRpc);
 						}
-						EmotionalAppraisal.Update();
-						RolePlayCharacter.Update();
 					}
 					else
 					{
 						EmotionalAppraisal.RemoveBelief(NPCBeliefs.ExpectedSelection.GetDescription(), spacelessName.ToString());
 					}
+					TickUpdate();
 				}
 			}
 			/*var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
@@ -335,8 +334,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				RolePlayCharacter.ActionFinished(positionRpc);
 			}
-			EmotionalAppraisal.Update();
-			RolePlayCharacter.Update();
+			TickUpdate();
 
 			eventString = String.Format("ManagerOpinionCheck({0})", boat.Manager.Name.Replace(" ", ""));
 			var managerOpinionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
@@ -345,8 +343,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				RolePlayCharacter.ActionFinished(managerOpinionRpc);
 			}
-			EmotionalAppraisal.Update();
-			RolePlayCharacter.Update();
+			TickUpdate();
 
 			foreach (BoatPosition boatPosition in boat.BoatPositions.OrderBy(b => b.Position.Name))
 			{
@@ -373,8 +370,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						RolePlayCharacter.ActionFinished(opinionRpc);
 					}
-					EmotionalAppraisal.Update();
-					RolePlayCharacter.Update();
+					TickUpdate();
 				}
 			}*/
 			SaveStatus();
@@ -504,10 +500,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				RolePlayCharacter.ActionFinished(eventRpc);
 			}
-			EmotionalAppraisal.Update();
-			RolePlayCharacter.Update();
-			SaveStatus();
-			LoadBeliefs(boat);
 			return reply;
 		}
 
@@ -655,8 +647,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				RolePlayCharacter.ActionFinished(eventRpc);
 			}
-			EmotionalAppraisal.Update();
-			RolePlayCharacter.Update();
+			TickUpdate();
 			SaveStatus();
 			LoadBeliefs(boat);
 		}
@@ -670,8 +661,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,Status(Retired),{0})";
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, spacelessName) });
-			EmotionalAppraisal.Update();
-			RolePlayCharacter.Update();
 			SaveStatus();
 		}
 	}

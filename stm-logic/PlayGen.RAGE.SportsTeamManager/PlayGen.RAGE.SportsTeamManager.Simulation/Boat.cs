@@ -352,6 +352,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		public void TickCrewMembers(int amount)
+		{
+			foreach (CrewMember cm in GetAllCrewMembersIncludingRetired())
+			{
+				cm.TickUpdate(amount);
+				cm.SaveStatus();
+				cm.LoadBeliefs(this);
+			}
+		}
+
 		/// <summary>
 		/// Save the current status of each CrewMember for this Boat
 		/// </summary>

@@ -340,6 +340,54 @@
 					"Meaning": "-",
 					"Style": "-",
 					"Utterance": "You said that last time as well, still didn't select me for the next crew..."
+				}, 
+				{
+					"Id": "96f550ee-2121-4cf6-b1ca-101b1d7f3bf3",
+					"CurrentState": "NotPickedSkillTrain",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Thanks, that gives me hope that I'll be able to work my way into the crew soon."
+				}, 
+				{
+					"Id": "cf21aae6-8bd9-4447-a6ce-fcb5fedaeaa1",
+					"CurrentState": "NotPickedSkillFriends",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Thanks for the advice, I'll try my best to bond better with other crew mates."
+				}, 
+				{
+					"Id": "cef11fea-61a7-4747-b830-78b913cd8e7f",
+					"CurrentState": "NotPickedSkillNothing",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Oh, well... OK. That's pretty discouraging to hear."
+				}, 
+				{
+					"Id": "72dc5935-7ea6-491c-a382-96b87650d479",
+					"CurrentState": "NotPickedSkillLeave",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Well, if you think it's for the best. The rest of the crew might not be too pleaded about this though."
+				}, 
+				{
+					"Id": "59dd4165-8f1b-4048-943b-aec1998a6e11",
+					"CurrentState": "NotPickedFiredYes",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "OK then, if you say so. That attitude won't get you very far though..."
+				}, 
+				{
+					"Id": "3ac16314-b284-4870-9f32-81ca53457b26",
+					"CurrentState": "NotPickedFiredNo",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Thanks, real funny..."
 				}]
 		},
 	"types": [

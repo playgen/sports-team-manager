@@ -404,6 +404,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void ConfirmLineUp()
 		{
+			Boat.TickCrewMembers(ActionAllowance);
 			Boat.ConfirmChanges();
 			Boat.PostRaceRest();
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
@@ -450,6 +451,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		void DeductCost(int cost)
 		{
 			ActionAllowance -= cost;
+			Boat.TickCrewMembers(cost);
 			Boat.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString(), "SELF");
 			Boat.Manager.SaveStatus();
 			AllowanceUpdated(this, new EventArgs());
