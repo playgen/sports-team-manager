@@ -543,15 +543,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			IEnumerable<DialogueStateActionDTO> dialogueOptions = Enumerable.Empty<DialogueStateActionDTO>();
 			string reply = null;
-			switch (selected.NextState)
+			string nextState = selected.NextState;
+			switch (nextState)
 			{
 				case "NotPickedSorry":
 					if (EmotionalAppraisal.BeliefExists(NPCBeliefs.ExpectedSelection.GetDescription()))
 					{
-						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, selected.NextState + "Again");
-					} else
-					{
-						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, selected.NextState);
+						nextState = selected.NextState + "Again";
 					}
 						break;
 				case "NotPickedSkill":
@@ -559,18 +557,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						if (bp.Position.GetPositionRating(this) >= bp.PositionScore)
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, selected.NextState + "Incorrect");
-						} else
-						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, selected.NextState);
+							nextState = selected.NextState + "Incorrect";
 						}
 						break;
 					}
 					break;
-				default:
-					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, selected.NextState);
-					break;
 			}
+			dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, nextState);
 			if (dialogueOptions != null && dialogueOptions.Count() > 0)
 			{
 				DialogueStateActionDTO selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
@@ -578,12 +571,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				reply = selectedNext.Utterance;
 				if (selectedNext.NextState == "-")
 				{
-					PostRaceFeedback(selected.NextState, boat);
+					PostRaceFeedback(nextState, boat);
 				}
 			} else
 			{
 				iat.SetDialogueState("Player", "-");
-				PostRaceFeedback(selected.NextState, boat);
+				PostRaceFeedback(nextState, boat);
 			}
 			return reply;
 		}
