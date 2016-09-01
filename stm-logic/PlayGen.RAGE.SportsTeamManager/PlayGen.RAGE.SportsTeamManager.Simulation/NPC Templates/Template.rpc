@@ -4,6 +4,7 @@
 			"classId": 0,
 			"_emotionalAppraisalAssetSource": "Template.ea",
 			"_emotionalDecisionMakingAssetSource": "Template.edm",
+			"_socialImportanceAssetSource": "Template.si",
 			"BodyName": "Template",
 			"CharacterName": "Template"
 		},

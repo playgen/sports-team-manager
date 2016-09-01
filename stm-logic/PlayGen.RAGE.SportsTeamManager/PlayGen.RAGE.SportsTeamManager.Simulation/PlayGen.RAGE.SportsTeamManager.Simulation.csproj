@@ -109,6 +109,7 @@
     <None Include="NPC Templates\Template.edm" />
     <None Include="NPC Templates\Template.iat" />
     <None Include="NPC Templates\Template.rpc" />
+    <None Include="NPC Templates\Template.si" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

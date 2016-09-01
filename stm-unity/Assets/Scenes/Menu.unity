@@ -11947,7 +11947,7 @@ RectTransform:
   m_RootOrder: 12
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 40, y: -70}
+  m_AnchoredPosition: {x: 120, y: -70}
   m_SizeDelta: {x: 80, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1209884636
@@ -12701,7 +12701,7 @@ RectTransform:
   m_RootOrder: 13
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 40, y: -105.000015}
+  m_AnchoredPosition: {x: 120, y: -105.000015}
   m_SizeDelta: {x: 80, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1261470302
@@ -15885,7 +15885,7 @@ RectTransform:
   m_RootOrder: 11
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 40, y: -35}
+  m_AnchoredPosition: {x: 120, y: -35}
   m_SizeDelta: {x: 80, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1587348038
@@ -17561,7 +17561,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Primary Team Colour Red:'
+  m_Text: 'Team Colour Red:'
 --- !u!222 &1750810482
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -72,15 +72,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///	&quot;OpinionLike&quot;: 2,
         ///	&quot;OpinionDislike&quot;: -2,
         ///	&quot;OpinionStrongDislike&quot;: -4,
-        ///	&quot;DislikeInPositionOpinionRequired&quot;: -2,
+        ///	&quot;DislikeEventOpinionRequired&quot;: -3,
+        ///	&quot;LikeEventOpinionRequired&quot;: 3,
         ///	&quot;OpinionRatingWeighting&quot;: 1,
         ///	&quot;ManagerOpinionRatingWeighting&quot;: 1,
         ///	&quot;MoodRatingWeighting&quot;: 1,
-        ///	&quot;DefaultOpinion&quot;: 0,
-        ///	&quot;DefaultMood&quot;: 0,
-        ///	&quot;PostRaceRest&quot;: 0,
-        ///	&quot;DefaultActionAllowance&quot;: 5,
-        ///	&quot;ActionAllowancePerPosition [rest of string was truncated]&quot;;.
+        ///	&quot;DefaultOpinionMin&quot;: 0,
+        ///	&quot;DefaultOpinionMax&quot;: 0,
+        ///	&quot;DefaultMoodMin&quot;: 0,
+        ///	&quot;DefaultMoodMax&quot;: 0 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string config {
             get {
@@ -124,6 +124,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         public static byte[] template_rpc {
             get {
                 object obj = ResourceManager.GetObject("template_rpc", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] template_si {
+            get {
+                object obj = ResourceManager.GetObject("template_si", resourceCulture);
                 return ((byte[])(obj));
             }
         }
