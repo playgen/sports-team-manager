@@ -136,7 +136,7 @@ public class CrewMemberUI : MonoBehaviour {
 		if (!placed)
 		{
 			Reset();
-			_teamSelection.RemoveCrew(_crewMember.Name);
+			_teamSelection.RemoveCrew(_crewMember);
 		}
 	}
 

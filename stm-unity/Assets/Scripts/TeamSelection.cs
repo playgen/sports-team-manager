@@ -59,7 +59,7 @@ public class TeamSelection : MonoBehaviour {
 	/// <summary>
 	/// Remove a CrewMember from their position on the active boat
 	/// </summary>
-	public void RemoveCrew(string crewMember)
+	public void RemoveCrew(CrewMember crewMember)
 	{
 		_gameManager.AssignCrew(null, crewMember);
 	}

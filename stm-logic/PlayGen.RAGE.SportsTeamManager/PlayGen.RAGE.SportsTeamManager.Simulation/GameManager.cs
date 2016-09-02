@@ -336,15 +336,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Assign the CrewMember with the name provided to the Position with the name provided
+		/// Assign the CrewMember provided to the Position provided
 		/// </summary>
-		public void AssignCrew(string positionName, string crewName)
-		{
-			BoatPosition position = Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == positionName);
-			CrewMember crewMember = Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == crewName);
-			Boat.AssignCrew(position, crewMember);
-		}
-
 		public void AssignCrew(Position position, CrewMember crewMember)
 		{
 			BoatPosition boatPosition = Boat.BoatPositions.SingleOrDefault(p => p.Position == position);
