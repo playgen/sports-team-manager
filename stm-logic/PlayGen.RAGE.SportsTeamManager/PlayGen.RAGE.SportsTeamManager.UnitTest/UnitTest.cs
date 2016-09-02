@@ -311,7 +311,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Dim Wobnam"));
 				Assert.AreEqual(30, gameManager.Boat.BoatScore);
 				gameManager.ConfirmLineUp();
-				Assert.AreEqual(30, gameManager.Boat.BoatScore);
+				Assert.AreEqual(10, gameManager.Boat.BoatScore);
+				//Assert.AreEqual(30, gameManager.Boat.BoatScore); promotion
 				//Assert.AreEqual(33, gameManager.Boat.BoatScore); opinion changes
 
 				gameManager.LoadGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace");
@@ -319,7 +320,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				Assert.AreEqual("Testy McTestFace", gameManager.Boat.Name);
 				Assert.AreEqual("Player Manager", gameManager.Boat.Manager.Name);
 				//Assert.AreEqual(gameManager.Boat.GetAllCrewMembers().Count - gameManager.Boat.BoatPositions.Count, gameManager.Boat.UnassignedCrew.Count);
-				Assert.AreEqual(30, gameManager.Boat.BoatScore);
+				Assert.AreEqual(10, gameManager.Boat.BoatScore);
+				//Assert.AreEqual(30, gameManager.Boat.BoatScore); promotion
 				//Assert.AreEqual(33, gameManager.Boat.BoatScore); opinion changes
 			}
 		}
@@ -428,12 +430,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				Assert.AreEqual(25, gameManager.Boat.BoatScore);
 				//Assert.AreEqual(27, gameManager.Boat.BoatScore); opinion changes
 				gameManager.ConfirmLineUp();
-				Assert.AreEqual(25, gameManager.Boat.BoatScore);
+				Assert.AreEqual(15, gameManager.Boat.BoatScore);
+				//Assert.AreEqual(25, gameManager.Boat.BoatScore); promotion
 				//Assert.AreEqual(29, gameManager.Boat.BoatScore); opinion changes
 
 				gameManager.LoadGame(LocalStorageProvider.Instance, Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace");
 
-				Assert.AreEqual(25, gameManager.Boat.BoatScore);
+				Assert.AreEqual(15, gameManager.Boat.BoatScore);
+				//Assert.AreEqual(25, gameManager.Boat.BoatScore); promotion
 				//Assert.AreEqual(29, gameManager.Boat.BoatScore); opinion changes
 			}
 		}

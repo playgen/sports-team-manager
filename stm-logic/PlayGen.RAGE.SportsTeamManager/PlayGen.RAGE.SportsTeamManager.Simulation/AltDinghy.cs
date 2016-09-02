@@ -5,9 +5,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// <summary>
 	/// Type of Boat
 	/// </summary>
-	public class LargeDinghy : Boat
+	public class AltDinghy : Boat
 	{
-		public LargeDinghy(ConfigStore config) : base(config)
+		public AltDinghy(ConfigStore config) : base(config)
 		{
 			BoatPositions = new List<BoatPosition>()
 			{
@@ -28,35 +28,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					Position = new Position
 					{
-						Name = "Helmsman",
-						RequiredSkills = new List<CrewMemberSkill>
-						{
-							CrewMemberSkill.Perception,
-							CrewMemberSkill.Quickness
-						}
-					}
-				},
-				new BoatPosition
-				{
-					Position = new Position
-					{
-						Name = "Bowman",
-						RequiredSkills = new List<CrewMemberSkill>
-						{
-							CrewMemberSkill.Perception,
-							CrewMemberSkill.Quickness,
-							CrewMemberSkill.Willpower
-						}
-					}
-				},
-				new BoatPosition
-				{
-					Position = new Position
-					{
 						Name = "Trimmer",
 						RequiredSkills = new List<CrewMemberSkill>
 						{
+							CrewMemberSkill.Perception,
+							CrewMemberSkill.Body
+						}
+					}
+				},
+				new BoatPosition
+				{
+					Position = new Position
+					{
+						Name = "Pitman",
+						RequiredSkills = new List<CrewMemberSkill>
+						{
 							CrewMemberSkill.Body,
+							CrewMemberSkill.Charisma,
 							CrewMemberSkill.Perception
 						}
 					}

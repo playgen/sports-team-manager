@@ -306,11 +306,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				CrewMember crewMember = new CrewMember(storagePorvider, rpc, _config);
 				if (position == "Retired")
 				{
+					crewMember.LoadBeliefs(Boat);
 					Boat.RetiredCrew.Add(crewMember);
 					continue;
 				}
 				if (position == "Recruit")
 				{
+					crewMember.LoadBeliefs(Boat);
 					Boat.Recruits.Add(crewMember);
 					continue;
 				}
@@ -383,7 +385,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			switch (Boat.GetType().Name)
 			{
 				case "Dinghy":
+					newBoat = new AltDinghy(_config);
+					break;
+				case "AltDinghy":
+					newBoat = new AltLargeDinghy(_config);
+					break;
+				case "AltLargeDinghy":
 					newBoat = new LargeDinghy(_config);
+					break;
+				case "LargeDinghy":
+					newBoat = new LargestDinghy(_config);
 					break;
 				default:
 					return;
@@ -402,6 +413,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var noSpaceBoatName = Boat.Name.Replace(" ", "");
 					string combinedStorageLocation = Path.Combine(_storageLocation, noSpaceBoatName);
 					newMember.CreateFile(_iat, templateStorage, _storageProvider, combinedStorageLocation);
+					foreach (CrewMember otherMember in Boat.GetAllCrewMembers())
+					{
+						if (newMember != otherMember)
+						{
+							newMember.AddOrUpdateOpinion(otherMember, rand.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+							newMember.AddOrUpdateRevealedOpinion(otherMember, rand.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+							otherMember.AddOrUpdateOpinion(newMember, rand.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+							otherMember.AddOrUpdateRevealedOpinion(newMember, rand.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+						}
+						newMember.AddOrUpdateOpinion(Boat.Manager, rand.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+						newMember.AddOrUpdateRevealedOpinion(Boat.Manager, rand.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+					}
 					newMember.UpdateBeliefs("null");
 					newMember.SaveStatus();
 					_iat.SaveToFile(_storageProvider, _iat.AssetFilePath);

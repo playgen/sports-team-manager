@@ -82,6 +82,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public int ConfirmLineUp(bool historical = false)
 	{
+		int score = 0;
 		_confirmCount++;
 		if (historical)
 		{
@@ -93,13 +94,14 @@ public class TeamSelection : MonoBehaviour {
 		else
 		{
 			_gameManager.SaveLineUp();
+			score = _gameManager.Boat.BoatScore;
 			if (_confirmCount >= _sessionLength)
 			{
 				_gameManager.ConfirmLineUp();
 				_confirmCount -= _sessionLength;
 			}
 		}
-		return _gameManager.Boat.BoatScore;
+		return score;
 	}
 
 	public void PostRaceEvent()
