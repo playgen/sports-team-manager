@@ -19,4 +19,13 @@ public class GameManagerObject : MonoBehaviour
 		GameManager = new GameManager();
 		DontDestroyOnLoad(gameObject);
 	}
+#if UNITY_EDITOR
+	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.P))
+		{
+			Application.CaptureScreenshot(System.DateTime.UtcNow.ToFileTimeUtc() + ".png");
+		}
+	}
+#endif
 }

@@ -171,50 +171,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			int amount = BoatPositions.Count + 1 - Recruits.Count;
 			for (int i = 0; i < amount; i++)
 			{
-				CrewMember newMember = new CrewMember(rand, _config);
-				bool unqiue = false;
-				while (!unqiue)
-				{
-					if (GetAllCrewMembers().Count(c => c.Name == newMember.Name) > 0 || RetiredCrew.Count(c => c.Name == newMember.Name) > 0 || Recruits.Count(c => c.Name == newMember.Name) > 1 || newMember.Name == Manager.Name)
-					{
-						newMember.Name = newMember.SelectNewName(newMember.Gender, rand);
-					}
-					else
-					{
-						unqiue = true;
-					}
-				}
-				Position selectedPerferred = null;
-				Dictionary<Position, int> positionStrength = GetPositionStrength();
-				if (positionStrength.OrderBy(kvp => kvp.Value).Last().Value - positionStrength.OrderBy(kvp => kvp.Value).First().Value == 0)
-				{
-					int positionValue = rand.Next(0, BoatPositions.Count + 1);
-					selectedPerferred = positionValue < BoatPositions.Count ? BoatPositions[positionValue].Position : null;
-				} else
-				{
-					int lowValue = positionStrength.OrderBy(kvp => kvp.Value).First().Value;
-					Position[] lowPositions = positionStrength.Where(kvp => kvp.Value == lowValue).Select(kvp => kvp.Key).ToArray();
-					selectedPerferred = lowPositions.OrderBy(p => Guid.NewGuid()).First();
-				}
-				newMember.Skills = new Dictionary<CrewMemberSkill, int>();
-				foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
-				{
-					if (selectedPerferred != null)
-					{
-						if (selectedPerferred.RequiredSkills.Contains(skill))
-						{
-							newMember.Skills.Add(skill, rand.Next((int)_config.ConfigValues[ConfigKeys.GoodPositionRating.ToString()], 11));
-						}
-						else
-						{
-							newMember.Skills.Add(skill, rand.Next(1, (int)_config.ConfigValues[ConfigKeys.BadPositionRating.ToString()] + 1));
-						}
-					}
-					else
-					{
-						newMember.Skills.Add(skill, rand.Next((int)_config.ConfigValues[ConfigKeys.RandomSkillLow.ToString()], (int)_config.ConfigValues[ConfigKeys.RandomSkillHigh.ToString()] + 1));
-					}
-				}
+				CrewMember newMember = CreateNewMember(rand);
 				Recruits.Add(newMember);
 			}
 			for (int i = 0; i < Recruits.Count; i++)
@@ -224,6 +181,56 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Recruits[i].SaveStatus();
 			}
 			iat.SaveToFile(savedStorage, iat.AssetFilePath);
+		}
+
+		public CrewMember CreateNewMember(Random rand)
+		{
+			CrewMember newMember = new CrewMember(rand, _config);
+			bool unqiue = false;
+			while (!unqiue)
+			{
+				if (GetAllCrewMembers().Count(c => c.Name == newMember.Name) > 0 || RetiredCrew.Count(c => c.Name == newMember.Name) > 0 || Recruits.Count(c => c.Name == newMember.Name) > 0 || newMember.Name == Manager.Name)
+				{
+					newMember.Name = newMember.SelectNewName(newMember.Gender, rand);
+				}
+				else
+				{
+					unqiue = true;
+				}
+			}
+			Position selectedPerferred = null;
+			Dictionary<Position, int> positionStrength = GetPositionStrength();
+			if (positionStrength.OrderBy(kvp => kvp.Value).Last().Value - positionStrength.OrderBy(kvp => kvp.Value).First().Value == 0)
+			{
+				int positionValue = rand.Next(0, BoatPositions.Count + 1);
+				selectedPerferred = positionValue < BoatPositions.Count ? BoatPositions[positionValue].Position : null;
+			}
+			else
+			{
+				int lowValue = positionStrength.OrderBy(kvp => kvp.Value).First().Value;
+				Position[] lowPositions = positionStrength.Where(kvp => kvp.Value == lowValue).Select(kvp => kvp.Key).ToArray();
+				selectedPerferred = lowPositions.OrderBy(p => Guid.NewGuid()).First();
+			}
+			newMember.Skills = new Dictionary<CrewMemberSkill, int>();
+			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
+			{
+				if (selectedPerferred != null)
+				{
+					if (selectedPerferred.RequiredSkills.Contains(skill))
+					{
+						newMember.Skills.Add(skill, rand.Next((int)_config.ConfigValues[ConfigKeys.GoodPositionRating.ToString()], 11));
+					}
+					else
+					{
+						newMember.Skills.Add(skill, rand.Next(1, (int)_config.ConfigValues[ConfigKeys.BadPositionRating.ToString()] + 1));
+					}
+				}
+				else
+				{
+					newMember.Skills.Add(skill, rand.Next((int)_config.ConfigValues[ConfigKeys.RandomSkillLow.ToString()], (int)_config.ConfigValues[ConfigKeys.RandomSkillHigh.ToString()] + 1));
+				}
+			}
+			return newMember;
 		}
 
 		Dictionary<Position, int> GetPositionStrength()

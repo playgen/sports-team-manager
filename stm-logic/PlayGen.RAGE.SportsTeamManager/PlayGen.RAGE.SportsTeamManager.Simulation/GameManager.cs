@@ -390,7 +390,28 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			Boat.Manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), newBoat.GetType().Name, "SELF");
 			Boat.Manager.SaveStatus();
+			int extraMembers = (newBoat.BoatPositions.Count - Boat.BoatPositions.Count) * 2;
 			LoadGame(_storageProvider, _storageLocation, Boat.Name);
+			Random rand = new Random();
+			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
+			for (int i = 0; i < extraMembers; i++)
+			{
+				if (CanAddToCrew())
+				{
+					CrewMember newMember = Boat.CreateNewMember(rand);
+					var noSpaceBoatName = Boat.Name.Replace(" ", "");
+					string combinedStorageLocation = Path.Combine(_storageLocation, noSpaceBoatName);
+					newMember.CreateFile(_iat, templateStorage, _storageProvider, combinedStorageLocation);
+					newMember.UpdateBeliefs("null");
+					newMember.SaveStatus();
+					_iat.SaveToFile(_storageProvider, _iat.AssetFilePath);
+					if (!CanRemoveFromCrew())
+					{
+						i--;
+					}
+					Boat.AddCrew(newMember);
+				}
+			}
 		}
 
 		public int GetRaceSessionLength()
@@ -450,18 +471,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat.TickCrewMembers(ActionAllowance);
 			Boat.ConfirmChanges();
 			Boat.PostRaceRest();
-			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
-			Boat.CreateRecruits(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name.Replace(" ", "")));
-			int idealScore = 0;
-			foreach (BoatPosition bp in Boat.IdealCrew)
-			{
-				bp.UpdateCrewMemberScore(Boat, _config);
-				idealScore += bp.PositionScore;
-			}
-			if (Boat.BoatScore >= idealScore)
+			if (Boat.BoatScore >= 7.5f * Boat.BoatPositions.Count)
 			{
 				PromoteBoat();
 			}
+			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
+			Boat.CreateRecruits(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name.Replace(" ", "")));
 			ResetActionAllowance();
 			ResetCrewEditAllowance();
 		}
