@@ -24,7 +24,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public event EventHandler AllowanceUpdated = delegate { };
 
 		private IntegratedAuthoringToolAsset _iat { get; set; }
-		private IStorageProvider _storagePorvider { get; set; }
+		private IStorageProvider _storageProvider { get; set; }
 		private string _storageLocation { get; set; }
 
 		private ConfigStore _config { get; set; }
@@ -41,8 +41,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			UnloadGame();
 			var noSpaceBoatName = boatName.Replace(" ", "");
-			storageLocation = Path.Combine(storageLocation, noSpaceBoatName);
-			Directory.CreateDirectory(storageLocation);
+			string combinedStorageLocation = Path.Combine(storageLocation, noSpaceBoatName);
+			Directory.CreateDirectory(combinedStorageLocation);
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile(templateStorage, "template_iat");
 			Boat = new Dinghy(_config);
@@ -67,7 +67,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			ActionAllowance = (int)_config.ConfigValues[ConfigKeys.DefaultActionAllowance.ToString()] + ((int)_config.ConfigValues[ConfigKeys.ActionAllowancePerPosition.ToString()] * Boat.BoatPositions.Count);
 			CrewEditAllowance = (int)_config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition.ToString()] * Boat.BoatPositions.Count;
 			this._raceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength.ToString()];
-			manager.CreateFile(iat, templateStorage, storagePorvider, storageLocation);
+			manager.CreateFile(iat, templateStorage, storagePorvider, combinedStorageLocation);
 			manager.UpdateBeliefs("Manager");
 			manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.GetType().Name, "SELF");
 			manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString(), "SELF");
@@ -83,7 +83,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 			foreach (CrewMember member in crew)
 			{
-				member.CreateFile(iat, templateStorage, storagePorvider, storageLocation);
+				member.CreateFile(iat, templateStorage, storagePorvider, combinedStorageLocation);
 				Boat.AddCrew(member);
 				/*if (initialCrew)
 				{
@@ -110,14 +110,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.SaveStatus();
 			}
 
-			iat.SaveToFile(storagePorvider, Path.Combine(storageLocation, noSpaceBoatName + ".iat"));
+			iat.SaveToFile(storagePorvider, Path.Combine(combinedStorageLocation, noSpaceBoatName + ".iat"));
 			EventController = new EventController();
 			_iat = iat;
 			_storageLocation = storageLocation;
-			_storagePorvider = storagePorvider;
+			_storageProvider = storagePorvider;
 			LineUpHistory = new List<Boat>();
 			Boat.GetIdealCrew();
-			Boat.CreateRecruits(iat, templateStorage, storagePorvider, storageLocation);
+			Boat.CreateRecruits(iat, templateStorage, storagePorvider, combinedStorageLocation);
 		}
 
 		/// <summary>
@@ -274,8 +274,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			UnloadGame();
 			Boat = new Boat(_config);
-			storageLocation = Path.Combine(storageLocation, boatName.Replace(" ", ""));
-			var iat = IntegratedAuthoringToolAsset.LoadFromFile(storagePorvider, Path.Combine(storageLocation, boatName.Replace(" ", "") + ".iat"));
+			string combinedStorageLocation = Path.Combine(storageLocation, boatName.Replace(" ", ""));
+			var iat = IntegratedAuthoringToolAsset.LoadFromFile(storagePorvider, Path.Combine(combinedStorageLocation, boatName.Replace(" ", "") + ".iat"));
 			var rpcList = iat.GetAllCharacters();
 
 			List<CrewMember> crewList = new List<CrewMember>();
@@ -321,7 +321,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			EventController = new EventController();
 			_iat = iat;
 			_storageLocation = storageLocation;
-			_storagePorvider = storagePorvider;
+			this._storageProvider = storagePorvider;
 			LoadLineUpHistory();
 			Boat.GetIdealCrew();
 		}
@@ -375,6 +375,22 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				boat.IdealMatchScore = float.Parse(subjectSplit[subjectSplit.Length - 1]);
 				LineUpHistory.Add(boat);
 			}
+		}
+
+		public void PromoteBoat()
+		{
+			Boat newBoat = new Boat(_config);
+			switch (Boat.GetType().Name)
+			{
+				case "Dinghy":
+					newBoat = new LargeDinghy(_config);
+					break;
+				default:
+					return;
+			}
+			Boat.Manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), newBoat.GetType().Name, "SELF");
+			Boat.Manager.SaveStatus();
+			LoadGame(_storageProvider, _storageLocation, Boat.Name);
 		}
 
 		public int GetRaceSessionLength()
@@ -435,7 +451,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat.ConfirmChanges();
 			Boat.PostRaceRest();
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
-			Boat.CreateRecruits(_iat, templateStorage, _storagePorvider, _storageLocation);
+			Boat.CreateRecruits(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name.Replace(" ", "")));
+			int idealScore = 0;
+			foreach (BoatPosition bp in Boat.IdealCrew)
+			{
+				bp.UpdateCrewMemberScore(Boat, _config);
+				idealScore += bp.PositionScore;
+			}
+			if (Boat.BoatScore >= idealScore)
+			{
+				PromoteBoat();
+			}
 			ResetActionAllowance();
 			ResetCrewEditAllowance();
 		}
@@ -528,7 +554,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				_iat.RemoveCharacters(new List<string>() { member.Name });
 				TemplateStorageProvider templateStorage = new TemplateStorageProvider();
-				member.CreateFile(_iat, templateStorage, _storagePorvider, _storageLocation);
+				member.CreateFile(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name.Replace(" ", "")));
 				Boat.AddCrew(member);
 				Random random = new Random();
 				foreach (CrewMember otherMember in Boat.GetAllCrewMembers())
@@ -547,7 +573,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.SaveStatus();
 				DeductCost(cost);
 				Boat.Recruits.Remove(member);
-				_iat.SaveToFile(_storagePorvider, _iat.AssetFilePath);
+				_iat.SaveToFile(this._storageProvider, _iat.AssetFilePath);
 				DeductCrewEditAllowance();
 			}
 		}

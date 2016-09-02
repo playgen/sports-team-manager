@@ -88,6 +88,7 @@
     <Compile Include="CrewMember.cs" />
     <Compile Include="CrewMemberSkill.cs" />
     <Compile Include="CrewOpinion.cs" />
+    <Compile Include="LargeDinghy.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="EventController.cs" />
     <Compile Include="GameManager.cs" />

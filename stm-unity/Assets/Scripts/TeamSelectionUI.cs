@@ -412,11 +412,14 @@ public class TeamSelectionUI : MonoBehaviour {
 		List<BoatPosition> currentPositions = new List<BoatPosition>();
 		foreach (BoatPosition bp in _teamSelection.GetBoat().BoatPositions)
 		{
-			currentPositions.Add(new BoatPosition
+			if (bp.CrewMember != null)
 			{
-				Position = bp.Position,
-				CrewMember = bp.CrewMember
-			});
+				currentPositions.Add(new BoatPosition
+				{
+					Position = bp.Position,
+					CrewMember = bp.CrewMember
+				});
+			}
 		}
 		_raceButton.onClick.AddListener(() => RepeatLineUp(currentPositions));
 
