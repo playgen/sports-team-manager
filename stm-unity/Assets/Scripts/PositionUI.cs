@@ -47,9 +47,9 @@ public class PositionUI : MonoBehaviour {
 	/// <summary>
 	/// Return the name of this position
 	/// </summary>
-	public string GetName()
+	public Position GetPosition()
 	{
-		return _position.Name;
+		return _position;
 	}
 
 	/// <summary>

@@ -53,11 +53,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					Position = new Position
 					{
-						Name = "Trimmer",
+						Name = "Mid-Bowman",
 						RequiredSkills = new List<CrewMemberSkill>
 						{
 							CrewMemberSkill.Body,
-							CrewMemberSkill.Perception
+							CrewMemberSkill.Quickness,
+							CrewMemberSkill.Willpower
 						}
 					}
 				}

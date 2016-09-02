@@ -220,10 +220,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			if (EmotionalAppraisal.GetBeliefValue(NPCBeliefs.Position.GetDescription()) != "null")
 			{
-				var boatPosition = boat.BoatPositions.SingleOrDefault(bp => bp.Position.Name == EmotionalAppraisal.GetBeliefValue(NPCBeliefs.Position.GetDescription()));
+				var boatPosition = boat.BoatPositions.Where(bp => bp.Position.Name == EmotionalAppraisal.GetBeliefValue(NPCBeliefs.Position.GetDescription()));
 				if (boatPosition != null)
 				{
-					boat.AssignCrew(boatPosition, this);
+					foreach (BoatPosition bp in boatPosition)
+					{
+						if (bp.CrewMember == null)
+						{
+							boat.AssignCrew(bp, this);
+						}
+					}
 				}
 			}
 			foreach (CrewMember member in boat.GetAllCrewMembers())

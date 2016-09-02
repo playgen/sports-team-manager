@@ -222,8 +222,8 @@ public class TeamSelectionUI : MonoBehaviour {
 			crewMember.name = _crewPrefab.name;
 			foreach (var position in boatContainer.GetComponentsInChildren<PositionUI>())
 			{
-				var boatPosition = position.GetName();
-				if (boatPosition == boat.BoatPositions[i].Position.Name)
+				var boatPosition = position.GetPosition();
+				if (boatPosition == boat.BoatPositions[i].Position)
 				{
 					RectTransform positionTransform = position.gameObject.GetComponent<RectTransform>();
 					crewMember.transform.SetParent(positionTransform, false);
@@ -382,18 +382,18 @@ public class TeamSelectionUI : MonoBehaviour {
 	public void ConfirmLineUp()
 	{
 		Tracker.T.completable.Completed("Crew Confirmed", CompletableTracker.Completable.Stage);
+		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
+		{
+			var boatPosition = position.GetPosition();
+			var score = _teamSelection.GetPositionScore(boatPosition);
+			position.LockPosition(score);
+			Destroy(position);
+		}
 		var teamScore = _teamSelection.ConfirmLineUp();
 		var scoreText = _currentBoat.transform.Find("Score").GetComponent<Text>();
 		scoreText.text = teamScore.ToString();
 		//float correctCount = _teamSelection.IdealCheck();
 		//scoreText.text = correctCount.ToString();
-		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
-		{
-			var boatPosition = position.GetName();
-			var score = _teamSelection.GetPositionScore(boatPosition);
-			position.LockPosition(score);
-			Destroy(position);
-		}
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
 			if (crewMember.transform.parent.name == _crewContainer.name)
@@ -430,18 +430,25 @@ public class TeamSelectionUI : MonoBehaviour {
 
 	public void RepeatLineUp(List<BoatPosition> boatPositions)
 	{
+		List<BoatPosition> tempBoatPositions = new List<BoatPosition>();
+		tempBoatPositions.AddRange(boatPositions);
 		Tracker.T.alternative.Selected("Old Crew Selection Selected", "Repeat", AlternativeTracker.Alternative.Menu);
-		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
+		List<CrewMemberUI> crewMembers = (FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[]).ToList();
+		List<PositionUI> positions = (FindObjectsOfType(typeof(PositionUI)) as PositionUI[]).ToList();
+		var sortedPositions = positions.OrderBy(p => p.transform.GetSiblingIndex());
+		foreach (var position in sortedPositions)
 		{
-			BoatPosition boatPosition = boatPositions.FirstOrDefault(bp => bp.Position.Name == position.name);
+			BoatPosition boatPosition = tempBoatPositions.FirstOrDefault(bp => bp.Position.Name == position.GetPosition().Name);
 			if (boatPosition != null)
 			{
-				foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
+				foreach (var crewMember in crewMembers)
 				{
 					if (crewMember.name == SplitName(boatPosition.CrewMember.Name))
 					{
 						crewMember.PlacedEvent();
 						crewMember.Place(position.gameObject);
+						crewMembers.Remove(crewMember);
+						tempBoatPositions.Remove(boatPosition);
 						break;
 					}
 				}

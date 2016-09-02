@@ -51,7 +51,7 @@ public class TeamSelection : MonoBehaviour {
 	/// <summary>
 	/// Assign a CrewMember to a Position on the active boat
 	/// </summary>
-	public void AssignCrew(string crewMember, string position)
+	public void AssignCrew(CrewMember crewMember, Position position)
 	{
 		_gameManager.AssignCrew(position, crewMember);
 	}
@@ -129,9 +129,9 @@ public class TeamSelection : MonoBehaviour {
 	/// <summary>
 	/// Get the current score of a Position on the active boat by name
 	/// </summary>
-	public int GetPositionScore(string positionName)
+	public int GetPositionScore(Position position)
 	{
-		var boatPosition = _gameManager.Boat.BoatPositions.SingleOrDefault(bp => bp.Position.Name == positionName);
+		var boatPosition = _gameManager.Boat.BoatPositions.SingleOrDefault(bp => bp.Position == position);
 		if (boatPosition != null)
 		{
 			return boatPosition.PositionScore;

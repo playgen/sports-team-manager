@@ -323,6 +323,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			_storageLocation = storageLocation;
 			this._storageProvider = storagePorvider;
 			LoadLineUpHistory();
+			Boat.UpdateBoatScore();
 			Boat.GetIdealCrew();
 		}
 
@@ -342,6 +343,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			BoatPosition position = Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == positionName);
 			CrewMember crewMember = Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == crewName);
 			Boat.AssignCrew(position, crewMember);
+		}
+
+		public void AssignCrew(Position position, CrewMember crewMember)
+		{
+			BoatPosition boatPosition = Boat.BoatPositions.SingleOrDefault(p => p.Position == position);
+			Boat.AssignCrew(boatPosition, crewMember);
 		}
 
 		/// <summary>

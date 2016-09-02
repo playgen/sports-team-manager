@@ -152,7 +152,7 @@ public class CrewMemberUI : MonoBehaviour {
 		transform.SetParent(positionTransform, false);
 		GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
 		GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);
-		_teamSelection.AssignCrew(_crewMember.Name, position.gameObject.GetComponent<PositionUI>().GetName());
+		_teamSelection.AssignCrew(_crewMember, position.gameObject.GetComponent<PositionUI>().GetPosition());
 	}
 
 	/// <summary>

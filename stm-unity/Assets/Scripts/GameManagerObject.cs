@@ -11,6 +11,11 @@ public class GameManagerObject : MonoBehaviour
 
 	void Awake()
 	{
+		if (FindObjectsOfType<GameManagerObject>().Length > 1)
+		{
+			Destroy(gameObject);
+			return;
+		}
 		GameManager = new GameManager();
 		DontDestroyOnLoad(gameObject);
 	}
