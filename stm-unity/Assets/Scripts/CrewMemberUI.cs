@@ -112,7 +112,6 @@ public class CrewMemberUI : MonoBehaviour {
 	void ShowPopUp()
 	{
 		_teamSelectionUI.DisplayCrewPopUp(_crewMember);
-		Tracker.T.trackedGameObject.Interacted("Viewed Crew Member Information", GameObjectTracker.TrackedGameObject.Npc);
 	}
 
 	/// <summary>

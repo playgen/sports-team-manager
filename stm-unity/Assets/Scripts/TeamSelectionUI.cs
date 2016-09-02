@@ -266,6 +266,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// </summary>
 	public void DisplayCrewPopUp(CrewMember crewMember)
 	{
+		Tracker.T.trackedGameObject.Interacted("Viewed Crew Member Information", GameObjectTracker.TrackedGameObject.Npc);
 		_crewPopUp.SetActive(true);
 		_crewPopUpText[0].text = "Name: " + SplitName(crewMember.Name);
 		_crewPopUpText[1].text = "";
@@ -333,10 +334,46 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// </summary>
 	public void DisplayPositionPopUp(Position position)
 	{
+		Tracker.T.trackedGameObject.Interacted("Viewed Position Information", GameObjectTracker.TrackedGameObject.GameObject);
 		_positionPopUp.SetActive(true);
 		_positionPopUpText[0].text = position.Name;
 		_positionPopUpText[1].text = "";
 		_positionPopUpText[2].text = _teamSelection.GetPositionCrewMember(position);
+		int raceCount = 1;
+		foreach (Transform child in _positionPopUpHistoryContainer.transform)
+		{
+			Destroy(child.gameObject);
+		}
+		foreach (var boat in _teamSelection.GetLineUpHistory())
+		{
+			BoatPosition boatPosition = boat.BoatPositions.Where(bp => bp.Position.Name == position.Name).FirstOrDefault();
+			if (boatPosition != null)
+			{
+				GameObject positionHistory = Instantiate(_positionPopUpHistoryPrefab);
+				positionHistory.transform.SetParent(_positionPopUpHistoryContainer.transform, false);
+				positionHistory.transform.SetAsFirstSibling();
+				positionHistory.transform.Find("Member/Name").GetComponent<Text>().text = SplitName(boatPosition.CrewMember.Name);
+				CrewMember positionMember = boatPosition.CrewMember;
+				if (_teamSelection.GetBoat().GetAllCrewMembers().Contains(positionMember))
+				{
+					positionHistory.transform.Find("Member").GetComponent<Button>().onClick.AddListener(delegate { DisplayCrewPopUp(positionMember); });
+				}
+				else
+				{
+					positionHistory.transform.Find("Member").GetComponent<Button>().interactable = false;
+				}
+				if (raceCount % _teamSelection.GetSessionLength() == 0)
+				{
+					positionHistory.transform.Find("Session").GetComponent<Text>().text = "Race Day!";
+				}
+				else
+				{
+					positionHistory.transform.Find("Session").GetComponent<Text>().text = "Practice " + (raceCount % _teamSelection.GetSessionLength());
+				}
+				positionHistory.transform.Find("Score").GetComponent<Text>().text = boatPosition.PositionScore.ToString();
+			}
+			raceCount++;
+		}
 	}
 
 	/// <summary>

@@ -412,7 +412,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var eventString = String.Format(eventStringUnformatted, boatType, crew);
 			manager.EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			manager.SaveStatus();
-			LineUpHistory.Add(Boat);
+			Boat lastBoat = new Boat(_config);
+			foreach (BoatPosition bp in Boat.BoatPositions)
+			{
+				lastBoat.BoatPositions.Add(new BoatPosition
+				{
+					Position = bp.Position,
+					CrewMember = bp.CrewMember,
+					PositionScore = bp.PositionScore
+				});
+			}
+			lastBoat.IdealMatchScore = lastBoat.IdealMatchScore;
+			LineUpHistory.Add(lastBoat);
 		}
 
 		/// <summary>
