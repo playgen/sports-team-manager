@@ -44,6 +44,7 @@ public class TeamSelectionUI : MonoBehaviour {
 
 	private GameObject _currentBoat;
 	private List<GameObject> _boatHistory = new List<GameObject>();
+	[SerializeField]
 	private int _positionsEmpty;
 
 	[SerializeField]
@@ -478,6 +479,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			Destroy(crewMember.gameObject);
 		}
+		_positionsEmpty = (FindObjectsOfType(typeof(PositionUI)) as PositionUI[]).Length;
 		CreateCrew();
 	}
 

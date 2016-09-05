@@ -317,7 +317,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void GetIdealCrew()
 		{
-			Boat tempBoat = (Boat)Activator.CreateInstance(this.GetType(), _config);
+			/*Boat tempBoat = (Boat)Activator.CreateInstance(this.GetType(), _config);
 			tempBoat.Manager = Manager;
 			IEnumerable<CrewMember> availableCrew = GetAllCrewMembers().Where(cm => cm.restCount <= 0);
 			IEnumerable<IEnumerable<CrewMember>> crewCombos = GetPermutations(availableCrew, BoatPositions.Count - 1);
@@ -349,12 +349,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			IdealCrew = bestCrew;
-			UpdateIdealScore();
+			UpdateIdealScore();*/
 		}
 
 		public void UpdateIdealScore()
 		{
-			IdealMatchScore = 0;
+			/*IdealMatchScore = 0;
 			for (int i = 0; i < IdealCrew.Count; i++)
 			{
 				if (IdealCrew[i].CrewMember == BoatPositions[i].CrewMember)
@@ -371,7 +371,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 				}
-			}
+			}*/
 		}
 
 		public void TickCrewMembers(int amount)
