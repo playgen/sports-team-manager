@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using GAIPS.Rage;
@@ -11,8 +12,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	public class Boat
 	{
 		public string Name { get; set; }
-		public float[] TeamColorsPrimary { get; set; }
-		public float[] TeamColorsSecondary { get; set; }
+		public int[] TeamColorsPrimary { get; set; }
+		public int[] TeamColorsSecondary { get; set; }
 		public List<BoatPosition> BoatPositions { get; set; }
 		public List<BoatPosition> IdealCrew { get; set; }
 		public List<CrewMember> UnassignedCrew { get; set; }
@@ -88,6 +89,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			UnassignedCrew.Add(crewMember);
 			UpdateBoatScore();
+			crewMember.Avatar.PrimaryOutfitColor = Color.FromArgb(255, TeamColorsPrimary[0], TeamColorsPrimary[1], TeamColorsPrimary[2]);
+			crewMember.Avatar.SecondaryOutfitColor = Color.FromArgb(255, TeamColorsPrimary[0], TeamColorsPrimary[1], TeamColorsPrimary[2]);
 		}
 
 		/// <summary>
@@ -177,6 +180,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			for (int i = 0; i < Recruits.Count; i++)
 			{
 				Recruits[i].CreateFile(iat, templateStorage, savedStorage, storageLocation, "Recruit" + i);
+				Recruits[i].Avatar = new Avatar(Recruits[i], false);
 				Recruits[i].UpdateBeliefs("Recruit");
 				Recruits[i].SaveStatus();
 			}

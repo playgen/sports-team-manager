@@ -1,0 +1,42 @@
+﻿{
+	"RandomBodyTypes": false,
+	"RandomOutfits": true,
+	"RandomHairColor": true,
+	"HairTypesCount": 5,
+	"OutfitTypesCount": 3,
+	"LightSkinColorValues": [
+		255,
+		255,
+		255
+	],
+	"MediumSkinColorValues": [
+		195,
+		186,
+		135
+	],
+	"DarkSkinColorValues": [
+		127,
+		109,
+		77
+	],
+	"BlondeHairColorValues": [
+		231,
+		231,
+		115
+	],
+	"BrownHairColorValues": [
+		86,
+		57,
+		13
+	],
+	"BlackHairColorValues": [
+		39,
+		24,
+		2
+	],
+	"GingerHairColorValues": [
+		204,
+		108,
+		6
+	]
+}

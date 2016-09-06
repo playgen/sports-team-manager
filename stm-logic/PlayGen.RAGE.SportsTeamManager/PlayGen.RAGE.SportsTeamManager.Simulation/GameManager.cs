@@ -5,6 +5,7 @@ using RolePlayCharacter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using IntegratedAuthoringTool.DTOs;
@@ -37,7 +38,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create a new game
 		/// </summary>
-		public void NewGame(IStorageProvider storagePorvider, string storageLocation, string boatName, float[] teamColorsPrimary, float[] teamColorsSecondary, string managerName, string managerAge, string managerGender, List<CrewMember> crew = null)
+		public void NewGame(IStorageProvider storagePorvider, string storageLocation, string boatName, int[] teamColorsPrimary, int[] teamColorsSecondary, string managerName, string managerAge, string managerGender, List<CrewMember> crew = null)
 		{
 			UnloadGame();
 			var noSpaceBoatName = boatName.Replace(" ", "");
@@ -66,7 +67,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			};
 			ActionAllowance = (int)_config.ConfigValues[ConfigKeys.DefaultActionAllowance.ToString()] + ((int)_config.ConfigValues[ConfigKeys.ActionAllowancePerPosition.ToString()] * Boat.BoatPositions.Count);
 			CrewEditAllowance = (int)_config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition.ToString()] * Boat.BoatPositions.Count;
-			this._raceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength.ToString()];
+			_raceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength.ToString()];
 			manager.CreateFile(iat, templateStorage, storagePorvider, combinedStorageLocation);
 			manager.UpdateBeliefs("Manager");
 			manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.GetType().Name, "SELF");
@@ -84,6 +85,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			foreach (CrewMember member in crew)
 			{
 				member.CreateFile(iat, templateStorage, storagePorvider, combinedStorageLocation);
+				member.Avatar = new Avatar(member);
 				Boat.AddCrew(member);
 				/*if (initialCrew)
 				{
@@ -292,14 +294,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					CrewEditAllowance = int.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.CrewEditAllowance.GetDescription()));
 					this._raceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength.ToString()];
 					Boat.Name = iat.ScenarioName;
-					Boat.TeamColorsPrimary = new float[3];
-					Boat.TeamColorsPrimary[0] = float.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorRedPrimary.GetDescription()));
-					Boat.TeamColorsPrimary[1] = float.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorGreenPrimary.GetDescription()));
-					Boat.TeamColorsPrimary[2] = float.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorBluePrimary.GetDescription()));
-					Boat.TeamColorsSecondary = new float[3];
-					Boat.TeamColorsSecondary[0] = float.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorRedSecondary.GetDescription()));
-					Boat.TeamColorsSecondary[1] = float.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorGreenSecondary.GetDescription()));
-					Boat.TeamColorsSecondary[2] = float.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorBlueSecondary.GetDescription()));
+					Boat.TeamColorsPrimary = new int[3];
+					Boat.TeamColorsPrimary[0] = int.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorRedPrimary.GetDescription()));
+					Boat.TeamColorsPrimary[1] = int.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorGreenPrimary.GetDescription()));
+					Boat.TeamColorsPrimary[2] = int.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorBluePrimary.GetDescription()));
+					Boat.TeamColorsSecondary = new int[3];
+					Boat.TeamColorsSecondary[0] = int.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorRedSecondary.GetDescription()));
+					Boat.TeamColorsSecondary[1] = int.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorGreenSecondary.GetDescription()));
+					Boat.TeamColorsSecondary[2] = int.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.TeamColorBlueSecondary.GetDescription()));
 					Boat.Manager = person;
 					continue;
 				}
@@ -307,17 +309,22 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (position == "Retired")
 				{
 					crewMember.LoadBeliefs(Boat);
+					crewMember.Avatar = new Avatar(crewMember, false, true);
 					Boat.RetiredCrew.Add(crewMember);
+					
 					continue;
 				}
 				if (position == "Recruit")
 				{
 					crewMember.LoadBeliefs(Boat);
+					crewMember.Avatar = new Avatar(crewMember, false, true);
 					Boat.Recruits.Add(crewMember);
+					
 					continue;
 				}
 				crewList.Add(crewMember);
 			}
+			crewList.ForEach(cm => cm.Avatar = new Avatar(cm, true, true));
 			crewList.ForEach(cm => Boat.AddCrew(cm));
 			crewList.ForEach(cm => cm.LoadBeliefs(Boat));
 			EventController = new EventController();
@@ -387,15 +394,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				case "Dinghy":
 					newBoat = new AltDinghy(_config);
 					break;
-				case "AltDinghy":
-					newBoat = new AltLargeDinghy(_config);
-					break;
-				case "AltLargeDinghy":
-					newBoat = new LargeDinghy(_config);
-					break;
-				case "LargeDinghy":
-					newBoat = new LargestDinghy(_config);
-					break;
 				default:
 					return;
 			}
@@ -410,6 +408,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (CanAddToCrew())
 				{
 					CrewMember newMember = Boat.CreateNewMember(rand);
+					newMember.Avatar = new Avatar(newMember);
 					var noSpaceBoatName = Boat.Name.Replace(" ", "");
 					string combinedStorageLocation = Path.Combine(_storageLocation, noSpaceBoatName);
 					newMember.CreateFile(_iat, templateStorage, _storageProvider, combinedStorageLocation);
@@ -494,10 +493,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat.TickCrewMembers(ActionAllowance);
 			Boat.ConfirmChanges();
 			Boat.PostRaceRest();
-			if (Boat.BoatScore >= 7.5f * Boat.BoatPositions.Count)
-			{
-				PromoteBoat();
-			}
+			PromoteBoat();
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 			Boat.CreateRecruits(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name.Replace(" ", "")));
 			ResetActionAllowance();

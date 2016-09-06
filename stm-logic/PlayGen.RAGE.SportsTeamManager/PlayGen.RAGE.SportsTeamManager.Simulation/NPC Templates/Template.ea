@@ -140,6 +140,15 @@
 							"Praiseworthiness": 3
 						}, 
 						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["NotPickedFiredNo = [reply]"]
+								},
+							"Desirability": -3,
+							"Praiseworthiness": -3
+						}, 
+						{
 							"EventName": "Event(Action-Start, Player, OpinionCheck([member], [x], [y]), Self)",
 							"Conditions":
 								{

@@ -18,6 +18,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public List<CrewOpinion> RevealedCrewOpinions { get; set; }
 		public event EventHandler OpinionChange = delegate { };
 		public int restCount { get; set; }
+		public Avatar Avatar { get; set; }
 		private ConfigStore _config { get; set; }
 
 		/// <summary>
@@ -669,6 +670,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,Status(Retired),{0})";
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, spacelessName) });
+			Avatar = new Avatar(this, false, true);
 			SaveStatus();
 		}
 	}

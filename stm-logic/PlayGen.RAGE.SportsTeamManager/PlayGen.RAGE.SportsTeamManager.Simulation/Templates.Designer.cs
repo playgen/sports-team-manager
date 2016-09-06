@@ -62,6 +62,49 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         
         /// <summary>
         ///   Looks up a localized string similar to {
+        ///	&quot;RandomBodyTypes&quot;: false,
+        ///	&quot;RandomOutfits&quot;: true,
+        ///	&quot;RandomHairColor&quot;: true,
+        ///	&quot;HairTypesCount&quot;: 5,
+        ///	&quot;OutfitTypesCount&quot;: 3,
+        ///	&quot;LightSkinColor&quot;: {
+        ///		&quot;r&quot;: 255,
+        ///		&quot;g&quot;: 255,
+        ///		&quot;b&quot;: 255,
+        ///		&quot;a&quot;: 255
+        ///	},
+        ///	&quot;MediumSkinColor&quot;: {
+        ///		&quot;r&quot;: 195,
+        ///		&quot;g&quot;: 186,
+        ///		&quot;b&quot;: 135,
+        ///		&quot;a&quot;: 255
+        ///	},
+        ///	&quot;DarkSkinColor&quot;: {
+        ///		&quot;r&quot;: 127,
+        ///		&quot;g&quot;: 109,
+        ///		&quot;b&quot;: 77,
+        ///		&quot;a&quot;: 255
+        ///	},
+        ///	&quot;BlondeHairColor&quot;: {
+        ///		&quot;r&quot;: 231,
+        ///		&quot;g&quot;: 231,
+        ///		&quot;b&quot;: 115,
+        ///		&quot;a&quot;: 255
+        ///	},
+        ///	&quot;BrownHairColor&quot;: {
+        ///		&quot;r&quot;: 86,
+        ///		&quot;g&quot;: 57,
+        ///		&quot;b&quot;: 13,
+        ///		&quot;a&quot;: 255        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string avatar_config {
+            get {
+                return ResourceManager.GetString("avatar_config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
         ///	&quot;GoodPositionRating&quot;: 7,
         ///	&quot;BadPositionRating&quot;: 4,
         ///	&quot;RandomSkillLow&quot;: 3,
