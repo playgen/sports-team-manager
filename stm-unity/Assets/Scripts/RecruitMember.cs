@@ -13,6 +13,11 @@ public class RecruitMember : MonoBehaviour {
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 	}
 
+	public Boat GetBoat()
+	{
+		return _gameManager.Boat;
+	}
+
 	public List<CrewMember> GetRecruits()
 	{
 		return _gameManager.Boat.Recruits;

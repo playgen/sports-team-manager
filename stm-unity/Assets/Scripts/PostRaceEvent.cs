@@ -27,6 +27,11 @@ public class PostRaceEvent : MonoBehaviour
 		}
 	}
 
+	public Boat GetBoat()
+	{
+		return _gameManager.Boat;
+	}
+
 	public KeyValuePair<List<CrewMember>, string> GetCurrentEvent()
 	{
 		return _postRace;

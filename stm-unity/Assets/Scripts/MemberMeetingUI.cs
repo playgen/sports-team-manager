@@ -15,6 +15,8 @@ public class MemberMeetingUI : MonoBehaviour
 	[SerializeField]
 	private GameObject _meetingPopUp;
 	[SerializeField]
+	private AvatarDisplay _avatarDisplay;
+	[SerializeField]
 	private Text _dialogueText;
 	[SerializeField]
 	private Text _meetingNameText;
@@ -43,6 +45,10 @@ public class MemberMeetingUI : MonoBehaviour
 	void ResetDisplay(bool postQuestion = false)
 	{
 		_meetingPopUp.SetActive(true);
+		var currentBoat = _memberMeeting.GetBoat();
+		var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);
+		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
+		_avatarDisplay.SetAvatar(_teamSelectionUI.GetCurrentCrewMember().Avatar, _teamSelectionUI.GetCurrentCrewMember().GetMood(), primary, secondary);
 		_dialogueText.text = "You wanted to see me?";
 		_meetingNameText.text = "What do you want to ask " + _teamSelectionUI.GetCurrentCrewMember().Name + " ?";
 		_statQuestion.text = _memberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).FirstOrDefault() + " (1)";

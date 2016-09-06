@@ -14,6 +14,8 @@ public class PostRaceEventUI : MonoBehaviour
 {
 	private PostRaceEvent _postRaceEvent;
 	[SerializeField]
+	private AvatarDisplay _avatarDisplay;
+	[SerializeField]
 	private Text _dialogueText;
 	[SerializeField]
 	private Text _nameText;
@@ -37,7 +39,11 @@ public class PostRaceEventUI : MonoBehaviour
 		GetComponent<CanvasGroup>().alpha = 0;
 		_closeButton.SetActive(false);
 		gameObject.SetActive(true);
+		var currentBoat = _postRaceEvent.GetBoat();
+		var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);
+		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
 		KeyValuePair<List<CrewMember>, string> current = _postRaceEvent.GetCurrentEvent();
+		_avatarDisplay.SetAvatar(current.Key[0].Avatar, current.Key[0].GetMood(), primary, secondary);
 		_nameText.text = "";
 		foreach (CrewMember cm in current.Key)
 		{

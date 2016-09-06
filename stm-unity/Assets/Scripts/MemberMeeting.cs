@@ -14,6 +14,11 @@ public class MemberMeeting : MonoBehaviour
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 	}
 
+	public Boat GetBoat()
+	{
+		return _gameManager.Boat;
+	}
+
 	public string[] GetEventText(string eventKey)
 	{
 		return _gameManager.GetEventStrings(eventKey);

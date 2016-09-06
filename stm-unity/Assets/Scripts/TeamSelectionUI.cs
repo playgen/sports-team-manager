@@ -212,6 +212,9 @@ public class TeamSelectionUI : MonoBehaviour {
 		var teamScore = boat.BoatPositions.Sum(bp => bp.PositionScore);
 		var scoreText = boatContainer.transform.Find("Score").GetComponent<Text>();
 		scoreText.text = teamScore.ToString();
+		var currentBoat = _teamSelection.GetBoat();
+		var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);
+		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
 		//scoreText.text = boat.IdealMatchScore.ToString();
 		for (int i = 0; i < boat.BoatPositions.Count; i++)
 		{
@@ -236,6 +239,7 @@ public class TeamSelectionUI : MonoBehaviour {
 					crewMember.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 					position.LinkCrew(crewMember.GetComponent<CrewMemberUI>());
 					crewMember.GetComponent<CrewMemberUI>().RevealScore(boat.BoatPositions[i].PositionScore);
+					crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(boat.BoatPositions[i].CrewMember.Avatar, boat.BoatPositions[i].CrewMember.GetMood(), primary, secondary, true);
 					nameText.enabled = true;
 					Destroy(position);
 					Destroy(crewMember.GetComponent<CrewMemberUI>());
@@ -271,6 +275,10 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		Tracker.T.trackedGameObject.Interacted("Viewed Crew Member Information", GameObjectTracker.TrackedGameObject.Npc);
 		_crewPopUp.SetActive(true);
+		var currentBoat = _teamSelection.GetBoat();
+		var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);
+		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
+		_crewPopUp.GetComponentInChildren<AvatarDisplay>().SetAvatar(crewMember.Avatar, crewMember.GetMood(), primary, secondary, true);
 		_crewPopUpText[0].text = "Name: " + SplitName(crewMember.Name);
 		_crewPopUpText[1].text = "";
 		_crewPopUpText[2].text = "Age: " + crewMember.Age;
@@ -339,6 +347,9 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		Tracker.T.trackedGameObject.Interacted("Viewed Position Information", GameObjectTracker.TrackedGameObject.GameObject);
 		_positionPopUp.SetActive(true);
+		var currentBoat = _teamSelection.GetBoat();
+		var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);
+		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
 		_positionPopUpText[0].text = position.Name;
 		_positionPopUpText[1].text = "";
 		_positionPopUpText[2].text = _teamSelection.GetPositionCrewMember(position);
@@ -376,6 +387,7 @@ public class TeamSelectionUI : MonoBehaviour {
 						positionHistory.transform.Find("Session").GetComponent<Text>().text = "Practice " + (raceCount % _teamSelection.GetSessionLength());
 					}
 					positionHistory.transform.Find("Score").GetComponent<Text>().text = boatPosition.PositionScore.ToString();
+					positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(boatPosition.CrewMember.Avatar, boatPosition.CrewMember.GetMood(), primary, secondary, true);
 				}
 			}
 			raceCount++;
