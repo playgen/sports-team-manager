@@ -20,7 +20,7 @@ public class NewGame : MonoBehaviour {
 	/// <summary>
 	/// Create a new game
 	/// </summary>
-	public bool CreateNewGame(string boatName, float[] colorsPri, float[] colorsSec, string managerName, string managerAge, string managerGender)
+	public bool CreateNewGame(string boatName, int[] colorsPri, int[] colorsSec, string managerName, string managerAge, string managerGender)
 	{
 		_gameManager.NewGame(LocalStorageProvider.Instance, Application.streamingAssetsPath, boatName, colorsPri, colorsSec, managerName, managerAge, managerGender);
 		if (_gameManager.Boat != null && _gameManager.Boat.Name == boatName)

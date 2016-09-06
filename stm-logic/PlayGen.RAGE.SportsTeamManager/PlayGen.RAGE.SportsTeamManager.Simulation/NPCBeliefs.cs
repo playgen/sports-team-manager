@@ -66,11 +66,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		AvatarMouthType,
 		[Description("Avatar(MouthColor)")]
 		AvatarMouthColor,
-		[Description("Avatar(MouthType)")]
+		[Description("Avatar(UsingGenericMouth)")]
 		AvatarUsingGenericMouth,
 		[Description("Avatar(Height)")]
 		AvatarHeight,
 		[Description("Avatar(Weight)")]
 		AvatarWeight,
+		[Description("Avatar(BestSkill)")]
+		AvatarBestSkill,
 	}
 }

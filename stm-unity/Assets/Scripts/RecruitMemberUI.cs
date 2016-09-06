@@ -72,9 +72,10 @@ public class RecruitMemberUI : MonoBehaviour
 			CrewMemberSkill selected = shuffledSkills[i];
 			_questionButtons[i].gameObject.SetActive(true);
 			_questionButtons[i].interactable = true;
-			_questionButtons[i].GetComponentInChildren<Text>().text = _recruitMember.GetQuestionText("Recruit" + selected).OrderBy(s => Guid.NewGuid()).FirstOrDefault() + " (2)";
+			string questionText = _recruitMember.GetQuestionText("Recruit" + selected).OrderBy(s => Guid.NewGuid()).FirstOrDefault();
+			_questionButtons[i].GetComponentInChildren<Text>().text = questionText + " (2)";
 			_questionButtons[i].onClick.RemoveAllListeners();
-			_questionButtons[i].onClick.AddListener(delegate { AskQuestion(selected); });
+			_questionButtons[i].onClick.AddListener(delegate { AskQuestion(selected, questionText); });
 			Button thisButton = _questionButtons[i];
 			_questionButtons[i].onClick.AddListener(delegate { thisButton.interactable = false; });
 		}
@@ -97,9 +98,10 @@ public class RecruitMemberUI : MonoBehaviour
 		}
 	}
 
-	public void AskQuestion(CrewMemberSkill skill)
+	public void AskQuestion(CrewMemberSkill skill, string questionText)
 	{
 		Tracker.T.alternative.Selected("Recruitment", skill + " Question", AlternativeTracker.Alternative.Question);
+		SetDialogueText(questionText);
 		Dictionary<CrewMember, string> replies = _recruitMember.AskQuestion(skill);
 		foreach (GameObject recruit in _recruitUI)
 		{

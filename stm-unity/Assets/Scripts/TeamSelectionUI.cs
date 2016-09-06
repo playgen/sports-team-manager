@@ -44,7 +44,6 @@ public class TeamSelectionUI : MonoBehaviour {
 
 	private GameObject _currentBoat;
 	private List<GameObject> _boatHistory = new List<GameObject>();
-	[SerializeField]
 	private int _positionsEmpty;
 
 	[SerializeField]
@@ -180,6 +179,8 @@ public class TeamSelectionUI : MonoBehaviour {
 	private void CreateCrew()
 	{
 		var boat = _teamSelection.LoadCrew();
+		var primary = new Color32((byte)boat.TeamColorsPrimary[0], (byte)boat.TeamColorsPrimary[1], (byte)boat.TeamColorsPrimary[2], 255);
+		var secondary = new Color32((byte)boat.TeamColorsSecondary[0], (byte)boat.TeamColorsSecondary[1], (byte)boat.TeamColorsSecondary[2], 255);
 		var crew = boat.GetAllCrewMembers();
 		for (int i = 0; i < crew.Count; i++)
 		{
@@ -188,6 +189,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(crew[i].Name, true);
 			crewMember.name = SplitName(crew[i].Name);
 			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, this, crew[i]);
+			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(crew[i].Avatar, crew[i].GetMood(), primary, secondary, true);
 		}
 		List<Transform> sortedCrew = new List<Transform>();
 		foreach (Transform child in _crewContainer.transform)

@@ -121,17 +121,17 @@ public class NewGameUI : MonoBehaviour {
 			_managerAge.transform.Find("Required Warning").gameObject.SetActive(true);
 		}
 		if (valid) {
-			float[] colorsPri = new float[]
+			int[] colorsPri = new int[]
 			{
-				_colorImagePrimary.color.r,
-				_colorImagePrimary.color.g,
-				_colorImagePrimary.color.b
+				(int)(_colorImagePrimary.color.r * 255),
+				(int)(_colorImagePrimary.color.g * 255),
+				(int)(_colorImagePrimary.color.b * 255)
 			};
-			float[] colorsSec = new float[]
+			int[] colorsSec = new int[]
 			{
-				_colorImageSecondary.color.r,
-				_colorImageSecondary.color.g,
-				_colorImageSecondary.color.b
+				(int)(_colorImageSecondary.color.r * 255),
+				(int)(_colorImageSecondary.color.g * 255),
+				(int)(_colorImageSecondary.color.b * 255)
 			};
 			bool success = _newGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text);
 			if (success)

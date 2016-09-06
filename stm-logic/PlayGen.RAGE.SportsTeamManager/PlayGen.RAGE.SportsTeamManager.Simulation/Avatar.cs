@@ -21,6 +21,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public float Weight { get; set; }
 		public float Height { get; set; }
 		public bool IsMale { get; set; }
+		public CrewMemberSkill BestSkill { get; set; }
 
 		public bool CustomOutfitColor { get; set; }
 
@@ -39,26 +40,26 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			GetConfig();
 			Random random = new Random();
-			var outfit = !isActive ? "01" : "0" + (random.Next(0, 100) % 2) + 2;
+			var outfit = !isActive ? "01" : ("0" + ((random.Next(0, 100) % 2) + 2));
 			var gender = crewMember.Gender == "Male" ? "M" : "F";
-			var bestSkill = GetBestSkill(crewMember, random);
 			IsMale = crewMember.Gender == "Male";
 			CustomOutfitColor = outfit != "01";
-			OutfitBaseType = string.Format("Outfit{0}_Base_{1}_{2}", gender, GetBody(crewMember, random, bestSkill), outfit);
-			OutfitHiglightType = string.Format("Outfit{0}_Highlight_{1}_{2}", gender, GetBody(crewMember, random, bestSkill), outfit);
-			OutfitShadowType = string.Format("Outfit{0}_Shadow_{1}_{2}", gender, GetBody(crewMember, random, bestSkill), outfit);
 			if (canLoad)
 			{
 				LoadAvatar(crewMember);
 			}
 			else
 			{
-				CreateAvatar(crewMember, gender, bestSkill, random);
+				CreateAvatar(crewMember, gender, random);
 			}
+			OutfitBaseType = string.Format("Outfit{0}_Base_{1}_{2}", gender, GetBody(BestSkill), outfit);
+			OutfitHiglightType = string.Format("Outfit{0}_Highlight_{1}_{2}", gender, GetBody(BestSkill), outfit);
+			OutfitShadowType = string.Format("Outfit{0}_Shadow_{1}_{2}", gender, GetBody(BestSkill), outfit);
 		}
 
-		private void CreateAvatar(CrewMember crewMember, string gender, CrewMemberSkill bestSkill, Random random)
+		private void CreateAvatar(CrewMember crewMember, string gender, Random random)
 		{
+			BestSkill = GetBestSkill(crewMember, random);
 			// Set Skin Color
 			SkinColor = GetSkin(random);
 
@@ -72,27 +73,27 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			SecondaryOutfitColor = CustomOutfitColor ? GetRandomColor(random) : Color.Black;
 
 			// Set Body Type
-			BodyType = string.Format("Body{0}_{1}", gender, GetBody(crewMember, random, bestSkill));
+			BodyType = string.Format("Body{0}_{1}", gender, GetBody(BestSkill));
 
 			// Set Hair Type
 			HairType = string.Format("Hair{0:00}{1}", random.Next(1, _config.HairTypesCount + 1), gender);
 
 			// Set Eye Type
-			EyeType = string.Format("Eye{0}_{1}_{2}", gender, bestSkill, GetEyes(random));
+			EyeType = string.Format("Eye{0}_{1}_{2}", gender, BestSkill, GetEyes(random));
 
 			// Set Face type
-			EyebrowType = string.Format("Face{0}_{1}_Eyebrows", gender, bestSkill);
-			NoseType = string.Format("Face{0}_{1}_Nose", gender, bestSkill);
+			EyebrowType = string.Format("Face{0}_{1}_Eyebrows", gender, BestSkill);
+			NoseType = string.Format("Face{0}_{1}_Nose", gender, BestSkill);
 
 			//our charisma and quickness faces have open mouths so specify the mouth
-			if ((bestSkill == CrewMemberSkill.Charisma || bestSkill == CrewMemberSkill.Quickness) && gender == "M")
+			if ((BestSkill == CrewMemberSkill.Charisma || BestSkill == CrewMemberSkill.Quickness) && gender == "M")
 			{
-				MouthType = string.Format("Face{0}_{1}_Mouth_{2}", gender, bestSkill, MouthColor);
+				MouthType = string.Format("Face{0}_{1}_Mouth_{2}", gender, BestSkill, MouthColor);
 				UsingGenericMouth = false;
 			}
 			else
 			{
-				MouthType = string.Format("Face{0}_{1}_Mouth", gender, bestSkill);
+				MouthType = string.Format("Face{0}_{1}_Mouth", gender, BestSkill);
 				UsingGenericMouth = true;
 			}
 
@@ -104,6 +105,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		private void LoadAvatar(CrewMember crewMember)
 		{
+			BestSkill = (CrewMemberSkill)Enum.Parse((typeof(CrewMemberSkill)), crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarBestSkill.GetDescription()));
 			BodyType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarBodyType.GetDescription());
 			EyebrowType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarEyebrowType.GetDescription());
 			EyeType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarEyeType.GetDescription());
@@ -126,6 +128,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		private void UpdateAvatarBeliefs(CrewMember crewMember)
 		{
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBestSkill.GetDescription(), BestSkill.ToString(), "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBodyType.GetDescription(), BodyType, "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyebrowType.GetDescription(), EyebrowType, "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyeType.GetDescription(), EyeType, "SELF");
@@ -137,7 +140,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarMouthType.GetDescription(), MouthType, "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarMouthColor.GetDescription(), MouthColor, "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarNoseType.GetDescription(), NoseType, "SELF");
-			string skinColorString = String.Format("{0},{1},{2},{3}", SkinColor.A, SkinColor.R, SkinColor.G, SkinColor.B);
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorRed.GetDescription(), SkinColor.R.ToString(), "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorGreen.GetDescription(), SkinColor.G.ToString(), "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorBlue.GetDescription(), SkinColor.B.ToString(), "SELF");
@@ -146,7 +148,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewMember.SaveStatus();
 		}
 
-		private string GetBody(CrewMember crewMember, Random random, CrewMemberSkill bestSkill)
+		private string GetBody(CrewMemberSkill bestSkill)
 		{
 			return GetBodyType(bestSkill);
 		}
