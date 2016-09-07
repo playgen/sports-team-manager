@@ -15,8 +15,6 @@ public class TeamSelectionUI : MonoBehaviour {
 	[SerializeField]
 	private GameObject _crewContainer;
 	[SerializeField]
-	private GameObject _opinionContainer;
-	[SerializeField]
 	private GameObject _boatPrefab;
 	[SerializeField]
 	private GameObject _positionPrefab;
@@ -30,10 +28,6 @@ public class TeamSelectionUI : MonoBehaviour {
 	[SerializeField]
 	private MemberMeetingUI _meetingUI;
 	[SerializeField]
-	private Text[] _crewPopUpText;
-	[SerializeField]
-	private Image[] _crewPopUpBars;
-	[SerializeField]
 	private GameObject _positionPopUp;
 	[SerializeField]
 	private Text[] _positionPopUpText;
@@ -45,9 +39,6 @@ public class TeamSelectionUI : MonoBehaviour {
 	private GameObject _currentBoat;
 	private List<GameObject> _boatHistory = new List<GameObject>();
 	private int _positionsEmpty;
-
-	[SerializeField]
-	private Button _meetingButton;
 
 	[SerializeField]
 	private GameObject _recuritmentPopUp;
@@ -267,16 +258,9 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// </summary>
 	public void DisplayCrewPopUp(CrewMember crewMember)
 	{
-		Tracker.T.trackedGameObject.Interacted("Viewed Crew Member Information", GameObjectTracker.TrackedGameObject.Npc);
-		_meetingButton.interactable = true;
-		foreach (Transform child in _opinionContainer.transform)
-		{
-			Destroy(child.gameObject);
-		}
 		foreach (CrewOpinion opinion in crewMember.RevealedCrewOpinions)
 		{
 			GameObject knownOpinion = Instantiate(_opinionPrefab);
-			knownOpinion.transform.SetParent(_opinionContainer.transform, false);
 			knownOpinion.transform.Find("Member/Name").GetComponent<Text>().text = SplitName(opinion.Person.Name);
 			CrewMember opinionMember = _teamSelection.PersonToCrewMember(opinion.Person);
 			if (opinionMember != null)
@@ -321,7 +305,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
 		_positionPopUpText[0].text = position.Name;
 		_positionPopUpText[1].text = "";
-		_positionPopUpText[2].text = _teamSelection.GetPositionCrewMember(position);
 		int raceCount = 1;
 		foreach (Transform child in _positionPopUpHistoryContainer.transform)
 		{

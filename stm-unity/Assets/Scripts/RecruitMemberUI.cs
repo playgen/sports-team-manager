@@ -81,7 +81,7 @@ public class RecruitMemberUI : MonoBehaviour
 			_questionButtons[i].gameObject.SetActive(true);
 			_questionButtons[i].interactable = true;
 			string questionText = _recruitMember.GetQuestionText("Recruit" + selected).OrderBy(s => Guid.NewGuid()).FirstOrDefault();
-			_questionButtons[i].GetComponentInChildren<Text>().text = questionText + " (2)";
+			_questionButtons[i].GetComponentInChildren<Text>().text = questionText;
 			_questionButtons[i].onClick.RemoveAllListeners();
 			_questionButtons[i].onClick.AddListener(delegate { AskQuestion(selected, questionText); });
 			Button thisButton = _questionButtons[i];
