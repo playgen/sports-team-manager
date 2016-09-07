@@ -19,6 +19,14 @@ public class MemberMeeting : MonoBehaviour
 		return _gameManager.Boat;
 	}
 
+	/// <summary>
+	/// Get the current position (if any) of a CrewMember
+	/// </summary>
+	public string GetCrewMemberPosition(CrewMember crewMember)
+	{
+		return crewMember.GetPosition(_gameManager.Boat);
+	}
+
 	public string[] GetEventText(string eventKey)
 	{
 		return _gameManager.GetEventStrings(eventKey);
@@ -32,5 +40,20 @@ public class MemberMeeting : MonoBehaviour
 	public int QuestionAllowance()
 	{
 		return _gameManager.ActionAllowance;
+	}
+
+	public int CrewEditAllowance()
+	{
+		return _gameManager.CrewEditAllowance;
+	}
+
+	public bool CanRemoveCheck()
+	{
+		return _gameManager.CanRemoveFromCrew();
+	}
+
+	public void FireCrewMember(CrewMember crewMember)
+	{
+		_gameManager.RetireCrewMember(crewMember);
 	}
 }

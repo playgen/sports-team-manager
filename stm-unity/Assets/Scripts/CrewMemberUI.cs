@@ -9,7 +9,7 @@ using System.Collections.Generic;
 public class CrewMemberUI : MonoBehaviour {
 
 	private TeamSelection _teamSelection;
-	private TeamSelectionUI _teamSelectionUI;
+	private MemberMeetingUI _meetingUI;
 	[SerializeField]
 	private Text _scoreText;
 	private CrewMember _crewMember;
@@ -49,10 +49,10 @@ public class CrewMemberUI : MonoBehaviour {
 		_defaultParent = transform.parent;
 	}
 
-	public void SetUp(TeamSelection teamSelection, TeamSelectionUI teamSelectionUI, CrewMember crewMember)
+	public void SetUp(TeamSelection teamSelection, MemberMeetingUI meetingUI, CrewMember crewMember)
 	{
 		_teamSelection = teamSelection;
-		_teamSelectionUI = teamSelectionUI;
+		_meetingUI = meetingUI;
 		_crewMember = crewMember;
 	}
 
@@ -111,7 +111,7 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	void ShowPopUp()
 	{
-		_teamSelectionUI.DisplayCrewPopUp(_crewMember);
+		_meetingUI.Display(_crewMember);
 	}
 
 	/// <summary>

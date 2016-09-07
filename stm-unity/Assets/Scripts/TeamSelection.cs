@@ -113,14 +113,6 @@ public class TeamSelection : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Get the current position (if any) of a CrewMember
-	/// </summary>
-	public string GetCrewMemberPosition(CrewMember crewMember)
-	{
-		return crewMember.GetPosition(_gameManager.Boat);
-	}
-
-	/// <summary>
 	/// Get the current CrewMember (if any) of a position
 	/// </summary>
 	public string GetPositionCrewMember(Position position)
@@ -146,11 +138,6 @@ public class TeamSelection : MonoBehaviour {
 		return _gameManager.Boat.IdealMatchScore;
 	}
 
-	public void FireCrewMember(CrewMember crewMember)
-	{
-		_gameManager.RetireCrewMember(crewMember);
-	}
-
 	public CrewMember PersonToCrewMember(Person person)
 	{
 		return _gameManager.Boat.GetAllCrewMembers().Where(cm => cm.Name == person.Name).FirstOrDefault();
@@ -169,10 +156,5 @@ public class TeamSelection : MonoBehaviour {
 	public bool CanAddCheck()
 	{
 		return _gameManager.CanAddToCrew();
-	}
-
-	public bool CanRemoveCheck()
-	{
-		return _gameManager.CanRemoveFromCrew();
 	}
 }

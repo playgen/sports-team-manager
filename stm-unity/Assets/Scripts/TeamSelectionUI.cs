@@ -28,7 +28,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	[SerializeField]
 	private Button _recruitButton;
 	[SerializeField]
-	private GameObject _crewPopUp;
+	private MemberMeetingUI _meetingUI;
 	[SerializeField]
 	private Text[] _crewPopUpText;
 	[SerializeField]
@@ -47,19 +47,13 @@ public class TeamSelectionUI : MonoBehaviour {
 	private int _positionsEmpty;
 
 	[SerializeField]
-	private GameObject _fireWarningPopUp;
-	[SerializeField]
-	private Button _fireButton;
-	[SerializeField]
 	private Button _meetingButton;
-	private CrewMember _currentDisplayedCrewMember;
 
 	[SerializeField]
 	private GameObject _recuritmentPopUp;
 
 	void Awake()
 	{
-		_fireWarningPopUp.SetActive(false);
 		_teamSelection = GetComponent<TeamSelection>();
 	}
 
@@ -144,7 +138,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			stageText.text = "Practice\n" + stageNumber;
 		}
-		_boatContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(_boatContainer.GetComponent<RectTransform>().sizeDelta.x, boatContainerHeight * (_boatHistory.Count - 2));
+		_boatContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(_boatContainer.GetComponent<RectTransform>().sizeDelta.x, boatContainerHeight * (_boatHistory.Count - (_teamSelection.GetSessionLength() -1)));
 		_boatContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
 
 		for (int i = 0; i < position.Count; i++)
@@ -188,7 +182,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			crewMember.transform.SetParent(_crewContainer.transform, false);
 			crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(crew[i].Name, true);
 			crewMember.name = SplitName(crew[i].Name);
-			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, this, crew[i]);
+			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, _meetingUI, crew[i]);
 			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(crew[i].Avatar, crew[i].GetMood(), primary, secondary, true);
 		}
 		List<Transform> sortedCrew = new List<Transform>();
@@ -274,32 +268,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	public void DisplayCrewPopUp(CrewMember crewMember)
 	{
 		Tracker.T.trackedGameObject.Interacted("Viewed Crew Member Information", GameObjectTracker.TrackedGameObject.Npc);
-		_crewPopUp.SetActive(true);
-		var currentBoat = _teamSelection.GetBoat();
-		var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);
-		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
-		_crewPopUp.GetComponentInChildren<AvatarDisplay>().SetAvatar(crewMember.Avatar, crewMember.GetMood(), primary, secondary, true);
-		_crewPopUpText[0].text = "Name: " + SplitName(crewMember.Name);
-		_crewPopUpText[1].text = "";
-		_crewPopUpText[2].text = "Age: " + crewMember.Age;
-		_crewPopUpText[3].text = "Role: " + _teamSelection.GetCrewMemberPosition(crewMember);
-		_crewPopUpBars[0].fillAmount = crewMember.RevealedSkills[CrewMemberSkill.Body] * 0.1f;
-		_crewPopUpBars[1].fillAmount = crewMember.RevealedSkills[CrewMemberSkill.Charisma] * 0.1f;
-		_crewPopUpBars[2].fillAmount = crewMember.RevealedSkills[CrewMemberSkill.Perception] * 0.1f;
-		_crewPopUpBars[3].fillAmount = crewMember.RevealedSkills[CrewMemberSkill.Quickness] * 0.1f;
-		_crewPopUpBars[4].fillAmount = crewMember.RevealedSkills[CrewMemberSkill.Wisdom] * 0.1f;
-		_crewPopUpBars[5].fillAmount = crewMember.RevealedSkills[CrewMemberSkill.Willpower] * 0.1f;
-		_currentDisplayedCrewMember = crewMember;
-		_fireButton.interactable = true;
 		_meetingButton.interactable = true;
-		if (_teamSelection.QuestionAllowance() < 2 || _teamSelection.CrewEditAllowance() == 0 || !_teamSelection.CanRemoveCheck())
-		{
-			_fireButton.interactable = false;
-		}
-		if (_teamSelection.QuestionAllowance() < 1 && _teamSelection.CrewEditAllowance() > 0 && _teamSelection.CanRemoveCheck())
-		{
-			_meetingButton.interactable = false;
-		}
 		foreach (Transform child in _opinionContainer.transform)
 		{
 			Destroy(child.gameObject);
@@ -474,19 +443,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 	}
 
-	public void FireCrewWarning()
-	{
-		Tracker.T.alternative.Selected("Crew Member", "Fire", AlternativeTracker.Alternative.Menu);
-		_fireWarningPopUp.SetActive(true);
-	}
-
-	public void FireCrew()
-	{
-		Tracker.T.trackedGameObject.Interacted("Fired Crew Member", GameObjectTracker.TrackedGameObject.Npc);
-		_teamSelection.FireCrewMember(_currentDisplayedCrewMember);
-		ResetCrew();
-	}
-
 	public void ResetCrew()
 	{
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
@@ -495,10 +451,5 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 		_positionsEmpty = (FindObjectsOfType(typeof(PositionUI)) as PositionUI[]).Length;
 		CreateCrew();
-	}
-
-	public CrewMember GetCurrentCrewMember()
-	{
-		return _currentDisplayedCrewMember;
 	}
 }

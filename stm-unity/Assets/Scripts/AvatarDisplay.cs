@@ -27,7 +27,7 @@ public class AvatarDisplay : MonoBehaviour
 	Dictionary<string, Sprite> Sprites = new Dictionary<string, Sprite>();
 #endif
 
-	private const byte EyebrowAlpha = 77;
+	private const byte EyebrowAlpha = 125;
 	private const float MaleOffsetPercent = 18f;
 
 	/// <summary>
