@@ -10,8 +10,6 @@ public class CrewMemberUI : MonoBehaviour {
 
 	private TeamSelection _teamSelection;
 	private MemberMeetingUI _meetingUI;
-	[SerializeField]
-	private Text _scoreText;
 	private CrewMember _crewMember;
 	private bool _beingClicked;
 	private bool _beingDragged;
@@ -26,7 +24,6 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	void Start()
 	{
-		_scoreText.enabled = false;
 		EventTrigger trigger = GetComponent<EventTrigger>();
 		if (_crewMember.restCount <= 0)
 		{
@@ -174,14 +171,5 @@ public class CrewMemberUI : MonoBehaviour {
 		{
 			Tracker.T.trackedGameObject.Interacted("Unpositioned Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 		}
-	}
-
-	/// <summary>
-	/// Display the score for this CrewMember in the position it is in
-	/// </summary>
-	public void RevealScore(int score)
-	{
-		_scoreText.enabled = true;
-		_scoreText.text = score.ToString();
 	}
 }

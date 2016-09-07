@@ -61,15 +61,4 @@ public class PositionUI : MonoBehaviour {
 		_crewMemberUI = null;
 		_teamSelectionUI.PositionChange(-1);
 	}
-
-	/// <summary>
-	/// Pass the current PositionScore to the CrewMember in this position
-	/// </summary>
-	public void LockPosition(int score)
-	{
-		if (_crewMemberUI != null)
-		{
-			_crewMemberUI.RevealScore(score);
-		}
-	}
 }

@@ -124,10 +124,10 @@ public class TeamSelectionUI : MonoBehaviour {
 		var stageText = boatContainer.transform.Find("Stage").GetComponent<Text>();
 		var stageNumber = _teamSelection.GetStage();
 		if (stageNumber == _teamSelection.GetSessionLength()) {
-			stageText.text = "Race\nDay!";
+			stageText.text = "RACE\nDAY!";
 		} else
 		{
-			stageText.text = "Practice\n" + stageNumber;
+			stageText.text = "PRACTICE\n" + stageNumber;
 		}
 		_boatContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(_boatContainer.GetComponent<RectTransform>().sizeDelta.x, boatContainerHeight * (_boatHistory.Count - (_teamSelection.GetSessionLength() -1)));
 		_boatContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
@@ -223,7 +223,6 @@ public class TeamSelectionUI : MonoBehaviour {
 					crewMember.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
 					crewMember.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 					position.LinkCrew(crewMember.GetComponent<CrewMemberUI>());
-					crewMember.GetComponent<CrewMemberUI>().RevealScore(boat.BoatPositions[i].PositionScore);
 					crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(boat.BoatPositions[i].CrewMember.Avatar, boat.BoatPositions[i].CrewMember.GetMood(), primary, secondary, true);
 					nameText.enabled = true;
 					Destroy(position);
@@ -239,7 +238,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 		_raceButton = boatContainer.transform.Find("Race").GetComponent<Button>();
 		_raceButton.onClick.RemoveAllListeners();
-		_raceButton.GetComponentInChildren<Text>().text = "Repeat";
+		_raceButton.GetComponentInChildren<Text>().text = "REPEAT";
 		_raceButton.onClick.AddListener(delegate { RepeatLineUp(boat.BoatPositions); });
 		_boatHistory.Add(boatContainer);
 		_teamSelection.ConfirmLineUp(true);
@@ -324,7 +323,7 @@ public class TeamSelectionUI : MonoBehaviour {
 					CrewMember positionMember = boatPosition.CrewMember;
 					if (_teamSelection.GetBoat().GetAllCrewMembers().Contains(positionMember))
 					{
-						positionHistory.transform.Find("Member").GetComponent<Button>().onClick.AddListener(delegate { DisplayCrewPopUp(positionMember); });
+						positionHistory.transform.Find("Member").GetComponent<Button>().onClick.AddListener(delegate { _meetingUI.Display(positionMember); });
 					}
 					else
 					{
@@ -332,13 +331,12 @@ public class TeamSelectionUI : MonoBehaviour {
 					}
 					if (raceCount % _teamSelection.GetSessionLength() == 0)
 					{
-						positionHistory.transform.Find("Session").GetComponent<Text>().text = "Race Day!";
+						positionHistory.transform.Find("Session").GetComponent<Text>().text = "RACE DAY!";
 					}
 					else
 					{
-						positionHistory.transform.Find("Session").GetComponent<Text>().text = "Practice " + (raceCount % _teamSelection.GetSessionLength());
+						positionHistory.transform.Find("Session").GetComponent<Text>().text = "PRACTICE " + (raceCount % _teamSelection.GetSessionLength());
 					}
-					positionHistory.transform.Find("Score").GetComponent<Text>().text = boatPosition.PositionScore.ToString();
 					positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(boatPosition.CrewMember.Avatar, boatPosition.CrewMember.GetMood(), primary, secondary, true);
 				}
 			}
@@ -354,9 +352,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		Tracker.T.completable.Completed("Crew Confirmed", CompletableTracker.Completable.Stage);
 		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
 		{
-			var boatPosition = position.GetPosition();
-			var score = _teamSelection.GetPositionScore(boatPosition);
-			position.LockPosition(score);
 			Destroy(position);
 		}
 		var teamScore = _teamSelection.ConfirmLineUp();
