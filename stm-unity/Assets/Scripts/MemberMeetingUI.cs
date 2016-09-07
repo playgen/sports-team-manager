@@ -52,6 +52,16 @@ public class MemberMeetingUI : MonoBehaviour
 		ResetDisplay();
 	}
 
+	void OnDisable()
+	{
+		_fireWarningPopUp.SetActive(false);
+		Tracker.T.alternative.Selected("Crew Member", "Meeting", AlternativeTracker.Alternative.Menu);
+		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
+		{
+			crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
+		}
+	}
+
 	public void Display(CrewMember crewMember)
 	{
 		_currentMember = crewMember;
@@ -109,6 +119,41 @@ public class MemberMeetingUI : MonoBehaviour
 		{
 			_closeText.text = "OK, thank you for telling me that.";
 		}
+		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
+		{
+			var name = crewMember.CrewMember().Name;
+			Image opinionImage = crewMember.transform.Find("Opinion").GetComponent<Image>();
+			if (name != _currentMember.Name)
+			{
+				opinionImage.enabled = true;
+				foreach (CrewOpinion opinion in _currentMember.RevealedCrewOpinions)
+				{
+					if (name == opinion.Person.Name)
+					{
+						if (opinion.Opinion > 1)
+						{
+							//opinionImage.sprite = ;
+							opinionImage.color = Color.green;
+						}
+						else if (opinion.Opinion < -1)
+						{
+							//opinionImage.sprite = ;
+							opinionImage.color = Color.red;
+						}
+						else
+						{
+							//opinionImage.sprite = ;
+							opinionImage.color = Color.yellow;
+						}
+					}
+				}
+				if (opinionImage.sprite == null)
+				{
+					//opinionImage.sprite = ;
+					//opinionImage.color = Color.yellow;
+				}
+			}
+		}
 	}
 
 	public void AskStatQuestion()
@@ -143,7 +188,6 @@ public class MemberMeetingUI : MonoBehaviour
 	{
 		ResetDisplay(true);
 		_dialogueText.text = reply.Length > 0 ? reply[0] : "";
-		_teamSelectionUI.DisplayCrewPopUp(_currentMember);
 	}
 
 	public void FireCrewWarning()

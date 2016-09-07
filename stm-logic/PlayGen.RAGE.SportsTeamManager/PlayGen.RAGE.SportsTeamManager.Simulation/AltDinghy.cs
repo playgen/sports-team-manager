@@ -16,6 +16,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					Position = new Position
 					{
 						Name = "Skipper",
+						Description = "",
 						RequiredSkills = new List<CrewMemberSkill>
 						{
 							CrewMemberSkill.Charisma,
@@ -29,6 +30,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					Position = new Position
 					{
 						Name = "Helmsman",
+						Description = "",
 						RequiredSkills = new List<CrewMemberSkill>
 						{
 							CrewMemberSkill.Perception,
@@ -41,6 +43,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					Position = new Position
 					{
 						Name = "Mid-Bowman",
+						Description = "",
 						RequiredSkills = new List<CrewMemberSkill>
 						{
 							CrewMemberSkill.Body,

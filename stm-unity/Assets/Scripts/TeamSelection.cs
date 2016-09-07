@@ -104,6 +104,15 @@ public class TeamSelection : MonoBehaviour {
 		return score;
 	}
 
+	public bool IsRace()
+	{
+		if (_confirmCount == 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	public void PostRaceEvent()
 	{
 		if (_confirmCount == 0)

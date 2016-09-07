@@ -53,6 +53,11 @@ public class CrewMemberUI : MonoBehaviour {
 		_crewMember = crewMember;
 	}
 
+	public CrewMember CrewMember()
+	{
+		return _crewMember;
+	}
+
 	/// <summary>
 	/// MouseDown start the current drag
 	/// </summary>

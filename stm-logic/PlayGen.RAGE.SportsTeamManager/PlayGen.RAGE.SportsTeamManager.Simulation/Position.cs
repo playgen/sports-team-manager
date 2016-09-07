@@ -6,6 +6,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	public class Position
 	{
 		public string Name { get; set; }
+		public string Description { get; set; }
 		public List<CrewMemberSkill> RequiredSkills { get; set; }
 
 		/// <summary>
