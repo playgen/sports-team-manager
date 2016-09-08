@@ -15,7 +15,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int[] TeamColorsPrimary { get; set; }
 		public int[] TeamColorsSecondary { get; set; }
 		public List<BoatPosition> BoatPositions { get; set; }
-		public List<BoatPosition> IdealCrew { get; set; }
+		public List<List<BoatPosition>> IdealCrew { get; set; }
 		public List<CrewMember> UnassignedCrew { get; set; }
 		public List<CrewMember> RetiredCrew { get; set; }
 		public List<CrewMember> Recruits { get; set; }
@@ -32,7 +32,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			BoatPositions = new List<BoatPosition>();
 			UnassignedCrew = new List<CrewMember>();
 			RetiredCrew = new List<CrewMember>();
-			IdealCrew = new List<BoatPosition>();
+			IdealCrew = new List<List<BoatPosition>>();
 			Recruits = new List<CrewMember>();
 			_config = config;
 		}
@@ -313,10 +313,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				bp.UpdateCrewMemberScore(this, _config);
 			}
 			BoatScore = BoatPositions.Sum(bp => bp.PositionScore);
-			if (IdealCrew.Count == BoatPositions.Count)
-			{
-				UpdateIdealScore();
-			}
+			UpdateIdealScore();
 		}
 
 		public void GetIdealCrew()
@@ -326,14 +323,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			IEnumerable<CrewMember> availableCrew = GetAllCrewMembers().Where(cm => cm.restCount <= 0);
 			IEnumerable<IEnumerable<CrewMember>> crewCombos = GetPermutations(availableCrew, BoatPositions.Count - 1);
 			int bestScore = 0;
-			List<BoatPosition> bestCrew = new List<BoatPosition>();
-			for (int i = 0; i < tempBoat.BoatPositions.Count; i++)
-			{
-				bestCrew.Add(new BoatPosition
-				{
-					Position = tempBoat.BoatPositions[i].Position
-				});
-			}
+			List<List<BoatPosition>> bestCrew = new List<List<BoatPosition>>();
 			foreach (IEnumerable<CrewMember> possibleCrew in crewCombos)
 			{
 				List<CrewMember> crewList = possibleCrew.ToList();
@@ -342,15 +332,26 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					tempBoat.BoatPositions[i].CrewMember = crewList[i];
 				}
 				tempBoat.UpdateBoatScore();
-				if (tempBoat.BoatScore > bestScore)
+				if (tempBoat.BoatScore >= bestScore)
 				{
-					for (int i = 0; i < tempBoat.BoatPositions.Count; i++)
+					List<BoatPosition> thisCrew = new List<BoatPosition>();
+					foreach (BoatPosition bp in tempBoat.BoatPositions)
 					{
-						bestCrew[i].CrewMember = tempBoat.BoatPositions[i].CrewMember;
-						bestCrew[i].PositionScore = tempBoat.BoatPositions[i].PositionScore;
+						thisCrew.Add(new BoatPosition
+						{
+							Position = bp.Position,
+							CrewMember = bp.CrewMember,
+							PositionScore = bp.PositionScore
+						});
 					}
-					bestScore = tempBoat.BoatScore;
-				}
+					if (tempBoat.BoatScore > bestScore)
+					{
+						bestCrew.Clear();
+						bestScore = tempBoat.BoatScore;
+					}
+					bestCrew.Add(thisCrew);
+					
+				} 
 			}
 			IdealCrew = bestCrew;
 			UpdateIdealScore();
@@ -359,21 +360,29 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void UpdateIdealScore()
 		{
 			IdealMatchScore = 0;
-			for (int i = 0; i < IdealCrew.Count; i++)
+			foreach (List<BoatPosition> crew in IdealCrew)
 			{
-				if (IdealCrew[i].CrewMember == BoatPositions[i].CrewMember)
+				float currentIdealMatch = 0;
+				for (int i = 0; i < crew.Count; i++)
 				{
-					IdealMatchScore++;
-				}
-				else
-				{
-					foreach (BoatPosition ideal in IdealCrew)
+					if (crew[i].CrewMember == BoatPositions[i].CrewMember)
 					{
-						if (ideal.CrewMember == BoatPositions[i].CrewMember)
+						currentIdealMatch++;
+					}
+					else
+					{
+						foreach (BoatPosition ideal in crew)
 						{
-							IdealMatchScore += 0.1f;
+							if (ideal.CrewMember == BoatPositions[i].CrewMember)
+							{
+								currentIdealMatch += 0.1f;
+							}
 						}
 					}
+				}
+				if (currentIdealMatch > IdealMatchScore)
+				{
+					IdealMatchScore = currentIdealMatch;
 				}
 			}
 		}

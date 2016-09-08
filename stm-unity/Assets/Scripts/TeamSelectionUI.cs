@@ -19,6 +19,8 @@ public class TeamSelectionUI : MonoBehaviour {
 	[SerializeField]
 	private GameObject _positionPrefab;
 	[SerializeField]
+	private GameObject _lightPrefab;
+	[SerializeField]
 	private GameObject _crewPrefab;
 	[SerializeField]
 	private GameObject _opinionPrefab;
@@ -151,6 +153,9 @@ public class TeamSelectionUI : MonoBehaviour {
 			positionObject.transform.Find("Name").GetComponent<Text>().text = position[i].Name;
 			positionObject.name = position[i].Name;
 			positionObject.GetComponent<PositionUI>().SetUp(this, position[i]);
+			GameObject lightObject = Instantiate(_lightPrefab);
+			lightObject.transform.SetParent(boatContainer.transform.Find("Light Container"), false);
+			lightObject.name = "Light " + i;
 		}
 		_positionsEmpty = position.Count;
 		foreach (var b in _boatHistory)
@@ -211,7 +216,22 @@ public class TeamSelectionUI : MonoBehaviour {
 		var currentBoat = _teamSelection.GetBoat();
 		var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);
 		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
-		//scoreText.text = boat.IdealMatchScore.ToString();
+		var idealScore = boat.IdealMatchScore;
+		foreach (Transform child in boatContainer.transform.Find("Light Container"))
+		{
+			if (idealScore >= 1)
+			{
+				child.GetComponent<Image>().color = Color.green;
+				idealScore--;
+			} else if (idealScore >= 0.1f)
+			{
+				child.GetComponent<Image>().color = Color.yellow;
+				idealScore -= 0.1f;
+			} else
+			{
+				child.GetComponent<Image>().color = Color.red;
+			}
+		}
 		for (int i = 0; i < boat.BoatPositions.Count; i++)
 		{
 			GameObject crewMember = Instantiate(_crewPrefab);
@@ -390,6 +410,24 @@ public class TeamSelectionUI : MonoBehaviour {
 			Destroy(position);
 		}
 		_teamSelection.PostRaceEvent();
+		float idealScore = _teamSelection.IdealCheck();
+		foreach (Transform child in _currentBoat.transform.Find("Light Container"))
+		{
+			if (idealScore >= 1)
+			{
+				child.GetComponent<Image>().color = Color.green;
+				idealScore--;
+			}
+			else if (idealScore >= 0.1f)
+			{
+				child.GetComponent<Image>().color = Color.yellow;
+				idealScore -= 0.1f;
+			}
+			else
+			{
+				child.GetComponent<Image>().color = Color.red;
+			}
+		}
 		var teamScore = _teamSelection.ConfirmLineUp();
 		var scoreText = _currentBoat.transform.Find("Score").GetComponent<Text>();
 		if (!_teamSelection.IsRace())
@@ -408,8 +446,6 @@ public class TeamSelectionUI : MonoBehaviour {
 			}
 			scoreText.text = "POSITION: " + position;
 		}
-		//float correctCount = _teamSelection.IdealCheck();
-		//scoreText.text = correctCount.ToString();
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
 			if (crewMember.transform.parent.name == _crewContainer.name)

@@ -669,6 +669,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			TickUpdate();
 			SaveStatus();
 			LoadBeliefs(boat);
+			boat.GetIdealCrew();
+			boat.UpdateBoatScore();
 		}
 
 		/// <summary>

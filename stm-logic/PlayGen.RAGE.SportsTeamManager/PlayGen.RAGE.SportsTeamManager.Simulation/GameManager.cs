@@ -456,6 +456,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					Boat.AddCrew(newMember);
 				}
 			}
+			Boat.GetIdealCrew();
 		}
 
 		public int GetRaceSessionLength()
@@ -633,6 +634,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Boat.Recruits.Remove(member);
 				_iat.SaveToFile(this._storageProvider, _iat.AssetFilePath);
 				DeductCrewEditAllowance();
+				Boat.GetIdealCrew();
 			}
 		}
 
@@ -667,8 +669,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (cost <= ActionAllowance)
 			{
 				var replies = EventController.SendMeetingEvent(_iat, eventType, eventName, members, Boat);
-				Boat.UpdateBoatScore();
-				Boat.GetIdealCrew();
 				DeductCost(cost);
 				return replies.ToArray();
 			}
