@@ -115,7 +115,7 @@ public class TeamSelection : MonoBehaviour {
 
 	public void PostRaceEvent()
 	{
-		if (_confirmCount == 0)
+		if (_confirmCount == _sessionLength - 1)
 		{
 			_postRaceEvent.GetEvent();
 		}

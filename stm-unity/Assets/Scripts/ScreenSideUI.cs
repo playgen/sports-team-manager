@@ -28,6 +28,11 @@ public class ScreenSideUI : MonoBehaviour {
 		_gameManager.AllowanceUpdated += AllowanceUpdated;
 	}
 
+	void OnDisable()
+	{
+		_gameManager.AllowanceUpdated -= AllowanceUpdated;
+	}
+
 	/// <summary>
 	/// Change the position of the selected object to match the current UI screen
 	/// </summary>

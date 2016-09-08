@@ -450,7 +450,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						break;
 					case "OpinionRevealPositive":
-						var crewOpinionsPositive = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Person.Name));
+						var crewOpinionsPositive = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Person.Name)).ToList();
+						crewOpinionsPositive.AddRange(CrewOpinions.Where(c => c.Person == boat.Manager));
 						var opinionsPositive = crewOpinionsPositive.Where(co => co.Opinion >= (int)_config.ConfigValues[ConfigKeys.OpinionLike.ToString()]);
 						var pickedOpinionPositive = opinionsPositive.OrderBy(o => Guid.NewGuid()).FirstOrDefault();
 						if (pickedOpinionPositive != null) {
@@ -465,6 +466,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							if (dialogueOptions != null && dialogueOptions.Count() > 0)
 							{
 								reply = String.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionPositive.Person.Name);
+								if (pickedOpinionPositive.Person == boat.Manager)
+								{
+									reply = String.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, "you");
+								}
 							}
 							AddOrUpdateRevealedOpinion(pickedOpinionPositive.Person, pickedOpinionPositive.Opinion);
 						}
@@ -478,7 +483,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						break;
 					case "OpinionRevealNegative":
-						var crewOpinionsNegative = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Person.Name));
+						var crewOpinionsNegative = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Person.Name)).ToList();
+						crewOpinionsNegative.AddRange(CrewOpinions.Where(c => c.Person == boat.Manager));
 						var opinionsNegative = crewOpinionsNegative.Where(co => co.Opinion <= (int)_config.ConfigValues[ConfigKeys.OpinionDislike.ToString()]);
 						var pickedOpinionNegative = opinionsNegative.OrderBy(o => Guid.NewGuid()).FirstOrDefault();
 						if (pickedOpinionNegative != null)
@@ -494,6 +500,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							if (dialogueOptions != null && dialogueOptions.Count() > 0)
 							{
 								reply = String.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionNegative.Person.Name);
+								if (pickedOpinionNegative.Person == boat.Manager)
+								{
+									reply = String.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, "you");
+								}
 							}
 							AddOrUpdateRevealedOpinion(pickedOpinionNegative.Person, pickedOpinionNegative.Opinion);
 						}

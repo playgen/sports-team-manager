@@ -42,6 +42,7 @@ public class TeamSelectionUI : MonoBehaviour {
 
 	private GameObject _currentBoat;
 	private List<GameObject> _boatHistory = new List<GameObject>();
+	[SerializeField]
 	private int _positionsEmpty;
 
 	[SerializeField]
@@ -388,6 +389,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			Destroy(position);
 		}
+		_teamSelection.PostRaceEvent();
 		var teamScore = _teamSelection.ConfirmLineUp();
 		var scoreText = _currentBoat.transform.Find("Score").GetComponent<Text>();
 		if (!_teamSelection.IsRace())
@@ -438,15 +440,17 @@ public class TeamSelectionUI : MonoBehaviour {
 		_raceButton.onClick.AddListener(() => RepeatLineUp(currentPositions));
 
 		_boatHistory.Add(_currentBoat);
-		_teamSelection.PostRaceEvent();
 		CreateNewBoat();
 	}
 
-	public void RepeatLineUp(List<BoatPosition> boatPositions)
+	public void RepeatLineUp(List<BoatPosition> boatPositions, bool buttonTriggered = true)
 	{
 		List<BoatPosition> tempBoatPositions = new List<BoatPosition>();
 		tempBoatPositions.AddRange(boatPositions);
-		Tracker.T.alternative.Selected("Old Crew Selection Selected", "Repeat", AlternativeTracker.Alternative.Menu);
+		if (buttonTriggered)
+		{
+			Tracker.T.alternative.Selected("Old Crew Selection Selected", "Repeat", AlternativeTracker.Alternative.Menu);
+		}
 		List<CrewMemberUI> crewMembers = (FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[]).ToList();
 		List<PositionUI> positions = (FindObjectsOfType(typeof(PositionUI)) as PositionUI[]).ToList();
 		var sortedPositions = positions.OrderBy(p => p.transform.GetSiblingIndex());
@@ -484,12 +488,16 @@ public class TeamSelectionUI : MonoBehaviour {
 				});
 			}
 		}
+		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
+		{
+			position.RemoveCrew();
+		}
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
 			Destroy(crewMember.gameObject);
 		}
 		_positionsEmpty = (FindObjectsOfType(typeof(PositionUI)) as PositionUI[]).Length;
 		CreateCrew();
-		RepeatLineUp(currentPositions);
+		RepeatLineUp(currentPositions, false);
 	}
 }

@@ -62,7 +62,6 @@ public class MemberMeetingUI : MonoBehaviour
 	void OnDisable()
 	{
 		_fireWarningPopUp.SetActive(false);
-		Tracker.T.alternative.Selected("Crew Member", "Meeting", AlternativeTracker.Alternative.Menu);
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
 			crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
