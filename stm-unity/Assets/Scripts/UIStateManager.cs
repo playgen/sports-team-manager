@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using PlayGen.RAGE.SportsTeamManager.Simulation;
+
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -53,6 +55,15 @@ public class UIStateManager : MonoBehaviour {
 		go.SetActive(false);
 		_mainMenu.SetActive(true);
 		Tracker.T.accessible.Accessed("Main Menu", AccessibleTracker.Accessible.Screen);
+		GameManager gameManager;
+		gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+		if (gameManager.GetGameNames(Application.streamingAssetsPath).Count == 0)
+		{
+			_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = false;
+		} else
+		{
+			_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = true;
+		}
 	}
 
 	public void ReloadScene()

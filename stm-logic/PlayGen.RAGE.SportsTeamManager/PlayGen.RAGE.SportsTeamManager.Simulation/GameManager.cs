@@ -251,12 +251,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			List<string> gameNames = new List<string>();
 			foreach (var folder in folders)
 			{
-				var files = Directory.GetFiles(folder, "*.iat");
-				foreach(var file in files)
+				var file = Path.GetFileName(folder);
+				gameNames.Add(file);
+				/*foreach(var file in files)
 				{
 					var name = IntegratedAuthoringToolAsset.LoadFromFile(LocalStorageProvider.Instance, file).ScenarioName;
 					gameNames.Add(name);
-				}
+				}*/
 			}
 			return gameNames;
 		}
@@ -266,7 +267,28 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public bool CheckIfGameExists(string storageLocation, string gameName)
 		{
-			return Directory.Exists(Path.Combine(storageLocation, gameName.Replace(" ", "")));
+			bool gameExists = false;
+			if (Directory.Exists(Path.Combine(storageLocation, gameName.Replace(" ", ""))))
+			{
+				var files = Directory.GetFiles(Path.Combine(storageLocation, gameName), "*.iat");
+				foreach (var file in files)
+				{
+					try
+					{
+						var game = IntegratedAuthoringToolAsset.LoadFromFile(LocalStorageProvider.Instance, file);
+						if (game != null && game.ScenarioName == gameName)
+						{
+							gameExists = true;
+							break;
+						}
+					}
+					catch
+					{
+
+					}
+				}
+			}
+			return gameExists;
 		}
 
 		/// <summary>
@@ -591,6 +613,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.CreateFile(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name.Replace(" ", "")));
 				Boat.AddCrew(member);
 				member.Avatar.UpdateAvatarBeliefs(member);
+				member.Avatar = new Avatar(member, true, true);
 				Random random = new Random();
 				foreach (CrewMember otherMember in Boat.GetAllCrewMembers())
 				{

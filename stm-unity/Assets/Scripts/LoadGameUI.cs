@@ -35,12 +35,12 @@ public class LoadGameUI : MonoBehaviour
 	/// </summary>
 	void Update()
 	{
-		if (_loadGame.GetSelected() == null && _loadButton.interactable)
+		if (string.IsNullOrEmpty(_loadGame.GetSelected()) && _loadButton.interactable)
 		{
 			_loadButton.interactable = false;
 			_selectedIcon.SetActive(false);
 		}
-		else if(_loadGame.GetSelected() != null && !_loadButton.interactable)
+		else if(!string.IsNullOrEmpty(_loadGame.GetSelected()) && !_loadButton.interactable)
 		{
 			_loadButton.interactable = true;
 			_selectedIcon.SetActive(true);
@@ -62,13 +62,10 @@ public class LoadGameUI : MonoBehaviour
 		{
 			GameObject gameButton = Instantiate(_gameButtonPrefab);
 			gameButton.transform.SetParent(_gameContainer.transform, false);
-			gameButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -gameButton.GetComponent<RectTransform>().sizeDelta.y * (i + 0.5f));
 			gameButton.GetComponentInChildren<Text>().text = gameNames[i];
 			gameButton.GetComponent<Button>().onClick.AddListener(() => SelectGame(gameButton.GetComponentInChildren<Text>()));
-			gameButton.name = _gameButtonPrefab.name;
+			gameButton.name = gameNames[i];
 		}
-		_gameContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(_gameContainer.GetComponent<RectTransform>().sizeDelta.x, gameNames.Count * _gameButtonPrefab.GetComponent<RectTransform>().sizeDelta.y);
-		_gameContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -_gameContainer.GetComponent<RectTransform>().sizeDelta.y * 0.5f);
 	}
 
 	/// <summary>
@@ -107,7 +104,10 @@ public class LoadGameUI : MonoBehaviour
 		else
 		{
 			_errorText.text = "Game does not exist. Please try loading a different game.";
-			GetGames();
+			_selectedIcon.transform.SetParent(_gameContainer.transform, true);
+			_selectedIcon.SetActive(false);
+			Destroy(_gameContainer.transform.Find(_loadGame.GetSelected()).gameObject);
+			_loadGame.SetSelected("");
 		}
 		
 	}
