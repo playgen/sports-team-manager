@@ -1,0 +1,1375 @@
+fileFormatVersion: 2
+guid: f28f4ac70f2694b409890c65e9f0ac9d
+timeCreated: 1472806124
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: EyeF_Charisma_Blue_Neutral
+    21300002: EyeF_Charisma_Brown_Neutral
+    21300004: EyeF_Charisma_Green_Neutral
+    21300006: EyeF_Perception_Blue_Neutral
+    21300008: EyeF_Perception_Brown_Neutral
+    21300010: EyeF_Perception_Green_Neutral
+    21300012: EyeF_Quickness_Blue_Neutral
+    21300014: EyeF_Quickness_Brown_Neutral
+    21300016: EyeF_Quickness_Green_Neutral
+    21300018: EyeF_Willpower_Blue_Neutral
+    21300020: EyeF_Willpower_Brown_Neutral
+    21300022: EyeF_Willpower_Green_Neutral
+    21300024: EyeF_Wisdom_Blue_Neutral
+    21300026: EyeF_Wisdom_Brown_Neutral
+    21300028: EyeF_Wisdom_Green_Neutral
+    21300030: EyeM_Charisma_Blue_Neutral
+    21300032: EyeM_Charisma_Brown_Neutral
+    21300034: EyeM_Charisma_Green_Neutral
+    21300036: EyeM_Perception_Blue_Neutral
+    21300038: EyeM_Perception_Brown_Neutral
+    21300040: EyeM_Perception_Green_Neutral
+    21300042: EyeM_Quickness_Blue_Neutral
+    21300044: EyeM_Quickness_Brown_Neutral
+    21300046: EyeM_Quickness_Green_Neutral
+    21300048: EyeM_Willpower_Blue_Neutral
+    21300050: EyeM_Willpower_Brown_Neutral
+    21300052: EyeM_Willpower_Green_Neutral
+    21300054: EyeM_Wisdom_Blue_Neutral
+    21300056: EyeM_Wisdom_Brown_Neutral
+    21300058: EyeM_Wisdom_Green_Neutral
+    21300060: FaceF_Charisma_Eyebrows_Neutral
+    21300062: FaceF_Charisma_Mouth_Neutral
+    21300064: FaceF_Charisma_Nose
+    21300066: FaceF_Perception_Eyebrows_Neutral
+    21300068: FaceF_Perception_Mouth_Neutral
+    21300070: FaceF_Perception_Nose
+    21300072: FaceF_Quickness_Eyebrows_Neutral
+    21300074: FaceF_Quickness_Mouth_Neutral
+    21300076: FaceF_Quickness_Nose
+    21300078: FaceF_Willpower_Eyebrows_Neutral
+    21300080: FaceF_Willpower_Mouth_Neutral
+    21300082: FaceF_Willpower_Nose
+    21300084: FaceF_Wisdom_Eyebrows_Neutral
+    21300086: FaceF_Wisdom_Mouth_Neutral
+    21300088: FaceF_Wisdom_Nose
+    21300090: FaceM_Charisma_Eyebrows_Neutral
+    21300092: FaceM_Charisma_Mouth_Dark_Neutral
+    21300094: FaceM_Charisma_Mouth_Light_Neutral
+    21300096: FaceM_Charisma_Mouth_Medium_Neutral
+    21300098: FaceM_Charisma_Nose
+    21300100: FaceM_Perception_Eyebrows_Neutral
+    21300102: FaceM_Perception_Mouth_Neutral
+    21300104: FaceM_Perception_Nose
+    21300106: FaceM_Quickness_eyebrows_Neutral
+    21300108: FaceM_Quickness_Mouth_Dark_Neutral
+    21300110: FaceM_Quickness_Mouth_Light_Neutral
+    21300112: FaceM_Quickness_Mouth_Medium_Neutral
+    21300114: FaceM_Quickness_Nose
+    21300116: FaceM_Willpower_Eyebrows_Neutral
+    21300118: FaceM_Willpower_Mouth_Neutral
+    21300120: FaceM_Willpower_Nose
+    21300122: FaceM_Wisdom_Eyebrows_Neutral
+    21300124: FaceM_Wisdom_Mouth_Neutral
+    21300126: FaceM_Wisdom_Nose
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: EyeF_Charisma_Blue_Neutral
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 944
+        width: 160
+        height: 39
+      alignment: 9
+      pivot: {x: 0.25625, y: -37.641026}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 16, y: 1507}
+        - {x: -32, y: 1507}
+        - {x: -41, y: 1506}
+        - {x: -41, y: 1478}
+        - {x: -22, y: 1468}
+        - {x: 30, y: 1468}
+        - {x: 32, y: 1470}
+        - {x: 32, y: 1487}
+        - {x: 24, y: 1504}
+      - - {x: 75, y: 1507}
+        - {x: 62, y: 1496}
+        - {x: 62, y: 1480}
+        - {x: 66, y: 1472}
+        - {x: 102, y: 1472}
+        - {x: 119, y: 1480}
+        - {x: 119, y: 1501}
+        - {x: 102, y: 1507}
+    - name: EyeF_Charisma_Brown_Neutral
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 944
+        width: 160
+        height: 39
+      alignment: 9
+      pivot: {x: 0.25625, y: -37.641026}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 16, y: 1507}
+        - {x: -32, y: 1507}
+        - {x: -41, y: 1506}
+        - {x: -41, y: 1478}
+        - {x: -22, y: 1468}
+        - {x: 30, y: 1468}
+        - {x: 32, y: 1470}
+        - {x: 32, y: 1487}
+        - {x: 24, y: 1504}
+      - - {x: 75, y: 1507}
+        - {x: 62, y: 1496}
+        - {x: 62, y: 1480}
+        - {x: 66, y: 1472}
+        - {x: 102, y: 1472}
+        - {x: 119, y: 1480}
+        - {x: 119, y: 1501}
+        - {x: 102, y: 1507}
+    - name: EyeF_Charisma_Green_Neutral
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 944
+        width: 160
+        height: 39
+      alignment: 9
+      pivot: {x: 0.25625, y: -37.641026}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 16, y: 1507}
+        - {x: -32, y: 1507}
+        - {x: -41, y: 1506}
+        - {x: -41, y: 1478}
+        - {x: -22, y: 1468}
+        - {x: 30, y: 1468}
+        - {x: 32, y: 1470}
+        - {x: 32, y: 1487}
+        - {x: 24, y: 1504}
+      - - {x: 75, y: 1507}
+        - {x: 62, y: 1496}
+        - {x: 62, y: 1480}
+        - {x: 66, y: 1472}
+        - {x: 102, y: 1472}
+        - {x: 119, y: 1480}
+        - {x: 119, y: 1501}
+        - {x: 102, y: 1507}
+    - name: EyeF_Perception_Blue_Neutral
+      rect:
+        serializedVersion: 2
+        x: 837
+        y: 975
+        width: 162
+        height: 48
+      alignment: 9
+      pivot: {x: 0.2777778, y: -30.458334}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -23, y: 1509}
+        - {x: -44, y: 1505}
+        - {x: -45, y: 1499}
+        - {x: -45, y: 1477}
+        - {x: -18, y: 1462}
+        - {x: 17, y: 1462}
+        - {x: 29, y: 1475}
+        - {x: 29, y: 1500}
+        - {x: 23, y: 1509}
+      - - {x: 78, y: 1510}
+        - {x: 66, y: 1493}
+        - {x: 66, y: 1482}
+        - {x: 80, y: 1469}
+        - {x: 94, y: 1469}
+        - {x: 103, y: 1470}
+        - {x: 117, y: 1485}
+        - {x: 117, y: 1505}
+        - {x: 112, y: 1510}
+    - name: EyeF_Perception_Brown_Neutral
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 939
+        width: 162
+        height: 48
+      alignment: 9
+      pivot: {x: 0.2777778, y: -30.458334}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -23, y: 1509}
+        - {x: -44, y: 1505}
+        - {x: -45, y: 1499}
+        - {x: -45, y: 1477}
+        - {x: -18, y: 1462}
+        - {x: 17, y: 1462}
+        - {x: 29, y: 1475}
+        - {x: 29, y: 1500}
+        - {x: 23, y: 1509}
+      - - {x: 78, y: 1510}
+        - {x: 66, y: 1493}
+        - {x: 66, y: 1482}
+        - {x: 80, y: 1469}
+        - {x: 94, y: 1469}
+        - {x: 103, y: 1470}
+        - {x: 117, y: 1485}
+        - {x: 117, y: 1505}
+        - {x: 112, y: 1510}
+    - name: EyeF_Perception_Green_Neutral
+      rect:
+        serializedVersion: 2
+        x: 669
+        y: 939
+        width: 162
+        height: 48
+      alignment: 9
+      pivot: {x: 0.2777778, y: -30.458334}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -23, y: 1509}
+        - {x: -44, y: 1505}
+        - {x: -45, y: 1499}
+        - {x: -45, y: 1477}
+        - {x: -18, y: 1462}
+        - {x: 17, y: 1462}
+        - {x: 29, y: 1475}
+        - {x: 29, y: 1500}
+        - {x: 23, y: 1509}
+      - - {x: 78, y: 1510}
+        - {x: 66, y: 1493}
+        - {x: 66, y: 1482}
+        - {x: 80, y: 1469}
+        - {x: 94, y: 1469}
+        - {x: 103, y: 1470}
+        - {x: 117, y: 1485}
+        - {x: 117, y: 1505}
+        - {x: 112, y: 1510}
+    - name: EyeF_Quickness_Blue_Neutral
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 863
+        width: 155
+        height: 44
+      alignment: 9
+      pivot: {x: 0.23870967, y: -33.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 78, y: 1518}
+        - {x: 70, y: 1517}
+        - {x: 64, y: 1508}
+        - {x: 64, y: 1477}
+        - {x: 75, y: 1474}
+        - {x: 110, y: 1474}
+        - {x: 112, y: 1475}
+        - {x: 118, y: 1496}
+        - {x: 118, y: 1513}
+        - {x: 112, y: 1518}
+      - - {x: -32, y: 1503}
+        - {x: -37, y: 1496}
+        - {x: -37, y: 1480}
+        - {x: 27, y: 1480}
+        - {x: 27, y: 1492}
+        - {x: 8, y: 1503}
+    - name: EyeF_Quickness_Brown_Neutral
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 844
+        width: 155
+        height: 44
+      alignment: 9
+      pivot: {x: 0.23870967, y: -33.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 78, y: 1518}
+        - {x: 70, y: 1517}
+        - {x: 64, y: 1508}
+        - {x: 64, y: 1477}
+        - {x: 75, y: 1474}
+        - {x: 110, y: 1474}
+        - {x: 112, y: 1475}
+        - {x: 118, y: 1496}
+        - {x: 118, y: 1513}
+        - {x: 112, y: 1518}
+      - - {x: -32, y: 1503}
+        - {x: -37, y: 1496}
+        - {x: -37, y: 1480}
+        - {x: 27, y: 1480}
+        - {x: 27, y: 1492}
+        - {x: 8, y: 1503}
+    - name: EyeF_Quickness_Green_Neutral
+      rect:
+        serializedVersion: 2
+        x: 644
+        y: 893
+        width: 155
+        height: 44
+      alignment: 9
+      pivot: {x: 0.23870967, y: -33.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 78, y: 1518}
+        - {x: 70, y: 1517}
+        - {x: 64, y: 1508}
+        - {x: 64, y: 1477}
+        - {x: 75, y: 1474}
+        - {x: 110, y: 1474}
+        - {x: 112, y: 1475}
+        - {x: 118, y: 1496}
+        - {x: 118, y: 1513}
+        - {x: 112, y: 1518}
+      - - {x: -32, y: 1503}
+        - {x: -37, y: 1496}
+        - {x: -37, y: 1480}
+        - {x: 27, y: 1480}
+        - {x: 27, y: 1492}
+        - {x: 8, y: 1503}
+    - name: EyeF_Willpower_Blue_Neutral
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 910
+        width: 158
+        height: 27
+      alignment: 9
+      pivot: {x: 0.25949368, y: -54.407406}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeF_Willpower_Brown_Neutral
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 910
+        width: 158
+        height: 27
+      alignment: 9
+      pivot: {x: 0.25949368, y: -54.407406}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeF_Willpower_Green_Neutral
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 910
+        width: 158
+        height: 27
+      alignment: 9
+      pivot: {x: 0.25949368, y: -54.407406}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeF_Wisdom_Blue_Neutral
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 985
+        width: 166
+        height: 38
+      alignment: 9
+      pivot: {x: 0.25903615, y: -38.63158}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -43, y: 1502}
+        - {x: -43, y: 1485}
+        - {x: -19, y: 1468}
+        - {x: 18, y: 1468}
+        - {x: 32, y: 1474}
+        - {x: 32, y: 1491}
+        - {x: -4, y: 1502}
+      - - {x: 113, y: 1506}
+        - {x: 65, y: 1495}
+        - {x: 60, y: 1487}
+        - {x: 60, y: 1476}
+        - {x: 65, y: 1473}
+        - {x: 98, y: 1473}
+        - {x: 109, y: 1475}
+        - {x: 123, y: 1499}
+        - {x: 123, y: 1506}
+      - - {x: -10, y: 1502}
+        - {x: -9, y: 1499}
+        - {x: -5, y: 1499}
+        - {x: -3, y: 1501}
+        - {x: -4, y: 1504}
+        - {x: -8, y: 1504}
+    - name: EyeF_Wisdom_Brown_Neutral
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 985
+        width: 166
+        height: 38
+      alignment: 9
+      pivot: {x: 0.25903615, y: -38.63158}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -43, y: 1502}
+        - {x: -43, y: 1485}
+        - {x: -19, y: 1468}
+        - {x: 18, y: 1468}
+        - {x: 32, y: 1474}
+        - {x: 32, y: 1491}
+        - {x: -4, y: 1502}
+      - - {x: 113, y: 1506}
+        - {x: 65, y: 1495}
+        - {x: 60, y: 1487}
+        - {x: 60, y: 1476}
+        - {x: 65, y: 1473}
+        - {x: 98, y: 1473}
+        - {x: 109, y: 1475}
+        - {x: 123, y: 1499}
+        - {x: 123, y: 1506}
+      - - {x: -10, y: 1502}
+        - {x: -9, y: 1499}
+        - {x: -5, y: 1499}
+        - {x: -3, y: 1501}
+        - {x: -4, y: 1504}
+        - {x: -8, y: 1504}
+    - name: EyeF_Wisdom_Green_Neutral
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 985
+        width: 166
+        height: 38
+      alignment: 9
+      pivot: {x: 0.25903615, y: -38.63158}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -43, y: 1502}
+        - {x: -43, y: 1485}
+        - {x: -19, y: 1468}
+        - {x: 18, y: 1468}
+        - {x: 32, y: 1474}
+        - {x: 32, y: 1491}
+        - {x: -4, y: 1502}
+      - - {x: 113, y: 1506}
+        - {x: 65, y: 1495}
+        - {x: 60, y: 1487}
+        - {x: 60, y: 1476}
+        - {x: 65, y: 1473}
+        - {x: 98, y: 1473}
+        - {x: 109, y: 1475}
+        - {x: 123, y: 1499}
+        - {x: 123, y: 1506}
+      - - {x: -10, y: 1502}
+        - {x: -9, y: 1499}
+        - {x: -5, y: 1499}
+        - {x: -3, y: 1501}
+        - {x: -4, y: 1504}
+        - {x: -8, y: 1504}
+    - name: EyeM_Charisma_Blue_Neutral
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 792
+        width: 138
+        height: 27
+      alignment: 9
+      pivot: {x: -0.014492754, y: -59}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeM_Charisma_Brown_Neutral
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 788
+        width: 138
+        height: 27
+      alignment: 9
+      pivot: {x: -0.014492754, y: -59}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeM_Charisma_Green_Neutral
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 763
+        width: 138
+        height: 27
+      alignment: 9
+      pivot: {x: -0.014492754, y: -59}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeM_Perception_Blue_Neutral
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 855
+        width: 135
+        height: 28
+      alignment: 9
+      pivot: {x: -0.022222223, y: -56.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeM_Perception_Brown_Neutral
+      rect:
+        serializedVersion: 2
+        x: 638
+        y: 863
+        width: 135
+        height: 28
+      alignment: 9
+      pivot: {x: -0.022222223, y: -56.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeM_Perception_Green_Neutral
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 825
+        width: 135
+        height: 28
+      alignment: 9
+      pivot: {x: -0.022222223, y: -56.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeM_Quickness_Blue_Neutral
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 764
+        width: 138
+        height: 22
+      alignment: 9
+      pivot: {x: -0.014492754, y: -72.40909}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeM_Quickness_Brown_Neutral
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 909
+        width: 138
+        height: 22
+      alignment: 9
+      pivot: {x: -0.014492754, y: -72.40909}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeM_Quickness_Green_Neutral
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 885
+        width: 138
+        height: 22
+      alignment: 9
+      pivot: {x: -0.014492754, y: -72.40909}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeM_Willpower_Blue_Neutral
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 806
+        width: 131
+        height: 17
+      alignment: 9
+      pivot: {x: -0.03816794, y: -93.52941}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeM_Willpower_Brown_Neutral
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 806
+        width: 131
+        height: 17
+      alignment: 9
+      pivot: {x: -0.03816794, y: -93.52941}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeM_Willpower_Green_Neutral
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 806
+        width: 131
+        height: 17
+      alignment: 9
+      pivot: {x: -0.03816794, y: -93.52941}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeM_Wisdom_Blue_Neutral
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 840
+        width: 139
+        height: 21
+      alignment: 9
+      pivot: {x: -0.007194245, y: -75.71429}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeM_Wisdom_Brown_Neutral
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 821
+        width: 139
+        height: 21
+      alignment: 9
+      pivot: {x: -0.007194245, y: -75.71429}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: EyeM_Wisdom_Green_Neutral
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 817
+        width: 139
+        height: 21
+      alignment: 9
+      pivot: {x: -0.007194245, y: -75.71429}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: FaceF_Charisma_Eyebrows_Neutral
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 882
+        width: 154
+        height: 26
+      alignment: 9
+      pivot: {x: 0.2857143, y: -57.807693}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: FaceF_Charisma_Mouth_Neutral
+      rect:
+        serializedVersion: 2
+        x: 557
+        y: 841
+        width: 79
+        height: 39
+      alignment: 9
+      pivot: {x: -0.101265825, y: -35.76923}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 8, y: 1434}
+        - {x: 8, y: 1417}
+        - {x: 26, y: 1395}
+        - {x: 64, y: 1395}
+        - {x: 73, y: 1404}
+        - {x: 87, y: 1423}
+        - {x: 87, y: 1434}
+    - name: FaceF_Charisma_Nose
+      rect:
+        serializedVersion: 2
+        x: 801
+        y: 902
+        width: 29
+        height: 35
+      alignment: 9
+      pivot: {x: -1.7241379, y: -41.028572}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: FaceF_Perception_Eyebrows_Neutral
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 838
+        width: 151
+        height: 43
+      alignment: 9
+      pivot: {x: 0.26490065, y: -34.860466}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 13, y: 1519}
+        - {x: -40, y: 1508}
+        - {x: -40, y: 1500}
+        - {x: -38, y: 1499}
+        - {x: 23, y: 1499}
+        - {x: 36, y: 1508}
+        - {x: 36, y: 1519}
+      - - {x: 54, y: 1542}
+        - {x: 54, y: 1530}
+        - {x: 102, y: 1513}
+        - {x: 111, y: 1513}
+        - {x: 111, y: 1529}
+        - {x: 98, y: 1542}
+    - name: FaceF_Perception_Mouth_Neutral
+      rect:
+        serializedVersion: 2
+        x: 893
+        y: 681
+        width: 76
+        height: 29
+      alignment: 9
+      pivot: {x: -0.09210526, y: -48.310345}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: FaceF_Perception_Nose
+      rect:
+        serializedVersion: 2
+        x: 996
+        y: 937
+        width: 24
+        height: 36
+      alignment: 9
+      pivot: {x: -2.2083333, y: -39.833332}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: FaceF_Quickness_Eyebrows_Neutral
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 989
+        width: 165
+        height: 34
+      alignment: 9
+      pivot: {x: 0.28484848, y: -44.235294}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 114, y: 1509}
+        - {x: 114, y: 1505}
+        - {x: 115, y: 1504}
+        - {x: 118, y: 1504}
+        - {x: 118, y: 1509}
+        - {x: 117, y: 1510}
+      - - {x: -12, y: 1513}
+        - {x: -11, y: 1510}
+        - {x: -5, y: 1510}
+        - {x: -3, y: 1512}
+        - {x: -4, y: 1515}
+        - {x: -10, y: 1515}
+      - - {x: 0, y: 1513}
+        - {x: 1, y: 1510}
+        - {x: 4, y: 1510}
+        - {x: 6, y: 1512}
+        - {x: 5, y: 1515}
+        - {x: 2, y: 1515}
+      - - {x: -22, y: 1538}
+        - {x: -47, y: 1528}
+        - {x: -47, y: 1515}
+        - {x: -46, y: 1514}
+        - {x: -7, y: 1514}
+        - {x: 22, y: 1515}
+        - {x: 29, y: 1523}
+        - {x: 29, y: 1533}
+        - {x: 15, y: 1538}
+      - - {x: 98, y: 1536}
+        - {x: 64, y: 1536}
+        - {x: 58, y: 1535}
+        - {x: 57, y: 1532}
+        - {x: 57, y: 1524}
+        - {x: 64, y: 1516}
+        - {x: 113, y: 1516}
+        - {x: 114, y: 1517}
+        - {x: 114, y: 1524}
+    - name: FaceF_Quickness_Mouth_Neutral
+      rect:
+        serializedVersion: 2
+        x: 557
+        y: 800
+        width: 79
+        height: 39
+      alignment: 9
+      pivot: {x: -0.101265825, y: -35.76923}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 8, y: 1434}
+        - {x: 8, y: 1417}
+        - {x: 26, y: 1395}
+        - {x: 64, y: 1395}
+        - {x: 73, y: 1404}
+        - {x: 87, y: 1423}
+        - {x: 87, y: 1434}
+    - name: FaceF_Quickness_Nose
+      rect:
+        serializedVersion: 2
+        x: 801
+        y: 865
+        width: 29
+        height: 35
+      alignment: 9
+      pivot: {x: -1.7241379, y: -41.028572}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: FaceF_Willpower_Eyebrows_Neutral
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 882
+        width: 154
+        height: 26
+      alignment: 9
+      pivot: {x: 0.2857143, y: -57.807693}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: FaceF_Willpower_Mouth_Neutral
+      rect:
+        serializedVersion: 2
+        x: 396
+        y: 801
+        width: 75
+        height: 32
+      alignment: 9
+      pivot: {x: -0.13333334, y: -43.8125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 31, y: 1434}
+        - {x: 10, y: 1427}
+        - {x: 10, y: 1409}
+        - {x: 33, y: 1402}
+        - {x: 77, y: 1402}
+        - {x: 85, y: 1422}
+        - {x: 85, y: 1434}
+    - name: FaceF_Willpower_Nose
+      rect:
+        serializedVersion: 2
+        x: 900
+        y: 722
+        width: 29
+        height: 35
+      alignment: 9
+      pivot: {x: -1.7241379, y: -41.028572}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: FaceF_Wisdom_Eyebrows_Neutral
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 918
+        width: 159
+        height: 24
+      alignment: 9
+      pivot: {x: 0.27672955, y: -62.625}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: FaceF_Wisdom_Mouth_Neutral
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 809
+        width: 76
+        height: 27
+      alignment: 9
+      pivot: {x: -0.09210526, y: -51.962963}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: FaceF_Wisdom_Nose
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 826
+        width: 29
+        height: 35
+      alignment: 9
+      pivot: {x: -1.7241379, y: -41.028572}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: FaceM_Charisma_Eyebrows_Neutral
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 989
+        width: 163
+        height: 34
+      alignment: 9
+      pivot: {x: 0.10429448, y: -47.35294}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 106, y: 1639}
+        - {x: 84, y: 1632}
+        - {x: 84, y: 1610}
+        - {x: 136, y: 1610}
+        - {x: 146, y: 1616}
+        - {x: 146, y: 1633}
+        - {x: 135, y: 1639}
+      - - {x: -13, y: 1644}
+        - {x: -17, y: 1635}
+        - {x: -17, y: 1625}
+        - {x: 45, y: 1610}
+        - {x: 64, y: 1610}
+        - {x: 78, y: 1620}
+        - {x: 78, y: 1644}
+    - name: FaceM_Charisma_Mouth_Dark_Neutral
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 835
+        width: 83
+        height: 45
+      alignment: 9
+      pivot: {x: -0.38554215, y: -33.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 61, y: 1503}
+        - {x: 60, y: 1500}
+        - {x: 60, y: 1497}
+        - {x: 63, y: 1494}
+        - {x: 83, y: 1494}
+        - {x: 86, y: 1496}
+        - {x: 86, y: 1501}
+        - {x: 85, y: 1503}
+      - - {x: 83, y: 1539}
+        - {x: 32, y: 1539}
+        - {x: 32, y: 1515}
+        - {x: 56, y: 1503}
+        - {x: 107, y: 1503}
+        - {x: 115, y: 1518}
+        - {x: 115, y: 1537}
+        - {x: 113, y: 1538}
+    - name: FaceM_Charisma_Mouth_Light_Neutral
+      rect:
+        serializedVersion: 2
+        x: 638
+        y: 816
+        width: 83
+        height: 45
+      alignment: 9
+      pivot: {x: -0.38554215, y: -33.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 61, y: 1503}
+        - {x: 60, y: 1500}
+        - {x: 60, y: 1497}
+        - {x: 63, y: 1494}
+        - {x: 83, y: 1494}
+        - {x: 86, y: 1496}
+        - {x: 86, y: 1501}
+        - {x: 85, y: 1503}
+      - - {x: 83, y: 1539}
+        - {x: 32, y: 1539}
+        - {x: 32, y: 1515}
+        - {x: 56, y: 1503}
+        - {x: 107, y: 1503}
+        - {x: 115, y: 1518}
+        - {x: 115, y: 1537}
+        - {x: 113, y: 1538}
+    - name: FaceM_Charisma_Mouth_Medium_Neutral
+      rect:
+        serializedVersion: 2
+        x: 638
+        y: 769
+        width: 83
+        height: 45
+      alignment: 9
+      pivot: {x: -0.38554215, y: -33.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 61, y: 1503}
+        - {x: 60, y: 1500}
+        - {x: 60, y: 1497}
+        - {x: 63, y: 1494}
+        - {x: 83, y: 1494}
+        - {x: 86, y: 1496}
+        - {x: 86, y: 1501}
+        - {x: 85, y: 1503}
+      - - {x: 83, y: 1539}
+        - {x: 32, y: 1539}
+        - {x: 32, y: 1515}
+        - {x: 56, y: 1503}
+        - {x: 107, y: 1503}
+        - {x: 115, y: 1518}
+        - {x: 115, y: 1537}
+        - {x: 113, y: 1538}
+    - name: FaceM_Charisma_Nose
+      rect:
+        serializedVersion: 2
+        x: 969
+        y: 797
+        width: 36
+        height: 64
+      alignment: 9
+      pivot: {x: -2.1388888, y: -23.984375}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 89, y: 1599}
+        - {x: 87, y: 1598}
+        - {x: 88, y: 1585}
+        - {x: 96, y: 1563}
+        - {x: 77, y: 1542}
+        - {x: 77, y: 1535}
+        - {x: 100, y: 1535}
+        - {x: 108, y: 1536}
+        - {x: 113, y: 1544}
+        - {x: 113, y: 1560}
+        - {x: 96, y: 1599}
+    - name: FaceM_Perception_Eyebrows_Neutral
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 890
+        width: 159
+        height: 52
+      alignment: 9
+      pivot: {x: 0.056603774, y: -30.942308}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 49, y: 1646}
+        - {x: -8, y: 1629}
+        - {x: -9, y: 1625}
+        - {x: -9, y: 1612}
+        - {x: 1, y: 1609}
+        - {x: 59, y: 1609}
+        - {x: 75, y: 1621}
+        - {x: 75, y: 1643}
+        - {x: 73, y: 1646}
+      - - {x: 94, y: 1639}
+        - {x: 136, y: 1620}
+        - {x: 150, y: 1620}
+        - {x: 150, y: 1658}
+        - {x: 133, y: 1661}
+        - {x: 95, y: 1661}
+        - {x: 94, y: 1655}
+    - name: FaceM_Perception_Mouth_Neutral
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 757
+        width: 89
+        height: 47
+      alignment: 9
+      pivot: {x: -0.25842696, y: -31.872341}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 87, y: 1511}
+        - {x: 62, y: 1511}
+        - {x: 62, y: 1500}
+        - {x: 63, y: 1498}
+        - {x: 87, y: 1498}
+        - {x: 90, y: 1502}
+        - {x: 90, y: 1507}
+      - - {x: 54, y: 1545}
+        - {x: 23, y: 1545}
+        - {x: 23, y: 1520}
+        - {x: 47, y: 1515}
+        - {x: 107, y: 1515}
+        - {x: 112, y: 1520}
+        - {x: 112, y: 1531}
+    - name: FaceM_Perception_Nose
+      rect:
+        serializedVersion: 2
+        x: 972
+        y: 863
+        width: 37
+        height: 68
+      alignment: 9
+      pivot: {x: -2.1351352, y: -22.57353}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 86, y: 1603}
+        - {x: 85, y: 1602}
+        - {x: 85, y: 1589}
+        - {x: 87, y: 1582}
+        - {x: 91, y: 1573}
+        - {x: 79, y: 1544}
+        - {x: 79, y: 1535}
+        - {x: 109, y: 1535}
+        - {x: 116, y: 1538}
+        - {x: 116, y: 1565}
+        - {x: 93, y: 1603}
+    - name: FaceM_Quickness_eyebrows_Neutral
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 883
+        width: 157
+        height: 33
+      alignment: 9
+      pivot: {x: 0.070063695, y: -48.878788}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 129, y: 1644}
+        - {x: 92, y: 1644}
+        - {x: 90, y: 1639}
+        - {x: 89, y: 1636}
+        - {x: 89, y: 1625}
+        - {x: 101, y: 1615}
+        - {x: 117, y: 1613}
+        - {x: 146, y: 1613}
+        - {x: 146, y: 1629}
+        - {x: 139, y: 1643}
+      - - {x: 13, y: 1646}
+        - {x: -11, y: 1633}
+        - {x: -11, y: 1619}
+        - {x: -10, y: 1617}
+        - {x: 64, y: 1617}
+        - {x: 74, y: 1628}
+        - {x: 74, y: 1641}
+        - {x: 65, y: 1646}
+    - name: FaceM_Quickness_Mouth_Dark_Neutral
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 741
+        width: 83
+        height: 45
+      alignment: 9
+      pivot: {x: -0.38554215, y: -33.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 61, y: 1503}
+        - {x: 60, y: 1500}
+        - {x: 60, y: 1497}
+        - {x: 63, y: 1494}
+        - {x: 83, y: 1494}
+        - {x: 86, y: 1496}
+        - {x: 86, y: 1501}
+        - {x: 85, y: 1503}
+      - - {x: 83, y: 1539}
+        - {x: 32, y: 1539}
+        - {x: 32, y: 1515}
+        - {x: 56, y: 1503}
+        - {x: 107, y: 1503}
+        - {x: 115, y: 1518}
+        - {x: 115, y: 1537}
+        - {x: 113, y: 1538}
+    - name: FaceM_Quickness_Mouth_Light_Neutral
+      rect:
+        serializedVersion: 2
+        x: 808
+        y: 710
+        width: 83
+        height: 45
+      alignment: 9
+      pivot: {x: -0.38554215, y: -33.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 61, y: 1503}
+        - {x: 60, y: 1500}
+        - {x: 60, y: 1497}
+        - {x: 63, y: 1494}
+        - {x: 83, y: 1494}
+        - {x: 86, y: 1496}
+        - {x: 86, y: 1501}
+        - {x: 85, y: 1503}
+      - - {x: 83, y: 1539}
+        - {x: 32, y: 1539}
+        - {x: 32, y: 1515}
+        - {x: 56, y: 1503}
+        - {x: 107, y: 1503}
+        - {x: 115, y: 1518}
+        - {x: 115, y: 1537}
+        - {x: 113, y: 1538}
+    - name: FaceM_Quickness_Mouth_Medium_Neutral
+      rect:
+        serializedVersion: 2
+        x: 638
+        y: 769
+        width: 83
+        height: 45
+      alignment: 9
+      pivot: {x: -0.38554215, y: -33.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 61, y: 1503}
+        - {x: 60, y: 1500}
+        - {x: 60, y: 1497}
+        - {x: 63, y: 1494}
+        - {x: 83, y: 1494}
+        - {x: 86, y: 1496}
+        - {x: 86, y: 1501}
+        - {x: 85, y: 1503}
+      - - {x: 83, y: 1539}
+        - {x: 32, y: 1539}
+        - {x: 32, y: 1515}
+        - {x: 56, y: 1503}
+        - {x: 107, y: 1503}
+        - {x: 115, y: 1518}
+        - {x: 115, y: 1537}
+        - {x: 113, y: 1538}
+    - name: FaceM_Quickness_Nose
+      rect:
+        serializedVersion: 2
+        x: 900
+        y: 759
+        width: 32
+        height: 45
+      alignment: 9
+      pivot: {x: -2.53125, y: -34.133335}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 86, y: 1581.0001}
+        - {x: 81, y: 1560.0001}
+        - {x: 81, y: 1536.0001}
+        - {x: 106, y: 1536.0001}
+        - {x: 113, y: 1543.0001}
+        - {x: 113, y: 1557.0001}
+        - {x: 99, y: 1581.0001}
+    - name: FaceM_Willpower_Eyebrows_Neutral
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 909
+        width: 159
+        height: 33
+      alignment: 9
+      pivot: {x: 0.0754717, y: -48.878788}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 89, y: 1644}
+        - {x: 89, y: 1617}
+        - {x: 104, y: 1613}
+        - {x: 147, y: 1613}
+        - {x: 147, y: 1636}
+        - {x: 142, y: 1644}
+      - - {x: -1, y: 1646}
+        - {x: -12, y: 1644}
+        - {x: -12, y: 1619}
+        - {x: -10, y: 1618}
+        - {x: -4, y: 1617}
+        - {x: 69, y: 1617}
+        - {x: 74, y: 1627}
+        - {x: 74, y: 1643}
+        - {x: 67, y: 1646}
+    - name: FaceM_Willpower_Mouth_Neutral
+      rect:
+        serializedVersion: 2
+        x: 934
+        y: 754
+        width: 87
+        height: 41
+      alignment: 9
+      pivot: {x: -0.33333334, y: -36.487804}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 65, y: 1510}
+        - {x: 64, y: 1508}
+        - {x: 64, y: 1499}
+        - {x: 68, y: 1496}
+        - {x: 90, y: 1496}
+        - {x: 94, y: 1502}
+        - {x: 94, y: 1509}
+        - {x: 93, y: 1510}
+      - - {x: 29, y: 1537}
+        - {x: 29, y: 1524}
+        - {x: 52, y: 1515}
+        - {x: 99, y: 1515}
+        - {x: 116, y: 1518}
+        - {x: 116, y: 1537}
+    - name: FaceM_Willpower_Nose
+      rect:
+        serializedVersion: 2
+        x: 283
+        y: 773
+        width: 33
+        height: 65
+      alignment: 9
+      pivot: {x: -2.4848485, y: -23.63077}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 94, y: 1601}
+        - {x: 85, y: 1601}
+        - {x: 82, y: 1585}
+        - {x: 82, y: 1536}
+        - {x: 105, y: 1536}
+        - {x: 115, y: 1538}
+        - {x: 115, y: 1574}
+        - {x: 114, y: 1580}
+    - name: FaceM_Wisdom_Eyebrows_Neutral
+      rect:
+        serializedVersion: 2
+        x: 833
+        y: 933
+        width: 161
+        height: 40
+      alignment: 9
+      pivot: {x: 0.07453416, y: -40.3}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 87, y: 1641}
+        - {x: 87, y: 1612}
+        - {x: 149, y: 1612}
+        - {x: 149, y: 1641}
+      - - {x: 42, y: 1650}
+        - {x: 35, y: 1652}
+        - {x: 9, y: 1652}
+        - {x: -6, y: 1646}
+        - {x: -12, y: 1641}
+        - {x: -12, y: 1622}
+        - {x: -11, y: 1619}
+        - {x: 54, y: 1612}
+        - {x: 70, y: 1612}
+        - {x: 73, y: 1615}
+        - {x: 74, y: 1621}
+        - {x: 74, y: 1634}
+    - name: FaceM_Wisdom_Mouth_Neutral
+      rect:
+        serializedVersion: 2
+        x: 931
+        y: 712
+        width: 85
+        height: 40
+      alignment: 9
+      pivot: {x: -0.34117648, y: -37.475}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 65, y: 1511}
+        - {x: 62, y: 1507}
+        - {x: 62, y: 1505}
+        - {x: 69, y: 1499}
+        - {x: 82, y: 1499}
+        - {x: 84, y: 1500}
+        - {x: 89, y: 1503}
+        - {x: 89, y: 1511}
+      - - {x: 31, y: 1539}
+        - {x: 29, y: 1537}
+        - {x: 29, y: 1525}
+        - {x: 42, y: 1515}
+        - {x: 114, y: 1515}
+        - {x: 114, y: 1534}
+        - {x: 64, y: 1539}
+    - name: FaceM_Wisdom_Nose
+      rect:
+        serializedVersion: 2
+        x: 775
+        y: 788
+        width: 32
+        height: 75
+      alignment: 9
+      pivot: {x: -2.5, y: -20.453333}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 95, y: 1609}
+        - {x: 80, y: 1609}
+        - {x: 80, y: 1534}
+        - {x: 100, y: 1534}
+        - {x: 112, y: 1541}
+        - {x: 112, y: 1568}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
