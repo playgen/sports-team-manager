@@ -126,7 +126,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Weight = float.Parse(crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarWeight.GetDescription()));
 		}
 
-		private void UpdateAvatarBeliefs(CrewMember crewMember)
+		public void UpdateAvatarBeliefs(CrewMember crewMember)
 		{
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBestSkill.GetDescription(), BestSkill.ToString(), "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBodyType.GetDescription(), BodyType, "SELF");

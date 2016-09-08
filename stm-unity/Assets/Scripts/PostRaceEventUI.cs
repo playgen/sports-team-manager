@@ -23,6 +23,8 @@ public class PostRaceEventUI : MonoBehaviour
 	private GameObject[] _questions;
 	[SerializeField]
 	private GameObject _closeButton;
+	[SerializeField]
+	private Button _popUpBlocker;
 
 	void Awake()
 	{
@@ -32,6 +34,16 @@ public class PostRaceEventUI : MonoBehaviour
 	void OnEnable()
 	{
 		ResetDisplay();
+		_popUpBlocker.transform.SetAsLastSibling();
+		transform.SetAsLastSibling();
+		_popUpBlocker.gameObject.SetActive(true);
+		_popUpBlocker.onClick.RemoveAllListeners();
+		_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
+	}
+
+	void OnDisable()
+	{
+		_popUpBlocker.gameObject.SetActive(false);
 	}
 
 	void ResetDisplay()

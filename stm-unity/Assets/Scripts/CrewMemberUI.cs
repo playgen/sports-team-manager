@@ -43,14 +43,14 @@ public class CrewMemberUI : MonoBehaviour {
 			click.callback.AddListener((data) => { ShowPopUp(); });
 			trigger.triggers.Add(click);
 		}
-		_defaultParent = transform.parent;
 	}
 
-	public void SetUp(TeamSelection teamSelection, MemberMeetingUI meetingUI, CrewMember crewMember)
+	public void SetUp(TeamSelection teamSelection, MemberMeetingUI meetingUI, CrewMember crewMember, Transform parent)
 	{
 		_teamSelection = teamSelection;
 		_meetingUI = meetingUI;
 		_crewMember = crewMember;
+		_defaultParent = parent;
 	}
 
 	public CrewMember CrewMember()
@@ -153,6 +153,8 @@ public class CrewMemberUI : MonoBehaviour {
 		RectTransform positionTransform = position.gameObject.GetComponent<RectTransform>();
 		transform.SetParent(positionTransform, false);
 		GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
+		GetComponent<RectTransform>().anchorMin = new Vector2(0, 1);
+		GetComponent<RectTransform>().anchorMax = new Vector2(0, 1);
 		GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);
 		_teamSelection.AssignCrew(_crewMember, position.gameObject.GetComponent<PositionUI>().GetPosition());
 	}

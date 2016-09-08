@@ -590,6 +590,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 				member.CreateFile(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name.Replace(" ", "")));
 				Boat.AddCrew(member);
+				member.Avatar.UpdateAvatarBeliefs(member);
 				Random random = new Random();
 				foreach (CrewMember otherMember in Boat.GetAllCrewMembers())
 				{

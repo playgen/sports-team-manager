@@ -39,6 +39,8 @@ public class MemberMeetingUI : MonoBehaviour
 	private GameObject _fireWarningPopUp;
 	[SerializeField]
 	private Button _fireButton;
+	[SerializeField]
+	private Button _popUpBlocker;
 
 	void Awake()
 	{
@@ -50,6 +52,11 @@ public class MemberMeetingUI : MonoBehaviour
 		_fireWarningPopUp.SetActive(false);
 		Tracker.T.alternative.Selected("Crew Member", "Meeting", AlternativeTracker.Alternative.Menu);
 		ResetDisplay();
+		_popUpBlocker.transform.SetAsLastSibling();
+		transform.SetAsLastSibling();
+		_popUpBlocker.gameObject.SetActive(true);
+		_popUpBlocker.onClick.RemoveAllListeners();
+		_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
 	}
 
 	void OnDisable()
@@ -60,6 +67,7 @@ public class MemberMeetingUI : MonoBehaviour
 		{
 			crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
 		}
+		_teamSelectionUI.ChangeBlockerOrder();
 	}
 
 	public void Display(CrewMember crewMember)
@@ -194,6 +202,27 @@ public class MemberMeetingUI : MonoBehaviour
 	{
 		Tracker.T.alternative.Selected("Crew Member", "Fire", AlternativeTracker.Alternative.Menu);
 		_fireWarningPopUp.SetActive(true);
+		_popUpBlocker.transform.SetAsLastSibling();
+		_fireWarningPopUp.transform.SetAsLastSibling();
+		_popUpBlocker.gameObject.SetActive(true);
+		_popUpBlocker.onClick.RemoveAllListeners();
+		_popUpBlocker.onClick.AddListener(delegate { CloseFireCrewWarning(); });
+	}
+
+	public void CloseFireCrewWarning()
+	{
+		_fireWarningPopUp.SetActive(false);
+		if (gameObject.activeSelf)
+		{
+			_popUpBlocker.transform.SetAsLastSibling();
+			transform.SetAsLastSibling();
+			_popUpBlocker.onClick.RemoveAllListeners();
+			_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
+		}
+		else
+		{
+			_popUpBlocker.gameObject.SetActive(false);
+		}
 	}
 
 	public void FireCrew()
@@ -201,5 +230,6 @@ public class MemberMeetingUI : MonoBehaviour
 		Tracker.T.trackedGameObject.Interacted("Fired Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 		_memberMeeting.FireCrewMember(_currentMember);
 		_teamSelectionUI.ResetCrew();
+		_teamSelectionUI.ResetPositionPopUp();
 	}
 }

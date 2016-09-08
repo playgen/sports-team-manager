@@ -47,6 +47,15 @@ public class NewGameUI : MonoBehaviour {
 		RandomColor();
 	}
 
+	void Update()
+	{
+		int ageTest;
+		if (int.TryParse(_managerAge.text, out ageTest) && ageTest < 0)
+		{
+			_managerAge.text = (ageTest * -1).ToString();
+		}
+	}
+
 	public void RandomColor()
 	{
 		foreach (Slider s in _colorSliderPrimary)
@@ -83,27 +92,6 @@ public class NewGameUI : MonoBehaviour {
 	public void ExistingGameCheck()
 	{
 		WarningDisable();
-		if (string.IsNullOrEmpty(_boatName.text))
-		{
-			_boatName.transform.Find("Required Warning").gameObject.SetActive(true);
-			return;
-		} 
-		bool exists = _newGame.ExistingGameCheck(_boatName.text);
-		if (exists)
-		{
-			_overwritePopUp.SetActive(true);
-		} else
-		{
-			NewGame();
-		}
-	}
-
-	/// <summary>
-	/// Check if information provided is valid
-	/// </summary>
-	public void NewGame()
-	{
-		Tracker.T.alternative.Selected("New Game", "Created Game", AlternativeTracker.Alternative.Menu);
 		var valid = true;
 		if (string.IsNullOrEmpty(_boatName.text))
 		{
@@ -120,28 +108,53 @@ public class NewGameUI : MonoBehaviour {
 			valid = false;
 			_managerAge.transform.Find("Required Warning").gameObject.SetActive(true);
 		}
-		if (valid) {
-			int[] colorsPri = new int[]
+		int ageTest;
+		if (!int.TryParse(_managerAge.text, out ageTest))
+		{
+			valid = false;
+			_managerAge.transform.Find("Required Warning").gameObject.SetActive(true);
+		}
+		if (valid)
+		{
+			bool exists = _newGame.ExistingGameCheck(_boatName.text);
+			if (exists)
+			{
+				_overwritePopUp.SetActive(true);
+			}
+			else
+			{
+				NewGame();
+			}
+		}
+	}
+
+	/// <summary>
+	/// Check if information provided is valid
+	/// </summary>
+	public void NewGame()
+	{
+		Tracker.T.alternative.Selected("New Game", "Created Game", AlternativeTracker.Alternative.Menu);
+		int[] colorsPri = new int[]
 			{
 				(int)(_colorImagePrimary.color.r * 255),
 				(int)(_colorImagePrimary.color.g * 255),
 				(int)(_colorImagePrimary.color.b * 255)
 			};
-			int[] colorsSec = new int[]
-			{
+		int[] colorsSec = new int[]
+		{
 				(int)(_colorImageSecondary.color.r * 255),
 				(int)(_colorImageSecondary.color.g * 255),
 				(int)(_colorImageSecondary.color.b * 255)
-			};
-			bool success = _newGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text);
-			if (success)
-			{
-				_stateManager.GoToGame(gameObject);
-				Tracker.T.completable.Initialized("Created New Game", CompletableTracker.Completable.Game);
-			} else
-			{
-				_errorText.text = "Game not created. Please try again.";
-			}
+		};
+		bool success = _newGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text);
+		if (success)
+		{
+			_stateManager.GoToGame(gameObject);
+			Tracker.T.completable.Initialized("Created New Game", CompletableTracker.Completable.Game);
+		}
+		else
+		{
+			_errorText.text = "Game not created. Please try again.";
 		}
 	}
 

@@ -18,6 +18,8 @@ public class RecruitMemberUI : MonoBehaviour
 	private Button[] _questionButtons;
 	[SerializeField]
 	private Text _dialogueText;
+	[SerializeField]
+	private Button _popUpBlocker;
 
 	void Awake()
 	{
@@ -28,6 +30,16 @@ public class RecruitMemberUI : MonoBehaviour
 	{
 		Tracker.T.alternative.Selected("Recruitment", "Recruitment", AlternativeTracker.Alternative.Menu);
 		ResetDisplay();
+		_popUpBlocker.transform.SetAsLastSibling();
+		transform.SetAsLastSibling();
+		_popUpBlocker.gameObject.SetActive(true);
+		_popUpBlocker.onClick.RemoveAllListeners();
+		_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
+	}
+
+	void OnDisable()
+	{
+		_popUpBlocker.gameObject.SetActive(false);
 	}
 
 	void ResetDisplay()
