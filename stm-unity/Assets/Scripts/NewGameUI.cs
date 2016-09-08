@@ -35,18 +35,6 @@ public class NewGameUI : MonoBehaviour {
 		_overwritePopUp.SetActive(false);
 	}
 
-	/// <summary>
-	/// Wipe all errors and provided information
-	/// </summary>
-	void OnEnable()
-	{
-		WarningDisable();
-		_boatName.text = "";
-		_managerName.text = "";
-		_managerAge.text = "";
-		RandomColor();
-	}
-
 	void Update()
 	{
 		int ageTest;

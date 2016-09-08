@@ -22,13 +22,13 @@
 	"DefaultActionAllowance": 5,
 	"ActionAllowancePerPosition": 5,
 	"CrewEditAllowancePerPosition": 1,
-	"RecruitmentCost": 2,
-	"FiringCost": 2,
+	"RecruitmentCost": 4,
+	"FiringCost": 4,
 	"SkillRevealCost": 1,
 	"RoleRevealCost": 3,
 	"OpinionPositiveRevealCost": 1,
 	"OpinionNegativeRevealCost": 2,
-	"SendRecruitmentQuestionCost": 2,
+	"SendRecruitmentQuestionCost": 1,
 	"RaceSessionLength": 5,
 	"EventChance" : 2
 }

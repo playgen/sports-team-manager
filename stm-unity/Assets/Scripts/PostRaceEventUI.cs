@@ -38,7 +38,6 @@ public class PostRaceEventUI : MonoBehaviour
 		transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
 	}
 
 	void OnDisable()
@@ -95,6 +94,7 @@ public class PostRaceEventUI : MonoBehaviour
 		if (replies.Length == 0)
 		{
 			_closeButton.SetActive(true);
+			_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
 		}
 	}
 
