@@ -20,6 +20,8 @@ public class MemberMeetingUI : MonoBehaviour
 	[SerializeField]
 	private Text[] _crewPopUpText;
 	[SerializeField]
+	private Button _crewPopUpRoleButton;
+	[SerializeField]
 	private Image[] _crewPopUpBars;
 	[SerializeField]
 	private Text _dialogueText;
@@ -71,7 +73,7 @@ public class MemberMeetingUI : MonoBehaviour
 		_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
 	}
 
-	void ResetDisplay(bool postQuestion = false)
+	public void ResetDisplay(bool postQuestion = false)
 	{
 		_fireButton.interactable = true;
 		var currentBoat = _memberMeeting.GetBoat();
@@ -80,7 +82,23 @@ public class MemberMeetingUI : MonoBehaviour
 		_avatarDisplay.SetAvatar(_currentMember.Avatar, _currentMember.GetMood(), primary, secondary);
 		_crewPopUpText[0].text = "Name: <color=#ffffffff>" + _currentMember.Name + "</color>";
 		_crewPopUpText[1].text = "Age: <color=#ffffffff>" + _currentMember.Age + "</color>";
-		_crewPopUpText[2].text = "Role: <color=#ffffffff>" + _memberMeeting.GetCrewMemberPosition(_currentMember) + "</color>";
+		var currentRole = _memberMeeting.GetCrewMemberPosition(_currentMember);
+		if (currentRole != null) {
+			_crewPopUpText[2].text = "Role: <color=#ffffffff>" + currentRole.Name + "</color>";
+		} else
+		{
+			_crewPopUpText[2].text = "Role: <color=#ffffffff>" + " No Role" + "</color>";
+		}
+		_crewPopUpRoleButton.onClick.RemoveAllListeners();
+		if (currentRole != null)
+		{
+			_crewPopUpRoleButton.gameObject.SetActive(true);
+			_crewPopUpRoleButton.onClick.AddListener(delegate { _teamSelectionUI.DisplayPositionPopUp(currentRole); });
+			_crewPopUpRoleButton.GetComponentInChildren<Text>().text = currentRole.Name;
+		} else
+		{
+			_crewPopUpRoleButton.gameObject.SetActive(false);
+		}
 		_crewPopUpBars[0].fillAmount = _currentMember.RevealedSkills[CrewMemberSkill.Body] * 0.1f;
 		_crewPopUpBars[1].fillAmount = _currentMember.RevealedSkills[CrewMemberSkill.Charisma] * 0.1f;
 		_crewPopUpBars[2].fillAmount = _currentMember.RevealedSkills[CrewMemberSkill.Perception] * 0.1f;

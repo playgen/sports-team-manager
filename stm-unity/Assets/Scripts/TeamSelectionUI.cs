@@ -41,13 +41,18 @@ public class TeamSelectionUI : MonoBehaviour {
 	[SerializeField]
 	private Image[] _positionPopUpSkills;
 	[SerializeField]
+	private AvatarDisplay _positionPopUpCurrentCrew;
+	[SerializeField]
+	private Text _positionPopUpCurrentName;
+	[SerializeField]
+	private Button _positionPopUpCurrentButton;
+	[SerializeField]
 	private GameObject _positionPopUpHistoryContainer;
 	[SerializeField]
 	private GameObject _positionPopUpHistoryPrefab;
 
 	private GameObject _currentBoat;
 	private List<GameObject> _boatHistory = new List<GameObject>();
-	[SerializeField]
 	private int _positionsEmpty;
 
 	[SerializeField]
@@ -344,6 +349,21 @@ public class TeamSelectionUI : MonoBehaviour {
 		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
 		_positionPopUpText[0].text = position.Name;
 		_positionPopUpText[1].text = position.Description;
+		var currentCrew = currentBoat.BoatPositions.Where(bp => bp.Position.Name == position.Name).FirstOrDefault().CrewMember;
+		_positionPopUpCurrentButton.onClick.RemoveAllListeners();
+		if (currentCrew != null)
+		{
+			_positionPopUpCurrentCrew.gameObject.SetActive(true);
+			_positionPopUpCurrentName.transform.parent.gameObject.SetActive(true);
+			_positionPopUpCurrentCrew.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), primary, secondary, true);
+			_positionPopUpCurrentCrew.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), primary, secondary, true);
+			_positionPopUpCurrentName.text = currentCrew.Name;
+			_positionPopUpCurrentButton.onClick.AddListener(delegate { _meetingUI.Display(currentCrew); });
+		} else
+		{
+			_positionPopUpCurrentCrew.gameObject.SetActive(false);
+			_positionPopUpCurrentName.transform.parent.gameObject.SetActive(false);
+		}
 		int raceCount = 1;
 		foreach (Transform child in _positionPopUpHistoryContainer.transform)
 		{
@@ -516,6 +536,8 @@ public class TeamSelectionUI : MonoBehaviour {
 
 		_boatHistory.Add(_currentBoat);
 		CreateNewBoat();
+		ResetPositionPopUp();
+		_meetingUI.ResetDisplay();
 	}
 
 	public void RepeatLineUp(List<BoatPosition> boatPositions, bool buttonTriggered = true)

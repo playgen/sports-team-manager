@@ -40,6 +40,7 @@ public class PositionUI : MonoBehaviour {
 			_crewMemberUI = crewmember;
 			_teamSelectionUI.PositionChange(1);
 			crewmember.ReplacedEvent += new EventHandler(OnReset);
+			_teamSelectionUI.ResetPositionPopUp();
 		}
 	}
 
@@ -58,6 +59,7 @@ public class PositionUI : MonoBehaviour {
 			_crewMemberUI.ReplacedEvent -= new EventHandler(OnReset);
 			_teamSelectionUI.PositionChange(-1);
 			_crewMemberUI = null;
+			_teamSelectionUI.ResetPositionPopUp();
 		}
 	}
 

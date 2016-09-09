@@ -277,13 +277,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the current position on this Boat (if any) for this CrewMember
 		/// </summary>
-		public string GetPosition(Boat boat)
+		public Position GetPosition(Boat boat)
 		{
-			string position = "";
+			Position position = null;
 			var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
 			if (currentPosition != null)
 			{
-				position = currentPosition.Position.Name;
+				position = currentPosition.Position;
 			}
 			return position;
 		}

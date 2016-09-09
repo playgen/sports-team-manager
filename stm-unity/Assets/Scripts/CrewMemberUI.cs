@@ -140,6 +140,10 @@ public class CrewMemberUI : MonoBehaviour {
 			Reset();
 			_teamSelection.RemoveCrew(_crewMember);
 		}
+		if (_meetingUI.gameObject.activeSelf)
+		{
+			_meetingUI.ResetDisplay();
+		}
 	}
 
 	public void PlacedEvent()

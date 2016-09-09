@@ -22,7 +22,7 @@ public class MemberMeeting : MonoBehaviour
 	/// <summary>
 	/// Get the current position (if any) of a CrewMember
 	/// </summary>
-	public string GetCrewMemberPosition(CrewMember crewMember)
+	public Position GetCrewMemberPosition(CrewMember crewMember)
 	{
 		return crewMember.GetPosition(_gameManager.Boat);
 	}
