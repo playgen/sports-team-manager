@@ -47,18 +47,6 @@ public class MemberMeetingUI : MonoBehaviour
 		_memberMeeting = GetComponent<MemberMeeting>();
 	}
 
-	void OnEnable()
-	{
-		_fireWarningPopUp.SetActive(false);
-		Tracker.T.alternative.Selected("Crew Member", "Meeting", AlternativeTracker.Alternative.Menu);
-		ResetDisplay();
-		_popUpBlocker.transform.SetAsLastSibling();
-		transform.SetAsLastSibling();
-		_popUpBlocker.gameObject.SetActive(true);
-		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
-	}
-
 	void OnDisable()
 	{
 		_fireWarningPopUp.SetActive(false);
@@ -73,6 +61,14 @@ public class MemberMeetingUI : MonoBehaviour
 	{
 		_currentMember = crewMember;
 		_meetingPopUp.SetActive(true);
+		_fireWarningPopUp.SetActive(false);
+		Tracker.T.alternative.Selected("Crew Member", "Meeting", AlternativeTracker.Alternative.Menu);
+		ResetDisplay();
+		_popUpBlocker.transform.SetAsLastSibling();
+		transform.SetAsLastSibling();
+		_popUpBlocker.gameObject.SetActive(true);
+		_popUpBlocker.onClick.RemoveAllListeners();
+		_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
 	}
 
 	void ResetDisplay(bool postQuestion = false)

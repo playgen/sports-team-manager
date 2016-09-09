@@ -403,7 +403,17 @@ public class TeamSelectionUI : MonoBehaviour {
 	public void ClosePositionPopUp()
 	{
 		_positionPopUp.SetActive(false);
-		_popUpBlocker.gameObject.SetActive(false);
+		if (_meetingUI.gameObject.activeSelf)
+		{
+			_popUpBlocker.transform.SetAsLastSibling();
+			_meetingUI.gameObject.transform.SetAsLastSibling();
+			_popUpBlocker.onClick.RemoveAllListeners();
+			_popUpBlocker.onClick.AddListener(delegate { _meetingUI.gameObject.SetActive(false); });
+		}
+		else
+		{
+			_popUpBlocker.gameObject.SetActive(false);
+		}
 	}
 
 	public void ChangeBlockerOrder()
@@ -569,5 +579,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		_positionsEmpty = (FindObjectsOfType(typeof(PositionUI)) as PositionUI[]).Length;
 		CreateCrew();
 		RepeatLineUp(currentPositions, false);
+		_meetingUI.gameObject.SetActive(false);
+		ClosePositionPopUp();
 	}
 }
