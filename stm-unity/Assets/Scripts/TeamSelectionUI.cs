@@ -170,6 +170,8 @@ public class TeamSelectionUI : MonoBehaviour {
 		} else
 		{
 			stageIcon.sprite = _practiceIcon;
+			boatContainer.transform.Find("Race").GetComponentInChildren<Text>().text = "PRACTICE " + stageNumber + "/" + _teamSelection.GetSessionLength();
+			boatContainer.transform.Find("Race").GetComponentInChildren<Text>().fontSize = 16;
 		}
 		_boatContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(_boatContainer.GetComponent<RectTransform>().sizeDelta.x, boatContainerHeight * (_boatHistory.Count - (_teamSelection.GetSessionLength() -1)));
 		_boatContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);

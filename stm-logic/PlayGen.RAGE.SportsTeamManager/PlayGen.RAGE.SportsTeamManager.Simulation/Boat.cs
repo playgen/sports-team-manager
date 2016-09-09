@@ -285,7 +285,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					cm.CrewOpinions.Remove(opinionToRemove);
 				}
-				CrewOpinion revealedToRemove = cm.RevealedCrewOpinions.First(co => co.Person.Name == crewMember.Name);
+				CrewOpinion revealedToRemove = cm.RevealedCrewOpinions.FirstOrDefault(co => co.Person.Name == crewMember.Name);
 				if (opinionToRemove != null)
 				{
 					cm.RevealedCrewOpinions.Remove(revealedToRemove);
