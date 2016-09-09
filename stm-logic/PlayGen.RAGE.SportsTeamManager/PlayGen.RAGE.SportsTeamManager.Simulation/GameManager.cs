@@ -605,7 +605,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int CrewLimitLeft()
 		{
 			return ((Boat.BoatPositions.Count + 1) * 2) - Boat.GetAllCrewMembers().Count;
-
 		}
 
 		public void AddRecruit(CrewMember member)

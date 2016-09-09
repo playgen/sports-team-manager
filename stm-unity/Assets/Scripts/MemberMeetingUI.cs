@@ -82,10 +82,9 @@ public class MemberMeetingUI : MonoBehaviour
 		var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);
 		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
 		_avatarDisplay.SetAvatar(_currentMember.Avatar, _currentMember.GetMood(), primary, secondary);
-		_crewPopUpText[0].text = "Name\n<color=#ffffffff>" + _currentMember.Name + "</color>";
-		_crewPopUpText[1].text = "Nationality\n<color=#ffffffff></color>";
-		_crewPopUpText[2].text = "Age\n<color=#ffffffff>" + _currentMember.Age + "</color>";
-		_crewPopUpText[3].text = "Role\n<color=#ffffffff>" + _memberMeeting.GetCrewMemberPosition(_currentMember) + "</color>";
+		_crewPopUpText[0].text = "Name: <color=#ffffffff>" + _currentMember.Name + "</color>";
+		_crewPopUpText[1].text = "Age: <color=#ffffffff>" + _currentMember.Age + "</color>";
+		_crewPopUpText[2].text = "Role: <color=#ffffffff>" + _memberMeeting.GetCrewMemberPosition(_currentMember) + "</color>";
 		_crewPopUpBars[0].fillAmount = _currentMember.RevealedSkills[CrewMemberSkill.Body] * 0.1f;
 		_crewPopUpBars[1].fillAmount = _currentMember.RevealedSkills[CrewMemberSkill.Charisma] * 0.1f;
 		_crewPopUpBars[2].fillAmount = _currentMember.RevealedSkills[CrewMemberSkill.Perception] * 0.1f;
