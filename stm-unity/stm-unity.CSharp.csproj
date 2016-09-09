@@ -76,53 +76,53 @@
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
     </Reference>
-    <Reference Include="ActionLibrary">
-      <HintPath>Assets\Plugins\ActionLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="AutobiographicMemory">
-      <HintPath>Assets\Plugins\AutobiographicMemory.dll</HintPath>
-    </Reference>
-    <Reference Include="Conditions">
-      <HintPath>Assets\Plugins\Conditions.dll</HintPath>
-    </Reference>
-    <Reference Include="EmotionalAppraisal">
-      <HintPath>Assets\Plugins\EmotionalAppraisal.dll</HintPath>
-    </Reference>
-    <Reference Include="EmotionalDecisionMaking">
-      <HintPath>Assets\Plugins\EmotionalDecisionMaking.dll</HintPath>
-    </Reference>
-    <Reference Include="GAIPS.Rage">
-      <HintPath>Assets\Plugins\GAIPS.Rage.dll</HintPath>
-    </Reference>
-    <Reference Include="GAIPS.Serialization">
-      <HintPath>Assets\Plugins\GAIPS.Serialization.dll</HintPath>
-    </Reference>
-    <Reference Include="IntegratedAuthoringTool">
-      <HintPath>Assets\Plugins\IntegratedAuthoringTool.dll</HintPath>
-    </Reference>
-    <Reference Include="KnowledgeBase">
-      <HintPath>Assets\Plugins\KnowledgeBase.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets\Plugins\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="PlayGen.RAGE.SportsTeamManager.Simulation">
-      <HintPath>Assets\Plugins\PlayGen.RAGE.SportsTeamManager.Simulation.dll</HintPath>
-    </Reference>
-    <Reference Include="RageAssetManager">
-      <HintPath>Assets\Plugins\RageAssetManager.dll</HintPath>
-    </Reference>
-    <Reference Include="RolePlayCharacter">
-      <HintPath>Assets\Plugins\RolePlayCharacter.dll</HintPath>
-    </Reference>
-    <Reference Include="SocialImportanceAsset">
-      <HintPath>Assets\Plugins\SocialImportanceAsset.dll</HintPath>
-    </Reference>
-    <Reference Include="Utilities">
-      <HintPath>Assets\Plugins\Utilities.dll</HintPath>
+      <HintPath>Assets\Plugins\stm-logic\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="WellFormedNames">
-      <HintPath>Assets\Plugins\WellFormedNames.dll</HintPath>
+      <HintPath>Assets\Plugins\stm-logic\WellFormedNames.dll</HintPath>
+    </Reference>
+    <Reference Include="Conditions">
+      <HintPath>Assets\Plugins\stm-logic\Conditions.dll</HintPath>
+    </Reference>
+    <Reference Include="RolePlayCharacter">
+      <HintPath>Assets\Plugins\stm-logic\RolePlayCharacter.dll</HintPath>
+    </Reference>
+    <Reference Include="Utilities">
+      <HintPath>Assets\Plugins\stm-logic\Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="KnowledgeBase">
+      <HintPath>Assets\Plugins\stm-logic\KnowledgeBase.dll</HintPath>
+    </Reference>
+    <Reference Include="IntegratedAuthoringTool">
+      <HintPath>Assets\Plugins\stm-logic\IntegratedAuthoringTool.dll</HintPath>
+    </Reference>
+    <Reference Include="GAIPS.Serialization">
+      <HintPath>Assets\Plugins\stm-logic\GAIPS.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="GAIPS.Rage">
+      <HintPath>Assets\Plugins\stm-logic\GAIPS.Rage.dll</HintPath>
+    </Reference>
+    <Reference Include="RageAssetManager">
+      <HintPath>Assets\Plugins\stm-logic\RageAssetManager.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.RAGE.SportsTeamManager.Simulation">
+      <HintPath>Assets\Plugins\stm-logic\PlayGen.RAGE.SportsTeamManager.Simulation.dll</HintPath>
+    </Reference>
+    <Reference Include="EmotionalAppraisal">
+      <HintPath>Assets\Plugins\stm-logic\EmotionalAppraisal.dll</HintPath>
+    </Reference>
+    <Reference Include="EmotionalDecisionMaking">
+      <HintPath>Assets\Plugins\stm-logic\EmotionalDecisionMaking.dll</HintPath>
+    </Reference>
+    <Reference Include="SocialImportanceAsset">
+      <HintPath>Assets\Plugins\stm-logic\SocialImportanceAsset.dll</HintPath>
+    </Reference>
+    <Reference Include="ActionLibrary">
+      <HintPath>Assets\Plugins\stm-logic\ActionLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="AutobiographicMemory">
+      <HintPath>Assets\Plugins\stm-logic\AutobiographicMemory.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -159,7 +159,7 @@
     <Compile Include="Assets\unity-tracker-master\Tracker\Tracker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Plugins\Newtonsoft.Json.xml" />
+    <None Include="Assets\Plugins\stm-logic\Newtonsoft.Json.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

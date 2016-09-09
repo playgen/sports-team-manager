@@ -33,6 +33,8 @@ public class NewGameUI : MonoBehaviour {
 		_stateManager = FindObjectOfType(typeof(UIStateManager)) as UIStateManager;
 		_newGame = GetComponent<NewGame>();
 		_overwritePopUp.SetActive(false);
+		WarningDisable();
+		RandomColor();
 	}
 
 	void Update()

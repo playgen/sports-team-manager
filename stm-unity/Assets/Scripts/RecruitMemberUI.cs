@@ -105,7 +105,7 @@ public class RecruitMemberUI : MonoBehaviour
 	void CostCheck()
 	{
 		int allowance = _recruitMember.QuestionAllowance();
-		if (allowance < 2)
+		if (allowance < 1)
 		{
 			for (int i = 0; i < _questionButtons.Length; i++)
 			{

@@ -393,7 +393,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				cm.TickUpdate(amount);
 				cm.SaveStatus();
-				cm.LoadBeliefs(this);
+				//cm.LoadBeliefs(this);
 			}
 		}
 

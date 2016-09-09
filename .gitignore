@@ -258,3 +258,4 @@ sysinfo.txt
 *.apk
 *.exe
 *.unitypackage
+stm-unity/Assets/Plugins/stm-logic/
