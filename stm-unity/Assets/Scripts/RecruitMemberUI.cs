@@ -20,6 +20,14 @@ public class RecruitMemberUI : MonoBehaviour
 	private Text _dialogueText;
 	[SerializeField]
 	private Button _popUpBlocker;
+	[SerializeField]
+	private Text _hireWarningText;
+	[SerializeField]
+	private GameObject _hireWarningPopUp;
+	[SerializeField]
+	private Button _hireWarningAccept;
+	[SerializeField]
+	private GameObject _hireWarningReject;
 
 	void Awake()
 	{
@@ -74,9 +82,9 @@ public class RecruitMemberUI : MonoBehaviour
 			{
 				_recruitUI[i].transform.Find("Image").localScale = new Vector3(-1, 1, 1);
 			}
-			_recruitUI[i].transform.Find("Name").GetComponent<Button>().interactable = true;
-			_recruitUI[i].transform.Find("Name").GetComponent<Button>().onClick.RemoveAllListeners();
-			_recruitUI[i].transform.Find("Name").GetComponent<Button>().onClick.AddListener(delegate { Recruit(thisRecruit); });
+			_recruitUI[i].transform.Find("Button").GetComponent<Button>().interactable = true;
+			_recruitUI[i].transform.Find("Button").GetComponent<Button>().onClick.RemoveAllListeners();
+			_recruitUI[i].transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { HireCrewWarning(thisRecruit); });
 			_recruitUI[i].transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = "";
 			_recruitUI[i].name = recruits[i].Name;
 		}
@@ -113,7 +121,7 @@ public class RecruitMemberUI : MonoBehaviour
 			}
 			for (int i = 0; i < _recruitUI.Length; i++)
 			{
-				_recruitUI[i].transform.Find("Name").GetComponent<Button>().interactable = false;
+				_recruitUI[i].transform.Find("Button").GetComponent<Button>().interactable = false;
 			}
 		}
 	}
@@ -136,11 +144,58 @@ public class RecruitMemberUI : MonoBehaviour
 		_dialogueText.text = text;
 	}
 
+	public void HireCrewWarning(CrewMember recruit)
+	{
+		print("Test");
+		_hireWarningPopUp.SetActive(true);
+		_popUpBlocker.transform.SetAsLastSibling();
+		_hireWarningPopUp.transform.SetAsLastSibling();
+		_popUpBlocker.gameObject.SetActive(true);
+		_popUpBlocker.onClick.RemoveAllListeners();
+		_popUpBlocker.onClick.AddListener(delegate { CloseHireCrewWarning(); });
+		if (_recruitMember.QuestionAllowance() < 4)
+		{
+			_hireWarningText.text = "You don't have enough time left to hire this person.";
+			_hireWarningAccept.gameObject.SetActive(false);
+			_hireWarningReject.GetComponent<RectTransform>().anchorMin = new Vector2(0.375f, 0.1f);
+			_hireWarningReject.GetComponent<RectTransform>().anchorMax = new Vector2(0.625f, 0.35f);
+			_hireWarningReject.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+			_hireWarningReject.GetComponentInChildren<Text>().text = "OK";
+		} else
+		{
+			_hireWarningAccept.onClick.RemoveAllListeners();
+			_hireWarningAccept.onClick.AddListener(delegate { Recruit(recruit); });
+			_hireWarningAccept.gameObject.SetActive(true);
+			_hireWarningText.text = "Are you sure you want to hire " + recruit.Name + "?";
+			_hireWarningReject.GetComponent<RectTransform>().anchorMin = new Vector2(0.55f, 0.1f);
+			_hireWarningReject.GetComponent<RectTransform>().anchorMax = new Vector2(0.8f, 0.35f);
+			_hireWarningReject.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+			_hireWarningReject.GetComponentInChildren<Text>().text = "NO";
+		}
+	}
+
+	public void CloseHireCrewWarning()
+	{
+		_hireWarningPopUp.SetActive(false);
+		if (gameObject.activeSelf)
+		{
+			_popUpBlocker.transform.SetAsLastSibling();
+			transform.SetAsLastSibling();
+			_popUpBlocker.onClick.RemoveAllListeners();
+			_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
+		}
+		else
+		{
+			_popUpBlocker.gameObject.SetActive(false);
+		}
+	}
+
 	public void Recruit(CrewMember crewMember)
 	{
 		Tracker.T.trackedGameObject.Interacted("Hired Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 		_recruitMember.Recruit(crewMember);
 		_teamSelectionUI.ResetCrew();
 		gameObject.SetActive(false);
+		CloseHireCrewWarning();
 	}
 }

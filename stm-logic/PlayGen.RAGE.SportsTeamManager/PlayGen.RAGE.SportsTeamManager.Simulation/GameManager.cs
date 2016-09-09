@@ -513,9 +513,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void ConfirmLineUp()
 		{
-			Boat.TickCrewMembers(ActionAllowance);
-			Boat.ConfirmChanges();
-			Boat.PostRaceRest();
+			Boat.ConfirmChanges(ActionAllowance);
 			PromoteBoat();
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 			Boat.CreateRecruits(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name.Replace(" ", "")));
@@ -602,6 +600,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return false;
 			}
 			return true;
+		}
+
+		public int CrewLimitLeft()
+		{
+			return ((Boat.BoatPositions.Count + 1) * 2) - Boat.GetAllCrewMembers().Count;
+
 		}
 
 		public void AddRecruit(CrewMember member)

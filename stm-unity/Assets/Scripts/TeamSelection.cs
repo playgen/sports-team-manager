@@ -166,4 +166,9 @@ public class TeamSelection : MonoBehaviour {
 	{
 		return _gameManager.CanAddToCrew();
 	}
+
+	public int CanAddAmount()
+	{
+		return _gameManager.CrewLimitLeft();
+	}
 }

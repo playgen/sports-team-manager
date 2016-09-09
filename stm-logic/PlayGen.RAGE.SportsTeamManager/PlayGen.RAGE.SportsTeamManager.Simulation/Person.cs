@@ -113,8 +113,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			for (int i = 0; i < amount; i++)
 			{
 				EmotionalAppraisal.Update();
-				RolePlayCharacter.Update();
 			}
+			SaveStatus();
 		}
 	}
 }

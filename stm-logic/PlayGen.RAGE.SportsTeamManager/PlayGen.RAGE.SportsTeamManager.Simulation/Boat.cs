@@ -392,28 +392,29 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			foreach (CrewMember cm in GetAllCrewMembersIncludingRetired())
 			{
 				cm.TickUpdate(amount);
-				cm.SaveStatus();
-				//cm.LoadBeliefs(this);
 			}
 		}
 
 		/// <summary>
 		/// Save the current status of each CrewMember for this Boat
 		/// </summary>
-		public void ConfirmChanges()
+		public void ConfirmChanges(int actionAllowance)
 		{
+			TickCrewMembers(actionAllowance);
 			List<CrewMember> crew = GetAllCrewMembers();
 			crew = crew.OrderBy(p => p.Name).ToList();
 			crew.ForEach(p => p.DecisionFeedback(this));
 			Manager.SaveStatus();
+			PostRaceRest();
+			GetIdealCrew();
 			UpdateBoatScore();
+			TickCrewMembers(0);
 		}
 
 		public void PostRaceRest()
 		{
 			List<CrewMember> crew = GetAllCrewMembers();
 			crew.ForEach(p => p.RaceRest(BoatPositions.SingleOrDefault(bp => bp.CrewMember == p) != null));
-			GetIdealCrew();
 		}
 
 		private IEnumerable<IEnumerable<T>>GetPermutations<T>(IEnumerable<T> list, int length)

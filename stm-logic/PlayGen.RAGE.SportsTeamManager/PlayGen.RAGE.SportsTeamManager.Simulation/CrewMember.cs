@@ -293,7 +293,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void DecisionFeedback(Boat boat)
 		{
-			SaveStatus();
 			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			if (EmotionalAppraisal.BeliefExists(NPCBeliefs.ExpectedSelection.GetDescription()))
@@ -380,8 +379,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					TickUpdate();
 				}
 			}*/
-			SaveStatus();
-			LoadBeliefs(boat);
 		}
 
 		public void RaceRest(bool assigned)
@@ -392,7 +389,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				restCount = (int)_config.ConfigValues[ConfigKeys.PostRaceRest.ToString()];
 			}
 			UpdateSingleBelief(NPCBeliefs.Rest.GetDescription(), restCount.ToString(), "SELF");
-			SaveStatus();
 		}
 
 		/// <summary>
@@ -668,7 +664,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			TickUpdate();
 			SaveStatus();
-			LoadBeliefs(boat);
 			boat.GetIdealCrew();
 			boat.UpdateBoatScore();
 		}
