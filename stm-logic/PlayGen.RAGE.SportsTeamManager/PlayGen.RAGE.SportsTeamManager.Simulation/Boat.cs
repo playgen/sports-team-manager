@@ -21,6 +21,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public List<CrewMember> Recruits { get; set; }
 		public int BoatScore { get; set; }
 		public float IdealMatchScore { get; set; }
+		public List<BoatPosition> NearestIdealMatch { get; set; }
 		public Person Manager { get; set; }
 		private ConfigStore _config { get;}
 
@@ -360,6 +361,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void UpdateIdealScore()
 		{
 			IdealMatchScore = 0;
+			NearestIdealMatch = null;
 			foreach (List<BoatPosition> crew in IdealCrew)
 			{
 				float currentIdealMatch = 0;
@@ -380,11 +382,89 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 				}
-				if (currentIdealMatch > IdealMatchScore)
+				if (currentIdealMatch > IdealMatchScore || NearestIdealMatch == null)
 				{
 					IdealMatchScore = currentIdealMatch;
+					NearestIdealMatch = crew;
+				} else if (currentIdealMatch > IdealMatchScore)
+				{
+					Random rand = new Random();
+					if (rand.Next(0, 100) % 2 == 0)
+					{
+						NearestIdealMatch = crew;
+					}
 				}
 			}
+		}
+
+		public List<string> GetAssignmentMistakes(int returnAmount)
+		{
+			List<string> mistakes = new List<string>();
+			Dictionary<string, float> mistakeScores = new Dictionary<string, float>();
+			Dictionary<string, float> hiddenScores = new Dictionary<string, float>();
+			foreach (string skillName in Enum.GetNames(typeof(CrewMemberSkill)))
+			{
+				mistakeScores.Add(skillName, 0);
+				hiddenScores.Add(skillName, 0);
+			}
+			mistakeScores.Add("CrewOpinion", 0);
+			mistakeScores.Add("ManagerOpinion", 0);
+			mistakeScores.Add("Mood", 0);
+			hiddenScores.Add("CrewOpinion", 0);
+			hiddenScores.Add("ManagerOpinion", 0);
+			hiddenScores.Add("Mood", 0);
+			for (int i = 0; i < BoatPositions.Count; i++)
+			{
+				if (BoatPositions[i].CrewMember == NearestIdealMatch[i].CrewMember)
+				{
+					continue;
+				}
+				foreach (CrewMemberSkill skill in BoatPositions[i].Position.RequiredSkills)
+				{
+					mistakeScores[skill.ToString()] += (float)(NearestIdealMatch[i].CrewMember.Skills[skill] - BoatPositions[i].CrewMember.Skills[skill])/(float)BoatPositions[i].Position.RequiredSkills.Count;
+					if (BoatPositions[i].CrewMember.RevealedSkills[skill] == 0)
+					{
+						hiddenScores[skill.ToString()] += (float)(NearestIdealMatch[i].CrewMember.Skills[skill] - BoatPositions[i].CrewMember.Skills[skill]) / (float)BoatPositions[i].Position.RequiredSkills.Count;
+					}
+				}
+				mistakeScores["ManagerOpinion"] += NearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
+				if (BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion != BoatPositions[i].CrewMember.RevealedCrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion)
+				{
+					hiddenScores["ManagerOpinion"] += NearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
+				}
+				mistakeScores["Mood"] += NearestIdealMatch[i].CrewMember.GetMood() - BoatPositions[i].CrewMember.GetMood();
+				int idealOpinion = NearestIdealMatch[i].PositionScore - NearestIdealMatch[i].Position.GetPositionRating(NearestIdealMatch[i].CrewMember) - NearestIdealMatch[i].CrewMember.GetMood() - NearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
+				int currentOpinion = BoatPositions[i].PositionScore - BoatPositions[i].Position.GetPositionRating(BoatPositions[i].CrewMember) - BoatPositions[i].CrewMember.GetMood() - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
+				mistakeScores["CrewOpinion"] += idealOpinion - currentOpinion;
+				int unknownCrewOpinions = 0;
+				foreach (BoatPosition bp in BoatPositions)
+				{
+					if (bp.CrewMember != BoatPositions[i].CrewMember)
+					{
+						if (BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == bp.CrewMember) != BoatPositions[i].CrewMember.RevealedCrewOpinions.FirstOrDefault(co => co.Person == bp.CrewMember))
+						{
+							unknownCrewOpinions++;
+						}
+					}
+				}
+				if (unknownCrewOpinions >= (BoatPositions.Count - 1) * 0.5f)
+				{
+					hiddenScores["CrewOpinion"] += idealOpinion - currentOpinion;
+				}
+			}
+			mistakes = mistakeScores.OrderByDescending(ms => ms.Value).Where(ms => ms.Value > 0).Select(ms => ms.Key).Take(returnAmount).ToList();
+			for (int i = 0; i < mistakes.Count; i++)
+			{
+				if (hiddenScores[mistakes[i]] >= mistakeScores[mistakes[i]] * 0.5f)
+				{
+					mistakes[i] = "Hidden";
+				}
+			}
+			for (int i = 0; i < returnAmount - mistakes.Count; i++)
+			{
+				mistakes.Insert(0, "Correct");
+			}
+			return mistakes;
 		}
 
 		public void TickCrewMembers(int amount)

@@ -171,4 +171,9 @@ public class TeamSelection : MonoBehaviour {
 	{
 		return _gameManager.CrewLimitLeft();
 	}
+
+	public List<string> GetAssignmentMistakes(int amount)
+	{
+		return _gameManager.GetAssignmentMistakes(amount);
+	}
 }

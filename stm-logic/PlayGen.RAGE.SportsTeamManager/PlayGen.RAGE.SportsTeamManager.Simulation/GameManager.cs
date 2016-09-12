@@ -463,6 +463,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return _raceSessionLength;
 		}
 
+		public List<string> GetAssignmentMistakes(int amount)
+		{
+			return Boat.GetAssignmentMistakes(amount);
+		}
+
 		/// <summary>
 		/// Save the current boat line-up to the manager's EA file
 		/// </summary>

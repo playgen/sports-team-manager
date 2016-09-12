@@ -194,7 +194,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22466320, guid: 7bc86f4c30d2c82448d743bf2e6aff96, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 22466320, guid: 7bc86f4c30d2c82448d743bf2e6aff96, type: 2}
       propertyPath: m_AnchoredPosition.x
@@ -1233,7 +1233,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22466320, guid: 7bc86f4c30d2c82448d743bf2e6aff96, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 22466320, guid: 7bc86f4c30d2c82448d743bf2e6aff96, type: 2}
       propertyPath: m_AnchoredPosition.x
@@ -1668,7 +1668,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22466320, guid: 7bc86f4c30d2c82448d743bf2e6aff96, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22466320, guid: 7bc86f4c30d2c82448d743bf2e6aff96, type: 2}
       propertyPath: m_AnchoredPosition.x
@@ -7824,7 +7824,7 @@ RectTransform:
   m_Children:
   - {fileID: 1408536805}
   m_Father: {fileID: 1197854537}
-  m_RootOrder: 1
+  m_RootOrder: 5
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.325}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -13382,11 +13382,11 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 608213205}
-  - {fileID: 616120951}
   - {fileID: 87446305}
   - {fileID: 1463088164}
   - {fileID: 1699595}
   - {fileID: 40006321}
+  - {fileID: 616120951}
   - {fileID: 1349064794}
   - {fileID: 657064479}
   - {fileID: 1234722330}
@@ -15629,7 +15629,31 @@ MonoBehaviour:
   _crewContainer: {fileID: 1500588850}
   _boatPrefab: {fileID: 131966, guid: 755fefc16ab02ff4eba8a2c8bce60a4e, type: 2}
   _positionPrefab: {fileID: 102220, guid: b06ca8ea5f4130e4abb4b2d53213c0e7, type: 2}
-  _lightPrefab: {fileID: 164068, guid: 2f8d1396b96dc294aa68bff7d750e317, type: 2}
+  _mistakePrefab: {fileID: 1000014165071666, guid: ceba41fb4673e5245b4811f6dcf6d942,
+    type: 2}
+  _mistakeIcons:
+  - Name: Body
+    Icon: {fileID: 0}
+  - Name: Charisma
+    Icon: {fileID: 0}
+  - Name: Perception
+    Icon: {fileID: 0}
+  - Name: Quickness
+    Icon: {fileID: 0}
+  - Name: Willpower
+    Icon: {fileID: 0}
+  - Name: Wisdom
+    Icon: {fileID: 0}
+  - Name: CrewOpinion
+    Icon: {fileID: 0}
+  - Name: ManagerOpinion
+    Icon: {fileID: 0}
+  - Name: Mood
+    Icon: {fileID: 0}
+  - Name: Correct
+    Icon: {fileID: 0}
+  - Name: Hidden
+    Icon: {fileID: 0}
   _crewPrefab: {fileID: 185380, guid: 8b95f0f42c5b19449851262db2955833, type: 2}
   _recruitPrefab: {fileID: 121942, guid: 1fa92a47237a488409007f67063705ab, type: 2}
   _opinionPrefab: {fileID: 172684, guid: 5dc38689f265f604aa95c475f9fa0bd1, type: 2}
@@ -17120,7 +17144,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22466320, guid: 7bc86f4c30d2c82448d743bf2e6aff96, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 22466320, guid: 7bc86f4c30d2c82448d743bf2e6aff96, type: 2}
       propertyPath: m_AnchoredPosition.x

@@ -6,9 +6,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[Serializable]
+public class MistakeIcon
+{
+	public string Name;
+	public Sprite Icon;
+}
+
 [RequireComponent(typeof(TeamSelection))]
 public class TeamSelectionUI : MonoBehaviour {
-
 	private TeamSelection _teamSelection;
 	[SerializeField]
 	private GameObject _boatContainer;
@@ -19,7 +25,9 @@ public class TeamSelectionUI : MonoBehaviour {
 	[SerializeField]
 	private GameObject _positionPrefab;
 	[SerializeField]
-	private GameObject _lightPrefab;
+	private GameObject _mistakePrefab;
+	[SerializeField]
+	private MistakeIcon[] _mistakeIcons;
 	[SerializeField]
 	private GameObject _crewPrefab;
 	[SerializeField]
@@ -347,6 +355,15 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 		_teamSelection.PostRaceEvent();
 		float idealScore = _teamSelection.IdealCheck();
+		List<string> mistakeList = _teamSelection.GetAssignmentMistakes(1);
+		foreach (string mistake in mistakeList)
+		{
+			GameObject mistakeObject = Instantiate(_mistakePrefab);
+			mistakeObject.transform.SetParent(_currentBoat.transform.Find("Icon Container"), false);
+			mistakeObject.name = mistake;
+			Sprite mistakeIcon = _mistakeIcons.FirstOrDefault(mo => mo.Name == mistake).Icon;
+			mistakeObject.GetComponent<Image>().sprite = mistakeIcon;
+		}
 		var unideal = _teamSelection.GetBoat().BoatPositions.Count - (int)idealScore - ((idealScore % 1) * 10);
 		_currentBoat.transform.Find("Light Container/Green").GetComponentInChildren<Text>().text = ((int)idealScore).ToString();
 		_currentBoat.transform.Find("Light Container/Yellow").GetComponentInChildren<Text>().text = Mathf.RoundToInt(((idealScore % 1) * 10)).ToString();
