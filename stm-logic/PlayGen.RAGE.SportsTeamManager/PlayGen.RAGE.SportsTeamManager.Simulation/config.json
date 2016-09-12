@@ -30,5 +30,7 @@
 	"OpinionNegativeRevealCost": 2,
 	"SendRecruitmentQuestionCost": 1,
 	"RaceSessionLength": 5,
-	"EventChance" : 2
+	"EventChance": 2,
+	"HiddenMistakeLimit": 0.5,
+	"HiddenOpinionLimit":  0.5
 }

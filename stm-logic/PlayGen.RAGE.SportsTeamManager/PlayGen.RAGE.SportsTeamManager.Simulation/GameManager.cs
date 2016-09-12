@@ -353,8 +353,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			_storageLocation = storageLocation;
 			this._storageProvider = storagePorvider;
 			LoadLineUpHistory();
-			Boat.UpdateBoatScore();
 			Boat.GetIdealCrew();
+			Boat.UpdateBoatScore();
 		}
 
 		/// <summary>
@@ -402,7 +402,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					boat.BoatPositions[i].CrewMember = Boat.GetAllCrewMembersIncludingRetired().SingleOrDefault(c => c.Name.Replace(" ", "") == subjectSplit[((i + 1) * 2) - 1].Replace(" ", ""));
 					boat.BoatPositions[i].PositionScore = int.Parse(subjectSplit[(i + 1) * 2]);
 				}
-				boat.IdealMatchScore = float.Parse(subjectSplit[subjectSplit.Length - 1]);
+				boat.IdealMatchScore = float.Parse(subjectSplit[(boat.BoatPositions.Count * 2) + 1]);
+				boat.SelectionMistakes = new List<string>();
+				for (int i = (boat.BoatPositions.Count + 1) * 2; i < subjectSplit.Length; i++)
+				{
+					boat.SelectionMistakes.Add(subjectSplit[i].Replace(" ", ""));
+				}
 				LineUpHistory.Add(boat);
 			}
 		}
@@ -495,6 +500,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			crew += "," + Boat.IdealMatchScore;
+			for (int i = 0; i < Boat.SelectionMistakes.Count; i++)
+			{
+				crew += "," + Boat.SelectionMistakes[i];
+			}
 			var eventString = String.Format(eventStringUnformatted, boatType, crew);
 			manager.EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			manager.SaveStatus();
@@ -625,7 +634,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				_iat.RemoveCharacters(new List<string>() { member.Name });
 				TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 				member.CreateFile(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name.Replace(" ", "")));
-				Boat.AddCrew(member);
 				member.Avatar.UpdateAvatarBeliefs(member);
 				member.Avatar = new Avatar(member, true, true);
 				Random random = new Random();
@@ -641,6 +649,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					member.AddOrUpdateOpinion(Boat.Manager, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
 					member.AddOrUpdateRevealedOpinion(Boat.Manager, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
 				}
+				Boat.AddCrew(member);
 				member.UpdateBeliefs("null");
 				member.SaveStatus();
 				DeductCost(cost);

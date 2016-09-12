@@ -245,6 +245,15 @@ public class TeamSelectionUI : MonoBehaviour {
 		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
 		var idealScore = boat.IdealMatchScore;
 		var unideal = boat.BoatPositions.Count - (int)idealScore - ((idealScore % 1) * 10);
+		List<string> mistakeList = boat.GetAssignmentMistakes(1);
+		foreach (string mistake in mistakeList)
+		{
+			GameObject mistakeObject = Instantiate(_mistakePrefab);
+			mistakeObject.transform.SetParent(boatContainer.transform.Find("Icon Container"), false);
+			mistakeObject.name = mistake;
+			Sprite mistakeIcon = _mistakeIcons.FirstOrDefault(mo => mo.Name == mistake).Icon;
+			mistakeObject.transform.Find("Icon").GetComponent<Image>().sprite = mistakeIcon;
+		}
 		boatContainer.transform.Find("Light Container/Green").GetComponentInChildren<Text>().text = ((int)idealScore).ToString();
 		boatContainer.transform.Find("Light Container/Yellow").GetComponentInChildren<Text>().text = Mathf.RoundToInt(((idealScore % 1) * 10)).ToString();
 		boatContainer.transform.Find("Light Container/Red").GetComponentInChildren<Text>().text = Mathf.RoundToInt(unideal).ToString();
@@ -362,7 +371,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			mistakeObject.transform.SetParent(_currentBoat.transform.Find("Icon Container"), false);
 			mistakeObject.name = mistake;
 			Sprite mistakeIcon = _mistakeIcons.FirstOrDefault(mo => mo.Name == mistake).Icon;
-			mistakeObject.GetComponent<Image>().sprite = mistakeIcon;
+			mistakeObject.transform.Find("Icon").GetComponent<Image>().sprite = mistakeIcon;
 		}
 		var unideal = _teamSelection.GetBoat().BoatPositions.Count - (int)idealScore - ((idealScore % 1) * 10);
 		_currentBoat.transform.Find("Light Container/Green").GetComponentInChildren<Text>().text = ((int)idealScore).ToString();

@@ -22,6 +22,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int BoatScore { get; set; }
 		public float IdealMatchScore { get; set; }
 		public List<BoatPosition> NearestIdealMatch { get; set; }
+		public List<string> SelectionMistakes { get; set; }
 		public Person Manager { get; set; }
 		private ConfigStore _config { get;}
 
@@ -89,7 +90,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return;
 			}
 			UnassignedCrew.Add(crewMember);
-			UpdateBoatScore();
+			GetIdealCrew();
 			crewMember.Avatar.PrimaryOutfitColor = Color.FromArgb(255, TeamColorsPrimary[0], TeamColorsPrimary[1], TeamColorsPrimary[2]);
 			crewMember.Avatar.SecondaryOutfitColor = Color.FromArgb(255, TeamColorsPrimary[0], TeamColorsPrimary[1], TeamColorsPrimary[2]);
 		}
@@ -128,6 +129,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				crewMember.UpdateBeliefs(boatPosition.Position.Name);
 			}
 			UpdateBoatScore();
+			UpdateIdealScore();
 		}
 
 		/// <summary>
@@ -137,6 +139,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			boatPosition.CrewMember.OpinionChange -= new EventHandler(OnOpinionChange);
 			UnassignedCrew.Add(boatPosition.CrewMember);
+			UpdateBoatScore();
 			boatPosition.CrewMember.UpdateBeliefs("null");
 			boatPosition.CrewMember = null;
 		}
@@ -302,6 +305,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		void OnOpinionChange(object sender, EventArgs e)
 		{
 			UpdateBoatScore();
+			GetIdealCrew();
 		}
 
 		/// <summary>
@@ -314,7 +318,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				bp.UpdateCrewMemberScore(this, _config);
 			}
 			BoatScore = BoatPositions.Sum(bp => bp.PositionScore);
-			UpdateIdealScore();
 		}
 
 		public void GetIdealCrew()
@@ -360,6 +363,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void UpdateIdealScore()
 		{
+			if (GetAllCrewMembers().Count >= BoatPositions.Count)
+			{
+				if (IdealCrew.Count == 0)
+				{
+					GetIdealCrew();
+				}
+			}
+			else
+			{
+				return;
+			}
 			IdealMatchScore = 0;
 			NearestIdealMatch = null;
 			foreach (List<BoatPosition> crew in IdealCrew)
@@ -395,10 +409,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 				}
 			}
+			FindAssignmentMistakes();
 		}
 
-		public List<string> GetAssignmentMistakes(int returnAmount)
+		public void FindAssignmentMistakes()
 		{
+			foreach (var bp in BoatPositions)
+			{
+				if (bp.CrewMember == null)
+				{
+					return;
+				}
+			}
 			List<string> mistakes = new List<string>();
 			Dictionary<string, float> mistakeScores = new Dictionary<string, float>();
 			Dictionary<string, float> hiddenScores = new Dictionary<string, float>();
@@ -447,19 +469,25 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 				}
-				if (unknownCrewOpinions >= (BoatPositions.Count - 1) * 0.5f)
+				if (unknownCrewOpinions >= (BoatPositions.Count - 1) * _config.ConfigValues[ConfigKeys.HiddenOpinionLimit.ToString()])
 				{
 					hiddenScores["CrewOpinion"] += idealOpinion - currentOpinion;
 				}
 			}
-			mistakes = mistakeScores.OrderByDescending(ms => ms.Value).Where(ms => ms.Value > 0).Select(ms => ms.Key).Take(returnAmount).ToList();
+			mistakes = mistakeScores.OrderByDescending(ms => ms.Value).Where(ms => ms.Value > 0).Select(ms => ms.Key).ToList();
 			for (int i = 0; i < mistakes.Count; i++)
 			{
-				if (hiddenScores[mistakes[i]] >= mistakeScores[mistakes[i]] * 0.5f)
+				if (hiddenScores[mistakes[i]] >= mistakeScores[mistakes[i]] * _config.ConfigValues[ConfigKeys.HiddenMistakeLimit.ToString()])
 				{
 					mistakes[i] = "Hidden";
 				}
 			}
+			SelectionMistakes = mistakes;
+		}
+
+		public List<string> GetAssignmentMistakes(int returnAmount)
+		{
+			List<string> mistakes = SelectionMistakes.Take(returnAmount).ToList();
 			for (int i = 0; i < returnAmount - mistakes.Count; i++)
 			{
 				mistakes.Insert(0, "Correct");

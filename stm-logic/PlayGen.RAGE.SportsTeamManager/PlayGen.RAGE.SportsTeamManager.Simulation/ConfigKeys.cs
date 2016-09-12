@@ -33,6 +33,8 @@
 		OpinionNegativeRevealCost,
 		SendRecruitmentQuestionCost,
 		RaceSessionLength,
-		EventChance
+		EventChance,
+		HiddenMistakeLimit,
+		HiddenOpinionLimit
 	}
 }
