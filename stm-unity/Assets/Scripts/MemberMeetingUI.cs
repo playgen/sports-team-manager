@@ -45,6 +45,10 @@ public class MemberMeetingUI : MonoBehaviour
 	private Button _fireButton;
 	[SerializeField]
 	private Button _popUpBlocker;
+	[SerializeField]
+	private Image _allowanceBar;
+	[SerializeField]
+	private Text _allowanceText;
 
 	void Awake()
 	{
@@ -77,6 +81,8 @@ public class MemberMeetingUI : MonoBehaviour
 
 	public void ResetDisplay(bool postQuestion = false)
 	{
+		_allowanceBar.fillAmount = (float)_memberMeeting.QuestionAllowance() / (float)_memberMeeting.StartingQuestionAllowance();
+		_allowanceText.text = _memberMeeting.QuestionAllowance().ToString();
 		_fireButton.interactable = true;
 		var currentBoat = _memberMeeting.GetBoat();
 		var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);

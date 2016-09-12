@@ -28,6 +28,10 @@ public class RecruitMemberUI : MonoBehaviour
 	private Button _hireWarningAccept;
 	[SerializeField]
 	private GameObject _hireWarningReject;
+	[SerializeField]
+	private Image _allowanceBar;
+	[SerializeField]
+	private Text _allowanceText;
 
 	void Awake()
 	{
@@ -52,6 +56,8 @@ public class RecruitMemberUI : MonoBehaviour
 
 	void ResetDisplay()
 	{
+		_allowanceBar.fillAmount = (float)_recruitMember.QuestionAllowance() / (float)_recruitMember.StartingQuestionAllowance();
+		_allowanceText.text = _recruitMember.QuestionAllowance().ToString();
 		SetDialogueText("");
 		List<CrewMember> recruits = _recruitMember.GetRecruits().OrderBy(r => Guid.NewGuid()).ToList();
 		for (int i = 0; i < _recruitUI.Length; i++)

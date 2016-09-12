@@ -145,13 +145,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		var position = boat.BoatPositions.Select(p => p.Position).ToList();
 		GameObject boatContainer = Instantiate(_boatPrefab);
 		boatContainer.transform.SetParent(_boatContainer.transform, false);
-		var boatContainerHeight = _boatContainer.GetComponent<RectTransform>().rect.height * (1f/_teamSelection.GetSessionLength());
-		if (_boatHistory.Count > 0)
-		{
-			boatContainerHeight = _boatHistory[0].GetComponent<RectTransform>().rect.height;
-		}
-		boatContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(0, boatContainerHeight);
-		boatContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(boatContainer.GetComponent<RectTransform>().sizeDelta.x * 0.5f, boatContainerHeight * 0.5f);
 		boatContainer.name = _boatPrefab.name;
 		var stageIcon = boatContainer.transform.Find("Stage").GetComponent<Image>();
 		var stageNumber = _teamSelection.GetStage();
@@ -163,8 +156,6 @@ public class TeamSelectionUI : MonoBehaviour {
 			boatContainer.transform.Find("Race").GetComponentInChildren<Text>().text = "PRACTICE " + stageNumber + "/" + _teamSelection.GetSessionLength();
 			boatContainer.transform.Find("Race").GetComponentInChildren<Text>().fontSize = 16;
 		}
-		_boatContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(_boatContainer.GetComponent<RectTransform>().sizeDelta.x, boatContainerHeight * (_boatHistory.Count - (_teamSelection.GetSessionLength() -1)));
-		_boatContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
 
 		for (int i = 0; i < position.Count; i++)
 		{
@@ -175,10 +166,6 @@ public class TeamSelectionUI : MonoBehaviour {
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, position[i]);
 		}
 		_positionsEmpty = position.Count;
-		foreach (var b in _boatHistory)
-		{
-			b.GetComponent<RectTransform>().anchoredPosition += new Vector2(0, b.GetComponent<RectTransform>().sizeDelta.y);
-		}
 		return boatContainer;
 	}
 

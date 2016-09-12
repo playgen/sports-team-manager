@@ -42,4 +42,9 @@ public class RecruitMember : MonoBehaviour {
 	{
 		return _gameManager.ActionAllowance;
 	}
+
+	public int StartingQuestionAllowance()
+	{
+		return _gameManager.GetStartingActionAllowance();
+	}
 }

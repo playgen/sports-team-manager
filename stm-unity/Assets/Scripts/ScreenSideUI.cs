@@ -5,12 +5,9 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.UI;
 
 public class ScreenSideUI : MonoBehaviour {
-
 	private GameManager _gameManager;
 	[SerializeField]
 	private Text _nameText;
-	[SerializeField]
-	private Text _allowanceText;
 	[SerializeField]
 	private GameObject _selected;
 
@@ -21,13 +18,6 @@ public class ScreenSideUI : MonoBehaviour {
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		_nameText.text = _gameManager.Boat.Name;
-		_allowanceText.text = "Talk Time Remaining: " + _gameManager.ActionAllowance;
-		_gameManager.AllowanceUpdated += AllowanceUpdated;
-	}
-
-	void OnDisable()
-	{
-		_gameManager.AllowanceUpdated -= AllowanceUpdated;
 	}
 
 	/// <summary>
@@ -38,10 +28,5 @@ public class ScreenSideUI : MonoBehaviour {
 		_selected.GetComponent<RectTransform>().anchorMax = new Vector2(0.25f + (0.15f * position), 1);
 		_selected.GetComponent<RectTransform>().anchorMin = new Vector2(0.1f + (0.15f * position), 0);
 		_selected.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-	}
-
-	void AllowanceUpdated(object sender, EventArgs e)
-	{
-		_allowanceText.text = "Talk Time Remaining: " + _gameManager.ActionAllowance;
 	}
 }

@@ -22,7 +22,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int ActionAllowance { get; set; }
 		public int CrewEditAllowance { get; set; }
 		private int _raceSessionLength { get; set; }
-		public event EventHandler AllowanceUpdated = delegate { };
 
 		private IntegratedAuthoringToolAsset _iat { get; set; }
 		private IStorageProvider _storageProvider { get; set; }
@@ -566,15 +565,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat.TickCrewMembers(cost);
 			Boat.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString(), "SELF");
 			Boat.Manager.SaveStatus();
-			AllowanceUpdated(this, new EventArgs());
 		}
 
 		void ResetActionAllowance()
 		{
-			ActionAllowance = (int)_config.ConfigValues[ConfigKeys.DefaultActionAllowance.ToString()] + ((int)_config.ConfigValues[ConfigKeys.ActionAllowancePerPosition.ToString()] * Boat.BoatPositions.Count);
+			ActionAllowance = GetStartingActionAllowance();
 			Boat.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString(), "SELF");
 			Boat.Manager.SaveStatus();
-			AllowanceUpdated(this, new EventArgs());
+		}
+
+		public int GetStartingActionAllowance()
+		{
+			return (int)_config.ConfigValues[ConfigKeys.DefaultActionAllowance.ToString()] + ((int)_config.ConfigValues[ConfigKeys.ActionAllowancePerPosition.ToString()] * Boat.BoatPositions.Count);
 		}
 
 		void DeductCrewEditAllowance()
@@ -582,15 +584,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			CrewEditAllowance--;
 			Boat.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString(), "SELF");
 			Boat.Manager.SaveStatus();
-			AllowanceUpdated(this, new EventArgs());
 		}
 
 		void ResetCrewEditAllowance()
 		{
-			CrewEditAllowance = (int)_config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition.ToString()] * Boat.BoatPositions.Count;
+			CrewEditAllowance = GetStartingCrewEditAllowance();
 			Boat.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString(), "SELF");
 			Boat.Manager.SaveStatus();
-			AllowanceUpdated(this, new EventArgs());
+		}
+
+		public int GetStartingCrewEditAllowance()
+		{
+			return (int)_config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition.ToString()] * Boat.BoatPositions.Count;
 		}
 
 		public bool CanAddToCrew()

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+
+using UnityEngine;
 using System.Collections;
 using System.Linq;
 
@@ -40,6 +42,11 @@ public class MemberMeeting : MonoBehaviour
 	public int QuestionAllowance()
 	{
 		return _gameManager.ActionAllowance;
+	}
+
+	public int StartingQuestionAllowance()
+	{
+		return _gameManager.GetStartingActionAllowance();
 	}
 
 	public int CrewEditAllowance()
