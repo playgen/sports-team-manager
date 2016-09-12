@@ -14,6 +14,8 @@ public class MemberMeetingUI : MonoBehaviour
 	[SerializeField]
 	private TeamSelectionUI _teamSelectionUI;
 	[SerializeField]
+	private PositionDisplayUI _positionUI;
+	[SerializeField]
 	private GameObject _meetingPopUp;
 	[SerializeField]
 	private AvatarDisplay _avatarDisplay;
@@ -56,7 +58,7 @@ public class MemberMeetingUI : MonoBehaviour
 		{
 			crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
 		}
-		_teamSelectionUI.ChangeBlockerOrder();
+		_positionUI.ChangeBlockerOrder();
 	}
 
 	public void Display(CrewMember crewMember)
@@ -93,7 +95,7 @@ public class MemberMeetingUI : MonoBehaviour
 		if (currentRole != null)
 		{
 			_crewPopUpRoleButton.gameObject.SetActive(true);
-			_crewPopUpRoleButton.onClick.AddListener(delegate { _teamSelectionUI.DisplayPositionPopUp(currentRole); });
+			_crewPopUpRoleButton.onClick.AddListener(delegate { _positionUI.Display(currentRole); });
 			_crewPopUpRoleButton.GetComponentInChildren<Text>().text = currentRole.Name;
 		} else
 		{
@@ -242,6 +244,5 @@ public class MemberMeetingUI : MonoBehaviour
 		Tracker.T.trackedGameObject.Interacted("Fired Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 		_memberMeeting.FireCrewMember(_currentMember);
 		_teamSelectionUI.ResetCrew();
-		_teamSelectionUI.ResetPositionPopUp();
 	}
 }

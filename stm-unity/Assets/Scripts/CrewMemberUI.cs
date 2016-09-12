@@ -153,7 +153,6 @@ public class CrewMemberUI : MonoBehaviour {
 
 	public void Place(GameObject position)
 	{
-		position.gameObject.GetComponent<PositionUI>().LinkCrew(this);
 		RectTransform positionTransform = position.gameObject.GetComponent<RectTransform>();
 		transform.SetParent(positionTransform, false);
 		GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
@@ -161,6 +160,7 @@ public class CrewMemberUI : MonoBehaviour {
 		GetComponent<RectTransform>().anchorMax = new Vector2(0, 1);
 		GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);
 		_teamSelection.AssignCrew(_crewMember, position.gameObject.GetComponent<PositionUI>().GetPosition());
+		position.gameObject.GetComponent<PositionUI>().LinkCrew(this);
 	}
 
 	/// <summary>

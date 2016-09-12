@@ -7,14 +7,16 @@ using UnityEngine.EventSystems;
 public class PositionUI : MonoBehaviour {
 
 	private TeamSelectionUI _teamSelectionUI;
+	private PositionDisplayUI _positionUI;
 	[SerializeField]
 	private Position _position;
 	private CrewMemberUI _crewMemberUI;
 
-	public void SetUp(TeamSelectionUI teamSelectionUI, Position position)
+	public void SetUp(TeamSelectionUI teamSelectionUI, PositionDisplayUI positionUI, Position position)
 	{
 		_teamSelectionUI = teamSelectionUI;
 		_position = position;
+		_positionUI = positionUI;
 	}
 
 	/// <summary>
@@ -22,7 +24,7 @@ public class PositionUI : MonoBehaviour {
 	/// </summary>
 	public void ShowPopUp()
 	{
-		_teamSelectionUI.DisplayPositionPopUp(_position);
+		_positionUI.Display(_position);
 	}
 
 	/// <summary>
@@ -40,7 +42,7 @@ public class PositionUI : MonoBehaviour {
 			_crewMemberUI = crewmember;
 			_teamSelectionUI.PositionChange(1);
 			crewmember.ReplacedEvent += new EventHandler(OnReset);
-			_teamSelectionUI.ResetPositionPopUp();
+			_positionUI.UpdateDisplay();
 		}
 	}
 
@@ -59,7 +61,7 @@ public class PositionUI : MonoBehaviour {
 			_crewMemberUI.ReplacedEvent -= new EventHandler(OnReset);
 			_teamSelectionUI.PositionChange(-1);
 			_crewMemberUI = null;
-			_teamSelectionUI.ResetPositionPopUp();
+			_positionUI.UpdateDisplay();
 		}
 	}
 
