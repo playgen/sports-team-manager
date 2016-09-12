@@ -64,12 +64,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return replies;
 		}
 
-		public Dictionary<CrewMember, string> SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, List<CrewMember> crewMembers, Boat boat)
+		public Dictionary<CrewMember, string> SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, List<CrewMember> crewMembers, Boat boat, Boat previous)
 		{
 			Dictionary<CrewMember, string> replies = new Dictionary<CrewMember, string>();
 			foreach (CrewMember member in crewMembers)
 			{
-				var reply = member.SendPostRaceEvent(iat, selected, boat);
+				var reply = member.SendPostRaceEvent(iat, selected, boat, previous);
 				if (reply != null)
 				{
 					replies.Add(member, reply);

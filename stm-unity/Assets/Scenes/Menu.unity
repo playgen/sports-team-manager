@@ -10980,13 +10980,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 951207833}
   m_TextComponent: {fileID: 1186627259}
   m_Placeholder: {fileID: 730087723}
-  m_ContentType: 4
+  m_ContentType: 5
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 1
+  m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 3
+  m_CharacterValidation: 4
   m_CharacterLimit: 20
   m_OnEndEdit:
     m_PersistentCalls:
@@ -15068,8 +15068,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: LoadGame
+      - m_Target: {fileID: 389740747}
+        m_MethodName: CloseGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15629,7 +15629,7 @@ MonoBehaviour:
   _crewContainer: {fileID: 1500588850}
   _boatPrefab: {fileID: 131966, guid: 755fefc16ab02ff4eba8a2c8bce60a4e, type: 2}
   _positionPrefab: {fileID: 102220, guid: b06ca8ea5f4130e4abb4b2d53213c0e7, type: 2}
-  _mistakePrefab: {fileID: 1000014165071666, guid: ceba41fb4673e5245b4811f6dcf6d942,
+  _mistakePrefab: {fileID: 1000011109859956, guid: ceba41fb4673e5245b4811f6dcf6d942,
     type: 2}
   _mistakeIcons:
   - Name: Body
@@ -24468,13 +24468,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2131088605}
   m_TextComponent: {fileID: 2123057136}
   m_Placeholder: {fileID: 656384503}
-  m_ContentType: 4
+  m_ContentType: 5
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 1
+  m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 3
+  m_CharacterValidation: 4
   m_CharacterLimit: 20
   m_OnEndEdit:
     m_PersistentCalls:

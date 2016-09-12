@@ -40,8 +40,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void NewGame(IStorageProvider storagePorvider, string storageLocation, string boatName, int[] teamColorsPrimary, int[] teamColorsSecondary, string managerName, string managerAge, string managerGender, List<CrewMember> crew = null)
 		{
 			UnloadGame();
-			var noSpaceBoatName = boatName.Replace(" ", "");
-			string combinedStorageLocation = Path.Combine(storageLocation, noSpaceBoatName);
+			string combinedStorageLocation = Path.Combine(storageLocation, boatName);
 			Directory.CreateDirectory(combinedStorageLocation);
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile(templateStorage, "template_iat");
@@ -111,7 +110,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.SaveStatus();
 			}
 
-			iat.SaveToFile(storagePorvider, Path.Combine(combinedStorageLocation, noSpaceBoatName + ".iat"));
+			iat.SaveToFile(storagePorvider, Path.Combine(combinedStorageLocation, boatName + ".iat"));
 			EventController = new EventController();
 			_iat = iat;
 			_storageLocation = storageLocation;
@@ -267,7 +266,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public bool CheckIfGameExists(string storageLocation, string gameName)
 		{
 			bool gameExists = false;
-			if (Directory.Exists(Path.Combine(storageLocation, gameName.Replace(" ", ""))))
+			if (Directory.Exists(Path.Combine(storageLocation, gameName)))
 			{
 				var files = Directory.GetFiles(Path.Combine(storageLocation, gameName), "*.iat");
 				foreach (var file in files)
@@ -297,8 +296,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			UnloadGame();
 			Boat = new Boat(_config);
-			string combinedStorageLocation = Path.Combine(storageLocation, boatName.Replace(" ", ""));
-			var iat = IntegratedAuthoringToolAsset.LoadFromFile(storagePorvider, Path.Combine(combinedStorageLocation, boatName.Replace(" ", "") + ".iat"));
+			string combinedStorageLocation = Path.Combine(storageLocation, boatName);
+			var iat = IntegratedAuthoringToolAsset.LoadFromFile(storagePorvider, Path.Combine(combinedStorageLocation, boatName + ".iat"));
 			var rpcList = iat.GetAllCharacters();
 
 			List<CrewMember> crewList = new List<CrewMember>();
@@ -435,8 +434,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					CrewMember newMember = Boat.CreateNewMember(rand);
 					newMember.Avatar = new Avatar(newMember);
-					var noSpaceBoatName = Boat.Name.Replace(" ", "");
-					string combinedStorageLocation = Path.Combine(_storageLocation, noSpaceBoatName);
+					string combinedStorageLocation = Path.Combine(_storageLocation, Boat.Name);
 					newMember.CreateFile(_iat, templateStorage, _storageProvider, combinedStorageLocation);
 					foreach (CrewMember otherMember in Boat.GetAllCrewMembers())
 					{
@@ -518,6 +516,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				});
 			}
 			lastBoat.IdealMatchScore = lastBoat.IdealMatchScore;
+			lastBoat.Manager = Boat.Manager;
 			LineUpHistory.Add(lastBoat);
 		}
 
@@ -529,7 +528,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat.ConfirmChanges(ActionAllowance);
 			PromoteBoat();
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
-			Boat.CreateRecruits(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name.Replace(" ", "")));
+			Boat.CreateRecruits(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name));
 			ResetActionAllowance();
 			ResetCrewEditAllowance();
 		}
@@ -569,7 +568,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public Dictionary<CrewMember, string> SendPostRaceEvent(DialogueStateActionDTO dialogue, List<CrewMember> members)
 		{
-			var replies = EventController.SendPostRaceEvent(_iat, dialogue, members, Boat);
+			var replies = EventController.SendPostRaceEvent(_iat, dialogue, members, Boat, LineUpHistory.LastOrDefault());
 			return replies;
 		}
 
@@ -633,7 +632,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				_iat.RemoveCharacters(new List<string>() { member.Name });
 				TemplateStorageProvider templateStorage = new TemplateStorageProvider();
-				member.CreateFile(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name.Replace(" ", "")));
+				member.CreateFile(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name));
 				member.Avatar.UpdateAvatarBeliefs(member);
 				member.Avatar = new Avatar(member, true, true);
 				Random random = new Random();

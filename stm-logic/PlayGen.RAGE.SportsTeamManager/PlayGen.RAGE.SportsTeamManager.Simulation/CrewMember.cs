@@ -219,20 +219,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					RevealedSkills.Add(skill, 0);
 				}
 			}
-			if (EmotionalAppraisal.GetBeliefValue(NPCBeliefs.Position.GetDescription()) != "null")
-			{
-				var boatPosition = boat.BoatPositions.Where(bp => bp.Position.Name == EmotionalAppraisal.GetBeliefValue(NPCBeliefs.Position.GetDescription()));
-				if (boatPosition != null)
-				{
-					foreach (BoatPosition bp in boatPosition)
-					{
-						if (bp.CrewMember == null)
-						{
-							boat.AssignCrew(bp, this);
-						}
-					}
-				}
-			}
 			foreach (CrewMember member in boat.GetAllCrewMembers())
 			{
 				if (EmotionalAppraisal.BeliefExists(String.Format(NPCBeliefs.Opinion.GetDescription(), member.Name.Replace(" ", ""))))
@@ -254,6 +240,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (EmotionalAppraisal.BeliefExists(String.Format(NPCBeliefs.RevealedOpinion.GetDescription(), boat.Manager.Name.Replace(" ", ""))))
 			{
 				AddOrUpdateRevealedOpinion(boat.Manager, int.Parse(EmotionalAppraisal.GetBeliefValue(String.Format(NPCBeliefs.RevealedOpinion.GetDescription(), boat.Manager.Name.Replace(" ", "")))));
+			}
+			if (EmotionalAppraisal.GetBeliefValue(NPCBeliefs.Position.GetDescription()) != "null")
+			{
+				var boatPosition = boat.BoatPositions.Where(bp => bp.Position.Name == EmotionalAppraisal.GetBeliefValue(NPCBeliefs.Position.GetDescription()));
+				if (boatPosition != null)
+				{
+					foreach (BoatPosition bp in boatPosition)
+					{
+						if (bp.CrewMember == null)
+						{
+							boat.AssignCrew(bp, this);
+						}
+					}
+				}
 			}
 			if (EmotionalAppraisal.BeliefExists(NPCBeliefs.Rest.GetDescription()))
 			{
@@ -546,7 +546,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return reply;
 		}
 
-		public string SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Boat boat)
+		public string SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Boat boat, Boat previousBoat)
 		{
 			IEnumerable<DialogueStateActionDTO> dialogueOptions = Enumerable.Empty<DialogueStateActionDTO>();
 			string reply = null;
@@ -560,7 +560,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 						break;
 				case "NotPickedSkill":
-					foreach (BoatPosition bp in boat.BoatPositions)
+					foreach (BoatPosition bp in previousBoat.BoatPositions)
 					{
 						if (bp.Position.GetPositionRating(this) >= bp.PositionScore)
 						{

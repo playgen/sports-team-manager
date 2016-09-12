@@ -23,7 +23,7 @@ public class LoadGame : MonoBehaviour
 		{
 			_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		}
-		return _gameManager.GetGameNames(Application.streamingAssetsPath);
+		return _gameManager.GetGameNames(Application.persistentDataPath);
 	}
 
 	/// <summary>
@@ -49,7 +49,7 @@ public class LoadGame : MonoBehaviour
 	{
 		if (_selectedName != null)
 		{
-			return _gameManager.CheckIfGameExists(Application.streamingAssetsPath, _selectedName);
+			return _gameManager.CheckIfGameExists(Application.persistentDataPath, _selectedName);
 		}
 		return false;
 	}
@@ -61,7 +61,7 @@ public class LoadGame : MonoBehaviour
 	{
 		if (_selectedName != null)
 		{
-			_gameManager.LoadGame(LocalStorageProvider.Instance, Application.streamingAssetsPath, _selectedName);
+			_gameManager.LoadGame(LocalStorageProvider.Instance, Application.persistentDataPath, _selectedName);
 			if (_gameManager.Boat != null && _gameManager.Boat.Name == _selectedName)
 			{
 				return true;

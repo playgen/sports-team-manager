@@ -57,7 +57,7 @@ public class UIStateManager : MonoBehaviour {
 		Tracker.T.accessible.Accessed("Main Menu", AccessibleTracker.Accessible.Screen);
 		GameManager gameManager;
 		gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
-		if (gameManager.GetGameNames(Application.streamingAssetsPath).Count == 0)
+		if (gameManager.GetGameNames(Application.persistentDataPath).Count == 0)
 		{
 			_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = false;
 		} else
@@ -118,5 +118,10 @@ public class UIStateManager : MonoBehaviour {
 		_helpPages.SetActive(true);
 		(FindObjectOfType(typeof(ScreenSideUI)) as ScreenSideUI).ChangeSelected(2);
 		Tracker.T.accessible.Accessed("Help", AccessibleTracker.Accessible.Screen);
+	}
+
+	public void CloseGame()
+	{
+		Application.Quit();
 	}
 }
