@@ -153,7 +153,7 @@ public class PositionDisplayUI : MonoBehaviour
 		{
 			GameObject positionHistory = Instantiate(_positionPopUpHistoryPrefab);
 			positionHistory.transform.SetParent(_positionPopUpHistoryContainer.transform, false);
-			positionHistory.transform.Find("Name Backdrop/Name").GetComponent<Text>().text = SplitName(member.Key.Name);
+			positionHistory.transform.Find("Name").GetComponent<Text>().text = SplitName(member.Key.Name);
 			if (_positionDisplay.GetBoat().GetAllCrewMembers().Contains(member.Key))
 			{
 				var current = member.Key;
