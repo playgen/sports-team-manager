@@ -81,6 +81,10 @@ public class MemberMeetingUI : MonoBehaviour
 
 	public void ResetDisplay(bool postQuestion = false)
 	{
+		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
+		{
+			crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
+		}
 		_allowanceBar.fillAmount = (float)_memberMeeting.QuestionAllowance() / (float)_memberMeeting.StartingQuestionAllowance();
 		_allowanceText.text = _memberMeeting.QuestionAllowance().ToString();
 		_fireButton.interactable = true;

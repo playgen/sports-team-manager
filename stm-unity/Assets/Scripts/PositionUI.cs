@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PositionUI : MonoBehaviour {
 
@@ -43,6 +44,8 @@ public class PositionUI : MonoBehaviour {
 			_teamSelectionUI.PositionChange(1);
 			crewmember.ReplacedEvent += new EventHandler(OnReset);
 			_positionUI.UpdateDisplay();
+			crewmember.transform.Find("Position").gameObject.GetComponent<Button>().onClick.RemoveAllListeners();
+			crewmember.transform.Find("Position").gameObject.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.Display(_position); });
 		}
 	}
 
@@ -60,6 +63,7 @@ public class PositionUI : MonoBehaviour {
 		{
 			_crewMemberUI.ReplacedEvent -= new EventHandler(OnReset);
 			_teamSelectionUI.PositionChange(-1);
+			_crewMemberUI.transform.Find("Position").gameObject.GetComponent<Button>().onClick.RemoveAllListeners();
 			_crewMemberUI = null;
 			_positionUI.UpdateDisplay();
 		}

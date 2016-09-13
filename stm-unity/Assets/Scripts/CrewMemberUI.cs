@@ -27,6 +27,18 @@ public class CrewMemberUI : MonoBehaviour {
 		EventTrigger trigger = GetComponent<EventTrigger>();
 		if (_crewMember.restCount <= 0)
 		{
+			SetEventTriggers(trigger, true);
+		} else
+		{
+			SetEventTriggers(trigger, false);
+		}
+	}
+
+	public void SetEventTriggers(EventTrigger trigger, bool isActive)
+	{
+		trigger.triggers.Clear();
+		if (isActive)
+		{
 			EventTrigger.Entry drag = new EventTrigger.Entry();
 			drag.eventID = EventTriggerType.PointerDown;
 			drag.callback.AddListener((data) => { BeginDrag(); });
@@ -161,6 +173,9 @@ public class CrewMemberUI : MonoBehaviour {
 		GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);
 		_teamSelection.AssignCrew(_crewMember, position.gameObject.GetComponent<PositionUI>().GetPosition());
 		position.gameObject.GetComponent<PositionUI>().LinkCrew(this);
+		var positionImage = transform.Find("Position").gameObject;
+		positionImage.GetComponent<Image>().enabled = true;
+		//positionImage.GetComponent<Image>().sprite
 	}
 
 	/// <summary>
@@ -182,5 +197,8 @@ public class CrewMemberUI : MonoBehaviour {
 		{
 			Tracker.T.trackedGameObject.Interacted("Unpositioned Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 		}
+		var positionImage = transform.Find("Position").gameObject;
+		positionImage.GetComponent<Image>().enabled = false;
+		//positionImage.GetComponent<Image>().sprite
 	}
 }

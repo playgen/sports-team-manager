@@ -211,6 +211,8 @@ public class TeamSelectionUI : MonoBehaviour {
 			crewMember.name = SplitName(crew[i].Name);
 			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, _meetingUI, crew[i], _crewContainer.transform);
 			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(crew[i].Avatar, crew[i].GetMood(), primary, secondary, true);
+			crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
+			crewMember.transform.Find("Position").GetComponent<Image>().enabled = false;
 		}
 		for (int i = 0; i < _teamSelection.CanAddAmount(); i++)
 		{
@@ -282,6 +284,12 @@ public class TeamSelectionUI : MonoBehaviour {
 					crewMember.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
 					crewMember.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 					position.LinkCrew(crewMember.GetComponent<CrewMemberUI>());
+					Destroy(crewMember.transform.Find("Opinion").GetComponent<Image>());
+					var positionImage = crewMember.transform.Find("Position").gameObject;
+					positionImage.GetComponent<Image>().enabled = true;
+					//positionImage.GetComponent<Image>().sprite
+					positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
+					positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.Display(boatPosition); });
 					crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(boat.BoatPositions[i].CrewMember.Avatar, boat.BoatPositions[i].CrewMember.GetMood(), primary, secondary, true);
 					nameText.enabled = true;
 					Destroy(position);
@@ -409,6 +417,9 @@ public class TeamSelectionUI : MonoBehaviour {
 			{
 				Destroy(crewMember);
 				Destroy(crewMember.GetComponent<EventTrigger>());
+				crewMember.transform.Find("Position").GetComponent<Button>().onClick.RemoveAllListeners();
+				var position = crewMember.transform.parent.GetComponent<PositionUI>().GetPosition();
+				crewMember.transform.Find("Position").GetComponent<Button>().onClick.AddListener(delegate { _positionUI.Display(position); });
 			}
 		}
 		foreach (Button b in _recruitButtons)
