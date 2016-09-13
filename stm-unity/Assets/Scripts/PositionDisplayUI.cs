@@ -39,6 +39,35 @@ public class PositionDisplayUI : MonoBehaviour
 		_positionDisplay = GetComponent<PositionDisplay>();
 	}
 
+	string SplitName(string original, bool shortName = true)
+	{
+		string[] splitName = original.Split(' ');
+		string name = splitName.Last();
+		if (!shortName)
+		{
+			name += ", ";
+		}
+		foreach (string split in splitName)
+		{
+			if (split != splitName.Last())
+			{
+				if (!shortName)
+				{
+					name += split + " ";
+				}
+				else
+				{
+					name = split[0] + "." + name;
+				}
+			}
+		}
+		if (!shortName)
+		{
+			name = name.Remove(name.Length - 1, 1);
+		}
+		return name;
+	}
+
 	public void UpdateDisplay()
 	{
 		if (gameObject.activeSelf)
@@ -85,7 +114,6 @@ public class PositionDisplayUI : MonoBehaviour
 			_positionPopUpCurrentCrew.gameObject.SetActive(false);
 			_positionPopUpCurrentName.transform.parent.gameObject.SetActive(false);
 		}
-		int raceCount = 1;
 		foreach (Transform child in _positionPopUpHistoryContainer.transform)
 		{
 			Destroy(child.gameObject);
@@ -101,6 +129,7 @@ public class PositionDisplayUI : MonoBehaviour
 				}
 			}
 		}
+		Dictionary<CrewMember, int> positionMembers = new Dictionary<CrewMember, int>();
 		foreach (var boat in _positionDisplay.GetLineUpHistory())
 		{
 			BoatPosition[] boatPositions = boat.BoatPositions.Where(bp => bp.Position.Name == position.Name).ToArray();
@@ -108,33 +137,34 @@ public class PositionDisplayUI : MonoBehaviour
 			{
 				foreach (BoatPosition boatPosition in boatPositions)
 				{
-					GameObject positionHistory = Instantiate(_positionPopUpHistoryPrefab);
-					positionHistory.transform.SetParent(_positionPopUpHistoryContainer.transform, false);
-					positionHistory.transform.SetAsFirstSibling();
-					positionHistory.transform.Find("Member/Name").GetComponent<Text>().text = boatPosition.CrewMember.Name;
 					CrewMember positionMember = boatPosition.CrewMember;
-					if (_positionDisplay.GetBoat().GetAllCrewMembers().Contains(positionMember))
+					if (positionMembers.ContainsKey(positionMember))
 					{
-						positionHistory.transform.Find("Member").GetComponent<Button>().onClick.AddListener(delegate { _meetingUI.Display(positionMember); });
-					}
-					else
+						positionMembers[positionMember]++;
+					} else
 					{
-						positionHistory.transform.Find("Member").GetComponent<Button>().interactable = false;
+						positionMembers.Add(positionMember, 1);
 					}
-					if (raceCount % _positionDisplay.GetSessionLength() == 0)
-					{
-						positionHistory.transform.Find("Session").GetComponent<Text>().text = "RACE DAY!";
-						positionHistory.transform.Find("Session Icon").GetComponent<Image>().sprite = _raceIcon;
-					}
-					else
-					{
-						positionHistory.transform.Find("Session").GetComponent<Text>().text = "PRACTICE " + (raceCount % _positionDisplay.GetSessionLength());
-						positionHistory.transform.Find("Session Icon").GetComponent<Image>().sprite = _practiceIcon;
-					}
-					positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(boatPosition.CrewMember.Avatar, boatPosition.CrewMember.GetMood(), primary, secondary, true);
 				}
 			}
-			raceCount++;
+		}
+		var orderedMembers = positionMembers.OrderBy(pm => SplitName(pm.Key.Name, false)).OrderByDescending(pm => pm.Value);
+		foreach (var member in orderedMembers)
+		{
+			GameObject positionHistory = Instantiate(_positionPopUpHistoryPrefab);
+			positionHistory.transform.SetParent(_positionPopUpHistoryContainer.transform, false);
+			positionHistory.transform.Find("Name Backdrop/Name").GetComponent<Text>().text = SplitName(member.Key.Name);
+			if (_positionDisplay.GetBoat().GetAllCrewMembers().Contains(member.Key))
+			{
+				var current = member.Key;
+				positionHistory.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { _meetingUI.Display(current); });
+			}
+			else
+			{
+				positionHistory.transform.Find("Button").GetComponent<Button>().interactable = false;
+			}
+			positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, member.Key.GetMood(), primary, secondary, true);
+			positionHistory.transform.Find("Session Back/Sessions").GetComponent<Text>().text = member.Value.ToString();
 		}
 	}
 
