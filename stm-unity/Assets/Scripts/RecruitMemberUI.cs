@@ -32,6 +32,9 @@ public class RecruitMemberUI : MonoBehaviour
 	private Image _allowanceBar;
 	[SerializeField]
 	private Text _allowanceText;
+	[SerializeField]
+	private Icon[] _opinionSprites;
+
 
 	void Awake()
 	{
@@ -92,6 +95,7 @@ public class RecruitMemberUI : MonoBehaviour
 			_recruitUI[i].transform.Find("Button").GetComponent<Button>().onClick.RemoveAllListeners();
 			_recruitUI[i].transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { HireCrewWarning(thisRecruit); });
 			_recruitUI[i].transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = "";
+			_recruitUI[i].transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = false;
 			_recruitUI[i].name = recruits[i].Name;
 		}
 		var skills = (CrewMemberSkill[])Enum.GetValues(typeof(CrewMemberSkill));
@@ -143,6 +147,8 @@ public class RecruitMemberUI : MonoBehaviour
 		{
 			string reply = replies.Where(r => r.Key.Name == recruit.name).FirstOrDefault().Value;
 			recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = reply;
+			recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = true;
+			recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = _opinionSprites.FirstOrDefault(o => o.Name == reply).Image;
 		}
 		CostCheck();
 	}
