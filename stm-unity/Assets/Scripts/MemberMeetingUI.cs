@@ -24,6 +24,12 @@ public class MemberMeetingUI : MonoBehaviour
 	[SerializeField]
 	private Button _crewPopUpRoleButton;
 	[SerializeField]
+	private Image[] _crewPopUpBarBackgrounds;
+	[SerializeField]
+	private Sprite _crewPopUpUnknownBackBar;
+	[SerializeField]
+	private Sprite _crewPopUpKnownBackBar;
+	[SerializeField]
 	private Image[] _crewPopUpBars;
 	[SerializeField]
 	private Text _dialogueText;
@@ -106,17 +112,24 @@ public class MemberMeetingUI : MonoBehaviour
 		{
 			_crewPopUpRoleButton.gameObject.SetActive(true);
 			_crewPopUpRoleButton.onClick.AddListener(delegate { _positionUI.Display(currentRole); });
-			_crewPopUpRoleButton.GetComponentInChildren<Text>().text = currentRole.Name;
+			_crewPopUpRoleButton.GetComponentInChildren<Text>().text = currentRole.Name.ToUpper();
+			_crewPopUpRoleButton.transform.Find("Image").GetComponent<Image>().sprite = _teamSelectionUI.RoleLogos.FirstOrDefault(mo => mo.Name == currentRole.Name).Image;
 		} else
 		{
 			_crewPopUpRoleButton.gameObject.SetActive(false);
 		}
 		_crewPopUpBars[0].fillAmount = _currentMember.RevealedSkills[CrewMemberSkill.Body] * 0.1f;
+		_crewPopUpBarBackgrounds[0].sprite = _currentMember.RevealedSkills[CrewMemberSkill.Body] == 0 ? _crewPopUpUnknownBackBar : _crewPopUpKnownBackBar;
 		_crewPopUpBars[1].fillAmount = _currentMember.RevealedSkills[CrewMemberSkill.Charisma] * 0.1f;
+		_crewPopUpBarBackgrounds[1].sprite = _currentMember.RevealedSkills[CrewMemberSkill.Charisma] == 0 ? _crewPopUpUnknownBackBar : _crewPopUpKnownBackBar;
 		_crewPopUpBars[2].fillAmount = _currentMember.RevealedSkills[CrewMemberSkill.Perception] * 0.1f;
+		_crewPopUpBarBackgrounds[2].sprite = _currentMember.RevealedSkills[CrewMemberSkill.Perception] == 0 ? _crewPopUpUnknownBackBar : _crewPopUpKnownBackBar;
 		_crewPopUpBars[3].fillAmount = _currentMember.RevealedSkills[CrewMemberSkill.Quickness] * 0.1f;
+		_crewPopUpBarBackgrounds[3].sprite = _currentMember.RevealedSkills[CrewMemberSkill.Quickness] == 0 ? _crewPopUpUnknownBackBar : _crewPopUpKnownBackBar;
 		_crewPopUpBars[4].fillAmount = _currentMember.RevealedSkills[CrewMemberSkill.Willpower] * 0.1f;
+		_crewPopUpBarBackgrounds[4].sprite = _currentMember.RevealedSkills[CrewMemberSkill.Willpower] == 0 ? _crewPopUpUnknownBackBar : _crewPopUpKnownBackBar;
 		_crewPopUpBars[5].fillAmount = _currentMember.RevealedSkills[CrewMemberSkill.Wisdom] * 0.1f;
+		_crewPopUpBarBackgrounds[5].sprite = _currentMember.RevealedSkills[CrewMemberSkill.Wisdom] == 0 ? _crewPopUpUnknownBackBar : _crewPopUpKnownBackBar;
 		_dialogueText.text = "You wanted to see me?";
 		_meetingNameText.text = "What do you want to ask?";
 		_statQuestion.text = _memberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).FirstOrDefault();

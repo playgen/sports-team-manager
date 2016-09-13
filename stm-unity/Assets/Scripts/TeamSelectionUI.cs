@@ -7,10 +7,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [Serializable]
-public class MistakeIcon
+public class Icon
 {
 	public string Name;
-	public Sprite Icon;
+	public Sprite Image;
 }
 
 [RequireComponent(typeof(TeamSelection))]
@@ -27,7 +27,10 @@ public class TeamSelectionUI : MonoBehaviour {
 	[SerializeField]
 	private GameObject _mistakePrefab;
 	[SerializeField]
-	private MistakeIcon[] _mistakeIcons;
+	private Icon[] _mistakeIcons;
+	[SerializeField]
+	private Icon[] _roleIcons;
+	public Icon[] RoleLogos;
 	[SerializeField]
 	private GameObject _crewPrefab;
 	[SerializeField]
@@ -170,6 +173,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			GameObject positionObject = Instantiate(_positionPrefab);
 			positionObject.transform.SetParent(boatContainer.transform.Find("Position Container"), false);
 			positionObject.transform.Find("Name").GetComponent<Text>().text = position[i].Name;
+			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.FirstOrDefault(mo => mo.Name == position[i].Name).Image;
 			positionObject.name = position[i].Name;
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, position[i]);
 		}
@@ -209,7 +213,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			crewMember.transform.SetParent(_crewContainer.transform, false);
 			crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(crew[i].Name, true);
 			crewMember.name = SplitName(crew[i].Name);
-			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, _meetingUI, crew[i], _crewContainer.transform);
+			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, _meetingUI, crew[i], _crewContainer.transform, _roleIcons);
 			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(crew[i].Avatar, crew[i].GetMood(), primary, secondary, true);
 			crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
 			crewMember.transform.Find("Position").GetComponent<Image>().enabled = false;
@@ -253,8 +257,8 @@ public class TeamSelectionUI : MonoBehaviour {
 			GameObject mistakeObject = Instantiate(_mistakePrefab);
 			mistakeObject.transform.SetParent(boatContainer.transform.Find("Icon Container"), false);
 			mistakeObject.name = mistake;
-			Sprite mistakeIcon = _mistakeIcons.FirstOrDefault(mo => mo.Name == mistake).Icon;
-			mistakeObject.transform.Find("Icon").GetComponent<Image>().sprite = mistakeIcon;
+			Sprite mistakeIcon = _mistakeIcons.FirstOrDefault(mo => mo.Name == mistake).Image;
+			mistakeObject.GetComponent<Image>().sprite = mistakeIcon;
 		}
 		boatContainer.transform.Find("Light Container/Green").GetComponentInChildren<Text>().text = ((int)idealScore).ToString();
 		boatContainer.transform.Find("Light Container/Yellow").GetComponentInChildren<Text>().text = Mathf.RoundToInt(((idealScore % 1) * 10)).ToString();
@@ -287,7 +291,7 @@ public class TeamSelectionUI : MonoBehaviour {
 					Destroy(crewMember.transform.Find("Opinion").GetComponent<Image>());
 					var positionImage = crewMember.transform.Find("Position").gameObject;
 					positionImage.GetComponent<Image>().enabled = true;
-					//positionImage.GetComponent<Image>().sprite
+					positionImage.GetComponent<Image>().sprite = _roleIcons.FirstOrDefault(mo => mo.Name == boatPosition.Name).Image;
 					positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 					positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.Display(boatPosition); });
 					crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(boat.BoatPositions[i].CrewMember.Avatar, boat.BoatPositions[i].CrewMember.GetMood(), primary, secondary, true);
@@ -378,8 +382,8 @@ public class TeamSelectionUI : MonoBehaviour {
 			GameObject mistakeObject = Instantiate(_mistakePrefab);
 			mistakeObject.transform.SetParent(_currentBoat.transform.Find("Icon Container"), false);
 			mistakeObject.name = mistake;
-			Sprite mistakeIcon = _mistakeIcons.FirstOrDefault(mo => mo.Name == mistake).Icon;
-			mistakeObject.transform.Find("Icon").GetComponent<Image>().sprite = mistakeIcon;
+			Sprite mistakeIcon = _mistakeIcons.FirstOrDefault(mo => mo.Name == mistake).Image;
+			mistakeObject.GetComponent<Image>().sprite = mistakeIcon;
 		}
 		var unideal = _teamSelection.GetBoat().BoatPositions.Count - (int)idealScore - ((idealScore % 1) * 10);
 		_currentBoat.transform.Find("Light Container/Green").GetComponentInChildren<Text>().text = ((int)idealScore).ToString();

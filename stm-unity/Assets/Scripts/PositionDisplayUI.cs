@@ -21,6 +21,10 @@ public class PositionDisplayUI : MonoBehaviour
 	[SerializeField]
 	private AvatarDisplay _positionPopUpCurrentCrew;
 	[SerializeField]
+	private Image _positionPopUpRoleImage;
+	[SerializeField]
+	private Icon[] _positionPopUpRoleSprites;
+	[SerializeField]
 	private Text _positionPopUpCurrentName;
 	[SerializeField]
 	private Button _positionPopUpCurrentButton;
@@ -28,11 +32,6 @@ public class PositionDisplayUI : MonoBehaviour
 	private GameObject _positionPopUpHistoryContainer;
 	[SerializeField]
 	private GameObject _positionPopUpHistoryPrefab;
-
-	[SerializeField]
-	private Sprite _practiceIcon;
-	[SerializeField]
-	private Sprite _raceIcon;
 
 	void Awake()
 	{
@@ -98,12 +97,13 @@ public class PositionDisplayUI : MonoBehaviour
 		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
 		_positionPopUpText[0].text = position.Name;
 		_positionPopUpText[1].text = position.Description;
+		_positionPopUpRoleImage.sprite = _positionPopUpRoleSprites.FirstOrDefault(mo => mo.Name == position.Name).Image;
 		var currentCrew = currentBoat.BoatPositions.Where(bp => bp.Position.Name == position.Name).FirstOrDefault().CrewMember;
 		_positionPopUpCurrentButton.onClick.RemoveAllListeners();
 		if (currentCrew != null)
 		{
 			_positionPopUpCurrentCrew.gameObject.SetActive(true);
-			_positionPopUpCurrentName.transform.parent.gameObject.SetActive(true);
+			_positionPopUpCurrentName.gameObject.SetActive(true);
 			_positionPopUpCurrentCrew.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), primary, secondary, true);
 			_positionPopUpCurrentCrew.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), primary, secondary, true);
 			_positionPopUpCurrentName.text = currentCrew.Name;
@@ -112,7 +112,7 @@ public class PositionDisplayUI : MonoBehaviour
 		else
 		{
 			_positionPopUpCurrentCrew.gameObject.SetActive(false);
-			_positionPopUpCurrentName.transform.parent.gameObject.SetActive(false);
+			_positionPopUpCurrentName.gameObject.SetActive(false);
 		}
 		foreach (Transform child in _positionPopUpHistoryContainer.transform)
 		{

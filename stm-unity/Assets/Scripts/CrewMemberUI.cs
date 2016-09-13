@@ -5,6 +5,7 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CrewMemberUI : MonoBehaviour {
 
@@ -14,6 +15,7 @@ public class CrewMemberUI : MonoBehaviour {
 	private bool _beingClicked;
 	private bool _beingDragged;
 	private Vector2 _dragPosition;
+	private Icon[] _roleIcons;
 
 	private Transform _defaultParent;
 	private Vector2 _currentPositon;
@@ -57,12 +59,13 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 	}
 
-	public void SetUp(TeamSelection teamSelection, MemberMeetingUI meetingUI, CrewMember crewMember, Transform parent)
+	public void SetUp(TeamSelection teamSelection, MemberMeetingUI meetingUI, CrewMember crewMember, Transform parent, Icon[] roleIcons)
 	{
 		_teamSelection = teamSelection;
 		_meetingUI = meetingUI;
 		_crewMember = crewMember;
 		_defaultParent = parent;
+		_roleIcons = roleIcons;
 	}
 
 	public CrewMember CrewMember()
@@ -175,7 +178,7 @@ public class CrewMemberUI : MonoBehaviour {
 		position.gameObject.GetComponent<PositionUI>().LinkCrew(this);
 		var positionImage = transform.Find("Position").gameObject;
 		positionImage.GetComponent<Image>().enabled = true;
-		//positionImage.GetComponent<Image>().sprite
+		positionImage.GetComponent<Image>().sprite = _roleIcons.FirstOrDefault(mo => mo.Name == position.gameObject.GetComponent<PositionUI>().GetPosition().Name).Image;
 	}
 
 	/// <summary>
