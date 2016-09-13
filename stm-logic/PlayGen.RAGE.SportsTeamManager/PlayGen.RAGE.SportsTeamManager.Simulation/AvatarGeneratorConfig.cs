@@ -33,8 +33,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 			string configText = Templates.ResourceManager.GetString("avatar_config");
-
-			//TODO set to properties and use newtonsoft to get json data
 			var config = JsonConvert.DeserializeObject<AvatarGeneratorConfig>(configText);
 			config.LightSkinColor = Color.FromArgb(255, config.LightSkinColorValues[0], config.LightSkinColorValues[1], config.LightSkinColorValues[2]);
 			config.MediumSkinColor = Color.FromArgb(255, config.MediumSkinColorValues[0], config.MediumSkinColorValues[1], config.MediumSkinColorValues[2]);

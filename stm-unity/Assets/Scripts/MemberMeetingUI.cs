@@ -128,6 +128,10 @@ public class MemberMeetingUI : MonoBehaviour
 		_roleQuestion.GetComponentInParent<Button>().interactable = true;
 		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = true;
 		_opinionNegativeQuestion.GetComponentInParent<Button>().interactable = true;
+		if (allowance < 4)
+		{
+			_fireButton.interactable = false;
+		}
 		if (allowance < 3)
 		{
 			_roleQuestion.GetComponentInParent<Button>().interactable = false;
@@ -135,7 +139,6 @@ public class MemberMeetingUI : MonoBehaviour
 		if (allowance < 2)
 		{
 			_opinionNegativeQuestion.GetComponentInParent<Button>().interactable = false;
-			_fireButton.interactable = false;
 		}
 		if (allowance < 1)
 		{
