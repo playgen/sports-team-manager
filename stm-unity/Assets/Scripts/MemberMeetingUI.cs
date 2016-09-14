@@ -44,6 +44,8 @@ public class MemberMeetingUI : MonoBehaviour
 	[SerializeField]
 	private Text _opinionNegativeQuestion;
 	[SerializeField]
+	private Sprite[] _opinionIcons;
+	[SerializeField]
 	private Text _closeText;
 	[SerializeField]
 	private GameObject _fireWarningPopUp;
@@ -174,31 +176,36 @@ public class MemberMeetingUI : MonoBehaviour
 			if (name != _currentMember.Name)
 			{
 				opinionImage.enabled = true;
+				opinionImage.sprite = null;
 				foreach (CrewOpinion opinion in _currentMember.RevealedCrewOpinions)
 				{
 					if (name == opinion.Person.Name)
 					{
-						if (opinion.Opinion > 1)
+						if (opinion.Opinion > 3)
 						{
-							//opinionImage.sprite = ;
-							opinionImage.color = Color.green;
+							opinionImage.sprite = _opinionIcons[0];
 						}
-						else if (opinion.Opinion < -1)
+						else if (opinion.Opinion > 0)
 						{
-							//opinionImage.sprite = ;
-							opinionImage.color = Color.red;
+							opinionImage.sprite = _opinionIcons[1];
+						}
+						else if (opinion.Opinion < 0)
+						{
+							opinionImage.sprite = _opinionIcons[3];
+						}
+						else if (opinion.Opinion < -3)
+						{
+							opinionImage.sprite = _opinionIcons[4];
 						}
 						else
 						{
-							//opinionImage.sprite = ;
-							opinionImage.color = Color.yellow;
+							opinionImage.sprite = _opinionIcons[2];
 						}
 					}
 				}
 				if (opinionImage.sprite == null)
 				{
-					//opinionImage.sprite = ;
-					//opinionImage.color = Color.yellow;
+					opinionImage.sprite = _opinionIcons[2];
 				}
 			}
 		}

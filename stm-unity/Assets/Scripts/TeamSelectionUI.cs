@@ -19,6 +19,8 @@ public class TeamSelectionUI : MonoBehaviour {
 	[SerializeField]
 	private GameObject _boatContainer;
 	[SerializeField]
+	private Scrollbar _boatContainerScroll;
+	[SerializeField]
 	private GameObject _crewContainer;
 	[SerializeField]
 	private GameObject _boatPrefab;
@@ -157,6 +159,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		GameObject boatContainer = Instantiate(_boatPrefab);
 		boatContainer.transform.SetParent(_boatContainer.transform, false);
 		boatContainer.name = _boatPrefab.name;
+		boatContainer.GetComponent<LayoutElement>().preferredHeight = Mathf.Abs(_boatContainer.transform.localPosition.y) * 0.2f;
 		var stageIcon = boatContainer.transform.Find("Stage").GetComponent<Image>();
 		var stageNumber = _teamSelection.GetStage();
 		if (stageNumber == _teamSelection.GetSessionLength()) {
@@ -178,6 +181,10 @@ public class TeamSelectionUI : MonoBehaviour {
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, position[i]);
 		}
 		_positionsEmpty = position.Count;
+		if (_boatContainer.transform.childCount > _teamSelection.GetSessionLength())
+		{
+			_boatContainerScroll.numberOfSteps = _boatContainer.transform.childCount - _teamSelection.GetSessionLength() + 1;
+		}
 		return boatContainer;
 	}
 
@@ -251,7 +258,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
 		var idealScore = boat.IdealMatchScore;
 		var unideal = boat.BoatPositions.Count - (int)idealScore - ((idealScore % 1) * 10);
-		List<string> mistakeList = boat.GetAssignmentMistakes(1);
+		List<string> mistakeList = boat.GetAssignmentMistakes(3);
 		foreach (string mistake in mistakeList)
 		{
 			GameObject mistakeObject = Instantiate(_mistakePrefab);

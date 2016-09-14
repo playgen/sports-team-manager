@@ -131,10 +131,6 @@ public class RecruitMemberUI : MonoBehaviour
 			{
 				_questionButtons[i].interactable = false;
 			}
-			for (int i = 0; i < _recruitUI.Length; i++)
-			{
-				_recruitUI[i].transform.Find("Button").GetComponent<Button>().interactable = false;
-			}
 		}
 	}
 
@@ -160,7 +156,6 @@ public class RecruitMemberUI : MonoBehaviour
 
 	public void HireCrewWarning(CrewMember recruit)
 	{
-		print("Test");
 		_hireWarningPopUp.SetActive(true);
 		_popUpBlocker.transform.SetAsLastSibling();
 		_hireWarningPopUp.transform.SetAsLastSibling();

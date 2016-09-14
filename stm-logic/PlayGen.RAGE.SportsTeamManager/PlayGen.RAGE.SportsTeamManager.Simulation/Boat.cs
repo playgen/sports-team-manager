@@ -488,8 +488,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public List<string> GetAssignmentMistakes(int returnAmount)
 		{
 			List<string> mistakes = SelectionMistakes.Take(returnAmount).ToList();
-			for (int i = 0; i < returnAmount - mistakes.Count; i++)
-			{
+			while (mistakes.Count < returnAmount) {
 				mistakes.Insert(0, "Correct");
 			}
 			return mistakes;
