@@ -77,7 +77,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		foreach (var boat in _teamSelection.GetLineUpHistory())
 		{
-			CreateHistoricalBoat(boat);
+			CreateHistoricalBoat(boat.Key, boat.Value);
 		}
 		CreateNewBoat();
 	}
@@ -248,7 +248,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Instantiate and position UI for an existing boat (aka, line-up already selected in the past)
 	/// </summary>
-	public void CreateHistoricalBoat(Boat boat)
+	public void CreateHistoricalBoat(Boat boat, int offset)
 	{
 		var boatContainer = CreateBoat(boat);
 		var teamScore = boat.BoatPositions.Sum(bp => bp.PositionScore);
@@ -320,10 +320,10 @@ public class TeamSelectionUI : MonoBehaviour {
 		_raceButton.onClick.AddListener(delegate { RepeatLineUp(boat.BoatPositions); });*/
 		Destroy(_raceButton.gameObject);
 		_boatHistory.Add(boatContainer);
-		_teamSelection.ConfirmLineUp(true);
+		_teamSelection.ConfirmLineUp(0, true);
 		if (!_teamSelection.IsRace())
 		{
-			TimeSpan timeTaken = TimeSpan.FromSeconds((1800 - ((teamScore - 20) * 10)));
+			TimeSpan timeTaken = TimeSpan.FromSeconds(1800 - ((teamScore - 20) * 10) + offset);
 			scoreText.text = string.Format("{0:D2}:{1:D2}", timeTaken.Minutes, timeTaken.Seconds);
 		}
 		else
@@ -383,7 +383,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 		_teamSelection.PostRaceEvent();
 		float idealScore = _teamSelection.IdealCheck();
-		List<string> mistakeList = _teamSelection.GetAssignmentMistakes(1);
+		List<string> mistakeList = _teamSelection.GetAssignmentMistakes(3);
 		foreach (string mistake in mistakeList)
 		{
 			GameObject mistakeObject = Instantiate(_mistakePrefab);
@@ -399,11 +399,12 @@ public class TeamSelectionUI : MonoBehaviour {
 		_currentBoat.transform.Find("Light Container/Green").GetComponent<Image>().color = Color.green;
 		_currentBoat.transform.Find("Light Container/Yellow").GetComponent<Image>().color = Color.yellow;
 		_currentBoat.transform.Find("Light Container/Red").GetComponent<Image>().color = Color.red;
-		var teamScore = _teamSelection.ConfirmLineUp();
+		int offset = UnityEngine.Random.Range(-3, 4);
+		var teamScore = _teamSelection.ConfirmLineUp(offset);
 		var scoreText = _currentBoat.transform.Find("Score").GetComponent<Text>();
 		if (!_teamSelection.IsRace())
 		{
-			TimeSpan timeTaken = TimeSpan.FromSeconds((1800 - ((teamScore - 20) * 10)));
+			TimeSpan timeTaken = TimeSpan.FromSeconds(1800 - ((teamScore - 20) * 10) + offset);
 			scoreText.text = string.Format("{0:D2}:{1:D2}", timeTaken.Minutes, timeTaken.Seconds);
 		}
 		else

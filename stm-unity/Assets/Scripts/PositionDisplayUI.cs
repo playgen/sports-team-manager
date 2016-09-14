@@ -98,7 +98,11 @@ public class PositionDisplayUI : MonoBehaviour
 		_positionPopUpText[0].text = position.Name;
 		_positionPopUpText[1].text = position.Description;
 		_positionPopUpRoleImage.sprite = _positionPopUpRoleSprites.FirstOrDefault(mo => mo.Name == position.Name).Image;
-		var currentCrew = currentBoat.BoatPositions.Where(bp => bp.Position.Name == position.Name).FirstOrDefault().CrewMember;
+		CrewMember currentCrew = null;
+		if (currentBoat.BoatPositions.FirstOrDefault(bp => bp.Position.Name == position.Name) != null)
+		{
+			currentCrew = currentBoat.BoatPositions.Where(bp => bp.Position.Name == position.Name).FirstOrDefault().CrewMember;
+		}
 		_positionPopUpCurrentButton.onClick.RemoveAllListeners();
 		if (currentCrew != null)
 		{

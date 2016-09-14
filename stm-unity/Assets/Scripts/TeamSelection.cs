@@ -25,9 +25,19 @@ public class TeamSelection : MonoBehaviour {
 	/// <summary>
 	/// Get the history of line-ups
 	/// </summary>
-	public List<Boat> GetLineUpHistory()
+	public Dictionary<Boat, int> GetLineUpHistory()
 	{
-		return _gameManager.LineUpHistory;
+		List<Boat> boats = _gameManager.LineUpHistory;
+		List<int> offsets = _gameManager.HistoricTimeOffset;
+		Dictionary<Boat, int> boatOffsets = new Dictionary<Boat, int>();
+		for (int i = 0; i < boats.Count; i++)
+		{
+			if (i < offsets.Count)
+			{
+				boatOffsets.Add(boats[i], offsets[i]);
+			}
+		}
+		return boatOffsets;
 	}
 
 	/// <summary>
@@ -80,7 +90,7 @@ public class TeamSelection : MonoBehaviour {
 	/// <summary>
 	/// Confirm the line-up and get its score
 	/// </summary>
-	public int ConfirmLineUp(bool historical = false)
+	public int ConfirmLineUp(int offset = 0, bool historical = false)
 	{
 		int score = 0;
 		_confirmCount++;
@@ -93,7 +103,7 @@ public class TeamSelection : MonoBehaviour {
 		}
 		else
 		{
-			_gameManager.SaveLineUp();
+			_gameManager.SaveLineUp(offset);
 			score = _gameManager.Boat.BoatScore;
 			if (_confirmCount >= _sessionLength)
 			{

@@ -19,6 +19,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public EventController EventController { get; set; }
 
 		public List<Boat> LineUpHistory { get; set; }
+		public List<int> HistoricTimeOffset { get; set; }
 		public int ActionAllowance { get; set; }
 		public int CrewEditAllowance { get; set; }
 		private int _raceSessionLength { get; set; }
@@ -116,6 +117,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			_storageLocation = storageLocation;
 			_storageProvider = storagePorvider;
 			LineUpHistory = new List<Boat>();
+			HistoricTimeOffset = new List<int>();
 			Boat.GetIdealCrew();
 			Boat.CreateRecruits(iat, templateStorage, storagePorvider, combinedStorageLocation);
 		}
@@ -387,6 +389,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void LoadLineUpHistory()
 		{
 			LineUpHistory = new List<Boat>();
+			HistoricTimeOffset = new List<int>();
 			var managerEvents = Boat.Manager.EmotionalAppraisal.EventRecords;
 			var lineUpEvents = managerEvents.Where(e => e.Event.Contains("SelectedLineUp")).Select(e => e.Event);
 			foreach (var lineup in lineUpEvents)
@@ -403,10 +406,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				boat.IdealMatchScore = float.Parse(subjectSplit[(boat.BoatPositions.Count * 2) + 1]);
 				boat.SelectionMistakes = new List<string>();
-				for (int i = (boat.BoatPositions.Count + 1) * 2; i < subjectSplit.Length; i++)
+				for (int i = (boat.BoatPositions.Count + 1) * 2; i < subjectSplit.Length - 1; i++)
 				{
 					boat.SelectionMistakes.Add(subjectSplit[i].Replace(" ", ""));
 				}
+				HistoricTimeOffset.Add(int.Parse(subjectSplit[subjectSplit.Length - 1]));
 				LineUpHistory.Add(boat);
 			}
 		}
@@ -474,7 +478,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Save the current boat line-up to the manager's EA file
 		/// </summary>
-		public void SaveLineUp()
+		public void SaveLineUp(int offset)
 		{
 			var manager = Boat.Manager;
 			var spacelessName = manager.EmotionalAppraisal.Perspective;
@@ -502,6 +506,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				crew += "," + Boat.SelectionMistakes[i];
 			}
+			crew += "," + offset.ToString();
 			var eventString = String.Format(eventStringUnformatted, boatType, crew);
 			manager.EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			manager.SaveStatus();
@@ -518,6 +523,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			lastBoat.IdealMatchScore = lastBoat.IdealMatchScore;
 			lastBoat.Manager = Boat.Manager;
 			LineUpHistory.Add(lastBoat);
+			HistoricTimeOffset.Add(offset);
 		}
 
 		/// <summary>
