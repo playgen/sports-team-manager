@@ -418,7 +418,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			Destroy(position);
 		}
-		_teamSelection.PostRaceEvent();
 		float idealScore = _teamSelection.IdealCheck();
 		List<string> mistakeList = _teamSelection.GetAssignmentMistakes(3);
 		foreach (string mistake in mistakeList)

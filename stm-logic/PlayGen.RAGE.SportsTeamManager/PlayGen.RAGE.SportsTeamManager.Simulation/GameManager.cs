@@ -550,11 +550,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			switch (postRaceEvent.Style)
 			{
 				case "NotPicked":
-					if (Boat.UnassignedCrew.Count == 0)
+                    List<CrewMember> allCrew = Boat.GetAllCrewMembers();
+                    foreach (var bp in LineUpHistory.LastOrDefault().BoatPositions)
+                    {
+                        if (bp.CrewMember != null)
+                        {
+                            allCrew.Remove(allCrew.First(ac => ac.Name == bp.CrewMember.Name));
+                        }
+                    }
+                    if (allCrew.Count == 0)
 					{
 						return new KeyValuePair<List<CrewMember>, string>(null, null);
 					}
-					CrewMember notSelected = Boat.UnassignedCrew.OrderBy(c => Guid.NewGuid()).First();
+					CrewMember notSelected = allCrew.OrderBy(c => Guid.NewGuid()).First();
 					eventMembers.Add(notSelected);
 					if (postRaceEvent.NextState != "-")
 					{

@@ -108,7 +108,8 @@ public class TeamSelection : MonoBehaviour {
 			if (_confirmCount >= _sessionLength)
 			{
 				_gameManager.ConfirmLineUp();
-				_confirmCount -= _sessionLength;
+                _postRaceEvent.GetEvent();
+                _confirmCount -= _sessionLength;
 			}
 		}
 		return score;
