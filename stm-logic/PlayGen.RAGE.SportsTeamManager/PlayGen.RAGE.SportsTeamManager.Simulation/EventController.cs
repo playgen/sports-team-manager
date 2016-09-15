@@ -27,7 +27,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				Random random = new Random();
 				int dialogueIndex = random.Next(0, dialogueOptions.Count() * chance);
-				if (dialogueIndex % 2 == 0)
+				if (dialogueIndex % chance == 0)
 				{
 					DialogueStateActionDTO selectedDialogue = dialogueOptions.ToArray()[dialogueIndex / chance];
 					return selectedDialogue;

@@ -402,7 +402,19 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		CloseConfirmPopUp();
 		Tracker.T.completable.Completed("Crew Confirmed", CompletableTracker.Completable.Stage);
-		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
+        List<BoatPosition> currentPositions = new List<BoatPosition>();
+        foreach (BoatPosition bp in _teamSelection.GetBoat().BoatPositions)
+        {
+            if (bp.CrewMember != null)
+            {
+                currentPositions.Add(new BoatPosition
+                {
+                    Position = bp.Position,
+                    CrewMember = bp.CrewMember
+                });
+            }
+        }
+        foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
 		{
 			Destroy(position);
 		}
@@ -481,23 +493,11 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 		_recruitButtons.Clear();
 
-		/*_raceButton.onClick.RemoveAllListeners();
+        /*_raceButton.onClick.RemoveAllListeners();
 		_raceButton.GetComponentInChildren<Text>().text = "REPEAT";
 		_raceButton.onClick.AddListener(() => RepeatLineUp(currentPositions));*/
 #if UNITY_EDITOR
-		List<BoatPosition> currentPositions = new List<BoatPosition>();
-		foreach (BoatPosition bp in _teamSelection.GetBoat().BoatPositions)
-		{
-			if (bp.CrewMember != null)
-			{
-				currentPositions.Add(new BoatPosition
-				{
-					Position = bp.Position,
-					CrewMember = bp.CrewMember
-				});
-			}
-		}
-		_lastCrew = currentPositions;
+        _lastCrew = currentPositions;
 #endif
 		Destroy(_raceButton.gameObject);
 
