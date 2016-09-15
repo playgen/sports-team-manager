@@ -11,7 +11,8 @@ public class CrewMemberUI : MonoBehaviour {
 
 	private TeamSelection _teamSelection;
 	private MemberMeetingUI _meetingUI;
-	private CrewMember _crewMember;
+    private PositionDisplayUI _positionUI;
+    private CrewMember _crewMember;
 	private bool _beingClicked;
 	private bool _beingDragged;
 	private Vector2 _dragPosition;
@@ -59,11 +60,12 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 	}
 
-	public void SetUp(TeamSelection teamSelection, MemberMeetingUI meetingUI, CrewMember crewMember, Transform parent, Icon[] roleIcons)
+	public void SetUp(TeamSelection teamSelection, MemberMeetingUI meetingUI, PositionDisplayUI positionUI, CrewMember crewMember, Transform parent, Icon[] roleIcons)
 	{
 		_teamSelection = teamSelection;
 		_meetingUI = meetingUI;
-		_crewMember = crewMember;
+        _positionUI = positionUI;
+        _crewMember = crewMember;
 		_defaultParent = parent;
 		_roleIcons = roleIcons;
 	}
@@ -152,8 +154,8 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 		if (!placed)
 		{
-			Reset();
-			_teamSelection.RemoveCrew(_crewMember);
+            _teamSelection.RemoveCrew(_crewMember);
+            Reset();
 		}
 		if (_meetingUI.gameObject.activeSelf)
 		{
@@ -179,7 +181,10 @@ public class CrewMemberUI : MonoBehaviour {
 		var positionImage = transform.Find("Position").gameObject;
 		positionImage.GetComponent<Image>().enabled = true;
 		positionImage.GetComponent<Image>().sprite = _roleIcons.FirstOrDefault(mo => mo.Name == position.gameObject.GetComponent<PositionUI>().GetPosition().Name).Image;
-	}
+        _positionUI.UpdateDisplay();
+        positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
+        positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.Display(position.gameObject.GetComponent<PositionUI>().GetPosition()); });
+    }
 
 	/// <summary>
 	/// Reset this UI back to its defaults.
@@ -202,6 +207,7 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 		var positionImage = transform.Find("Position").gameObject;
 		positionImage.GetComponent<Image>().enabled = false;
-		//positionImage.GetComponent<Image>().sprite
-	}
+        positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
+        _positionUI.UpdateDisplay();
+    }
 }

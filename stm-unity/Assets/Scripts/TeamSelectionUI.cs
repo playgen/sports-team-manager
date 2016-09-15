@@ -220,7 +220,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			crewMember.transform.SetParent(_crewContainer.transform, false);
 			crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(crew[i].Name, true);
 			crewMember.name = SplitName(crew[i].Name);
-			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, _meetingUI, crew[i], _crewContainer.transform, _roleIcons);
+			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, _meetingUI, _positionUI, crew[i], _crewContainer.transform, _roleIcons);
 			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(crew[i].Avatar, crew[i].GetMood(), primary, secondary, true);
 			crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
 			crewMember.transform.Find("Position").GetComponent<Image>().enabled = false;
