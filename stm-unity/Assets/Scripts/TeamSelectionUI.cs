@@ -47,12 +47,18 @@ public class TeamSelectionUI : MonoBehaviour {
 	private MemberMeetingUI _meetingUI;
 	[SerializeField]
 	private PositionDisplayUI _positionUI;
+    [SerializeField]
+    private PostRaceEventUI _postRaceEventUI;
 
-	private GameObject _currentBoat;
+    private GameObject _currentBoat;
 	private List<GameObject> _boatHistory = new List<GameObject>();
 	private int _positionsEmpty;
 	[SerializeField]
 	private GameObject _preRacePopUp;
+	[SerializeField]
+	private GameObject _postRacePopUp;
+	[SerializeField]
+	private GameObject _postRaceCrewPrefab;
 	[SerializeField]
 	private Button _popUpBlocker;
 
@@ -150,6 +156,14 @@ public class TeamSelectionUI : MonoBehaviour {
 		return name;
 	}
 
+    KeyValuePair<Color32, Color32> GetBoatColors()
+    {
+        var currentBoat = _teamSelection.GetBoat();
+        var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);
+        var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
+        return new KeyValuePair<Color32, Color32>(primary, secondary);
+    }
+
 	/// <summary>
 	/// Instantiate a new UI object for a Boat line-up, adjust container size, position and position of all other similar elements accordingly
 	/// </summary>
@@ -211,9 +225,8 @@ public class TeamSelectionUI : MonoBehaviour {
 	private void CreateCrew()
 	{
 		var boat = _teamSelection.LoadCrew();
-		var primary = new Color32((byte)boat.TeamColorsPrimary[0], (byte)boat.TeamColorsPrimary[1], (byte)boat.TeamColorsPrimary[2], 255);
-		var secondary = new Color32((byte)boat.TeamColorsSecondary[0], (byte)boat.TeamColorsSecondary[1], (byte)boat.TeamColorsSecondary[2], 255);
-		var crew = boat.GetAllCrewMembers();
+        KeyValuePair<Color32, Color32> boatColors = GetBoatColors();
+        var crew = boat.GetAllCrewMembers();
 		for (int i = 0; i < crew.Count; i++)
 		{
 			GameObject crewMember = Instantiate(_crewPrefab);
@@ -221,7 +234,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(crew[i].Name, true);
 			crewMember.name = SplitName(crew[i].Name);
 			crewMember.GetComponent<CrewMemberUI>().SetUp(_teamSelection, _meetingUI, _positionUI, crew[i], _crewContainer.transform, _roleIcons);
-			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(crew[i].Avatar, crew[i].GetMood(), primary, secondary, true);
+			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(crew[i].Avatar, crew[i].GetMood(), boatColors.Key, boatColors.Value, true);
 			crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
 			crewMember.transform.Find("Position").GetComponent<Image>().enabled = false;
 		}
@@ -253,9 +266,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var boatContainer = CreateBoat(boat);
 		var teamScore = boat.BoatPositions.Sum(bp => bp.PositionScore);
 		var scoreText = boatContainer.transform.Find("Score").GetComponent<Text>();
-		var currentBoat = _teamSelection.GetBoat();
-		var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);
-		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
+        KeyValuePair<Color32, Color32> boatColors = GetBoatColors();
 		var idealScore = boat.IdealMatchScore;
 		var unideal = boat.BoatPositions.Count - (int)idealScore - ((idealScore % 1) * 10);
 		List<string> mistakeList = boat.GetAssignmentMistakes(3);
@@ -301,7 +312,7 @@ public class TeamSelectionUI : MonoBehaviour {
 					positionImage.GetComponent<Image>().sprite = _roleIcons.FirstOrDefault(mo => mo.Name == boatPosition.Name).Image;
 					positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 					positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.Display(boatPosition); });
-					crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(boat.BoatPositions[i].CrewMember.Avatar, boat.BoatPositions[i].CrewMember.GetMood(), primary, secondary, true);
+					crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(boat.BoatPositions[i].CrewMember.Avatar, boat.BoatPositions[i].CrewMember.GetMood(), boatColors.Key, boatColors.Value, true);
 					nameText.enabled = true;
 					Destroy(position);
 					Destroy(crewMember.GetComponent<CrewMemberUI>());
@@ -335,7 +346,21 @@ public class TeamSelectionUI : MonoBehaviour {
 				position++;
 				expected -= boat.BoatPositions.Count;
 			}
-			scoreText.text = "POSITION: " + position;
+            switch (position)
+            {
+                case 1:
+                    scoreText.text = "POSITION: " + "1st";
+                    break;
+                case 2:
+                    scoreText.text = "POSITION: " + "2nd";
+                    break;
+                case 3:
+                    scoreText.text = "POSITION: " + "3rd";
+                    break;
+                default:
+                    scoreText.text = "POSITION: " + position + "th";
+                    break;
+            }
 		}
 	}
 
@@ -402,21 +427,37 @@ public class TeamSelectionUI : MonoBehaviour {
 		int offset = UnityEngine.Random.Range(-3, 4);
 		var teamScore = _teamSelection.ConfirmLineUp(offset);
 		var scoreText = _currentBoat.transform.Find("Score").GetComponent<Text>();
-		if (!_teamSelection.IsRace())
+        string finishPositionText = "";
+        if (!_teamSelection.IsRace())
 		{
 			TimeSpan timeTaken = TimeSpan.FromSeconds(1800 - ((teamScore - 20) * 10) + offset);
 			scoreText.text = string.Format("{0:D2}:{1:D2}", timeTaken.Minutes, timeTaken.Seconds);
 		}
 		else
 		{
-			int position = 1;
-			float expected = 7.5f * _teamSelection.GetBoat().BoatPositions.Count;
+            int finishPosition = 1;
+            float expected = 7.5f * _teamSelection.GetBoat().BoatPositions.Count;
 			while (teamScore < expected)
 			{
-				position++;
+                finishPosition++;
 				expected -= _teamSelection.GetBoat().BoatPositions.Count;
 			}
-			scoreText.text = "POSITION: " + position;
+            switch (finishPosition)
+            {
+                case 1:
+                    finishPositionText = "1st";
+                    break;
+                case 2:
+                    finishPositionText = "2nd";
+                    break;
+                case 3:
+                    finishPositionText = "3rd";
+                    break;
+                default:
+                    finishPositionText = finishPosition + "th";
+                    break;
+            }
+			scoreText.text = "POSITION: " + finishPositionText;
 		}
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
@@ -462,14 +503,67 @@ public class TeamSelectionUI : MonoBehaviour {
 
 		_boatHistory.Add(_currentBoat);
 		CreateNewBoat();
-		_positionUI.UpdateDisplay();
-		if (_meetingUI.gameObject.activeSelf)
-		{
-			_meetingUI.ResetDisplay();
-		}
+        if (!_teamSelection.IsRace())
+        {
+            _positionUI.UpdateDisplay();
+            if (_meetingUI.gameObject.activeSelf)
+            {
+                _meetingUI.ResetDisplay();
+            }
+        }
+        else
+        {
+            DisplayPostRacePopUp(currentPositions, finishPositionText);
+        }
 	}
 
-	public void RepeatLineUp(List<BoatPosition> boatPositions, bool buttonTriggered = true)
+    void DisplayPostRacePopUp(List<BoatPosition> currentPositions, string finishPositionText)
+    {
+        _meetingUI.gameObject.SetActive(false);
+        _positionUI.ClosePositionPopUp();
+        _postRacePopUp.SetActive(true);
+        _popUpBlocker.transform.SetAsLastSibling();
+        _postRacePopUp.transform.SetAsLastSibling();
+        _popUpBlocker.gameObject.SetActive(true);
+        _popUpBlocker.onClick.RemoveAllListeners();
+        _popUpBlocker.onClick.AddListener(delegate { ClosePostRacePopUp(); });
+        foreach (Transform child in _postRacePopUp.transform.Find("Crew"))
+        {
+            Destroy(child.gameObject);
+        }
+        KeyValuePair<Color32, Color32> boatColors = GetBoatColors();
+        for (int i = 0; i < currentPositions.Count; i++)
+        {
+            GameObject memberObject = Instantiate(_postRaceCrewPrefab);
+            memberObject.transform.SetParent(_postRacePopUp.transform.Find("Crew"), false);
+            memberObject.name = currentPositions[i].CrewMember.Name;
+            memberObject.transform.Find("Avatar").GetComponentInChildren<AvatarDisplay>().SetAvatar(currentPositions[i].CrewMember.Avatar, currentPositions[i].CrewMember.GetMood(), boatColors.Key, boatColors.Value);
+            memberObject.transform.Find("Position").GetComponent<Image>().sprite = RoleLogos.FirstOrDefault(mo => mo.Name == currentPositions[i].Position.Name).Image;
+            memberObject.transform.Find("Position").GetComponent<RectTransform>().offsetMin = new Vector2(10, 0);
+            if (i % 2 != 0)
+            {
+                Vector3 currentScale = memberObject.transform.Find("Avatar").localScale;
+                memberObject.transform.Find("Avatar").localScale = new Vector3(-currentScale.x, currentScale.y, currentScale.z);
+                memberObject.transform.Find("Position").GetComponent<RectTransform>().offsetMin = new Vector2(-10, 0);
+            }
+        }
+        _postRacePopUp.transform.Find("Result").GetComponent<Text>().text = _teamSelection.GetBoat().Name + " finished " + finishPositionText + "!";
+    }
+
+    public void ClosePostRacePopUp()
+    {
+        _postRacePopUp.SetActive(false);
+        _popUpBlocker.gameObject.SetActive(false);
+        if (_postRaceEventUI.gameObject.activeSelf)
+        {
+            _popUpBlocker.transform.SetAsLastSibling();
+            _postRaceEventUI.transform.SetAsLastSibling();
+            _popUpBlocker.gameObject.SetActive(true);
+            _popUpBlocker.onClick.RemoveAllListeners();
+        }
+    }
+
+    public void RepeatLineUp(List<BoatPosition> boatPositions, bool buttonTriggered = true)
 	{
 		List<BoatPosition> tempBoatPositions = new List<BoatPosition>();
 		tempBoatPositions.AddRange(boatPositions);
