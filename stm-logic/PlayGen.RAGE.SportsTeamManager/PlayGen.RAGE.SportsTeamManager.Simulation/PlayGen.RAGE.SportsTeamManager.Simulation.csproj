@@ -82,6 +82,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BiggestDingy.cs" />
+    <Compile Include="BiggerDinghy.cs" />
     <Compile Include="Avatar.cs" />
     <Compile Include="AvatarGeneratorConfig.cs" />
     <Compile Include="Boat.cs" />

@@ -46,8 +46,8 @@
 								{
 									"Set": ["Opinion([manager]) < -2"]
 								},
-							"Desirability": -2,
-							"Praiseworthiness": -2
+							"Desirability": -4,
+							"Praiseworthiness": -4
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, ManagerOpinionCheck([manager]), Self)",
@@ -55,8 +55,8 @@
 								{
 									"Set": ["Opinion([manager]) > 2"]
 								},
-							"Desirability": 2,
-							"Praiseworthiness": 2
+							"Desirability": 4,
+							"Praiseworthiness": 4
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, PositionRating([score]), Self)",
@@ -64,8 +64,8 @@
 								{
 									"Set": ["[score] > 6"]
 								},
-							"Desirability": 3,
-							"Praiseworthiness": 3
+							"Desirability": 6,
+							"Praiseworthiness": 6
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, PositionRating([score]), Self)",
@@ -73,8 +73,8 @@
 								{
 									"Set": ["0 = [score]", "Race(Rest) < 1"]
 								},
-							"Desirability": -4,
-							"Praiseworthiness": -4
+							"Desirability": -8,
+							"Praiseworthiness": -8
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, PositionRating([score]), Self)",
@@ -82,8 +82,8 @@
 								{
 									"Set": ["[score] != 0", "[score] < 5"]
 								},
-							"Desirability": -2,
-							"Praiseworthiness": -2
+							"Desirability": -4,
+							"Praiseworthiness": -4
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
@@ -91,8 +91,8 @@
 								{
 									"Set": ["NotPickedAfterSorry = [reply]"]
 								},
-							"Desirability": -4,
-							"Praiseworthiness": -4
+							"Desirability": -8,
+							"Praiseworthiness": -8
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
@@ -100,8 +100,8 @@
 								{
 									"Set": ["NotPickedSkillFriends = [reply]"]
 								},
-							"Desirability": 2,
-							"Praiseworthiness": 2
+							"Desirability": 4,
+							"Praiseworthiness": 4
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
@@ -109,8 +109,8 @@
 								{
 									"Set": ["NotPickedSkillIncorrect = [reply]"]
 								},
-							"Desirability": -2,
-							"Praiseworthiness": -2
+							"Desirability": -4,
+							"Praiseworthiness": -4
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
@@ -118,8 +118,8 @@
 								{
 									"Set": ["NotPickedSkillNothing = [reply]"]
 								},
-							"Desirability": -3,
-							"Praiseworthiness": -3
+							"Desirability": -6,
+							"Praiseworthiness": -6
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
@@ -127,8 +127,8 @@
 								{
 									"Set": ["NotPickedSkillTrain = [reply]"]
 								},
-							"Desirability": 2,
-							"Praiseworthiness": 2
+							"Desirability": 4,
+							"Praiseworthiness": 4
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
@@ -136,8 +136,8 @@
 								{
 									"Set": ["NotPickedSorry = [reply]"]
 								},
-							"Desirability": 3,
-							"Praiseworthiness": 3
+							"Desirability": 4,
+							"Praiseworthiness": 4
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
@@ -145,8 +145,8 @@
 								{
 									"Set": ["NotPickedFiredNo = [reply]"]
 								},
-							"Desirability": -3,
-							"Praiseworthiness": -3
+							"Desirability": -6,
+							"Praiseworthiness": -6
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, OpinionCheck([member], [x], [y]), Self)",
@@ -154,8 +154,8 @@
 								{
 									"Set": ["[x] > [y]", "Opinion([member]) < -2"]
 								},
-							"Desirability": -4,
-							"Praiseworthiness": -4
+							"Desirability": -8,
+							"Praiseworthiness": -8
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, OpinionCheck([member], [x], [y]), Self)",
@@ -163,8 +163,8 @@
 								{
 									"Set": ["Opinion([member]) > 2"]
 								},
-							"Desirability": 3,
-							"Praiseworthiness": 3
+							"Desirability": 6,
+							"Praiseworthiness": 6
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, OpinionCheck([member], [x], [y]), Self)",
@@ -172,8 +172,8 @@
 								{
 									"Set": ["Opinion([member]) < -2"]
 								},
-							"Desirability": -2,
-							"Praiseworthiness": -2
+							"Desirability": -4,
+							"Praiseworthiness": -4
 						}]
 				}
 		}],

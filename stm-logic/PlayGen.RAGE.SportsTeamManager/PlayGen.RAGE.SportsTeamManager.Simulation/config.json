@@ -19,8 +19,8 @@
 	"DefaultMoodMin": 0,
 	"DefaultMoodMax": 0,
 	"PostRaceRest": 0,
-	"DefaultActionAllowance": 5,
-	"ActionAllowancePerPosition": 5,
+	"DefaultActionAllowance": 10,
+	"ActionAllowancePerPosition": 10,
 	"CrewEditAllowancePerPosition": 1,
 	"RecruitmentCost": 4,
 	"FiringCost": 4,
@@ -30,7 +30,7 @@
 	"OpinionNegativeRevealCost": 2,
 	"SendRecruitmentQuestionCost": 1,
 	"RaceSessionLength": 5,
-	"EventChance": 2,
+	"EventChance": 1,
 	"HiddenMistakeLimit": 0.5,
 	"HiddenOpinionLimit":  0.5
 }

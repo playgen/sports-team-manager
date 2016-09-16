@@ -86,16 +86,31 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.CreateFile(iat, templateStorage, storagePorvider, combinedStorageLocation);
 				member.Avatar = new Avatar(member);
 				Boat.AddCrew(member);
-				foreach (CrewMember otherMember in crew)
-				{
-					if (member != otherMember)
-					{
-						member.AddOrUpdateOpinion(otherMember, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
-						member.AddOrUpdateRevealedOpinion(otherMember, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
-					}
-					member.AddOrUpdateOpinion(Boat.Manager, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
-					member.AddOrUpdateRevealedOpinion(Boat.Manager, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
-				}
+                if (initialCrew)
+                {
+                    foreach (CrewMember otherMember in crew)
+                    {
+                        if (member != otherMember)
+                        {
+                            member.AddOrUpdateOpinion(otherMember, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+                            member.AddOrUpdateRevealedOpinion(otherMember, 0);
+                        }
+                        member.AddOrUpdateOpinion(Boat.Manager, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+                        member.AddOrUpdateRevealedOpinion(Boat.Manager, 0);
+                    }
+                } else
+                {
+                    foreach (CrewMember otherMember in crew)
+                    {
+                        if (member != otherMember)
+                        {
+                            member.AddOrUpdateOpinion(otherMember, 0);
+                            member.AddOrUpdateRevealedOpinion(otherMember, 0);
+                        }
+                        member.AddOrUpdateOpinion(Boat.Manager, 0);
+                        member.AddOrUpdateRevealedOpinion(Boat.Manager, 0);
+                    }
+                }
 				member.UpdateBeliefs("null");
 				member.SaveStatus();
 			}
@@ -412,12 +427,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				case "Dinghy":
 					newBoat = new AltDinghy(_config);
 					break;
-				default:
+                case "AltDinghy":
+                    newBoat = new BiggerDinghy(_config);
+                    break;
+                /*case "BiggerDinghy":
+                    newBoat = new BiggestDinghy(_config);
+                    break;*/
+                default:
 					return;
 			}
 			Boat.Manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), newBoat.GetType().Name, "SELF");
 			Boat.Manager.SaveStatus();
-			int extraMembers = (newBoat.BoatPositions.Count - Boat.BoatPositions.Count) * 2;
+            int extraMembers = 0;//(newBoat.BoatPositions.Count - Boat.BoatPositions.Count) * 2;
 			LoadGame(_storageProvider, _storageLocation, Boat.Name);
 			Random rand = new Random();
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
@@ -426,20 +447,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (CanAddToCrew())
 				{
 					CrewMember newMember = Boat.CreateNewMember(rand);
-					newMember.Avatar = new Avatar(newMember);
-					string combinedStorageLocation = Path.Combine(_storageLocation, Boat.Name);
-					newMember.CreateFile(_iat, templateStorage, _storageProvider, combinedStorageLocation);
+                    string combinedStorageLocation = Path.Combine(_storageLocation, Boat.Name);
+                    newMember.CreateFile(_iat, templateStorage, _storageProvider, combinedStorageLocation);
+                    newMember.Avatar = new Avatar(newMember);
 					foreach (CrewMember otherMember in Boat.GetAllCrewMembers())
 					{
 						if (newMember != otherMember)
 						{
 							newMember.AddOrUpdateOpinion(otherMember, rand.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
-							newMember.AddOrUpdateRevealedOpinion(otherMember, rand.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+							newMember.AddOrUpdateRevealedOpinion(otherMember, 0);
 							otherMember.AddOrUpdateOpinion(newMember, rand.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
-							otherMember.AddOrUpdateRevealedOpinion(newMember, rand.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+							otherMember.AddOrUpdateRevealedOpinion(newMember, 0);
 						}
-						newMember.AddOrUpdateOpinion(Boat.Manager, rand.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
-						newMember.AddOrUpdateRevealedOpinion(Boat.Manager, rand.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+						newMember.AddOrUpdateOpinion(Boat.Manager, 0);
+						newMember.AddOrUpdateRevealedOpinion(Boat.Manager, 0);
 					}
 					newMember.UpdateBeliefs("null");
 					newMember.SaveStatus();
@@ -500,7 +521,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			manager.EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			manager.SaveStatus();
 			Boat lastBoat = new Boat(_config);
-			foreach (BoatPosition bp in Boat.BoatPositions)
+            //Boat lastBoat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + Boat.GetType().Name), _config);
+            foreach (BoatPosition bp in Boat.BoatPositions)
 			{
 				lastBoat.BoatPositions.Add(new BoatPosition
 				{
@@ -521,7 +543,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void ConfirmLineUp()
 		{
 			Boat.ConfirmChanges(ActionAllowance);
-			PromoteBoat();
+            if (((LineUpHistory.Count + 1) / _raceSessionLength) % 2 != 0)
+            {
+                PromoteBoat();
+            }
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 			Boat.CreateRecruits(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name));
 			ResetActionAllowance();
@@ -530,7 +555,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public KeyValuePair<List<CrewMember>, string> SelectPostRaceEvent()
 		{
-			DialogueStateActionDTO postRaceEvent = EventController.SelectPostRaceEvent(_iat, (int)_config.ConfigValues[ConfigKeys.EventChance.ToString()]);
+            if ((LineUpHistory.Count / _raceSessionLength) % 2 != 0)
+            {
+                return new KeyValuePair<List<CrewMember>, string>(null, null);
+            }
+            DialogueStateActionDTO postRaceEvent = EventController.SelectPostRaceEvent(_iat, (int)_config.ConfigValues[ConfigKeys.EventChance.ToString()]);
 			if (postRaceEvent == null)
 			{
 				return new KeyValuePair<List<CrewMember>, string>(null, null);
@@ -644,12 +673,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					if (member != otherMember)
 					{
 						member.AddOrUpdateOpinion(otherMember, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
-						member.AddOrUpdateRevealedOpinion(otherMember, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+						member.AddOrUpdateRevealedOpinion(otherMember, 0);
 						otherMember.AddOrUpdateOpinion(member, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
-						otherMember.AddOrUpdateRevealedOpinion(member, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+						otherMember.AddOrUpdateRevealedOpinion(member, 0);
 					}
 					member.AddOrUpdateOpinion(Boat.Manager, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
-					member.AddOrUpdateRevealedOpinion(Boat.Manager, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+					member.AddOrUpdateRevealedOpinion(Boat.Manager, 0);
 				}
 				Boat.AddCrew(member);
 				member.UpdateBeliefs("null");

@@ -437,11 +437,11 @@ public class TeamSelectionUI : MonoBehaviour {
 		_currentBoat.transform.Find("Light Container/Yellow").GetComponent<Image>().color = Color.yellow;
 		_currentBoat.transform.Find("Light Container/Red").GetComponent<Image>().color = Color.red;
 		int offset = UnityEngine.Random.Range(-3, 4);
-		var teamScore = _teamSelection.ConfirmLineUp(offset);
-		var scoreText = _currentBoat.transform.Find("Score").GetComponent<Text>();
         string finishPositionText = "";
         int finishPosition = 1;
         float expected = 7.5f * _teamSelection.GetBoat().BoatPositions.Count;
+        var teamScore = _teamSelection.ConfirmLineUp(offset);
+		var scoreText = _currentBoat.transform.Find("Score").GetComponent<Text>();
         foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
         {
             Destroy(crewMember.transform.Find("Opinion").GetComponent<Image>());
