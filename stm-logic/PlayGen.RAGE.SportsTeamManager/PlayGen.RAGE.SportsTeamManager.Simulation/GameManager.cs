@@ -86,17 +86,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.CreateFile(iat, templateStorage, storagePorvider, combinedStorageLocation);
 				member.Avatar = new Avatar(member);
 				Boat.AddCrew(member);
-				/*if (initialCrew)
-				{
-					foreach (CrewMember otherMember in crew)
-					{
-						if (member != otherMember)
-						{
-							member.AddOrUpdateOpinion(otherMember, rand.Next(-4, 5));
-						}
-						member.AddOrUpdateOpinion(Boat.Manager, rand.Next(-3, 4));
-					}
-				}*/
 				foreach (CrewMember otherMember in crew)
 				{
 					if (member != otherMember)

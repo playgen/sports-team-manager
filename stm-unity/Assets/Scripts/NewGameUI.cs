@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 
+using UnityEngine.EventSystems;
+
 [RequireComponent(typeof(NewGame))]
 public class NewGameUI : MonoBehaviour {
 
@@ -44,7 +46,23 @@ public class NewGameUI : MonoBehaviour {
 		{
 			_managerAge.text = (ageTest * -1).ToString();
 		}
-	}
+        if (Input.GetKeyDown(KeyCode.Tab) && EventSystem.current.currentSelectedGameObject != null)
+        {
+            Selectable next = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().navigation.selectOnDown;
+
+            if (next != null)
+            {
+                InputField inputfield = next.GetComponent<InputField>();
+                if (inputfield != null) inputfield.OnPointerClick(new PointerEventData(EventSystem.current));
+
+                EventSystem.current.SetSelectedGameObject(next.gameObject, new BaseEventData(EventSystem.current));
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            ExistingGameCheck();
+        }
+    }
 
 	public void RandomColor()
 	{

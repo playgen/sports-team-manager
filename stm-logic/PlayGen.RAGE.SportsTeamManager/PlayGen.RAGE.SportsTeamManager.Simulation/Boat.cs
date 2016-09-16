@@ -174,8 +174,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				Recruits.Remove(member);
 			}
-			
-			int amount = BoatPositions.Count + 1 - Recruits.Count;
+
+            //int amount = BoatPositions.Count + 1 - Recruits.Count;
+            int amount = 4 - Recruits.Count;
 			for (int i = 0; i < amount; i++)
 			{
 				CrewMember newMember = CreateNewMember(rand);
