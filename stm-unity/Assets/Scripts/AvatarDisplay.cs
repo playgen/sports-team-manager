@@ -28,7 +28,7 @@ public class AvatarDisplay : MonoBehaviour
 	Dictionary<string, Sprite> Sprites = new Dictionary<string, Sprite>();
 #endif
 
-	private const byte EyebrowAlpha = 125;
+	private const byte EyebrowAlpha = 128;
 	private const float MaleOffsetPercent = 18f;
 
 	/// <summary>
@@ -46,49 +46,11 @@ public class AvatarDisplay : MonoBehaviour
 		// TODO reference the texture packed images
 		// HACK: Just load the images from resources
 
-		var moodStr = "StronglyDisagree";
-		/*if (mood >= 3)
-		{
-			moodStr = "StronglyAgree";
-		}
-		else if (mood >= 1)
-		{
-			moodStr = "Agree";
-		}
-        else if (mood <= -3)
-        {
-            moodStr = "StronglyDisAgree";
-        }
-        else if (mood <= -1)
-        {
-            moodStr = "Disagree";
-        }*/
-
         Body.sprite = Resources.Load<Sprite>(string.Format("Avatars/Body/{0}", avatar.BodyType));
 		Outfit.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitBaseType));
 		OutfitHighlight.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitHiglightType));
 		OutfitShadow.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitShadowType));
 
-		Eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}_{2}", avatar.EyeType, avatar.EyeColor, moodStr));
-        if (Eyes.sprite == null)
-        {
-            Eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.EyeType, moodStr));
-            if (Eyes.sprite == null)
-            {
-                Eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}_Neutral", avatar.EyeType, avatar.EyeColor));
-            }
-        }
-
-		Eyebrow.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.EyebrowType, moodStr));
-		Mouth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.MouthType, moodStr));
-        Teeth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.TeethType, moodStr));
-        if (Teeth.sprite != null)
-        {
-            Teeth.color = Color.white;
-        } else
-        {
-            Teeth.color = new Color(0, 0, 0, 0);
-        }
         Nose.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}", avatar.NoseType));
 
 		HairBack.sprite = Resources.Load<Sprite>(string.Format("Avatars/Hair/{0}_Back", avatar.HairType));
@@ -126,7 +88,72 @@ public class AvatarDisplay : MonoBehaviour
 		{
 			SetFullBodyProperties(avatar);
 		}
+        UpdateMood(avatar, mood);
 	}
+
+    public void UpdateMood(Avatar avatar, string reaction)
+    {
+        switch (reaction.Replace(" ", ""))
+        {
+            case "StronglyAgree":
+                UpdateMood(avatar, 4);
+                return;
+            case "Agree":
+                UpdateMood(avatar, 2);
+                return;
+            case "Disagree":
+                UpdateMood(avatar, -2);
+                return;
+            case "StronglyDisagree":
+                UpdateMood(avatar, -4);
+                return;
+            default:
+                UpdateMood(avatar, 0);
+                break;
+        }
+    }
+
+    public void UpdateMood(Avatar avatar, float mood)
+    {
+        var moodStr = "Neutral";
+        if (mood >= 3)
+        {
+            moodStr = "StronglyAgree";
+        }
+        else if (mood >= 1)
+        {
+            moodStr = "Agree";
+        }
+        else if (mood <= -3)
+        {
+            moodStr = "StronglyDisAgree";
+        }
+        else if (mood <= -1)
+        {
+            moodStr = "Disagree";
+        }
+        Eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}_{2}", avatar.EyeType, avatar.EyeColor, moodStr));
+        if (Eyes.sprite == null)
+        {
+            Eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.EyeType, moodStr));
+            if (Eyes.sprite == null)
+            {
+                Eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}_Neutral", avatar.EyeType, avatar.EyeColor));
+            }
+        }
+
+        Eyebrow.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.EyebrowType, moodStr));
+        Mouth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.MouthType, moodStr));
+        Teeth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.TeethType, moodStr));
+        if (Teeth.sprite != null)
+        {
+            Teeth.color = Color.white;
+        }
+        else
+        {
+            Teeth.color = new Color(0, 0, 0, 0);
+        }
+    }
 
 	/// <summary>
 	/// Setup avatar properties that are only common in icons

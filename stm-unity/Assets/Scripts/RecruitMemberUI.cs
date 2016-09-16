@@ -86,7 +86,7 @@ public class RecruitMemberUI : MonoBehaviour
 			var currentBoat = _recruitMember.GetBoat();
 			var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);
 			var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
-			_recruitUI[i].transform.Find("Image").GetComponentInChildren<AvatarDisplay>().SetAvatar(thisRecruit.Avatar, thisRecruit.GetMood(), primary, secondary);
+			_recruitUI[i].transform.Find("Image").GetComponentInChildren<AvatarDisplay>().SetAvatar(thisRecruit.Avatar, 0, primary, secondary);
 			if (i % 2 != 0)
 			{
 				_recruitUI[i].transform.Find("Image").localScale = new Vector3(-1, 1, 1);
@@ -141,11 +141,12 @@ public class RecruitMemberUI : MonoBehaviour
 		Dictionary<CrewMember, string> replies = _recruitMember.AskQuestion(skill);
 		foreach (GameObject recruit in _recruitUI)
 		{
-			string reply = replies.Where(r => r.Key.Name == recruit.name).FirstOrDefault().Value;
-			recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = reply;
+			var reply = replies.Where(r => r.Key.Name == recruit.name).FirstOrDefault();
+			recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = reply.Value;
 			recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = true;
-			recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = _opinionSprites.FirstOrDefault(o => o.Name == reply).Image;
-		}
+			recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value).Image;
+            recruit.transform.Find("Image").GetComponentInChildren<AvatarDisplay>().UpdateMood(reply.Key.Avatar, reply.Value);
+        }
 		CostCheck();
 	}
 

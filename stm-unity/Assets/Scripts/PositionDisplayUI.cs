@@ -109,7 +109,6 @@ public class PositionDisplayUI : MonoBehaviour
 			_positionPopUpCurrentCrew.gameObject.SetActive(true);
 			_positionPopUpCurrentName.gameObject.SetActive(true);
 			_positionPopUpCurrentCrew.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), primary, secondary, true);
-			_positionPopUpCurrentCrew.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), primary, secondary, true);
 			_positionPopUpCurrentName.text = currentCrew.Name;
 			_positionPopUpCurrentButton.onClick.AddListener(delegate { _meetingUI.Display(currentCrew); });
 		}

@@ -95,7 +95,13 @@ public class PostRaceEventUI : MonoBehaviour
 		{
 			_closeButton.SetActive(true);
 			_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
-		}
+            KeyValuePair<List<CrewMember>, string> current = _postRaceEvent.GetCurrentEvent();
+            _avatarDisplay.UpdateMood(current.Key[0].Avatar, current.Key[0].GetMood());
+            foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
+            {
+                crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(crewMember.CrewMember().Avatar, crewMember.CrewMember().GetMood());
+            }
+        }
 	}
 
 	public void SendReply(DialogueStateActionDTO reply)

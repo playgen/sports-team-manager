@@ -284,7 +284,9 @@ public class TeamSelectionUI : MonoBehaviour {
 		boatContainer.transform.Find("Light Container/Green").GetComponent<Image>().color = Color.green;
 		boatContainer.transform.Find("Light Container/Yellow").GetComponent<Image>().color = Color.yellow;
 		boatContainer.transform.Find("Light Container/Red").GetComponent<Image>().color = Color.red;
-		for (int i = 0; i < boat.BoatPositions.Count; i++)
+        int finishPosition = 1;
+        float expected = 7.5f * boat.BoatPositions.Count;
+        for (int i = 0; i < boat.BoatPositions.Count; i++)
 		{
 			GameObject crewMember = Instantiate(_crewPrefab);
 			var nameText = crewMember.transform.Find("Name").GetComponent<Text>();
@@ -312,7 +314,8 @@ public class TeamSelectionUI : MonoBehaviour {
 					positionImage.GetComponent<Image>().sprite = _roleIcons.FirstOrDefault(mo => mo.Name == boatPosition.Name).Image;
 					positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 					positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.Display(boatPosition); });
-					crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(boat.BoatPositions[i].CrewMember.Avatar, boat.BoatPositions[i].CrewMember.GetMood(), boatColors.Key, boatColors.Value, true);
+                    print(((teamScore - expected) * (2f / boat.BoatPositions.Count)) + 3);
+					crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(boat.BoatPositions[i].CrewMember.Avatar, (teamScore - expected) * (2f/boat.BoatPositions.Count) + 3, boatColors.Key, boatColors.Value, true);
 					nameText.enabled = true;
 					Destroy(position);
 					Destroy(crewMember.GetComponent<CrewMemberUI>());
@@ -332,21 +335,19 @@ public class TeamSelectionUI : MonoBehaviour {
 		Destroy(_raceButton.gameObject);
 		_boatHistory.Add(boatContainer);
 		_teamSelection.ConfirmLineUp(0, true);
-		if (!_teamSelection.IsRace())
-		{
-			TimeSpan timeTaken = TimeSpan.FromSeconds(1800 - ((teamScore - 20) * 10) + offset);
-			scoreText.text = string.Format("{0:D2}:{1:D2}", timeTaken.Minutes, timeTaken.Seconds);
-		}
-		else
-		{
-			int position = 1;
-			float expected = 7.5f * boat.BoatPositions.Count;
-			while (teamScore < expected)
-			{
-				position++;
-				expected -= boat.BoatPositions.Count;
-			}
-            switch (position)
+        if (!_teamSelection.IsRace())
+        {
+            TimeSpan timeTaken = TimeSpan.FromSeconds(1800 - ((teamScore - 20) * 10) + offset);
+            scoreText.text = string.Format("{0:D2}:{1:D2}", timeTaken.Minutes, timeTaken.Seconds);
+        }
+        else
+        {
+            while (teamScore < expected)
+            {
+                finishPosition++;
+                expected -= boat.BoatPositions.Count;
+            }
+            switch (finishPosition)
             {
                 case 1:
                     scoreText.text = "POSITION: " + "1st";
@@ -358,11 +359,11 @@ public class TeamSelectionUI : MonoBehaviour {
                     scoreText.text = "POSITION: " + "3rd";
                     break;
                 default:
-                    scoreText.text = "POSITION: " + position + "th";
+                    scoreText.text = "POSITION: " + finishPosition + "th";
                     break;
             }
-		}
-	}
+        }
+    }
 
 	/// <summary>
 	/// Adjust the number of positions on the currentBoat that has not been given a CrewMember
@@ -439,6 +440,25 @@ public class TeamSelectionUI : MonoBehaviour {
 		var teamScore = _teamSelection.ConfirmLineUp(offset);
 		var scoreText = _currentBoat.transform.Find("Score").GetComponent<Text>();
         string finishPositionText = "";
+        int finishPosition = 1;
+        float expected = 7.5f * _teamSelection.GetBoat().BoatPositions.Count;
+        foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
+        {
+            Destroy(crewMember.transform.Find("Opinion").GetComponent<Image>());
+            if (crewMember.transform.parent.name == _crewContainer.name)
+            {
+                Destroy(crewMember.gameObject);
+            }
+            else
+            {
+                Destroy(crewMember);
+                Destroy(crewMember.GetComponent<EventTrigger>());
+                crewMember.transform.Find("Position").GetComponent<Button>().onClick.RemoveAllListeners();
+                var position = crewMember.transform.parent.GetComponent<PositionUI>().GetPosition();
+                crewMember.transform.Find("Position").GetComponent<Button>().onClick.AddListener(delegate { _positionUI.Display(position); });
+                crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(crewMember.CrewMember().Avatar, ((teamScore - expected) * (2f / _teamSelection.GetBoat().BoatPositions.Count)) + 3);
+            }
+        }
         if (!_teamSelection.IsRace())
 		{
 			TimeSpan timeTaken = TimeSpan.FromSeconds(1800 - ((teamScore - 20) * 10) + offset);
@@ -446,8 +466,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 		else
 		{
-            int finishPosition = 1;
-            float expected = 7.5f * _teamSelection.GetBoat().BoatPositions.Count;
 			while (teamScore < expected)
 			{
                 finishPosition++;
@@ -469,22 +487,6 @@ public class TeamSelectionUI : MonoBehaviour {
                     break;
             }
 			scoreText.text = "POSITION: " + finishPositionText;
-		}
-		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
-		{
-			Destroy(crewMember.transform.Find("Opinion").GetComponent<Image>());
-			if (crewMember.transform.parent.name == _crewContainer.name)
-			{
-				Destroy(crewMember.gameObject);
-			}
-			else
-			{
-				Destroy(crewMember);
-				Destroy(crewMember.GetComponent<EventTrigger>());
-				crewMember.transform.Find("Position").GetComponent<Button>().onClick.RemoveAllListeners();
-				var position = crewMember.transform.parent.GetComponent<PositionUI>().GetPosition();
-				crewMember.transform.Find("Position").GetComponent<Button>().onClick.AddListener(delegate { _positionUI.Display(position); });
-			}
 		}
 		foreach (Button b in _recruitButtons)
 		{
@@ -512,11 +514,11 @@ public class TeamSelectionUI : MonoBehaviour {
         }
         else
         {
-            DisplayPostRacePopUp(currentPositions, finishPositionText);
+            DisplayPostRacePopUp(currentPositions, finishPosition, finishPositionText);
         }
 	}
 
-    void DisplayPostRacePopUp(List<BoatPosition> currentPositions, string finishPositionText)
+    void DisplayPostRacePopUp(List<BoatPosition> currentPositions, int finishPosition, string finishPositionText)
     {
         _meetingUI.gameObject.SetActive(false);
         _positionUI.ClosePositionPopUp();
@@ -536,7 +538,7 @@ public class TeamSelectionUI : MonoBehaviour {
             GameObject memberObject = Instantiate(_postRaceCrewPrefab);
             memberObject.transform.SetParent(_postRacePopUp.transform.Find("Crew"), false);
             memberObject.name = currentPositions[i].CrewMember.Name;
-            memberObject.transform.Find("Avatar").GetComponentInChildren<AvatarDisplay>().SetAvatar(currentPositions[i].CrewMember.Avatar, currentPositions[i].CrewMember.GetMood(), boatColors.Key, boatColors.Value);
+            memberObject.transform.Find("Avatar").GetComponentInChildren<AvatarDisplay>().SetAvatar(currentPositions[i].CrewMember.Avatar, -(finishPosition - 3) * 2, boatColors.Key, boatColors.Value);
             memberObject.transform.Find("Position").GetComponent<Image>().sprite = RoleLogos.FirstOrDefault(mo => mo.Name == currentPositions[i].Position.Name).Image;
             memberObject.transform.Find("Position").GetComponent<RectTransform>().offsetMin = new Vector2(10, 0);
             if (i % 2 != 0)

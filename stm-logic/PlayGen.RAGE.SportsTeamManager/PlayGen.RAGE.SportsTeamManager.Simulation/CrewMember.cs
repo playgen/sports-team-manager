@@ -274,10 +274,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return mood;
 		}
 
-		/// <summary>
-		/// Get the current position on this Boat (if any) for this CrewMember
-		/// </summary>
-		public Position GetPosition(Boat boat)
+        /// <summary>
+        /// Get the current position on this Boat (if any) for this CrewMember
+        /// </summary>
+        public Position GetPosition(Boat boat)
 		{
 			Position position = null;
 			var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
@@ -610,7 +610,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					AddOrUpdateOpinion(boat.Manager, -1);
 					break;
 				case "NotPickedFiredYes":
-					boat.RetireCrew(this);
+                    AddOrUpdateOpinion(boat.Manager, -10);
+                    boat.RetireCrew(this);
 					foreach (CrewMember cm in boat.GetAllCrewMembers())
 					{
 						cm.AddOrUpdateOpinion(boat.Manager, -2);
@@ -650,7 +651,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					AddOrUpdateOpinion(boat.Manager, -10);
 					break;
 				case "NotPickedSkillLeave":
-					boat.RetireCrew(this);
+                    AddOrUpdateOpinion(boat.Manager, -10);
+                    boat.RetireCrew(this);
 					foreach (CrewMember cm in boat.GetAllCrewMembers())
 					{
 						cm.AddOrUpdateOpinion(boat.Manager, -1);
