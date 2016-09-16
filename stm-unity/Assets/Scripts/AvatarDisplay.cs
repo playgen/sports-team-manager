@@ -17,7 +17,8 @@ public class AvatarDisplay : MonoBehaviour
 	public Image Eyebrow;
 	public Image Nose;
 	public Image Mouth;
-	public Image Eyes;
+    public Image Teeth;
+    public Image Eyes;
 	public Image Outfit;
 	public Image OutfitHighlight;
 	public Image OutfitShadow;
@@ -45,26 +46,50 @@ public class AvatarDisplay : MonoBehaviour
 		// TODO reference the texture packed images
 		// HACK: Just load the images from resources
 
-		var moodStr = "Neutral";
-		if (mood < -3)
+		var moodStr = "StronglyDisagree";
+		/*if (mood >= 3)
 		{
-			moodStr = "Sad";
+			moodStr = "StronglyAgree";
 		}
-		else if (mood > 3)
+		else if (mood >= 1)
 		{
-			moodStr = "Happy";
+			moodStr = "Agree";
 		}
+        else if (mood <= -3)
+        {
+            moodStr = "StronglyDisAgree";
+        }
+        else if (mood <= -1)
+        {
+            moodStr = "Disagree";
+        }*/
 
-		Body.sprite = Resources.Load<Sprite>(string.Format("Avatars/Body/{0}", avatar.BodyType));
+        Body.sprite = Resources.Load<Sprite>(string.Format("Avatars/Body/{0}", avatar.BodyType));
 		Outfit.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitBaseType));
 		OutfitHighlight.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitHiglightType));
 		OutfitShadow.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitShadowType));
 
-		Eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.EyeType, moodStr));
+		Eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}_{2}", avatar.EyeType, avatar.EyeColor, moodStr));
+        if (Eyes.sprite == null)
+        {
+            Eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.EyeType, moodStr));
+            if (Eyes.sprite == null)
+            {
+                Eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}_Neutral", avatar.EyeType, avatar.EyeColor));
+            }
+        }
 
 		Eyebrow.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.EyebrowType, moodStr));
 		Mouth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.MouthType, moodStr));
-		Nose.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}", avatar.NoseType));
+        Teeth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.TeethType, moodStr));
+        if (Teeth.sprite != null)
+        {
+            Teeth.color = Color.white;
+        } else
+        {
+            Teeth.color = new Color(0, 0, 0, 0);
+        }
+        Nose.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}", avatar.NoseType));
 
 		HairBack.sprite = Resources.Load<Sprite>(string.Format("Avatars/Hair/{0}_Back", avatar.HairType));
 		HairFront.sprite = Resources.Load<Sprite>(string.Format("Avatars/Hair/{0}_Front", avatar.HairType));
@@ -72,7 +97,7 @@ public class AvatarDisplay : MonoBehaviour
 		// Set out colours
 		Body.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
 		Nose.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
-		Mouth.color = avatar.UsingGenericMouth ? new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255) : (Color32)Color.white;
+		Mouth.color = avatar.IsMale ? new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255) : (Color32)Color.white;
 
 		HairFront.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
 		HairBack.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
