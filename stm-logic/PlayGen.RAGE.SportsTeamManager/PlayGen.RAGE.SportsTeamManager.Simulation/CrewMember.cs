@@ -241,25 +241,29 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				AddOrUpdateRevealedOpinion(boat.Manager, int.Parse(EmotionalAppraisal.GetBeliefValue(String.Format(NPCBeliefs.RevealedOpinion.GetDescription(), boat.Manager.Name.Replace(" ", "")))));
 			}
-			if (EmotionalAppraisal.GetBeliefValue(NPCBeliefs.Position.GetDescription()) != "null")
-			{
-				var boatPosition = boat.BoatPositions.Where(bp => bp.Position.Name == EmotionalAppraisal.GetBeliefValue(NPCBeliefs.Position.GetDescription()));
-				if (boatPosition != null)
-				{
-					foreach (BoatPosition bp in boatPosition)
-					{
-						if (bp.CrewMember == null)
-						{
-							boat.AssignCrew(bp, this);
-						}
-					}
-				}
-			}
 			if (EmotionalAppraisal.BeliefExists(NPCBeliefs.Rest.GetDescription()))
 			{
 				restCount = int.Parse(EmotionalAppraisal.GetBeliefValue(NPCBeliefs.Rest.GetDescription()));
 			}
 		}
+
+        public void LoadPosition(Boat boat)
+        {
+            if (EmotionalAppraisal.GetBeliefValue(NPCBeliefs.Position.GetDescription()) != "null")
+            {
+                var boatPosition = boat.BoatPositions.Where(bp => bp.Position.Name == EmotionalAppraisal.GetBeliefValue(NPCBeliefs.Position.GetDescription()));
+                if (boatPosition != null)
+                {
+                    foreach (BoatPosition bp in boatPosition)
+                    {
+                        if (bp.CrewMember == null)
+                        {
+                            boat.AssignCrew(bp, this);
+                        }
+                    }
+                }
+            }
+        }
 
 		/// <summary>
 		/// Get the current mood of this CrewMember

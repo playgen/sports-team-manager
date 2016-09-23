@@ -353,6 +353,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewList.ForEach(cm => cm.Avatar = new Avatar(cm, true, true));
 			crewList.ForEach(cm => Boat.UnassignedCrew.Add(cm));
 			crewList.ForEach(cm => cm.LoadBeliefs(Boat));
+            crewList.ForEach(cm => cm.LoadPosition(Boat));
             crewList.ForEach(cm => cm.Avatar.PrimaryOutfitColor = Color.FromArgb(255, Boat.TeamColorsPrimary[0], Boat.TeamColorsPrimary[1], Boat.TeamColorsPrimary[2]));
             crewList.ForEach(cm => cm.Avatar.SecondaryOutfitColor = Color.FromArgb(255, Boat.TeamColorsPrimary[0], Boat.TeamColorsPrimary[1], Boat.TeamColorsPrimary[2]));
             EventController = new EventController();
@@ -647,7 +648,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public bool CanAddToCrew()
 		{
-			if (Boat.GetAllCrewMembers().Count + 1 > (Boat.BoatPositions.Count + 1) * 2)
+			if (Boat.GetAllCrewMembers().Count + 1 > (Boat.BoatPositions.Count + 1) * 2 || Boat.Recruits.Count == 0)
 			{
 				return false;
 			}
