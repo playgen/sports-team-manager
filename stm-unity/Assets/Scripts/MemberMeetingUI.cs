@@ -68,7 +68,10 @@ public class MemberMeetingUI : MonoBehaviour
 		_fireWarningPopUp.SetActive(false);
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
-			crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
+            if (crewMember.Current)
+            {
+                crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
+            }
 		}
 		_positionUI.ChangeBlockerOrder();
 	}
@@ -91,7 +94,10 @@ public class MemberMeetingUI : MonoBehaviour
 	{
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
-			crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
+            if (crewMember.Current)
+            {
+                crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
+            }
 		}
 		_allowanceBar.fillAmount = (float)_memberMeeting.QuestionAllowance() / (float)_memberMeeting.StartingQuestionAllowance();
 		_allowanceText.text = _memberMeeting.QuestionAllowance().ToString();
@@ -171,43 +177,46 @@ public class MemberMeetingUI : MonoBehaviour
 		}
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
-			var name = crewMember.CrewMember().Name;
-			Image opinionImage = crewMember.transform.Find("Opinion").GetComponent<Image>();
-			if (name != _currentMember.Name)
-			{
-				opinionImage.enabled = true;
-				opinionImage.sprite = null;
-				foreach (CrewOpinion opinion in _currentMember.RevealedCrewOpinions)
-				{
-					if (name == opinion.Person.Name)
-					{
-						if (opinion.Opinion > 3)
-						{
-							opinionImage.sprite = _opinionIcons[0];
-						}
-						else if (opinion.Opinion > 0)
-						{
-							opinionImage.sprite = _opinionIcons[1];
-						}
-						else if (opinion.Opinion < 0)
-						{
-							opinionImage.sprite = _opinionIcons[3];
-						}
-						else if (opinion.Opinion < -3)
-						{
-							opinionImage.sprite = _opinionIcons[4];
-						}
-						else
-						{
-							opinionImage.sprite = _opinionIcons[2];
-						}
-					}
-				}
-				if (opinionImage.sprite == null)
-				{
-					opinionImage.sprite = _opinionIcons[2];
-				}
-			}
+            if (crewMember.Current)
+            {
+                var name = crewMember.CrewMember().Name;
+                Image opinionImage = crewMember.transform.Find("Opinion").GetComponent<Image>();
+                if (name != _currentMember.Name)
+                {
+                    opinionImage.enabled = true;
+                    opinionImage.sprite = null;
+                    foreach (CrewOpinion opinion in _currentMember.RevealedCrewOpinions)
+                    {
+                        if (name == opinion.Person.Name)
+                        {
+                            if (opinion.Opinion > 3)
+                            {
+                                opinionImage.sprite = _opinionIcons[0];
+                            }
+                            else if (opinion.Opinion > 0)
+                            {
+                                opinionImage.sprite = _opinionIcons[1];
+                            }
+                            else if (opinion.Opinion < 0)
+                            {
+                                opinionImage.sprite = _opinionIcons[3];
+                            }
+                            else if (opinion.Opinion < -3)
+                            {
+                                opinionImage.sprite = _opinionIcons[4];
+                            }
+                            else
+                            {
+                                opinionImage.sprite = _opinionIcons[2];
+                            }
+                        }
+                    }
+                    if (opinionImage.sprite == null)
+                    {
+                        opinionImage.sprite = _opinionIcons[2];
+                    }
+                }
+            }
 		}
 	}
 

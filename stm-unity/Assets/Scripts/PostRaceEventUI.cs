@@ -99,7 +99,10 @@ public class PostRaceEventUI : MonoBehaviour
             _avatarDisplay.UpdateMood(current.Key[0].Avatar, current.Key[0].GetMood());
             foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
             {
-                crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(crewMember.CrewMember().Avatar, crewMember.CrewMember().GetMood());
+                if (crewMember.Current)
+                {
+                    crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(crewMember.CrewMember().Avatar, crewMember.CrewMember().GetMood());
+                }
             }
         }
 	}

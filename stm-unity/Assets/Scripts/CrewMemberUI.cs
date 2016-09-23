@@ -20,24 +20,32 @@ public class CrewMemberUI : MonoBehaviour {
 
 	private Transform _defaultParent;
 	private Vector2 _currentPositon;
+    public bool Usable;
+    public bool Current;
 	public event EventHandler ReplacedEvent = delegate { };
 
-	/// <summary>
-	/// Get event listeners for click down and up
-	/// </summary>
-	void Start()
-	{
-		EventTrigger trigger = GetComponent<EventTrigger>();
-		if (_crewMember.restCount <= 0)
-		{
-			SetEventTriggers(trigger, true);
-		} else
-		{
-			SetEventTriggers(trigger, false);
-		}
-	}
+    public void SetUp(bool usable, bool current, TeamSelection teamSelection, MemberMeetingUI meetingUI, PositionDisplayUI positionUI, CrewMember crewMember, Transform parent, Icon[] roleIcons)
+    {
+        _teamSelection = teamSelection;
+        _meetingUI = meetingUI;
+        _positionUI = positionUI;
+        _crewMember = crewMember;
+        _defaultParent = parent;
+        _roleIcons = roleIcons;
+        Usable = usable;
+        Current = current;
+        EventTrigger trigger = GetComponent<EventTrigger>();
+        if (_crewMember.restCount <= 0 && Usable)
+        {
+            SetEventTriggers(trigger, true);
+        }
+        else
+        {
+            SetEventTriggers(trigger, false);
+        }
+    }
 
-	public void SetEventTriggers(EventTrigger trigger, bool isActive)
+    public void SetEventTriggers(EventTrigger trigger, bool isActive)
 	{
 		trigger.triggers.Clear();
 		if (isActive)
@@ -60,16 +68,6 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 	}
 
-	public void SetUp(TeamSelection teamSelection, MemberMeetingUI meetingUI, PositionDisplayUI positionUI, CrewMember crewMember, Transform parent, Icon[] roleIcons)
-	{
-		_teamSelection = teamSelection;
-		_meetingUI = meetingUI;
-        _positionUI = positionUI;
-        _crewMember = crewMember;
-		_defaultParent = parent;
-		_roleIcons = roleIcons;
-	}
-
 	public CrewMember CrewMember()
 	{
 		return _crewMember;
@@ -85,7 +83,6 @@ public class CrewMemberUI : MonoBehaviour {
 		_beingClicked = true;
 		_dragPosition = Input.mousePosition - transform.position;
 		transform.SetParent(_defaultParent, false);
-		transform.parent.GetComponent<HorizontalLayoutGroup>().enabled = false;
 		transform.position = (Vector2)Input.mousePosition - _dragPosition;
 		transform.SetAsLastSibling();
 	}
@@ -113,10 +110,6 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	void EndDrag()
 	{
-		if (transform.parent.GetComponent<HorizontalLayoutGroup>())
-		{
-			transform.parent.GetComponent<HorizontalLayoutGroup>().enabled = true;
-		}
 		_beingDragged = false;
 		CheckPlacement();
 		if (_beingClicked) {
@@ -173,8 +166,6 @@ public class CrewMemberUI : MonoBehaviour {
 		RectTransform positionTransform = position.gameObject.GetComponent<RectTransform>();
 		transform.SetParent(positionTransform, false);
 		GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
-		GetComponent<RectTransform>().anchorMin = new Vector2(0, 1);
-		GetComponent<RectTransform>().anchorMax = new Vector2(0, 1);
 		GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);
 		_teamSelection.AssignCrew(_crewMember, position.gameObject.GetComponent<PositionUI>().GetPosition());
 		position.gameObject.GetComponent<PositionUI>().LinkCrew(this);
@@ -192,15 +183,8 @@ public class CrewMemberUI : MonoBehaviour {
 	public void Reset()
 	{
 		transform.SetParent(_defaultParent, true);
-		transform.SetAsLastSibling();
-		for (int i = 0; i < transform.parent.childCount; i++)
-		{
-			if (transform.parent.GetChild(i).name != name && String.Compare(name, transform.parent.GetChild(i).name) < 0)
-			{
-				transform.SetSiblingIndex(transform.parent.GetChild(i).GetSiblingIndex());
-				break;
-			}
-		}
+        transform.position = _defaultParent.position;
+        transform.SetAsLastSibling();
 		if (_currentPositon != (Vector2)transform.position)
 		{
 			Tracker.T.trackedGameObject.Interacted("Unpositioned Crew Member", GameObjectTracker.TrackedGameObject.Npc);
