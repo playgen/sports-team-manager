@@ -351,9 +351,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				crewList.Add(crewMember);
 			}
 			crewList.ForEach(cm => cm.Avatar = new Avatar(cm, true, true));
-			crewList.ForEach(cm => Boat.AddCrew(cm));
+			crewList.ForEach(cm => Boat.UnassignedCrew.Add(cm));
 			crewList.ForEach(cm => cm.LoadBeliefs(Boat));
-			EventController = new EventController();
+            crewList.ForEach(cm => cm.Avatar.PrimaryOutfitColor = Color.FromArgb(255, Boat.TeamColorsPrimary[0], Boat.TeamColorsPrimary[1], Boat.TeamColorsPrimary[2]));
+            crewList.ForEach(cm => cm.Avatar.SecondaryOutfitColor = Color.FromArgb(255, Boat.TeamColorsPrimary[0], Boat.TeamColorsPrimary[1], Boat.TeamColorsPrimary[2]));
+            EventController = new EventController();
 			_iat = iat;
 			_storageLocation = storageLocation;
 			this._storageProvider = storagePorvider;
