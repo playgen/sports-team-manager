@@ -644,7 +644,7 @@ public class TeamSelectionUI : MonoBehaviour {
                 if (currentCrew.Where(cm => cm.Name == crewMember.CrewMember().Name).Count() == 0)
                 {
                     KeyValuePair<Color32, Color32> boatColors = GetBoatColors();
-                    crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(crewMember.CrewMember().Avatar, 0, boatColors.Key, boatColors.Value, true); //TODO: Update mood
+                    crewMember.GetComponentInChildren<AvatarDisplay>().UpdateAvatar(crewMember.CrewMember().Avatar, true);
                     Destroy(crewMember);
                 }
             }

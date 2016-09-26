@@ -22,6 +22,7 @@ public class AvatarDisplay : MonoBehaviour
 	public Image Outfit;
 	public Image OutfitHighlight;
 	public Image OutfitShadow;
+    private float _lastMood;
 
 	public RectTransform SpriteParent;
 #if USE_SPRITESHEET
@@ -43,9 +44,9 @@ public class AvatarDisplay : MonoBehaviour
 #if USE_SPRITESHEET
 		LoadDictionary();
 #endif
-		// TODO reference the texture packed images
-		// HACK: Just load the images from resources
-
+        // TODO reference the texture packed images
+        // HACK: Just load the images from resources 
+        _lastMood = mood;
         Body.sprite = Resources.Load<Sprite>(string.Format("Avatars/Body/{0}", avatar.BodyType));
 		Outfit.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitBaseType));
 		OutfitHighlight.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitHiglightType));
@@ -90,6 +91,11 @@ public class AvatarDisplay : MonoBehaviour
 		}
         UpdateMood(avatar, mood);
 	}
+
+    public void UpdateAvatar(Avatar avatar, bool isIcon = false)
+    {
+        SetAvatar(avatar, _lastMood, Outfit.color, OutfitHighlight.color, isIcon);
+    }
 
     public void UpdateMood(Avatar avatar, string reaction)
     {
