@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using GAIPS.Rage;
 using IntegratedAuthoringTool;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	public class Boat
+    /// <summary>
+    /// Stores boat and crew details and contains functionality related to adjusting either
+    /// </summary>
+    public class Boat
 	{
 		public string Name { get; set; }
 		public int[] TeamColorsPrimary { get; set; }
@@ -91,9 +92,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			UnassignedCrew.Add(crewMember);
 			GetIdealCrew();
-			crewMember.Avatar.PrimaryOutfitColor = Color.FromArgb(255, TeamColorsPrimary[0], TeamColorsPrimary[1], TeamColorsPrimary[2]);
-			crewMember.Avatar.SecondaryOutfitColor = Color.FromArgb(255, TeamColorsPrimary[0], TeamColorsPrimary[1], TeamColorsPrimary[2]);
 		}
+
+        /// <summary>
+		/// Set the avatar outfit colors to match the team colors
+		/// </summary>
+        public void SetCrewColors(Avatar avatar)
+        {
+            avatar.PrimaryOutfitColor = Color.FromArgb(255, TeamColorsPrimary[0], TeamColorsPrimary[1], TeamColorsPrimary[2]);
+            avatar.SecondaryOutfitColor = Color.FromArgb(255, TeamColorsPrimary[0], TeamColorsPrimary[1], TeamColorsPrimary[2]);
+        }
 
 		/// <summary>
 		/// Assign a CrewMember to a BoatPosition
@@ -133,7 +141,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Remove a Crewmember from their BoatPosition and add them to the list of UnassignedCrew
+		/// Remove a CrewMember from their BoatPosition and add them to the list of UnassignedCrew
 		/// </summary>
 		public void RemoveCrew(BoatPosition boatPosition)
 		{
@@ -158,14 +166,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+        /// <summary>
+		/// Update the set of recruits for this Boat
+		/// </summary>
 		public void CreateRecruits(IntegratedAuthoringToolAsset iat, IStorageProvider templateStorage, IStorageProvider savedStorage, string storageLocation)
 		{
 			Random rand = new Random();
 			List<CrewMember> recuritsToRemove = new List<CrewMember>();
+            //remove recruits from iat and randomly select to remove them from pool of available recruits
 			foreach (CrewMember member in Recruits)
 			{
 				iat.RemoveCharacters(new List<string>() { member.Name });
-				if (rand.Next(0, 100) % 3 != 0)
+				if (rand.Next(0, 100) % (int)_config.ConfigValues[ConfigKeys.RecruitChangeChance.ToString()] != 0)
 				{
 					recuritsToRemove.Add(member);
 				}
@@ -175,13 +187,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Recruits.Remove(member);
 			}
 
-            //int amount = BoatPositions.Count + 1 - Recruits.Count;
-            int amount = 4 - Recruits.Count;
+            //for the amount of empty recruit spaces, create a new recruit
+            int amount = (int)_config.ConfigValues[ConfigKeys.RecruitCount.ToString()] - Recruits.Count;
 			for (int i = 0; i < amount; i++)
 			{
 				CrewMember newMember = CreateNewMember(rand);
 				Recruits.Add(newMember);
 			}
+            //for each recruit, save their asset files, avatar and save files/add to iat
 			for (int i = 0; i < Recruits.Count; i++)
 			{
 				Recruits[i].CreateFile(iat, templateStorage, savedStorage, storageLocation, "Recruit" + i);
@@ -192,10 +205,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			iat.SaveToFile(savedStorage, iat.AssetFilePath);
 		}
 
+        /// <summary>
+		/// Create a new CrewMember for this boat.
+		/// </summary>
 		public CrewMember CreateNewMember(Random rand)
 		{
 			CrewMember newMember = new CrewMember(rand, _config);
 			bool unqiue = false;
+            //if the name is already in use by another character, reset their name
 			while (!unqiue)
 			{
 				if (GetAllCrewMembers().Count(c => c.Name == newMember.Name) > 0 || RetiredCrew.Count(c => c.Name == newMember.Name) > 0 || Recruits.Count(c => c.Name == newMember.Name) > 0 || newMember.Name == Manager.Name)
@@ -207,19 +224,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					unqiue = true;
 				}
 			}
-			Position selectedPerferred = null;
+            //select a position that is in need of a new crew member
+			Position selectedPerferred;
 			Dictionary<Position, int> positionStrength = GetPositionStrength();
+            //if there is no position that has more available than another, select one at random
 			if (positionStrength.OrderBy(kvp => kvp.Value).Last().Value - positionStrength.OrderBy(kvp => kvp.Value).First().Value == 0)
 			{
 				int positionValue = rand.Next(0, BoatPositions.Count + 1);
 				selectedPerferred = positionValue < BoatPositions.Count ? BoatPositions[positionValue].Position : null;
 			}
-			else
-			{
+            //select from weaker positions if at least one position has less available members than another 
+            else
+            {
 				int lowValue = positionStrength.OrderBy(kvp => kvp.Value).First().Value;
 				Position[] lowPositions = positionStrength.Where(kvp => kvp.Value == lowValue).Select(kvp => kvp.Key).ToArray();
 				selectedPerferred = lowPositions.OrderBy(p => Guid.NewGuid()).First();
 			}
+            //set the skils of the new CrewMember according to the required skills for the selected position
 			newMember.Skills = new Dictionary<CrewMemberSkill, int>();
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
 			{
@@ -242,6 +263,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return newMember;
 		}
 
+        /// <summary>
+		/// Get the amount of current crew and recruits that are capable of going into each position
+		/// </summary>
 		Dictionary<Position, int> GetPositionStrength()
 		{
 			Dictionary<Position, int> positionStrength = new Dictionary<Position, int>();
@@ -301,7 +325,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Triggered when a Crewmember's opinion on a Person changes in order to update the Boat's score to an accurate value
+		/// Triggered when a CrewMember's opinion on a Person changes in order to update the Boat's score to an accurate value
 		/// </summary>
 		void OnOpinionChange(object sender, EventArgs e)
 		{
@@ -321,22 +345,30 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			BoatScore = BoatPositions.Sum(bp => bp.PositionScore);
 		}
 
+        /// <summary>
+		/// Get the crew set-up(s) that would be worth the highest BoatScore
+		/// </summary>
 		public void GetIdealCrew()
 		{
 			Boat tempBoat = (Boat)Activator.CreateInstance(this.GetType(), _config);
 			tempBoat.Manager = Manager;
 			IEnumerable<CrewMember> availableCrew = GetAllCrewMembers().Where(cm => cm.restCount <= 0);
+            //get all crew combinations
 			IEnumerable<IEnumerable<CrewMember>> crewCombos = GetPermutations(availableCrew, BoatPositions.Count - 1);
 			int bestScore = 0;
 			List<List<BoatPosition>> bestCrew = new List<List<BoatPosition>>();
+            //for each possible combination
 			foreach (IEnumerable<CrewMember> possibleCrew in crewCombos)
 			{
 				List<CrewMember> crewList = possibleCrew.ToList();
+                //assign crew members to their positions
 				for (int i = 0; i < tempBoat.BoatPositions.Count; i++)
 				{
 					tempBoat.BoatPositions[i].CrewMember = crewList[i];
 				}
+                //get the score for this set-up
 				tempBoat.UpdateBoatScore();
+                //if the score for this set-up is higher or equal than the current highest, set up a new list of BoatPositions for the set-up
 				if (tempBoat.BoatScore >= bestScore)
 				{
 					List<BoatPosition> thisCrew = new List<BoatPosition>();
@@ -349,11 +381,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							PositionScore = bp.PositionScore
 						});
 					}
+                    //if the set-up has a higher score, clear the current list
 					if (tempBoat.BoatScore > bestScore)
 					{
 						bestCrew.Clear();
 						bestScore = tempBoat.BoatScore;
 					}
+                    //add this set-up to the list of best crews
 					bestCrew.Add(thisCrew);
 					
 				} 
@@ -362,8 +396,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UpdateIdealScore();
 		}
 
+        /// <summary>
+		/// Find how close the current crew is to being an 'ideal' set-up
+		/// </summary>
 		public void UpdateIdealScore()
 		{
+            //if there are enough CrewMembers to have an ideal crew and there are currently none known, get the ideal crew(s)
 			if (GetAllCrewMembers().Count >= BoatPositions.Count)
 			{
 				if (IdealCrew.Count == 0)
@@ -371,23 +409,28 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					GetIdealCrew();
 				}
 			}
+            //if there aren't enough CrewMembers to fill this Boat layout, do not look for a match
 			else
 			{
 				return;
 			}
+            //reset current values
 			IdealMatchScore = 0;
 			NearestIdealMatch = null;
+            //check the current positioned crew against every ideal crew layout
 			foreach (List<BoatPosition> crew in IdealCrew)
 			{
 				float currentIdealMatch = 0;
 				for (int i = 0; i < crew.Count; i++)
 				{
+                    //if the CrewMembers match in both the current and the ideal, add 1 to the currentIdealMatch score
 					if (crew[i].CrewMember == BoatPositions[i].CrewMember)
 					{
 						currentIdealMatch++;
 					}
-					else
-					{
+                    //otherwise, check if this CrewMember is meant to be positioned elsewhere in an ideal set-up. If so, add 0.1f to the currentIdealMatch score
+                    else
+                    {
 						foreach (BoatPosition ideal in crew)
 						{
 							if (ideal.CrewMember == BoatPositions[i].CrewMember)
@@ -397,24 +440,22 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 				}
-				if (currentIdealMatch > IdealMatchScore || NearestIdealMatch == null)
+                //if the final currentIdealMatch score is higher than the current IdealMatchScore, or NearestIdealMatch is null (meaning no other ideals have been checked), set this ideal crew to the nearest match
+                if (currentIdealMatch > IdealMatchScore || NearestIdealMatch == null)
 				{
 					IdealMatchScore = currentIdealMatch;
 					NearestIdealMatch = crew;
-				} else if (currentIdealMatch > IdealMatchScore)
-				{
-					Random rand = new Random();
-					if (rand.Next(0, 100) % 2 == 0)
-					{
-						NearestIdealMatch = crew;
-					}
 				}
 			}
 			FindAssignmentMistakes();
 		}
 
+        /// <summary>
+		/// Find all the reasons this current crew is not an 'ideal' crew
+		/// </summary>
 		public void FindAssignmentMistakes()
 		{
+            //if any BoatPosition does not have a CrewMember, do not do this check
 			foreach (var bp in BoatPositions)
 			{
 				if (bp.CrewMember == null)
@@ -423,6 +464,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			List<string> mistakes = new List<string>();
+            //create a list of all possible 'mistakes' for known values and hidden values
 			Dictionary<string, float> mistakeScores = new Dictionary<string, float>();
 			Dictionary<string, float> hiddenScores = new Dictionary<string, float>();
 			foreach (string skillName in Enum.GetNames(typeof(CrewMemberSkill)))
@@ -438,27 +480,37 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			hiddenScores.Add("Mood", 0);
 			for (int i = 0; i < BoatPositions.Count; i++)
 			{
+                //if the position is correctly assigned, there's no need for further checks
 				if (BoatPositions[i].CrewMember == NearestIdealMatch[i].CrewMember)
 				{
 					continue;
 				}
+                //for each required skill for this position, get the difference between the rating of the ideal and the current and add to mistakeScores
 				foreach (CrewMemberSkill skill in BoatPositions[i].Position.RequiredSkills)
 				{
 					mistakeScores[skill.ToString()] += (float)(NearestIdealMatch[i].CrewMember.Skills[skill] - BoatPositions[i].CrewMember.Skills[skill])/(float)BoatPositions[i].Position.RequiredSkills.Count;
+                    //if the rating of the current positioned CrewMember is not known to the player, add to hiddenScores
 					if (BoatPositions[i].CrewMember.RevealedSkills[skill] == 0)
 					{
 						hiddenScores[skill.ToString()] += (float)(NearestIdealMatch[i].CrewMember.Skills[skill] - BoatPositions[i].CrewMember.Skills[skill]) / (float)BoatPositions[i].Position.RequiredSkills.Count;
 					}
 				}
+                //add the difference in opinion of the manager to mistakeScores
 				mistakeScores["ManagerOpinion"] += NearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
+                //if the player does not know this opinion, add the difference to hiddenScores
 				if (BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion != BoatPositions[i].CrewMember.RevealedCrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion)
 				{
 					hiddenScores["ManagerOpinion"] += NearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
 				}
-				mistakeScores["Mood"] += NearestIdealMatch[i].CrewMember.GetMood() - BoatPositions[i].CrewMember.GetMood();
+                //add the difference in mood to mistakeScores
+                mistakeScores["Mood"] += NearestIdealMatch[i].CrewMember.GetMood() - BoatPositions[i].CrewMember.GetMood();
+                //find the total score caused by crew opinion in the ideal set-up
 				int idealOpinion = NearestIdealMatch[i].PositionScore - NearestIdealMatch[i].Position.GetPositionRating(NearestIdealMatch[i].CrewMember) - NearestIdealMatch[i].CrewMember.GetMood() - NearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
-				int currentOpinion = BoatPositions[i].PositionScore - BoatPositions[i].Position.GetPositionRating(BoatPositions[i].CrewMember) - BoatPositions[i].CrewMember.GetMood() - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
+                //find the total score caused by crew opinion in the current set-up
+                int currentOpinion = BoatPositions[i].PositionScore - BoatPositions[i].Position.GetPositionRating(BoatPositions[i].CrewMember) - BoatPositions[i].CrewMember.GetMood() - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
+                //add the difference to mistakeScores
 				mistakeScores["CrewOpinion"] += idealOpinion - currentOpinion;
+                //if the percentage of unknown opinions is above the given amount, add the difference to hiddenScores
 				int unknownCrewOpinions = 0;
 				foreach (BoatPosition bp in BoatPositions)
 				{
@@ -475,7 +527,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					hiddenScores["CrewOpinion"] += idealOpinion - currentOpinion;
 				}
 			}
+            //sort the 'mistakes' by their values, removing all with a score of 0 and below (aka, equal or better to the ideal crew)
 			mistakes = mistakeScores.OrderByDescending(ms => ms.Value).Where(ms => ms.Value > 0).Select(ms => ms.Key).ToList();
+            //if the value of the mistake in hiddenScores is more than the given percentage of that in mistakeScores, set this mistake to be 'hidden'
 			for (int i = 0; i < mistakes.Count; i++)
 			{
 				if (hiddenScores[mistakes[i]] >= mistakeScores[mistakes[i]] * _config.ConfigValues[ConfigKeys.HiddenMistakeLimit.ToString()])
@@ -483,9 +537,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					mistakes[i] = "Hidden";
 				}
 			}
+            //store the current range of mistakes
 			SelectionMistakes = mistakes;
 		}
 
+        /// <summary>
+		/// Get the amount of mistakes requested, adding 'Correct' if not enough exist
+		/// </summary>
 		public List<string> GetAssignmentMistakes(int returnAmount)
 		{
 			List<string> mistakes = SelectionMistakes.Take(returnAmount).ToList();
@@ -495,6 +553,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return mistakes;
 		}
 
+        //Tick all CrewMembers
 		public void TickCrewMembers(int amount)
 		{
 			foreach (CrewMember cm in GetAllCrewMembersIncludingRetired())
@@ -519,12 +578,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			TickCrewMembers(0);
 		}
 
+        /// <summary>
+		/// Set all CrewMembers who raced to not be available for the set amount of races
+		/// </summary>
 		public void PostRaceRest()
 		{
 			List<CrewMember> crew = GetAllCrewMembers();
 			crew.ForEach(p => p.RaceRest(BoatPositions.SingleOrDefault(bp => bp.CrewMember == p) != null));
 		}
 
+        /// <summary>
+		/// Get every possible combination of CrewMembers
+		/// </summary>
 		private IEnumerable<IEnumerable<T>>GetPermutations<T>(IEnumerable<T> list, int length)
 		{
 			if (length == 0)

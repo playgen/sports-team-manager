@@ -1,18 +1,18 @@
 ﻿using System.IO;
-using System.Linq;
-
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using EmotionalDecisionMaking;
 using GAIPS.Rage;
 using IntegratedAuthoringTool;
 using RolePlayCharacter;
-
 using SocialImportance;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	public class Person
+    /// <summary>
+    /// Stores base details of a person (aka, the manager) or crew member and functionality to create and update storytelling framework files
+    /// </summary>
+    public class Person
 	{
 		public string Name { get; set; }
 		public int Age { get; set; }
@@ -49,10 +49,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void CreateFile(IntegratedAuthoringToolAsset iat, IStorageProvider templateStorage, IStorageProvider savedStorage, string storageLocation, string fileName = "")
 		{
+            //Create Storytelling Framework files
 			var templateRpc = RolePlayCharacterAsset.LoadFromFile(templateStorage, "template_rpc");
 			var ea = EmotionalAppraisalAsset.LoadFromFile(templateStorage, templateRpc.EmotionalAppraisalAssetSource);
 			var edm = EmotionalDecisionMakingAsset.LoadFromFile(templateStorage, templateRpc.EmotionalDecisionMakingSource);
 			var si = SocialImportanceAsset.LoadFromFile(templateStorage, templateRpc.SocialImportanceAssetSource);
+            //set values
 			si.BindEmotionalAppraisalAsset(ea);
 			templateRpc.CharacterName = Name;
 			var noSpaceName = templateRpc.CharacterName.Replace(" ", "");
@@ -61,14 +63,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				fileName = noSpaceName;
 			}
 			ea.SetPerspective("NPC" + noSpaceName);
+            //save files
 			ea.SaveToFile(savedStorage, Path.Combine(storageLocation, fileName + ".ea"));
 			edm.SaveToFile(savedStorage, Path.Combine(storageLocation, fileName + ".edm"));
 			si.SaveToFile(savedStorage, Path.Combine(storageLocation, fileName + ".si"));
+            //assign asset files to RPC
 			templateRpc.EmotionalAppraisalAssetSource = Path.Combine(storageLocation, fileName + ".ea");
 			templateRpc.EmotionalDecisionMakingSource = Path.Combine(storageLocation, fileName + ".edm");
 			templateRpc.SocialImportanceAssetSource = Path.Combine(storageLocation, fileName + ".si");
 			templateRpc.SaveToFile(savedStorage, Path.Combine(storageLocation, fileName + ".rpc"));
+            //add character to iat asset
 			iat.AddCharacter(templateRpc);
+            //store EA and RPC locally
 			EmotionalAppraisal = EmotionalAppraisalAsset.LoadFromFile(savedStorage, Path.Combine(storageLocation, fileName + ".ea"));
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(savedStorage, Path.Combine(storageLocation, fileName + ".rpc"));
 		}
@@ -108,6 +114,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, RolePlayCharacter.AssetFilePath);
 		}
 
+        /// <summary>
+		/// Tick EmotionalAppraisal asset amount passed through
+		/// </summary>
 		public void TickUpdate(int amount = 1)
 		{
 			for (int i = 0; i < amount; i++)

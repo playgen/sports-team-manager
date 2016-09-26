@@ -4,7 +4,6 @@ using IntegratedAuthoringTool;
 using RolePlayCharacter;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -12,8 +11,11 @@ using IntegratedAuthoringTool.DTOs;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	//Two starting crew members and random starting opinions currently commented out
-	public class GameManager
+    //Two starting crew members and random starting opinions currently commented out
+    /// <summary>
+    /// Used to acess functionality contained within other classes
+    /// </summary>
+    public class GameManager
 	{
 		public Boat Boat { get; set; }
 		public EventController EventController { get; set; }
@@ -86,6 +88,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.CreateFile(iat, templateStorage, storagePorvider, combinedStorageLocation);
 				member.Avatar = new Avatar(member);
 				Boat.AddCrew(member);
+                Boat.SetCrewColors(member.Avatar);
                 if (initialCrew)
                 {
                     foreach (CrewMember otherMember in crew)
@@ -441,8 +444,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			Boat.Manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), newBoat.GetType().Name, "SELF");
 			Boat.Manager.SaveStatus();
-            int extraMembers = 0;//(newBoat.BoatPositions.Count - Boat.BoatPositions.Count) * 2;
-			LoadGame(_storageProvider, _storageLocation, Boat.Name);
+            int extraMembers = (newBoat.BoatPositions.Count - Boat.BoatPositions.Count) * 2;
+            LoadGame(_storageProvider, _storageLocation, Boat.Name);
 			Random rand = new Random();
 			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 			for (int i = 0; i < extraMembers; i++)
@@ -453,7 +456,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
                     string combinedStorageLocation = Path.Combine(_storageLocation, Boat.Name);
                     newMember.CreateFile(_iat, templateStorage, _storageProvider, combinedStorageLocation);
                     newMember.Avatar = new Avatar(newMember);
-					foreach (CrewMember otherMember in Boat.GetAllCrewMembers())
+                    Boat.SetCrewColors(newMember.Avatar);
+                    foreach (CrewMember otherMember in Boat.GetAllCrewMembers())
 					{
 						if (newMember != otherMember)
 						{
@@ -473,7 +477,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						i--;
 					}
 					Boat.AddCrew(newMember);
-				}
+                }
 			}
 			Boat.GetIdealCrew();
 		}
@@ -523,8 +527,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var eventString = String.Format(eventStringUnformatted, boatType, crew);
 			manager.EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			manager.SaveStatus();
-			Boat lastBoat = new Boat(_config);
-            //Boat lastBoat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + Boat.GetType().Name), _config);
+            Boat lastBoat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + Boat.GetType().Name), _config);
             foreach (BoatPosition bp in Boat.BoatPositions)
 			{
 				lastBoat.BoatPositions.Add(new BoatPosition
@@ -546,6 +549,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void ConfirmLineUp()
 		{
 			Boat.ConfirmChanges(ActionAllowance);
+            //TODO: Change trigger for promotion
             if (((LineUpHistory.Count + 1) / _raceSessionLength) % 2 != 0)
             {
                 PromoteBoat();
@@ -558,10 +562,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public KeyValuePair<List<CrewMember>, string> SelectPostRaceEvent()
 		{
-            if ((LineUpHistory.Count / _raceSessionLength) % 2 != 0)
-            {
-                return new KeyValuePair<List<CrewMember>, string>(null, null);
-            }
             DialogueStateActionDTO postRaceEvent = EventController.SelectPostRaceEvent(_iat, (int)_config.ConfigValues[ConfigKeys.EventChance.ToString()]);
 			if (postRaceEvent == null)
 			{
@@ -670,7 +670,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.CreateFile(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name));
 				member.Avatar.UpdateAvatarBeliefs(member);
 				member.Avatar = new Avatar(member, true, true);
-				Random random = new Random();
+                Boat.SetCrewColors(member.Avatar);
+                Random random = new Random();
 				foreach (CrewMember otherMember in Boat.GetAllCrewMembers())
 				{
 					if (member != otherMember)

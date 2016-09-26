@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GAIPS.Rage;
@@ -9,8 +8,11 @@ using RolePlayCharacter;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	//Decision Feedback functionality to adjust opinions/mood based on placement currently commented out
-	public class CrewMember : Person
+    //Decision Feedback functionality to adjust opinions/mood based on placement currently commented out
+    /// <summary>
+    /// Stores values and functionality related to crew members
+    /// </summary>
+    public class CrewMember : Person
 	{
 		public Dictionary<CrewMemberSkill, int> Skills { get; set; }
 		public Dictionary<CrewMemberSkill, int> RevealedSkills { get; set; }

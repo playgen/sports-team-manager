@@ -34,6 +34,8 @@
 		SendRecruitmentQuestionCost,
 		RaceSessionLength,
 		EventChance,
+        RecruitCount,
+        RecruitChangeChance,
 		HiddenMistakeLimit,
 		HiddenOpinionLimit
 	}

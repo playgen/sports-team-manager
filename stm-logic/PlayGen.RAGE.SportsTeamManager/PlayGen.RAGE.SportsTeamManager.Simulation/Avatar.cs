@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Drawing;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	public class Avatar
+    /// <summary>
+    /// Avatar class containing names of sprites that make up the avatar
+    /// </summary>
+    public class Avatar
 	{
-		/// <summary>
-		/// Avatar class containing names of sprites that make up the avatar
-		/// </summary>
 		public string BodyType { get; set; }
 		public string OutfitBaseType { get; set; }
 		public string OutfitHiglightType { get; set; }
@@ -39,6 +38,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			GetConfig();
 			Random random = new Random();
+            //set outfit type
 			var outfit = !isActive ? "01" : ("0" + ((random.Next(0, 100) % 2) + 2));
 			var gender = crewMember.Gender == "Male" ? "M" : "F";
 			IsMale = crewMember.Gender == "Male";
@@ -51,58 +51,182 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				CreateAvatar(crewMember, gender, random);
 			}
-			OutfitBaseType = string.Format("Outfit{0}_Base_{1}_{2}", gender, GetBody(BestSkill), outfit);
-			OutfitHiglightType = string.Format("Outfit{0}_Highlight_{1}_{2}", gender, GetBody(BestSkill), outfit);
-			OutfitShadowType = string.Format("Outfit{0}_Shadow_{1}_{2}", gender, GetBody(BestSkill), outfit);
+            //set outfit according to type, best skill and gender
+			OutfitBaseType = string.Format("Outfit{0}_Base_{1}_{2}", gender, GetBodyType(BestSkill), outfit);
+			OutfitHiglightType = string.Format("Outfit{0}_Highlight_{1}_{2}", gender, GetBodyType(BestSkill), outfit);
+			OutfitShadowType = string.Format("Outfit{0}_Shadow_{1}_{2}", gender, GetBodyType(BestSkill), outfit);
 		}
 
-		private void CreateAvatar(CrewMember crewMember, string gender, Random random)
+        private void GetConfig()
+        {
+            var config = new AvatarGeneratorConfig().GetConfig();
+            _config = config;
+        }
+
+        private void CreateAvatar(CrewMember crewMember, string gender, Random random)
 		{
+            //Get Best Skill
 			BestSkill = GetBestSkill(crewMember, random);
-			// Set Skin Color
-			SkinColor = GetSkin(random);
 
-			// Set Hair Color
-			HairColor = GetHairColor(SkinColor, random);
+			//Set Skin Color
+			SkinColor = GetRandomSkinColor(random);
 
-			// Set Prinary Color
+			//Set Hair Color
+			HairColor = _config.RandomHairColor ? GetRandomHairColor(random) : GetHairColorForSkin(SkinColor, random);
+
+			//Set Prinary Color
 			PrimaryOutfitColor = CustomOutfitColor ? GetRandomColor(random) : Color.White;
 
-			// Set Secondary Color
+			//Set Secondary Color
 			SecondaryOutfitColor = CustomOutfitColor ? GetRandomColor(random) : Color.Black;
 
-			// Set Body Type
-			BodyType = string.Format("Body{0}_{1}", gender, GetBody(BestSkill));
+			//Set Body Type
+			BodyType = string.Format("Body{0}_{1}", gender, GetBodyType(BestSkill));
 
-			// Set Hair Type
+			//Set Hair Type
 			HairType = string.Format("Hair{0:00}{1}", random.Next(1, _config.HairTypesCount + 1), gender);
 
-			// Set Eye Type
+			//Set Eye Type
 			EyeType = string.Format("Eye{0}_{1}", gender, BestSkill);
 
             //Set Eye Color
-            EyeColor = GetEyes(random);
+            EyeColor = GetRandomEyeColor(random);
 
-			// Set Face type
+			//Set Face type
 			EyebrowType = string.Format("Face{0}_{1}_Eyebrows", gender, BestSkill);
 			NoseType = string.Format("Face{0}_{1}_Nose", gender, BestSkill);
 
-			//our charisma and quickness faces have open mouths so specify the mouth
+			//Specify the teeth for male avatars
 			if (gender == "M")
 			{
                 TeethType = string.Format("Face{0}_{1}_Teeth", gender, BestSkill);
             }
+
+            //Set Mouth Type
             MouthType = string.Format("Face{0}_{1}_Mouth", gender, BestSkill);
 
             // Set Height and Width
             Height = 1 + (((float)random.NextDouble() * 0.15f) - 0.075f);
 			Weight = 1 + (((float)random.NextDouble() * 0.15f) - 0.075f);
+
+            //Save attributes to 
 			UpdateAvatarBeliefs(crewMember);
 		}
 
-		private void LoadAvatar(CrewMember crewMember)
+        //get the highest rated skill for this CrewMember's EmotionalAppraisal Asset
+        private CrewMemberSkill GetBestSkill(CrewMember crewMember, Random rand)
+        {
+            CrewMemberSkill bestSkill = CrewMemberSkill.Charisma;
+            int bestSkillLevel = 0;
+            //for each available skill
+            foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
+            {
+                if (skill == CrewMemberSkill.Body)
+                {
+                    continue;
+                }
+                //if the skill rating is equal to the current highest, randomly select if it should become the new bestSkill
+                if (crewMember.Skills[skill] == bestSkillLevel)
+                {
+                    if (rand.Next(0, 100) % 2 == 0)
+                    {
+                        bestSkillLevel = crewMember.Skills[skill];
+                        bestSkill = skill;
+                    }
+                }
+                //if the skill rating is higher, make this skill the new bestSkill
+                if (crewMember.Skills[skill] > bestSkillLevel)
+                {
+                    bestSkillLevel = crewMember.Skills[skill];
+                    bestSkill = skill;
+                }
+            }
+            return bestSkill;
+        }
+
+        private Color GetRandomSkinColor(Random rand)
+        {
+            switch (rand.Next(0, 3))
+            {
+                case 0:
+                    MouthColor = "Light";
+                    return _config.LightSkinColor;
+                case 1:
+                    MouthColor = "Dark";
+                    return _config.DarkSkinColor;
+                default:
+                    MouthColor = "Medium";
+                    return _config.MediumSkinColor;
+            }
+        }
+
+        private Color GetHairColorForSkin(Color skin, Random rand)
+        {
+            // We want to limit the hair colours that are available, so dark skin does not give bright coloured hair
+            if (skin == _config.LightSkinColor || skin == _config.MediumSkinColor)
+            {
+                //lighter coiour skin tones have all hair colours
+                return GetRandomHairColor(rand);
+            }
+            switch (rand.Next(0, 2))
+            {
+                case 0:
+                    return _config.BlackHairColor;
+                default:
+                    return _config.BrownHairColor;
+            }
+        }
+
+        private Color GetRandomHairColor(Random rand)
+        {
+            switch (rand.Next(0, 4))
+            {
+                case 0:
+                    return _config.BlondeHairColor;
+                case 1:
+                    return _config.BlackHairColor;
+                case 2:
+                    return _config.GingerHairColor;
+                default:
+                    return _config.BrownHairColor;
+            }
+        }
+
+        private Color GetRandomColor(Random rand)
+        {
+            return Color.FromArgb(255, rand.Next(0, 256), rand.Next(0, 256), rand.Next(0, 256));
+        }
+
+        private string GetBodyType(CrewMemberSkill skill)
+        {
+            switch (skill)
+            {
+                case CrewMemberSkill.Quickness:
+                    return "Skinny";
+                case CrewMemberSkill.Willpower:
+                    return "Plump";
+                default:
+                    return "Normal";
+            }
+        }
+
+        private string GetRandomEyeColor(Random rand)
+        {
+            switch (rand.Next(0, 3))
+            {
+                case 0:
+                    return "Blue";
+                case 1:
+                    return "Green";
+                default:
+                    return "Brown";
+            }
+        }
+
+        private void LoadAvatar(CrewMember crewMember)
 		{
-			BestSkill = (CrewMemberSkill)Enum.Parse((typeof(CrewMemberSkill)), crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarBestSkill.GetDescription()));
+            //recover the avatar attributes from beliefs stored in the EmotionalAppraisal Asset
+            BestSkill = (CrewMemberSkill)Enum.Parse((typeof(CrewMemberSkill)), crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarBestSkill.GetDescription()));
 			BodyType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarBodyType.GetDescription());
 			EyebrowType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarEyebrowType.GetDescription());
 			EyeType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarEyeType.GetDescription());
@@ -126,7 +250,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void UpdateAvatarBeliefs(CrewMember crewMember)
 		{
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBestSkill.GetDescription(), BestSkill.ToString(), "SELF");
+            //save the current attributes of the CrewMember to thier EmotionalAppraisal Asset
+            crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBestSkill.GetDescription(), BestSkill.ToString(), "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBodyType.GetDescription(), BodyType, "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyebrowType.GetDescription(), EyebrowType, "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyeType.GetDescription(), EyeType, "SELF");
@@ -146,135 +271,5 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarWeight.GetDescription(), Weight.ToString(), "SELF");
 			crewMember.SaveStatus();
 		}
-
-		private string GetBody(CrewMemberSkill bestSkill)
-		{
-			return GetBodyType(bestSkill);
-		}
-		private Color GetSkin(Random random)
-		{
-			return GetRandomSkinColor(random);
-		}
-		private Color GetHairColor(Color skin, Random random)
-		{
-			// we can check the skin colour here to determine which hair colours to return
-			return _config.RandomHairColor ? GetRandomHairColor(random) : GetHairColorForSkin(skin, random);
-		}
-
-		private string GetEyes(Random random)
-		{
-			return GetRandomEyeColor(random);
-		}
-
-		private string GetBodyType(CrewMemberSkill skill)
-		{
-			switch (skill)
-			{
-				case CrewMemberSkill.Quickness:
-					return "Skinny";
-				case CrewMemberSkill.Willpower:
-					return "Plump";
-				default:
-					return "Normal";
-			}
-		}
-
-		private Color GetRandomHairColor(Random rand)
-		{
-			switch (rand.Next(0, 4))
-			{
-				case 0:
-					return _config.BlondeHairColor;
-				case 1:
-					return _config.BlackHairColor;
-				case 2:
-					return _config.GingerHairColor;
-				default:
-					return _config.BrownHairColor;
-			}
-		}
-
-		private Color GetHairColorForSkin(Color skin, Random rand)
-		{
-			// We want to limit the hair colours that are available, so dark skin does not give bright coloured hair
-			if (skin == _config.LightSkinColor || skin == _config.MediumSkinColor)
-			{
-				//lighter coiour skin tones have all hair colours
-				return GetRandomHairColor(rand);
-			}
-			switch (rand.Next(0, 2))
-			{
-				case 0:
-					return _config.BlackHairColor;
-				default:
-					return _config.BrownHairColor;
-			}
-		}
-		private Color GetRandomSkinColor(Random rand)
-		{
-			switch (rand.Next(0, 3))
-			{
-				case 0:
-					MouthColor = "Light";
-					return _config.LightSkinColor;
-				case 1:
-					MouthColor = "Dark";
-					return _config.DarkSkinColor;
-				default:
-					MouthColor = "Medium";
-					return _config.MediumSkinColor;
-			}
-		}
-
-		private string GetRandomEyeColor(Random rand)
-		{
-			switch (rand.Next(0, 3))
-			{
-				case 0:
-					return "Blue";
-				case 1:
-					return "Green";
-				default:
-					return "Brown";
-			}
-		}
-
-		private Color GetRandomColor(Random rand)
-		{
-			return Color.FromArgb(255, rand.Next(0, 256), rand.Next(0, 256), rand.Next(0, 256));
-		}
-
-		private void GetConfig()
-		{
-			var config = new AvatarGeneratorConfig().GetConfig();
-			_config = config;
-		}
-
-		private CrewMemberSkill GetBestSkill(CrewMember crewMember, Random rand)
-		{
-			CrewMemberSkill bestSkill = CrewMemberSkill.Charisma;
-			int bestSkillLevel = 0;
-			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
-			{
-				if (skill == CrewMemberSkill.Body)
-				{
-					continue;
-				}
-				if (crewMember.Skills[skill] == bestSkillLevel)
-				{
-					if (rand.Next(0, 100) % 2 == 0)
-					{
-						bestSkillLevel = crewMember.Skills[skill];
-						bestSkill = skill;
-					}
-				}
-				if (crewMember.Skills[skill] > bestSkillLevel)
-				{
-					bestSkillLevel = crewMember.Skills[skill];
-					bestSkill = skill;
-				}
-			}
-			return bestSkill;
-		}
-	}
+    }
 }

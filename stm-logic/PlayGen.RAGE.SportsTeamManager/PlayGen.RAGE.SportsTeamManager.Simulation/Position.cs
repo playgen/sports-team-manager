@@ -3,14 +3,17 @@ using System.Linq;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	public class Position
+    /// <summary>
+    /// Stores position details and functionality
+    /// </summary>
+    public class Position
 	{
 		public string Name { get; set; }
 		public string Description { get; set; }
 		public List<CrewMemberSkill> RequiredSkills { get; set; }
 
 		/// <summary>
-		/// Get a rating for this CrewMember in this Position
+		/// Get the average skill rating for this CrewMember in this Position
 		/// </summary>
 		public int GetPositionRating(CrewMember crewMember)
 		{

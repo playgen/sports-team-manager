@@ -1,0 +1,12 @@
+diff a/stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json b/stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json	(rejected hunks)
+@@ -19,8 +19,8 @@
+ 	"DefaultMoodMin": 0,
+ 	"DefaultMoodMax": 0,
+ 	"PostRaceRest": 0,
+-	"DefaultActionAllowance": 5,
+-	"ActionAllowancePerPosition": 5,
++	"DefaultActionAllowance": 10,
++	"ActionAllowancePerPosition": 10,
+ 	"CrewEditAllowancePerPosition": 1,
+ 	"RecruitmentCost": 4,
+ 	"FiringCost": 4,
