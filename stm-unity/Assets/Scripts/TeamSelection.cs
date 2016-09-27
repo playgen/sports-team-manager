@@ -124,14 +124,6 @@ public class TeamSelection : MonoBehaviour {
 		return false;
 	}
 
-	public void PostRaceEvent()
-	{
-		if (_confirmCount == _sessionLength - 1)
-		{
-			_postRaceEvent.GetEvent();
-		}
-	}
-
 	/// <summary>
 	/// Get the current CrewMember (if any) of a position
 	/// </summary>

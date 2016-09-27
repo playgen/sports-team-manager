@@ -26,7 +26,8 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public Position GetCrewMemberPosition(CrewMember crewMember)
 	{
-		return crewMember.GetPosition(_gameManager.Boat);
+		var boatPosition = crewMember.GetBoatPosition(_gameManager.Boat);
+        return boatPosition != null ? boatPosition.Position : null;
 	}
 
 	public string[] GetEventText(string eventKey)

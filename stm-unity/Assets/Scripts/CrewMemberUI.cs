@@ -82,7 +82,8 @@ public class CrewMemberUI : MonoBehaviour {
 		_beingDragged = true;
 		_beingClicked = true;
 		_dragPosition = Input.mousePosition - transform.position;
-		transform.SetParent(_defaultParent, false);
+        _defaultParent.parent.GetComponent<HorizontalLayoutGroup>().enabled = false;
+        transform.SetParent(_defaultParent.parent, false);
 		transform.position = (Vector2)Input.mousePosition - _dragPosition;
 		transform.SetAsLastSibling();
 	}
@@ -110,7 +111,8 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	void EndDrag()
 	{
-		_beingDragged = false;
+        _defaultParent.parent.GetComponent<HorizontalLayoutGroup>().enabled = true;
+        _beingDragged = false;
 		CheckPlacement();
 		if (_beingClicked) {
 			ShowPopUp();

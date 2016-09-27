@@ -150,10 +150,7 @@ public class AvatarDisplay : MonoBehaviour
 
         Eyebrow.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.EyebrowType, moodStr));
         Mouth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.MouthType, moodStr));
-        if (avatar.TeethType != null)
-        {
-            Teeth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.TeethType, moodStr));
-        }
+        Teeth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.TeethType, moodStr));
         if (Teeth.sprite != null)
         {
             Teeth.color = Color.white;

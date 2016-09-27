@@ -101,7 +101,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			_raceButton.interactable = true;
 		}
-		if ((_teamSelection.QuestionAllowance() < 2 || _teamSelection.CrewEditAllowance() == 0 || !_teamSelection.CanAddCheck()) && _recruitButtons.Count > 0 && _recruitButtons[0].IsInteractable())
+		if ((_teamSelection.QuestionAllowance() < 4 || _teamSelection.CrewEditAllowance() == 0 || !_teamSelection.CanAddCheck()) && _recruitButtons.Count > 0 && _recruitButtons[0].IsInteractable())
 		{
 			foreach (Button b in _recruitButtons)
 			{
@@ -109,7 +109,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			}
 			
 		}
-		else if (_teamSelection.QuestionAllowance() >= 2 && _teamSelection.CrewEditAllowance() > 0 && _teamSelection.CanAddCheck() && _recruitButtons.Count > 0 && !_recruitButtons[0].IsInteractable())
+		else if (_teamSelection.QuestionAllowance() >= 4 && _teamSelection.CrewEditAllowance() > 0 && _teamSelection.CanAddCheck() && _recruitButtons.Count > 0 && !_recruitButtons[0].IsInteractable())
 		{
 			foreach (Button b in _recruitButtons)
 			{
@@ -181,7 +181,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		} else
 		{
 			stageIcon.sprite = _practiceIcon;
-			boatContainer.transform.Find("Race").GetComponentInChildren<Text>().text = "PRACTICE " + stageNumber + "/" + _teamSelection.GetSessionLength();
+			boatContainer.transform.Find("Race").GetComponentInChildren<Text>().text = "PRACTICE " + stageNumber + "/" + (_teamSelection.GetSessionLength() - 1);
 			boatContainer.transform.Find("Race").GetComponentInChildren<Text>().fontSize = 16;
 		}
 

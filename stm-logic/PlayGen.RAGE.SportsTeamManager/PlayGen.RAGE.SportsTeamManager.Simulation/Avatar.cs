@@ -113,7 +113,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UpdateAvatarBeliefs(crewMember);
 		}
 
-        //get the highest rated skill for this CrewMember's EmotionalAppraisal Asset
+        /// <summary>
+		/// get the highest rated skill for this CrewMember
+		/// </summary>
         private CrewMemberSkill GetBestSkill(CrewMember crewMember, Random rand)
         {
             CrewMemberSkill bestSkill = CrewMemberSkill.Charisma;
@@ -223,9 +225,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
             }
         }
 
+        /// <summary>
+		/// recover the avatar attributes from beliefs stored in the EmotionalAppraisal Asset
+		/// </summary>
         private void LoadAvatar(CrewMember crewMember)
 		{
-            //recover the avatar attributes from beliefs stored in the EmotionalAppraisal Asset
             BestSkill = (CrewMemberSkill)Enum.Parse((typeof(CrewMemberSkill)), crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarBestSkill.GetDescription()));
 			BodyType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarBodyType.GetDescription());
 			EyebrowType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarEyebrowType.GetDescription());
@@ -248,9 +252,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Weight = float.Parse(crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarWeight.GetDescription()));
 		}
 
+        /// <summary>
+		/// save the current attributes of the CrewMember to their EmotionalAppraisal Asset
+		/// </summary>
 		public void UpdateAvatarBeliefs(CrewMember crewMember)
 		{
-            //save the current attributes of the CrewMember to thier EmotionalAppraisal Asset
             crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBestSkill.GetDescription(), BestSkill.ToString(), "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBodyType.GetDescription(), BodyType, "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyebrowType.GetDescription(), EyebrowType, "SELF");

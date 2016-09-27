@@ -38,28 +38,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RevealedCrewOpinions = new List<CrewOpinion>();
 		}
 
-		/// <summary>
-		/// Constructor for creating a CrewMember with a random age/gender/name
-		/// </summary>
-		public CrewMember(Random random, ConfigStore config)
-		{
-			_config = config;
-			Gender = SelectGender(random);
-			Age = random.Next(18, 45);
-			Name = SelectRandomName(Gender, random);
-			RevealedSkills = new Dictionary<CrewMemberSkill, int>();
-			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
-			{
-				RevealedSkills.Add(skill, 0);
-			}
-			CrewOpinions = new List<CrewOpinion>();
-			RevealedCrewOpinions = new List<CrewOpinion>();
-		}
-
-		/// <summary>
-		/// Constructor for creating a CrewMember from a saved game
-		/// </summary>
-		public CrewMember(IStorageProvider savedStorage, RolePlayCharacterAsset rpc, ConfigStore config) : base(savedStorage, rpc)
+        /// <summary>
+        /// Constructor for creating a CrewMember from a saved game
+        /// </summary>
+        public CrewMember(IStorageProvider savedStorage, RolePlayCharacterAsset rpc, ConfigStore config) : base(savedStorage, rpc)
 		{
 			_config = config;
 			Skills = new Dictionary<CrewMemberSkill, int>();
@@ -73,10 +55,51 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RevealedCrewOpinions = new List<CrewOpinion>();
 		}
 
-		/// <summary>
-		/// Randomly selected the gender of the CrewMember
+        /// <summary>
+		/// Constructor for creating a CrewMember with a random age/gender/name
 		/// </summary>
-		private string SelectGender(Random random)
+		public CrewMember(Random random, Boat boat, ConfigStore config)
+        {
+            _config = config;
+            Gender = SelectGender(random);
+            Age = random.Next(18, 45);
+            Name = SelectRandomName(Gender, random);
+            RevealedSkills = new Dictionary<CrewMemberSkill, int>();
+            foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
+            {
+                RevealedSkills.Add(skill, 0);
+            }
+            CrewOpinions = new List<CrewOpinion>();
+            RevealedCrewOpinions = new List<CrewOpinion>();
+            boat.UniqueNameCheck(random, this);
+            //select a position that is in need of a new crew member
+            Position selectedPerferred = boat.GetWeakPosition(random);
+            //set the skils of the new CrewMember according to the required skills for the selected position
+            Skills = new Dictionary<CrewMemberSkill, int>();
+            foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
+            {
+                if (selectedPerferred != null)
+                {
+                    if (selectedPerferred.RequiredSkills.Contains(skill))
+                    {
+                        Skills.Add(skill, random.Next((int)_config.ConfigValues[ConfigKeys.GoodPositionRating.ToString()], 11));
+                    }
+                    else
+                    {
+                        Skills.Add(skill, random.Next(1, (int)_config.ConfigValues[ConfigKeys.BadPositionRating.ToString()] + 1));
+                    }
+                }
+                else
+                {
+                    Skills.Add(skill, random.Next((int)_config.ConfigValues[ConfigKeys.RandomSkillLow.ToString()], (int)_config.ConfigValues[ConfigKeys.RandomSkillHigh.ToString()] + 1));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Randomly select the gender of the CrewMember
+        /// </summary>
+        private string SelectGender(Random random)
 		{
 			return random.Next(0, 1000) % 2 == 0 ? "Male" : "Female";
 		}
@@ -90,7 +113,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Randomly seect a name for this CrewMember
+		/// Randomly select a name for this CrewMember
 		/// </summary>
 		private string SelectRandomName(string gender, Random random)
 		{
@@ -121,20 +144,31 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				UpdateSingleBelief(String.Format(NPCBeliefs.Skill.GetDescription(), skill), Skills[skill].ToString(), "SELF");
 			}
-			foreach (CrewOpinion co in CrewOpinions)
-			{
-				UpdateSingleBelief(String.Format(NPCBeliefs.Opinion.GetDescription(), co.Person.Name.Replace(" ", "")), co.Opinion.ToString(), "SELF");
-			}
-			foreach (CrewOpinion co in RevealedCrewOpinions)
-			{
-				UpdateSingleBelief(String.Format(NPCBeliefs.RevealedOpinion.GetDescription(), co.Person.Name.Replace(" ", "")), co.Opinion.ToString(), "SELF");
-			}
 		}
 
-		/// <summary>
-		/// Adjust or overwrite an opinion on another Person
-		/// </summary>
-		public void AddOrUpdateOpinion(Person person, int change, bool replace = false)
+        public void CreateInitialOpinions(Random random, Boat boat)
+        {
+            foreach (CrewMember otherMember in boat.GetAllCrewMembers())
+            {
+                if (this != otherMember)
+                {
+                    CreateInitialOpinion(random, otherMember);
+                }
+                CreateInitialOpinion(random, boat.Manager);
+            }
+        }
+
+        public void CreateInitialOpinion(Random random, Person person)
+        {
+            AddOrUpdateOpinion(person, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+            AddOrUpdateRevealedOpinion(person, 0);
+            SaveStatus();
+        }
+
+        /// <summary>
+        /// Adjust or overwrite an opinion on another Person
+        /// </summary>
+        public void AddOrUpdateOpinion(Person person, int change, bool replace = false)
 		{
 			var cw = CrewOpinions.SingleOrDefault(op => op.Person == person);
 			if (cw != null)
@@ -165,8 +199,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				cw.Opinion = 5;
 			}
-			UpdateBeliefs();
-			OpinionChange(this, new EventArgs());
+            UpdateSingleBelief(String.Format(NPCBeliefs.Opinion.GetDescription(), cw.Person.Name.Replace(" ", "")), cw.Opinion.ToString(), "SELF");
+            OpinionChange(this, new EventArgs());
 		}
 
 		public void AddOrUpdateRevealedOpinion(Person person, int change)
@@ -193,11 +227,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				cw.Opinion = 5;
 			}
-			UpdateBeliefs();
-		}
+            UpdateSingleBelief(String.Format(NPCBeliefs.RevealedOpinion.GetDescription(), cw.Person.Name.Replace(" ", "")), cw.Opinion.ToString(), "SELF");
+        }
 
 		/// <summary>
-		/// Get the saved stats, position, opinions and retirement status for this CrewMember
+		/// Get the saved stats and opinions for this CrewMember
 		/// </summary>
 		public void LoadBeliefs(Boat boat)
 		{
@@ -249,6 +283,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+        /// <summary>
+		/// Get the saved last position for this CrewMember
+		/// </summary>
         public void LoadPosition(Boat boat)
         {
             if (EmotionalAppraisal.GetBeliefValue(NPCBeliefs.Position.GetDescription()) != "null")
@@ -283,15 +320,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
         /// <summary>
         /// Get the current position on this Boat (if any) for this CrewMember
         /// </summary>
-        public Position GetPosition(Boat boat)
+        public BoatPosition GetBoatPosition(Boat boat)
 		{
-			Position position = null;
-			var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
-			if (currentPosition != null)
-			{
-				position = currentPosition.Position;
-			}
-			return position;
+            return boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
 		}
 
 		/// <summary>
@@ -305,7 +336,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				if (EmotionalAppraisal.GetBeliefValue(NPCBeliefs.ExpectedSelection.GetDescription()).ToLower() == "true")
 				{
-					if (boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this) == null)
+					if (GetBoatPosition(boat) == null)
 					{
 						AddOrUpdateOpinion(boat.Manager, -3);
 						UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "false", "SELF");
@@ -387,6 +418,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}*/
 		}
 
+        /// <summary>
+		/// Decrease rest amount and set rest amount if CrewMember has been used
+		/// </summary>
 		public void RaceRest(bool assigned)
 		{
 			restCount--;
@@ -398,7 +432,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Send an event to the EA/EDM to get the CrewMember's reaction and mood change as a result
+		/// Send an event to the EA/RPC to get CrewMember information
 		/// </summary>
 		public string SendMeetingEvent(IntegratedAuthoringToolAsset iat, string state, string style, Boat boat)
 		{
@@ -524,9 +558,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return reply;
 		}
 
+        /// <summary>
+		/// Get recruit reaction to statement based on their rating of that skill
+		/// </summary>
 		public string SendRecruitEvent(IntegratedAuthoringToolAsset iat, CrewMemberSkill skill)
 		{
-			string reply = null;
+			string reply;
 			IEnumerable<DialogueStateActionDTO> dialogueOptions = Enumerable.Empty<DialogueStateActionDTO>();
 			if (Skills[skill] >= 9)
 			{
@@ -552,6 +589,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return reply;
 		}
 
+        /// <summary>
+		/// Get CrewMember reply to player dialogue during a post-race event
+		/// </summary>
 		public string SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Boat boat, Boat previousBoat)
 		{
 			IEnumerable<DialogueStateActionDTO> dialogueOptions = Enumerable.Empty<DialogueStateActionDTO>();
@@ -594,6 +634,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return reply;
 		}
 
+        /// <summary>
+		/// Make changes based off of post-race events
+		/// </summary>
 		void PostRaceFeedback(string lastEvent, Boat boat)
 		{
 			SaveStatus();
@@ -637,8 +680,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						{
 							Skills[(CrewMemberSkill)randomStat] = 10;
 						}
-					}
-					UpdateBeliefs();
+                        UpdateSingleBelief(String.Format(NPCBeliefs.Skill.GetDescription(), Skills[(CrewMemberSkill)randomStat]), ((CrewMemberSkill)randomStat).ToString(), "SELF");
+                    }
 					break;
 				case "NotPickedSkillFriends":
 					AddOrUpdateOpinion(boat.Manager, 1);

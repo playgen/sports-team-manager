@@ -80,7 +80,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void AddCrew(CrewMember crewMember)
 		{
-			var currentPosition = BoatPositions.SingleOrDefault(bp => bp.CrewMember == crewMember);
+			var currentPosition = crewMember.GetBoatPosition(this);
 			if (currentPosition != null)
 			{
 				return;
@@ -110,7 +110,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			if (crewMember != null)
 			{
-				var current = BoatPositions.SingleOrDefault(bp => bp.CrewMember == crewMember);
+				var current = crewMember.GetBoatPosition(this);
 				if (current != null)
 				{
 					RemoveCrew(current);
@@ -134,8 +134,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			if (crewMember != null && boatPosition != null)
 			{
-				crewMember.UpdateBeliefs(boatPosition.Position.Name);
-			}
+				crewMember.UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), boatPosition.Position.Name, "SELF");
+            }
 			UpdateBoatScore();
 			UpdateIdealScore();
 		}
@@ -148,8 +148,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			boatPosition.CrewMember.OpinionChange -= new EventHandler(OnOpinionChange);
 			UnassignedCrew.Add(boatPosition.CrewMember);
 			UpdateBoatScore();
-			boatPosition.CrewMember.UpdateBeliefs("null");
-			boatPosition.CrewMember = null;
+			boatPosition.CrewMember.UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "null", "SELF");
+            boatPosition.CrewMember = null;
 		}
 
 		/// <summary>
@@ -165,6 +165,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 		}
+
+        public void UniqueNameCheck(Random random, CrewMember cm)
+        {
+            bool unqiue = false;
+            //if the name is already in use by another character, reset their name
+            while (!unqiue)
+            {
+                if (GetAllCrewMembers().Count(c => c.Name == cm.Name) > 0 || RetiredCrew.Count(c => c.Name == cm.Name) > 0 || Recruits.Count(c => c.Name == cm.Name) > 0 || cm.Name == Manager.Name)
+                {
+                    cm.Name = cm.SelectNewName(cm.Gender, random);
+                }
+                else
+                {
+                    unqiue = true;
+                }
+            }
+        }
 
         /// <summary>
 		/// Update the set of recruits for this Boat
@@ -191,7 +208,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
             int amount = (int)_config.ConfigValues[ConfigKeys.RecruitCount.ToString()] - Recruits.Count;
 			for (int i = 0; i < amount; i++)
 			{
-				CrewMember newMember = CreateNewMember(rand);
+				CrewMember newMember = new CrewMember(rand, this, _config);
 				Recruits.Add(newMember);
 			}
             //for each recruit, save their asset files, avatar and save files/add to iat
@@ -205,68 +222,25 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			iat.SaveToFile(savedStorage, iat.AssetFilePath);
 		}
 
-        /// <summary>
-		/// Create a new CrewMember for this boat.
-		/// </summary>
-		public CrewMember CreateNewMember(Random rand)
-		{
-			CrewMember newMember = new CrewMember(rand, _config);
-			bool unqiue = false;
-            //if the name is already in use by another character, reset their name
-			while (!unqiue)
-			{
-				if (GetAllCrewMembers().Count(c => c.Name == newMember.Name) > 0 || RetiredCrew.Count(c => c.Name == newMember.Name) > 0 || Recruits.Count(c => c.Name == newMember.Name) > 0 || newMember.Name == Manager.Name)
-				{
-					newMember.Name = newMember.SelectNewName(newMember.Gender, rand);
-				}
-				else
-				{
-					unqiue = true;
-				}
-			}
-            //select a position that is in need of a new crew member
-			Position selectedPerferred;
-			Dictionary<Position, int> positionStrength = GetPositionStrength();
+        public Position GetWeakPosition(Random random)
+        {
+            Dictionary<Position, int> positionStrength = GetPositionStrength();
             //if there is no position that has more available than another, select one at random
-			if (positionStrength.OrderBy(kvp => kvp.Value).Last().Value - positionStrength.OrderBy(kvp => kvp.Value).First().Value == 0)
-			{
-				int positionValue = rand.Next(0, BoatPositions.Count + 1);
-				selectedPerferred = positionValue < BoatPositions.Count ? BoatPositions[positionValue].Position : null;
-			}
-            //select from weaker positions if at least one position has less available members than another 
-            else
+            if (positionStrength.OrderBy(kvp => kvp.Value).Last().Value - positionStrength.OrderBy(kvp => kvp.Value).First().Value == 0)
             {
-				int lowValue = positionStrength.OrderBy(kvp => kvp.Value).First().Value;
-				Position[] lowPositions = positionStrength.Where(kvp => kvp.Value == lowValue).Select(kvp => kvp.Key).ToArray();
-				selectedPerferred = lowPositions.OrderBy(p => Guid.NewGuid()).First();
-			}
-            //set the skils of the new CrewMember according to the required skills for the selected position
-			newMember.Skills = new Dictionary<CrewMemberSkill, int>();
-			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
-			{
-				if (selectedPerferred != null)
-				{
-					if (selectedPerferred.RequiredSkills.Contains(skill))
-					{
-						newMember.Skills.Add(skill, rand.Next((int)_config.ConfigValues[ConfigKeys.GoodPositionRating.ToString()], 11));
-					}
-					else
-					{
-						newMember.Skills.Add(skill, rand.Next(1, (int)_config.ConfigValues[ConfigKeys.BadPositionRating.ToString()] + 1));
-					}
-				}
-				else
-				{
-					newMember.Skills.Add(skill, rand.Next((int)_config.ConfigValues[ConfigKeys.RandomSkillLow.ToString()], (int)_config.ConfigValues[ConfigKeys.RandomSkillHigh.ToString()] + 1));
-				}
-			}
-			return newMember;
-		}
+                int positionValue = random.Next(0, BoatPositions.Count + 1);
+                return positionValue < BoatPositions.Count ? BoatPositions[positionValue].Position : null;
+            }
+            //select from weaker positions if at least one position has less available members than another 
+            int lowValue = positionStrength.OrderBy(kvp => kvp.Value).First().Value;
+            Position[] lowPositions = positionStrength.Where(kvp => kvp.Value == lowValue).Select(kvp => kvp.Key).ToArray();
+            return lowPositions.OrderBy(p => Guid.NewGuid()).First();
+        }
 
         /// <summary>
 		/// Get the amount of current crew and recruits that are capable of going into each position
 		/// </summary>
-		Dictionary<Position, int> GetPositionStrength()
+		public Dictionary<Position, int> GetPositionStrength()
 		{
 			Dictionary<Position, int> positionStrength = new Dictionary<Position, int>();
 			foreach (Position pos in BoatPositions.Select(bp => bp.Position))
@@ -295,7 +269,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void RetireCrew(CrewMember crewMember)
 		{
-			var currentPosition = BoatPositions.SingleOrDefault(bp => bp.CrewMember == crewMember);
+			var currentPosition = crewMember.GetBoatPosition(this);
 			if (currentPosition != null)
 			{
 				RemoveCrew(currentPosition);
