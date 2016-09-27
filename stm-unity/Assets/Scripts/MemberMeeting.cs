@@ -1,12 +1,9 @@
-﻿using System;
-
-using UnityEngine;
-using System.Collections;
-using System.Linq;
-
+﻿using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
-using System.Collections.Generic;
 
+/// <summary>
+/// Contains all logic to communicate between MemberMeetingUI and GameManager
+/// </summary>
 public class MemberMeeting : MonoBehaviour
 {
 	private GameManager _gameManager;
@@ -16,7 +13,10 @@ public class MemberMeeting : MonoBehaviour
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 	}
 
-	public Boat GetBoat()
+    /// <summary>
+    /// Get the current boat being used throughout the game
+    /// </summary>
+    public Boat GetBoat()
 	{
 		return _gameManager.Boat;
 	}
@@ -30,36 +30,57 @@ public class MemberMeeting : MonoBehaviour
         return boatPosition != null ? boatPosition.Position : null;
 	}
 
-	public string[] GetEventText(string eventKey)
+    /// <summary>
+    /// Get player text for a question
+    /// </summary>
+    public string[] GetEventText(string eventKey)
 	{
 		return _gameManager.GetEventStrings(eventKey);
 	}
 
-	public string[] AskQuestion(string context, string eventKey, CrewMember crewMember)
+    /// <summary>
+    /// Send question asked by player to CrewMember, get their reply in response
+    /// </summary>
+	public string AskQuestion(string eventKey, CrewMember crewMember)
 	{
-		return _gameManager.SendMeetingEvent(context, eventKey, new List<CrewMember>() { crewMember });
+		return _gameManager.SendMeetingEvent(eventKey, crewMember);
 	}
 
+    /// <summary>
+    /// Get the amount of available ActionAllowance remaining for this race
+    /// </summary>
 	public int QuestionAllowance()
 	{
 		return _gameManager.ActionAllowance;
 	}
 
+    /// <summary>
+    /// Get the amount of available ActionAllowance given at the start of this race
+    /// </summary>
 	public int StartingQuestionAllowance()
 	{
 		return _gameManager.GetStartingActionAllowance();
 	}
 
+    /// <summary>
+    /// Get the amount of hire/fire actions remaining for this race
+    /// </summary>
 	public int CrewEditAllowance()
 	{
 		return _gameManager.CrewEditAllowance;
 	}
 
+    /// <summary>
+    /// Check if it is allowable to fire crew members at this point
+    /// </summary>
 	public bool CanRemoveCheck()
 	{
 		return _gameManager.CanRemoveFromCrew();
 	}
 
+    /// <summary>
+    /// Remove a CrewMember from the team
+    /// </summary>
 	public void FireCrewMember(CrewMember crewMember)
 	{
 		_gameManager.RetireCrewMember(crewMember);

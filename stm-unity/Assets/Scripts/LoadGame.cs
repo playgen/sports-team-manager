@@ -3,6 +3,9 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Contains all logic to communicate between LoadGameUI and GameManager
+/// </summary>
 public class LoadGame : MonoBehaviour
 {
 	private GameManager _gameManager;

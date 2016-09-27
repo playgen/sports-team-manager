@@ -1,29 +1,37 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 
+/// <summary>
+/// Contains all logic related to CrewMember prefabs
+/// </summary>
 public class CrewMemberUI : MonoBehaviour {
 
 	private TeamSelection _teamSelection;
 	private MemberMeetingUI _meetingUI;
     private PositionDisplayUI _positionUI;
     private CrewMember _crewMember;
+    public CrewMember CrewMember
+    {
+        get { return _crewMember; }
+    }
 	private bool _beingClicked;
 	private bool _beingDragged;
 	private Vector2 _dragPosition;
 	private Icon[] _roleIcons;
-
 	private Transform _defaultParent;
 	private Vector2 _currentPositon;
     public bool Usable;
     public bool Current;
 	public event EventHandler ReplacedEvent = delegate { };
 
+    /// <summary>
+	/// Bring in elements that need to be known to this class
+	/// </summary>
     public void SetUp(bool usable, bool current, TeamSelection teamSelection, MemberMeetingUI meetingUI, PositionDisplayUI positionUI, CrewMember crewMember, Transform parent, Icon[] roleIcons)
     {
         _teamSelection = teamSelection;
@@ -45,6 +53,9 @@ public class CrewMemberUI : MonoBehaviour {
         }
     }
 
+    /// <summary>
+	/// Set up event triggers depending on if this should be draggable or not
+	/// </summary>
     public void SetEventTriggers(EventTrigger trigger, bool isActive)
 	{
 		trigger.triggers.Clear();
@@ -68,11 +79,6 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 	}
 
-	public CrewMember CrewMember()
-	{
-		return _crewMember;
-	}
-
 	/// <summary>
 	/// MouseDown start the current drag
 	/// </summary>
@@ -81,8 +87,11 @@ public class CrewMemberUI : MonoBehaviour {
 		_currentPositon = transform.position;
 		_beingDragged = true;
 		_beingClicked = true;
+        //_dragPosition is used to offset according to where the click occured
 		_dragPosition = Input.mousePosition - transform.position;
+        //disable layoutgroup to avoiding jumping to different position
         _defaultParent.parent.GetComponent<HorizontalLayoutGroup>().enabled = false;
+        //set as child of container so this displays above all other CrewMember objects
         transform.SetParent(_defaultParent.parent, false);
 		transform.position = (Vector2)Input.mousePosition - _dragPosition;
 		transform.SetAsLastSibling();
@@ -106,10 +115,10 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 	}
 
-	/// <summary>
-	/// MouseUp ends the current drag. If beingClicked is true, the CrewMember pop-up is displayed. Otherwise, check if the Crewmember has been placed into a position.
-	/// </summary>
-	void EndDrag()
+    /// <summary>
+    /// MouseUp ends the current drag. Check if the CrewMember has been placed into a position.If beingClicked is true, the CrewMember pop-up is displayed.
+    /// </summary>
+    void EndDrag()
 	{
         _defaultParent.parent.GetComponent<HorizontalLayoutGroup>().enabled = true;
         _beingDragged = false;
@@ -125,7 +134,7 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	void ShowPopUp()
 	{
-		_meetingUI.Display(_crewMember);
+		_meetingUI.SetUpDisplay(_crewMember);
 	}
 
 	/// <summary>
@@ -135,6 +144,7 @@ public class CrewMemberUI : MonoBehaviour {
 	{
 		PlacedEvent();
 		var raycastResults = new List<RaycastResult>();
+        //gets all UI objects below the cursor
 		EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
 		bool placed = false;
 		foreach (var result in raycastResults)
@@ -154,16 +164,22 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 		if (_meetingUI.gameObject.activeSelf)
 		{
-			_meetingUI.ResetDisplay();
+			_meetingUI.Display();
 		}
 	}
 
+    /// <summary>
+	/// Event triggered when the placement of this object is changed
+	/// </summary>
 	public void PlacedEvent()
 	{
 		ReplacedEvent(this, new EventArgs());
 	}
 
-	public void Place(GameObject position)
+    /// <summary>
+    /// Place the CrewMember to be inline with the Position it is now paired with
+    /// </summary>
+    public void Place(GameObject position)
 	{
 		RectTransform positionTransform = position.gameObject.GetComponent<RectTransform>();
 		transform.SetParent(positionTransform, false);

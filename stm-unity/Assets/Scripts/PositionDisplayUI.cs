@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(PositionDisplay))]
+/// <summary>
+/// Contains all UI logic related to the Position pop-up
+/// </summary>
 public class PositionDisplayUI : MonoBehaviour
 {
 	private PositionDisplay _positionDisplay;
@@ -93,8 +94,6 @@ public class PositionDisplayUI : MonoBehaviour
 	void ResetDisplay(Position position)
 	{
 		var currentBoat = _positionDisplay.GetBoat();
-		var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);
-		var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
 		_positionPopUpText[0].text = position.Name;
 		_positionPopUpText[1].text = position.Description;
 		_positionPopUpRoleImage.sprite = _positionPopUpRoleSprites.FirstOrDefault(mo => mo.Name == position.Name).Image;
@@ -108,9 +107,9 @@ public class PositionDisplayUI : MonoBehaviour
 		{
 			_positionPopUpCurrentCrew.gameObject.SetActive(true);
 			_positionPopUpCurrentName.gameObject.SetActive(true);
-			_positionPopUpCurrentCrew.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), primary, secondary, true);
+			_positionPopUpCurrentCrew.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), true);
 			_positionPopUpCurrentName.text = currentCrew.Name;
-			_positionPopUpCurrentButton.onClick.AddListener(delegate { _meetingUI.Display(currentCrew); });
+			_positionPopUpCurrentButton.onClick.AddListener(delegate { _meetingUI.SetUpDisplay(currentCrew); });
 		}
 		else
 		{
@@ -160,13 +159,13 @@ public class PositionDisplayUI : MonoBehaviour
 			if (_positionDisplay.GetBoat().GetAllCrewMembers().Contains(member.Key))
 			{
 				var current = member.Key;
-				positionHistory.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { _meetingUI.Display(current); });
+				positionHistory.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { _meetingUI.SetUpDisplay(current); });
 			}
 			else
 			{
 				positionHistory.transform.Find("Button").GetComponent<Button>().interactable = false;
 			}
-			positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, member.Key.GetMood(), primary, secondary, true);
+			positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, member.Key.GetMood(), true);
 			positionHistory.transform.Find("Session Back/Sessions").GetComponent<Text>().text = member.Value.ToString();
 		}
 	}

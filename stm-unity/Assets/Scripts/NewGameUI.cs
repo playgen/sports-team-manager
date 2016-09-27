@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(NewGame))]
+/// <summary>
+/// Contains all UI logic related to creating new games
+/// </summary>
 public class NewGameUI : MonoBehaviour {
 
 	private NewGame _newGame;
@@ -46,6 +47,7 @@ public class NewGameUI : MonoBehaviour {
 		{
 			_managerAge.text = (ageTest * -1).ToString();
 		}
+        //code for tabbing between input fields
         if (Input.GetKeyDown(KeyCode.Tab) && EventSystem.current.currentSelectedGameObject != null)
         {
             Selectable next = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().navigation.selectOnDown;
@@ -64,7 +66,10 @@ public class NewGameUI : MonoBehaviour {
         }
     }
 
-	public void RandomColor()
+    /// <summary>
+    /// Set the color sliders to random values
+    /// </summary>
+    public void RandomColor()
 	{
 		foreach (Slider s in _colorSliderPrimary)
 		{
@@ -77,7 +82,10 @@ public class NewGameUI : MonoBehaviour {
 		UpdateColor();
 	}
 
-	public void UpdateColor()
+    /// <summary>
+    /// Update the displayed color to match what has been selected using the sliders
+    /// </summary>
+    public void UpdateColor()
 	{
 		_colorImagePrimary.color = new Color(_colorSliderPrimary[0].value, _colorSliderPrimary[1].value, _colorSliderPrimary[2].value);
 		_colorImageSecondary.color = new Color(_colorSliderSecondary[0].value, _colorSliderSecondary[1].value, _colorSliderSecondary[2].value);
@@ -137,7 +145,7 @@ public class NewGameUI : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Check if information provided is valid
+	/// Check if information provided is valid and creates new game if so
 	/// </summary>
 	public void NewGame()
 	{

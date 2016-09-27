@@ -49,20 +49,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
         /// <summary>
-        /// Send dialogue from the player to (an) NPC(s) in a meeting and get the reply from the NPC(s)
+        /// Send dialogue from the player to a NPC in a meeting and get the reply from the NPC
         /// </summary>
-		public List<string> SendMeetingEvent(IntegratedAuthoringToolAsset iat, string eventType, string eventName, List<CrewMember> crewMembers, Boat boat)
+		public string SendMeetingEvent(IntegratedAuthoringToolAsset iat, string eventName, CrewMember crewMember, Boat boat)
 		{
-			List<string> replies = new List<string>();
-			foreach (CrewMember member in crewMembers)
-			{
-				var reply = member.SendMeetingEvent(iat, eventType, eventName, boat);
-				if (reply != null)
-				{
-					replies.Add(reply);
-				}
-			}
-			return replies;
+            return crewMember.SendMeetingEvent(iat, eventName, boat);
 		}
 
         /// <summary>

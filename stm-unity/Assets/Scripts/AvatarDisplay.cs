@@ -1,45 +1,47 @@
 ﻿//#define USE_SPRITESHEET
-
-using System;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine.UI;
-using PlayGen.RAGE.SportsTeamManager.Simulation;
 using Avatar = PlayGen.RAGE.SportsTeamManager.Simulation.Avatar;
 
+/// <summary>
+/// Used to layout displayed avatars
+/// </summary>
 public class AvatarDisplay : MonoBehaviour
 {
-	public Image Body;
-	public Image HairBack;
-	public Image HairFront;
-	public Image Eyebrow;
-	public Image Nose;
-	public Image Mouth;
-    public Image Teeth;
-    public Image Eyes;
-	public Image Outfit;
-	public Image OutfitHighlight;
-	public Image OutfitShadow;
-    private float _lastMood;
-
-	public RectTransform SpriteParent;
+    private const byte _eyebrowAlpha = 128;
+    private const float _maleOffsetPercent = 18f;
+    private float _lastMood { get; set; }
+    [SerializeField]
+    private Image _body;
+    [SerializeField]
+    private Image _hairBack;
+    [SerializeField]
+    private Image _hairFront;
+    [SerializeField]
+    private Image _eyebrow;
+    [SerializeField]
+    private Image _nose;
+    [SerializeField]
+    private Image _mouth;
+    [SerializeField]
+    private Image _teeth;
+    [SerializeField]
+    private Image _eyes;
+    [SerializeField]
+    private Image _outfit;
+    [SerializeField]
+    private Image _outfitHighlight;
+    [SerializeField]
+    private Image _outfitShadow;
+    [SerializeField]
+    private RectTransform _spriteParent;
 #if USE_SPRITESHEET
 	Dictionary<string, Sprite> Sprites = new Dictionary<string, Sprite>();
 #endif
-
-	private const byte EyebrowAlpha = 128;
-	private const float MaleOffsetPercent = 18f;
-
-	/// <summary>
-	/// Load the images for each part of the avatar.
-	/// <para>
-	/// Avatar must be setup using AvatarGenerator.SetAvatarConfiguration() prior to calling this
-	/// </para>
-	/// </summary>
-	/// <param characterName="avatar">The avatar to show</param>
-	public void SetAvatar(Avatar avatar, float mood, Color primary, Color secondary, bool isIcon = false)
+    /// <summary>
+    /// Load the images for each part of the avatar.
+    /// </summary>
+    public void SetAvatar(Avatar avatar, float mood, bool isIcon = false)
 	{
 #if USE_SPRITESHEET
 		LoadDictionary();
@@ -47,39 +49,40 @@ public class AvatarDisplay : MonoBehaviour
         // TODO reference the texture packed images
         // HACK: Just load the images from resources 
         _lastMood = mood;
-        Body.sprite = Resources.Load<Sprite>(string.Format("Avatars/Body/{0}", avatar.BodyType));
-		Outfit.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitBaseType));
-		OutfitHighlight.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitHiglightType));
-		OutfitShadow.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitShadowType));
+        _body.sprite = Resources.Load<Sprite>(string.Format("Avatars/Body/{0}", avatar.BodyType));
+		_outfit.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitBaseType));
+		_outfitHighlight.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitHiglightType));
+		_outfitShadow.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitShadowType));
+        _nose.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}", avatar.NoseType));
+		_hairBack.sprite = Resources.Load<Sprite>(string.Format("Avatars/Hair/{0}_Back", avatar.HairType));
+		_hairFront.sprite = Resources.Load<Sprite>(string.Format("Avatars/Hair/{0}_Front", avatar.HairType));
 
-        Nose.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}", avatar.NoseType));
+		// Set colors
+		_body.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
+		_nose.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
+		_mouth.color = avatar.IsMale ? new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255) : (Color32)Color.white;
+		_hairFront.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
+		_hairBack.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
+		_eyebrow.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, _eyebrowAlpha);
 
-		HairBack.sprite = Resources.Load<Sprite>(string.Format("Avatars/Hair/{0}_Back", avatar.HairType));
-		HairFront.sprite = Resources.Load<Sprite>(string.Format("Avatars/Hair/{0}_Front", avatar.HairType));
 
-		// Set out colours
-		Body.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
-		Nose.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
-		Mouth.color = avatar.IsMale ? new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255) : (Color32)Color.white;
+        Color32 primary = new Color32(avatar.PrimaryOutfitColor.R, avatar.PrimaryOutfitColor.G, avatar.PrimaryOutfitColor.B, avatar.PrimaryOutfitColor.A);
+        Color32 secondary = new Color32(avatar.SecondaryOutfitColor.R, avatar.SecondaryOutfitColor.G, avatar.SecondaryOutfitColor.B, avatar.SecondaryOutfitColor.A);
 
-		HairFront.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
-		HairBack.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
-
-		Eyebrow.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, EyebrowAlpha);
-
-		// Check the current outfit is not the casual one, we should not be changing the colour of casual
-		if (avatar.CustomOutfitColor)
+        // Check the current outfit is not the casual one, we should not be changing the color of casual
+        if (avatar.CustomOutfitColor)
 		{
-			Outfit.color = primary == Color.clear ? new Color32(avatar.PrimaryOutfitColor.R, avatar.PrimaryOutfitColor.G, avatar.PrimaryOutfitColor.B, 255) : (Color32)primary;
-			OutfitHighlight.color = secondary == Color.clear ? new Color32(avatar.SecondaryOutfitColor.R, avatar.SecondaryOutfitColor.G, avatar.SecondaryOutfitColor.B, 255) : (Color32)secondary;
+			_outfit.color = primary;
+			_outfitHighlight.color = secondary;
 		}
 		else
 		{
-			Outfit.color = Color.white;
-		}
+			_outfit.color = Color.white;
+            _outfitHighlight.color = Color.white;
+        }
 
-		OutfitHighlight.gameObject.SetActive(avatar.CustomOutfitColor);
-		OutfitShadow.gameObject.SetActive(avatar.CustomOutfitColor);
+		_outfitHighlight.gameObject.SetActive(avatar.CustomOutfitColor);
+		_outfitShadow.gameObject.SetActive(avatar.CustomOutfitColor);
 
 		if (isIcon)
 		{
@@ -94,7 +97,7 @@ public class AvatarDisplay : MonoBehaviour
 
     public void UpdateAvatar(Avatar avatar, bool isIcon = false)
     {
-        SetAvatar(avatar, _lastMood, Outfit.color, OutfitHighlight.color, isIcon);
+        SetAvatar(avatar, _lastMood, isIcon);
     }
 
     public void UpdateMood(Avatar avatar, string reaction)
@@ -138,26 +141,26 @@ public class AvatarDisplay : MonoBehaviour
         {
             moodStr = "Disagree";
         }
-        Eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}_{2}", avatar.EyeType, avatar.EyeColor, moodStr));
-        if (Eyes.sprite == null)
+        _eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}_{2}", avatar.EyeType, avatar.EyeColor, moodStr));
+        if (_eyes.sprite == null)
         {
-            Eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.EyeType, moodStr));
-            if (Eyes.sprite == null)
+            _eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.EyeType, moodStr));
+            if (_eyes.sprite == null)
             {
-                Eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}_Neutral", avatar.EyeType, avatar.EyeColor));
+                _eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}_Neutral", avatar.EyeType, avatar.EyeColor));
             }
         }
 
-        Eyebrow.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.EyebrowType, moodStr));
-        Mouth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.MouthType, moodStr));
-        Teeth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.TeethType, moodStr));
-        if (Teeth.sprite != null)
+        _eyebrow.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.EyebrowType, moodStr));
+        _mouth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.MouthType, moodStr));
+        _teeth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.TeethType, moodStr));
+        if (_teeth.sprite != null)
         {
-            Teeth.color = Color.white;
+            _teeth.color = Color.white;
         }
         else
         {
-            Teeth.color = new Color(0, 0, 0, 0);
+            _teeth.color = new Color(0, 0, 0, 0);
         }
     }
 
@@ -166,9 +169,9 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	private void SetIconProperties(Avatar a)
 	{
-		if (SpriteParent == null)
+		if (_spriteParent == null)
 			return;
-		SpriteParent.offsetMax = a.IsMale ? new Vector2(SpriteParent.offsetMax.x, -1f * (SpriteParent.rect.height / MaleOffsetPercent)) : new Vector2(SpriteParent.offsetMax.x, 0);
+		_spriteParent.offsetMax = a.IsMale ? new Vector2(_spriteParent.offsetMax.x, -1f * (_spriteParent.rect.height / _maleOffsetPercent)) : new Vector2(_spriteParent.offsetMax.x, 0);
 	}
 
 	/// <summary>

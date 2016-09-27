@@ -25,8 +25,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int ActionAllowance { get; set; }
 		public int CrewEditAllowance { get; set; }
 		private int _raceSessionLength { get; set; }
+        public int RaceSessionLength
+        {
+            get { return _raceSessionLength; }
+        }
 
-		private IntegratedAuthoringToolAsset _iat { get; set; }
+        private IntegratedAuthoringToolAsset _iat { get; set; }
 		private IStorageProvider _storageProvider { get; set; }
 		private string _storageLocation { get; set; }
 
@@ -374,14 +378,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
         /// <summary>
-		/// Return the length of a race session
-		/// </summary>
-		public int GetRaceSessionLength()
-		{
-			return _raceSessionLength;
-		}
-
-        /// <summary>
 		/// Get the amount provided of current selection mistakes
 		/// </summary>
 		public List<string> GetAssignmentMistakes(int amount)
@@ -661,18 +657,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
         /// <summary>
-        /// Send player meeting dialogue to (a) CrewMember(s), getting their response in return
+        /// Send player meeting dialogue to a CrewMember, getting their response in return
         /// </summary>
-		public string[] SendMeetingEvent(string eventType, string eventName, List<CrewMember> members)
+		public string SendMeetingEvent(string eventName, CrewMember member)
 		{
 			int cost = GetQuestionCost(eventName);
 			if (cost <= ActionAllowance)
 			{
-				var replies = EventController.SendMeetingEvent(_iat, eventType, eventName, members, Boat);
+				var reply = EventController.SendMeetingEvent(_iat, eventName, member, Boat);
 				DeductCost(cost);
-				return replies.ToArray();
+				return reply;
 			}
-			return new string[0];
+			return "";
 		}
 
         /// <summary>

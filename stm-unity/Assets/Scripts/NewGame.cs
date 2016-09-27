@@ -2,6 +2,9 @@
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
 
+/// <summary>
+/// Contains all logic to communicate between NewGameUI and GameManager
+/// </summary>
 public class NewGame : MonoBehaviour {
 	private GameManager _gameManager;
 

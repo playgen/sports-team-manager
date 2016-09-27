@@ -156,14 +156,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		return name;
 	}
 
-    KeyValuePair<Color32, Color32> GetBoatColors()
-    {
-        var currentBoat = _teamSelection.GetBoat();
-        var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);
-        var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
-        return new KeyValuePair<Color32, Color32>(primary, secondary);
-    }
-
 	/// <summary>
 	/// Instantiate a new UI object for a Boat line-up, adjust container size, position and position of all other similar elements accordingly
 	/// </summary>
@@ -225,7 +217,6 @@ public class TeamSelectionUI : MonoBehaviour {
 	private void CreateCrew()
 	{
 		var boat = _teamSelection.LoadCrew();
-        KeyValuePair<Color32, Color32> boatColors = GetBoatColors();
         var crew = boat.GetAllCrewMembers();
 		for (int i = 0; i < crew.Count; i++)
 		{
@@ -238,7 +229,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(crew[i].Name, true);
 			crewMember.name = SplitName(crew[i].Name);
 			crewMember.GetComponent<CrewMemberUI>().SetUp(false, true, _teamSelection, _meetingUI, _positionUI, crew[i], _crewContainer.transform, _roleIcons);
-            crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(crew[i].Avatar, crew[i].GetMood(), boatColors.Key, boatColors.Value, true);
+            crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(crew[i].Avatar, crew[i].GetMood(), true);
             crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
 			crewMember.transform.Find("Position").GetComponent<Image>().enabled = false;
             GameObject crewMemberCopy = Instantiate(_crewPrefab);
@@ -247,7 +238,7 @@ public class TeamSelectionUI : MonoBehaviour {
             crewMemberCopy.transform.Find("Name").GetComponent<Text>().text = SplitName(crew[i].Name, true);
             crewMemberCopy.name = SplitName(crew[i].Name);
             crewMemberCopy.GetComponent<CrewMemberUI>().SetUp(true, true, _teamSelection, _meetingUI, _positionUI, crew[i], crewMember.transform, _roleIcons);
-            crewMemberCopy.GetComponentInChildren<AvatarDisplay>().SetAvatar(crew[i].Avatar, crew[i].GetMood(), boatColors.Key, boatColors.Value, true);
+            crewMemberCopy.GetComponentInChildren<AvatarDisplay>().SetAvatar(crew[i].Avatar, crew[i].GetMood(), true);
             crewMemberCopy.transform.Find("Opinion").GetComponent<Image>().enabled = false;
             crewMemberCopy.transform.Find("Position").GetComponent<Image>().enabled = false;
 
@@ -280,7 +271,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		var boatContainer = CreateBoat(boat);
 		var teamScore = boat.BoatPositions.Sum(bp => bp.PositionScore);
 		var scoreText = boatContainer.transform.Find("Score").GetComponent<Text>();
-        KeyValuePair<Color32, Color32> boatColors = GetBoatColors();
 		var idealScore = boat.IdealMatchScore;
 		var unideal = boat.BoatPositions.Count - (int)idealScore - ((idealScore % 1) * 10);
 		List<string> mistakeList = boat.GetAssignmentMistakes(3);
@@ -330,7 +320,7 @@ public class TeamSelectionUI : MonoBehaviour {
 					positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 					positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.Display(boatPosition); });
                     print(((teamScore - expected) * (2f / boat.BoatPositions.Count)) + 3);
-					crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(boat.BoatPositions[i].CrewMember.Avatar, (teamScore - expected) * (2f/boat.BoatPositions.Count) + 3, boatColors.Key, boatColors.Value, true);
+					crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(boat.BoatPositions[i].CrewMember.Avatar, (teamScore - expected) * (2f/boat.BoatPositions.Count) + 3, true);
                     crewMember.GetComponent<CrewMemberUI>().SetUp(false, false, _teamSelection, _meetingUI, _positionUI, boat.BoatPositions[i].CrewMember, _crewContainer.transform, _roleIcons);
                     if (currentCrew.Where(cm => cm.Name == boat.BoatPositions[i].CrewMember.Name).Count() == 0)
                     {
@@ -471,11 +461,11 @@ public class TeamSelectionUI : MonoBehaviour {
                 }
                 else
                 {
-                    crewMember.GetComponent<CrewMemberUI>().SetUp(false, false, _teamSelection, _meetingUI, _positionUI, crewMember.CrewMember(), _crewContainer.transform, _roleIcons);
+                    crewMember.GetComponent<CrewMemberUI>().SetUp(false, false, _teamSelection, _meetingUI, _positionUI, crewMember.CrewMember, _crewContainer.transform, _roleIcons);
                     crewMember.transform.Find("Position").GetComponent<Button>().onClick.RemoveAllListeners();
                     var position = crewMember.transform.parent.GetComponent<PositionUI>().GetPosition();
                     crewMember.transform.Find("Position").GetComponent<Button>().onClick.AddListener(delegate { _positionUI.Display(position); });
-                    crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(crewMember.CrewMember().Avatar, ((teamScore - expected) * (2f / _teamSelection.GetBoat().BoatPositions.Count)) + 3);
+                    crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(crewMember.CrewMember.Avatar, ((teamScore - expected) * (2f / _teamSelection.GetBoat().BoatPositions.Count)) + 3);
                 }
             }
         }
@@ -529,7 +519,7 @@ public class TeamSelectionUI : MonoBehaviour {
             _positionUI.UpdateDisplay();
             if (_meetingUI.gameObject.activeSelf)
             {
-                _meetingUI.ResetDisplay();
+                _meetingUI.Display();
             }
         }
         else
@@ -552,13 +542,12 @@ public class TeamSelectionUI : MonoBehaviour {
         {
             Destroy(child.gameObject);
         }
-        KeyValuePair<Color32, Color32> boatColors = GetBoatColors();
         for (int i = 0; i < currentPositions.Count; i++)
         {
             GameObject memberObject = Instantiate(_postRaceCrewPrefab);
             memberObject.transform.SetParent(_postRacePopUp.transform.Find("Crew"), false);
             memberObject.name = currentPositions[i].CrewMember.Name;
-            memberObject.transform.Find("Avatar").GetComponentInChildren<AvatarDisplay>().SetAvatar(currentPositions[i].CrewMember.Avatar, -(finishPosition - 3) * 2, boatColors.Key, boatColors.Value);
+            memberObject.transform.Find("Avatar").GetComponentInChildren<AvatarDisplay>().SetAvatar(currentPositions[i].CrewMember.Avatar, -(finishPosition - 3) * 2);
             memberObject.transform.Find("Position").GetComponent<Image>().sprite = RoleLogos.FirstOrDefault(mo => mo.Name == currentPositions[i].Position.Name).Image;
             memberObject.transform.Find("Position").GetComponent<RectTransform>().offsetMin = new Vector2(10, 0);
             if (i % 2 != 0)
@@ -641,10 +630,9 @@ public class TeamSelectionUI : MonoBehaviour {
                 Destroy(crewMember.gameObject);
             } else
             {
-                if (currentCrew.Where(cm => cm.Name == crewMember.CrewMember().Name).Count() == 0)
+                if (currentCrew.Where(cm => cm.Name == crewMember.CrewMember.Name).Count() == 0)
                 {
-                    KeyValuePair<Color32, Color32> boatColors = GetBoatColors();
-                    crewMember.GetComponentInChildren<AvatarDisplay>().UpdateAvatar(crewMember.CrewMember().Avatar, true);
+                    crewMember.GetComponentInChildren<AvatarDisplay>().UpdateAvatar(crewMember.CrewMember.Avatar, true);
                     Destroy(crewMember);
                 }
             }

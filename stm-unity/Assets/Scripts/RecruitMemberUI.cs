@@ -83,10 +83,7 @@ public class RecruitMemberUI : MonoBehaviour
 			}
 			name = name.Remove(name.Length - 1, 1);
 			_recruitUI[i].transform.Find("Name").GetComponent<Text>().text = name;
-			var currentBoat = _recruitMember.GetBoat();
-			var primary = new Color32((byte)currentBoat.TeamColorsPrimary[0], (byte)currentBoat.TeamColorsPrimary[1], (byte)currentBoat.TeamColorsPrimary[2], 255);
-			var secondary = new Color32((byte)currentBoat.TeamColorsSecondary[0], (byte)currentBoat.TeamColorsSecondary[1], (byte)currentBoat.TeamColorsSecondary[2], 255);
-			_recruitUI[i].transform.Find("Image").GetComponentInChildren<AvatarDisplay>().SetAvatar(thisRecruit.Avatar, 0, primary, secondary);
+			_recruitUI[i].transform.Find("Image").GetComponentInChildren<AvatarDisplay>().SetAvatar(thisRecruit.Avatar, 0);
 			if (i % 2 != 0)
 			{
 				_recruitUI[i].transform.Find("Image").localScale = new Vector3(-1, 1, 1);

@@ -434,11 +434,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send an event to the EA/RPC to get CrewMember information
 		/// </summary>
-		public string SendMeetingEvent(IntegratedAuthoringToolAsset iat, string state, string style, Boat boat)
+		public string SendMeetingEvent(IntegratedAuthoringToolAsset iat, string style, Boat boat)
 		{
 			var spacelessName = EmotionalAppraisal.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			var eventString = String.Format("{0}({1})", state, style);
+			var eventString = String.Format("SoloInterview({0})", style);
 			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			string reply = null;

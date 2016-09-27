@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Linq;
-
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Collections.Generic;
 
+/// <summary>
+/// Contains all logic to communicate between PositionDisplayUI and GameManager
+/// </summary>
 public class PositionDisplay : MonoBehaviour
 {
 	private GameManager _gameManager;
@@ -14,6 +14,9 @@ public class PositionDisplay : MonoBehaviour
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 	}
 
+    /// <summary>
+    /// Get the current boat being used throughout the game
+    /// </summary>
 	public Boat GetBoat()
 	{
 		return _gameManager.Boat;
@@ -25,10 +28,5 @@ public class PositionDisplay : MonoBehaviour
 	public List<Boat> GetLineUpHistory()
 	{
 		return _gameManager.LineUpHistory;
-	}
-
-	public int GetSessionLength()
-	{
-		return _gameManager.GetRaceSessionLength();
 	}
 }

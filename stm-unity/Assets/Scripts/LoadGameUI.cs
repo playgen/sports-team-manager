@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 [RequireComponent(typeof(LoadGame))]
+/// <summary>
+/// Contains all UI logic related to loading saved games
+/// </summary>
 public class LoadGameUI : MonoBehaviour
 {
 	private LoadGame _loadGame;
@@ -24,7 +26,10 @@ public class LoadGameUI : MonoBehaviour
 		_loadGame = GetComponent<LoadGame>();
 	}
 
-	void OnEnable()
+    /// <summary>
+    /// Get available games and wipe error text
+    /// </summary>
+    void OnEnable()
 	{
 		GetGames();
 		_errorText.text = "";
@@ -53,6 +58,7 @@ public class LoadGameUI : MonoBehaviour
 	void GetGames()
 	{
 		_selectedIcon.transform.SetParent(transform, false);
+        //destroy old buttons
 		foreach (Transform child in _gameContainer.transform)
 		{
 			Destroy(child.gameObject);
@@ -87,6 +93,7 @@ public class LoadGameUI : MonoBehaviour
 	{
 		Tracker.T.alternative.Selected("Load Game", "Loaded Game", AlternativeTracker.Alternative.Menu);
 		_errorText.text = "";
+        //check if the game exists
 		bool exists = _loadGame.ExistingGameCheck();
 		if (exists)
 		{
@@ -101,6 +108,7 @@ public class LoadGameUI : MonoBehaviour
 				_errorText.text = "Game was not loaded. Please try again.";
 			}
 		}
+        //display error and remove game from the list if the game could not be found
 		else
 		{
 			_errorText.text = "Game does not exist. Please try loading a different game.";

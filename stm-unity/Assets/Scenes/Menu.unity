@@ -146,18 +146,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 163dad8cbd7b0d646b4cf191afe9417c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Body: {fileID: 703379105}
-  HairBack: {fileID: 502975889}
-  HairFront: {fileID: 1579858212}
-  Eyebrow: {fileID: 50922175}
-  Nose: {fileID: 981587059}
-  Mouth: {fileID: 577797001}
-  Teeth: {fileID: 1839493707}
-  Eyes: {fileID: 140597337}
-  Outfit: {fileID: 691142782}
-  OutfitHighlight: {fileID: 1283097196}
-  OutfitShadow: {fileID: 739903393}
-  SpriteParent: {fileID: 1445804136}
+  _body: {fileID: 703379105}
+  _hairBack: {fileID: 502975889}
+  _hairFront: {fileID: 1579858212}
+  _eyebrow: {fileID: 50922175}
+  _nose: {fileID: 981587059}
+  _mouth: {fileID: 577797001}
+  _teeth: {fileID: 1839493707}
+  _eyes: {fileID: 140597337}
+  _outfit: {fileID: 691142782}
+  _outfitHighlight: {fileID: 1283097196}
+  _outfitShadow: {fileID: 739903393}
+  _spriteParent: {fileID: 1445804136}
 --- !u!1001 &1699594
 Prefab:
   m_ObjectHideFlags: 0
@@ -25463,25 +25463,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _teamSelectionUI: {fileID: 1334125065}
   _positionUI: {fileID: 38095101}
-  _meetingPopUp: {fileID: 1950819048}
   _avatarDisplay: {fileID: 64453451}
-  _crewPopUpText:
+  _textList:
   - {fileID: 994816216}
   - {fileID: 1027082278}
   - {fileID: 1204848451}
-  _crewPopUpRoleButton: {fileID: 863895115}
-  _crewPopUpBarBackgrounds:
+  _roleButton: {fileID: 863895115}
+  _barBackgrounds:
   - {fileID: 116885476}
   - {fileID: 26310179}
   - {fileID: 1925372654}
   - {fileID: 990822535}
   - {fileID: 292726485}
   - {fileID: 1927840992}
-  _crewPopUpUnknownBackBar: {fileID: 21300000, guid: 1979c9dffd7551449b54e96bfda6befc,
-    type: 3}
-  _crewPopUpKnownBackBar: {fileID: 21300000, guid: 20aebb896f1a97d488b3277d991c1ad3,
-    type: 3}
-  _crewPopUpBars:
+  _unknownBackBar: {fileID: 21300000, guid: 1979c9dffd7551449b54e96bfda6befc, type: 3}
+  _knownBackBar: {fileID: 21300000, guid: 20aebb896f1a97d488b3277d991c1ad3, type: 3}
+  _barForegrounds:
   - {fileID: 1644573942}
   - {fileID: 1280740808}
   - {fileID: 1988280019}
@@ -25489,17 +25486,17 @@ MonoBehaviour:
   - {fileID: 1740980383}
   - {fileID: 341909293}
   _dialogueText: {fileID: 1732577634}
-  _meetingNameText: {fileID: 202269921}
+  _nameText: {fileID: 202269921}
   _statQuestion: {fileID: 1102365753}
   _roleQuestion: {fileID: 585712154}
   _opinionPositiveQuestion: {fileID: 784060693}
   _opinionNegativeQuestion: {fileID: 1672117938}
   _opinionIcons:
-  - {fileID: 21300000, guid: 749965791696af14097647bb31c18b71, type: 3}
-  - {fileID: 21300000, guid: 5747ff95395c4ad42a2524dcca13cb1d, type: 3}
-  - {fileID: 21300000, guid: 40f8bb6369afa6444a3e789571162936, type: 3}
-  - {fileID: 21300000, guid: 0369e602c3f2f5e41ae90d0be6328fc2, type: 3}
   - {fileID: 21300000, guid: e7fa7ee478ebc3f4d9ac98cb5bac5120, type: 3}
+  - {fileID: 21300000, guid: 0369e602c3f2f5e41ae90d0be6328fc2, type: 3}
+  - {fileID: 21300000, guid: 40f8bb6369afa6444a3e789571162936, type: 3}
+  - {fileID: 21300000, guid: 5747ff95395c4ad42a2524dcca13cb1d, type: 3}
+  - {fileID: 21300000, guid: 749965791696af14097647bb31c18b71, type: 3}
   _closeText: {fileID: 1015216150}
   _fireWarningPopUp: {fileID: 351043587}
   _fireButton: {fileID: 1112984671}
