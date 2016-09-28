@@ -46,8 +46,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public List<CrewMember> GetAllCrewMembers()
 		{
 			List<CrewMember> crew = new List<CrewMember>();
-            UnassignedCrew.ForEach(crewMember => crew.Add(crewMember));
-            BoatPositions.Where(bp => bp.CrewMember != null).ToList().ForEach(boatPosition => crew.Add(boatPosition.CrewMember));
+			UnassignedCrew.ForEach(crewMember => crew.Add(crewMember));
+			BoatPositions.Where(bp => bp.CrewMember != null).ToList().ForEach(boatPosition => crew.Add(boatPosition.CrewMember));
 			crew = crew.OrderBy(c => c.Name).ToList();
 			return crew;
 		}
@@ -58,7 +58,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public List<CrewMember> GetAllCrewMembersIncludingRetired()
 		{
 			List<CrewMember> crew = GetAllCrewMembers();
-            RetiredCrew.ForEach(crewMember => crew.Add(crewMember));
+			RetiredCrew.ForEach(crewMember => crew.Add(crewMember));
 			crew = crew.OrderBy(c => c.Name).ToList();
 			return crew;
 		}
@@ -334,12 +334,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (tempBoat.BoatScore >= bestScore)
 				{
 					List<BoatPosition> thisCrew = new List<BoatPosition>();
-                    tempBoat.BoatPositions.ForEach(bp => thisCrew.Add(new BoatPosition
-                    {
-                        Position = bp.Position,
-                        CrewMember = bp.CrewMember,
-                        PositionScore = bp.PositionScore
-                    }));
+					tempBoat.BoatPositions.ForEach(bp => thisCrew.Add(new BoatPosition
+					{
+						Position = bp.Position,
+						CrewMember = bp.CrewMember,
+						PositionScore = bp.PositionScore
+					}));
 					//if the set-up has a higher score, clear the current list
 					if (tempBoat.BoatScore > bestScore)
 					{
@@ -422,7 +422,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					return;
 				}
 			}
-			List<string> mistakes = new List<string>();
 			//create a list of all possible 'mistakes' for known values and hidden values
 			Dictionary<string, float> mistakeScores = new Dictionary<string, float>();
 			Dictionary<string, float> hiddenScores = new Dictionary<string, float>();
@@ -447,11 +446,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//for each required skill for this position, get the difference between the rating of the ideal and the current and add to mistakeScores
 				foreach (CrewMemberSkill skill in BoatPositions[i].Position.RequiredSkills)
 				{
-					mistakeScores[skill.ToString()] += (float)(NearestIdealMatch[i].CrewMember.Skills[skill] - BoatPositions[i].CrewMember.Skills[skill])/(float)BoatPositions[i].Position.RequiredSkills.Count;
+					mistakeScores[skill.ToString()] += (NearestIdealMatch[i].CrewMember.Skills[skill] - BoatPositions[i].CrewMember.Skills[skill])/(float)BoatPositions[i].Position.RequiredSkills.Count;
 					//if the rating of the current positioned CrewMember is not known to the player, add to hiddenScores
 					if (BoatPositions[i].CrewMember.RevealedSkills[skill] == 0)
 					{
-						hiddenScores[skill.ToString()] += (float)(NearestIdealMatch[i].CrewMember.Skills[skill] - BoatPositions[i].CrewMember.Skills[skill]) / (float)BoatPositions[i].Position.RequiredSkills.Count;
+						hiddenScores[skill.ToString()] += (NearestIdealMatch[i].CrewMember.Skills[skill] - BoatPositions[i].CrewMember.Skills[skill]) / (float)BoatPositions[i].Position.RequiredSkills.Count;
 					}
 				}
 				//add the difference in opinion of the manager to mistakeScores
@@ -487,7 +486,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			//sort the 'mistakes' by their values, removing all with a score of 0 and below (aka, equal or better to the ideal crew)
-			mistakes = mistakeScores.OrderByDescending(ms => ms.Value).Where(ms => ms.Value > 0).Select(ms => ms.Key).ToList();
+			List<string> mistakes = mistakeScores.OrderByDescending(ms => ms.Value).Where(ms => ms.Value > 0).Select(ms => ms.Key).ToList();
 			//if the value of the mistake in hiddenScores is more than the given percentage of that in mistakeScores, set this mistake to be 'hidden'
 			for (int i = 0; i < mistakes.Count; i++)
 			{

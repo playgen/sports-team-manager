@@ -10,6 +10,7 @@ public class PositionUI : MonoBehaviour {
 	private TeamSelectionUI _teamSelectionUI;
 	private PositionDisplayUI _positionUI;
 	private Position _position;
+	private CrewMemberUI _crewMemberUI;
 	public Position Position
 	{
 		get
@@ -17,7 +18,6 @@ public class PositionUI : MonoBehaviour {
 			return _position;
 		}
 	}
-	private CrewMemberUI _crewMemberUI;
 
 	public void SetUp(TeamSelectionUI teamSelectionUI, PositionDisplayUI positionUI, Position position)
 	{

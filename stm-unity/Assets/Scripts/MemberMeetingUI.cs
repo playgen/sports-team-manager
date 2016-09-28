@@ -4,10 +4,10 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(MemberMeeting))]
 /// <summary>
 /// Contains all logic related to the CrewMember Meeting pop-up
 /// </summary>
+[RequireComponent(typeof(MemberMeeting))]
 public class MemberMeetingUI : MonoBehaviour
 {
 	private MemberMeeting _memberMeeting;
@@ -57,7 +57,7 @@ public class MemberMeetingUI : MonoBehaviour
 	[SerializeField]
 	private Text _allowanceText;
 
-	void Awake()
+	private void Awake()
 	{
 		_memberMeeting = GetComponent<MemberMeeting>();
 	}
@@ -65,7 +65,7 @@ public class MemberMeetingUI : MonoBehaviour
 	/// <summary>
 	/// On the GameObject being disabled, hide the fire warning pop-up, all displayed opinions and adjust the order of the pop-ups
 	/// </summary>
-	void OnDisable()
+	private void OnDisable()
 	{
 		_fireWarningPopUp.SetActive(false);
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
@@ -107,7 +107,7 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void Display(bool postQuestion = false)
 	{
-		_allowanceBar.fillAmount = (float)_memberMeeting.QuestionAllowance() / (float)_memberMeeting.StartingQuestionAllowance();
+		_allowanceBar.fillAmount = _memberMeeting.QuestionAllowance() / (float)_memberMeeting.StartingQuestionAllowance();
 		_allowanceText.text = _memberMeeting.QuestionAllowance().ToString();
 		_fireButton.interactable = true;
 		_avatarDisplay.SetAvatar(_currentMember.Avatar, _currentMember.GetMood());

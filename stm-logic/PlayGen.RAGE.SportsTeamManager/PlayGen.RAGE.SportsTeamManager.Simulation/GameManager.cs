@@ -34,7 +34,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private IStorageProvider _storageProvider { get; set; }
 		private string _storageLocation { get; set; }
 
-		private ConfigStore _config { get; set; }
+		private ConfigStore _config { get; }
 
         /// <summary>
 		/// GameManager Constructor
@@ -303,8 +303,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				splitAfter = splitAfter.Split(')')[0];
 				var subjectSplit = splitAfter.Split(',');
                 //set up the version of boat this was
-				Boat boat = new Boat(_config);
-				boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + subjectSplit[0]), _config);
+                Boat boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + subjectSplit[0]), _config);
                 //position crew members and gather set-up information using details from split string
 				for (int i = 0; i < boat.BoatPositions.Count; i++)
 				{
@@ -327,7 +326,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void PromoteBoat()
 		{
-			Boat newBoat = new Boat(_config);
+			Boat newBoat;
 			switch (Boat.GetType().Name)
 			{
 				case "Dinghy":

@@ -8,7 +8,7 @@ using UnityEngine;
 public class NewGame : MonoBehaviour {
 	private GameManager _gameManager;
 
-	void Start () {
+	private void Start () {
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 	}
 

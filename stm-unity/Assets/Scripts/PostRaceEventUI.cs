@@ -5,10 +5,10 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(PostRaceEvent))]
 /// <summary>
 /// Contains all UI logic related to the Post Race pop-up
 /// </summary>
+[RequireComponent(typeof(PostRaceEvent))]
 public class PostRaceEventUI : MonoBehaviour
 {
 	private PostRaceEvent _postRaceEvent;
@@ -25,12 +25,12 @@ public class PostRaceEventUI : MonoBehaviour
 	[SerializeField]
 	private Button _popUpBlocker;
 
-	void Awake()
+	private void Awake()
 	{
 		_postRaceEvent = GetComponent<PostRaceEvent>();
 	}
 
-	void OnEnable()
+	private void OnEnable()
 	{
 		ResetDisplay();
 		_popUpBlocker.transform.SetAsLastSibling();
@@ -39,7 +39,7 @@ public class PostRaceEventUI : MonoBehaviour
 		_popUpBlocker.onClick.RemoveAllListeners();
 	}
 
-	void OnDisable()
+	private void OnDisable()
 	{
 		_popUpBlocker.gameObject.SetActive(false);
 	}
@@ -47,7 +47,7 @@ public class PostRaceEventUI : MonoBehaviour
 	/// <summary>
 	/// Reset and populate the pop-up for a new event
 	/// </summary>
-	void ResetDisplay()
+	private void ResetDisplay()
 	{
 		//hide the pop-up in case no event is selected
 		GetComponent<CanvasGroup>().alpha = 0;
@@ -78,7 +78,7 @@ public class PostRaceEventUI : MonoBehaviour
 	/// <summary>
 	/// Reset the available dialogue options for the player
 	/// </summary>
-	void ResetQuestions()
+	private void ResetQuestions()
 	{
 		DialogueStateActionDTO[] replies = _postRaceEvent.GetEventReplies();
 		for (int i = 0; i < _questions.Length; i++)

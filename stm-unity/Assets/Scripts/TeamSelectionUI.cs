@@ -45,16 +45,14 @@ public class TeamSelectionUI : MonoBehaviour {
 	private Button _raceButton;
 	[SerializeField]
 	private GameObject _recruitPopUp;
-	private List<Button> _recruitButtons = new List<Button>();
+	private readonly List<Button> _recruitButtons = new List<Button>();
 	[SerializeField]
 	private MemberMeetingUI _meetingUI;
 	[SerializeField]
 	private PositionDisplayUI _positionUI;
 	[SerializeField]
 	private PostRaceEventUI _postRaceEventUI;
-
 	private GameObject _currentBoat;
-	private List<GameObject> _boatHistory = new List<GameObject>();
 	private int _positionsEmpty;
 	[SerializeField]
 	private GameObject _preRacePopUp;
@@ -64,7 +62,6 @@ public class TeamSelectionUI : MonoBehaviour {
 	private GameObject _postRaceCrewPrefab;
 	[SerializeField]
 	private Button _popUpBlocker;
-
 	[SerializeField]
 	private Sprite _practiceIcon;
 	[SerializeField]
@@ -74,7 +71,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	private List<BoatPosition> _lastCrew = new List<BoatPosition>();
 #endif
 
-	void Awake()
+	private void Awake()
 	{
 		_teamSelection = GetComponent<TeamSelection>();
 	}
@@ -82,7 +79,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Create UI for all of the previous line-ups and one for the next line-up
 	/// </summary>
-	void Start()
+	private void Start()
 	{
 		foreach (var boat in _teamSelection.GetLineUpHistory())
 		{
@@ -94,7 +91,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Toggle interactivity of race and recruitment buttons by if they are currently allowable 
 	/// </summary>
-	void Update()
+	private void Update()
 	{
 		if (_positionsEmpty > 0 && _raceButton.interactable)
 		{
@@ -133,7 +130,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last name, first names
 	/// </summary>
-	string SplitName(string original, bool shortName = false)
+	private string SplitName(string original, bool shortName = false)
 	{
 		string[] splitName = original.Split(' ');
 		string lastName = splitName.Last();
@@ -165,7 +162,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Instantiate a new UI object for a Boat line-up
 	/// </summary>
-	public GameObject CreateBoat(Boat boat)
+	private GameObject CreateBoat(Boat boat)
 	{
 		var position = boat.BoatPositions.Select(p => p.Position).ToList();
 		GameObject newBoat = Instantiate(_boatPrefab);
@@ -272,7 +269,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Instantiate and position UI for an existing boat (aka, line-up already selected in the past)
 	/// </summary>
-	public void CreateHistoricalBoat(Boat boat, int offset)
+	private void CreateHistoricalBoat(Boat boat, int offset)
 	{
 		var oldBoat = CreateBoat(boat);
 		var teamScore = boat.BoatPositions.Sum(bp => bp.PositionScore);
@@ -297,7 +294,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			crewMember.GetComponent<CrewMemberUI>().Place(position.gameObject);
 			Destroy(crewMember.transform.Find("Opinion").GetComponent<Image>());
 			crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(bp.CrewMember.Avatar, scoreDiff * (2f / boat.BoatPositions.Count) + 3);
-			if (currentCrew.Where(cm => cm.Name == bp.CrewMember.Name).Count() == 0)
+			if (currentCrew.All(cm => cm.Name != bp.CrewMember.Name))
 			{
 				Destroy(crewMember.GetComponent<CrewMemberUI>());
 			}
@@ -306,7 +303,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 		_raceButton = oldBoat.transform.Find("Race").GetComponent<Button>();
 		Destroy(_raceButton.gameObject);
-		_boatHistory.Add(oldBoat);
 		_teamSelection.ConfirmLineUp(0, true);
 	}
 
@@ -339,7 +335,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Display a pop-up before a race, with different text depending on if the player has ActionAllowance remaining
 	/// </summary>
-	void ConfirmPopUp()
+	private void ConfirmPopUp()
 	{
 		_preRacePopUp.SetActive(true);
 		_preRacePopUp.GetComponentInChildren<Text>().text = _teamSelection.QuestionAllowance() > 0 ? string.Format("You have {0} Talk Time remaining! If you don't use it before the race, they will be lost.\n\nAre you sure you want to race with this line-up now?", _teamSelection.QuestionAllowance()) : "Are you sure you want to race with this line-up now?";
@@ -416,7 +412,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		_lastCrew = currentPositions;
 #endif
 		Destroy(_raceButton.gameObject);
-		_boatHistory.Add(_currentBoat);
 		CreateNewBoat();
 		if (!_teamSelection.IsRace())
 		{
@@ -431,7 +426,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Display pop-up which shows the race result
 	/// </summary>
-	void DisplayPostRacePopUp(List<BoatPosition> currentPositions, int finishPosition, string finishPositionText)
+	private void DisplayPostRacePopUp(List<BoatPosition> currentPositions, int finishPosition, string finishPositionText)
 	{
 		_meetingUI.gameObject.SetActive(false);
 		_positionUI.ClosePositionPopUp();
@@ -482,7 +477,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Repeat the line-up (or what can be repeated) from what is passed to it
 	/// </summary>
-	public void RepeatLineUp(List<BoatPosition> boatPositions)
+	private void RepeatLineUp(List<BoatPosition> boatPositions)
 	{
 		List<BoatPosition> tempBoatPositions = new List<BoatPosition>();
 		tempBoatPositions.AddRange(boatPositions);
@@ -539,7 +534,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			}
 			else
 			{
-				if (currentCrew.Where(cm => cm.Name == crewMember.CrewMember.Name).Count() == 0)
+				if (currentCrew.All(cm => cm.Name != crewMember.CrewMember.Name))
 				{
 					crewMember.GetComponentInChildren<AvatarDisplay>().UpdateAvatar(crewMember.CrewMember.Avatar, true);
 					Destroy(crewMember);
@@ -577,7 +572,7 @@ public class TeamSelectionUI : MonoBehaviour {
 				finishPosition++;
 				expected -= positions;
 			}
-			string finishPositionText = "";
+			string finishPositionText;
 			switch (finishPosition)
 			{
 				case 1:

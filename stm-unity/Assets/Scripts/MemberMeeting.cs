@@ -8,17 +8,9 @@ public class MemberMeeting : MonoBehaviour
 {
 	private GameManager _gameManager;
 
-	void Awake()
+	private void Awake()
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
-	}
-
-	/// <summary>
-	/// Get the current boat being used throughout the game
-	/// </summary>
-	public Boat GetBoat()
-	{
-		return _gameManager.Boat;
 	}
 
 	/// <summary>

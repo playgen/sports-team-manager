@@ -9,7 +9,7 @@ public class PositionDisplay : MonoBehaviour
 {
 	private GameManager _gameManager;
 
-	void Awake()
+	private void Awake()
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 	}

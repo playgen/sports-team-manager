@@ -15,16 +15,16 @@ public class CrewMemberUI : MonoBehaviour {
 	private MemberMeetingUI _meetingUI;
 	private PositionDisplayUI _positionUI;
 	private CrewMember _crewMember;
-	public CrewMember CrewMember
-	{
-		get { return _crewMember; }
-	}
 	private bool _beingClicked;
 	private bool _beingDragged;
 	private Vector2 _dragPosition;
 	private Icon[] _roleIcons;
 	private Transform _defaultParent;
 	private Vector2 _currentPositon;
+	public CrewMember CrewMember
+	{
+		get { return _crewMember; }
+	}
 	public bool Usable;
 	public bool Current;
 	public event EventHandler ReplacedEvent = delegate { };
@@ -56,7 +56,7 @@ public class CrewMemberUI : MonoBehaviour {
 	/// <summary>
 	/// Set up event triggers depending on if this should be draggable or not
 	/// </summary>
-	public void SetEventTriggers(EventTrigger trigger, bool isActive)
+	private void SetEventTriggers(EventTrigger trigger, bool isActive)
 	{
 		trigger.triggers.Clear();
 		if (isActive)
@@ -82,7 +82,7 @@ public class CrewMemberUI : MonoBehaviour {
 	/// <summary>
 	/// MouseDown start the current drag
 	/// </summary>
-	void BeginDrag()
+	private void BeginDrag()
 	{
 		_currentPositon = transform.position;
 		_beingDragged = true;
@@ -100,7 +100,7 @@ public class CrewMemberUI : MonoBehaviour {
 	/// <summary>
 	/// Have this UI element follow the mouse when being dragged, toggle beingClicked to false if dragged too far
 	/// </summary>
-	void Update ()
+	private void Update ()
 	{
 		if (_beingDragged)
 		{
@@ -118,7 +118,7 @@ public class CrewMemberUI : MonoBehaviour {
 	/// <summary>
 	/// MouseUp ends the current drag. Check if the CrewMember has been placed into a position.If beingClicked is true, the CrewMember pop-up is displayed.
 	/// </summary>
-	void EndDrag()
+	private void EndDrag()
 	{
 		_defaultParent.parent.GetComponent<HorizontalLayoutGroup>().enabled = true;
 		_beingDragged = false;
@@ -132,7 +132,7 @@ public class CrewMemberUI : MonoBehaviour {
 	/// <summary>
 	/// Display the CrewMember pop-up and reset the UI position
 	/// </summary>
-	void ShowPopUp()
+	private void ShowPopUp()
 	{
 		_meetingUI.SetUpDisplay(_crewMember);
 	}
@@ -140,7 +140,7 @@ public class CrewMemberUI : MonoBehaviour {
 	/// <summary>
 	/// Check if the drag stopped over a Position UI element.
 	/// </summary>
-	void CheckPlacement()
+	private void CheckPlacement()
 	{
 		PlacedEvent();
 		var raycastResults = new List<RaycastResult>();

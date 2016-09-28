@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 
 /// <summary>
@@ -10,7 +9,7 @@ public class RecruitMember : MonoBehaviour {
 
 	private GameManager _gameManager;
 
-	void Awake()
+	private void Awake()
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 	}

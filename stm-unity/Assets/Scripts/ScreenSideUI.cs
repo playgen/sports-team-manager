@@ -15,7 +15,7 @@ public class ScreenSideUI : MonoBehaviour {
 	/// <summary>
 	/// Set the information displayed at the top of the screen
 	/// </summary>
-	void OnEnable()
+	private void OnEnable()
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		_nameText.text = _gameManager.Boat.Name.ToUpper();

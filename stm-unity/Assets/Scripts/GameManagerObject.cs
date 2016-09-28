@@ -8,7 +8,7 @@ public class GameManagerObject : MonoBehaviour
 {
 	public GameManager GameManager;
 
-	void Awake()
+	private void Awake()
 	{
 		if (FindObjectsOfType<GameManagerObject>().Length > 1)
 		{
@@ -19,7 +19,7 @@ public class GameManagerObject : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 	}
 #if UNITY_EDITOR
-	void Update()
+	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.P))
 		{

@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(RecruitMember))]
 /// <summary>
 /// Contains all UI logic related to the Recruitment pop-up
 /// </summary>
+[RequireComponent(typeof(RecruitMember))]
 public class RecruitMemberUI : MonoBehaviour
 {
 	private RecruitMember _recruitMember;
@@ -37,13 +37,12 @@ public class RecruitMemberUI : MonoBehaviour
 	[SerializeField]
 	private Icon[] _opinionSprites;
 
-
-	void Awake()
+	private void Awake()
 	{
 		_recruitMember = GetComponent<RecruitMember>();
 	}
 
-	void OnEnable()
+	private void OnEnable()
 	{
 		Tracker.T.alternative.Selected("Recruitment", "Recruitment", AlternativeTracker.Alternative.Menu);
 		ResetDisplay();
@@ -54,7 +53,7 @@ public class RecruitMemberUI : MonoBehaviour
 		_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
 	}
 
-	void OnDisable()
+	private void OnDisable()
 	{
 		_popUpBlocker.gameObject.SetActive(false);
 	}
@@ -62,9 +61,9 @@ public class RecruitMemberUI : MonoBehaviour
 	/// <summary>
 	/// Populate the information required in the pop-up
 	/// </summary>
-	void ResetDisplay()
+	private void ResetDisplay()
 	{
-		_allowanceBar.fillAmount = (float)_recruitMember.QuestionAllowance() / (float)_recruitMember.StartingQuestionAllowance();
+		_allowanceBar.fillAmount = _recruitMember.QuestionAllowance() / (float)_recruitMember.StartingQuestionAllowance();
 		_allowanceText.text = _recruitMember.QuestionAllowance().ToString();
 		SetDialogueText("");
 		List<CrewMember> recruits = _recruitMember.GetRecruits().OrderBy(r => Guid.NewGuid()).ToList();
@@ -125,10 +124,10 @@ public class RecruitMemberUI : MonoBehaviour
 	/// <summary>
 	/// Update the allowance bar and disable all questions if they cost too much to ask
 	/// </summary>
-	void CostCheck()
+	private void CostCheck()
 	{
 		int allowance = _recruitMember.QuestionAllowance();
-		_allowanceBar.fillAmount = (float)allowance / (float)_recruitMember.StartingQuestionAllowance();
+		_allowanceBar.fillAmount = allowance / (float)_recruitMember.StartingQuestionAllowance();
 		_allowanceText.text = allowance.ToString();
 		if (allowance < 1)
 		{
@@ -158,7 +157,7 @@ public class RecruitMemberUI : MonoBehaviour
 	/// <summary>
 	/// Set the previously asked question to be displayed
 	/// </summary>
-	public void SetDialogueText(string text)
+	private void SetDialogueText(string text)
 	{
 		_dialogueText.text = text;
 	}

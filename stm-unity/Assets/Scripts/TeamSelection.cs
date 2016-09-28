@@ -12,7 +12,7 @@ public class TeamSelection : MonoBehaviour {
 	private int _sessionLength;
 	private int _confirmCount;
 
-	void Start()
+	private void Start()
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		_sessionLength = _gameManager.RaceSessionLength;

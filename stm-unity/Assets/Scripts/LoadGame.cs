@@ -11,7 +11,7 @@ public class LoadGame : MonoBehaviour
 	private GameManager _gameManager;
 	private string _selectedName;
 
-	void Start()
+	private void Start()
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 	}

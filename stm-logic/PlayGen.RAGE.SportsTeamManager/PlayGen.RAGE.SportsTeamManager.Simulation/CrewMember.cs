@@ -21,7 +21,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public event EventHandler OpinionChange = delegate { };
 		public int RestCount { get; set; }
 		public Avatar Avatar { get; set; }
-		private ConfigStore _config { get; set; }
+		private ConfigStore _config { get; }
 
 		/// <summary>
 		/// Constructor for creating a CrewMember with a non-random age/gender/name
@@ -560,8 +560,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string SendRecruitEvent(IntegratedAuthoringToolAsset iat, CrewMemberSkill skill)
 		{
-			string reply;
-			List<DialogueStateActionDTO> dialogueOptions = new List<DialogueStateActionDTO>();
+			List<DialogueStateActionDTO> dialogueOptions;
 			if (Skills[skill] >= 9)
 			{
 				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "StrongAgree").ToList();
@@ -582,8 +581,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "StrongDisagree").ToList();
 			}
-			reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
-			return reply;
+			return dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
 		}
 
 		/// <summary>
@@ -591,7 +589,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Boat boat, Boat previousBoat)
 		{
-			List<DialogueStateActionDTO> dialogueOptions = new List<DialogueStateActionDTO>();
 			string reply = null;
 			string nextState = selected.NextState;
 			switch (nextState)
@@ -613,7 +610,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					break;
 			}
-			dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, nextState).ToList();
+			List<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, nextState).ToList();
 			if (dialogueOptions.Any())
 			{
 				DialogueStateActionDTO selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();

@@ -4,10 +4,10 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(PositionDisplay))]
 /// <summary>
 /// Contains all UI logic related to the Position pop-up
 /// </summary>
+[RequireComponent(typeof(PositionDisplay))]
 public class PositionDisplayUI : MonoBehaviour
 {
 	private PositionDisplay _positionDisplay;
@@ -34,7 +34,7 @@ public class PositionDisplayUI : MonoBehaviour
 	[SerializeField]
 	private GameObject _historyPrefab;
 
-	void Awake()
+	private void Awake()
 	{
 		_positionDisplay = GetComponent<PositionDisplay>();
 	}
@@ -42,7 +42,7 @@ public class PositionDisplayUI : MonoBehaviour
 	/// <summary>
 	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last name, first names
 	/// </summary>
-	string SplitName(string original, bool shortName = true)
+	private string SplitName(string original, bool shortName = true)
 	{
 		string[] splitName = original.Split(' ');
 		string lastName = splitName.Last();
@@ -100,13 +100,13 @@ public class PositionDisplayUI : MonoBehaviour
 	/// <summary>
 	/// Populate the information required in the pop-up
 	/// </summary>
-	void Display(Position position)
+	private void Display(Position position)
 	{
 		var currentBoat = _positionDisplay.GetBoat();
 		CrewMember currentCrew = null;
 		if (currentBoat.BoatPositions.FirstOrDefault(bp => bp.Position.Name == position.Name) != null)
 		{
-			currentCrew = currentBoat.BoatPositions.Where(bp => bp.Position.Name == position.Name).FirstOrDefault().CrewMember;
+			currentCrew = currentBoat.BoatPositions.FirstOrDefault(bp => bp.Position.Name == position.Name).CrewMember;
 		}
 		_textList[0].text = position.Name;
 		_textList[1].text = position.Description;

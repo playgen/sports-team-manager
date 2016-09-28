@@ -2,10 +2,10 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(NewGame))]
 /// <summary>
 /// Contains all UI logic related to creating new games
 /// </summary>
+[RequireComponent(typeof(NewGame))]
 public class NewGameUI : MonoBehaviour {
 
 	private NewGame _newGame;
@@ -31,7 +31,7 @@ public class NewGameUI : MonoBehaviour {
 	[SerializeField]
 	private Image _colorImageSecondary;
 
-	void Awake()
+	private void Awake()
 	{
 		_stateManager = FindObjectOfType(typeof(UIStateManager)) as UIStateManager;
 		_newGame = GetComponent<NewGame>();
@@ -40,7 +40,7 @@ public class NewGameUI : MonoBehaviour {
 		RandomColor();
 	}
 
-	void Update()
+	private void Update()
 	{
 		int ageTest;
 		if (int.TryParse(_managerAge.text, out ageTest) && ageTest < 0)
@@ -94,7 +94,7 @@ public class NewGameUI : MonoBehaviour {
 	/// <summary>
 	/// Hide all warnings for missing information
 	/// </summary>
-	void WarningDisable()
+	private void WarningDisable()
 	{
 		_errorText.text = "";
 		_boatName.transform.Find("Required Warning").gameObject.SetActive(false);

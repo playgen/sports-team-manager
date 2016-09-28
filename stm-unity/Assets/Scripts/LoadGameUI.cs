@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(LoadGame))]
 /// <summary>
 /// Contains all UI logic related to loading saved games
 /// </summary>
+[RequireComponent(typeof(LoadGame))]
 public class LoadGameUI : MonoBehaviour
 {
 	private LoadGame _loadGame;
@@ -20,7 +20,7 @@ public class LoadGameUI : MonoBehaviour
 	[SerializeField]
 	private Text _errorText;
 
-	void Awake()
+	private void Awake()
 	{
 		_stateManager = FindObjectOfType(typeof(UIStateManager)) as UIStateManager;
 		_loadGame = GetComponent<LoadGame>();
@@ -29,7 +29,7 @@ public class LoadGameUI : MonoBehaviour
 	/// <summary>
 	/// Get available games and wipe error text
 	/// </summary>
-	void OnEnable()
+	private void OnEnable()
 	{
 		GetGames();
 		_errorText.text = "";
@@ -38,7 +38,7 @@ public class LoadGameUI : MonoBehaviour
 	/// <summary>
 	/// Update the position of the selected icon and if the load button should be enabled according to whether a game is selected or not
 	/// </summary>
-	void Update()
+	private void Update()
 	{
 		if (string.IsNullOrEmpty(_loadGame.GetSelected()) && _loadButton.interactable)
 		{
@@ -55,7 +55,7 @@ public class LoadGameUI : MonoBehaviour
 	/// <summary>
 	/// Get a list of the current game and instantiate a new button for each one
 	/// </summary>
-	void GetGames()
+	private void GetGames()
 	{
 		_selectedIcon.transform.SetParent(transform, false);
 		//destroy old buttons
