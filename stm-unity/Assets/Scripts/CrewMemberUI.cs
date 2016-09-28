@@ -185,14 +185,15 @@ public class CrewMemberUI : MonoBehaviour {
 		transform.SetParent(positionTransform, false);
 		GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
 		GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);
-		_teamSelection.AssignCrew(_crewMember, position.gameObject.GetComponent<PositionUI>().GetPosition());
+		_teamSelection.AssignCrew(_crewMember, position.gameObject.GetComponent<PositionUI>().Position);
 		position.gameObject.GetComponent<PositionUI>().LinkCrew(this);
 		var positionImage = transform.Find("Position").gameObject;
 		positionImage.GetComponent<Image>().enabled = true;
-		positionImage.GetComponent<Image>().sprite = _roleIcons.FirstOrDefault(mo => mo.Name == position.gameObject.GetComponent<PositionUI>().GetPosition().Name).Image;
+		positionImage.GetComponent<Image>().sprite = _roleIcons.FirstOrDefault(mo => mo.Name == position.gameObject.GetComponent<PositionUI>().Position.Name).Image;
 		_positionUI.UpdateDisplay();
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
-		positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.SetUpDisplay(position.gameObject.GetComponent<PositionUI>().GetPosition()); });
+		var currentPosition = position.gameObject.GetComponent<PositionUI>().Position;
+		positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentPosition); });
 	}
 
 	/// <summary>

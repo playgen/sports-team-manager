@@ -10,6 +10,13 @@ public class PositionUI : MonoBehaviour {
 	private TeamSelectionUI _teamSelectionUI;
 	private PositionDisplayUI _positionUI;
 	private Position _position;
+	public Position Position
+	{
+		get
+		{
+			return _position;
+		}
+	}
 	private CrewMemberUI _crewMemberUI;
 
 	public void SetUp(TeamSelectionUI teamSelectionUI, PositionDisplayUI positionUI, Position position)
@@ -43,14 +50,6 @@ public class PositionUI : MonoBehaviour {
 			_teamSelectionUI.PositionChange(1);
 			crewmember.ReplacedEvent += OnReset;
 		}
-	}
-
-	/// <summary>
-	/// Return the name of this position
-	/// </summary>
-	public Position GetPosition()
-	{
-		return _position;
 	}
 
 	/// <summary>

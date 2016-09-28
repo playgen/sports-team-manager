@@ -102,7 +102,12 @@ public class PositionDisplayUI : MonoBehaviour
 	/// </summary>
 	void Display(Position position)
 	{
-        CrewMember currentCrew = position.GetCrewMember(_positionDisplay.GetBoat());
+		var currentBoat = _positionDisplay.GetBoat();
+		CrewMember currentCrew = null;
+		if (currentBoat.BoatPositions.FirstOrDefault(bp => bp.Position.Name == position.Name) != null)
+		{
+			currentCrew = currentBoat.BoatPositions.Where(bp => bp.Position.Name == position.Name).FirstOrDefault().CrewMember;
+		}
 		_textList[0].text = position.Name;
 		_textList[1].text = position.Description;
 		_roleImage.sprite = _roleSprites.FirstOrDefault(mo => mo.Name == position.Name).Image;
