@@ -3,10 +3,10 @@ using System.Linq;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-    /// <summary>
-    /// Stores position details and functionality
-    /// </summary>
-    public class Position
+	/// <summary>
+	/// Stores position details and functionality
+	/// </summary>
+	public class Position
 	{
 		public string Name { get; set; }
 		public string Description { get; set; }
@@ -28,20 +28,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewScore = crewScore / positionCount;
 
 			return crewScore;
-		}
-
-		/// <summary>
-		/// Get the CrewMember (if any) for this Position for the Boat provided
-		/// </summary>
-		public CrewMember GetCrewMember(Boat boat)
-		{
-            CrewMember crewMember = null;
-			var boatPosition = boat.BoatPositions.SingleOrDefault(bp => bp.Position == this);
-			if (boatPosition != null)
-			{
-                crewMember = boatPosition.CrewMember;
-			}
-			return crewMember;
 		}
 	}
 }

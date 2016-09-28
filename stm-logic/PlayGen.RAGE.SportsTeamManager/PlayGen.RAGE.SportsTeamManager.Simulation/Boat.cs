@@ -16,13 +16,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int[] TeamColorsPrimary { get; set; }
 		public int[] TeamColorsSecondary { get; set; }
 		public List<BoatPosition> BoatPositions { get; set; }
-		public List<List<BoatPosition>> IdealCrew { get; set; }
-		public List<CrewMember> UnassignedCrew { get; set; }
-		public List<CrewMember> RetiredCrew { get; set; }
-		public List<CrewMember> Recruits { get; set; }
-		public int BoatScore { get; set; }
+		private List<List<BoatPosition>> _idealCrew { get; set; }
+		public List<CrewMember> UnassignedCrew { get; }
+		public List<CrewMember> RetiredCrew { get; }
+		public List<CrewMember> Recruits { get; }
+		public int BoatScore { get; private set; }
 		public float IdealMatchScore { get; set; }
-		public List<BoatPosition> NearestIdealMatch { get; set; }
+		private List<BoatPosition> _nearestIdealMatch { get; set; }
 		public List<string> SelectionMistakes { get; set; }
 		public Person Manager { get; set; }
 		private ConfigStore _config { get;}
@@ -35,7 +35,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			BoatPositions = new List<BoatPosition>();
 			UnassignedCrew = new List<CrewMember>();
 			RetiredCrew = new List<CrewMember>();
-			IdealCrew = new List<List<BoatPosition>>();
+			_idealCrew = new List<List<BoatPosition>>();
 			Recruits = new List<CrewMember>();
 			_config = config;
 		}
@@ -131,7 +131,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Remove a CrewMember from their BoatPosition and add them to the list of UnassignedCrew
 		/// </summary>
-		public void RemoveCrew(BoatPosition boatPosition)
+		private void RemoveCrew(BoatPosition boatPosition)
 		{
 			boatPosition.CrewMember.OpinionChange -= OnOpinionChange;
 			UnassignedCrew.Add(boatPosition.CrewMember);
@@ -228,7 +228,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the amount of current crew and recruits that are capable of going into each position
 		/// </summary>
-		public Dictionary<Position, int> GetPositionStrength()
+		private Dictionary<Position, int> GetPositionStrength()
 		{
 			Dictionary<Position, int> positionStrength = new Dictionary<Position, int>();
 			foreach (Position pos in BoatPositions.Select(bp => bp.Position))
@@ -289,7 +289,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Triggered when a CrewMember's opinion on a Person changes in order to update the Boat's score to an accurate value
 		/// </summary>
-		void OnOpinionChange(object sender, EventArgs e)
+		private void OnOpinionChange(object sender, EventArgs e)
 		{
 			UpdateBoatScore();
 			GetIdealCrew();
@@ -351,19 +351,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					
 				} 
 			}
-			IdealCrew = bestCrew;
+			_idealCrew = bestCrew;
 			UpdateIdealScore();
 		}
 
 		/// <summary>
 		/// Find how close the current crew is to being an 'ideal' set-up
 		/// </summary>
-		public void UpdateIdealScore()
+		private void UpdateIdealScore()
 		{
 			//if there are enough CrewMembers to have an ideal crew and there are currently none known, get the ideal crew(s)
 			if (GetAllCrewMembers().Count >= BoatPositions.Count)
 			{
-				if (IdealCrew.Count == 0)
+				if (_idealCrew.Count == 0)
 				{
 					GetIdealCrew();
 				}
@@ -375,9 +375,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			//reset current values
 			IdealMatchScore = 0;
-			NearestIdealMatch = null;
+			_nearestIdealMatch = null;
 			//check the current positioned crew against every ideal crew layout
-			foreach (List<BoatPosition> crew in IdealCrew)
+			foreach (List<BoatPosition> crew in _idealCrew)
 			{
 				float currentIdealMatch = 0;
 				for (int i = 0; i < crew.Count; i++)
@@ -399,11 +399,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 				}
-				//if the final currentIdealMatch score is higher than the current IdealMatchScore, or NearestIdealMatch is null (meaning no other ideals have been checked), set this ideal crew to the nearest match
-				if (currentIdealMatch > IdealMatchScore || NearestIdealMatch == null)
+				//if the final currentIdealMatch score is higher than the current IdealMatchScore, or _nearestIdealMatch is null (meaning no other ideals have been checked), set this ideal crew to the nearest match
+				if (currentIdealMatch > IdealMatchScore || _nearestIdealMatch == null)
 				{
 					IdealMatchScore = currentIdealMatch;
-					NearestIdealMatch = crew;
+					_nearestIdealMatch = crew;
 				}
 			}
 			FindAssignmentMistakes();
@@ -412,7 +412,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Find all the reasons this current crew is not an 'ideal' crew
 		/// </summary>
-		public void FindAssignmentMistakes()
+		private void FindAssignmentMistakes()
 		{
 			//if any BoatPosition does not have a CrewMember, do not do this check
 			foreach (var bp in BoatPositions)
@@ -439,31 +439,31 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			for (int i = 0; i < BoatPositions.Count; i++)
 			{
 				//if the position is correctly assigned, there's no need for further checks
-				if (BoatPositions[i].CrewMember == NearestIdealMatch[i].CrewMember)
+				if (BoatPositions[i].CrewMember == _nearestIdealMatch[i].CrewMember)
 				{
 					continue;
 				}
 				//for each required skill for this position, get the difference between the rating of the ideal and the current and add to mistakeScores
 				foreach (CrewMemberSkill skill in BoatPositions[i].Position.RequiredSkills)
 				{
-					mistakeScores[skill.ToString()] += (NearestIdealMatch[i].CrewMember.Skills[skill] - BoatPositions[i].CrewMember.Skills[skill])/(float)BoatPositions[i].Position.RequiredSkills.Count;
+					mistakeScores[skill.ToString()] += (_nearestIdealMatch[i].CrewMember.Skills[skill] - BoatPositions[i].CrewMember.Skills[skill])/(float)BoatPositions[i].Position.RequiredSkills.Count;
 					//if the rating of the current positioned CrewMember is not known to the player, add to hiddenScores
 					if (BoatPositions[i].CrewMember.RevealedSkills[skill] == 0)
 					{
-						hiddenScores[skill.ToString()] += (NearestIdealMatch[i].CrewMember.Skills[skill] - BoatPositions[i].CrewMember.Skills[skill]) / (float)BoatPositions[i].Position.RequiredSkills.Count;
+						hiddenScores[skill.ToString()] += (_nearestIdealMatch[i].CrewMember.Skills[skill] - BoatPositions[i].CrewMember.Skills[skill]) / (float)BoatPositions[i].Position.RequiredSkills.Count;
 					}
 				}
 				//add the difference in opinion of the manager to mistakeScores
-				mistakeScores["ManagerOpinion"] += NearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
+				mistakeScores["ManagerOpinion"] += _nearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
 				//if the player does not know this opinion, add the difference to hiddenScores
 				if (BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion != BoatPositions[i].CrewMember.RevealedCrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion)
 				{
-					hiddenScores["ManagerOpinion"] += NearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
+					hiddenScores["ManagerOpinion"] += _nearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
 				}
 				//add the difference in mood to mistakeScores
-				mistakeScores["Mood"] += NearestIdealMatch[i].CrewMember.GetMood() - BoatPositions[i].CrewMember.GetMood();
+				mistakeScores["Mood"] += _nearestIdealMatch[i].CrewMember.GetMood() - BoatPositions[i].CrewMember.GetMood();
 				//find the total score caused by crew opinion in the ideal set-up
-				int idealOpinion = NearestIdealMatch[i].PositionScore - NearestIdealMatch[i].Position.GetPositionRating(NearestIdealMatch[i].CrewMember) - NearestIdealMatch[i].CrewMember.GetMood() - NearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
+				int idealOpinion = _nearestIdealMatch[i].PositionScore - _nearestIdealMatch[i].Position.GetPositionRating(_nearestIdealMatch[i].CrewMember) - _nearestIdealMatch[i].CrewMember.GetMood() - _nearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
 				//find the total score caused by crew opinion in the current set-up
 				int currentOpinion = BoatPositions[i].PositionScore - BoatPositions[i].Position.GetPositionRating(BoatPositions[i].CrewMember) - BoatPositions[i].CrewMember.GetMood() - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
 				//add the difference to mistakeScores
@@ -539,7 +539,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Set all CrewMembers who raced to not be available for the set amount of races
 		/// </summary>
-		public void PostRaceRest()
+		private void PostRaceRest()
 		{
 			List<CrewMember> crew = GetAllCrewMembers();
 			crew.ForEach(p => p.RaceRest(BoatPositions.SingleOrDefault(bp => bp.CrewMember == p) != null));

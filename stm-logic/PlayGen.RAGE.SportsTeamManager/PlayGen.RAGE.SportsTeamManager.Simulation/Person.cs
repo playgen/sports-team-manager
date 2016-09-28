@@ -18,8 +18,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int Age { get; set; }
 		public string Gender { get; set; }
 
-		public EmotionalAppraisalAsset EmotionalAppraisal { get; set; }
-		public RolePlayCharacterAsset RolePlayCharacter { get; set; }
+		public EmotionalAppraisalAsset EmotionalAppraisal { get; private set; }
+		protected RolePlayCharacterAsset RolePlayCharacter { get; private set; }
 
 		/// <summary>
 		/// Constructor for creating a Person

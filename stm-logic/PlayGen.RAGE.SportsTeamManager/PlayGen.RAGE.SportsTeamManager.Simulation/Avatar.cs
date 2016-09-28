@@ -8,27 +8,27 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class Avatar
 	{
-		public string BodyType { get; set; }
-		public string OutfitBaseType { get; set; }
-		public string OutfitHighlightType { get; set; }
-		public string OutfitShadowType { get; set; }
-		public string HairType { get; set; }
-		public string EyeType { get; set; }
-		public string EyeColor { get; set; }
-		public string EyebrowType { get; set; }
-		public string NoseType { get; set; }
-		public string MouthType { get; set; }
-		public string TeethType { get; set; }
-		public float Weight { get; set; }
-		public float Height { get; set; }
-		public bool IsMale { get; set; }
-		public CrewMemberSkill BestSkill { get; set; }
+		public string BodyType { get; private set; }
+		public string OutfitBaseType { get; private set; }
+		public string OutfitHighlightType { get; private set; }
+		public string OutfitShadowType { get; private set; }
+		public string HairType { get; private set; }
+		public string EyeType { get; private set; }
+		public string EyeColor { get; private set; }
+		public string EyebrowType { get; private set; }
+		public string NoseType { get; private set; }
+		public string MouthType { get; private set; }
+		public string TeethType { get; private set; }
+		public float Weight { get; private set; }
+		public float Height { get; private set; }
+		public bool IsMale { get; private set; }
+		public CrewMemberSkill BestSkill { get; private set; }
 
-		public bool CustomOutfitColor { get; set; }
+		public bool CustomOutfitColor { get; }
 
-		public Color SkinColor { get; set; }
-		public string MouthColor { get; set; }
-		public Color HairColor { get; set; }
+		public Color SkinColor { get; private set; }
+		public string MouthColor { get; private set; }
+		public Color HairColor { get; private set; }
 		public Color PrimaryOutfitColor { get; set; }
 		public Color SecondaryOutfitColor { get; set; }
 

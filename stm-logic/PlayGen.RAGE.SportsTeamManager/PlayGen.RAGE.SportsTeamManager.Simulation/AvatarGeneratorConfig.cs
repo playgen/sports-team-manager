@@ -8,25 +8,24 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class AvatarGeneratorConfig
 	{
-		public bool RandomHairColor;
-		public int HairTypesCount;
-		public int OutfitTypesCount;
+		public bool RandomHairColor { get; set; }
+		public int HairTypesCount { get; set; }
+		public int OutfitTypesCount { get; set; }
+		public int[] LightSkinColorValues { get; set; }
+		public int[] MediumSkinColorValues { get; set; }
+		public int[] DarkSkinColorValues { get; set; }
+		public int[] BlondeHairColorValues { get; set; }
+		public int[] BrownHairColorValues { get; set; }
+		public int[] BlackHairColorValues { get; set; }
+		public int[] GingerHairColorValues { get; set; }
 
-		public Color LightSkinColor;
-		public Color MediumSkinColor;
-		public Color DarkSkinColor;
-		public Color BlondeHairColor;
-		public Color BrownHairColor;
-		public Color BlackHairColor;
-		public Color GingerHairColor;
-
-		public int[] LightSkinColorValues;
-		public int[] MediumSkinColorValues;
-		public int[] DarkSkinColorValues;
-		public int[] BlondeHairColorValues;
-		public int[] BrownHairColorValues;
-		public int[] BlackHairColorValues;
-		public int[] GingerHairColorValues;
+		public Color LightSkinColor { get; private set; }
+		public Color MediumSkinColor { get; private set; }
+		public Color DarkSkinColor { get; private set; }
+		public Color BlondeHairColor { get; private set; }
+		public Color BrownHairColor { get; private set; }
+		public Color BlackHairColor { get; private set; }
+		public Color GingerHairColor { get; private set; }
 
 		//get and return values for avatar configs
 		public AvatarGeneratorConfig GetConfig()

@@ -15,11 +15,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	public class CrewMember : Person
 	{
 		public Dictionary<CrewMemberSkill, int> Skills { get; set; }
-		public Dictionary<CrewMemberSkill, int> RevealedSkills { get; set; }
-		public List<CrewOpinion> CrewOpinions { get; set; }
-		public List<CrewOpinion> RevealedCrewOpinions { get; set; }
+		public Dictionary<CrewMemberSkill, int> RevealedSkills { get; }
+		public List<CrewOpinion> CrewOpinions { get; }
+		public List<CrewOpinion> RevealedCrewOpinions { get; }
 		public event EventHandler OpinionChange = delegate { };
-		public int RestCount { get; set; }
+		public int RestCount { get; private set; }
 		public Avatar Avatar { get; set; }
 		private ConfigStore _config { get; }
 
@@ -631,7 +631,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Make changes based off of post-race events
 		/// </summary>
-		void PostRaceFeedback(string lastEvent, Boat boat)
+		private void PostRaceFeedback(string lastEvent, Boat boat)
 		{
 			SaveStatus();
 			var spacelessName = EmotionalAppraisal.Perspective;
