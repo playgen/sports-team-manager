@@ -413,13 +413,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			crew += "," + Boat.IdealMatchScore;
-			for (int i = 0; i < Boat.SelectionMistakes.Count; i++)
-			{
-				crew += "," + Boat.SelectionMistakes[i];
-			}
+            Boat.SelectionMistakes.ForEach(sm => crew += "," + sm);
 			crew += "," + offset;
-			var eventString = String.Format(eventStringUnformatted, boatType, crew);
-			manager.EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
+			var eventString = string.Format(eventStringUnformatted, boatType, crew);
+			manager.EmotionalAppraisal.AppraiseEvents(new [] { string.Format(eventBase, eventString, spacelessName) });
 			manager.SaveStatus();
             Boat lastBoat = new Boat(_config);
             //Boat lastBoat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + Boat.GetType().Name), _config);
@@ -706,10 +703,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			else
 			{
 				Dictionary<CrewMember, string> replies = new Dictionary<CrewMember, string>();
-				foreach (CrewMember member in members)
-				{
-					replies.Add(member, "");
-				}
+                members.ForEach(member => replies.Add(member, ""));
 				return replies;
 			}
 		}

@@ -32,9 +32,9 @@ public class LoadGame : MonoBehaviour
 	/// <summary>
 	/// Set the name of the game selected to load
 	/// </summary>
-	public void SetSelected(string name)
+	public void SetSelected(string givenName)
 	{
-		_selectedName = name;
+		_selectedName = givenName;
 	}
 
 	/// <summary>

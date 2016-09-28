@@ -1,15 +1,14 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
+/// <summary>
+/// Contains all logic related to Position prefabs
+/// </summary>
 public class PositionUI : MonoBehaviour {
 
 	private TeamSelectionUI _teamSelectionUI;
 	private PositionDisplayUI _positionUI;
-	[SerializeField]
 	private Position _position;
 	private CrewMemberUI _crewMemberUI;
 
@@ -25,7 +24,7 @@ public class PositionUI : MonoBehaviour {
 	/// </summary>
 	public void ShowPopUp()
 	{
-		_positionUI.Display(_position);
+		_positionUI.SetUpDisplay(_position);
 	}
 
 	/// <summary>
@@ -42,7 +41,7 @@ public class PositionUI : MonoBehaviour {
 			RemoveCrew();
 			_crewMemberUI = crewmember;
 			_teamSelectionUI.PositionChange(1);
-			crewmember.ReplacedEvent += new EventHandler(OnReset);
+			crewmember.ReplacedEvent += OnReset;
 		}
 	}
 
@@ -54,11 +53,14 @@ public class PositionUI : MonoBehaviour {
 		return _position;
 	}
 
+	/// <summary>
+	/// Remove the reference to the CrewMember previously attached to this Position
+	/// </summary>
 	public void RemoveCrew()
 	{
 		if (_crewMemberUI != null)
 		{
-			_crewMemberUI.ReplacedEvent -= new EventHandler(OnReset);
+			_crewMemberUI.ReplacedEvent -= OnReset;
 			_teamSelectionUI.PositionChange(-1);
 			_crewMemberUI = null;
 		}

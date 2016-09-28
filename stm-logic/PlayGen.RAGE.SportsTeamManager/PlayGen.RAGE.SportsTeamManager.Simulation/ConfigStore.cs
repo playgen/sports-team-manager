@@ -5,10 +5,10 @@ using Newtonsoft.Json;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-    /// <summary>
-    /// Used to access values related to functionality
-    /// </summary>
-    public class ConfigStore
+	/// <summary>
+	/// Used to access values related to functionality
+	/// </summary>
+	public class ConfigStore
 	{
 		public Dictionary<string, float> ConfigValues { get; set; }
 

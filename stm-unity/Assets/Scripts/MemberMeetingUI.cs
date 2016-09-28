@@ -114,24 +114,24 @@ public class MemberMeetingUI : MonoBehaviour
 		_textList[0].text = _currentMember.Name;
 		_textList[1].text = _currentMember.Age.ToString();
 		var currentRole = _memberMeeting.GetCrewMemberPosition(_currentMember);
-        _textList[2].text = currentRole == null ? "No Role" : "";
+		_textList[2].text = currentRole == null ? "No Role" : "";
 		_roleButton.onClick.RemoveAllListeners();
 		if (currentRole != null)
 		{
 			_roleButton.gameObject.SetActive(true);
-			_roleButton.onClick.AddListener(delegate { _positionUI.Display(currentRole); });
+			_roleButton.onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentRole); });
 			_roleButton.GetComponentInChildren<Text>().text = currentRole.Name.ToUpper();
 			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = _teamSelectionUI.RoleLogos.FirstOrDefault(mo => mo.Name == currentRole.Name).Image;
 		}
-        else
+		else
 		{
 			_roleButton.gameObject.SetActive(false);
 		}
-        for (int i = 0; i < _barBackgrounds.Length; i++)
-        {
-            _barForegrounds[i].fillAmount = _currentMember.RevealedSkills[(CrewMemberSkill)i] * 0.1f;
-            _barBackgrounds[i].sprite = _currentMember.RevealedSkills[(CrewMemberSkill)i] == 0 ? _unknownBackBar : _knownBackBar;
-        }
+		for (int i = 0; i < _barBackgrounds.Length; i++)
+		{
+			_barForegrounds[i].fillAmount = _currentMember.RevealedSkills[(CrewMemberSkill)i] * 0.1f;
+			_barBackgrounds[i].sprite = _currentMember.RevealedSkills[(CrewMemberSkill)i] == 0 ? _unknownBackBar : _knownBackBar;
+		}
 		_dialogueText.text = "You wanted to see me?";
 		_nameText.text = "What do you want to ask?";
 		_statQuestion.text = _memberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).FirstOrDefault();
@@ -139,8 +139,8 @@ public class MemberMeetingUI : MonoBehaviour
 		_opinionPositiveQuestion.text = _memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).FirstOrDefault();
 		_opinionNegativeQuestion.text = _memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).FirstOrDefault();
 		int allowance = _memberMeeting.QuestionAllowance();
-        _fireButton.interactable = allowance >= 4;
-        _statQuestion.GetComponentInParent<Button>().interactable = allowance >= 1;
+		_fireButton.interactable = allowance >= 4;
+		_statQuestion.GetComponentInParent<Button>().interactable = allowance >= 1;
 		_roleQuestion.GetComponentInParent<Button>().interactable = allowance >= 3;
 		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = allowance >= 1;
 		_opinionNegativeQuestion.GetComponentInParent<Button>().interactable = allowance >= 2;
@@ -157,20 +157,20 @@ public class MemberMeetingUI : MonoBehaviour
 		{
 			if (crewMember.Current)
 			{
-				var name = crewMember.CrewMember.Name;
+				var crewName = crewMember.CrewMember.Name;
 				Image opinionImage = crewMember.transform.Find("Opinion").GetComponent<Image>();
-				if (name != _currentMember.Name)
+				if (crewName != _currentMember.Name)
 				{
 					opinionImage.enabled = true;
 					opinionImage.sprite = null;
-                    var opinion = _currentMember.RevealedCrewOpinions.FirstOrDefault(co => co.Person == crewMember.CrewMember);
-                    opinionImage.sprite = _opinionIcons[(opinion.Opinion > 0 ? Mathf.CeilToInt(opinion.Opinion / 3f) : Mathf.FloorToInt(opinion.Opinion / 3f)) + 2];
-                }
+					var opinion = _currentMember.RevealedCrewOpinions.FirstOrDefault(co => co.Person == crewMember.CrewMember);
+					opinionImage.sprite = _opinionIcons[(opinion.Opinion > 0 ? Mathf.CeilToInt(opinion.Opinion / 3f) : Mathf.FloorToInt(opinion.Opinion / 3f)) + 2];
+				}
 			}
 		}
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Triggered by button. Sends StatReveal question to Simulation, gets reply from NPC in response.
 	/// </summary>
 	public void AskStatQuestion()
@@ -180,7 +180,7 @@ public class MemberMeetingUI : MonoBehaviour
 		AnswerUpdate(reply);
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Triggered by button. Sends RoleReveal question to Simulation, gets reply from NPC in response.
 	/// </summary>
 	public void AskRoleQuestion()
@@ -190,7 +190,7 @@ public class MemberMeetingUI : MonoBehaviour
 		AnswerUpdate(reply);
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Triggered by button. Sends OpinionRevealPositive question to Simulation, gets reply from NPC in response.
 	/// </summary>
 	public void AskOpinionPositiveQuestion()
@@ -200,7 +200,7 @@ public class MemberMeetingUI : MonoBehaviour
 		AnswerUpdate(reply);
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Triggered by button. Sends OpinionRevealNegative question to Simulation, gets reply from NPC in response.
 	/// </summary>
 	public void AskOpinionNegativeQuestion()
@@ -210,7 +210,7 @@ public class MemberMeetingUI : MonoBehaviour
 		AnswerUpdate(reply);
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Reset displayed information and display reply from NPC.
 	/// </summary>
 	private void AnswerUpdate(string reply)
@@ -219,7 +219,7 @@ public class MemberMeetingUI : MonoBehaviour
 		_dialogueText.text = reply.Length > 0 ? reply : "";
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Triggered by button. Display warning to player that they are about to fire a character.
 	/// </summary>
 	public void FireCrewWarning()
@@ -233,7 +233,7 @@ public class MemberMeetingUI : MonoBehaviour
 		_popUpBlocker.onClick.AddListener(delegate { CloseFireCrewWarning(); });
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Triggered by button. Close fire warning pop-up.
 	/// </summary>
 	public void CloseFireCrewWarning()
@@ -252,7 +252,7 @@ public class MemberMeetingUI : MonoBehaviour
 		}
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Triggered by button. Fires a character from the team.
 	/// </summary>
 	public void FireCrew()

@@ -5,7 +5,7 @@
 	/// </summary>
 	public class CrewOpinion
 	{
-		public Person Person;
-		public int Opinion;
+		public Person Person { get; set; }
+		public int Opinion { get; set; }
 	}
 }

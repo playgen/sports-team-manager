@@ -3,10 +3,10 @@ using Newtonsoft.Json;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-    /// <summary>
-    /// Container for shared Avatar values
-    /// </summary>
-    public class AvatarGeneratorConfig
+	/// <summary>
+	/// Container for shared Avatar values
+	/// </summary>
+	public class AvatarGeneratorConfig
 	{
 		public bool RandomHairColor;
 		public int HairTypesCount;
@@ -28,7 +28,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int[] BlackHairColorValues;
 		public int[] GingerHairColorValues;
 
-        //get and return values for avatar configs
+		//get and return values for avatar configs
 		public AvatarGeneratorConfig GetConfig()
 		{
 			string configText = Templates.ResourceManager.GetString("avatar_config");

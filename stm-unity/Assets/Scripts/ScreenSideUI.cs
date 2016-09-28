@@ -1,9 +1,10 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controls the UI displayed at the top of the screen
+/// </summary>
 public class ScreenSideUI : MonoBehaviour {
 	private GameManager _gameManager;
 	[SerializeField]

@@ -33,17 +33,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the CrewMember (if any) for this Position for the Boat provided
 		/// </summary>
-		public string GetCrewMember(Boat boat)
+		public CrewMember GetCrewMember(Boat boat)
 		{
-			string crewMember = "";
+            CrewMember crewMember = null;
 			var boatPosition = boat.BoatPositions.SingleOrDefault(bp => bp.Position == this);
 			if (boatPosition != null)
 			{
-				var currentMember = boatPosition.CrewMember;
-				if (currentMember != null)
-				{
-					crewMember = currentMember.Name;
-				}
+                crewMember = boatPosition.CrewMember;
 			}
 			return crewMember;
 		}

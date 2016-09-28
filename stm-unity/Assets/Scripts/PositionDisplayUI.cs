@@ -16,36 +16,39 @@ public class PositionDisplayUI : MonoBehaviour
 	[SerializeField]
 	private Button _popUpBlocker;
 	[SerializeField]
-	private Text[] _positionPopUpText;
+	private Text[] _textList;
 	[SerializeField]
-	private Image[] _positionPopUpSkills;
+	private Image[] _skillImages;
 	[SerializeField]
-	private AvatarDisplay _positionPopUpCurrentCrew;
+	private AvatarDisplay _currentAvatar;
 	[SerializeField]
-	private Image _positionPopUpRoleImage;
+	private Text _currentName;
 	[SerializeField]
-	private Icon[] _positionPopUpRoleSprites;
+	private Button _currentButton;
 	[SerializeField]
-	private Text _positionPopUpCurrentName;
+	private Image _roleImage;
 	[SerializeField]
-	private Button _positionPopUpCurrentButton;
+	private Icon[] _roleSprites;
 	[SerializeField]
-	private GameObject _positionPopUpHistoryContainer;
+	private GameObject _historyContainer;
 	[SerializeField]
-	private GameObject _positionPopUpHistoryPrefab;
+	private GameObject _historyPrefab;
 
 	void Awake()
 	{
 		_positionDisplay = GetComponent<PositionDisplay>();
 	}
 
+	/// <summary>
+	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last name, first names
+	/// </summary>
 	string SplitName(string original, bool shortName = true)
 	{
 		string[] splitName = original.Split(' ');
-		string name = splitName.Last();
+		string lastName = splitName.Last();
 		if (!shortName)
 		{
-			name += ", ";
+			lastName += ", ";
 		}
 		foreach (string split in splitName)
 		{
@@ -53,33 +56,36 @@ public class PositionDisplayUI : MonoBehaviour
 			{
 				if (!shortName)
 				{
-					name += split + " ";
+					lastName += split + " ";
 				}
 				else
 				{
-					name = split[0] + "." + name;
+					lastName = split[0] + "." + lastName;
 				}
 			}
 		}
 		if (!shortName)
 		{
-			name = name.Remove(name.Length - 1, 1);
+			lastName = lastName.Remove(lastName.Length - 1, 1);
 		}
-		return name;
+		return lastName;
 	}
 
+	/// <summary>
+	/// If the pop-up is already active, update UI elements to match current information
+	/// </summary>
 	public void UpdateDisplay()
 	{
 		if (gameObject.activeSelf)
 		{
-			ResetDisplay(_positionDisplay.GetBoat().BoatPositions.Select(bp => bp.Position).FirstOrDefault(p => p.Name == _positionPopUpText[0].text));
+			Display(_positionDisplay.GetBoat().BoatPositions.Select(bp => bp.Position).FirstOrDefault(p => p.Name == _textList[0].text));
 		}
 	}
 
 	/// <summary>
-	/// Display and set the information for the pop-up for Position details
+	/// Activate the pop-up and the blocker
 	/// </summary>
-	public void Display(Position position)
+	public void SetUpDisplay(Position position)
 	{
 		Tracker.T.trackedGameObject.Interacted("Viewed Position Information", GameObjectTracker.TrackedGameObject.GameObject);
 		gameObject.SetActive(true);
@@ -88,39 +94,32 @@ public class PositionDisplayUI : MonoBehaviour
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
 		_popUpBlocker.onClick.AddListener(delegate { ClosePositionPopUp(); });
-		ResetDisplay(position);
+		Display(position);
 	}
 
-	void ResetDisplay(Position position)
+	/// <summary>
+	/// Populate the information required in the pop-up
+	/// </summary>
+	void Display(Position position)
 	{
-		var currentBoat = _positionDisplay.GetBoat();
-		_positionPopUpText[0].text = position.Name;
-		_positionPopUpText[1].text = position.Description;
-		_positionPopUpRoleImage.sprite = _positionPopUpRoleSprites.FirstOrDefault(mo => mo.Name == position.Name).Image;
-		CrewMember currentCrew = null;
-		if (currentBoat.BoatPositions.FirstOrDefault(bp => bp.Position.Name == position.Name) != null)
-		{
-			currentCrew = currentBoat.BoatPositions.Where(bp => bp.Position.Name == position.Name).FirstOrDefault().CrewMember;
-		}
-		_positionPopUpCurrentButton.onClick.RemoveAllListeners();
+        CrewMember currentCrew = position.GetCrewMember(_positionDisplay.GetBoat());
+		_textList[0].text = position.Name;
+		_textList[1].text = position.Description;
+		_roleImage.sprite = _roleSprites.FirstOrDefault(mo => mo.Name == position.Name).Image;
+		_currentButton.onClick.RemoveAllListeners();
+		_currentAvatar.gameObject.SetActive(currentCrew != null);
+		_currentName.gameObject.SetActive(currentCrew != null);
 		if (currentCrew != null)
 		{
-			_positionPopUpCurrentCrew.gameObject.SetActive(true);
-			_positionPopUpCurrentName.gameObject.SetActive(true);
-			_positionPopUpCurrentCrew.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), true);
-			_positionPopUpCurrentName.text = currentCrew.Name;
-			_positionPopUpCurrentButton.onClick.AddListener(delegate { _meetingUI.SetUpDisplay(currentCrew); });
+			_currentAvatar.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), true);
+			_currentName.text = currentCrew.Name;
+			_currentButton.onClick.AddListener(delegate { _meetingUI.SetUpDisplay(currentCrew); });
 		}
-		else
-		{
-			_positionPopUpCurrentCrew.gameObject.SetActive(false);
-			_positionPopUpCurrentName.gameObject.SetActive(false);
-		}
-		foreach (Transform child in _positionPopUpHistoryContainer.transform)
+		foreach (Transform child in _historyContainer.transform)
 		{
 			Destroy(child.gameObject);
 		}
-		foreach (Image skill in _positionPopUpSkills)
+		foreach (Image skill in _skillImages)
 		{
 			skill.enabled = false;
 			foreach (CrewMemberSkill actualSkill in position.RequiredSkills)
@@ -135,26 +134,24 @@ public class PositionDisplayUI : MonoBehaviour
 		foreach (var boat in _positionDisplay.GetLineUpHistory())
 		{
 			BoatPosition[] boatPositions = boat.BoatPositions.Where(bp => bp.Position.Name == position.Name).ToArray();
-			if (boatPositions != null)
+			foreach (BoatPosition boatPosition in boatPositions)
 			{
-				foreach (BoatPosition boatPosition in boatPositions)
+				CrewMember positionMember = boatPosition.CrewMember;
+				if (positionMembers.ContainsKey(positionMember))
 				{
-					CrewMember positionMember = boatPosition.CrewMember;
-					if (positionMembers.ContainsKey(positionMember))
-					{
-						positionMembers[positionMember]++;
-					} else
-					{
-						positionMembers.Add(positionMember, 1);
-					}
+					positionMembers[positionMember]++;
+				}
+				else
+				{
+					positionMembers.Add(positionMember, 1);
 				}
 			}
 		}
-		var orderedMembers = positionMembers.OrderBy(pm => SplitName(pm.Key.Name, false)).OrderByDescending(pm => pm.Value);
+		var orderedMembers = positionMembers.OrderByDescending(pm => pm.Value).ThenBy(pm => SplitName(pm.Key.Name, false));
 		foreach (var member in orderedMembers)
 		{
-			GameObject positionHistory = Instantiate(_positionPopUpHistoryPrefab);
-			positionHistory.transform.SetParent(_positionPopUpHistoryContainer.transform, false);
+			GameObject positionHistory = Instantiate(_historyPrefab);
+			positionHistory.transform.SetParent(_historyContainer.transform, false);
 			positionHistory.transform.Find("Name").GetComponent<Text>().text = SplitName(member.Key.Name);
 			if (_positionDisplay.GetBoat().GetAllCrewMembers().Contains(member.Key))
 			{
@@ -189,6 +186,9 @@ public class PositionDisplayUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Adjust blocker position in hierarchy according to another pop-up that uses it is displayed as well
+	/// </summary>
 	public void ChangeBlockerOrder()
 	{
 		if (gameObject.activeSelf)

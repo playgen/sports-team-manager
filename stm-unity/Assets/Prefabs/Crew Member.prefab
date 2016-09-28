@@ -671,18 +671,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 163dad8cbd7b0d646b4cf191afe9417c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Body: {fileID: 11498206}
-  HairBack: {fileID: 11414016}
-  HairFront: {fileID: 11436792}
-  Eyebrow: {fileID: 11490354}
-  Nose: {fileID: 11424826}
-  Mouth: {fileID: 11473796}
-  Teeth: {fileID: 114000010349937668}
-  Eyes: {fileID: 11489922}
-  Outfit: {fileID: 11490394}
-  OutfitHighlight: {fileID: 11439664}
-  OutfitShadow: {fileID: 11456568}
-  SpriteParent: {fileID: 22499470}
+  _body: {fileID: 11498206}
+  _hairBack: {fileID: 11414016}
+  _hairFront: {fileID: 11436792}
+  _eyebrow: {fileID: 11490354}
+  _nose: {fileID: 11424826}
+  _mouth: {fileID: 11473796}
+  _teeth: {fileID: 114000010349937668}
+  _eyes: {fileID: 11489922}
+  _outfit: {fileID: 11490394}
+  _outfitHighlight: {fileID: 11439664}
+  _outfitShadow: {fileID: 11456568}
+  _spriteParent: {fileID: 22499470}
 --- !u!114 &11489922
 MonoBehaviour:
   m_ObjectHideFlags: 1

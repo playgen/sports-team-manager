@@ -13,10 +13,10 @@ public class MemberMeeting : MonoBehaviour
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 	}
 
-    /// <summary>
-    /// Get the current boat being used throughout the game
-    /// </summary>
-    public Boat GetBoat()
+	/// <summary>
+	/// Get the current boat being used throughout the game
+	/// </summary>
+	public Boat GetBoat()
 	{
 		return _gameManager.Boat;
 	}
@@ -27,60 +27,60 @@ public class MemberMeeting : MonoBehaviour
 	public Position GetCrewMemberPosition(CrewMember crewMember)
 	{
 		var boatPosition = crewMember.GetBoatPosition(_gameManager.Boat);
-        return boatPosition != null ? boatPosition.Position : null;
+		return boatPosition != null ? boatPosition.Position : null;
 	}
 
-    /// <summary>
-    /// Get player text for a question
-    /// </summary>
-    public string[] GetEventText(string eventKey)
+	/// <summary>
+	/// Get player text for a question
+	/// </summary>
+	public string[] GetEventText(string eventKey)
 	{
 		return _gameManager.GetEventStrings(eventKey);
 	}
 
-    /// <summary>
-    /// Send question asked by player to CrewMember, get their reply in response
-    /// </summary>
+	/// <summary>
+	/// Send question asked by player to CrewMember, get their reply in response
+	/// </summary>
 	public string AskQuestion(string eventKey, CrewMember crewMember)
 	{
 		return _gameManager.SendMeetingEvent(eventKey, crewMember);
 	}
 
-    /// <summary>
-    /// Get the amount of available ActionAllowance remaining for this race
-    /// </summary>
+	/// <summary>
+	/// Get the amount of available ActionAllowance remaining for this race
+	/// </summary>
 	public int QuestionAllowance()
 	{
 		return _gameManager.ActionAllowance;
 	}
 
-    /// <summary>
-    /// Get the amount of available ActionAllowance given at the start of this race
-    /// </summary>
+	/// <summary>
+	/// Get the amount of available ActionAllowance given at the start of this race
+	/// </summary>
 	public int StartingQuestionAllowance()
 	{
 		return _gameManager.GetStartingActionAllowance();
 	}
 
-    /// <summary>
-    /// Get the amount of hire/fire actions remaining for this race
-    /// </summary>
+	/// <summary>
+	/// Get the amount of hire/fire actions remaining for this race
+	/// </summary>
 	public int CrewEditAllowance()
 	{
 		return _gameManager.CrewEditAllowance;
 	}
 
-    /// <summary>
-    /// Check if it is allowable to fire crew members at this point
-    /// </summary>
+	/// <summary>
+	/// Check if it is allowable to fire crew members at this point
+	/// </summary>
 	public bool CanRemoveCheck()
 	{
 		return _gameManager.CanRemoveFromCrew();
 	}
 
-    /// <summary>
-    /// Remove a CrewMember from the team
-    /// </summary>
+	/// <summary>
+	/// Remove a CrewMember from the team
+	/// </summary>
 	public void FireCrewMember(CrewMember crewMember)
 	{
 		_gameManager.RetireCrewMember(crewMember);

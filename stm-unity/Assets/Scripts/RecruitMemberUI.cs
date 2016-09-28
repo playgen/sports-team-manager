@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(RecruitMember))]
+/// <summary>
+/// Contains all UI logic related to the Recruitment pop-up
+/// </summary>
 public class RecruitMemberUI : MonoBehaviour
 {
 	private RecruitMember _recruitMember;
@@ -57,6 +59,9 @@ public class RecruitMemberUI : MonoBehaviour
 		_popUpBlocker.gameObject.SetActive(false);
 	}
 
+	/// <summary>
+	/// Populate the information required in the pop-up
+	/// </summary>
 	void ResetDisplay()
 	{
 		_allowanceBar.fillAmount = (float)_recruitMember.QuestionAllowance() / (float)_recruitMember.StartingQuestionAllowance();
@@ -73,16 +78,16 @@ public class RecruitMemberUI : MonoBehaviour
 			CrewMember thisRecruit = recruits[i];
 			_recruitUI[i].SetActive(true);
 			string[] splitName = thisRecruit.Name.Split(' ');
-			string name = splitName.Last() + ",\n";
+			string lastName = splitName.Last() + ",\n";
 			foreach (string split in splitName)
 			{
 				if (split != splitName.Last())
 				{
-					name += split + " ";
+					lastName += split + " ";
 				}
 			}
-			name = name.Remove(name.Length - 1, 1);
-			_recruitUI[i].transform.Find("Name").GetComponent<Text>().text = name;
+			lastName = lastName.Remove(lastName.Length - 1, 1);
+			_recruitUI[i].transform.Find("Name").GetComponent<Text>().text = lastName;
 			_recruitUI[i].transform.Find("Image").GetComponentInChildren<AvatarDisplay>().SetAvatar(thisRecruit.Avatar, 0);
 			if (i % 2 != 0)
 			{
@@ -117,6 +122,9 @@ public class RecruitMemberUI : MonoBehaviour
 		CostCheck();
 	}
 
+	/// <summary>
+	/// Update the allowance bar and disable all questions if they cost too much to ask
+	/// </summary>
 	void CostCheck()
 	{
 		int allowance = _recruitMember.QuestionAllowance();
@@ -124,13 +132,13 @@ public class RecruitMemberUI : MonoBehaviour
 		_allowanceText.text = allowance.ToString();
 		if (allowance < 1)
 		{
-			for (int i = 0; i < _questionButtons.Length; i++)
-			{
-				_questionButtons[i].interactable = false;
-			}
+			_questionButtons.ToList().ForEach(qb => qb.interactable = false);
 		}
 	}
 
+	/// <summary>
+	/// Send a question to all recruits and get their replies in response
+	/// </summary>
 	public void AskQuestion(CrewMemberSkill skill, string questionText)
 	{
 		Tracker.T.alternative.Selected("Recruitment", skill + " Question", AlternativeTracker.Alternative.Question);
@@ -138,20 +146,26 @@ public class RecruitMemberUI : MonoBehaviour
 		Dictionary<CrewMember, string> replies = _recruitMember.AskQuestion(skill);
 		foreach (GameObject recruit in _recruitUI)
 		{
-			var reply = replies.Where(r => r.Key.Name == recruit.name).FirstOrDefault();
+			var reply = replies.FirstOrDefault(r => r.Key.Name == recruit.name);
 			recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = reply.Value;
 			recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = true;
 			recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value).Image;
-            recruit.transform.Find("Image").GetComponentInChildren<AvatarDisplay>().UpdateMood(reply.Key.Avatar, reply.Value);
-        }
+			recruit.transform.Find("Image").GetComponentInChildren<AvatarDisplay>().UpdateMood(reply.Key.Avatar, reply.Value);
+		}
 		CostCheck();
 	}
 
+	/// <summary>
+	/// Set the previously asked question to be displayed
+	/// </summary>
 	public void SetDialogueText(string text)
 	{
 		_dialogueText.text = text;
 	}
 
+	/// <summary>
+	/// Display a warning before hiring a recruit
+	/// </summary>
 	public void HireCrewWarning(CrewMember recruit)
 	{
 		_hireWarningPopUp.SetActive(true);
@@ -181,6 +195,9 @@ public class RecruitMemberUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Close the hire warning
+	/// </summary>
 	public void CloseHireCrewWarning()
 	{
 		_hireWarningPopUp.SetActive(false);
@@ -197,6 +214,9 @@ public class RecruitMemberUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Hire the selected recruit onto the player's crew
+	/// </summary>
 	public void Recruit(CrewMember crewMember)
 	{
 		Tracker.T.trackedGameObject.Interacted("Hired Crew Member", GameObjectTracker.TrackedGameObject.Npc);

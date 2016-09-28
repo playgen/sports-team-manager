@@ -1169,19 +1169,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _meetingUI: {fileID: 1950819050}
   _popUpBlocker: {fileID: 1047302245}
-  _positionPopUpText:
+  _textList:
   - {fileID: 1919122502}
   - {fileID: 1436544572}
-  _positionPopUpSkills:
+  _skillImages:
   - {fileID: 1701430471}
   - {fileID: 1112542895}
   - {fileID: 271112480}
   - {fileID: 741707707}
   - {fileID: 1316830322}
   - {fileID: 1376782177}
-  _positionPopUpCurrentCrew: {fileID: 972236}
-  _positionPopUpRoleImage: {fileID: 899542281}
-  _positionPopUpRoleSprites:
+  _currentAvatar: {fileID: 972236}
+  _currentName: {fileID: 188931265}
+  _currentButton: {fileID: 1846595369}
+  _roleImage: {fileID: 899542281}
+  _roleSprites:
   - Name: Bowman
     Image: {fileID: 21300000, guid: 284e431379065d246a367f6f94dd82d0, type: 3}
   - Name: Grinder
@@ -1198,11 +1200,8 @@ MonoBehaviour:
     Image: {fileID: 21300000, guid: e139bbb1216b3a547a0d72eb67743858, type: 3}
   - Name: Trimmer
     Image: {fileID: 21300000, guid: 95f8c1db0ac1eab4999f2c9dd01a9894, type: 3}
-  _positionPopUpCurrentName: {fileID: 188931265}
-  _positionPopUpCurrentButton: {fileID: 1846595369}
-  _positionPopUpHistoryContainer: {fileID: 847425285}
-  _positionPopUpHistoryPrefab: {fileID: 115054, guid: 67b920194e5c2db41b72273d4b3c9b37,
-    type: 2}
+  _historyContainer: {fileID: 847425285}
+  _historyPrefab: {fileID: 115054, guid: 67b920194e5c2db41b72273d4b3c9b37, type: 2}
 --- !u!114 &38095102
 MonoBehaviour:
   m_ObjectHideFlags: 0

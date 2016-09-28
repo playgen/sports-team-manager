@@ -13,68 +13,68 @@ public class CrewMemberUI : MonoBehaviour {
 
 	private TeamSelection _teamSelection;
 	private MemberMeetingUI _meetingUI;
-    private PositionDisplayUI _positionUI;
-    private CrewMember _crewMember;
-    public CrewMember CrewMember
-    {
-        get { return _crewMember; }
-    }
+	private PositionDisplayUI _positionUI;
+	private CrewMember _crewMember;
+	public CrewMember CrewMember
+	{
+		get { return _crewMember; }
+	}
 	private bool _beingClicked;
 	private bool _beingDragged;
 	private Vector2 _dragPosition;
 	private Icon[] _roleIcons;
 	private Transform _defaultParent;
 	private Vector2 _currentPositon;
-    public bool Usable;
-    public bool Current;
+	public bool Usable;
+	public bool Current;
 	public event EventHandler ReplacedEvent = delegate { };
 
-    /// <summary>
+	/// <summary>
 	/// Bring in elements that need to be known to this class
 	/// </summary>
-    public void SetUp(bool usable, bool current, TeamSelection teamSelection, MemberMeetingUI meetingUI, PositionDisplayUI positionUI, CrewMember crewMember, Transform parent, Icon[] roleIcons)
-    {
-        _teamSelection = teamSelection;
-        _meetingUI = meetingUI;
-        _positionUI = positionUI;
-        _crewMember = crewMember;
-        _defaultParent = parent;
-        _roleIcons = roleIcons;
-        Usable = usable;
-        Current = current;
-        EventTrigger trigger = GetComponent<EventTrigger>();
-        if (_crewMember.restCount <= 0 && Usable)
-        {
-            SetEventTriggers(trigger, true);
-        }
-        else
-        {
-            SetEventTriggers(trigger, false);
-        }
-    }
+	public void SetUp(bool usable, bool current, TeamSelection teamSelection, MemberMeetingUI meetingUI, PositionDisplayUI positionUI, CrewMember crewMember, Transform parent, Icon[] roleIcons)
+	{
+		_teamSelection = teamSelection;
+		_meetingUI = meetingUI;
+		_positionUI = positionUI;
+		_crewMember = crewMember;
+		_defaultParent = parent;
+		_roleIcons = roleIcons;
+		Usable = usable;
+		Current = current;
+		EventTrigger trigger = GetComponent<EventTrigger>();
+		if (_crewMember.RestCount <= 0 && Usable)
+		{
+			SetEventTriggers(trigger, true);
+		}
+		else
+		{
+			SetEventTriggers(trigger, false);
+		}
+	}
 
-    /// <summary>
+	/// <summary>
 	/// Set up event triggers depending on if this should be draggable or not
 	/// </summary>
-    public void SetEventTriggers(EventTrigger trigger, bool isActive)
+	public void SetEventTriggers(EventTrigger trigger, bool isActive)
 	{
 		trigger.triggers.Clear();
 		if (isActive)
 		{
 			EventTrigger.Entry drag = new EventTrigger.Entry();
 			drag.eventID = EventTriggerType.PointerDown;
-			drag.callback.AddListener((data) => { BeginDrag(); });
+			drag.callback.AddListener(data => { BeginDrag(); });
 			trigger.triggers.Add(drag);
 			EventTrigger.Entry drop = new EventTrigger.Entry();
 			drop.eventID = EventTriggerType.PointerUp;
-			drop.callback.AddListener((data) => { EndDrag(); });
+			drop.callback.AddListener(data => { EndDrag(); });
 			trigger.triggers.Add(drop);
 		} else
 		{
 			GetComponentInChildren<Image>().color = Color.gray;
 			EventTrigger.Entry click = new EventTrigger.Entry();
 			click.eventID = EventTriggerType.PointerClick;
-			click.callback.AddListener((data) => { ShowPopUp(); });
+			click.callback.AddListener(data => { ShowPopUp(); });
 			trigger.triggers.Add(click);
 		}
 	}
@@ -87,12 +87,12 @@ public class CrewMemberUI : MonoBehaviour {
 		_currentPositon = transform.position;
 		_beingDragged = true;
 		_beingClicked = true;
-        //_dragPosition is used to offset according to where the click occured
+		//_dragPosition is used to offset according to where the click occurred
 		_dragPosition = Input.mousePosition - transform.position;
-        //disable layoutgroup to avoiding jumping to different position
-        _defaultParent.parent.GetComponent<HorizontalLayoutGroup>().enabled = false;
-        //set as child of container so this displays above all other CrewMember objects
-        transform.SetParent(_defaultParent.parent, false);
+		//disable layoutgroup to avoiding jumping to different position
+		_defaultParent.parent.GetComponent<HorizontalLayoutGroup>().enabled = false;
+		//set as child of container so this displays above all other CrewMember objects
+		transform.SetParent(_defaultParent.parent, false);
 		transform.position = (Vector2)Input.mousePosition - _dragPosition;
 		transform.SetAsLastSibling();
 	}
@@ -115,13 +115,13 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 	}
 
-    /// <summary>
-    /// MouseUp ends the current drag. Check if the CrewMember has been placed into a position.If beingClicked is true, the CrewMember pop-up is displayed.
-    /// </summary>
-    void EndDrag()
+	/// <summary>
+	/// MouseUp ends the current drag. Check if the CrewMember has been placed into a position.If beingClicked is true, the CrewMember pop-up is displayed.
+	/// </summary>
+	void EndDrag()
 	{
-        _defaultParent.parent.GetComponent<HorizontalLayoutGroup>().enabled = true;
-        _beingDragged = false;
+		_defaultParent.parent.GetComponent<HorizontalLayoutGroup>().enabled = true;
+		_beingDragged = false;
 		CheckPlacement();
 		if (_beingClicked) {
 			ShowPopUp();
@@ -144,7 +144,7 @@ public class CrewMemberUI : MonoBehaviour {
 	{
 		PlacedEvent();
 		var raycastResults = new List<RaycastResult>();
-        //gets all UI objects below the cursor
+		//gets all UI objects below the cursor
 		EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
 		bool placed = false;
 		foreach (var result in raycastResults)
@@ -159,8 +159,8 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 		if (!placed)
 		{
-            _teamSelection.RemoveCrew(_crewMember);
-            Reset();
+			_teamSelection.RemoveCrew(_crewMember);
+			Reset();
 		}
 		if (_meetingUI.gameObject.activeSelf)
 		{
@@ -168,7 +168,7 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Event triggered when the placement of this object is changed
 	/// </summary>
 	public void PlacedEvent()
@@ -176,10 +176,10 @@ public class CrewMemberUI : MonoBehaviour {
 		ReplacedEvent(this, new EventArgs());
 	}
 
-    /// <summary>
-    /// Place the CrewMember to be inline with the Position it is now paired with
-    /// </summary>
-    public void Place(GameObject position)
+	/// <summary>
+	/// Place the CrewMember to be in-line with the Position it is now paired with
+	/// </summary>
+	public void Place(GameObject position)
 	{
 		RectTransform positionTransform = position.gameObject.GetComponent<RectTransform>();
 		transform.SetParent(positionTransform, false);
@@ -190,10 +190,10 @@ public class CrewMemberUI : MonoBehaviour {
 		var positionImage = transform.Find("Position").gameObject;
 		positionImage.GetComponent<Image>().enabled = true;
 		positionImage.GetComponent<Image>().sprite = _roleIcons.FirstOrDefault(mo => mo.Name == position.gameObject.GetComponent<PositionUI>().GetPosition().Name).Image;
-        _positionUI.UpdateDisplay();
-        positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
-        positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.Display(position.gameObject.GetComponent<PositionUI>().GetPosition()); });
-    }
+		_positionUI.UpdateDisplay();
+		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
+		positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.SetUpDisplay(position.gameObject.GetComponent<PositionUI>().GetPosition()); });
+	}
 
 	/// <summary>
 	/// Reset this UI back to its defaults.
@@ -201,15 +201,15 @@ public class CrewMemberUI : MonoBehaviour {
 	public void Reset()
 	{
 		transform.SetParent(_defaultParent, true);
-        transform.position = _defaultParent.position;
-        transform.SetAsLastSibling();
+		transform.position = _defaultParent.position;
+		transform.SetAsLastSibling();
 		if (_currentPositon != (Vector2)transform.position)
 		{
 			Tracker.T.trackedGameObject.Interacted("Unpositioned Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 		}
 		var positionImage = transform.Find("Position").gameObject;
 		positionImage.GetComponent<Image>().enabled = false;
-        positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
-        _positionUI.UpdateDisplay();
-    }
+		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
+		_positionUI.UpdateDisplay();
+	}
 }

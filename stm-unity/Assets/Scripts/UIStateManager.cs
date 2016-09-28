@@ -1,9 +1,11 @@
 ﻿using PlayGen.RAGE.SportsTeamManager.Simulation;
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controls switching between different game state panels
+/// </summary>
 public class UIStateManager : MonoBehaviour {
 	[SerializeField]
 	private GameObject _mainMenu;
@@ -55,17 +57,13 @@ public class UIStateManager : MonoBehaviour {
 		go.SetActive(false);
 		_mainMenu.SetActive(true);
 		Tracker.T.accessible.Accessed("Main Menu", AccessibleTracker.Accessible.Screen);
-		GameManager gameManager;
-		gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
-		if (gameManager.GetGameNames(Application.persistentDataPath).Count == 0)
-		{
-			_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = false;
-		} else
-		{
-			_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = true;
-		}
+		GameManager gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = gameManager.GetGameNames(Application.persistentDataPath).Count != 0;
 	}
 
+	/// <summary>
+	/// Reload the scene
+	/// </summary>
 	public void ReloadScene()
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -120,6 +118,9 @@ public class UIStateManager : MonoBehaviour {
 		Tracker.T.accessible.Accessed("Help", AccessibleTracker.Accessible.Screen);
 	}
 
+	/// <summary>
+	/// Close the game
+	/// </summary>
 	public void CloseGame()
 	{
 		Application.Quit();

@@ -14,9 +14,9 @@ public class PositionDisplay : MonoBehaviour
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 	}
 
-    /// <summary>
-    /// Get the current boat being used throughout the game
-    /// </summary>
+	/// <summary>
+	/// Get the current boat being used throughout the game
+	/// </summary>
 	public Boat GetBoat()
 	{
 		return _gameManager.Boat;

@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-
 using IntegratedAuthoringTool.DTOs;
-
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(PostRaceEvent))]
+/// <summary>
+/// Contains all UI logic related to the Post Race pop-up
+/// </summary>
 public class PostRaceEventUI : MonoBehaviour
 {
 	private PostRaceEvent _postRaceEvent;
@@ -45,12 +44,16 @@ public class PostRaceEventUI : MonoBehaviour
 		_popUpBlocker.gameObject.SetActive(false);
 	}
 
+	/// <summary>
+	/// Reset and populate the pop-up for a new event
+	/// </summary>
 	void ResetDisplay()
 	{
+		//hide the pop-up in case no event is selected
 		GetComponent<CanvasGroup>().alpha = 0;
 		_closeButton.SetActive(false);
 		gameObject.SetActive(true);
-		KeyValuePair<List<CrewMember>, string> current = _postRaceEvent.GetCurrentEvent();
+		KeyValuePair<List<CrewMember>, string> current = _postRaceEvent.CurrentEvent;
 		_avatarDisplay.SetAvatar(current.Key[0].Avatar, current.Key[0].GetMood());
 		_nameText.text = "";
 		foreach (CrewMember cm in current.Key)
@@ -72,6 +75,9 @@ public class PostRaceEventUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Reset the available dialogue options for the player
+	/// </summary>
 	void ResetQuestions()
 	{
 		DialogueStateActionDTO[] replies = _postRaceEvent.GetEventReplies();
@@ -88,22 +94,26 @@ public class PostRaceEventUI : MonoBehaviour
 			_questions[i].GetComponent<Button>().onClick.RemoveAllListeners();
 			_questions[i].GetComponent<Button>().onClick.AddListener(delegate { SendReply(currentReply); });
 		}
+		//display the button for closing the pop-up and update the displayed character mood if there are no more dialogue options
 		if (replies.Length == 0)
 		{
 			_closeButton.SetActive(true);
 			_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
-            KeyValuePair<List<CrewMember>, string> current = _postRaceEvent.GetCurrentEvent();
-            _avatarDisplay.UpdateMood(current.Key[0].Avatar, current.Key[0].GetMood());
-            foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
-            {
-                if (crewMember.Current)
-                {
-                    crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(crewMember.CrewMember.Avatar, crewMember.CrewMember.GetMood());
-                }
-            }
-        }
+			KeyValuePair<List<CrewMember>, string> current = _postRaceEvent.CurrentEvent;
+			_avatarDisplay.UpdateMood(current.Key[0].Avatar, current.Key[0].GetMood());
+			foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
+			{
+				if (crewMember.Current)
+				{
+					crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(crewMember.CrewMember.Avatar, crewMember.CrewMember.GetMood());
+				}
+			}
+		}
 	}
 
+	/// <summary>
+	/// Triggered by button. Send the selected dialogue to the character
+	/// </summary>
 	public void SendReply(DialogueStateActionDTO reply)
 	{
 		Tracker.T.alternative.Selected("Post Race Event", reply.NextState, AlternativeTracker.Alternative.Dialog);

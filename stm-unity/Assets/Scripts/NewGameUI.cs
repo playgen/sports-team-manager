@@ -47,29 +47,29 @@ public class NewGameUI : MonoBehaviour {
 		{
 			_managerAge.text = (ageTest * -1).ToString();
 		}
-        //code for tabbing between input fields
-        if (Input.GetKeyDown(KeyCode.Tab) && EventSystem.current.currentSelectedGameObject != null)
-        {
-            Selectable next = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().navigation.selectOnDown;
+		//code for tabbing between input fields
+		if (Input.GetKeyDown(KeyCode.Tab) && EventSystem.current.currentSelectedGameObject != null)
+		{
+			Selectable next = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().navigation.selectOnDown;
 
-            if (next != null)
-            {
-                InputField inputfield = next.GetComponent<InputField>();
-                if (inputfield != null) inputfield.OnPointerClick(new PointerEventData(EventSystem.current));
+			if (next != null)
+			{
+				InputField inputfield = next.GetComponent<InputField>();
+				if (inputfield != null) inputfield.OnPointerClick(new PointerEventData(EventSystem.current));
 
-                EventSystem.current.SetSelectedGameObject(next.gameObject, new BaseEventData(EventSystem.current));
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            ExistingGameCheck();
-        }
-    }
+				EventSystem.current.SetSelectedGameObject(next.gameObject, new BaseEventData(EventSystem.current));
+			}
+		}
+		if (Input.GetKeyDown(KeyCode.Return))
+		{
+			ExistingGameCheck();
+		}
+	}
 
-    /// <summary>
-    /// Set the color sliders to random values
-    /// </summary>
-    public void RandomColor()
+	/// <summary>
+	/// Set the color sliders to random values
+	/// </summary>
+	public void RandomColor()
 	{
 		foreach (Slider s in _colorSliderPrimary)
 		{
@@ -82,10 +82,10 @@ public class NewGameUI : MonoBehaviour {
 		UpdateColor();
 	}
 
-    /// <summary>
-    /// Update the displayed color to match what has been selected using the sliders
-    /// </summary>
-    public void UpdateColor()
+	/// <summary>
+	/// Update the displayed color to match what has been selected using the sliders
+	/// </summary>
+	public void UpdateColor()
 	{
 		_colorImagePrimary.color = new Color(_colorSliderPrimary[0].value, _colorSliderPrimary[1].value, _colorSliderPrimary[2].value);
 		_colorImageSecondary.color = new Color(_colorSliderSecondary[0].value, _colorSliderSecondary[1].value, _colorSliderSecondary[2].value);

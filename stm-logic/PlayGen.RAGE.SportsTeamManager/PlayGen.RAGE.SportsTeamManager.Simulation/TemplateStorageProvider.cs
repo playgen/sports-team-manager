@@ -13,7 +13,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			absoluteFilePath = absoluteFilePath.Replace("\\", "");
 			absoluteFilePath = absoluteFilePath.Replace(".", "_").ToLower();
 			object obj = Templates.ResourceManager.GetObject(absoluteFilePath);
-			return new MemoryStream((byte[])(obj));
+			return new MemoryStream((byte[])obj);
 		}
 
 		protected override bool IsDirectory(string path)

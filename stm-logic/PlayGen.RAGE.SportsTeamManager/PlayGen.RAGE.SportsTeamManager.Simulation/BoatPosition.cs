@@ -16,20 +16,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void UpdateCrewMemberScore(Boat boat, ConfigStore config)
 		{
-            //set score as 0 if no Position or CrewMember is provided
+			//set score as 0 if no Position or CrewMember is provided
 			if (CrewMember == null || Position == null)
 			{
 				PositionScore = 0;
 				return;
 			}
-            //Get the averafe skill rating for this CrewMember in this Position
+			//Get the average skill rating for this CrewMember in this Position
 			int crewScore = Position.GetPositionRating(CrewMember);
 
 			int opinion = 0;
 			int opinionCount = 0;
 			int managerOpinion = 0;
 
-            //get the average opinion of every other positioned crew member and the manager
+			//get the average opinion of every other positioned crew member and the manager
 			if (CrewMember.CrewOpinions != null && CrewMember.CrewOpinions.Count > 0)
 			{
 				foreach (BoatPosition bp in boat.BoatPositions)
@@ -56,7 +56,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				opinion = opinion / opinionCount;
 			}
 
-            //add average opinion, manager opinion and current mood to score
+			//add average opinion, manager opinion and current mood to score
 			crewScore += (int)(opinion * config.ConfigValues[ConfigKeys.OpinionRatingWeighting.ToString()]);
 
 			crewScore += (int)(managerOpinion * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting.ToString()]);

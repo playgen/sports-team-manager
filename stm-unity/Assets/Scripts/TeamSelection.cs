@@ -1,14 +1,10 @@
-﻿using System;
-
-using UnityEngine;
-using System.Collections;
-using System.Linq;
-
+﻿using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Collections.Generic;
 
-using IntegratedAuthoringTool.DTOs;
-
+/// <summary>
+/// Contains all logic to communicate between TeamSelectionUI and GameManager
+/// </summary>
 public class TeamSelection : MonoBehaviour {
 	private GameManager _gameManager;
 	[SerializeField]
@@ -43,16 +39,19 @@ public class TeamSelection : MonoBehaviour {
 	/// <summary>
 	/// Get the currently available crew for the active Boat
 	/// </summary>
-	public Boat LoadCrew()
+	public List<CrewMember> LoadCrew()
 	{
 		if (_gameManager == null)
 		{
 			_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		}
 		_gameManager.RemoveAllCrew();
-		return _gameManager.Boat;
+		return _gameManager.Boat.UnassignedCrew;
 	}
 
+	/// <summary>
+	/// Get the history of line-ups
+	/// </summary>
 	public Boat GetBoat()
 	{
 		return _gameManager.Boat;
@@ -75,13 +74,16 @@ public class TeamSelection : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Get the current assigning stage
+	/// Get the current session in the race
 	/// </summary>
 	public int GetStage()
 	{
 		return _confirmCount + 1;
 	}
 
+	/// <summary>
+	/// Get the amount of sessions in this race
+	/// </summary>
 	public int GetSessionLength()
 	{
 		return _sessionLength;
@@ -108,13 +110,16 @@ public class TeamSelection : MonoBehaviour {
 			if (_confirmCount >= _sessionLength)
 			{
 				_gameManager.ConfirmLineUp();
-                _postRaceEvent.GetEvent();
-                _confirmCount -= _sessionLength;
+				_postRaceEvent.GetEvent();
+				_confirmCount -= _sessionLength;
 			}
 		}
 		return score;
 	}
 
+	/// <summary>
+	/// If a race has just occured, return true
+	/// </summary>
 	public bool IsRace()
 	{
 		if (_confirmCount == 0)
@@ -125,56 +130,48 @@ public class TeamSelection : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Get the current CrewMember (if any) of a position
+	/// Get the current ideal score
 	/// </summary>
-	public string GetPositionCrewMember(Position position)
-	{
-		return position.GetCrewMember(_gameManager.Boat);
-	}
-
-	/// <summary>
-	/// Get the current score of a Position on the active boat by name
-	/// </summary>
-	public int GetPositionScore(Position position)
-	{
-		var boatPosition = _gameManager.Boat.BoatPositions.SingleOrDefault(bp => bp.Position == position);
-		if (boatPosition != null)
-		{
-			return boatPosition.PositionScore;
-		}
-		return 0;
-	}
-
 	public float IdealCheck()
 	{
 		return _gameManager.Boat.IdealMatchScore;
 	}
 
-	public CrewMember PersonToCrewMember(Person person)
-	{
-		return _gameManager.Boat.GetAllCrewMembers().Where(cm => cm.Name == person.Name).FirstOrDefault();
-	}
-
+	/// <summary>
+	/// Get the amount of ActionAllowance remaining
+	/// </summary>
 	public int QuestionAllowance()
 	{
 		return _gameManager.ActionAllowance;
 	}
 
+	/// <summary>
+	/// Get the amount of hire/fire actions remaining for this race
+	/// </summary>
 	public int CrewEditAllowance()
 	{
 		return _gameManager.CrewEditAllowance;
 	}
 
+	/// <summary>
+	/// Check if the player is able to hire another character onto the team
+	/// </summary>
 	public bool CanAddCheck()
 	{
 		return _gameManager.CanAddToCrew();
 	}
 
+	/// <summary>
+	/// Check the amount of players below the crew limit this boat currently is
+	/// </summary>
 	public int CanAddAmount()
 	{
 		return _gameManager.CrewLimitLeft();
 	}
 
+	/// <summary>
+	/// Get the top amount of current mistakes in crew assignment the player is making
+	/// </summary>
 	public List<string> GetAssignmentMistakes(int amount)
 	{
 		return _gameManager.GetAssignmentMistakes(amount);

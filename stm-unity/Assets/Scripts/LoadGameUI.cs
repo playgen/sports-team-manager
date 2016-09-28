@@ -26,10 +26,10 @@ public class LoadGameUI : MonoBehaviour
 		_loadGame = GetComponent<LoadGame>();
 	}
 
-    /// <summary>
-    /// Get available games and wipe error text
-    /// </summary>
-    void OnEnable()
+	/// <summary>
+	/// Get available games and wipe error text
+	/// </summary>
+	void OnEnable()
 	{
 		GetGames();
 		_errorText.text = "";
@@ -58,31 +58,31 @@ public class LoadGameUI : MonoBehaviour
 	void GetGames()
 	{
 		_selectedIcon.transform.SetParent(transform, false);
-        //destroy old buttons
+		//destroy old buttons
 		foreach (Transform child in _gameContainer.transform)
 		{
 			Destroy(child.gameObject);
 		}
 		var gameNames = _loadGame.GetGames();
-		for (int i = 0; i < gameNames.Count; i++)
+		foreach (var game in gameNames)
 		{
 			GameObject gameButton = Instantiate(_gameButtonPrefab);
 			gameButton.transform.SetParent(_gameContainer.transform, false);
-			gameButton.GetComponentInChildren<Text>().text = gameNames[i];
+			gameButton.GetComponentInChildren<Text>().text = game;
 			gameButton.GetComponent<Button>().onClick.AddListener(() => SelectGame(gameButton.GetComponentInChildren<Text>()));
-			gameButton.name = gameNames[i];
+			gameButton.name = game;
 		}
 	}
 
 	/// <summary>
 	/// Triggered by button click. Set clicked to be selected game
 	/// </summary>
-	public void SelectGame(Text name)
+	public void SelectGame(Text nameText)
 	{
 		_errorText.text = "";
-		_loadGame.SetSelected(name.text);
-		_selectedIcon.transform.SetParent(name.transform, false);
-		_selectedIcon.transform.position = name.transform.position;
+		_loadGame.SetSelected(nameText.text);
+		_selectedIcon.transform.SetParent(nameText.transform, false);
+		_selectedIcon.transform.position = nameText.transform.position;
 		Tracker.T.alternative.Selected("Load Game", "Selected Game", AlternativeTracker.Alternative.Menu);
 	}
 
@@ -93,7 +93,7 @@ public class LoadGameUI : MonoBehaviour
 	{
 		Tracker.T.alternative.Selected("Load Game", "Loaded Game", AlternativeTracker.Alternative.Menu);
 		_errorText.text = "";
-        //check if the game exists
+		//check if the game exists
 		bool exists = _loadGame.ExistingGameCheck();
 		if (exists)
 		{
@@ -108,7 +108,7 @@ public class LoadGameUI : MonoBehaviour
 				_errorText.text = "Game was not loaded. Please try again.";
 			}
 		}
-        //display error and remove game from the list if the game could not be found
+		//display error and remove game from the list if the game could not be found
 		else
 		{
 			_errorText.text = "Game does not exist. Please try loading a different game.";
