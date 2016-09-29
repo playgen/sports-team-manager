@@ -90,7 +90,7 @@
 					"NextState": "NotPickedSorry",
 					"Meaning": "NotPickedSorry",
 					"Style": "NotPickedSorry",
-					"Utterance": "Sorry, you really should've been in that team. I'll try to make sure you're in next time."
+					"Utterance": "Sorry, you really should've been in that team. I'll try to make sure you're in for the next race."
 				}, 
 				{
 					"Id": "d2860497-9706-47e6-a9ba-90ccffe88f7c",
@@ -298,8 +298,8 @@
 					"CurrentState": "PostRaceEventStart",
 					"NextState": "NotPicked",
 					"Meaning": "NotPicked",
-					"Style": "NotPicked",
-					"Utterance": "Hey boss, why didn't you pick me for that last race?"
+					"Style": "Any",
+					"Utterance": "Hey boss, why didn't you pick me in that last line-up?"
 				}, 
 				{
 					"Id": "8547fae3-1369-4f1a-a134-4b722ac8cb52",
@@ -307,7 +307,7 @@
 					"NextState": "-",
 					"Meaning": "-",
 					"Style": "-",
-					"Utterance": "Thanks for saying that, I look forward to being in the next crew."
+					"Utterance": "Thanks for saying that, I look forward to being in the next race."
 				}, 
 				{
 					"Id": "a8d832f6-901e-4870-a88f-d59a6433542f",
@@ -339,7 +339,7 @@
 					"NextState": "-",
 					"Meaning": "-",
 					"Style": "-",
-					"Utterance": "You said that last time as well, still didn't select me for the next crew..."
+					"Utterance": "You said that last time as well, still didn't select me for the next race..."
 				}, 
 				{
 					"Id": "96f550ee-2121-4cf6-b1ca-101b1d7f3bf3",

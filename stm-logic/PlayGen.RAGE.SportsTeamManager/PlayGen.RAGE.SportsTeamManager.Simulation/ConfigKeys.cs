@@ -34,6 +34,7 @@
 		SendRecruitmentQuestionCost,
 		RaceSessionLength,
 		EventChance,
+		PracticeEventChanceReduction,
 		RecruitCount,
 		RecruitChangeChance,
 		HiddenMistakeLimit,

@@ -31,6 +31,7 @@
     "SendRecruitmentQuestionCost": 1,
     "RaceSessionLength": 5,
     "EventChance": 2,
+    "PracticeEventChanceReduction": 3,
     "RecruitCount": 4,
     "RecruitChangeChance": 3,
     "HiddenMistakeLimit": 0.5,

@@ -6,35 +6,42 @@ using IntegratedAuthoringTool.DTOs;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-    /// <summary>
-    /// Handles NPC dialogue events
-    /// </summary>
-    public class EventController
+	/// <summary>
+	/// Handles NPC dialogue events
+	/// </summary>
+	public class EventController
 	{
-        /// <summary>
-        /// Get all player dialogues strings with the eventKey provided set as CurrentState
-        /// </summary>
-        public string[] GetEventStrings(IntegratedAuthoringToolAsset iat, string eventKey)
+		/// <summary>
+		/// Get all player dialogues strings with the eventKey provided set as CurrentState
+		/// </summary>
+		public string[] GetEventStrings(IntegratedAuthoringToolAsset iat, string eventKey)
 		{
 			IEnumerable<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey);
 			return dialogueOptions.Select(dia => dia.Utterance).ToArray();
 		}
 
-        /// <summary>
-        /// Get all player dialogues with the eventKey provided set as CurrentState
-        /// </summary>
+		/// <summary>
+		/// Get all player dialogues with the eventKey provided set as CurrentState
+		/// </summary>
 		public DialogueStateActionDTO[] GetEvents(IntegratedAuthoringToolAsset iat, string eventKey)
 		{
 			IEnumerable<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey);
 			return dialogueOptions.ToArray();
 		}
 
-        /// <summary>
-        /// Select a random (if any) event to trigger post race
-        /// </summary>
-		public DialogueStateActionDTO SelectPostRaceEvent(IntegratedAuthoringToolAsset iat, int chance)
+		/// <summary>
+		/// Select a random (if any) event to trigger post race
+		/// </summary>
+		public DialogueStateActionDTO SelectPostRaceEvent(IntegratedAuthoringToolAsset iat, int chance, bool raceSession = false)
 		{
 			List<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PostRaceEventStart").ToList();
+			if (raceSession)
+			{
+				dialogueOptions = dialogueOptions.Where(dia => dia.Style != "Practice").ToList();
+			} else
+			{
+				dialogueOptions = dialogueOptions.Where(dia => dia.Style != "Race").ToList();
+			}
 			if (dialogueOptions.Any())
 			{
 				Random random = new Random();
@@ -48,17 +55,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return null;
 		}
 
-        /// <summary>
-        /// Send dialogue from the player to a NPC in a meeting and get the reply from the NPC
-        /// </summary>
+		/// <summary>
+		/// Send dialogue from the player to a NPC in a meeting and get the reply from the NPC
+		/// </summary>
 		public string SendMeetingEvent(IntegratedAuthoringToolAsset iat, string eventName, CrewMember crewMember, Boat boat)
 		{
-            return crewMember.SendMeetingEvent(iat, eventName, boat);
+			return crewMember.SendMeetingEvent(iat, eventName, boat);
 		}
 
-        /// <summary>
-        /// Send dialogue from the player to all recruit NPCs and get their replies 
-        /// </summary>
+		/// <summary>
+		/// Send dialogue from the player to all recruit NPCs and get their replies 
+		/// </summary>
 		public Dictionary<CrewMember, string> SendRecruitEvent(IntegratedAuthoringToolAsset iat, CrewMemberSkill skill, List<CrewMember> crewMembers)
 		{
 			Dictionary<CrewMember, string> replies = new Dictionary<CrewMember, string>();
@@ -73,9 +80,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return replies;
 		}
 
-        /// <summary>
-        /// Send dialogue from the player to (an) NPC(s) and get their replies 
-        /// </summary>
+		/// <summary>
+		/// Send dialogue from the player to (an) NPC(s) and get their replies 
+		/// </summary>
 		public Dictionary<CrewMember, string> SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, List<CrewMember> crewMembers, Boat boat, Boat previous)
 		{
 			Dictionary<CrewMember, string> replies = new Dictionary<CrewMember, string>();
