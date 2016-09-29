@@ -620,7 +620,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					PostRaceFeedback(nextState, boat);
 				}
-			} else
+			}
+			else
 			{
 				iat.SetDialogueState("Player", "-");
 				PostRaceFeedback(nextState, boat);

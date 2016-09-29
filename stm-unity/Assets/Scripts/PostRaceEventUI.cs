@@ -47,27 +47,27 @@ public class PostRaceEventUI : MonoBehaviour
 	/// <summary>
 	/// Reset and populate the pop-up for a new event
 	/// </summary>
-	private void ResetDisplay()
+	public void ResetDisplay()
 	{
 		//hide the pop-up in case no event is selected
 		GetComponent<CanvasGroup>().alpha = 0;
 		_closeButton.SetActive(false);
 		gameObject.SetActive(true);
-		KeyValuePair<List<CrewMember>, string> current = _postRaceEvent.CurrentEvent;
-		_avatarDisplay.SetAvatar(current.Key[0].Avatar, current.Key[0].GetMood());
+		KeyValuePair<List<CrewMember>, DialogueStateActionDTO> current = _postRaceEvent.CurrentEvent;
 		_nameText.text = "";
-		foreach (CrewMember cm in current.Key)
+		if (current.Key != null && current.Value != null)
 		{
-			if (_nameText.text.Length > 0)
+			_avatarDisplay.SetAvatar(current.Key[0].Avatar, current.Key[0].GetMood());
+			foreach (CrewMember cm in current.Key)
 			{
-				_nameText.text += " & ";
+				if (_nameText.text.Length > 0)
+				{
+					_nameText.text += " & ";
+				}
+				_nameText.text += cm.Name;
 			}
-			_nameText.text += cm.Name;
-		}
-		if (current.Key != null & current.Value != null)
-		{
 			GetComponent<CanvasGroup>().alpha = 1;
-			_dialogueText.text = current.Value;
+			_dialogueText.text = current.Value.Utterance;
 			ResetQuestions();
 		} else
 		{
@@ -80,7 +80,9 @@ public class PostRaceEventUI : MonoBehaviour
 	/// </summary>
 	private void ResetQuestions()
 	{
-		DialogueStateActionDTO[] replies = _postRaceEvent.GetEventReplies();
+        KeyValuePair<List<CrewMember>, DialogueStateActionDTO> current = _postRaceEvent.CurrentEvent;
+        CrewMember eventMember = current.Key != null ? current.Key[0] : null;
+        DialogueStateActionDTO[] replies = _postRaceEvent.GetEventReplies();
 		for (int i = 0; i < _questions.Length; i++)
 		{
 			if (replies.Length <= i)
@@ -99,8 +101,10 @@ public class PostRaceEventUI : MonoBehaviour
 		{
 			_closeButton.SetActive(true);
 			_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
-			KeyValuePair<List<CrewMember>, string> current = _postRaceEvent.CurrentEvent;
-			_avatarDisplay.UpdateMood(current.Key[0].Avatar, current.Key[0].GetMood());
+			if (eventMember != null)
+			{
+				_avatarDisplay.UpdateMood(eventMember.Avatar, eventMember.GetMood());
+			}
 			foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 			{
 				if (crewMember.Current)

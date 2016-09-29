@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Collections.Generic;
+using System.Linq;
+
 using IntegratedAuthoringTool.DTOs;
 
 /// <summary>
@@ -9,8 +11,9 @@ using IntegratedAuthoringTool.DTOs;
 public class PostRaceEvent : MonoBehaviour
 {
 	private GameManager _gameManager;
-	private KeyValuePair<List<CrewMember>, string> _currentEvent;
-	public KeyValuePair<List<CrewMember>, string> CurrentEvent
+	private Dictionary<List<CrewMember>, DialogueStateActionDTO> _currentEvents;
+	private KeyValuePair<List<CrewMember>, DialogueStateActionDTO> _currentEvent;
+	public KeyValuePair<List<CrewMember>, DialogueStateActionDTO> CurrentEvent
 	{
 		get { return _currentEvent; }
 	}
@@ -24,9 +27,10 @@ public class PostRaceEvent : MonoBehaviour
 		{
 			_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		}
-		_currentEvent = _gameManager.SelectPostRaceEvent();
-		if (_currentEvent.Key != null)
+		_currentEvents = _gameManager.SelectPostRaceEvent();
+		if (_currentEvents.Count > 0)
 		{
+			SetEvent();
 			gameObject.SetActive(true);
 		}
 	}
@@ -36,7 +40,26 @@ public class PostRaceEvent : MonoBehaviour
 	/// </summary>
 	public DialogueStateActionDTO[] GetEventReplies()
 	{
-		return _gameManager.GetPostRaceEvents();
+		var replies = _gameManager.GetPostRaceEvents();
+		if (replies == null || replies.Length == 0)
+		{
+			_currentEvent = new KeyValuePair<List<CrewMember>, DialogueStateActionDTO>(null, null);
+		}
+		if (_currentEvent.Key == null && _currentEvents.Count > 0)
+		{
+			SetEvent();
+		}
+		return replies;
+	}
+
+	/// <summary>
+	/// Set the event that the player is currently progressing through
+	/// </summary>
+	private void SetEvent()
+	{
+		_currentEvent = _currentEvents.First();
+		_currentEvents.Remove(_currentEvent.Key);
+		_gameManager.SetPlayerState(_currentEvent.Value);
 	}
 
 	/// <summary>
@@ -44,6 +67,7 @@ public class PostRaceEvent : MonoBehaviour
 	/// </summary>
 	public Dictionary<CrewMember, string> SendReply(DialogueStateActionDTO selectedEvent)
 	{
-		return _gameManager.SendPostRaceEvent(selectedEvent, _currentEvent.Key);
+		var replies = _gameManager.SendPostRaceEvent(selectedEvent, _currentEvent.Key);
+		return replies;
 	}
 }

@@ -32,7 +32,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Select a random (if any) event to trigger post race
 		/// </summary>
-		public DialogueStateActionDTO SelectPostRaceEvent(IntegratedAuthoringToolAsset iat, int chance, bool raceSession = false)
+		public DialogueStateActionDTO SelectPostRaceEvent(IntegratedAuthoringToolAsset iat, int chance, int sessionEventCount, Random random, bool raceSession = false)
 		{
 			List<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PostRaceEventStart").ToList();
 			if (raceSession)
@@ -44,7 +44,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			if (dialogueOptions.Any())
 			{
-				Random random = new Random();
+				chance = (int)Math.Pow(chance, sessionEventCount + 1);
 				int dialogueIndex = random.Next(0, dialogueOptions.Count * chance);
 				if (dialogueIndex % chance == 0)
 				{

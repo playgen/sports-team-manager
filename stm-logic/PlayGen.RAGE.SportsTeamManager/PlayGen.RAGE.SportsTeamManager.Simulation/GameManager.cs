@@ -28,7 +28,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private IntegratedAuthoringToolAsset _iat { get; set; }
 		private IStorageProvider _storageProvider { get; set; }
 		private string _storageLocation { get; set; }
-		private int _sessionEventCount { get; set; }
 
 		private ConfigStore _config { get; }
 
@@ -452,67 +451,93 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Select a random post-race event
 		/// </summary>
-		public KeyValuePair<List<CrewMember>, string> SelectPostRaceEvent()
+		public Dictionary<List<CrewMember>, DialogueStateActionDTO> SelectPostRaceEvent()
 		{
-			DialogueStateActionDTO postRaceEvent;
-			//attempt a random post-race event
-			if (LineUpHistory.Count % RaceSessionLength == 0)
+			Random random = new Random();
+			Dictionary<List<CrewMember>, DialogueStateActionDTO> selectedEvents = new Dictionary<List<CrewMember>, DialogueStateActionDTO>();
+			bool findEvents = true;
+			while (findEvents)
 			{
-				postRaceEvent = EventController.SelectPostRaceEvent(_iat, (int)_config.ConfigValues[ConfigKeys.EventChance.ToString()], true);
-			} else
-			{
-				var increasedChance = (int)_config.ConfigValues[ConfigKeys.EventChance.ToString()] + (int)_config.ConfigValues[ConfigKeys.PracticeEventChanceReduction.ToString()];
-				postRaceEvent = EventController.SelectPostRaceEvent(_iat, increasedChance);
-			}
-			//if no post-race event was selected, return null KVP to represent that none was selected
-			if (postRaceEvent == null)
-			{
-				return new KeyValuePair<List<CrewMember>, string>(null, null);
-			}
-			List<CrewMember> eventMembers = new List<CrewMember>();
-			switch (postRaceEvent.Meaning)
-			{
-				case "NotPicked":
-					//for this event, select a crew member who was not selected in the previous race
-					List<CrewMember> allCrew = Boat.GetAllCrewMembers();
-					foreach (var bp in LineUpHistory.LastOrDefault().BoatPositions)
-					{
-						if (bp.CrewMember != null)
+				DialogueStateActionDTO postRaceEvent;
+				//attempt a random post-race event
+				if (LineUpHistory.Count % RaceSessionLength == 0)
+				{
+					postRaceEvent = EventController.SelectPostRaceEvent(_iat, (int)_config.ConfigValues[ConfigKeys.EventChance.ToString()], selectedEvents.Count, random, true);
+				}
+				else
+				{
+					var increasedChance = (int)_config.ConfigValues[ConfigKeys.EventChance.ToString()] + (int)_config.ConfigValues[ConfigKeys.PracticeEventChanceReduction.ToString()];
+					postRaceEvent = EventController.SelectPostRaceEvent(_iat, increasedChance, selectedEvents.Count, random);
+				}
+				//if no post-race event was selected, stop searching for events
+				if (postRaceEvent == null)
+				{
+					findEvents = false;
+					continue;
+				}
+				List<CrewMember> eventMembers = new List<CrewMember>();
+				switch (postRaceEvent.Meaning)
+				{
+					case "NotPicked":
+						//for this event, select a crew member who was not selected in the previous race
+						List<CrewMember> allCrew = Boat.GetAllCrewMembers();
+						foreach (var bp in LineUpHistory.LastOrDefault().BoatPositions)
 						{
-							allCrew.Remove(allCrew.First(ac => ac.Name == bp.CrewMember.Name));
-						}
-					}
-					List<CrewMember> allCrewRemovals = new List<CrewMember>();
-					foreach (CrewMember cm in allCrew)
-					{
-						if (cm.EmotionalAppraisal.BeliefExists(NPCBeliefs.ExpectedSelection.GetDescription()))
-						{
-							if (cm.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.ExpectedSelection.GetDescription()).ToLower() == "true")
+							if (bp.CrewMember != null)
 							{
-								allCrewRemovals.Add(cm);
+								allCrew.Remove(allCrew.First(ac => ac.Name == bp.CrewMember.Name));
 							}
 						}
-					}
-					foreach (var cm in allCrewRemovals)
-					{
-						allCrew.Remove(cm);   
-					}
-					if (allCrew.Count == 0)
-					{
-						return new KeyValuePair<List<CrewMember>, string>(null, null);
-					}
-					CrewMember notSelected = allCrew.OrderBy(c => Guid.NewGuid()).First();
-					eventMembers.Add(notSelected);
-					//set the dialogue state for the player
-					if (postRaceEvent.NextState != "-")
-					{
-						_iat.SetDialogueState("Player", postRaceEvent.NextState);
-					}
-					string reply = postRaceEvent.Utterance;
-					return new KeyValuePair<List<CrewMember>, string>(eventMembers, reply);
-				default:
-					return new KeyValuePair<List<CrewMember>, string>(null, null);
+						foreach (List<CrewMember> crewMembers in selectedEvents.Keys)
+						{
+							foreach (CrewMember crewMember in crewMembers)
+							{
+								allCrew.Remove(crewMember);
+							}
+						}
+						List<CrewMember> allCrewRemovals = new List<CrewMember>();
+						foreach (CrewMember crewMember in allCrew)
+						{
+							if (crewMember.EmotionalAppraisal.BeliefExists(NPCBeliefs.ExpectedSelection.GetDescription()))
+							{
+								if (crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.ExpectedSelection.GetDescription()).ToLower() == "true")
+								{
+									allCrewRemovals.Add(crewMember);
+								}
+							}
+						}
+						foreach (var crewMember in allCrewRemovals)
+						{
+							allCrew.Remove(crewMember);
+						}
+						if (allCrew.Count == 0)
+						{
+							findEvents = false;
+							continue;
+						}
+						CrewMember notSelected = allCrew.OrderBy(c => Guid.NewGuid()).First();
+						eventMembers.Add(notSelected);
+						//set the dialogue state for the player
+						if (postRaceEvent.NextState != "-")
+						{
+							
+						}
+						selectedEvents.Add(eventMembers, postRaceEvent);
+						continue;
+					default:
+						findEvents = false;
+						continue;
+				}
 			}
+			return selectedEvents;
+		}
+
+		/// <summary>
+		/// Set the player dialogue state
+		/// </summary>
+		public void SetPlayerState(DialogueStateActionDTO currentEvent)
+		{
+			_iat.SetDialogueState("Player", currentEvent.NextState);
 		}
 
 		/// <summary>
