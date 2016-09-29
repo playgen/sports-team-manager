@@ -154,16 +154,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					CreateInitialOpinion(random, otherMember);
 				}
-				CreateInitialOpinion(random, boat.Manager);
 			}
-		}
+            CreateInitialOpinion(random, boat.Manager);
+        }
 
 		public void CreateInitialOpinion(Random random, Person person)
 		{
-			AddOrUpdateOpinion(person, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
-			AddOrUpdateRevealedOpinion(person, 0);
-			SaveStatus();
-		}
+            AddOrUpdateOpinion(person, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+            if (person.GetType() == typeof(CrewMember) && Name.Split(' ').Last() == person.Name.Split(' ').Last())
+            {
+                AddOrUpdateOpinion(person, (int)_config.ConfigValues[ConfigKeys.LastNameBonusOpinion.ToString()]);
+            }
+            AddOrUpdateRevealedOpinion(person, 0);
+            SaveStatus();
+        }
 
 		/// <summary>
 		/// Adjust or overwrite an opinion on another Person

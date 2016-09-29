@@ -35,5 +35,6 @@
     "RecruitCount": 4,
     "RecruitChangeChance": 3,
     "HiddenMistakeLimit": 0.5,
-    "HiddenOpinionLimit": 0.5
+    "HiddenOpinionLimit": 0.5,
+    "LastNameBonusOpinion": 1
 }

@@ -38,6 +38,7 @@
 		RecruitCount,
 		RecruitChangeChance,
 		HiddenMistakeLimit,
-		HiddenOpinionLimit
-	}
+		HiddenOpinionLimit,
+        LastNameBonusOpinion
+    }
 }
