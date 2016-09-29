@@ -1270,7 +1270,7 @@ GameObject:
   - 222: {fileID: 222000014215227512}
   - 114: {fileID: 114000010566732582}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Cost Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1423,7 +1423,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 4
+  m_Text: 
 --- !u!222 &222000011668046856
 CanvasRenderer:
   m_ObjectHideFlags: 1

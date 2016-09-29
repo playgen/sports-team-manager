@@ -138,16 +138,17 @@ public class MemberMeetingUI : MonoBehaviour
 		_roleQuestion.text = _memberMeeting.GetEventText("RoleReveal").OrderBy(s => Guid.NewGuid()).FirstOrDefault();
 		_opinionPositiveQuestion.text = _memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).FirstOrDefault();
 		_opinionNegativeQuestion.text = _memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).FirstOrDefault();
+		_statQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.SkillRevealCost).ToString();
+		_roleQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost).ToString();
+		_opinionPositiveQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionPositiveRevealCost).ToString();
+		_opinionNegativeQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionNegativeRevealCost).ToString();
+		_fireButton.transform.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.FiringCost).ToString();
 		int allowance = _memberMeeting.QuestionAllowance();
-		_fireButton.interactable = allowance >= 4;
-		_statQuestion.GetComponentInParent<Button>().interactable = allowance >= 1;
-		_roleQuestion.GetComponentInParent<Button>().interactable = allowance >= 3;
-		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = allowance >= 1;
-		_opinionNegativeQuestion.GetComponentInParent<Button>().interactable = allowance >= 2;
-		if (_memberMeeting.CrewEditAllowance() == 0 || !_memberMeeting.CanRemoveCheck())
-		{
-			_fireButton.interactable = false;
-		}
+		_fireButton.interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.FiringCost) && _memberMeeting.CrewEditAllowance() != 0 && _memberMeeting.CanRemoveCheck();
+		_statQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.SkillRevealCost);
+		_roleQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost);
+		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.OpinionPositiveRevealCost);
+		_opinionNegativeQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.OpinionNegativeRevealCost);
 		_closeText.text = "Nevermind, goodbye";
 		if (postQuestion)
 		{

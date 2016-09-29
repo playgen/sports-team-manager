@@ -146,6 +146,14 @@ public class TeamSelection : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Get the value stored in the config
+	/// </summary>
+	public float GetConfigValue(ConfigKeys eventKey)
+	{
+		return _gameManager.GetConfigValue(eventKey);
+	}
+
+	/// <summary>
 	/// Get the amount of hire/fire actions remaining for this race
 	/// </summary>
 	public int CrewEditAllowance()

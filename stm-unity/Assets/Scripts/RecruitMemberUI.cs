@@ -97,6 +97,7 @@ public class RecruitMemberUI : MonoBehaviour
 			_recruitUI[i].transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { HireCrewWarning(thisRecruit); });
 			_recruitUI[i].transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = "";
 			_recruitUI[i].transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = false;
+			_recruitUI[i].transform.Find("Cost Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString();
 			_recruitUI[i].name = recruits[i].Name;
 		}
 		var skills = (CrewMemberSkill[])Enum.GetValues(typeof(CrewMemberSkill));
@@ -113,6 +114,7 @@ public class RecruitMemberUI : MonoBehaviour
 			_questionButtons[i].interactable = true;
 			string questionText = _recruitMember.GetQuestionText("Recruit" + selected).OrderBy(s => Guid.NewGuid()).FirstOrDefault();
 			_questionButtons[i].transform.Find("Text").GetComponent<Text>().text = questionText;
+			_questionButtons[i].transform.Find("Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost).ToString();
 			_questionButtons[i].onClick.RemoveAllListeners();
 			_questionButtons[i].onClick.AddListener(delegate { AskQuestion(selected, questionText); });
 			Button thisButton = _questionButtons[i];
@@ -129,7 +131,7 @@ public class RecruitMemberUI : MonoBehaviour
 		int allowance = _recruitMember.QuestionAllowance();
 		_allowanceBar.fillAmount = allowance / (float)_recruitMember.StartingQuestionAllowance();
 		_allowanceText.text = allowance.ToString();
-		if (allowance < 1)
+		if (allowance < _recruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost))
 		{
 			_questionButtons.ToList().ForEach(qb => qb.interactable = false);
 		}
@@ -173,7 +175,7 @@ public class RecruitMemberUI : MonoBehaviour
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
 		_popUpBlocker.onClick.AddListener(delegate { CloseHireCrewWarning(); });
-		if (_recruitMember.QuestionAllowance() < 4)
+		if (_recruitMember.QuestionAllowance() < _recruitMember.GetConfigValue(ConfigKeys.RecruitmentCost))
 		{
 			_hireWarningText.text = "You don't have enough time left to hire this person.";
 			_hireWarningAccept.gameObject.SetActive(false);

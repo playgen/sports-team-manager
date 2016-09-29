@@ -46,10 +46,18 @@ public class MemberMeeting : MonoBehaviour
 		return _gameManager.ActionAllowance;
 	}
 
-	/// <summary>
-	/// Get the amount of available ActionAllowance given at the start of this race
+    /// <summary>
+	/// Get the value stored in the config
 	/// </summary>
-	public int StartingQuestionAllowance()
+	public float GetConfigValue(ConfigKeys eventKey)
+    {
+        return _gameManager.GetConfigValue(eventKey);
+    }
+
+    /// <summary>
+    /// Get the amount of available ActionAllowance given at the start of this race
+    /// </summary>
+    public int StartingQuestionAllowance()
 	{
 		return _gameManager.GetStartingActionAllowance();
 	}

@@ -42,7 +42,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create a new game
 		/// </summary>
-		public void NewGame(IStorageProvider storagePorvider, string storageLocation, string boatName, int[] teamColorsPrimary, int[] teamColorsSecondary, string managerName, string managerAge, string managerGender, List<CrewMember> crew = null)
+		public void NewGame(IStorageProvider storageProvider, string storageLocation, string boatName, int[] teamColorsPrimary, int[] teamColorsSecondary, string managerName, string managerAge, string managerGender, List<CrewMember> crew = null)
 		{
 			UnloadGame();
 			//create folder and iat file for game
@@ -79,7 +79,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			CrewEditAllowance = (int)_config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition.ToString()] * Boat.BoatPositions.Count;
 			RaceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength.ToString()];
 			//create manager files and store game attribute details
-			manager.CreateFile(iat, templateStorage, storagePorvider, combinedStorageLocation);
+			manager.CreateFile(iat, templateStorage, storageProvider, combinedStorageLocation);
 			manager.UpdateBeliefs("Manager");
 			manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.GetType().Name, "SELF");
 			manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString(), "SELF");
@@ -96,7 +96,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//set up files and details for each CrewMember
 			foreach (CrewMember member in crew)
 			{
-				member.CreateFile(iat, templateStorage, storagePorvider, combinedStorageLocation);
+				member.CreateFile(iat, templateStorage, storageProvider, combinedStorageLocation);
 				member.Avatar = new Avatar(member);
 				Boat.AddCrew(member);
 				Boat.SetCrewColors(member.Avatar);
@@ -122,15 +122,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Boat.GetAllCrewMembers().ForEach(cm => cm.CreateInitialOpinions(random, Boat));
 			}
 
-			iat.SaveToFile(storagePorvider, Path.Combine(combinedStorageLocation, boatName + ".iat"));
+			iat.SaveToFile(storageProvider, Path.Combine(combinedStorageLocation, boatName + ".iat"));
 			EventController = new EventController();
 			_iat = iat;
 			_storageLocation = storageLocation;
-			_storageProvider = storagePorvider;
+			_storageProvider = storageProvider;
 			LineUpHistory = new List<Boat>();
 			HistoricTimeOffset = new List<int>();
 			Boat.GetIdealCrew();
-			Boat.CreateRecruits(iat, templateStorage, storagePorvider, combinedStorageLocation);
+			Boat.CreateRecruits(iat, templateStorage, storageProvider, combinedStorageLocation);
 		}
 
 		/// <summary>
@@ -680,6 +680,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				default:
 					return 0;
 			}
+		}
+
+		/// <summary>
+		/// Get the value from the config
+		/// </summary>
+		public float GetConfigValue(ConfigKeys eventKey)
+		{
+			return _config.ConfigValues[eventKey.ToString()];
 		}
 
 		/// <summary>

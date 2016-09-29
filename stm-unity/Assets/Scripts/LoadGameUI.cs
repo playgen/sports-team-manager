@@ -111,7 +111,7 @@ public class LoadGameUI : MonoBehaviour
 		//display error and remove game from the list if the game could not be found
 		else
 		{
-			_errorText.text = "Game does not exist. Please try loading a different game.";
+			_errorText.text = "Unable to load game due to missing files. Please try loading a different game.";
 			_selectedIcon.transform.SetParent(_gameContainer.transform, true);
 			_selectedIcon.SetActive(false);
 			Destroy(_gameContainer.transform.Find(_loadGame.GetSelected()).gameObject);

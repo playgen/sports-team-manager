@@ -101,7 +101,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			_raceButton.interactable = true;
 		}
-		if ((_teamSelection.QuestionAllowance() < 4 || _teamSelection.CrewEditAllowance() == 0 || !_teamSelection.CanAddCheck()) && _recruitButtons.Count > 0 && _recruitButtons[0].IsInteractable())
+		if ((_teamSelection.QuestionAllowance() < _teamSelection.GetConfigValue(ConfigKeys.RecruitmentCost) || _teamSelection.CrewEditAllowance() == 0 || !_teamSelection.CanAddCheck()) && _recruitButtons.Count > 0 && _recruitButtons[0].IsInteractable())
 		{
 			foreach (Button b in _recruitButtons)
 			{
@@ -109,7 +109,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			}
 			
 		}
-		else if (_teamSelection.QuestionAllowance() >= 4 && _teamSelection.CrewEditAllowance() > 0 && _teamSelection.CanAddCheck() && _recruitButtons.Count > 0 && !_recruitButtons[0].IsInteractable())
+		else if (_teamSelection.QuestionAllowance() >= _teamSelection.GetConfigValue(ConfigKeys.RecruitmentCost) && _teamSelection.CrewEditAllowance() > 0 && _teamSelection.CanAddCheck() && _recruitButtons.Count > 0 && !_recruitButtons[0].IsInteractable())
 		{
 			foreach (Button b in _recruitButtons)
 			{
@@ -125,6 +125,18 @@ public class TeamSelectionUI : MonoBehaviour {
 			}
 		}
 #endif
+	}
+
+	private void FixedUpdate()
+	{
+		var currentPosition = _boatContainer.transform.localPosition.y - _boatContainer.GetComponent<RectTransform>().anchoredPosition.y;
+		if (_currentBoat.GetComponent<LayoutElement>().preferredHeight != Mathf.Abs(currentPosition) * 0.2f)
+		{
+			foreach (Transform boat in _boatContainer.transform)
+			{
+				boat.GetComponent<LayoutElement>().preferredHeight = Mathf.Abs(currentPosition) * 0.2f;
+			}
+		}
 	}
 
 	/// <summary>
@@ -277,6 +289,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var currentCrew = _teamSelection.GetBoat().GetAllCrewMembers();
 		List<string> mistakeList = boat.GetAssignmentMistakes(3);
 		CreateMistakeIcons(mistakeList, oldBoat, idealScore, boat.BoatPositions.Count);
+		_teamSelection.ConfirmLineUp(0, true);
 		float scoreDiff = GetResult(_teamSelection.IsRace(), teamScore, boat.BoatPositions.Count, offset, oldBoat.transform.Find("Score").GetComponent<Text>());
 		foreach (var bp in boat.BoatPositions)
 		{
@@ -303,7 +316,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 		_raceButton = oldBoat.transform.Find("Race").GetComponent<Button>();
 		Destroy(_raceButton.gameObject);
-		_teamSelection.ConfirmLineUp(0, true);
 	}
 
 	private void CreateMistakeIcons(List<string> mistakes, GameObject boat, float idealScore, int positionCount)
@@ -381,7 +393,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		float idealScore = _teamSelection.IdealCheck();
 		List<string> mistakeList = _teamSelection.GetAssignmentMistakes(3);
 		CreateMistakeIcons(mistakeList, _currentBoat, idealScore, _teamSelection.GetBoat().BoatPositions.Count);
-		int offset = UnityEngine.Random.Range(-3, 4);
+		int offset = UnityEngine.Random.Range(0, 10);
 		var teamScore = _teamSelection.ConfirmLineUp(offset);
 		float scoreDiff = GetResult(_teamSelection.IsRace(), teamScore, currentPositions.Count, offset, _currentBoat.transform.Find("Score").GetComponent<Text>(), currentPositions);
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])

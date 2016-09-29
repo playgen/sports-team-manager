@@ -111,7 +111,28 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void SaveStatus()
 		{
 			EmotionalAppraisal.SaveToFile(LocalStorageProvider.Instance, EmotionalAppraisal.AssetFilePath);
-			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, RolePlayCharacter.AssetFilePath);
+            try
+            {
+                RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, RolePlayCharacter.AssetFilePath);
+            }
+            catch
+            {
+                var filePath = EmotionalAppraisal.AssetFilePath.Replace(Name.Replace(" ", "") + ".ea", "");
+                TemplateStorageProvider templateStorage = new TemplateStorageProvider();
+                var templateRpc = RolePlayCharacterAsset.LoadFromFile(templateStorage, "template_rpc");
+                var edm = EmotionalDecisionMakingAsset.LoadFromFile(templateStorage, templateRpc.EmotionalDecisionMakingSource);
+                var si = SocialImportanceAsset.LoadFromFile(templateStorage, templateRpc.SocialImportanceAssetSource);
+                si.BindEmotionalAppraisalAsset(EmotionalAppraisal);
+                templateRpc.CharacterName = Name;
+                var noSpaceName = templateRpc.CharacterName.Replace(" ", "");
+                edm.SaveToFile(LocalStorageProvider.Instance, Path.Combine(filePath, noSpaceName + ".edm"));
+                si.SaveToFile(LocalStorageProvider.Instance, Path.Combine(filePath, noSpaceName + ".si"));
+                templateRpc.EmotionalAppraisalAssetSource = Path.Combine(filePath, noSpaceName + ".ea");
+                templateRpc.EmotionalDecisionMakingSource = Path.Combine(filePath, noSpaceName + ".edm");
+                templateRpc.SocialImportanceAssetSource = Path.Combine(filePath, noSpaceName + ".si");
+                templateRpc.SaveToFile(LocalStorageProvider.Instance, Path.Combine(filePath, noSpaceName + ".rpc"));
+                RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, Path.Combine(filePath, noSpaceName + ".rpc"));
+            }
 		}
 
         /// <summary>
