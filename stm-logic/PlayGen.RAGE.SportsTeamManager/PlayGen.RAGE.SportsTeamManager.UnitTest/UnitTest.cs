@@ -2,7 +2,6 @@
 using System.Linq;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GAIPS.Rage;
 using System.IO;
 
 namespace PlayGen.RAGE.SportsTeamManager.UnitTest
