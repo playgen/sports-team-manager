@@ -1,5 +1,4 @@
 ﻿using EmotionalAppraisal;
-using GAIPS.Rage;
 using IntegratedAuthoringTool;
 using RolePlayCharacter;
 using System;
@@ -7,6 +6,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+
+using AssetManagerPackage;
+
+using AssetPackage;
 using IntegratedAuthoringTool.DTOs;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
@@ -26,7 +29,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int CrewEditAllowance { get; private set; }
 		public int RaceSessionLength { get; private set; }
 		private IntegratedAuthoringToolAsset _iat { get; set; }
-		private IStorageProvider _storageProvider { get; set; }
 		private string _storageLocation { get; set; }
 
 		private ConfigStore _config { get; }
@@ -42,21 +44,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create a new game
 		/// </summary>
-		public void NewGame(IStorageProvider storageProvider, string storageLocation, string boatName, int[] teamColorsPrimary, int[] teamColorsSecondary, string managerName, string managerAge, string managerGender, List<CrewMember> crew = null)
+		public void NewGame(string storageLocation, string boatName, int[] teamColorsPrimary, int[] teamColorsSecondary, string managerName, string managerAge, string managerGender, List<CrewMember> crew = null)
 		{
 			UnloadGame();
+			AssetManager.Instance.Bridge = new TemplateBridge();
 			//create folder and iat file for game
 			string combinedStorageLocation = Path.Combine(storageLocation, boatName);
 			Directory.CreateDirectory(combinedStorageLocation);
-			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
-			var iat = IntegratedAuthoringToolAsset.LoadFromFile(templateStorage, "template_iat");
+			var iat = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
 			//set up first boat
 			Boat = new Dinghy(_config);
 			Boat.Name = boatName;
 			Boat.TeamColorsPrimary = teamColorsPrimary;
 			Boat.TeamColorsSecondary = teamColorsSecondary;
 			iat.ScenarioName = Boat.Name;
-			Random random = new Random();
+            AssetManager.Instance.Bridge = new BaseBridge();
+            iat.SaveToFile(Path.Combine(combinedStorageLocation, boatName + ".iat"));
+            Random random = new Random();
 			Person manager = new Person
 			{
 				Name = managerName,
@@ -79,7 +83,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			CrewEditAllowance = (int)_config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition.ToString()] * Boat.BoatPositions.Count;
 			RaceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength.ToString()];
 			//create manager files and store game attribute details
-			manager.CreateFile(iat, templateStorage, storageProvider, combinedStorageLocation);
+			manager.CreateFile(iat, combinedStorageLocation);
 			manager.UpdateBeliefs("Manager");
 			manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.GetType().Name, "SELF");
 			manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString(), "SELF");
@@ -96,7 +100,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//set up files and details for each CrewMember
 			foreach (CrewMember member in crew)
 			{
-				member.CreateFile(iat, templateStorage, storageProvider, combinedStorageLocation);
+				member.CreateFile(iat, combinedStorageLocation);
 				member.Avatar = new Avatar(member);
 				Boat.AddCrew(member);
 				Boat.SetCrewColors(member.Avatar);
@@ -121,16 +125,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				Boat.GetAllCrewMembers().ForEach(cm => cm.CreateInitialOpinions(random, Boat));
 			}
-
-			iat.SaveToFile(storageProvider, Path.Combine(combinedStorageLocation, boatName + ".iat"));
+			iat.SaveToFile(Path.Combine(combinedStorageLocation, boatName + ".iat"));
 			EventController = new EventController();
 			_iat = iat;
 			_storageLocation = storageLocation;
-			_storageProvider = storageProvider;
 			LineUpHistory = new List<Boat>();
 			HistoricTimeOffset = new List<int>();
 			Boat.GetIdealCrew();
-			Boat.CreateRecruits(iat, templateStorage, storageProvider, combinedStorageLocation);
+			Boat.CreateRecruits(iat, combinedStorageLocation);
 		}
 
 		/// <summary>
@@ -166,7 +168,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					try
 					{
-						var game = IntegratedAuthoringToolAsset.LoadFromFile(LocalStorageProvider.Instance, file);
+						AssetManager.Instance.Bridge = new BaseBridge();
+						var game = IntegratedAuthoringToolAsset.LoadFromFile(file);
 						if (game != null && game.ScenarioName == gameName)
 						{
 							gameExists = true;
@@ -185,25 +188,26 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Load an existing game
 		/// </summary>
-		public void LoadGame(IStorageProvider storagePorvider, string storageLocation, string boatName)
+		public void LoadGame(string storageLocation, string boatName)
 		{
 			UnloadGame();
 			Boat = new Boat(_config);
 			//get the iat file and all characters for this game
 			string combinedStorageLocation = Path.Combine(storageLocation, boatName);
-			var iat = IntegratedAuthoringToolAsset.LoadFromFile(storagePorvider, Path.Combine(combinedStorageLocation, boatName + ".iat"));
+			AssetManager.Instance.Bridge = new BaseBridge();
+			var iat = IntegratedAuthoringToolAsset.LoadFromFile(Path.Combine(combinedStorageLocation, boatName + ".iat"));
 			var rpcList = iat.GetAllCharacters();
 
 			List<CrewMember> crewList = new List<CrewMember>();
 
 			foreach (RolePlayCharacterAsset rpc in rpcList)
 			{
-				var tempea = EmotionalAppraisalAsset.LoadFromFile(storagePorvider, rpc.EmotionalAppraisalAssetSource);
+				var tempea = EmotionalAppraisalAsset.LoadFromFile(rpc.EmotionalAppraisalAssetSource);
 				string position = tempea.GetBeliefValue(NPCBeliefs.Position.GetDescription());
 				//if this character is the manager, load the game details from this file and set this character as the manager
 				if (position == "Manager")
 				{
-					Person person = new Person(storagePorvider, rpc);
+					Person person = new Person(rpc);
 					Boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.BoatType.GetDescription())), _config);
 					ActionAllowance = int.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.ActionAllowance.GetDescription()));
 					CrewEditAllowance = int.Parse(person.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.CrewEditAllowance.GetDescription()));
@@ -221,7 +225,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					continue;
 				}
 				//set up every other character as a CrewManager, making sure to separate retired and recruits
-				CrewMember crewMember = new CrewMember(storagePorvider, rpc, _config);
+				CrewMember crewMember = new CrewMember(rpc, _config);
 				if (position == "Retired")
 				{
 					crewMember.Avatar = new Avatar(crewMember, false, true);
@@ -250,7 +254,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			EventController = new EventController();
 			_iat = iat;
 			_storageLocation = storageLocation;
-			_storageProvider = storagePorvider;
 			LoadLineUpHistory();
 			Boat.GetIdealCrew();
 			Boat.UpdateBoatScore();
@@ -342,9 +345,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//calculate how many new members should be created
 			int extraMembers = (newBoat.BoatPositions.Count - Boat.BoatPositions.Count) * 2;
 			//reload the current game
-			LoadGame(_storageProvider, _storageLocation, Boat.Name);
+			LoadGame(_storageLocation, Boat.Name);
 			Random rand = new Random();
-			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 			for (int i = 0; i < extraMembers; i++)
 			{
 			//only create a new CrewMember if the crew limit can support it
@@ -352,14 +354,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					CrewMember newMember = new CrewMember(rand, Boat, _config);
 					string combinedStorageLocation = Path.Combine(_storageLocation, Boat.Name);
-					newMember.CreateFile(_iat, templateStorage, _storageProvider, combinedStorageLocation);
+					newMember.CreateFile(_iat, combinedStorageLocation);
 					newMember.Avatar = new Avatar(newMember);
 					Boat.SetCrewColors(newMember.Avatar);
 					newMember.CreateInitialOpinions(rand, Boat);
 					Boat.GetAllCrewMembers().ForEach(cm => cm.CreateInitialOpinion(rand, newMember));
 					newMember.UpdateBeliefs("null");
 					newMember.SaveStatus();
-					_iat.SaveToFile(_storageProvider, _iat.AssetFilePath);
+					AssetManager.Instance.Bridge = new BaseBridge();
+					_iat.SaveToFile(_iat.AssetFilePath);
 					//if the boat is under-staffed for the current boat size, this new CrewMember is not counted
 					if (!CanRemoveFromCrew())
 					{
@@ -440,9 +443,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				PromoteBoat();
 			}
-			TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 			//update available recruits for the next race
-			Boat.CreateRecruits(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name));
+			Boat.CreateRecruits(_iat, Path.Combine(_storageLocation, Boat.Name));
 			//reset the limits on actions and hiring/firing
 			ResetActionAllowance();
 			ResetCrewEditAllowance();
@@ -476,7 +478,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					continue;
 				}
 				List<CrewMember> eventMembers = new List<CrewMember>();
-				switch (postRaceEvent.Meaning)
+				switch (postRaceEvent.NextState)
 				{
 					case "NotPicked":
 						//for this event, select a crew member who was not selected in the previous race
@@ -517,11 +519,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						CrewMember notSelected = allCrew.OrderBy(c => Guid.NewGuid()).First();
 						eventMembers.Add(notSelected);
-						//set the dialogue state for the player
-						if (postRaceEvent.NextState != "-")
-						{
-							
-						}
 						selectedEvents.Add(eventMembers, postRaceEvent);
 						continue;
 					default:
@@ -642,9 +639,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 			//remove recruit from the current list of characters in the game
 				_iat.RemoveCharacters(new List<string>() { member.Name });
-				TemplateStorageProvider templateStorage = new TemplateStorageProvider();
 				//set up recruit as a 'proper' character in the game
-				member.CreateFile(_iat, templateStorage, _storageProvider, Path.Combine(_storageLocation, Boat.Name));
+				member.CreateFile(_iat, Path.Combine(_storageLocation, Boat.Name));
 				member.Avatar.UpdateAvatarBeliefs(member);
 				member.Avatar = new Avatar(member, true, true);
 				Boat.SetCrewColors(member.Avatar);
@@ -656,7 +652,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.SaveStatus();
 				DeductCost(cost);
 				Boat.Recruits.Remove(member);
-				_iat.SaveToFile(_storageProvider, _iat.AssetFilePath);
+				AssetManager.Instance.Bridge = new BaseBridge();
+				_iat.SaveToFile(_iat.AssetFilePath);
 				DeductCrewEditAllowance();
 				Boat.GetIdealCrew();
 			}

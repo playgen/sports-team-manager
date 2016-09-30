@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	public static class EnumHelper
+	public static class EnumExtensions
 	{
 		public static string GetDescription(this Enum value)
 		{

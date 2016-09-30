@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GAIPS.Rage;
+using AssetPackage;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 using RolePlayCharacter;
@@ -41,7 +41,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Constructor for creating a CrewMember from a saved game
 		/// </summary>
-		public CrewMember(IStorageProvider savedStorage, RolePlayCharacterAsset rpc, ConfigStore config) : base(savedStorage, rpc)
+		public CrewMember(RolePlayCharacterAsset rpc, ConfigStore config) : base(rpc)
 		{
 			_config = config;
 			Skills = new Dictionary<CrewMemberSkill, int>();
@@ -155,19 +155,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					CreateInitialOpinion(random, otherMember);
 				}
 			}
-            CreateInitialOpinion(random, boat.Manager);
-        }
+			CreateInitialOpinion(random, boat.Manager);
+		}
 
 		public void CreateInitialOpinion(Random random, Person person)
 		{
-            AddOrUpdateOpinion(person, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
-            if (person.GetType() == typeof(CrewMember) && Name.Split(' ').Last() == person.Name.Split(' ').Last())
-            {
-                AddOrUpdateOpinion(person, (int)_config.ConfigValues[ConfigKeys.LastNameBonusOpinion.ToString()]);
-            }
-            AddOrUpdateRevealedOpinion(person, 0);
-            SaveStatus();
-        }
+			AddOrUpdateOpinion(person, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+			if (person.GetType() == typeof(CrewMember) && Name.Split(' ').Last() == person.Name.Split(' ').Last())
+			{
+				AddOrUpdateOpinion(person, (int)_config.ConfigValues[ConfigKeys.LastNameBonusOpinion.ToString()]);
+			}
+			AddOrUpdateRevealedOpinion(person, 0);
+			SaveStatus();
+		}
 
 		/// <summary>
 		/// Adjust or overwrite an opinion on another Person
@@ -457,14 +457,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
 						if (statValue <= (int)_config.ConfigValues[ConfigKeys.BadSkillRating.ToString()])
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "Bad").ToList();
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "Bad").ToName()).ToList();
 						}
 						else if (statValue >= (int)_config.ConfigValues[ConfigKeys.GoodSkillRating.ToString()])
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "Good").ToList();
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "Good").ToName()).ToList();
 						} else
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "Middle").ToList();
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "Middle").ToName()).ToList();
 						}
 						if (dialogueOptions.Any())
 						{
@@ -476,10 +476,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						Position pos = boat.BoatPositions[rand.Next(0, boat.BoatPositions.Count)].Position;
 						if (pos.GetPositionRating(this) <= 5)
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "Bad").ToList();
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "Bad").ToName()).ToList();
 						} else if (pos.GetPositionRating(this) >= 6)
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "Good").ToList();
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "Good").ToName()).ToList();
 						}
 						if (dialogueOptions.Any())
 						{
@@ -494,11 +494,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						if (pickedOpinionPositive != null) {
 							if (pickedOpinionPositive.Opinion >= (int)_config.ConfigValues[ConfigKeys.OpinionStrongLike.ToString()])
 							{
-								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "High").ToList();
+								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "High").ToName()).ToList();
 							}
 							else
 							{
-								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey).ToList();
+								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey.ToName()).ToList();
 							}
 							if (dialogueOptions.Any())
 							{
@@ -512,7 +512,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						else
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "None").ToList();
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "None").ToName()).ToList();
 							if (dialogueOptions.Any())
 							{
 								reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
@@ -528,11 +528,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						{
 							if (pickedOpinionNegative.Opinion <= (int)_config.ConfigValues[ConfigKeys.OpinionStrongDislike.ToString()])
 							{
-								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "High").ToList();
+								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "High").ToName()).ToList();
 							}
 							else
 							{
-								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey).ToList();
+								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey.ToName()).ToList();
 							}
 							if (dialogueOptions.Any())
 							{
@@ -546,7 +546,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						else
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey + "None").ToList();
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "None").ToName()).ToList();
 							if (dialogueOptions.Any())
 							{
 								reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
@@ -567,23 +567,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			List<DialogueStateActionDTO> dialogueOptions;
 			if (Skills[skill] >= 9)
 			{
-				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "StrongAgree").ToList();
+				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "StrongAgree".ToName()).ToList();
 			}
 			else if (Skills[skill] >= 7)
 			{
-				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Agree").ToList();
+				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Agree".ToName()).ToList();
 			}
 			else if (Skills[skill] >= 5)
 			{
-				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Neither").ToList();
+				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Neither".ToName()).ToList();
 			}
 			else if (Skills[skill] >= 3)
 			{
-				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Disagree").ToList();
+				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Disagree".ToName()).ToList();
 			}
 			else
 			{
-				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "StrongDisagree").ToList();
+				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "StrongDisagree".ToName()).ToList();
 			}
 			return dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
 		}
@@ -614,7 +614,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					break;
 			}
-			List<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, nextState).ToList();
+			List<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, nextState.ToName()).ToList();
 			if (dialogueOptions.Any())
 			{
 				DialogueStateActionDTO selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();

@@ -16,7 +16,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string[] GetEventStrings(IntegratedAuthoringToolAsset iat, string eventKey)
 		{
-			IEnumerable<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey);
+			IEnumerable<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey.ToName());
 			return dialogueOptions.Select(dia => dia.Utterance).ToArray();
 		}
 
@@ -25,7 +25,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public DialogueStateActionDTO[] GetEvents(IntegratedAuthoringToolAsset iat, string eventKey)
 		{
-			IEnumerable<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey);
+			IEnumerable<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey.ToName());
 			return dialogueOptions.ToArray();
 		}
 
@@ -34,13 +34,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public DialogueStateActionDTO SelectPostRaceEvent(IntegratedAuthoringToolAsset iat, int chance, int sessionEventCount, Random random, bool raceSession = false)
 		{
-			List<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PostRaceEventStart").ToList();
+			List<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PostRaceEventStart".ToName()).ToList();
 			if (raceSession)
 			{
-				dialogueOptions = dialogueOptions.Where(dia => dia.Style != "Practice").ToList();
+				dialogueOptions = dialogueOptions.Where(dia => dia.Style.Contains("Race")).ToList();
 			} else
 			{
-				dialogueOptions = dialogueOptions.Where(dia => dia.Style != "Race").ToList();
+				dialogueOptions = dialogueOptions.Where(dia => dia.Style.Contains("Practice")).ToList();
 			}
 			if (dialogueOptions.Any())
 			{

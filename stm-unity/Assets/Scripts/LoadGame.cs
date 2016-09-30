@@ -1,5 +1,4 @@
-﻿using GAIPS.Rage;
-using PlayGen.RAGE.SportsTeamManager.Simulation;
+﻿using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -64,7 +63,7 @@ public class LoadGame : MonoBehaviour
 	{
 		if (_selectedName != null)
 		{
-			_gameManager.LoadGame(LocalStorageProvider.Instance, Application.persistentDataPath, _selectedName);
+			_gameManager.LoadGame(Application.persistentDataPath, _selectedName);
 			if (_gameManager.Boat != null && _gameManager.Boat.Name == _selectedName)
 			{
 				return true;

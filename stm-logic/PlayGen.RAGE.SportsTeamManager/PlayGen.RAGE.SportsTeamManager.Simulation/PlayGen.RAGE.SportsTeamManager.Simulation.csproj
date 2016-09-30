@@ -82,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseBridge.cs" />
     <Compile Include="BiggestDingy.cs" />
     <Compile Include="BiggerDinghy.cs" />
     <Compile Include="Avatar.cs" />
@@ -98,11 +99,12 @@
     <Compile Include="EventController.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Dinghy.cs" />
+    <Compile Include="NameExtensions.cs" />
     <Compile Include="NPCBeliefs.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TemplateStorageProvider.cs" />
+    <Compile Include="TemplateBridge.cs" />
     <Compile Include="Templates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

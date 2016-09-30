@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using GAIPS.Rage;
+using AssetManagerPackage;
+using AssetPackage;
 using IntegratedAuthoringTool;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
@@ -174,7 +175,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Update the set of recruits for this Boat
 		/// </summary>
-		public void CreateRecruits(IntegratedAuthoringToolAsset iat, IStorageProvider templateStorage, IStorageProvider savedStorage, string storageLocation)
+		public void CreateRecruits(IntegratedAuthoringToolAsset iat, string storageLocation)
 		{
 			Random rand = new Random();
 			List<CrewMember> recuritsToRemove = new List<CrewMember>();
@@ -202,12 +203,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//for each recruit, save their asset files, avatar and save files/add to iat
 			for (int i = 0; i < Recruits.Count; i++)
 			{
-				Recruits[i].CreateFile(iat, templateStorage, savedStorage, storageLocation, "Recruit" + i);
+				Recruits[i].CreateFile(iat, storageLocation, "Recruit" + i);
 				Recruits[i].Avatar = new Avatar(Recruits[i], false);
 				Recruits[i].UpdateBeliefs("Recruit");
 				Recruits[i].SaveStatus();
 			}
-			iat.SaveToFile(savedStorage, iat.AssetFilePath);
+			AssetManager.Instance.Bridge = new BaseBridge();
+			iat.SaveToFile(iat.AssetFilePath);
 		}
 
 		public Position GetWeakPosition(Random random)

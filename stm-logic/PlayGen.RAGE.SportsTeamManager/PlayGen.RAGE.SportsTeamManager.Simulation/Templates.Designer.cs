@@ -62,40 +62,45 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///	&quot;RandomBodyTypes&quot;: false,
-        ///	&quot;RandomOutfits&quot;: true,
         ///	&quot;RandomHairColor&quot;: true,
         ///	&quot;HairTypesCount&quot;: 5,
         ///	&quot;OutfitTypesCount&quot;: 3,
-        ///	&quot;LightSkinColor&quot;: {
-        ///		&quot;r&quot;: 255,
-        ///		&quot;g&quot;: 255,
-        ///		&quot;b&quot;: 255,
-        ///		&quot;a&quot;: 255
-        ///	},
-        ///	&quot;MediumSkinColor&quot;: {
-        ///		&quot;r&quot;: 195,
-        ///		&quot;g&quot;: 186,
-        ///		&quot;b&quot;: 135,
-        ///		&quot;a&quot;: 255
-        ///	},
-        ///	&quot;DarkSkinColor&quot;: {
-        ///		&quot;r&quot;: 127,
-        ///		&quot;g&quot;: 109,
-        ///		&quot;b&quot;: 77,
-        ///		&quot;a&quot;: 255
-        ///	},
-        ///	&quot;BlondeHairColor&quot;: {
-        ///		&quot;r&quot;: 231,
-        ///		&quot;g&quot;: 231,
-        ///		&quot;b&quot;: 115,
-        ///		&quot;a&quot;: 255
-        ///	},
-        ///	&quot;BrownHairColor&quot;: {
-        ///		&quot;r&quot;: 86,
-        ///		&quot;g&quot;: 57,
-        ///		&quot;b&quot;: 13,
-        ///		&quot;a&quot;: 255        /// [rest of string was truncated]&quot;;.
+        ///	&quot;LightSkinColorValues&quot;: [
+        ///		255,
+        ///		255,
+        ///		255
+        ///	],
+        ///	&quot;MediumSkinColorValues&quot;: [
+        ///		195,
+        ///		186,
+        ///		135
+        ///	],
+        ///	&quot;DarkSkinColorValues&quot;: [
+        ///		127,
+        ///		109,
+        ///		77
+        ///	],
+        ///	&quot;BlondeHairColorValues&quot;: [
+        ///		231,
+        ///		231,
+        ///		115
+        ///	],
+        ///	&quot;BrownHairColorValues&quot;: [
+        ///		86,
+        ///		57,
+        ///		13
+        ///	],
+        ///	&quot;BlackHairColorValues&quot;: [
+        ///		39,
+        ///		24,
+        ///		2
+        ///	],
+        ///	&quot;GingerHairColorValues&quot;: [
+        ///		204,
+        ///		108,
+        ///		6
+        ///	]
+        ///}.
         /// </summary>
         public static string avatar_config {
             get {
@@ -105,25 +110,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///	&quot;GoodPositionRating&quot;: 7,
-        ///	&quot;BadPositionRating&quot;: 4,
-        ///	&quot;RandomSkillLow&quot;: 3,
-        ///	&quot;RandomSkillHigh&quot;: 8,
-        ///	&quot;GoodSkillRating&quot;: 8,
-        ///	&quot;BadSkillRating&quot;: 3,
-        ///	&quot;OpinionStrongLike&quot;: 4,
-        ///	&quot;OpinionLike&quot;: 2,
-        ///	&quot;OpinionDislike&quot;: -2,
-        ///	&quot;OpinionStrongDislike&quot;: -4,
-        ///	&quot;DislikeEventOpinionRequired&quot;: -3,
-        ///	&quot;LikeEventOpinionRequired&quot;: 3,
-        ///	&quot;OpinionRatingWeighting&quot;: 1,
-        ///	&quot;ManagerOpinionRatingWeighting&quot;: 1,
-        ///	&quot;MoodRatingWeighting&quot;: 1,
-        ///	&quot;DefaultOpinionMin&quot;: 0,
-        ///	&quot;DefaultOpinionMax&quot;: 0,
-        ///	&quot;DefaultMoodMin&quot;: 0,
-        ///	&quot;DefaultMoodMax&quot;: 0 [rest of string was truncated]&quot;;.
+        ///    &quot;GoodPositionRating&quot;: 7,
+        ///    &quot;BadPositionRating&quot;: 4,
+        ///    &quot;RandomSkillLow&quot;: 3,
+        ///    &quot;RandomSkillHigh&quot;: 8,
+        ///    &quot;GoodSkillRating&quot;: 8,
+        ///    &quot;BadSkillRating&quot;: 3,
+        ///    &quot;OpinionStrongLike&quot;: 4,
+        ///    &quot;OpinionLike&quot;: 1,
+        ///    &quot;OpinionDislike&quot;: -1,
+        ///    &quot;OpinionStrongDislike&quot;: -4,
+        ///    &quot;DislikeEventOpinionRequired&quot;: -3,
+        ///    &quot;LikeEventOpinionRequired&quot;: 3,
+        ///    &quot;OpinionRatingWeighting&quot;: 1,
+        ///    &quot;ManagerOpinionRatingWeighting&quot;: 1,
+        ///    &quot;MoodRatingWeighting&quot;: 1,
+        ///    &quot;DefaultOpinionMin&quot;: 0,
+        ///    &quot;DefaultOpinionMa [rest of string was truncated]&quot;;.
         /// </summary>
         public static string config {
             get {
@@ -132,52 +135,136 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized string similar to {
+        ///	&quot;root&quot;: &quot;refId@0&quot;,
+        ///	&quot;references&quot;: [
+        ///		{
+        ///			&quot;refId&quot;: 0,
+        ///			&quot;classId&quot;: 0,
+        ///			&quot;Description&quot;: null,
+        ///			&quot;EmotionalHalfLifeDecayTime&quot;: 15,
+        ///			&quot;MoodHalfLifeDecayTime&quot;: 60,
+        ///			&quot;HalfLifeDecayConstant&quot;: 0.5,
+        ///			&quot;EmotionInfluenceOnMoodFactor&quot;: 0.3,
+        ///			&quot;MoodInfluenceOnEmotionFactor&quot;: 0.3,
+        ///			&quot;MinimumMoodValueForInfluencingEmotions&quot;: 0.5,
+        ///			&quot;KnowledgeBase&quot;:
+        ///				{
+        ///					&quot;Perspective&quot;: &quot;Nameless&quot;,
+        ///					&quot;Knowledge&quot;:
+        ///						{
+        ///
+        ///						}
+        ///				},
+        ///			&quot;AutobiographicMemory&quot;:
+        ///				{
+        ///					&quot;Tick&quot;: 1,
+        ///					&quot;re [rest of string was truncated]&quot;;.
         /// </summary>
-        public static byte[] template_ea {
+        public static string template_ea {
             get {
-                object obj = ResourceManager.GetObject("template_ea", resourceCulture);
-                return ((byte[])(obj));
+                return ResourceManager.GetString("template_ea", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized string similar to {
+        ///	&quot;root&quot;:
+        ///		{
+        ///			&quot;classId&quot;: 0,
+        ///			&quot;DefaultActionPriority&quot;: 2,
+        ///			&quot;ActionTendencies&quot;: [
+        ///				{
+        ///					&quot;Action&quot;: &quot;RatingFeedback(Good)&quot;,
+        ///					&quot;Conditions&quot;:
+        ///						{
+        ///							&quot;Set&quot;: [&quot;EventId(Action-Start, *, PositionRating([x]), SELF) = [id]&quot;, &quot;[x] &gt; 6&quot;, &quot;EventElapsedTime([id]) &lt; 1&quot;]
+        ///						},
+        ///					&quot;Priority&quot;: 0
+        ///				}, 
+        ///				{
+        ///					&quot;Action&quot;: &quot;RatingFeedback(Bad)&quot;,
+        ///					&quot;Conditions&quot;:
+        ///						{
+        ///							&quot;Set&quot;: [&quot;EventId(Action-Start, *, PositionRating([x]), SELF) = [id]&quot;, &quot;[x] &lt; 5&quot;, &quot;[x] != 0&quot;, &quot;EventEla [rest of string was truncated]&quot;;.
         /// </summary>
-        public static byte[] template_edm {
+        public static string template_edm {
             get {
-                object obj = ResourceManager.GetObject("template_edm", resourceCulture);
-                return ((byte[])(obj));
+                return ResourceManager.GetString("template_edm", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized string similar to {
+        ///	&quot;root&quot;:
+        ///		{
+        ///			&quot;classId&quot;: 0,
+        ///			&quot;ScenarioName&quot;: &quot;Template&quot;,
+        ///			&quot;Characters&quot;: [],
+        ///			&quot;PlayerDialogues&quot;: [
+        ///				{
+        ///					&quot;Id&quot;: &quot;0373149f-a1d3-43aa-9909-2d7bc4c37087&quot;,
+        ///					&quot;CurrentState&quot;: &quot;RoleReveal&quot;,
+        ///					&quot;NextState&quot;: &quot;-&quot;,
+        ///					&quot;Meaning&quot;: [&quot;RoleReveal&quot;],
+        ///					&quot;Style&quot;: [&quot;RoleReveal&quot;],
+        ///					&quot;Utterance&quot;: &quot;What role do you think you can do well in?&quot;
+        ///				}, 
+        ///				{
+        ///					&quot;Id&quot;: &quot;b6aec58f-d1b1-42a1-bfa9-b4ff8176f41b&quot;,
+        ///					&quot;CurrentState&quot;: &quot;StatReveal&quot;,
+        ///					&quot;NextState&quot;: &quot;-&quot;,
+        ///					&quot;Meaning&quot;: [&quot;Stat [rest of string was truncated]&quot;;.
         /// </summary>
-        public static byte[] template_iat {
+        public static string template_iat {
             get {
-                object obj = ResourceManager.GetObject("template_iat", resourceCulture);
-                return ((byte[])(obj));
+                return ResourceManager.GetString("template_iat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized string similar to {
+        ///	&quot;root&quot;:
+        ///		{
+        ///			&quot;classId&quot;: 0,
+        ///			&quot;_emotionalAppraisalAssetSource&quot;: &quot;Template.ea&quot;,
+        ///			&quot;_emotionalDecisionMakingAssetSource&quot;: &quot;Template.edm&quot;,
+        ///			&quot;_socialImportanceAssetSource&quot;: &quot;Template.si&quot;,
+        ///			&quot;BodyName&quot;: &quot;Template&quot;,
+        ///			&quot;CharacterName&quot;: &quot;Template&quot;
+        ///		},
+        ///	&quot;types&quot;: [
+        ///		{
+        ///			&quot;TypeId&quot;: 0,
+        ///			&quot;ClassName&quot;: &quot;RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;
+        ///		}]
+        ///}.
         /// </summary>
-        public static byte[] template_rpc {
+        public static string template_rpc {
             get {
-                object obj = ResourceManager.GetObject("template_rpc", resourceCulture);
-                return ((byte[])(obj));
+                return ResourceManager.GetString("template_rpc", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized string similar to {
+        ///	&quot;root&quot;:
+        ///		{
+        ///			&quot;classId&quot;: 0,
+        ///			&quot;AttributionRules&quot;: [],
+        ///			&quot;Claims&quot;: [],
+        ///			&quot;Conferrals&quot;: []
+        ///		},
+        ///	&quot;types&quot;: [
+        ///		{
+        ///			&quot;TypeId&quot;: 0,
+        ///			&quot;ClassName&quot;: &quot;SocialImportance.SocialImportanceAsset, SocialImportanceAsset, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;
+        ///		}]
+        ///}.
         /// </summary>
-        public static byte[] template_si {
+        public static string template_si {
             get {
-                object obj = ResourceManager.GetObject("template_si", resourceCulture);
-                return ((byte[])(obj));
+                return ResourceManager.GetString("template_si", resourceCulture);
             }
         }
     }
