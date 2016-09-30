@@ -122,7 +122,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			if (crewMember != null && boatPosition != null)
 			{
-				crewMember.UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), boatPosition.Position.Name, "SELF");
+				crewMember.UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), boatPosition.Position.Name);
 			}
 			UpdateBoatScore();
 			UpdateIdealScore();
@@ -136,7 +136,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			boatPosition.CrewMember.OpinionChange -= OnOpinionChange;
 			UnassignedCrew.Add(boatPosition.CrewMember);
 			UpdateBoatScore();
-			boatPosition.CrewMember.UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "null", "SELF");
+			boatPosition.CrewMember.UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "null");
 			boatPosition.CrewMember = null;
 		}
 

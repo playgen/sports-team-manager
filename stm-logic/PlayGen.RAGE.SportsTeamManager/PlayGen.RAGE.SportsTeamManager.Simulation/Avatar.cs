@@ -230,26 +230,26 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void LoadAvatar(CrewMember crewMember)
 		{
-			BestSkill = (CrewMemberSkill)Enum.Parse((typeof(CrewMemberSkill)), crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarBestSkill.GetDescription()));
-			BodyType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarBodyType.GetDescription());
-			EyebrowType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarEyebrowType.GetDescription());
-			EyeType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarEyeType.GetDescription());
-			EyeColor = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarEyeColor.GetDescription());
-			int hairColorRed = int.Parse(crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarHairColorRed.GetDescription()));
-			int hairColorGreen = int.Parse(crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarHairColorGreen.GetDescription()));
-			int hairColorBlue = int.Parse(crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarHairColorBlue.GetDescription()));
+			BestSkill = (CrewMemberSkill)Enum.Parse((typeof(CrewMemberSkill)), crewMember.LoadBelief(NPCBeliefs.AvatarBestSkill.GetDescription()));
+			BodyType = crewMember.LoadBelief(NPCBeliefs.AvatarBodyType.GetDescription());
+			EyebrowType = crewMember.LoadBelief(NPCBeliefs.AvatarEyebrowType.GetDescription());
+			EyeType = crewMember.LoadBelief(NPCBeliefs.AvatarEyeType.GetDescription());
+			EyeColor = crewMember.LoadBelief(NPCBeliefs.AvatarEyeColor.GetDescription());
+			int hairColorRed = Convert.ToInt32(crewMember.LoadBelief(NPCBeliefs.AvatarHairColorRed.GetDescription()));
+			int hairColorGreen = Convert.ToInt32(crewMember.LoadBelief(NPCBeliefs.AvatarHairColorGreen.GetDescription()));
+			int hairColorBlue = Convert.ToInt32(crewMember.LoadBelief(NPCBeliefs.AvatarHairColorBlue.GetDescription()));
 			HairColor = Color.FromArgb(255, hairColorRed, hairColorGreen, hairColorBlue);
-			HairType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarHairType.GetDescription());
-			Height = float.Parse(crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarHeight.GetDescription()));
-			MouthType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarMouthType.GetDescription());
-			MouthColor = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarMouthColor.GetDescription());
-			TeethType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarTeethType.GetDescription());
-			NoseType = crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarNoseType.GetDescription());
-			int skinColorRed = int.Parse(crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarSkinColorRed.GetDescription()));
-			int skinColorGreen = int.Parse(crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarSkinColorGreen.GetDescription()));
-			int skinColorBlue = int.Parse(crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarSkinColorBlue.GetDescription()));
+			HairType = crewMember.LoadBelief(NPCBeliefs.AvatarHairType.GetDescription());
+			Height = float.Parse(crewMember.LoadBelief(NPCBeliefs.AvatarHeight.GetDescription()));
+			MouthType = crewMember.LoadBelief(NPCBeliefs.AvatarMouthType.GetDescription());
+			MouthColor = crewMember.LoadBelief(NPCBeliefs.AvatarMouthColor.GetDescription());
+			TeethType = crewMember.LoadBelief(NPCBeliefs.AvatarTeethType.GetDescription());
+			NoseType = crewMember.LoadBelief(NPCBeliefs.AvatarNoseType.GetDescription());
+			int skinColorRed = Convert.ToInt32(crewMember.LoadBelief(NPCBeliefs.AvatarSkinColorRed.GetDescription()));
+			int skinColorGreen = Convert.ToInt32(crewMember.LoadBelief(NPCBeliefs.AvatarSkinColorGreen.GetDescription()));
+			int skinColorBlue = Convert.ToInt32(crewMember.LoadBelief(NPCBeliefs.AvatarSkinColorBlue.GetDescription()));
 			SkinColor = Color.FromArgb(255, skinColorRed, skinColorGreen, skinColorBlue);
-			Weight = float.Parse(crewMember.EmotionalAppraisal.GetBeliefValue(NPCBeliefs.AvatarWeight.GetDescription()));
+			Weight = float.Parse(crewMember.LoadBelief(NPCBeliefs.AvatarWeight.GetDescription()));
 		}
 
 		/// <summary>
@@ -257,24 +257,24 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void UpdateAvatarBeliefs(CrewMember crewMember)
 		{
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBestSkill.GetDescription(), BestSkill.ToString(), "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBodyType.GetDescription(), BodyType, "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyebrowType.GetDescription(), EyebrowType, "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyeType.GetDescription(), EyeType, "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyeColor.GetDescription(), EyeColor, "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHairColorRed.GetDescription(), HairColor.R.ToString(), "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHairColorGreen.GetDescription(), HairColor.G.ToString(), "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHairColorBlue.GetDescription(), HairColor.B.ToString(), "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHairType.GetDescription(), HairType, "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHeight.GetDescription(), Height.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-GB")), "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarMouthType.GetDescription(), MouthType, "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarMouthColor.GetDescription(), MouthColor, "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarTeethType.GetDescription(), TeethType, "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarNoseType.GetDescription(), NoseType, "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorRed.GetDescription(), SkinColor.R.ToString(), "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorGreen.GetDescription(), SkinColor.G.ToString(), "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorBlue.GetDescription(), SkinColor.B.ToString(), "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarWeight.GetDescription(), Weight.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-GB")), "SELF");
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBestSkill.GetDescription(), BestSkill.ToString());
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBodyType.GetDescription(), BodyType);
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyebrowType.GetDescription(), EyebrowType);
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyeType.GetDescription(), EyeType);
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyeColor.GetDescription(), EyeColor);
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHairColorRed.GetDescription(), HairColor.R.ToString());
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHairColorGreen.GetDescription(), HairColor.G.ToString());
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHairColorBlue.GetDescription(), HairColor.B.ToString());
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHairType.GetDescription(), HairType);
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHeight.GetDescription(), Height.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-GB")));
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarMouthType.GetDescription(), MouthType);
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarMouthColor.GetDescription(), MouthColor);
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarTeethType.GetDescription(), TeethType ?? "null");
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarNoseType.GetDescription(), NoseType);
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorRed.GetDescription(), SkinColor.R.ToString());
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorGreen.GetDescription(), SkinColor.G.ToString());
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorBlue.GetDescription(), SkinColor.B.ToString());
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarWeight.GetDescription(), Weight.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-GB")));
 			crewMember.SaveStatus();
 		}
 	}

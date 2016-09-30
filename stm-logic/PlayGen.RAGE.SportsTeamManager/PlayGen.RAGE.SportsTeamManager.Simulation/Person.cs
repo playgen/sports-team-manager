@@ -1,7 +1,9 @@
-﻿using System.IO;
+using System;
+using System.IO;
 using AssetManagerPackage;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
+
 using EmotionalDecisionMaking;
 using IntegratedAuthoringTool;
 using RolePlayCharacter;
@@ -17,9 +19,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string Name { get; set; }
 		public int Age { get; set; }
 		public string Gender { get; set; }
-
 		public EmotionalAppraisalAsset EmotionalAppraisal { get; private set; }
-		protected RolePlayCharacterAsset RolePlayCharacter { get; private set; }
+		public RolePlayCharacterAsset RolePlayCharacter { get; private set; }
 
 		/// <summary>
 		/// Constructor for creating a Person
@@ -35,14 +36,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Person(RolePlayCharacterAsset rpc)
 		{
 			AssetManager.Instance.Bridge = new BaseBridge();
-			var ea = EmotionalAppraisalAsset.LoadFromFile(rpc.EmotionalAppraisalAssetSource);
-			int age;
-			int.TryParse(ea.GetBeliefValue(NPCBeliefs.Age.GetDescription()), out age);
-			Name = rpc.CharacterName;
-			Age = age;
-			Gender = ea.GetBeliefValue(NPCBeliefs.Gender.GetDescription());
-			EmotionalAppraisal = ea;
 			RolePlayCharacter = rpc;
+			EmotionalAppraisal = EmotionalAppraisalAsset.LoadFromFile(rpc.EmotionalAppraisalAssetSource);
+			Name = rpc.CharacterName;
+			Age = Convert.ToInt32(LoadBelief(NPCBeliefs.Age.GetDescription()));
+			Gender = LoadBelief(NPCBeliefs.Gender.GetDescription());
 		}
 
 		/// <summary>
@@ -57,7 +55,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var edm = EmotionalDecisionMakingAsset.LoadFromFile(templateRpc.EmotionalDecisionMakingSource);
 			var si = SocialImportanceAsset.LoadFromFile(templateRpc.SocialImportanceAssetSource);
 			//set values
-			si.BindEmotionalAppraisalAsset(ea);
 			templateRpc.CharacterName = Name;
 			var noSpaceName = templateRpc.CharacterName.Replace(" ", "");
 			if (string.IsNullOrEmpty(fileName))
@@ -70,15 +67,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			ea.SaveToFile(Path.Combine(storageLocation, fileName + ".ea"));
 			edm.SaveToFile(Path.Combine(storageLocation, fileName + ".edm"));
 			si.SaveToFile(Path.Combine(storageLocation, fileName + ".si"));
-            //add character to iat asset
-            templateRpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
-            iat.AddCharacter(templateRpc);
-            //assign asset files to RPC
-            templateRpc.EmotionalAppraisalAssetSource = fileName + ".ea";
-            templateRpc.EmotionalDecisionMakingSource = fileName + ".edm";
-            templateRpc.SocialImportanceAssetSource = fileName + ".si";
-            templateRpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
-			//store EA and RPC locally
+			//add character to iat asset
+			templateRpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
+			iat.AddCharacter(templateRpc);
+			//assign asset files to RPC
+			templateRpc.EmotionalAppraisalAssetSource = fileName + ".ea";
+			templateRpc.EmotionalDecisionMakingSource = fileName + ".edm";
+			templateRpc.SocialImportanceAssetSource = fileName + ".si";
+			templateRpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
+			//store RPC locally
 			EmotionalAppraisal = EmotionalAppraisalAsset.LoadFromFile(Path.Combine(storageLocation, fileName + ".ea"));
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(Path.Combine(storageLocation, fileName + ".rpc"));
 		}
@@ -88,25 +85,45 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public virtual void UpdateBeliefs(string position = null)
 		{
-			UpdateSingleBelief(NPCBeliefs.Age.GetDescription(), Age.ToString(), "SELF");
-			UpdateSingleBelief(NPCBeliefs.Gender.GetDescription(), Gender, "SELF");
-			UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), position, "SELF");
+			UpdateSingleBelief(NPCBeliefs.Age.GetDescription(), Age.ToString());
+			UpdateSingleBelief(NPCBeliefs.Gender.GetDescription(), Gender);
+			UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), position);
 		}
 
 		/// <summary>
 		/// Update the stored information to match what is passed here or add if it doesn't already exist
 		/// </summary>
-		public void UpdateSingleBelief(string name, string value, string perspective)
+		public void UpdateSingleBelief(string name, string value)
 		{
-			if (EmotionalAppraisal != null && name != null && value != null && perspective != null)
+			/*if (RolePlayCharacter != null && name != null && value != null)
 			{
-				EmotionalAppraisal.AddOrUpdateBelief(new BeliefDTO
+				var eventBase = "Event(Property-Change,{0},{1},{2})";
+				var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, RolePlayCharacter.Perspective, name, value) });
+				if (eventRpc != null)
 				{
-					Name = name,
-					Value = value,
-					Perspective = perspective
-				});
+					RolePlayCharacter.ActionFinished(eventRpc);
+				}
+			}*/
+			EmotionalAppraisal.AddOrUpdateBelief(new BeliefDTO
+			{
+				Name = name,
+				Value = value,
+				Perspective = "SELF"
+			});
+		}
+
+		public string LoadBelief(string belief)
+		{
+			/*var ea = EmotionalAppraisalAsset.LoadFromFile(RolePlayCharacter.EmotionalAppraisalAssetSource);
+			if (ea.BeliefExists(belief))
+			{
+				return ea.GetBeliefValue(belief);
+			}*/
+			if (EmotionalAppraisal.BeliefExists(belief))
+			{
+				return EmotionalAppraisal.GetBeliefValue(belief);
 			}
+			return null;
 		}
 
 		/// <summary>
@@ -138,7 +155,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				templateRpc.SocialImportanceAssetSource = Path.Combine(filePath, noSpaceName + ".si");
 				templateRpc.SaveToFile(Path.Combine(filePath, noSpaceName + ".rpc"));
 				RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(Path.Combine(filePath, noSpaceName + ".rpc"));
+				RolePlayCharacter.SaveToFile(RolePlayCharacter.AssetFilePath);
 			}
+			//RolePlayCharacter.SaveToFile(RolePlayCharacter.AssetFilePath);
 		}
 
 		/// <summary>
@@ -148,7 +167,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			for (int i = 0; i < amount; i++)
 			{
-				EmotionalAppraisal.Update();
+				RolePlayCharacter.Update();
 			}
 			SaveStatus();
 		}
