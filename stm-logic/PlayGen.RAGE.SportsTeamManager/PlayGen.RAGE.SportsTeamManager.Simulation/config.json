@@ -30,6 +30,7 @@
     "OpinionNegativeRevealCost": 2,
     "SendRecruitmentQuestionCost": 1,
     "RaceSessionLength": 5,
+    "TicksPerSession":  5,
     "EventChance": 2,
     "PracticeEventChanceReduction": 3,
     "RecruitCount": 4,

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AssetPackage;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 using RolePlayCharacter;
@@ -437,125 +436,119 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string SendMeetingEvent(IntegratedAuthoringToolAsset iat, string style, Boat boat)
 		{
-			var spacelessName = EmotionalAppraisal.Perspective;
-			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			var eventString = string.Format("SoloInterview({0})", style);
-			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new [] { string.Format(eventBase, eventString, spacelessName) });
-			EmotionalAppraisal.AppraiseEvents(new [] { string.Format(eventBase, eventString, spacelessName) });
-			string reply = null;
-			if (eventRpc != null)
+			string reply = "";
+			Random rand = new Random();
+			List<DialogueStateActionDTO> dialogueOptions = new List<DialogueStateActionDTO>();
+			switch (style)
 			{
-				var eventKey = eventRpc.ActionName.ToString();
-				Random rand = new Random();
-				List<DialogueStateActionDTO> dialogueOptions = new List<DialogueStateActionDTO>();
-				switch (eventKey)
-				{
-					case "StatReveal":
-						int randomStat = rand.Next(0, Skills.Count);
-						string statName = ((CrewMemberSkill)randomStat).ToString();
-						int statValue = Skills[(CrewMemberSkill)randomStat];
-						RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
-						if (statValue <= (int)_config.ConfigValues[ConfigKeys.BadSkillRating.ToString()])
+				case "StatReveal":
+					int randomStat = rand.Next(0, Skills.Count);
+					string statName = ((CrewMemberSkill)randomStat).ToString();
+					int statValue = Skills[(CrewMemberSkill)randomStat];
+					RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
+					if (statValue <= (int)_config.ConfigValues[ConfigKeys.BadSkillRating.ToString()])
+					{
+						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Bad").ToName()).ToList();
+					}
+					else if (statValue >= (int)_config.ConfigValues[ConfigKeys.GoodSkillRating.ToString()])
+					{
+						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Good").ToName()).ToList();
+					}
+					else
+					{
+						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Middle").ToName()).ToList();
+					}
+					if (dialogueOptions.Any())
+					{
+						reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, statName.ToLower());
+					}
+					UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString(), "SELF");
+					break;
+				case "RoleReveal":
+					Position pos = boat.BoatPositions[rand.Next(0, boat.BoatPositions.Count)].Position;
+					if (pos.GetPositionRating(this) <= 5)
+					{
+						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Bad").ToName()).ToList();
+					}
+					else if (pos.GetPositionRating(this) >= 6)
+					{
+						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Good").ToName()).ToList();
+					}
+					if (dialogueOptions.Any())
+					{
+						reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pos.Name);
+					}
+					break;
+				case "OpinionRevealPositive":
+					var crewOpinionsPositive = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Person.Name)).ToList();
+					crewOpinionsPositive.AddRange(CrewOpinions.Where(c => c.Person == boat.Manager));
+					var opinionsPositive = crewOpinionsPositive.Where(co => co.Opinion >= (int)_config.ConfigValues[ConfigKeys.OpinionLike.ToString()]);
+					var pickedOpinionPositive = opinionsPositive.OrderBy(o => Guid.NewGuid()).FirstOrDefault();
+					if (pickedOpinionPositive != null)
+					{
+						if (pickedOpinionPositive.Opinion >= (int)_config.ConfigValues[ConfigKeys.OpinionStrongLike.ToString()])
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "Bad").ToName()).ToList();
-						}
-						else if (statValue >= (int)_config.ConfigValues[ConfigKeys.GoodSkillRating.ToString()])
-						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "Good").ToName()).ToList();
-						} else
-						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "Middle").ToName()).ToList();
-						}
-						if (dialogueOptions.Any())
-						{
-							reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, statName.ToLower());
-						}
-						UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString(), "SELF");
-						break;
-					case "RoleReveal":
-						Position pos = boat.BoatPositions[rand.Next(0, boat.BoatPositions.Count)].Position;
-						if (pos.GetPositionRating(this) <= 5)
-						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "Bad").ToName()).ToList();
-						} else if (pos.GetPositionRating(this) >= 6)
-						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "Good").ToName()).ToList();
-						}
-						if (dialogueOptions.Any())
-						{
-							reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pos.Name);
-						}
-						break;
-					case "OpinionRevealPositive":
-						var crewOpinionsPositive = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Person.Name)).ToList();
-						crewOpinionsPositive.AddRange(CrewOpinions.Where(c => c.Person == boat.Manager));
-						var opinionsPositive = crewOpinionsPositive.Where(co => co.Opinion >= (int)_config.ConfigValues[ConfigKeys.OpinionLike.ToString()]);
-						var pickedOpinionPositive = opinionsPositive.OrderBy(o => Guid.NewGuid()).FirstOrDefault();
-						if (pickedOpinionPositive != null) {
-							if (pickedOpinionPositive.Opinion >= (int)_config.ConfigValues[ConfigKeys.OpinionStrongLike.ToString()])
-							{
-								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "High").ToName()).ToList();
-							}
-							else
-							{
-								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey.ToName()).ToList();
-							}
-							if (dialogueOptions.Any())
-							{
-								reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionPositive.Person.Name);
-								if (pickedOpinionPositive.Person == boat.Manager)
-								{
-									reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, "you");
-								}
-							}
-							AddOrUpdateRevealedOpinion(pickedOpinionPositive.Person, pickedOpinionPositive.Opinion);
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "High").ToName()).ToList();
 						}
 						else
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "None").ToName()).ToList();
-							if (dialogueOptions.Any())
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
+						}
+						if (dialogueOptions.Any())
+						{
+							reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionPositive.Person.Name);
+							if (pickedOpinionPositive.Person == boat.Manager)
 							{
-								reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+								reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, "you");
 							}
 						}
-						break;
-					case "OpinionRevealNegative":
-						var crewOpinionsNegative = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Person.Name)).ToList();
-						crewOpinionsNegative.AddRange(CrewOpinions.Where(c => c.Person == boat.Manager));
-						var opinionsNegative = crewOpinionsNegative.Where(co => co.Opinion <= (int)_config.ConfigValues[ConfigKeys.OpinionDislike.ToString()]);
-						var pickedOpinionNegative = opinionsNegative.OrderBy(o => Guid.NewGuid()).FirstOrDefault();
-						if (pickedOpinionNegative != null)
+						AddOrUpdateRevealedOpinion(pickedOpinionPositive.Person, pickedOpinionPositive.Opinion);
+					}
+					else
+					{
+						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "None").ToName()).ToList();
+						if (dialogueOptions.Any())
 						{
-							if (pickedOpinionNegative.Opinion <= (int)_config.ConfigValues[ConfigKeys.OpinionStrongDislike.ToString()])
-							{
-								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "High").ToName()).ToList();
-							}
-							else
-							{
-								dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventKey.ToName()).ToList();
-							}
-							if (dialogueOptions.Any())
-							{
-								reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionNegative.Person.Name);
-								if (pickedOpinionNegative.Person == boat.Manager)
-								{
-									reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, "you");
-								}
-							}
-							AddOrUpdateRevealedOpinion(pickedOpinionNegative.Person, pickedOpinionNegative.Opinion);
+							reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+						}
+					}
+					break;
+				case "OpinionRevealNegative":
+					var crewOpinionsNegative = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Person.Name)).ToList();
+					crewOpinionsNegative.AddRange(CrewOpinions.Where(c => c.Person == boat.Manager));
+					var opinionsNegative = crewOpinionsNegative.Where(co => co.Opinion <= (int)_config.ConfigValues[ConfigKeys.OpinionDislike.ToString()]);
+					var pickedOpinionNegative = opinionsNegative.OrderBy(o => Guid.NewGuid()).FirstOrDefault();
+					if (pickedOpinionNegative != null)
+					{
+						if (pickedOpinionNegative.Opinion <= (int)_config.ConfigValues[ConfigKeys.OpinionStrongDislike.ToString()])
+						{
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "High").ToName()).ToList();
 						}
 						else
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (eventKey + "None").ToName()).ToList();
-							if (dialogueOptions.Any())
+							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
+						}
+						if (dialogueOptions.Any())
+						{
+							reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionNegative.Person.Name);
+							if (pickedOpinionNegative.Person == boat.Manager)
 							{
-								reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+								reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, "you");
 							}
 						}
-						break;
-				}
-				RolePlayCharacter.ActionFinished(eventRpc);
+						AddOrUpdateRevealedOpinion(pickedOpinionNegative.Person, pickedOpinionNegative.Opinion);
+					}
+					else
+					{
+						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "None").ToName()).ToList();
+						if (dialogueOptions.Any())
+						{
+							reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+						}
+					}
+					break;
 			}
+			SaveStatus();
 			return reply;
 		}
 

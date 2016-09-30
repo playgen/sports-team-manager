@@ -26,7 +26,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public DialogueStateActionDTO[] GetEvents(IntegratedAuthoringToolAsset iat, string eventKey)
 		{
 			IEnumerable<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey.ToName());
-			return dialogueOptions.ToArray();
+			return dialogueOptions.OrderBy(c => Guid.NewGuid()).ToArray();
 		}
 
 		/// <summary>
@@ -34,7 +34,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public DialogueStateActionDTO SelectPostRaceEvent(IntegratedAuthoringToolAsset iat, int chance, int sessionEventCount, Random random, bool raceSession = false)
 		{
-			List<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PostRaceEventStart".ToName()).ToList();
+			List<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PostRaceEventStart".ToName()).OrderBy(c => Guid.NewGuid()).ToList();
 			if (raceSession)
 			{
 				dialogueOptions = dialogueOptions.Where(dia => dia.Style.Contains("Race")).ToList();
@@ -53,31 +53,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			return null;
-		}
-
-		/// <summary>
-		/// Send dialogue from the player to a NPC in a meeting and get the reply from the NPC
-		/// </summary>
-		public string SendMeetingEvent(IntegratedAuthoringToolAsset iat, string eventName, CrewMember crewMember, Boat boat)
-		{
-			return crewMember.SendMeetingEvent(iat, eventName, boat);
-		}
-
-		/// <summary>
-		/// Send dialogue from the player to all recruit NPCs and get their replies 
-		/// </summary>
-		public Dictionary<CrewMember, string> SendRecruitEvent(IntegratedAuthoringToolAsset iat, CrewMemberSkill skill, List<CrewMember> crewMembers)
-		{
-			Dictionary<CrewMember, string> replies = new Dictionary<CrewMember, string>();
-			foreach (CrewMember member in crewMembers)
-			{
-				var reply = member.SendRecruitEvent(iat, skill);
-				if (reply != null)
-				{
-					replies.Add(member, reply);
-				}
-			}
-			return replies;
 		}
 
 		/// <summary>

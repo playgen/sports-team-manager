@@ -266,7 +266,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHairColorGreen.GetDescription(), HairColor.G.ToString(), "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHairColorBlue.GetDescription(), HairColor.B.ToString(), "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHairType.GetDescription(), HairType, "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHeight.GetDescription(), Height.ToString(), "SELF");
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHeight.GetDescription(), Height.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-GB")), "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarMouthType.GetDescription(), MouthType, "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarMouthColor.GetDescription(), MouthColor, "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarTeethType.GetDescription(), TeethType, "SELF");
@@ -274,7 +274,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorRed.GetDescription(), SkinColor.R.ToString(), "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorGreen.GetDescription(), SkinColor.G.ToString(), "SELF");
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorBlue.GetDescription(), SkinColor.B.ToString(), "SELF");
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarWeight.GetDescription(), Weight.ToString(), "SELF");
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarWeight.GetDescription(), Weight.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-GB")), "SELF");
 			crewMember.SaveStatus();
 		}
 	}

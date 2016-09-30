@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using AssetManagerPackage;
-using AssetPackage;
 using IntegratedAuthoringTool;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
@@ -527,7 +526,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void ConfirmChanges(int actionAllowance)
 		{
-			TickCrewMembers(actionAllowance);
 			List<CrewMember> crew = GetAllCrewMembers();
 			crew = crew.OrderBy(p => p.Name).ToList();
 			crew.ForEach(p => p.DecisionFeedback(this));

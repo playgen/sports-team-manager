@@ -6,10 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-
 using AssetManagerPackage;
-
-using AssetPackage;
 using IntegratedAuthoringTool.DTOs;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
@@ -58,9 +55,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat.TeamColorsPrimary = teamColorsPrimary;
 			Boat.TeamColorsSecondary = teamColorsSecondary;
 			iat.ScenarioName = Boat.Name;
-            AssetManager.Instance.Bridge = new BaseBridge();
-            iat.SaveToFile(Path.Combine(combinedStorageLocation, boatName + ".iat"));
-            Random random = new Random();
+			AssetManager.Instance.Bridge = new BaseBridge();
+			iat.SaveToFile(Path.Combine(combinedStorageLocation, boatName + ".iat"));
+			Random random = new Random();
 			Person manager = new Person
 			{
 				Name = managerName,
@@ -455,6 +452,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public Dictionary<List<CrewMember>, DialogueStateActionDTO> SelectPostRaceEvent()
 		{
+			Boat.TickCrewMembers((int)_config.ConfigValues[ConfigKeys.TicksPerSession.ToString()]);
 			Random random = new Random();
 			Dictionary<List<CrewMember>, DialogueStateActionDTO> selectedEvents = new Dictionary<List<CrewMember>, DialogueStateActionDTO>();
 			bool findEvents = true;
@@ -560,7 +558,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		void DeductCost(int cost)
 		{
 			ActionAllowance -= cost;
-			Boat.TickCrewMembers(cost);
 			Boat.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString(), "SELF");
 			Boat.Manager.SaveStatus();
 		}
@@ -701,7 +698,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			int cost = GetQuestionCost(eventName);
 			if (cost <= ActionAllowance)
 			{
-				var reply = EventController.SendMeetingEvent(_iat, eventName, member, Boat);
+				var reply = member.SendMeetingEvent(_iat, eventName, Boat);
 				DeductCost(cost);
 				return reply;
 			}
@@ -744,7 +741,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			int cost = (int)_config.ConfigValues[ConfigKeys.SendRecruitmentQuestionCost.ToString()];
 			if (cost <= ActionAllowance)
 			{
-				var replies = EventController.SendRecruitEvent(_iat, skill, members);
+				Dictionary<CrewMember, string> replies = new Dictionary<CrewMember, string>();
+				foreach (CrewMember member in members)
+				{
+					var reply = member.SendRecruitEvent(_iat, skill);
+					if (reply != null)
+					{
+						replies.Add(member, reply);
+					} else
+					{
+						replies.Add(member, "");
+					}
+				}
 				DeductCost(cost);
 				return replies;
 			}

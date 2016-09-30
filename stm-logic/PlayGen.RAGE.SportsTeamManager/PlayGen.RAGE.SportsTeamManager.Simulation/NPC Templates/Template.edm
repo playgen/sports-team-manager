@@ -8,7 +8,7 @@
 					"Action": "RatingFeedback(Good)",
 					"Conditions":
 						{
-							"Set": ["EventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "[x] > 6", "EventElapsedTime([id]) < 1"]
+							"Set": ["LastEventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "[x] > 6"]
 						},
 					"Priority": 0
 				}, 
@@ -16,7 +16,7 @@
 					"Action": "RatingFeedback(Bad)",
 					"Conditions":
 						{
-							"Set": ["EventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "[x] < 5", "[x] != 0", "EventElapsedTime([id]) < 1"]
+							"Set": ["LastEventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "[x] < 5", "[x] != 0"]
 						},
 					"Priority": 0
 				}, 
@@ -24,7 +24,7 @@
 					"Action": "RatingFeedback(VeryBad)",
 					"Conditions":
 						{
-							"Set": ["EventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "0 = [x]", "Race(Rest) < 1", "EventElapsedTime([id]) < 1"]
+							"Set": ["LastEventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "0 = [x]", "Race(Rest) < 1"]
 						},
 					"Priority": 0
 				}, 
@@ -32,39 +32,7 @@
 					"Action": "OpinionFeedback(DislikedInBetter)",
 					"Conditions":
 						{
-							"Set": ["EventId(Action-Start, *, OpinionCheck([x], [y], [z]), SELF) = [id]", "[z] < [y]", "Opinion([x]) < -2", "EventElapsedTime([id]) < 1"]
-						},
-					"Priority": 0
-				}, 
-				{
-					"Action": "RoleReveal",
-					"Conditions":
-						{
-							"Set": ["EventId(Action-Start, *, SoloInterview(RoleReveal), SELF) = [id]", "EventElapsedTime([id]) < 1"]
-						},
-					"Priority": 0
-				}, 
-				{
-					"Action": "StatReveal",
-					"Conditions":
-						{
-							"Set": ["EventId(Action-Start, *, SoloInterview(StatReveal), SELF) = [id]", "EventElapsedTime([id]) < 1"]
-						},
-					"Priority": 0
-				}, 
-				{
-					"Action": "OpinionRevealPositive",
-					"Conditions":
-						{
-							"Set": ["EventId(Action-Start, *, SoloInterview(OpinionRevealPositive), SELF) = [id]", "EventElapsedTime([id]) < 1"]
-						},
-					"Priority": 0
-				}, 
-				{
-					"Action": "OpinionRevealNegative",
-					"Conditions":
-						{
-							"Set": ["EventId(Action-Start, *, SoloInterview(OpinionRevealNegative), SELF) = [id]", "EventElapsedTime([id]) < 1"]
+							"Set": ["LastEventId(Action-Start, *, OpinionCheck([x], [y], [z]), SELF) = [id]", "[z] < [y]", "Opinion([x]) < -2"]
 						},
 					"Priority": 0
 				}]
