@@ -11,7 +11,7 @@ using IntegratedAuthoringTool.DTOs;
 public class PostRaceEvent : MonoBehaviour
 {
 	private GameManager _gameManager;
-	private Dictionary<List<CrewMember>, DialogueStateActionDTO> _currentEvents;
+	private List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> _currentEvents;
 	private KeyValuePair<List<CrewMember>, DialogueStateActionDTO> _currentEvent;
 	public KeyValuePair<List<CrewMember>, DialogueStateActionDTO> CurrentEvent
 	{
@@ -58,7 +58,7 @@ public class PostRaceEvent : MonoBehaviour
 	private void SetEvent()
 	{
 		_currentEvent = _currentEvents.First();
-		_currentEvents.Remove(_currentEvent.Key);
+		_currentEvents.Remove(_currentEvent);
 		_gameManager.SetPlayerState(_currentEvent.Value);
 	}
 

@@ -312,29 +312,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void DecisionFeedback(Boat boat)
 		{
-			var spacelessName = RolePlayCharacter.Perspective;
+			/*var spacelessName = RolePlayCharacter.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			if ((LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "true")
-			{
-				if (GetBoatPosition(boat) == null)
-				{
-					AddOrUpdateOpinion(boat.Manager, -3);
-					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "false");
-					var eventString = "PostRace(NotPickedAfterSorry)";
-					EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
-					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
-					if (eventRpc != null)
-					{
-						RolePlayCharacter.ActionFinished(eventRpc);
-					}
-				}
-				else
-				{
-					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "not");
-				}
-				TickUpdate();
-			}
-			/*var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
+			var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
 			int positionScore = currentPosition != null ? currentPosition.Position.GetPositionRating(this) : 0;
 			var eventString = string.Format("PositionRating({0})", positionScore);
 			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
@@ -558,6 +538,45 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "StrongDisagree".ToName()).ToList();
 			}
 			return dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+		}
+
+		/// <summary>
+		/// Check to see if any events are about to be triggered
+		/// </summary>
+		public DialogueStateActionDTO[] CurrentEventCheck(Boat boat, IntegratedAuthoringToolAsset iat, bool afterRaceSession)
+		{
+			List<DialogueStateActionDTO> replies = new List<DialogueStateActionDTO>();
+			List<DialogueStateActionDTO> dialogueOptions;
+			var spacelessName = RolePlayCharacter.Perspective;
+			var eventBase = "Event(Action-Start,Player,{0},{1})";
+			if (afterRaceSession && (LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "true")
+			{
+				if (GetBoatPosition(boat) == null)
+				{
+					AddOrUpdateOpinion(boat.Manager, -3);
+					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "false");
+					var eventString = "PostRace(NotPickedAfterSorry)";
+					EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
+					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
+					if (eventRpc != null)
+					{
+						RolePlayCharacter.ActionFinished(eventRpc);
+					}
+					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "NotPickedAfterSorry".ToName()).ToList();
+				}
+				else
+				{
+					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "not");
+					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PickedAfterSorry".ToName()).ToList();
+				}
+				if (dialogueOptions.Any())
+				{
+					DialogueStateActionDTO selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
+					replies.Add(selectedNext);
+				}
+				TickUpdate();
+			}
+			return replies.OrderBy(o => Guid.NewGuid()).ToArray();
 		}
 
 		/// <summary>

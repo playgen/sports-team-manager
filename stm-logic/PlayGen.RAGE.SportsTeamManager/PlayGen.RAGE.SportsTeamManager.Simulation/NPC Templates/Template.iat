@@ -6,7 +6,6 @@
 			"Characters": [],
 			"PlayerDialogues": [
 				{
-					"Id": "0373149f-a1d3-43aa-9909-2d7bc4c37087",
 					"CurrentState": "RoleReveal",
 					"NextState": "-",
 					"Meaning": ["RoleReveal"],
@@ -14,7 +13,6 @@
 					"Utterance": "What role do you think you can do well in?"
 				}, 
 				{
-					"Id": "b6aec58f-d1b1-42a1-bfa9-b4ff8176f41b",
 					"CurrentState": "StatReveal",
 					"NextState": "-",
 					"Meaning": ["StatReveal"],
@@ -22,7 +20,6 @@
 					"Utterance": "Tell me more about your skillset"
 				}, 
 				{
-					"Id": "34c51647-25ef-487c-925d-dff2b90c2d61",
 					"CurrentState": "OpinionRevealPositive",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealPositive"],
@@ -30,7 +27,6 @@
 					"Utterance": "Are you getting on well with any of your teammates?"
 				}, 
 				{
-					"Id": "029332c5-8739-4612-a16c-0c6a62892158",
 					"CurrentState": "OpinionRevealNegative",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealNegative"],
@@ -38,7 +34,6 @@
 					"Utterance": "Is there any conflict between you and someome else on the team?"
 				}, 
 				{
-					"Id": "e1c74e29-f6db-4e2f-bd66-d579343add40",
 					"CurrentState": "RecruitBody",
 					"NextState": "-",
 					"Meaning": ["RecruitBody"],
@@ -46,7 +41,6 @@
 					"Utterance": "You excel at exercise"
 				}, 
 				{
-					"Id": "1485be38-b4b5-498a-a029-d60b7c0a9dea",
 					"CurrentState": "RecruitPerception",
 					"NextState": "-",
 					"Meaning": ["RecruitPerception"],
@@ -54,7 +48,6 @@
 					"Utterance": "You are aware of your surroundings"
 				}, 
 				{
-					"Id": "4f741c29-d081-4f49-b6d3-df3fff7054b0",
 					"CurrentState": "RecruitQuickness",
 					"NextState": "-",
 					"Meaning": ["RecruitQuickness"],
@@ -62,7 +55,6 @@
 					"Utterance": "You are the first to react in a situation"
 				}, 
 				{
-					"Id": "f2f44ad0-f494-448e-bfe6-772e0c766c70",
 					"CurrentState": "RecruitWillpower",
 					"NextState": "-",
 					"Meaning": ["RecruitWillpower"],
@@ -70,7 +62,6 @@
 					"Utterance": "You keep calm whilst under heavy pressure"
 				}, 
 				{
-					"Id": "b28fe6fa-3d7d-459a-9ed8-184173ccd325",
 					"CurrentState": "RecruitWisdom",
 					"NextState": "-",
 					"Meaning": ["RecruitWisdom"],
@@ -78,7 +69,6 @@
 					"Utterance": "You are the one people look toward for decisions"
 				}, 
 				{
-					"Id": "0f744b1a-b0af-4062-b661-a89eea7a3215",
 					"CurrentState": "RecruitCharisma",
 					"NextState": "-",
 					"Meaning": ["RecruitCharisma"],
@@ -86,7 +76,6 @@
 					"Utterance": "You talk and others listen to every word"
 				}, 
 				{
-					"Id": "2a074ffa-b716-4e4a-b266-d47759d4e93a",
 					"CurrentState": "NotPicked",
 					"NextState": "NotPickedSorry",
 					"Meaning": ["NotPickedSorry"],
@@ -94,7 +83,6 @@
 					"Utterance": "Sorry, you really should've been in that team. I'll try to make sure you're in for the next race."
 				}, 
 				{
-					"Id": "d2860497-9706-47e6-a9ba-90ccffe88f7c",
 					"CurrentState": "NotPicked",
 					"NextState": "NotPickedSkill",
 					"Meaning": ["NotPickedSkill"],
@@ -102,7 +90,6 @@
 					"Utterance": "You weren't picked because everyone else out there was better."
 				}, 
 				{
-					"Id": "6d5c50fb-93b7-4eff-aed3-4a2560152893",
 					"CurrentState": "NotPicked",
 					"NextState": "NotPickedFired",
 					"Meaning": ["NotPickedFired"],
@@ -110,7 +97,6 @@
 					"Utterance": "How dare you question me?! You're fired!"
 				}, 
 				{
-					"Id": "e2bfdf13-090e-4e9c-aaed-059197ab5b8e",
 					"CurrentState": "NotPickedFiredQuestion",
 					"NextState": "NotPickedFiredYes",
 					"Meaning": ["NotPickedFiredYes"],
@@ -118,7 +104,6 @@
 					"Utterance": "Yes. Now get out of my office."
 				}, 
 				{
-					"Id": "b5630c21-4b5e-4132-a4ac-45c17a9a0692",
 					"CurrentState": "NotPickedFiredQuestion",
 					"NextState": "NotPickedFiredNo",
 					"Meaning": ["NotPickedFiredNo"],
@@ -126,7 +111,6 @@
 					"Utterance": "Ha, almost got you there! I'm still not picking you though."
 				}, 
 				{
-					"Id": "5402390a-e32e-4433-87d4-152ec750fe89",
 					"CurrentState": "NotPickedSkillQuestion",
 					"NextState": "NotPickedSkillTrain",
 					"Meaning": ["NotPickedSkillTrain"],
@@ -134,7 +118,6 @@
 					"Utterance": "Keep training and hopefully you'll be good enough for the crew soon."
 				}, 
 				{
-					"Id": "e04efe4f-f310-463b-bef7-ba8dde6b5c2b",
 					"CurrentState": "NotPickedSkillQuestion",
 					"NextState": "NotPickedSkillFriends",
 					"Meaning": ["NotPickedSkillFriends"],
@@ -142,7 +125,6 @@
 					"Utterance": "Try and become more friendly with the rest of the crew, it could help you get a place."
 				}, 
 				{
-					"Id": "ebb813f9-2deb-4ec1-be80-71881496fe18",
 					"CurrentState": "NotPickedSkillQuestion",
 					"NextState": "NotPickedSkillNothing",
 					"Meaning": ["NotPickedSkillNothing"],
@@ -150,7 +132,6 @@
 					"Utterance": "Nothing really. Guess you're stuck on the bench."
 				}, 
 				{
-					"Id": "6bcadfca-3835-412c-b8cb-c571a794cbd3",
 					"CurrentState": "NotPickedSkillQuestion",
 					"NextState": "NotPickedSkillLeave",
 					"Meaning": ["NotPickedSkillLeave"],
@@ -159,7 +140,6 @@
 				}],
 			"AgentDialogues": [
 				{
-					"Id": "fd0f54c7-38b2-436b-b8d9-ec5ddf50667b",
 					"CurrentState": "StatRevealBad",
 					"NextState": "-",
 					"Meaning": ["StatRevealBad"],
@@ -167,7 +147,6 @@
 					"Utterance": "My {0} is one of my weaknesses."
 				}, 
 				{
-					"Id": "7dfcf660-8739-4e61-89d7-439f4486239f",
 					"CurrentState": "StatRevealMiddle",
 					"NextState": "-",
 					"Meaning": ["StatRevealMiddle"],
@@ -175,7 +154,6 @@
 					"Utterance": "My {0} is fairly average."
 				}, 
 				{
-					"Id": "b2fac4a6-998a-4598-97b9-66a9e9d7d574",
 					"CurrentState": "StatRevealGood",
 					"NextState": "-",
 					"Meaning": ["StatRevealGood"],
@@ -183,7 +161,6 @@
 					"Utterance": "My {0} is one of my strongest areas."
 				}, 
 				{
-					"Id": "0009a7a2-b1fd-4ae0-8ffd-dd41f1d35b05",
 					"CurrentState": "RoleRevealGood",
 					"NextState": "-",
 					"Meaning": ["RoleRevealGood"],
@@ -191,7 +168,6 @@
 					"Utterance": "{0} is one of my better roles, so feel free to consider me for that place."
 				}, 
 				{
-					"Id": "68cc7de6-5a97-4125-8039-5838b7850145",
 					"CurrentState": "InterviewIntro",
 					"NextState": "-",
 					"Meaning": ["InterviewIntro"],
@@ -199,7 +175,6 @@
 					"Utterance": "You wanted to see me?"
 				}, 
 				{
-					"Id": "ffdc8072-43e3-4128-b2cf-f69236938e7b",
 					"CurrentState": "RoleRevealBad",
 					"NextState": "-",
 					"Meaning": ["RoleRevealBad"],
@@ -207,7 +182,6 @@
 					"Utterance": "You don't want to put me in as {0}, I won't do very well."
 				}, 
 				{
-					"Id": "8c071a09-00b0-42b1-a7b2-15e4204a8794",
 					"CurrentState": "OpinionRevealPositive",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealPositive"],
@@ -215,7 +189,6 @@
 					"Utterance": "I somewhat get along with {0}."
 				}, 
 				{
-					"Id": "396be72b-0a13-452c-b898-2b7d39bc3f5d",
 					"CurrentState": "OpinionRevealNegative",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealNegative"],
@@ -223,7 +196,6 @@
 					"Utterance": "Myself and {0} aren't on the best of terms."
 				}, 
 				{
-					"Id": "ec159e53-1e48-437a-95ed-4a56186b7727",
 					"CurrentState": "OpinionRevealPositiveHigh",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealPositiveHigh"],
@@ -231,7 +203,6 @@
 					"Utterance": "I'm good friends with {0}."
 				}, 
 				{
-					"Id": "518d1fe5-06e6-46ab-aa1f-72d9b8743c17",
 					"CurrentState": "OpinionRevealNegativeHigh",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealNegativeHigh"],
@@ -239,7 +210,6 @@
 					"Utterance": "I don't get along with {0} at all."
 				}, 
 				{
-					"Id": "91143cfd-c98a-4f7c-8892-fd7962102dee",
 					"CurrentState": "OpinionRevealNegativeNone",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealNegativeNone"],
@@ -247,7 +217,6 @@
 					"Utterance": "None come to mind, thankfully."
 				}, 
 				{
-					"Id": "950c15fc-1669-4f5a-9e94-e42e0764a3a8",
 					"CurrentState": "OpinionRevealPositiveNone",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealPositiveNone"],
@@ -255,7 +224,6 @@
 					"Utterance": "Nobody comes to mind."
 				}, 
 				{
-					"Id": "2f59b11f-a644-4541-a1d3-2072feeb50c9",
 					"CurrentState": "StrongAgree",
 					"NextState": "-",
 					"Meaning": ["StrongAgree"],
@@ -263,7 +231,6 @@
 					"Utterance": "Strongly Agree"
 				}, 
 				{
-					"Id": "1a4ccb49-0381-4368-b129-ba85aed50a18",
 					"CurrentState": "Agree",
 					"NextState": "-",
 					"Meaning": ["Agree"],
@@ -271,7 +238,6 @@
 					"Utterance": "Agree"
 				}, 
 				{
-					"Id": "a0ef3253-fffe-4356-aed0-8c92ddcd586c",
 					"CurrentState": "Disagree",
 					"NextState": "-",
 					"Meaning": ["Disagree"],
@@ -279,7 +245,6 @@
 					"Utterance": "Disagree"
 				}, 
 				{
-					"Id": "12c469ce-138c-47f8-999b-af023f5c4f71",
 					"CurrentState": "StrongDisagree",
 					"NextState": "-",
 					"Meaning": ["StrongDisagree"],
@@ -287,7 +252,6 @@
 					"Utterance": "Strongly Disagree"
 				}, 
 				{
-					"Id": "95c2f909-fd3e-49fb-bb47-a57a18726caf",
 					"CurrentState": "Neither",
 					"NextState": "-",
 					"Meaning": ["Neither"],
@@ -295,7 +259,6 @@
 					"Utterance": "Neither agree or disagree"
 				}, 
 				{
-					"Id": "d48ddeec-8549-4504-91d9-9b7874ff4840",
 					"CurrentState": "PostRaceEventStart",
 					"NextState": "NotPicked",
 					"Meaning": ["NotPicked"],
@@ -303,7 +266,6 @@
 					"Utterance": "Hey boss, why didn't you pick me in that last line-up?"
 				}, 
 				{
-					"Id": "8547fae3-1369-4f1a-a134-4b722ac8cb52",
 					"CurrentState": "NotPickedSorry",
 					"NextState": "-",
 					"Meaning": ["-"],
@@ -311,7 +273,6 @@
 					"Utterance": "Thanks for saying that, I look forward to being in the next race."
 				}, 
 				{
-					"Id": "a8d832f6-901e-4870-a88f-d59a6433542f",
 					"CurrentState": "NotPickedSkill",
 					"NextState": "NotPickedSkillQuestion",
 					"Meaning": ["NotPickedSkillQuestion"],
@@ -319,7 +280,6 @@
 					"Utterance": "Yeah, you're right. What should I do about it?"
 				}, 
 				{
-					"Id": "afa0f59c-6ab1-41be-a01a-6048378b0414",
 					"CurrentState": "NotPickedFired",
 					"NextState": "NotPickedFiredQuestion",
 					"Meaning": ["NotPickedFiredQuestion"],
@@ -327,7 +287,6 @@
 					"Utterance": "Fired?! I only asked! I mean, are you sure? The rest of the crew may not be too pleased about this!"
 				}, 
 				{
-					"Id": "08c50822-751d-44d1-8cc0-21b9f746391e",
 					"CurrentState": "NotPickedSkillIncorrect",
 					"NextState": "-",
 					"Meaning": ["-"],
@@ -335,7 +294,6 @@
 					"Utterance": "Er, no. There was a position on that crew I would've been better in."
 				}, 
 				{
-					"Id": "aa19fe42-013b-438e-8ad3-2dd1260d462b",
 					"CurrentState": "NotPickedSorryAgain",
 					"NextState": "-",
 					"Meaning": ["-"],
@@ -343,7 +301,6 @@
 					"Utterance": "You said that last time as well, still didn't select me for the next race..."
 				}, 
 				{
-					"Id": "96f550ee-2121-4cf6-b1ca-101b1d7f3bf3",
 					"CurrentState": "NotPickedSkillTrain",
 					"NextState": "-",
 					"Meaning": ["-"],
@@ -351,7 +308,6 @@
 					"Utterance": "Thanks, that gives me hope that I'll be able to work my way into the crew soon."
 				}, 
 				{
-					"Id": "cf21aae6-8bd9-4447-a6ce-fcb5fedaeaa1",
 					"CurrentState": "NotPickedSkillFriends",
 					"NextState": "-",
 					"Meaning": ["-"],
@@ -359,7 +315,6 @@
 					"Utterance": "Thanks for the advice, I'll try my best to bond better with other crew mates."
 				}, 
 				{
-					"Id": "cef11fea-61a7-4747-b830-78b913cd8e7f",
 					"CurrentState": "NotPickedSkillNothing",
 					"NextState": "-",
 					"Meaning": ["-"],
@@ -367,7 +322,6 @@
 					"Utterance": "Oh, well... OK. That's pretty discouraging to hear."
 				}, 
 				{
-					"Id": "72dc5935-7ea6-491c-a382-96b87650d479",
 					"CurrentState": "NotPickedSkillLeave",
 					"NextState": "-",
 					"Meaning": ["-"],
@@ -375,7 +329,6 @@
 					"Utterance": "Well, if you think it's for the best. The rest of the crew might not be too pleased about this though."
 				}, 
 				{
-					"Id": "59dd4165-8f1b-4048-943b-aec1998a6e11",
 					"CurrentState": "NotPickedFiredYes",
 					"NextState": "-",
 					"Meaning": ["-"],
@@ -383,12 +336,25 @@
 					"Utterance": "OK then, if you say so. That attitude won't get you very far though..."
 				}, 
 				{
-					"Id": "3ac16314-b284-4870-9f32-81ca53457b26",
 					"CurrentState": "NotPickedFiredNo",
 					"NextState": "-",
 					"Meaning": ["-"],
 					"Style": ["-"],
 					"Utterance": "Thanks, real funny..."
+				}, 
+				{
+					"CurrentState": "NotPickedAfterSorry",
+					"NextState": "-",
+					"Meaning": ["NotPickedAfterSorry"],
+					"Style": ["After"],
+					"Utterance": "So much for picking me for this race, I guess..."
+				}, 
+				{
+					"CurrentState": "PickedAfterSorry",
+					"NextState": "-",
+					"Meaning": ["PickedAfterSorry"],
+					"Style": ["After"],
+					"Utterance": "Thanks for sticking to your word and picking me for that race."
 				}]
 		},
 	"types": [

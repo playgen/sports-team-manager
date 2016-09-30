@@ -288,9 +288,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			LineUpHistory = new List<Boat>();
 			HistoricTimeOffset = new List<int>();
-            //get all events that feature 'SelectedLineUp' from their EA file
-            var ea = EmotionalAppraisalAsset.LoadFromFile(Boat.Manager.RolePlayCharacter.EmotionalAppraisalAssetSource);
-            var managerEvents = ea.EventRecords;
+			//get all events that feature 'SelectedLineUp' from their EA file
+			var ea = EmotionalAppraisalAsset.LoadFromFile(Boat.Manager.RolePlayCharacter.EmotionalAppraisalAssetSource);
+			var managerEvents = ea.EventRecords;
 			var lineUpEvents = managerEvents.Where(e => e.Event.Contains("SelectedLineUp")).Select(e => e.Event);
 			foreach (var lineup in lineUpEvents)
 			{
@@ -411,13 +411,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat.SelectionMistakes.ForEach(sm => crew += "," + sm);
 			crew += "," + offset;
 			var eventString = string.Format(eventStringUnformatted, boatType, crew);
-            manager.EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
-            var eventRpc = manager.RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
-            if (eventRpc != null)
-            {
-                manager.RolePlayCharacter.ActionFinished(eventRpc);
-            }
-            manager.SaveStatus();
+			manager.EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
+			var eventRpc = manager.RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
+			if (eventRpc != null)
+			{
+				manager.RolePlayCharacter.ActionFinished(eventRpc);
+			}
+			manager.SaveStatus();
 			Boat lastBoat = new Boat(_config);
 			//Boat lastBoat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + Boat.GetType().Name), _config);
 			foreach (BoatPosition bp in Boat.BoatPositions)
@@ -456,25 +456,27 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Select a random post-race event
 		/// </summary>
-		public Dictionary<List<CrewMember>, DialogueStateActionDTO> SelectPostRaceEvent()
+		public List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> SelectPostRaceEvent()
 		{
 			Boat.TickCrewMembers((int)_config.ConfigValues[ConfigKeys.TicksPerSession.ToString()]);
 			Random random = new Random();
-			Dictionary<List<CrewMember>, DialogueStateActionDTO> selectedEvents = new Dictionary<List<CrewMember>, DialogueStateActionDTO>();
+			List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> selectedEvents = new List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>>();
+			bool afterRace = false;
+			var chance = (int)_config.ConfigValues[ConfigKeys.EventChance.ToString()];
+			if (LineUpHistory.Count % RaceSessionLength == 0)
+			{
+				afterRace = true;
+			}
+			else
+			{
+			   chance += (int)_config.ConfigValues[ConfigKeys.PracticeEventChanceReduction.ToString()];
+			}
 			bool findEvents = true;
 			while (findEvents)
 			{
 				DialogueStateActionDTO postRaceEvent;
 				//attempt a random post-race event
-				if (LineUpHistory.Count % RaceSessionLength == 0)
-				{
-					postRaceEvent = EventController.SelectPostRaceEvent(_iat, (int)_config.ConfigValues[ConfigKeys.EventChance.ToString()], selectedEvents.Count, random, true);
-				}
-				else
-				{
-					var increasedChance = (int)_config.ConfigValues[ConfigKeys.EventChance.ToString()] + (int)_config.ConfigValues[ConfigKeys.PracticeEventChanceReduction.ToString()];
-					postRaceEvent = EventController.SelectPostRaceEvent(_iat, increasedChance, selectedEvents.Count, random);
-				}
+				postRaceEvent = EventController.SelectPostRaceEvent(_iat, chance, selectedEvents.Count, random, afterRace);
 				//if no post-race event was selected, stop searching for events
 				if (postRaceEvent == null)
 				{
@@ -494,9 +496,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 								allCrew.Remove(allCrew.First(ac => ac.Name == bp.CrewMember.Name));
 							}
 						}
-						foreach (List<CrewMember> crewMembers in selectedEvents.Keys)
+						foreach (KeyValuePair<List<CrewMember>, DialogueStateActionDTO> kvp in selectedEvents)
 						{
-							foreach (CrewMember crewMember in crewMembers)
+							foreach (CrewMember crewMember in kvp.Key)
 							{
 								allCrew.Remove(crewMember);
 							}
@@ -504,11 +506,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						List<CrewMember> allCrewRemovals = new List<CrewMember>();
 						foreach (CrewMember crewMember in allCrew)
 						{
-                            if ((crewMember.LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "true")
-                            {
-                                allCrewRemovals.Add(crewMember);
-                            }
-                        }
+							if ((crewMember.LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "true")
+							{
+								allCrewRemovals.Add(crewMember);
+							}
+						}
 						foreach (var crewMember in allCrewRemovals)
 						{
 							allCrew.Remove(crewMember);
@@ -520,14 +522,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						CrewMember notSelected = allCrew.OrderBy(c => Guid.NewGuid()).First();
 						eventMembers.Add(notSelected);
-						selectedEvents.Add(eventMembers, postRaceEvent);
+						selectedEvents.Add(new KeyValuePair<List<CrewMember>, DialogueStateActionDTO>(eventMembers, postRaceEvent));
 						continue;
 					default:
 						findEvents = false;
 						continue;
 				}
 			}
-			return selectedEvents;
+			List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> reactionEvents = new List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>>();
+			foreach (CrewMember crewMember in Boat.GetAllCrewMembers())
+			{
+				DialogueStateActionDTO[] delayedReactions = crewMember.CurrentEventCheck(Boat, _iat, afterRace);
+				foreach (DialogueStateActionDTO reply in delayedReactions)
+				{
+					reactionEvents.Add(new KeyValuePair<List<CrewMember>, DialogueStateActionDTO>(new List<CrewMember>{ crewMember }, reply));
+				}
+			}
+			return reactionEvents.Concat(selectedEvents).ToList();
 		}
 
 		/// <summary>
@@ -561,9 +572,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		void DeductCost(int cost)
 		{
 			ActionAllowance -= cost;
-            Boat.TickCrewMembers(cost);
-            Boat.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
-            Boat.Manager.SaveStatus();
+			Boat.TickCrewMembers(cost);
+			Boat.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
+			Boat.Manager.SaveStatus();
 		}
 
 		/// <summary>

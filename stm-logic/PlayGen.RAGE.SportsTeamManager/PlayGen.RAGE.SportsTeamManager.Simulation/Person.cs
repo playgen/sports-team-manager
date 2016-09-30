@@ -114,8 +114,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public string LoadBelief(string belief)
 		{
-			/*var ea = EmotionalAppraisalAsset.LoadFromFile(RolePlayCharacter.EmotionalAppraisalAssetSource);
-			if (ea.BeliefExists(belief))
+			/*if (ea.BeliefExists(belief))
 			{
 				return ea.GetBeliefValue(belief);
 			}*/
