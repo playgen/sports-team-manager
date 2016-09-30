@@ -471,7 +471,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 			   chance += (int)_config.ConfigValues[ConfigKeys.PracticeEventChanceReduction.ToString()];
 			}
-			bool findEvents = true;
+            List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> reactionEvents = new List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>>();
+            foreach (CrewMember crewMember in Boat.GetAllCrewMembers())
+            {
+                DialogueStateActionDTO[] delayedReactions = crewMember.CurrentEventCheck(Boat, _iat, afterRace);
+                foreach (DialogueStateActionDTO reply in delayedReactions)
+                {
+                    reactionEvents.Add(new KeyValuePair<List<CrewMember>, DialogueStateActionDTO>(new List<CrewMember> { crewMember }, reply));
+                }
+            }
+            bool findEvents = true;
 			while (findEvents)
 			{
 				DialogueStateActionDTO postRaceEvent;
@@ -484,11 +493,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					continue;
 				}
 				List<CrewMember> eventMembers = new List<CrewMember>();
+				List<CrewMember> allCrew = Boat.GetAllCrewMembers();
+				List<CrewMember> allCrewRemovals = new List<CrewMember>();
 				switch (postRaceEvent.NextState)
 				{
 					case "NotPicked":
 						//for this event, select a crew member who was not selected in the previous race
-						List<CrewMember> allCrew = Boat.GetAllCrewMembers();
+						
 						foreach (var bp in LineUpHistory.LastOrDefault().BoatPositions)
 						{
 							if (bp.CrewMember != null)
@@ -503,10 +514,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 								allCrew.Remove(crewMember);
 							}
 						}
-						List<CrewMember> allCrewRemovals = new List<CrewMember>();
 						foreach (CrewMember crewMember in allCrew)
 						{
 							if ((crewMember.LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "true")
+							{
+								allCrewRemovals.Add(crewMember);
+							}
+							else if (crewMember.LoadBelief("Event(Retire)") != null)
 							{
 								allCrewRemovals.Add(crewMember);
 							}
@@ -524,18 +538,36 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						eventMembers.Add(notSelected);
 						selectedEvents.Add(new KeyValuePair<List<CrewMember>, DialogueStateActionDTO>(eventMembers, postRaceEvent));
 						continue;
+					case "Retirement":
+						allCrew = allCrew.Where(cm => cm.RestCount <= -5).ToList();
+						foreach (CrewMember crewMember in allCrew)
+						{
+							if ((crewMember.LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "true")
+							{
+								allCrewRemovals.Add(crewMember);
+							}
+							else if (crewMember.LoadBelief("Event(Retire)") != null)
+							{
+								allCrewRemovals.Add(crewMember);
+							}
+						}
+						foreach (var crewMember in allCrewRemovals)
+						{
+							allCrew.Remove(crewMember);
+						}
+						if (allCrew.Count == 0)
+						{
+							findEvents = false;
+							continue;
+						}
+						CrewMember retiree = allCrew.OrderBy(c => Guid.NewGuid()).First();
+						retiree.UpdateSingleBelief("Event(Retire)", "1");
+						eventMembers.Add(retiree);
+						selectedEvents.Add(new KeyValuePair<List<CrewMember>, DialogueStateActionDTO>(eventMembers, postRaceEvent));
+						continue;
 					default:
 						findEvents = false;
 						continue;
-				}
-			}
-			List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> reactionEvents = new List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>>();
-			foreach (CrewMember crewMember in Boat.GetAllCrewMembers())
-			{
-				DialogueStateActionDTO[] delayedReactions = crewMember.CurrentEventCheck(Boat, _iat, afterRace);
-				foreach (DialogueStateActionDTO reply in delayedReactions)
-				{
-					reactionEvents.Add(new KeyValuePair<List<CrewMember>, DialogueStateActionDTO>(new List<CrewMember>{ crewMember }, reply));
 				}
 			}
 			return reactionEvents.Concat(selectedEvents).ToList();

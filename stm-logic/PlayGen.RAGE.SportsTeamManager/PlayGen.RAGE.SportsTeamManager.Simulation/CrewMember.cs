@@ -576,6 +576,27 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				TickUpdate();
 			}
+			if (afterRaceSession && !string.IsNullOrEmpty(LoadBelief("Event(Retire)")))
+			{
+				UpdateSingleBelief("Event(Retire)", (Convert.ToInt32(LoadBelief("Event(Retire)")) - 1).ToString());
+				if (Convert.ToInt32(LoadBelief("Event(Retire)")) == 0)
+				{
+					var eventString = "PostRace(RetirementTriggered)";
+					EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
+					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
+					if (eventRpc != null)
+					{
+						RolePlayCharacter.ActionFinished(eventRpc);
+					}
+					boat.RetireCrew(this);
+					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "RetirementTriggered".ToName()).ToList();
+					if (dialogueOptions.Any())
+					{
+						DialogueStateActionDTO selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
+						replies.Add(selectedNext);
+					}
+				}
+			}
 			return replies.OrderBy(o => Guid.NewGuid()).ToArray();
 		}
 

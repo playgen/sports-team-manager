@@ -355,6 +355,27 @@
 					"Meaning": ["PickedAfterSorry"],
 					"Style": ["After"],
 					"Utterance": "Thanks for sticking to your word and picking me for that race."
+				},
+				{
+					"CurrentState": "PostRaceEventStart",
+					"NextState": "Retirement",
+					"Meaning": ["Retirement"],
+					"Style": ["Race"],
+					"Utterance": "Well, I've had enough of not being picked. I'm going to retire after the next race, no matter what."
+				},
+				{
+					"CurrentState": "RetirementTriggered",
+					"NextState": "-",
+					"Meaning": ["RetirementTriggered"],
+					"Style": ["After"],
+					"Utterance": "Off I go. See you round on the sailing circuit!"
+				},
+				{
+					"CurrentState": "RetirementTriggered",
+					"NextState": "-",
+					"Meaning": ["RetirementTriggered"],
+					"Style": ["After"],
+					"Utterance": "Late wake-ups and lazy days, here I come. Retirement doesn't sound so bad after all..."
 				}]
 		},
 	"types": [
