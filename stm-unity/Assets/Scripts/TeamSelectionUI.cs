@@ -66,6 +66,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	private Sprite _practiceIcon;
 	[SerializeField]
 	private Sprite _raceIcon;
+	private float _recruitCost;
 
 #if UNITY_EDITOR
 	private List<BoatPosition> _lastCrew = new List<BoatPosition>();
@@ -81,11 +82,13 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// </summary>
 	private void Start()
 	{
+		_recruitCost = _teamSelection.GetConfigValue(ConfigKeys.RecruitmentCost);
 		foreach (var boat in _teamSelection.GetLineUpHistory())
 		{
 			CreateHistoricalBoat(boat.Key, boat.Value);
 		}
 		CreateNewBoat();
+		Invoke("ChangeVisibleBoats", 0.01f);
 	}
 
 	/// <summary>
@@ -101,7 +104,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			_raceButton.interactable = true;
 		}
-		if ((_teamSelection.QuestionAllowance() < _teamSelection.GetConfigValue(ConfigKeys.RecruitmentCost) || _teamSelection.CrewEditAllowance() == 0 || !_teamSelection.CanAddCheck()) && _recruitButtons.Count > 0 && _recruitButtons[0].IsInteractable())
+		if ((_teamSelection.QuestionAllowance() < _recruitCost|| _teamSelection.CrewEditAllowance() == 0 || !_teamSelection.CanAddCheck()) && _recruitButtons.Count > 0 && _recruitButtons[0].IsInteractable())
 		{
 			foreach (Button b in _recruitButtons)
 			{
@@ -109,7 +112,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			}
 			
 		}
-		else if (_teamSelection.QuestionAllowance() >= _teamSelection.GetConfigValue(ConfigKeys.RecruitmentCost) && _teamSelection.CrewEditAllowance() > 0 && _teamSelection.CanAddCheck() && _recruitButtons.Count > 0 && !_recruitButtons[0].IsInteractable())
+		else if (_teamSelection.QuestionAllowance() >= _recruitCost && _teamSelection.CrewEditAllowance() > 0 && _teamSelection.CanAddCheck() && _recruitButtons.Count > 0 && !_recruitButtons[0].IsInteractable())
 		{
 			foreach (Button b in _recruitButtons)
 			{
@@ -130,7 +133,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	private void FixedUpdate()
 	{
 		var currentPosition = _boatContainer.transform.localPosition.y - _boatContainer.GetComponent<RectTransform>().anchoredPosition.y;
-		if (_currentBoat.GetComponent<LayoutElement>().preferredHeight != Mathf.Abs(currentPosition) * 0.2f)
+		if (!Mathf.Approximately(_currentBoat.GetComponent<LayoutElement>().preferredHeight, Mathf.Abs(currentPosition) * 0.2f))
 		{
 			foreach (Transform boat in _boatContainer.transform)
 			{
@@ -215,6 +218,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		var boat = _teamSelection.GetBoat();
 		var boatObject = CreateBoat(boat);
+		ChangeVisibleBoats();
 		_raceButton = boatObject.transform.Find("Race").GetComponent<Button>();
 		if (_teamSelection.GetStage() == _teamSelection.GetSessionLength())
 		{
@@ -286,7 +290,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var oldBoat = CreateBoat(boat);
 		var teamScore = boat.BoatPositions.Sum(bp => bp.PositionScore);
 		var idealScore = boat.IdealMatchScore;
-		var currentCrew = _teamSelection.GetBoat().GetAllCrewMembers();
+		var currentCrew = _teamSelection.GetBoat().AllCrew;
 		List<string> mistakeList = boat.GetAssignmentMistakes(3);
 		CreateMistakeIcons(mistakeList, oldBoat, idealScore, boat.BoatPositions.Count);
 		_teamSelection.ConfirmLineUp(0, true);
@@ -311,7 +315,8 @@ public class TeamSelectionUI : MonoBehaviour {
 			{
 				Destroy(crewMember.GetComponent<CrewMemberUI>());
 			}
-			Destroy(position);
+			crewMember.transform.SetParent(position.transform.parent, true);
+			Destroy(position.gameObject);
 			position.name = "Old Position";
 		}
 		_raceButton = oldBoat.transform.Find("Race").GetComponent<Button>();
@@ -342,6 +347,53 @@ public class TeamSelectionUI : MonoBehaviour {
 	public void PositionChange(int change)
 	{
 		_positionsEmpty -= change;
+	}
+
+	public void ChangeVisibleBoats()
+	{
+		float currentPositionTop = -_boatContainer.GetComponent<RectTransform>().localPosition.y;
+		float currentPositionBottom = -_boatContainer.GetComponent<RectTransform>().anchoredPosition.y;
+		foreach (var boat in _boatContainer.GetComponentsInChildren<CanvasGroup>())
+		{
+			if (boat.GetComponent<RectTransform>().localPosition.y < currentPositionTop && boat.GetComponent<RectTransform>().localPosition.y > currentPositionBottom)
+			{
+				boat.alpha = 1;
+				boat.interactable = true;
+				boat.blocksRaycasts = true;
+				foreach (var aspect in boat.GetComponentsInChildren<AspectRatioFitter>())
+				{
+					aspect.enabled = true;
+				}
+				foreach (var layout in boat.GetComponentsInChildren<LayoutGroup>())
+				{
+					layout.enabled = true;
+				}
+				foreach (var layout in boat.GetComponentsInChildren<LayoutElement>())
+				{
+					layout.enabled = true;
+				}
+			} else
+			{
+				boat.alpha = 0;
+				boat.interactable = false;
+				boat.blocksRaycasts = false;
+				foreach (var aspect in boat.GetComponentsInChildren<AspectRatioFitter>())
+				{
+					aspect.enabled = false;
+				}
+				foreach (var layout in boat.GetComponentsInChildren<LayoutGroup>())
+				{
+					layout.enabled = false;
+				}
+				foreach (var layout in boat.GetComponentsInChildren<LayoutElement>())
+				{
+					if (layout.gameObject != boat.gameObject)
+					{
+						layout.enabled = false;
+					}
+				}
+			}
+		}
 	}
 
 	/// <summary>
@@ -537,7 +589,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			position.RemoveCrew();
 		}
-		var currentCrew = _teamSelection.GetBoat().GetAllCrewMembers();
+		var currentCrew = _teamSelection.GetBoat().AllCrew;
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
 			if (crewMember.Current)

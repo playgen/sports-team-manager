@@ -40,6 +40,11 @@ public class NewGameUI : MonoBehaviour {
 		RandomColor();
 	}
 
+	public void ExtraNameValidation(InputField inputField)
+	{
+		inputField.text = inputField.text.Replace("'", "");
+	}
+
 	private void Update()
 	{
 		int ageTest;
@@ -56,7 +61,7 @@ public class NewGameUI : MonoBehaviour {
 			{
 				InputField inputfield = next.GetComponent<InputField>();
 				if (inputfield != null) inputfield.OnPointerClick(new PointerEventData(EventSystem.current));
-
+				inputfield.MoveTextEnd(true);
 				EventSystem.current.SetSelectedGameObject(next.gameObject, new BaseEventData(EventSystem.current));
 			}
 		}
