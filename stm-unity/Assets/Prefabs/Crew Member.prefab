@@ -8,7 +8,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 22478444}
-  - 222: {fileID: 22290170}
   - 114: {fileID: 11482670}
   m_Layer: 5
   m_Name: AvatarIcon
@@ -144,7 +143,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 22499470}
-  - 222: {fileID: 22241486}
   m_Layer: 5
   m_Name: AvatarSprites
   m_TagString: Untagged
@@ -194,7 +192,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 22441768}
-  - 222: {fileID: 22200964}
   m_Layer: 5
   m_Name: Avatar
   m_TagString: Untagged
@@ -298,7 +295,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 22461884}
-  - 222: {fileID: 22272228}
   - 114: {fileID: 11460434}
   m_Layer: 5
   m_Name: Icon
@@ -315,7 +311,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 22420924}
-  - 222: {fileID: 22281290}
   m_Layer: 5
   m_Name: AvatarIcon
   m_TagString: Untagged
@@ -830,12 +825,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!222 &22200964
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 159462}
 --- !u!222 &22217080
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -860,12 +849,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158186}
---- !u!222 &22241486
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 143912}
 --- !u!222 &22256430
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -896,36 +879,18 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 119346}
---- !u!222 &22272228
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 190972}
 --- !u!222 &22278560
 CanvasRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 133204}
---- !u!222 &22281290
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 196214}
 --- !u!222 &22288634
 CanvasRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 198900}
---- !u!222 &22290170
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100398}
 --- !u!222 &22297644
 CanvasRenderer:
   m_ObjectHideFlags: 1

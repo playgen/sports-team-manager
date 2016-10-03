@@ -137,7 +137,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 224000013147650174}
-  - 222: {fileID: 222000010983154768}
   m_Layer: 5
   m_Name: AvatarSprites
   m_TagString: Untagged
@@ -238,7 +237,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 224000010905145266}
-  - 222: {fileID: 222000012647641786}
   - 114: {fileID: 114000012807301094}
   m_Layer: 5
   m_Name: Avatar
@@ -439,7 +437,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -647,12 +645,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011674600824}
---- !u!222 &222000010983154768
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012046870092}
 --- !u!222 &222000011490370586
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -677,12 +669,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010258194158}
---- !u!222 &222000012647641786
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013936676440}
 --- !u!222 &222000012734250334
 CanvasRenderer:
   m_ObjectHideFlags: 1

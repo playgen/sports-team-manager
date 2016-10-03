@@ -76,7 +76,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 22498182}
-  - 222: {fileID: 22205006}
   m_Layer: 5
   m_Name: AvatarSprites
   m_TagString: Untagged
@@ -177,7 +176,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 22405064}
-  - 222: {fileID: 22242682}
   - 114: {fileID: 11420016}
   m_Layer: 5
   m_Name: Avatar
@@ -797,12 +795,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 166732}
---- !u!222 &22205006
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 119122}
 --- !u!222 &22209898
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -845,12 +837,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100490}
---- !u!222 &22242682
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 157502}
 --- !u!222 &22253824
 CanvasRenderer:
   m_ObjectHideFlags: 1
