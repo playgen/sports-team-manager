@@ -62,8 +62,6 @@ public class HoverPopUpUI : MonoBehaviour {
 		}
 	}
 
-
-
 	public void HideHover()
 	{
 		gameObject.SetActive(false);
