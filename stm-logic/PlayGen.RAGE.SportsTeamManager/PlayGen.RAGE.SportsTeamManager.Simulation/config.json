@@ -13,7 +13,7 @@
     "LikeEventOpinionRequired": 3,
     "OpinionRatingWeighting": 1,
     "ManagerOpinionRatingWeighting": 1,
-    "MoodRatingWeighting": 1,
+    "MoodRatingWeighting": 0.5,
     "DefaultOpinionMin": 0,
     "DefaultOpinionMax": 0,
     "DefaultMoodMin": 0,

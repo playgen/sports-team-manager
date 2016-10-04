@@ -79,7 +79,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return;
 			}
 			UnassignedCrew.Add(crewMember);
-			GetIdealCrew();
 		}
 
 		/// <summary>
@@ -115,17 +114,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					RemoveCrew(boatPosition);
 				}
 				boatPosition.CrewMember = crewMember;
-				if (boatPosition.CrewMember != null)
-				{
-					crewMember.OpinionChange += OnOpinionChange;
-				}
 			}
 			if (crewMember != null && boatPosition != null)
 			{
 				crewMember.UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), boatPosition.Position.Name);
 			}
-			UpdateBoatScore();
-			UpdateIdealScore();
 		}
 
 		/// <summary>
@@ -133,9 +126,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void RemoveCrew(BoatPosition boatPosition)
 		{
-			boatPosition.CrewMember.OpinionChange -= OnOpinionChange;
 			UnassignedCrew.Add(boatPosition.CrewMember);
-			UpdateBoatScore();
 			boatPosition.CrewMember.UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "null");
 			boatPosition.CrewMember = null;
 		}
@@ -283,17 +274,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					cm.RevealedCrewOpinions.Remove(revealedToRemove);
 				}
 			}
-			GetIdealCrew();
-			UpdateBoatScore();
-		}
-
-		/// <summary>
-		/// Triggered when a CrewMember's opinion on a Person changes in order to update the Boat's score to an accurate value
-		/// </summary>
-		private void OnOpinionChange(object sender, EventArgs e)
-		{
-			UpdateBoatScore();
-			GetIdealCrew();
 		}
 
 		/// <summary>
@@ -316,13 +296,53 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Boat tempBoat = (Boat)Activator.CreateInstance(GetType(), _config);
 			tempBoat.Manager = Manager;
 			IEnumerable<CrewMember> availableCrew = GetAllCrewMembers().Where(cm => cm.RestCount <= 0);
+			if (availableCrew.Count() < BoatPositions.Count)
+			{
+				return;
+			}
 			//get all crew combinations
-			IEnumerable<IEnumerable<CrewMember>> crewCombos = GetPermutations(availableCrew, BoatPositions.Count - 1);
+			List<BoatPosition> positionCrewCombos = new List<BoatPosition>();
+			foreach (var bp in BoatPositions)
+			{
+				foreach (var cm in availableCrew)
+				{
+					positionCrewCombos.Add(new BoatPosition
+					{
+						Position = bp.Position,
+						CrewMember = cm,
+						PositionScore = bp.Position.GetPositionRating(cm) + cm.GetMood() + cm.CrewOpinions.SingleOrDefault(op => op.Person == Manager).Opinion
+					});
+				}
+			}
+            IEnumerable<IEnumerable<CrewMember>> crewOpinionCombos = GetPermutations(availableCrew, BoatPositions.Count - 1);
+            Dictionary<List<string>, int> crewOpinions = new Dictionary<List<string>, int>();
+            foreach (IEnumerable<CrewMember> possibleCrew in crewOpinionCombos)
+            {
+                List<string> crewList = possibleCrew.Select(pc => pc.Name).ToList();
+                crewOpinions.Add(crewList, 0);
+                foreach (var crewMember in possibleCrew)
+                {
+                    int opinion = 0;
+                    int opinionCount = 0;
+                    foreach (var otherMember in possibleCrew)
+                    {
+                        if (crewMember != otherMember)
+                        {
+                            opinion += crewMember.CrewOpinions.FirstOrDefault(op => op.Person == otherMember).Opinion;
+                            opinionCount++;
+                        }
+                    }
+                    opinion = opinion / opinionCount;
+                    crewOpinions[crewList] += opinion;
+                }
+            }
+            IEnumerable<IEnumerable<CrewMember>> crewCombos = GetOrderedPermutations(availableCrew, BoatPositions.Count - 1);
 			int bestScore = 0;
 			List<List<BoatPosition>> bestCrew = new List<List<BoatPosition>>();
 			//for each possible combination
 			foreach (IEnumerable<CrewMember> possibleCrew in crewCombos)
 			{
+				tempBoat.BoatScore = 0;
 				List<CrewMember> crewList = possibleCrew.ToList();
 				//assign crew members to their positions
 				for (int i = 0; i < tempBoat.BoatPositions.Count; i++)
@@ -330,9 +350,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					tempBoat.BoatPositions[i].CrewMember = crewList[i];
 				}
 				//get the score for this set-up
-				tempBoat.UpdateBoatScore();
-				//if the score for this set-up is higher or equal than the current highest, set up a new list of BoatPositions for the set-up
-				if (tempBoat.BoatScore >= bestScore)
+				foreach (var boatPosition in tempBoat.BoatPositions)
+				{
+					boatPosition.PositionScore = positionCrewCombos.FirstOrDefault(pcc => pcc.Position.Name == boatPosition.Position.Name && pcc.CrewMember.Name == boatPosition.CrewMember.Name).PositionScore;
+					tempBoat.BoatScore += boatPosition.PositionScore;
+				}
+                var nameList = crewList.OrderBy(cm => cm.Name).Select(pc => pc.Name).ToList();
+                var matchingNames = crewOpinions.Keys.FirstOrDefault(co => co.All(cos => nameList.Contains(cos)));
+                int opinion = crewOpinions[matchingNames];
+                tempBoat.BoatScore += opinion;
+                //if the score for this set-up is higher or equal than the current highest, set up a new list of BoatPositions for the set-up
+                if (tempBoat.BoatScore >= bestScore)
 				{
 					List<BoatPosition> thisCrew = new List<BoatPosition>();
 					tempBoat.BoatPositions.ForEach(bp => thisCrew.Add(new BoatPosition
@@ -349,8 +377,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					//add this set-up to the list of best crews
 					bestCrew.Add(thisCrew);
-					
-				} 
+				}
 			}
 			_idealCrew = bestCrew;
 			UpdateIdealScore();
@@ -361,19 +388,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void UpdateIdealScore()
 		{
-			//if there are enough CrewMembers to have an ideal crew and there are currently none known, get the ideal crew(s)
-			if (GetAllCrewMembers().Count >= BoatPositions.Count)
-			{
-				if (_idealCrew.Count == 0)
-				{
-					GetIdealCrew();
-				}
-			}
-			//if there aren't enough CrewMembers to fill this Boat layout, do not look for a match
-			else
-			{
-				return;
-			}
 			//reset current values
 			IdealMatchScore = 0;
 			_nearestIdealMatch = null;
@@ -527,12 +541,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void ConfirmChanges(int actionAllowance)
 		{
 			List<CrewMember> crew = GetAllCrewMembers();
-			crew = crew.OrderBy(p => p.Name).ToList();
 			crew.ForEach(p => p.DecisionFeedback(this));
 			Manager.SaveStatus();
 			PostRaceRest();
-			GetIdealCrew();
-			UpdateBoatScore();
 			TickCrewMembers(0);
 		}
 
@@ -546,18 +557,33 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Get every possible combination of CrewMembers
+		/// Get every possible combination of CrewMembers in every order
 		/// </summary>
-		private IEnumerable<IEnumerable<T>>GetPermutations<T>(IEnumerable<T> list, int length)
+		private IEnumerable<IEnumerable<T>>GetOrderedPermutations<T>(IEnumerable<T> list, int length)
 		{
 			if (length == 0)
 			{
 				return list.Select(t => new [] { t }.AsEnumerable());
 				
 			}
-			return GetPermutations(list, length - 1)
+			return GetOrderedPermutations(list, length - 1)
 				.SelectMany(t => list.Where(o => !t.Contains(o)),
 					(t1, t2) => t1.Concat(new [] { t2 }));
+		}
+
+		/// <summary>
+		/// Get every possible combination of CrewMembers in no order
+		/// </summary>
+		private IEnumerable<IEnumerable<T>> GetPermutations<T>(IEnumerable<T> list, int length) where T : IComparable<T>
+		{
+			if (length == 0)
+			{
+				return list.Select(t => new[] { t }.AsEnumerable());
+
+			}
+			return GetPermutations(list, length - 1)
+				.SelectMany(t => list.Where(o => o.CompareTo(t.Last()) > 0),
+					(t1, t2) => t1.Concat(new[] { t2 }));
 		}
 	}
 }

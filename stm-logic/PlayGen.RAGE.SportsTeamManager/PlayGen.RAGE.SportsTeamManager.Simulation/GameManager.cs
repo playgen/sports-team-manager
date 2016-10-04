@@ -128,7 +128,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			_storageLocation = storageLocation;
 			LineUpHistory = new List<Boat>();
 			HistoricTimeOffset = new List<int>();
-			Boat.GetIdealCrew();
 			Boat.CreateRecruits(iat, combinedStorageLocation);
 		}
 
@@ -252,8 +251,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			_iat = iat;
 			_storageLocation = storageLocation;
 			LoadLineUpHistory();
-			Boat.GetIdealCrew();
-			Boat.UpdateBoatScore();
 		}
 
 		/// <summary>
@@ -369,7 +366,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					Boat.AddCrew(newMember);
 				}
 			}
-			Boat.GetIdealCrew();
 		}
 
 		/// <summary>
@@ -385,6 +381,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void SaveLineUp(int offset)
 		{
+			Boat.GetIdealCrew();
+			Boat.UpdateBoatScore();
 			var manager = Boat.Manager;
 			var spacelessName = manager.RolePlayCharacter.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
@@ -697,7 +695,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				AssetManager.Instance.Bridge = new BaseBridge();
 				_iat.SaveToFile(_iat.AssetFilePath);
 				DeductCrewEditAllowance();
-				Boat.GetIdealCrew();
 			}
 		}
 

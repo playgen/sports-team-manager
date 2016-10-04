@@ -11,13 +11,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// <summary>
 	/// Stores values and functionality related to crew members
 	/// </summary>
-	public class CrewMember : Person
+	public class CrewMember : Person, IComparable<CrewMember>
 	{
 		public Dictionary<CrewMemberSkill, int> Skills { get; set; }
 		public Dictionary<CrewMemberSkill, int> RevealedSkills { get; }
 		public List<CrewOpinion> CrewOpinions { get; }
 		public List<CrewOpinion> RevealedCrewOpinions { get; }
-		public event EventHandler OpinionChange = delegate { };
 		public int RestCount { get; private set; }
 		public Avatar Avatar { get; set; }
 		private ConfigStore _config { get; }
@@ -203,7 +202,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				cw.Opinion = 5;
 			}
 			UpdateSingleBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), cw.Person.Name.Replace(" ", "")), cw.Opinion.ToString());
-			OpinionChange(this, new EventArgs());
 		}
 
 		public void AddOrUpdateRevealedOpinion(Person person, int change)
@@ -726,8 +724,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			TickUpdate();
 			SaveStatus();
-			boat.GetIdealCrew();
-			boat.UpdateBoatScore();
 		}
 
 		/// <summary>
@@ -746,6 +742,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			Avatar = new Avatar(this, false, true);
 			SaveStatus();
+		}
+
+		public int CompareTo(CrewMember other)
+		{
+			return Name.CompareTo(other.Name);
 		}
 	}
 }

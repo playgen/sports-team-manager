@@ -19,12 +19,16 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new int[] {0, 0, 0}, new int[] {0, 0, 0}, "Player Manager", "18", "Male", crew);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip"));
+            gameManager.Boat.UpdateBoatScore();
 			Assert.AreEqual(10, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Wise Nav"));
-			Assert.AreEqual(20, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(20, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Dim Wobnam"));
-			Assert.AreEqual(30, gameManager.Boat.BoatScore);
-		}
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(30, gameManager.Boat.BoatScore);
+            gameManager.Boat.GetIdealCrew();
+        }
 
 		[TestMethod]
 		public void BadBoat()
@@ -34,11 +38,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new int[] {0, 0, 0}, new int[] {0, 0, 0}, "Player Manager", "18", "Male", crew);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Nick Pony"));
-			Assert.AreEqual(4, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(4, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Rav Age"));
-			Assert.AreEqual(9, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(9, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip"));
-			Assert.AreEqual(13, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(13, gameManager.Boat.BoatScore);
 		}
 
 		[TestMethod]
@@ -49,11 +56,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			GameManager gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new int[] {0, 0, 0}, new int[] {0, 0, 0}, "Player Manager", "18", "Male", crew);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Rav Age"));
-			Assert.AreEqual(5, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(5, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Rav Age"));
-			Assert.AreEqual(5, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(5, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Rav Age"));
-			Assert.AreEqual(5, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(5, gameManager.Boat.BoatScore);
 		}
 
 		[TestMethod]
@@ -73,11 +83,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			bow.AddOrUpdateOpinion(skip, 5);
 			bow.AddOrUpdateOpinion(nav, 5);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip"));
-			Assert.AreEqual(10, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(10, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Wise Nav"));
-			Assert.AreEqual(30, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(30, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Dim Wobnam"));
-			Assert.AreEqual(45, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(45, gameManager.Boat.BoatScore);
 		}
 
 		[TestMethod]
@@ -97,11 +110,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			bow.AddOrUpdateOpinion(skip, -5);
 			bow.AddOrUpdateOpinion(nav, -5);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip"));
-			Assert.AreEqual(10, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(10, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Wise Nav"));
-			Assert.AreEqual(10, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(10, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Dim Wobnam"));
-			Assert.AreEqual(15, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(15, gameManager.Boat.BoatScore);
 		}
 
 		[TestMethod]
@@ -121,11 +137,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			bow.AddOrUpdateOpinion(skip, 1);
 			bow.AddOrUpdateOpinion(nav, 5);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip"));
-			Assert.AreEqual(10, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(10, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Wise Nav"));
-			Assert.AreEqual(21, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(21, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Dim Wobnam"));
-			Assert.AreEqual(32, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(32, gameManager.Boat.BoatScore);
 		}
 
 		[TestMethod]
@@ -141,11 +160,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			skip.AddOrUpdateOpinion(nav, -5);
 			skip.AddOrUpdateOpinion(bow, -5);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip"));
-			Assert.AreEqual(10, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(10, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Wise Nav"));
-			Assert.AreEqual(15, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(15, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Dim Wobnam"));
-			Assert.AreEqual(25, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(25, gameManager.Boat.BoatScore);
 		}
 
 		[TestMethod]
@@ -163,11 +185,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			bow.AddOrUpdateOpinion(gameManager.Boat.Manager, -4);
 			Assert.AreEqual(0, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip"));
-			Assert.AreEqual(13, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(13, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Wise Nav"));
-			Assert.AreEqual(18, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(18, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Dim Wobnam"));
-			Assert.AreEqual(24, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(24, gameManager.Boat.BoatScore);
 		}
 
 		[TestMethod]
@@ -189,13 +214,17 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			bow.AddOrUpdateOpinion(gameManager.Boat.Manager, -2);
 			bow.AddOrUpdateOpinion(skip, 5);
 			bow.AddOrUpdateOpinion(nav, 3);
-			Assert.AreEqual(0, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(0, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip"));
-			Assert.AreEqual(13, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(13, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Wise Nav"));
-			Assert.AreEqual(19, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(19, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Dim Wobnam"));
-			Assert.AreEqual(30, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(30, gameManager.Boat.BoatScore);
 		}
 
 		[TestMethod]
@@ -221,13 +250,17 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			bow.AddOrUpdateOpinion(skip, 5);
 			bow.AddOrUpdateOpinion(nav, 3);
 			bow.AddOrUpdateOpinion(unused, 4);
-			Assert.AreEqual(0, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(0, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip"));
-			Assert.AreEqual(13, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(13, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Wise Nav"));
-			Assert.AreEqual(19, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(19, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Dim Wobnam"));
-			Assert.AreEqual(30, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(30, gameManager.Boat.BoatScore);
 		}
 
 		[TestMethod]
@@ -249,25 +282,32 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			bow.AddOrUpdateOpinion(gameManager.Boat.Manager, -2);
 			bow.AddOrUpdateOpinion(skip, 5);
 			bow.AddOrUpdateOpinion(nav, 3);
-			Assert.AreEqual(0, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(0, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip"));
-			Assert.AreEqual(13, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(13, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Wise Nav"));
-			Assert.AreEqual(19, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(19, gameManager.Boat.BoatScore);
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Dim Wobnam"));
-			Assert.AreEqual(30, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(30, gameManager.Boat.BoatScore);
 			skip.AddOrUpdateOpinion(gameManager.Boat.Manager, 2);
 			skip.AddOrUpdateOpinion(nav, 2);
 			skip.AddOrUpdateOpinion(bow, 2);
-			Assert.AreEqual(34, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(34, gameManager.Boat.BoatScore);
 			nav.AddOrUpdateOpinion(gameManager.Boat.Manager, -1);
 			nav.AddOrUpdateOpinion(skip, 2);
 			nav.AddOrUpdateOpinion(bow, -3);
-			Assert.AreEqual(34, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(34, gameManager.Boat.BoatScore);
 			bow.AddOrUpdateOpinion(gameManager.Boat.Manager, 1);
 			bow.AddOrUpdateOpinion(skip, 1);
 			bow.AddOrUpdateOpinion(nav, -2);
-			Assert.AreEqual(34, gameManager.Boat.BoatScore);
+            gameManager.Boat.UpdateBoatScore();
+            Assert.AreEqual(34, gameManager.Boat.BoatScore);
 		}
 
 		[TestMethod]
@@ -304,21 +344,26 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new int[] {0, 0, 0}, new int[] {0, 0, 0}, "Player Manager", "18", "Male", crew);
 
 				gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip"));
-				Assert.AreEqual(10, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(10, gameManager.Boat.BoatScore);
 				gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Wise Nav"));
-				Assert.AreEqual(20, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(20, gameManager.Boat.BoatScore);
 				gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Dim Wobnam"));
-				Assert.AreEqual(30, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(30, gameManager.Boat.BoatScore);
 				gameManager.ConfirmLineUp();
-				Assert.AreEqual(30, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(30, gameManager.Boat.BoatScore);
 				//Assert.AreEqual(33, gameManager.Boat.BoatScore); opinion changes
 
 				gameManager.LoadGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace");
 
 				Assert.AreEqual("Testy McTestFace", gameManager.Boat.Name);
 				Assert.AreEqual("Player Manager", gameManager.Boat.Manager.Name);
-				//Assert.AreEqual(gameManager.Boat.GetAllCrewMembers().Count - gameManager.Boat.BoatPositions.Count, gameManager.Boat.UnassignedCrew.Count);
-				Assert.AreEqual(30, gameManager.Boat.BoatScore);
+                //Assert.AreEqual(gameManager.Boat.GetAllCrewMembers().Count - gameManager.Boat.BoatPositions.Count, gameManager.Boat.UnassignedCrew.Count);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(30, gameManager.Boat.BoatScore);
 				//Assert.AreEqual(33, gameManager.Boat.BoatScore); opinion changes
 			}
 		}
@@ -347,21 +392,26 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				bow.AddOrUpdateOpinion(nav, -5);
 
 				gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip"));
-				Assert.AreEqual(15, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(15, gameManager.Boat.BoatScore);
 				gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Wise Nav"));
-				Assert.AreEqual(24, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(24, gameManager.Boat.BoatScore);
 				gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Dim Wobnam"));
-				Assert.AreEqual(22, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(22, gameManager.Boat.BoatScore);
 				gameManager.ConfirmLineUp();
-				Assert.AreEqual(22, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(22, gameManager.Boat.BoatScore);
 				//Assert.AreEqual(24, gameManager.Boat.BoatScore); opinion changes
 
 				gameManager.LoadGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace");
 
 				Assert.AreEqual("Testy McTestFace", gameManager.Boat.Name);
 				Assert.AreEqual("Player Manager", gameManager.Boat.Manager.Name);
-				//Assert.AreEqual(gameManager.Boat.GetAllCrewMembers().Count - gameManager.Boat.BoatPositions.Count, gameManager.Boat.UnassignedCrew.Count);
-				Assert.AreEqual(22, gameManager.Boat.BoatScore);
+                //Assert.AreEqual(gameManager.Boat.GetAllCrewMembers().Count - gameManager.Boat.BoatPositions.Count, gameManager.Boat.UnassignedCrew.Count);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(22, gameManager.Boat.BoatScore);
 				//Assert.AreEqual(24, gameManager.Boat.BoatScore); opinion changes
 			}
 		}
@@ -390,21 +440,26 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				bow.AddOrUpdateOpinion(nav, -5);
 
 				gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip"));
-				Assert.AreEqual(15, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(15, gameManager.Boat.BoatScore);
 				gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Wise Nav"));
-				Assert.AreEqual(24, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(24, gameManager.Boat.BoatScore);
 				gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Dim Wobnam"));
-				Assert.AreEqual(22, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(22, gameManager.Boat.BoatScore);
 				gameManager.ConfirmLineUp();
-				Assert.AreEqual(22, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(22, gameManager.Boat.BoatScore);
 				//Assert.AreEqual(24, gameManager.Boat.BoatScore); opinion changes
 
 				gameManager.LoadGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace");
 
 				Assert.AreEqual("Testy McTestFace", gameManager.Boat.Name);
 				Assert.AreEqual("Player Manager", gameManager.Boat.Manager.Name);
-				//Assert.AreEqual(gameManager.Boat.GetAllCrewMembers().Count - gameManager.Boat.BoatPositions.Count, gameManager.Boat.UnassignedCrew.Count);
-				Assert.AreEqual(22, gameManager.Boat.BoatScore);
+                //Assert.AreEqual(gameManager.Boat.GetAllCrewMembers().Count - gameManager.Boat.BoatPositions.Count, gameManager.Boat.UnassignedCrew.Count);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(22, gameManager.Boat.BoatScore);
 				//Assert.AreEqual(24, gameManager.Boat.BoatScore); opinion changes
 
 				skip = gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip");
@@ -414,26 +469,31 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				skip.AddOrUpdateOpinion(gameManager.Boat.Manager, 2);
 				skip.AddOrUpdateOpinion(nav, 2);
 				skip.AddOrUpdateOpinion(bow, 2);
-				Assert.AreEqual(24, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(24, gameManager.Boat.BoatScore);
 				//Assert.AreEqual(26, gameManager.Boat.BoatScore); opinion changes
 				nav.AddOrUpdateOpinion(gameManager.Boat.Manager, -1);
 				nav.AddOrUpdateOpinion(skip, 2);
 				nav.AddOrUpdateOpinion(bow, -3);
-				Assert.AreEqual(23, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(23, gameManager.Boat.BoatScore);
 				//Assert.AreEqual(25, gameManager.Boat.BoatScore); opinion changes
 				bow.AddOrUpdateOpinion(gameManager.Boat.Manager, 1);
 				bow.AddOrUpdateOpinion(skip, 1);
 				bow.AddOrUpdateOpinion(nav, -2);
-				Assert.AreEqual(25, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(25, gameManager.Boat.BoatScore);
 				//Assert.AreEqual(27, gameManager.Boat.BoatScore); opinion changes
 				gameManager.ConfirmLineUp();
-				Assert.AreEqual(25, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(25, gameManager.Boat.BoatScore);
 				//Assert.AreEqual(25, gameManager.Boat.BoatScore); promotion
 				//Assert.AreEqual(29, gameManager.Boat.BoatScore); opinion changes
 
 				gameManager.LoadGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace");
 
-				Assert.AreEqual(25, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(25, gameManager.Boat.BoatScore);
 				//Assert.AreEqual(25, gameManager.Boat.BoatScore); promotion
 				//Assert.AreEqual(29, gameManager.Boat.BoatScore); opinion changes
 			}
@@ -456,21 +516,26 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				bow.AddOrUpdateOpinion(nav, -3);
 
 				gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Skipper").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Nick Pony"));
-				Assert.AreEqual(4, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(4, gameManager.Boat.BoatScore);
 				gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Navigator").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Rav Age"));
-				Assert.AreEqual(9, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(9, gameManager.Boat.BoatScore);
 				gameManager.AssignCrew(gameManager.Boat.BoatPositions.SingleOrDefault(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().SingleOrDefault(c => c.Name == "Skippy Skip"));
-				Assert.AreEqual(10, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(10, gameManager.Boat.BoatScore);
 				gameManager.ConfirmLineUp();
-				Assert.AreEqual(10, gameManager.Boat.BoatScore);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(10, gameManager.Boat.BoatScore);
 				//Assert.AreEqual(4, gameManager.Boat.BoatScore); opinion changes
 
 				gameManager.LoadGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace");
 
 				Assert.AreEqual("Testy McTestFace", gameManager.Boat.Name);
 				Assert.AreEqual("Player Manager", gameManager.Boat.Manager.Name);
-				//Assert.AreEqual(gameManager.Boat.GetAllCrewMembers().Count - gameManager.Boat.BoatPositions.Count, gameManager.Boat.UnassignedCrew.Count);
-				Assert.AreEqual(10, gameManager.Boat.BoatScore);
+                //Assert.AreEqual(gameManager.Boat.GetAllCrewMembers().Count - gameManager.Boat.BoatPositions.Count, gameManager.Boat.UnassignedCrew.Count);
+                gameManager.Boat.UpdateBoatScore();
+                Assert.AreEqual(10, gameManager.Boat.BoatScore);
 				//Assert.AreEqual(4, gameManager.Boat.BoatScore); opinion changes
 			}
 		}
