@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
@@ -67,6 +70,8 @@ public class TeamSelectionUI : MonoBehaviour {
 	[SerializeField]
 	private Sprite _raceIcon;
 	private float _recruitCost;
+	[SerializeField]
+	private HoverPopUpUI _hoverPopUp;
 
 #if UNITY_EDITOR
 	private List<BoatPosition> _lastCrew = new List<BoatPosition>();
@@ -334,12 +339,31 @@ public class TeamSelectionUI : MonoBehaviour {
 			mistakeObject.name = mistake;
 			Sprite mistakeIcon = _mistakeIcons.FirstOrDefault(mo => mo.Name == mistake).Image;
 			mistakeObject.GetComponent<Image>().sprite = mistakeIcon;
+			FeedbackHoverOver(mistakeObject.transform, Regex.Replace(mistake, "([a-z])([A-Z])", "$1 $2"));
 		}
 		var unideal = positionCount - (int)idealScore - ((idealScore % 1) * 10);
 		boat.transform.Find("Light Container").gameObject.SetActive(true);
 		boat.transform.Find("Light Container/Green").GetComponentInChildren<Text>().text = ((int)idealScore).ToString();
+		FeedbackHoverOver(boat.transform.Find("Light Container/Green"), "Ideal Placements");
 		boat.transform.Find("Light Container/Yellow").GetComponentInChildren<Text>().text = Mathf.RoundToInt(((idealScore % 1) * 10)).ToString();
+		FeedbackHoverOver(boat.transform.Find("Light Container/Yellow"), "Ideal In Another Position");
 		boat.transform.Find("Light Container/Red").GetComponentInChildren<Text>().text = Mathf.RoundToInt(unideal).ToString();
+		FeedbackHoverOver(boat.transform.Find("Light Container/Red"), "Unideal Placements");
+	}
+
+	private void FeedbackHoverOver(Transform feedback, string text)
+	{
+		EventTrigger.Entry enter = new EventTrigger.Entry();
+		enter.eventID = EventTriggerType.PointerEnter;
+		Transform trans = feedback;
+		string mis = text;
+		enter.callback.AddListener(data => { _hoverPopUp.SetHoverObject(trans); });
+		enter.callback.AddListener(data => { _hoverPopUp.DisplayHover(mis); });
+		trans.GetComponent<EventTrigger>().triggers.Add(enter);
+		EventTrigger.Entry exit = new EventTrigger.Entry();
+		exit.eventID = EventTriggerType.PointerExit;
+		exit.callback.AddListener(data => { _hoverPopUp.HideHover(); });
+		trans.GetComponent<EventTrigger>().triggers.Add(exit);
 	}
 
 	/// <summary>
