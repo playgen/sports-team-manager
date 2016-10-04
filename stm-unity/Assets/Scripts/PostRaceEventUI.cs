@@ -80,9 +80,9 @@ public class PostRaceEventUI : MonoBehaviour
 	/// </summary>
 	private void ResetQuestions()
 	{
-        KeyValuePair<List<CrewMember>, DialogueStateActionDTO> current = _postRaceEvent.CurrentEvent;
-        CrewMember eventMember = current.Key != null ? current.Key[0] : null;
-        DialogueStateActionDTO[] replies = _postRaceEvent.GetEventReplies();
+		KeyValuePair<List<CrewMember>, DialogueStateActionDTO> current = _postRaceEvent.CurrentEvent;
+		CrewMember eventMember = current.Key != null ? current.Key[0] : null;
+		DialogueStateActionDTO[] replies = _postRaceEvent.GetEventReplies();
 		for (int i = 0; i < _questions.Length; i++)
 		{
 			if (replies.Length <= i)

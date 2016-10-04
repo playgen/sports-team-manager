@@ -17,7 +17,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int[] TeamColorsSecondary { get; set; }
 		public List<BoatPosition> BoatPositions { get; set; }
 		private List<List<BoatPosition>> _idealCrew { get; set; }
-		public List<CrewMember> AllCrew { get; set; }
 		public List<CrewMember> UnassignedCrew { get; }
 		public List<CrewMember> RetiredCrew { get; }
 		public List<CrewMember> Recruits { get; }
@@ -34,7 +33,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Boat(ConfigStore config)
 		{
 			BoatPositions = new List<BoatPosition>();
-			AllCrew = new List<CrewMember>();
 			UnassignedCrew = new List<CrewMember>();
 			RetiredCrew = new List<CrewMember>();
 			_idealCrew = new List<List<BoatPosition>>();
@@ -43,12 +41,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
+		/// Get a list of all the CrewMember assigned to this Boat, including those currently not in a position
+		/// </summary>
+		public List<CrewMember> GetAllCrewMembers()
+		{
+			List<CrewMember> crew = new List<CrewMember>();
+			UnassignedCrew.ForEach(crewMember => crew.Add(crewMember));
+			BoatPositions.Where(bp => bp.CrewMember != null).ToList().ForEach(boatPosition => crew.Add(boatPosition.CrewMember));
+			crew = crew.OrderBy(c => c.Name).ToList();
+			return crew;
+		}
+
+		/// <summary>
 		/// Get a list of all CrewMembers assigned to this boat, including those marked as 'retired' and thus cannot go into a position
 		/// </summary>
 		public List<CrewMember> GetAllCrewMembersIncludingRetired()
 		{
-			List<CrewMember> crew = new List<CrewMember>();
-			AllCrew.ForEach(crewMember => crew.Add(crewMember));
+			List<CrewMember> crew = GetAllCrewMembers();
 			RetiredCrew.ForEach(crewMember => crew.Add(crewMember));
 			crew = crew.OrderBy(c => c.Name).ToList();
 			return crew;
@@ -70,11 +79,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return;
 			}
 			UnassignedCrew.Add(crewMember);
-			if (!AllCrew.Contains(crewMember))
-			{
-				AllCrew.Add(crewMember);
-				AllCrew = AllCrew.OrderBy(c => c.Name).ToList();
-			}
 			GetIdealCrew();
 		}
 
@@ -156,7 +160,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//if the name is already in use by another character, reset their name
 			while (!unqiue)
 			{
-				if (AllCrew.Count(c => c.Name == cm.Name) > 0 || RetiredCrew.Count(c => c.Name == cm.Name) > 0 || Recruits.Count(c => c.Name == cm.Name) > 0 || cm.Name == Manager.Name)
+				if (GetAllCrewMembers().Count(c => c.Name == cm.Name) > 0 || RetiredCrew.Count(c => c.Name == cm.Name) > 0 || Recruits.Count(c => c.Name == cm.Name) > 0 || cm.Name == Manager.Name)
 				{
 					cm.Name = cm.SelectNewName(cm.Gender, random);
 				}
@@ -231,7 +235,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			foreach (Position pos in BoatPositions.Select(bp => bp.Position))
 			{
 				positionStrength.Add(pos, 0);
-				foreach (CrewMember cm in AllCrew)
+				foreach (CrewMember cm in GetAllCrewMembers())
 				{
 					if (pos.GetPositionRating(cm) >= (int)_config.ConfigValues[ConfigKeys.GoodPositionRating.ToString()])
 					{
@@ -264,10 +268,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				UnassignedCrew.Remove(crewMember);
 			}
-			AllCrew.Remove(crewMember);
 			RetiredCrew.Add(crewMember);
 			crewMember.Retire();
-			foreach (CrewMember cm in AllCrew)
+			foreach (CrewMember cm in GetAllCrewMembers())
 			{
 				CrewOpinion opinionToRemove = cm.CrewOpinions.FirstOrDefault(co => co.Person.Name == crewMember.Name);
 				if (opinionToRemove != null)
@@ -312,7 +315,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			Boat tempBoat = (Boat)Activator.CreateInstance(GetType(), _config);
 			tempBoat.Manager = Manager;
-			IEnumerable<CrewMember> availableCrew = AllCrew.Where(cm => cm.RestCount <= 0);
+			IEnumerable<CrewMember> availableCrew = GetAllCrewMembers().Where(cm => cm.RestCount <= 0);
 			//get all crew combinations
 			IEnumerable<IEnumerable<CrewMember>> crewCombos = GetPermutations(availableCrew, BoatPositions.Count - 1);
 			int bestScore = 0;
@@ -359,7 +362,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private void UpdateIdealScore()
 		{
 			//if there are enough CrewMembers to have an ideal crew and there are currently none known, get the ideal crew(s)
-			if (AllCrew.Count >= BoatPositions.Count)
+			if (GetAllCrewMembers().Count >= BoatPositions.Count)
 			{
 				if (_idealCrew.Count == 0)
 				{
@@ -523,7 +526,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void ConfirmChanges(int actionAllowance)
 		{
-			List<CrewMember> crew = AllCrew;
+			List<CrewMember> crew = GetAllCrewMembers();
 			crew = crew.OrderBy(p => p.Name).ToList();
 			crew.ForEach(p => p.DecisionFeedback(this));
 			Manager.SaveStatus();
@@ -538,7 +541,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void PostRaceRest()
 		{
-			List<CrewMember> crew = AllCrew;
+			List<CrewMember> crew = GetAllCrewMembers();
 			crew.ForEach(p => p.RaceRest(BoatPositions.SingleOrDefault(bp => bp.CrewMember == p) != null));
 		}
 

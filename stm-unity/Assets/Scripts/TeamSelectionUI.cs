@@ -87,8 +87,8 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			CreateHistoricalBoat(boat.Key, boat.Value);
 		}
+		LayoutRebuilder.ForceRebuildLayoutImmediate(_boatContainer.GetComponent<RectTransform>());
 		CreateNewBoat();
-		Invoke("ChangeVisibleBoats", 0.01f);
 	}
 
 	/// <summary>
@@ -230,6 +230,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 		_currentBoat = boatObject;
 		CreateCrew();
+		AdjustBoatVisibility(boatObject.GetComponent<CanvasGroup>(), true);
 	}
 
 	/// <summary>
@@ -290,7 +291,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var oldBoat = CreateBoat(boat);
 		var teamScore = boat.BoatPositions.Sum(bp => bp.PositionScore);
 		var idealScore = boat.IdealMatchScore;
-		var currentCrew = _teamSelection.GetBoat().AllCrew;
+		var currentCrew = _teamSelection.GetBoat().GetAllCrewMembers();
 		List<string> mistakeList = boat.GetAssignmentMistakes(3);
 		CreateMistakeIcons(mistakeList, oldBoat, idealScore, boat.BoatPositions.Count);
 		_teamSelection.ConfirmLineUp(0, true);
@@ -349,49 +350,42 @@ public class TeamSelectionUI : MonoBehaviour {
 		_positionsEmpty -= change;
 	}
 
-	public void ChangeVisibleBoats()
+	private void ChangeVisibleBoats()
 	{
 		float currentPositionTop = -_boatContainer.GetComponent<RectTransform>().localPosition.y;
 		float currentPositionBottom = -_boatContainer.GetComponent<RectTransform>().anchoredPosition.y;
 		foreach (var boat in _boatContainer.GetComponentsInChildren<CanvasGroup>())
 		{
-			if (boat.GetComponent<RectTransform>().localPosition.y < currentPositionTop && boat.GetComponent<RectTransform>().localPosition.y > currentPositionBottom)
+			float boatPosition = boat.GetComponent<RectTransform>().localPosition.y;
+			if (boatPosition < currentPositionTop && boatPosition > currentPositionBottom)
 			{
-				boat.alpha = 1;
-				boat.interactable = true;
-				boat.blocksRaycasts = true;
-				foreach (var aspect in boat.GetComponentsInChildren<AspectRatioFitter>())
-				{
-					aspect.enabled = true;
-				}
-				foreach (var layout in boat.GetComponentsInChildren<LayoutGroup>())
-				{
-					layout.enabled = true;
-				}
-				foreach (var layout in boat.GetComponentsInChildren<LayoutElement>())
-				{
-					layout.enabled = true;
-				}
-			} else
+				AdjustBoatVisibility(boat, true);
+			}
+			else
 			{
-				boat.alpha = 0;
-				boat.interactable = false;
-				boat.blocksRaycasts = false;
-				foreach (var aspect in boat.GetComponentsInChildren<AspectRatioFitter>())
-				{
-					aspect.enabled = false;
-				}
-				foreach (var layout in boat.GetComponentsInChildren<LayoutGroup>())
-				{
-					layout.enabled = false;
-				}
-				foreach (var layout in boat.GetComponentsInChildren<LayoutElement>())
-				{
-					if (layout.gameObject != boat.gameObject)
-					{
-						layout.enabled = false;
-					}
-				}
+				AdjustBoatVisibility(boat, false);
+			}
+		}
+	}
+
+	private void AdjustBoatVisibility(CanvasGroup boat, bool visibility)
+	{
+		boat.alpha = visibility ? 1 : 0;
+		boat.interactable = visibility;
+		boat.blocksRaycasts = visibility;
+		foreach (var aspect in boat.GetComponentsInChildren<AspectRatioFitter>())
+		{
+			aspect.enabled = visibility;
+		}
+		foreach (var layout in boat.GetComponentsInChildren<LayoutGroup>())
+		{
+			layout.enabled = visibility;
+		}
+		foreach (var layout in boat.GetComponentsInChildren<LayoutElement>())
+		{
+			if (layout.gameObject != boat.gameObject)
+			{
+				layout.enabled = visibility;
 			}
 		}
 	}
@@ -589,7 +583,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			position.RemoveCrew();
 		}
-		var currentCrew = _teamSelection.GetBoat().AllCrew;
+		var currentCrew = _teamSelection.GetBoat().GetAllCrewMembers();
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
 			if (crewMember.Current)

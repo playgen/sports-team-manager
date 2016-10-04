@@ -158,7 +158,7 @@ public class PositionDisplayUI : MonoBehaviour
 			GameObject positionHistory = Instantiate(_historyPrefab);
 			positionHistory.transform.SetParent(_historyContainer.transform, false);
 			positionHistory.transform.Find("Name").GetComponent<Text>().text = SplitName(member.Key.Name);
-			if (_positionDisplay.GetBoat().AllCrew.Contains(member.Key))
+			if (_positionDisplay.GetBoat().GetAllCrewMembers().Contains(member.Key))
 			{
 				var current = member.Key;
 				positionHistory.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { _meetingUI.SetUpDisplay(current); });
