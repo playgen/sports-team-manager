@@ -294,7 +294,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	private void CreateHistoricalBoat(Boat boat, int offset)
 	{
 		var oldBoat = CreateBoat(boat);
-		var teamScore = boat.BoatPositions.Sum(bp => bp.PositionScore);
+		var teamScore = boat.BoatScore;
 		var idealScore = boat.IdealMatchScore;
 		var currentCrew = _teamSelection.GetBoat().GetAllCrewMembers();
 		List<string> mistakeList = boat.GetAssignmentMistakes(3);
@@ -460,12 +460,12 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			Destroy(position);
 		}
-		float idealScore = _teamSelection.IdealCheck();
-		List<string> mistakeList = _teamSelection.GetAssignmentMistakes(3);
-		CreateMistakeIcons(mistakeList, _currentBoat, idealScore, _teamSelection.GetBoat().BoatPositions.Count);
 		int offset = UnityEngine.Random.Range(0, 10);
-		var teamScore = _teamSelection.ConfirmLineUp(offset);
-		float scoreDiff = GetResult(_teamSelection.IsRace(), teamScore, currentPositions.Count, offset, _currentBoat.transform.Find("Score").GetComponent<Text>(), currentPositions);
+		var currentBoat = _teamSelection.ConfirmLineUp(offset);
+		float idealScore = _teamSelection.IdealCheck();
+		List<string> mistakeList = currentBoat.GetAssignmentMistakes(3);
+		CreateMistakeIcons(mistakeList, _currentBoat, idealScore, _teamSelection.GetBoat().BoatPositions.Count);
+		float scoreDiff = GetResult(_teamSelection.IsRace(), currentBoat.BoatScore, currentPositions.Count, offset, _currentBoat.transform.Find("Score").GetComponent<Text>(), currentPositions);
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
 			if (crewMember.Current)

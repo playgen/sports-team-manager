@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
+
 using AssetManagerPackage;
 using IntegratedAuthoringTool;
 
@@ -20,7 +22,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public List<CrewMember> UnassignedCrew { get; }
 		public List<CrewMember> RetiredCrew { get; }
 		public List<CrewMember> Recruits { get; }
-		public int BoatScore { get; private set; }
+		public int BoatScore { get; set; }
 		public float IdealMatchScore { get; set; }
 		private List<BoatPosition> _nearestIdealMatch { get; set; }
 		public List<string> SelectionMistakes { get; set; }
@@ -37,6 +39,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RetiredCrew = new List<CrewMember>();
 			_idealCrew = new List<List<BoatPosition>>();
 			Recruits = new List<CrewMember>();
+			SelectionMistakes = new List<string>();
 			_config = config;
 		}
 
@@ -293,90 +296,84 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void GetIdealCrew()
 		{
-			Boat tempBoat = (Boat)Activator.CreateInstance(GetType(), _config);
-			tempBoat.Manager = Manager;
 			IEnumerable<CrewMember> availableCrew = GetAllCrewMembers().Where(cm => cm.RestCount <= 0);
 			if (availableCrew.Count() < BoatPositions.Count)
 			{
 				return;
 			}
 			//get all crew combinations
-			List<BoatPosition> positionCrewCombos = new List<BoatPosition>();
+			Dictionary<string, int> positionCrewCombos = new Dictionary<string, int>();
 			foreach (var bp in BoatPositions)
 			{
 				foreach (var cm in availableCrew)
 				{
-					positionCrewCombos.Add(new BoatPosition
-					{
-						Position = bp.Position,
-						CrewMember = cm,
-						PositionScore = bp.Position.GetPositionRating(cm) + cm.GetMood() + cm.CrewOpinions.SingleOrDefault(op => op.Person == Manager).Opinion
-					});
+					positionCrewCombos.Add(string.Format("{0} {1}", bp.Position.Name, cm.Name), bp.Position.GetPositionRating(cm) + cm.GetMood() + cm.CrewOpinions.SingleOrDefault(op => op.Person == Manager).Opinion);
 				}
 			}
-            IEnumerable<IEnumerable<CrewMember>> crewOpinionCombos = GetPermutations(availableCrew, BoatPositions.Count - 1);
-            Dictionary<List<string>, int> crewOpinions = new Dictionary<List<string>, int>();
-            foreach (IEnumerable<CrewMember> possibleCrew in crewOpinionCombos)
-            {
-                List<string> crewList = possibleCrew.Select(pc => pc.Name).ToList();
-                crewOpinions.Add(crewList, 0);
-                foreach (var crewMember in possibleCrew)
-                {
-                    int opinion = 0;
-                    int opinionCount = 0;
-                    foreach (var otherMember in possibleCrew)
-                    {
-                        if (crewMember != otherMember)
-                        {
-                            opinion += crewMember.CrewOpinions.FirstOrDefault(op => op.Person == otherMember).Opinion;
-                            opinionCount++;
-                        }
-                    }
-                    opinion = opinion / opinionCount;
-                    crewOpinions[crewList] += opinion;
-                }
-            }
-            IEnumerable<IEnumerable<CrewMember>> crewCombos = GetOrderedPermutations(availableCrew, BoatPositions.Count - 1);
+			IEnumerable<IEnumerable<CrewMember>> crewOpinionCombos = GetPermutations(availableCrew, BoatPositions.Count - 1);
+			Dictionary<string, int> crewOpinions = new Dictionary<string, int>();
+			foreach (IEnumerable<CrewMember> possibleCrew in crewOpinionCombos)
+			{
+				List<string> crewList = possibleCrew.Select(pc => pc.Name).ToList();
+				var crewComboKey = crewList.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString();
+				crewOpinions.Add(crewComboKey, 0);
+				foreach (var crewMember in possibleCrew)
+				{
+					int opinion = 0;
+					int opinionCount = 0;
+					foreach (var otherMember in possibleCrew)
+					{
+						if (crewMember != otherMember)
+						{
+							opinion += crewMember.CrewOpinions.FirstOrDefault(op => op.Person == otherMember).Opinion;
+							opinionCount++;
+						}
+					}
+					opinion = opinion / opinionCount;
+					crewOpinions[crewComboKey] += opinion;
+				}
+			}
+			int opinionDifference = crewOpinions.Values.Max() - crewOpinions.Values.Min();
+			IEnumerable<IEnumerable<CrewMember>> crewCombos = GetOrderedPermutations(availableCrew, BoatPositions.Count - 1);
 			int bestScore = 0;
 			List<List<BoatPosition>> bestCrew = new List<List<BoatPosition>>();
 			//for each possible combination
 			foreach (IEnumerable<CrewMember> possibleCrew in crewCombos)
 			{
-				tempBoat.BoatScore = 0;
-				List<CrewMember> crewList = possibleCrew.ToList();
-				//assign crew members to their positions
-				for (int i = 0; i < tempBoat.BoatPositions.Count; i++)
+                int score = 0;
+                List<CrewMember> crewList = possibleCrew.ToList();
+                List<BoatPosition> positionedCrew = new List<BoatPosition>();
+				//assign crew members to their positions and get the score for this set-up
+				for (int i = 0; i < BoatPositions.Count; i++)
 				{
-					tempBoat.BoatPositions[i].CrewMember = crewList[i];
+                    positionedCrew.Add(new BoatPosition
+                    {
+                        Position = BoatPositions[i].Position,
+                        CrewMember = crewList[i],
+                        PositionScore = positionCrewCombos[string.Format("{0} {1}", BoatPositions[i].Position.Name, crewList[i].Name)]
+                    });
+                    score += positionedCrew[i].PositionScore;
 				}
-				//get the score for this set-up
-				foreach (var boatPosition in tempBoat.BoatPositions)
+				if (score + opinionDifference < bestScore)
 				{
-					boatPosition.PositionScore = positionCrewCombos.FirstOrDefault(pcc => pcc.Position.Name == boatPosition.Position.Name && pcc.CrewMember.Name == boatPosition.CrewMember.Name).PositionScore;
-					tempBoat.BoatScore += boatPosition.PositionScore;
+					continue;
 				}
-                var nameList = crewList.OrderBy(cm => cm.Name).Select(pc => pc.Name).ToList();
-                var matchingNames = crewOpinions.Keys.FirstOrDefault(co => co.All(cos => nameList.Contains(cos)));
-                int opinion = crewOpinions[matchingNames];
-                tempBoat.BoatScore += opinion;
-                //if the score for this set-up is higher or equal than the current highest, set up a new list of BoatPositions for the set-up
-                if (tempBoat.BoatScore >= bestScore)
+				var nameList = crewList.Select(pc => pc.Name).ToList();
+				nameList.Sort();
+				var crewComboKey = nameList.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString();
+				int opinion = crewOpinions[crewComboKey];
+                score += opinion;
+				//if the score for this set-up is higher or equal than the current highest, set up a new list of BoatPositions for the set-up
+				if (score >= bestScore)
 				{
-					List<BoatPosition> thisCrew = new List<BoatPosition>();
-					tempBoat.BoatPositions.ForEach(bp => thisCrew.Add(new BoatPosition
-					{
-						Position = bp.Position,
-						CrewMember = bp.CrewMember,
-						PositionScore = bp.PositionScore
-					}));
 					//if the set-up has a higher score, clear the current list
-					if (tempBoat.BoatScore > bestScore)
+					if (score > bestScore)
 					{
 						bestCrew.Clear();
-						bestScore = tempBoat.BoatScore;
+						bestScore = score;
 					}
 					//add this set-up to the list of best crews
-					bestCrew.Add(thisCrew);
+					bestCrew.Add(positionedCrew);
 				}
 			}
 			_idealCrew = bestCrew;

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Contains all logic to communicate between TeamSelectionUI and GameManager
@@ -92,7 +93,7 @@ public class TeamSelection : MonoBehaviour {
 	/// <summary>
 	/// Confirm the line-up and get its score
 	/// </summary>
-	public int ConfirmLineUp(int offset = 0, bool historical = false)
+	public Boat ConfirmLineUp(int offset = 0, bool historical = false)
 	{
 		int score = 0;
 		_confirmCount++;
@@ -106,7 +107,6 @@ public class TeamSelection : MonoBehaviour {
 		else
 		{
 			_gameManager.SaveLineUp(offset);
-			score = _gameManager.Boat.BoatScore;
 			if (_confirmCount >= _sessionLength)
 			{
 				_gameManager.ConfirmLineUp();
@@ -114,7 +114,7 @@ public class TeamSelection : MonoBehaviour {
 			}
 			_postRaceEvent.GetEvent();
 		}
-		return score;
+		return _gameManager.LineUpHistory.Last();
 	}
 
 	/// <summary>

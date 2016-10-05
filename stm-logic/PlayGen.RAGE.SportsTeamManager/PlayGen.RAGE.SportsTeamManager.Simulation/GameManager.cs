@@ -73,8 +73,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				crew = new List<CrewMember>();
 				for (int i = 0; i < Boat.BoatPositions.Count * 2; i++)
 				{
-					crew.Add(new CrewMember(random, Boat, _config));
+					Boat.AddCrew(new CrewMember(random, Boat, _config));
 				}
+			}
+			if (!initialCrew)
+			{
+				crew.ForEach(cm => Boat.AddCrew(cm));
 			}
 			ActionAllowance = (int)_config.ConfigValues[ConfigKeys.DefaultActionAllowance.ToString()] + ((int)_config.ConfigValues[ConfigKeys.ActionAllowancePerPosition.ToString()] * Boat.BoatPositions.Count);
 			CrewEditAllowance = (int)_config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition.ToString()] * Boat.BoatPositions.Count;
@@ -95,11 +99,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			manager.SaveStatus();
 
 			//set up files and details for each CrewMember
-			foreach (CrewMember member in crew)
+			foreach (CrewMember member in Boat.GetAllCrewMembers())
 			{
 				member.CreateFile(iat, combinedStorageLocation);
 				member.Avatar = new Avatar(member);
-				Boat.AddCrew(member);
 				Boat.SetCrewColors(member.Avatar);
 				if (!initialCrew)
 				{
@@ -114,13 +117,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						member.AddOrUpdateRevealedOpinion(Boat.Manager, 0);
 					}
 				}
+				else
+				{
+					member.CreateInitialOpinions(random, Boat);
+				}
 				member.UpdateBeliefs("null");
 				member.SaveStatus();
-			}
-
-			if (initialCrew)
-			{
-				Boat.GetAllCrewMembers().ForEach(cm => cm.CreateInitialOpinions(random, Boat));
 			}
 			iat.SaveToFile(Path.Combine(combinedStorageLocation, boatName + ".iat"));
 			EventController = new EventController();
@@ -304,6 +306,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					boat.BoatPositions[i].PositionScore = Convert.ToInt32(subjectSplit[(i + 1) * 2]);
 				}
 				boat.IdealMatchScore = float.Parse(subjectSplit[(boat.BoatPositions.Count * 2) + 1]);
+				boat.BoatScore = boat.BoatPositions.Sum(bp => bp.PositionScore);
 				boat.SelectionMistakes = new List<string>();
 				for (int i = (boat.BoatPositions.Count + 1) * 2; i < subjectSplit.Length - 1; i++)
 				{
@@ -328,9 +331,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				case "AltDinghy":
 					newBoat = new BiggerDinghy(_config);
 					break;
-				/*case "BiggerDinghy":
+				case "BiggerDinghy":
 					newBoat = new BiggestDinghy(_config);
-					break;*/
+					break;
 				default:
 					return;
 			}
@@ -341,6 +344,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			int extraMembers = (newBoat.BoatPositions.Count - Boat.BoatPositions.Count) * 2;
 			//reload the current game
 			LoadGame(_storageLocation, Boat.Name);
+			Boat.UpdateBoatScore();
+			Boat.GetIdealCrew();
 			Random rand = new Random();
 			for (int i = 0; i < extraMembers; i++)
 			{
@@ -381,8 +386,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void SaveLineUp(int offset)
 		{
-			Boat.GetIdealCrew();
 			Boat.UpdateBoatScore();
+			Boat.GetIdealCrew();
 			var manager = Boat.Manager;
 			var spacelessName = manager.RolePlayCharacter.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
@@ -427,7 +432,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					PositionScore = bp.PositionScore
 				});
 			}
-			lastBoat.IdealMatchScore = lastBoat.IdealMatchScore;
+			lastBoat.SelectionMistakes = Boat.SelectionMistakes;
+			lastBoat.IdealMatchScore = Boat.IdealMatchScore;
+			lastBoat.BoatScore = lastBoat.BoatPositions.Sum(bp => bp.PositionScore);
 			lastBoat.Manager = Boat.Manager;
 			LineUpHistory.Add(lastBoat);
 			HistoricTimeOffset.Add(offset);

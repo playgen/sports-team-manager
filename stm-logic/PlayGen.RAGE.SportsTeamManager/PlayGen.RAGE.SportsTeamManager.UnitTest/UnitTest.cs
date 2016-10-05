@@ -540,7 +540,22 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			}
 		}
 
-		public List<CrewMember> CreateInitialCrew(ConfigStore config)
+        [TestMethod]
+        public void IdealSpeedTest()
+        {
+            GameManager gameManager = new GameManager();
+            gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Ideal Test", new int[] { 0, 0, 0 }, new int[] { 0, 0, 0 }, "Player Manager", "18", "Male");
+            gameManager.PromoteBoat();
+            gameManager.PromoteBoat();
+            gameManager.PromoteBoat();
+            Assert.AreEqual(12, gameManager.Boat.UnassignedCrew.Count);
+            gameManager.AddRecruit(gameManager.Boat.Recruits[0]);
+            gameManager.AddRecruit(gameManager.Boat.Recruits[0]);
+            Assert.AreEqual(14, gameManager.Boat.UnassignedCrew.Count);
+            gameManager.Boat.GetIdealCrew();
+        }
+
+        public List<CrewMember> CreateInitialCrew(ConfigStore config)
 		{
 			CrewMember[] crew = {
 			new CrewMember (config)
