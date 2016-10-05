@@ -145,6 +145,7 @@ public class TeamSelectionUI : MonoBehaviour {
 				boat.GetComponent<LayoutElement>().preferredHeight = Mathf.Abs(currentPosition) * 0.2f;
 			}
 		}
+		Debug.Log(_teamSelection.GetBoat().Running);
 	}
 
 	/// <summary>
@@ -461,8 +462,9 @@ public class TeamSelectionUI : MonoBehaviour {
 			Destroy(position);
 		}
 		var offset = UnityEngine.Random.Range(0, 10);
+		
 		var currentBoat = _teamSelection.ConfirmLineUp(offset);
-		var idealScore = _teamSelection.IdealCheck();
+		var idealScore = currentBoat.IdealMatchScore;
 		var mistakeList = currentBoat.GetAssignmentMistakes(3);
 		CreateMistakeIcons(mistakeList, _currentBoat, idealScore, currentBoat.BoatPositions.Count);
 		var scoreDiff = GetResult(_teamSelection.IsRace(), currentBoat.BoatScore, currentPositions.Count, offset, _currentBoat.transform.Find("Score").GetComponent<Text>(), currentPositions);

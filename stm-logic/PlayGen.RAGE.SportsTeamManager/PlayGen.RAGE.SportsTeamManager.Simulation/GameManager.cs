@@ -2,6 +2,7 @@
 using IntegratedAuthoringTool;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -342,8 +343,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var extraMembers = (newBoat.BoatPositions.Count - Boat.BoatPositions.Count) * 2;
 			//reload the current game
 			LoadGame(_storageLocation, Boat.Name);
-			Boat.UpdateBoatScore();
-			Boat.GetIdealCrew();
 			var rand = new Random();
 			for (var i = 0; i < extraMembers; i++)
 			{
