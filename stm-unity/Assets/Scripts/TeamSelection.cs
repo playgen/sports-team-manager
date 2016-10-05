@@ -95,7 +95,6 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public Boat ConfirmLineUp(int offset = 0, bool historical = false)
 	{
-		var score = 0;
 		_confirmCount++;
 		if (historical)
 		{

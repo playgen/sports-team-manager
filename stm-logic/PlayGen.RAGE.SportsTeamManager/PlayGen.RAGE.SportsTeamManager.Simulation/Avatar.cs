@@ -8,6 +8,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class Avatar
 	{
+		private AvatarGeneratorConfig _config;
+
 		public string BodyType { get; private set; }
 		public string OutfitBaseType { get; private set; }
 		public string OutfitHighlightType { get; private set; }
@@ -31,8 +33,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Color HairColor { get; private set; }
 		public Color PrimaryOutfitColor { get; set; }
 		public Color SecondaryOutfitColor { get; set; }
-
-		private AvatarGeneratorConfig _config { get; set; }
 
 		public Avatar (CrewMember crewMember, bool isActive = true, bool canLoad = false)
 		{

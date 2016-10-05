@@ -54,18 +54,18 @@ public class RecruitMember : MonoBehaviour {
 		return _gameManager.ActionAllowance;
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Get the value stored in the config
 	/// </summary>
 	public float GetConfigValue(ConfigKeys eventKey)
-    {
-        return _gameManager.GetConfigValue(eventKey);
-    }
+	{
+		return _gameManager.GetConfigValue(eventKey);
+	}
 
-    /// <summary>
-    /// Get the amount of ActionAllowance provided at the beginning of the race session
-    /// </summary>
-    public int StartingQuestionAllowance()
+	/// <summary>
+	/// Get the amount of ActionAllowance provided at the beginning of the race session
+	/// </summary>
+	public int StartingQuestionAllowance()
 	{
 		return _gameManager.GetStartingActionAllowance();
 	}

@@ -155,13 +155,13 @@ public class NewGameUI : MonoBehaviour {
 	public void NewGame()
 	{
 		Tracker.T.alternative.Selected("New Game", "Created Game", AlternativeTracker.Alternative.Menu);
-		var colorsPri = new int[]
+		var colorsPri = new []
 			{
 				(int)(_colorImagePrimary.color.r * 255),
 				(int)(_colorImagePrimary.color.g * 255),
 				(int)(_colorImagePrimary.color.b * 255)
 			};
-		var colorsSec = new int[]
+		var colorsSec = new []
 		{
 				(int)(_colorImageSecondary.color.r * 255),
 				(int)(_colorImageSecondary.color.g * 255),

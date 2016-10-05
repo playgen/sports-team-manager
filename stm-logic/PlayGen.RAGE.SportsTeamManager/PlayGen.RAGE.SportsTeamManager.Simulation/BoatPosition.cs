@@ -36,19 +36,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					if (bp != this && bp.CrewMember != null)
 					{
-						var crewMember = CrewMember.CrewOpinions.SingleOrDefault(op => op.Person == bp.CrewMember);
-						if (crewMember != null)
-						{
-							opinion += crewMember.Opinion;
-						}
+						opinion += CrewMember.CrewOpinions[bp.CrewMember];
 						opinionCount++;
 					}
 				}
-				var manager = CrewMember.CrewOpinions.SingleOrDefault(op => op.Person == boat.Manager);
-				if (manager != null)
-				{
-					managerOpinion += manager.Opinion;
-				}
+				managerOpinion += CrewMember.CrewOpinions[boat.Manager];
 			}
 
 			if (opinionCount > 0)

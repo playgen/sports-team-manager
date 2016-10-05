@@ -121,7 +121,7 @@ public class MemberMeetingUI : MonoBehaviour
 			_roleButton.gameObject.SetActive(true);
 			_roleButton.onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentRole); });
 			_roleButton.GetComponentInChildren<Text>().text = currentRole.Name.ToUpper();
-			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = _teamSelectionUI.RoleLogos.FirstOrDefault(mo => mo.Name == currentRole.Name).Image;
+			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = _teamSelectionUI.RoleLogos.First(mo => mo.Name == currentRole.Name).Image;
 		}
 		else
 		{
@@ -134,10 +134,10 @@ public class MemberMeetingUI : MonoBehaviour
 		}
 		_dialogueText.text = "You wanted to see me?";
 		_nameText.text = "What do you want to ask?";
-		_statQuestion.text = _memberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).FirstOrDefault();
-		_roleQuestion.text = _memberMeeting.GetEventText("RoleReveal").OrderBy(s => Guid.NewGuid()).FirstOrDefault();
-		_opinionPositiveQuestion.text = _memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).FirstOrDefault();
-		_opinionNegativeQuestion.text = _memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).FirstOrDefault();
+		_statQuestion.text = _memberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).First();
+		_roleQuestion.text = _memberMeeting.GetEventText("RoleReveal").OrderBy(s => Guid.NewGuid()).First();
+		_opinionPositiveQuestion.text = _memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).First();
+		_opinionNegativeQuestion.text = _memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).First();
 		_statQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.SkillRevealCost).ToString();
 		_roleQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost).ToString();
 		_opinionPositiveQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionPositiveRevealCost).ToString();
@@ -164,8 +164,8 @@ public class MemberMeetingUI : MonoBehaviour
 				{
 					opinionImage.enabled = true;
 					opinionImage.sprite = null;
-					var opinion = _currentMember.RevealedCrewOpinions.FirstOrDefault(co => co.Person == crewMember.CrewMember);
-					opinionImage.sprite = _opinionIcons[(opinion.Opinion > 0 ? Mathf.CeilToInt(opinion.Opinion / 3f) : Mathf.FloorToInt(opinion.Opinion / 3f)) + 2];
+					var opinion = _currentMember.RevealedCrewOpinions[crewMember.CrewMember];
+					opinionImage.sprite = _opinionIcons[(opinion > 0 ? Mathf.CeilToInt(opinion / 3f) : Mathf.FloorToInt(opinion / 3f)) + 2];
 				}
 			}
 		}

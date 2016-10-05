@@ -25,8 +25,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string Load(string fileId)
 		{
 			fileId = fileId.Replace(".", "_").ToLower();
-            fileId = fileId.Split('\\').Last();
-            var obj = Templates.ResourceManager.GetString(fileId);
+			fileId = fileId.Split('\\').Last();
+			var obj = Templates.ResourceManager.GetString(fileId);
 			return obj;
 		}
 

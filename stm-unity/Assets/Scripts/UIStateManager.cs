@@ -1,5 +1,4 @@
-﻿using PlayGen.RAGE.SportsTeamManager.Simulation;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 

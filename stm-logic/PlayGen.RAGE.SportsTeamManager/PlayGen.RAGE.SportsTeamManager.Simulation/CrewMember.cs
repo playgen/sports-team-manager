@@ -13,13 +13,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class CrewMember : Person, IComparable<CrewMember>
 	{
+		private readonly ConfigStore _config;
+		
 		public Dictionary<CrewMemberSkill, int> Skills { get; set; }
 		public Dictionary<CrewMemberSkill, int> RevealedSkills { get; }
-		public List<CrewOpinion> CrewOpinions { get; }
-		public List<CrewOpinion> RevealedCrewOpinions { get; }
+		public Dictionary<Person, int> CrewOpinions { get; }
+		public Dictionary<Person, int> RevealedCrewOpinions { get; }
 		public int RestCount { get; private set; }
 		public Avatar Avatar { get; set; }
-		private ConfigStore _config { get; }
 
 		/// <summary>
 		/// Constructor for creating a CrewMember with a non-random age/gender/name
@@ -32,8 +33,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				RevealedSkills.Add(skill, 0);
 			}
-			CrewOpinions = new List<CrewOpinion>();
-			RevealedCrewOpinions = new List<CrewOpinion>();
+			CrewOpinions = new Dictionary<Person, int>();
+			RevealedCrewOpinions = new Dictionary<Person, int>();
 		}
 
 		/// <summary>
@@ -49,8 +50,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Skills.Add(skill, 0);
 				RevealedSkills.Add(skill, 0);
 			}
-			CrewOpinions = new List<CrewOpinion>();
-			RevealedCrewOpinions = new List<CrewOpinion>();
+			CrewOpinions = new Dictionary<Person, int>();
+			RevealedCrewOpinions = new Dictionary<Person, int>();
 		}
 
 		/// <summary>
@@ -67,8 +68,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				RevealedSkills.Add(skill, 0);
 			}
-			CrewOpinions = new List<CrewOpinion>();
-			RevealedCrewOpinions = new List<CrewOpinion>();
+			CrewOpinions = new Dictionary<Person, int>();
+			RevealedCrewOpinions = new Dictionary<Person, int>();
 			boat.UniqueNameCheck(random, this);
 			//select a position that is in need of a new crew member
 			var selectedPerferred = boat.GetWeakPosition(random);
@@ -172,63 +173,37 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void AddOrUpdateOpinion(Person person, int change, bool replace = false)
 		{
-			var cw = CrewOpinions.SingleOrDefault(op => op.Person == person);
-			if (cw != null)
+			if (!CrewOpinions.ContainsKey(person))
 			{
-				if (replace)
-				{
-					cw.Opinion = change;
-				}
-				else
-				{
-					cw.Opinion += change;
-				}
+				CrewOpinions.Add(person, 0);
+			}
+			if (replace)
+			{
+				CrewOpinions[person] = change;
 			}
 			else
 			{
-				cw = new CrewOpinion
-				{
-					Person = person,
-					Opinion = change
-				};
-				CrewOpinions.Add(cw);
+				CrewOpinions[person] += change;
 			}
-			if (cw.Opinion < -5)
+			if (CrewOpinions[person] < -5)
 			{
-				cw.Opinion = -5;
+				CrewOpinions[person] = -5;
 			}
-			if (cw.Opinion > 5)
+			if (CrewOpinions[person] > 5)
 			{
-				cw.Opinion = 5;
+				CrewOpinions[person] = 5;
 			}
-			UpdateSingleBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), cw.Person.Name.Replace(" ", "")), cw.Opinion.ToString());
+			UpdateSingleBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), person.Name.Replace(" ", "")), CrewOpinions[person].ToString());
 		}
 
 		public void AddOrUpdateRevealedOpinion(Person person, int change)
 		{
-			var cw = RevealedCrewOpinions.SingleOrDefault(op => op.Person == person);
-			if (cw != null)
+			if (!RevealedCrewOpinions.ContainsKey(person))
 			{
-				cw.Opinion = change;
+				RevealedCrewOpinions.Add(person, 0);
 			}
-			else
-			{
-				cw = new CrewOpinion
-				{
-					Person = person,
-					Opinion = change
-				};
-				RevealedCrewOpinions.Add(cw);
-			}
-			if (cw.Opinion < -5)
-			{
-				cw.Opinion = -5;
-			}
-			if (cw.Opinion > 5)
-			{
-				cw.Opinion = 5;
-			}
-			UpdateSingleBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), cw.Person.Name.Replace(" ", "")), cw.Opinion.ToString());
+			RevealedCrewOpinions[person] = change;
+			UpdateSingleBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), person.Name.Replace(" ", "")), RevealedCrewOpinions[person].ToString());
 		}
 
 		/// <summary>
@@ -302,7 +277,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public BoatPosition GetBoatPosition(Boat boat)
 		{
-			return boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
+			return boat.BoatPositions.FirstOrDefault(bp => bp.CrewMember == this);
 		}
 
 		/// <summary>
@@ -312,14 +287,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			/*var spacelessName = RolePlayCharacter.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			var currentPosition = boat.BoatPositions.SingleOrDefault(bp => bp.CrewMember == this);
+			var currentPosition = boat.BoatPositions.Single(bp => bp.CrewMember == this);
 			int positionScore = currentPosition != null ? currentPosition.Position.GetPositionRating(this) : 0;
 			var eventString = string.Format("PositionRating({0})", positionScore);
 			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 			if (positionRpc != null)
 			{
-				var positionKey = positionRpc.Parameters.FirstOrDefault().GetValue().ToString();
+				var positionKey = positionRpc.Parameters.First().GetValue().ToString();
 				switch (positionKey)
 				{
 					case "Good":
@@ -360,7 +335,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
 					if (opinionRpc != null)
 					{
-						var opinionKey = opinionRpc.Parameters.FirstOrDefault().GetValue().ToString();
+						var opinionKey = opinionRpc.Parameters.First().GetValue().ToString();
 						switch (opinionKey)
 						{
 							case "DislikedInBetter":
@@ -437,13 +412,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					break;
 				case "OpinionRevealPositive":
-					var crewOpinionsPositive = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Person.Name)).ToList();
-					crewOpinionsPositive.AddRange(CrewOpinions.Where(c => c.Person == boat.Manager));
-					var opinionsPositive = crewOpinionsPositive.Where(co => co.Opinion >= (int)_config.ConfigValues[ConfigKeys.OpinionLike.ToString()]);
-					var pickedOpinionPositive = opinionsPositive.OrderBy(o => Guid.NewGuid()).FirstOrDefault();
-					if (pickedOpinionPositive != null)
+					var crewOpinionsPositive = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Key.Name)).ToDictionary(p => p.Key, p => p.Value);
+					crewOpinionsPositive.Add(boat.Manager, CrewOpinions[boat.Manager]);
+					var opinionsPositive = crewOpinionsPositive.Where(co => co.Value >= (int)_config.ConfigValues[ConfigKeys.OpinionLike.ToString()]);
+					if (opinionsPositive.Any())
 					{
-						if (pickedOpinionPositive.Opinion >= (int)_config.ConfigValues[ConfigKeys.OpinionStrongLike.ToString()])
+						var pickedOpinionPositive = opinionsPositive.OrderBy(o => Guid.NewGuid()).First();
+						if (pickedOpinionPositive.Value >= (int)_config.ConfigValues[ConfigKeys.OpinionStrongLike.ToString()])
 						{
 							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "High").ToName()).ToList();
 						}
@@ -453,13 +428,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						if (dialogueOptions.Any())
 						{
-							reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionPositive.Person.Name);
-							if (pickedOpinionPositive.Person == boat.Manager)
+							reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionPositive.Key.Name);
+							if (pickedOpinionPositive.Key == boat.Manager)
 							{
 								reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, "you");
 							}
 						}
-						AddOrUpdateRevealedOpinion(pickedOpinionPositive.Person, pickedOpinionPositive.Opinion);
+						AddOrUpdateRevealedOpinion(pickedOpinionPositive.Key, pickedOpinionPositive.Value);
 					}
 					else
 					{
@@ -471,13 +446,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					break;
 				case "OpinionRevealNegative":
-					var crewOpinionsNegative = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Person.Name)).ToList();
-					crewOpinionsNegative.AddRange(CrewOpinions.Where(c => c.Person == boat.Manager));
-					var opinionsNegative = crewOpinionsNegative.Where(co => co.Opinion <= (int)_config.ConfigValues[ConfigKeys.OpinionDislike.ToString()]);
-					var pickedOpinionNegative = opinionsNegative.OrderBy(o => Guid.NewGuid()).FirstOrDefault();
-					if (pickedOpinionNegative != null)
+					var crewOpinionsNegative = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Key.Name)).ToDictionary(p => p.Key, p => p.Value);
+					crewOpinionsNegative.Add(boat.Manager, CrewOpinions[boat.Manager]);
+					var opinionsNegative = crewOpinionsNegative.Where(co => co.Value <= (int)_config.ConfigValues[ConfigKeys.OpinionDislike.ToString()]);
+					if (opinionsNegative.Any())
 					{
-						if (pickedOpinionNegative.Opinion <= (int)_config.ConfigValues[ConfigKeys.OpinionStrongDislike.ToString()])
+						var pickedOpinionNegative = opinionsNegative.OrderBy(o => Guid.NewGuid()).First();
+						if (pickedOpinionNegative.Value <= (int)_config.ConfigValues[ConfigKeys.OpinionStrongDislike.ToString()])
 						{
 							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "High").ToName()).ToList();
 						}
@@ -487,13 +462,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						if (dialogueOptions.Any())
 						{
-							reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionNegative.Person.Name);
-							if (pickedOpinionNegative.Person == boat.Manager)
+							reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionNegative.Key.Name);
+							if (pickedOpinionNegative.Key == boat.Manager)
 							{
 								reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, "you");
 							}
 						}
-						AddOrUpdateRevealedOpinion(pickedOpinionNegative.Person, pickedOpinionNegative.Opinion);
+						AddOrUpdateRevealedOpinion(pickedOpinionNegative.Key, pickedOpinionNegative.Value);
 					}
 					else
 					{

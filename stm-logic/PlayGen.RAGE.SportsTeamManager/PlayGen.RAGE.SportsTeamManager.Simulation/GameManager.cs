@@ -1,6 +1,5 @@
 ﻿using EmotionalAppraisal;
 using IntegratedAuthoringTool;
-using RolePlayCharacter;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,18 +16,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class GameManager
 	{
+		private IntegratedAuthoringToolAsset _iat;
+		private string _storageLocation;
+		private readonly ConfigStore _config;
+
 		public Boat Boat { get; private set; }
 		public EventController EventController { get; private set; }
-
 		public List<Boat> LineUpHistory { get; private set; }
 		public List<int> HistoricTimeOffset { get; private set; }
 		public int ActionAllowance { get; private set; }
 		public int CrewEditAllowance { get; private set; }
 		public int RaceSessionLength { get; private set; }
-		private IntegratedAuthoringToolAsset _iat { get; set; }
-		private string _storageLocation { get; set; }
-
-		private ConfigStore _config { get; }
 
 		/// <summary>
 		/// GameManager Constructor
@@ -302,7 +300,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//position crew members and gather set-up information using details from split string
 				for (var i = 0; i < boat.BoatPositions.Count; i++)
 				{
-					boat.BoatPositions[i].CrewMember = Boat.GetAllCrewMembersIncludingRetired().SingleOrDefault(c => c.Name.Replace(" ", "") == subjectSplit[((i + 1) * 2) - 1].Replace(" ", ""));
+					boat.BoatPositions[i].CrewMember = Boat.GetAllCrewMembersIncludingRetired().Single(c => c.Name.Replace(" ", "") == subjectSplit[((i + 1) * 2) - 1].Replace(" ", ""));
 					boat.BoatPositions[i].PositionScore = Convert.ToInt32(subjectSplit[(i + 1) * 2]);
 				}
 				boat.IdealMatchScore = float.Parse(subjectSplit[(boat.BoatPositions.Count * 2) + 1]);
@@ -503,11 +501,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					case "NotPicked":
 						//for this event, select a crew member who was not selected in the previous race
-						foreach (var bp in LineUpHistory.LastOrDefault().BoatPositions)
+						foreach (var bp in LineUpHistory.Last().BoatPositions)
 						{
 							if (bp.CrewMember != null)
 							{
-								allCrew.Remove(allCrew.FirstOrDefault(ac => ac.Name == bp.CrewMember.Name));
+								allCrew.Remove(allCrew.First(ac => ac.Name == bp.CrewMember.Name));
 							}
 						}
 						foreach (var kvp in selectedEvents)
@@ -597,7 +595,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public Dictionary<CrewMember, string> SendPostRaceEvent(DialogueStateActionDTO dialogue, List<CrewMember> members)
 		{
-			var replies = EventController.SendPostRaceEvent(_iat, dialogue, members, Boat, LineUpHistory.LastOrDefault());
+			var replies = EventController.SendPostRaceEvent(_iat, dialogue, members, Boat, LineUpHistory.Last());
 			return replies;
 		}
 
@@ -794,13 +792,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				foreach (var member in members)
 				{
 					var reply = member.SendRecruitEvent(_iat, skill);
-					if (reply != null)
-					{
-						replies.Add(member, reply);
-					} else
-					{
-						replies.Add(member, "");
-					}
+					replies.Add(member, reply ?? "");
 				}
 				DeductCost(cost);
 				return replies;

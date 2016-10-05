@@ -12,7 +12,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 			var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
-			return attributes.FirstOrDefault()?.Description ?? value.ToString();
+			return attributes.First()?.Description ?? value.ToString();
 		}
 	}
 }

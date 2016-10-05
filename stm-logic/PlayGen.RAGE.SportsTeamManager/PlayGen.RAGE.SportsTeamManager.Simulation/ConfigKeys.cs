@@ -33,13 +33,13 @@
 		OpinionNegativeRevealCost,
 		SendRecruitmentQuestionCost,
 		RaceSessionLength,
-        TicksPerSession,
-        EventChance,
+		TicksPerSession,
+		EventChance,
 		PracticeEventChanceReduction,
 		RecruitCount,
 		RecruitChangeChance,
 		HiddenMistakeLimit,
 		HiddenOpinionLimit,
-        LastNameBonusOpinion
-    }
+		LastNameBonusOpinion
+	}
 }

@@ -78,7 +78,7 @@ public class PositionDisplayUI : MonoBehaviour
 	{
 		if (gameObject.activeSelf)
 		{
-			Display(_positionDisplay.GetBoat().BoatPositions.Select(bp => bp.Position).FirstOrDefault(p => p.Name == _textList[0].text));
+			Display(_positionDisplay.GetBoat().BoatPositions.Select(bp => bp.Position).First(p => p.Name == _textList[0].text));
 		}
 	}
 
@@ -104,13 +104,13 @@ public class PositionDisplayUI : MonoBehaviour
 	{
 		var currentBoat = _positionDisplay.GetBoat();
 		CrewMember currentCrew = null;
-		if (currentBoat.BoatPositions.FirstOrDefault(bp => bp.Position.Name == position.Name) != null)
+		if (currentBoat.BoatPositions.Any(bp => bp.Position.Name == position.Name))
 		{
-			currentCrew = currentBoat.BoatPositions.FirstOrDefault(bp => bp.Position.Name == position.Name).CrewMember;
+			currentCrew = currentBoat.BoatPositions.First(bp => bp.Position.Name == position.Name).CrewMember;
 		}
 		_textList[0].text = position.Name;
 		_textList[1].text = position.Description;
-		_roleImage.sprite = _roleSprites.FirstOrDefault(mo => mo.Name == position.Name).Image;
+		_roleImage.sprite = _roleSprites.First(mo => mo.Name == position.Name).Image;
 		_currentButton.onClick.RemoveAllListeners();
 		_currentAvatar.gameObject.SetActive(currentCrew != null);
 		_currentName.gameObject.SetActive(currentCrew != null);

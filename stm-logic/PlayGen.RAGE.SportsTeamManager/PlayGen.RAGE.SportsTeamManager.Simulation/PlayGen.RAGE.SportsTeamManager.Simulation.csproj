@@ -93,7 +93,6 @@
     <Compile Include="ConfigStore.cs" />
     <Compile Include="CrewMember.cs" />
     <Compile Include="CrewMemberSkill.cs" />
-    <Compile Include="CrewOpinion.cs" />
     <Compile Include="AltDinghy.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="EventController.cs" />

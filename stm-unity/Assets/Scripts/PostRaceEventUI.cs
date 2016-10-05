@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using IntegratedAuthoringTool.DTOs;
-using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -124,7 +122,7 @@ public class PostRaceEventUI : MonoBehaviour
 		var response = _postRaceEvent.SendReply(reply);
 		if (response != null)
 		{
-			_dialogueText.text = response.FirstOrDefault().Value;
+			_dialogueText.text = response.First().Value;
 			ResetQuestions();
 		}
 	}

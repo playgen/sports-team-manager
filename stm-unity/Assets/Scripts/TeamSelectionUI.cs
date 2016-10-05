@@ -202,7 +202,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			var positionObject = Instantiate(_positionPrefab);
 			positionObject.transform.SetParent(newBoat.transform.Find("Position Container"), false);
 			positionObject.transform.Find("Name").GetComponent<Text>().text = pos.Name;
-			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.FirstOrDefault(mo => mo.Name == pos.Name).Image;
+			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.Name).Image;
 			positionObject.name = pos.Name;
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
 		}
@@ -337,7 +337,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			var mistakeObject = Instantiate(_mistakePrefab);
 			mistakeObject.transform.SetParent(mistakeParent, false);
 			mistakeObject.name = mistake;
-			var mistakeIcon = _mistakeIcons.FirstOrDefault(mo => mo.Name == mistake).Image;
+			var mistakeIcon = _mistakeIcons.First(mo => mo.Name == mistake).Image;
 			mistakeObject.GetComponent<Image>().sprite = mistakeIcon;
 			FeedbackHoverOver(mistakeObject.transform, Regex.Replace(mistake, "([a-z])([A-Z])", "$1 $2"));
 		}
@@ -464,7 +464,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var currentBoat = _teamSelection.ConfirmLineUp(offset);
 		var idealScore = _teamSelection.IdealCheck();
 		var mistakeList = currentBoat.GetAssignmentMistakes(3);
-		CreateMistakeIcons(mistakeList, _currentBoat, idealScore, _teamSelection.GetBoat().BoatPositions.Count);
+		CreateMistakeIcons(mistakeList, _currentBoat, idealScore, currentBoat.BoatPositions.Count);
 		var scoreDiff = GetResult(_teamSelection.IsRace(), currentBoat.BoatScore, currentPositions.Count, offset, _currentBoat.transform.Find("Score").GetComponent<Text>(), currentPositions);
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
@@ -528,7 +528,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			memberObject.transform.SetParent(_postRacePopUp.transform.Find("Crew"), false);
 			memberObject.name = currentPositions[i].CrewMember.Name;
 			memberObject.transform.Find("Avatar").GetComponentInChildren<AvatarDisplay>().SetAvatar(currentPositions[i].CrewMember.Avatar, -(finishPosition - 3) * 2);
-			memberObject.transform.Find("Position").GetComponent<Image>().sprite = RoleLogos.FirstOrDefault(mo => mo.Name == currentPositions[i].Position.Name).Image;
+			memberObject.transform.Find("Position").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == currentPositions[i].Position.Name).Image;
 			memberObject.transform.Find("Position").GetComponent<RectTransform>().offsetMin = new Vector2(10, 0);
 			if (i % 2 != 0)
 			{

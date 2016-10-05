@@ -14,20 +14,21 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class Boat
 	{
+		private List<List<BoatPosition>> _idealCrew;
+		private List<BoatPosition> _nearestIdealMatch;
+		private readonly ConfigStore _config;
+
 		public string Name { get; set; }
 		public int[] TeamColorsPrimary { get; set; }
 		public int[] TeamColorsSecondary { get; set; }
 		public List<BoatPosition> BoatPositions { get; set; }
-		private List<List<BoatPosition>> _idealCrew { get; set; }
 		public List<CrewMember> UnassignedCrew { get; }
 		public List<CrewMember> RetiredCrew { get; }
 		public List<CrewMember> Recruits { get; }
 		public int BoatScore { get; set; }
 		public float IdealMatchScore { get; set; }
-		private List<BoatPosition> _nearestIdealMatch { get; set; }
 		public List<string> SelectionMistakes { get; set; }
 		public Person Manager { get; set; }
-		private ConfigStore _config { get;}
 
 		/// <summary>
 		/// Boat constructor
@@ -76,8 +77,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				return;
 			}
-			var current = UnassignedCrew.SingleOrDefault(c => c == crewMember);
-			if (current != null)
+			if (UnassignedCrew.Any(c => c == crewMember))
 			{
 				return;
 			}
@@ -207,15 +207,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public Position GetWeakPosition(Random random)
 		{
-			var positionStrength = GetPositionStrength();
+			var positionStrength = GetPositionStrength().OrderBy(kvp => kvp.Value).ToDictionary(p => p.Key, p => p.Value);
 			//if there is no position that has more available than another, select one at random
-			if (positionStrength.OrderBy(kvp => kvp.Value).Last().Value - positionStrength.OrderBy(kvp => kvp.Value).First().Value == 0)
+			if (positionStrength.Values.Max() - positionStrength.Values.Min() == 0)
 			{
 				var positionValue = random.Next(0, BoatPositions.Count + 1);
 				return positionValue < BoatPositions.Count ? BoatPositions[positionValue].Position : null;
 			}
 			//select from weaker positions if at least one position has less available members than another 
-			var lowValue = positionStrength.OrderBy(kvp => kvp.Value).First().Value;
+			var lowValue = positionStrength.Values.Min();
 			var lowPositions = positionStrength.Where(kvp => kvp.Value == lowValue).Select(kvp => kvp.Key).ToArray();
 			return lowPositions.OrderBy(p => Guid.NewGuid()).First();
 		}
@@ -257,8 +257,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				RemoveCrew(currentPosition);
 			}
-			var current = UnassignedCrew.SingleOrDefault(c => c == crewMember);
-			if (current != null)
+			if (UnassignedCrew.Any(c => c == crewMember))
 			{
 				UnassignedCrew.Remove(crewMember);
 			}
@@ -266,16 +265,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewMember.Retire();
 			foreach (var cm in GetAllCrewMembers())
 			{
-				var opinionToRemove = cm.CrewOpinions.FirstOrDefault(co => co.Person.Name == crewMember.Name);
-				if (opinionToRemove != null)
-				{
-					cm.CrewOpinions.Remove(opinionToRemove);
-				}
-				var revealedToRemove = cm.RevealedCrewOpinions.FirstOrDefault(co => co.Person.Name == crewMember.Name);
-				if (opinionToRemove != null)
-				{
-					cm.RevealedCrewOpinions.Remove(revealedToRemove);
-				}
+				cm.CrewOpinions.Remove(crewMember);
+				cm.RevealedCrewOpinions.Remove(crewMember);
 			}
 		}
 
@@ -296,8 +287,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void GetIdealCrew()
 		{
-			var availableCrew = GetAllCrewMembers().Where(cm => cm.RestCount <= 0);
-			if (availableCrew.Count() < BoatPositions.Count)
+			var availableCrew = GetAllCrewMembers().Where(cm => cm.RestCount <= 0).ToList();
+			if (availableCrew.Count < BoatPositions.Count)
 			{
 				return;
 			}
@@ -307,14 +298,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				foreach (var cm in availableCrew)
 				{
-					positionCrewCombos.Add(string.Format("{0} {1}", bp.Position.Name, cm.Name), bp.Position.GetPositionRating(cm) + cm.GetMood() + cm.CrewOpinions.SingleOrDefault(op => op.Person == Manager).Opinion);
+					positionCrewCombos.Add(string.Format("{0} {1}", bp.Position.Name, cm.Name), bp.Position.GetPositionRating(cm) + cm.GetMood() + cm.CrewOpinions[Manager]);
 				}
 			}
 			var crewOpinionCombos = GetPermutations(availableCrew, BoatPositions.Count - 1);
 			var crewOpinions = new Dictionary<string, int>();
 			foreach (var possibleCrew in crewOpinionCombos)
 			{
-				var crewList = possibleCrew.Select(pc => pc.Name).ToList();
+				var crewList = possibleCrew.Select(pc => pc.Name);
 				var crewComboKey = crewList.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString();
 				crewOpinions.Add(crewComboKey, 0);
 				foreach (var crewMember in possibleCrew)
@@ -325,7 +316,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						if (crewMember != otherMember)
 						{
-							opinion += crewMember.CrewOpinions.FirstOrDefault(op => op.Person == otherMember).Opinion;
+							opinion += crewMember.CrewOpinions[otherMember];
 							opinionCount++;
 						}
 					}
@@ -466,18 +457,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 				}
 				//add the difference in opinion of the manager to mistakeScores
-				mistakeScores["ManagerOpinion"] += _nearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
+				mistakeScores["ManagerOpinion"] += _nearestIdealMatch[i].CrewMember.CrewOpinions[Manager] - BoatPositions[i].CrewMember.CrewOpinions[Manager];
 				//if the player does not know this opinion, add the difference to hiddenScores
-				if (BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion != BoatPositions[i].CrewMember.RevealedCrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion)
+				if (BoatPositions[i].CrewMember.CrewOpinions[Manager] != BoatPositions[i].CrewMember.RevealedCrewOpinions[Manager])
 				{
-					hiddenScores["ManagerOpinion"] += _nearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
+					hiddenScores["ManagerOpinion"] += _nearestIdealMatch[i].CrewMember.CrewOpinions[Manager] - BoatPositions[i].CrewMember.CrewOpinions[Manager];
 				}
 				//add the difference in mood to mistakeScores
 				mistakeScores["Mood"] += _nearestIdealMatch[i].CrewMember.GetMood() - BoatPositions[i].CrewMember.GetMood();
 				//find the total score caused by crew opinion in the ideal set-up
-				var idealOpinion = _nearestIdealMatch[i].PositionScore - _nearestIdealMatch[i].Position.GetPositionRating(_nearestIdealMatch[i].CrewMember) - _nearestIdealMatch[i].CrewMember.GetMood() - _nearestIdealMatch[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
+				var idealOpinion = _nearestIdealMatch[i].PositionScore - _nearestIdealMatch[i].Position.GetPositionRating(_nearestIdealMatch[i].CrewMember) - _nearestIdealMatch[i].CrewMember.GetMood() - _nearestIdealMatch[i].CrewMember.CrewOpinions[Manager];
 				//find the total score caused by crew opinion in the current set-up
-				var currentOpinion = BoatPositions[i].PositionScore - BoatPositions[i].Position.GetPositionRating(BoatPositions[i].CrewMember) - BoatPositions[i].CrewMember.GetMood() - BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == Manager).Opinion;
+				var currentOpinion = BoatPositions[i].PositionScore - BoatPositions[i].Position.GetPositionRating(BoatPositions[i].CrewMember) - BoatPositions[i].CrewMember.GetMood() - BoatPositions[i].CrewMember.CrewOpinions[Manager];
 				//add the difference to mistakeScores
 				mistakeScores["CrewOpinion"] += idealOpinion - currentOpinion;
 				//if the percentage of unknown opinions is above the given amount, add the difference to hiddenScores
@@ -486,7 +477,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					if (bp.CrewMember != BoatPositions[i].CrewMember)
 					{
-						if (BoatPositions[i].CrewMember.CrewOpinions.FirstOrDefault(co => co.Person == bp.CrewMember) != BoatPositions[i].CrewMember.RevealedCrewOpinions.FirstOrDefault(co => co.Person == bp.CrewMember))
+						if (BoatPositions[i].CrewMember.CrewOpinions[bp.CrewMember] != BoatPositions[i].CrewMember.RevealedCrewOpinions[bp.CrewMember])
 						{
 							unknownCrewOpinions++;
 						}
@@ -550,37 +541,37 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private void PostRaceRest()
 		{
 			var crew = GetAllCrewMembers();
-			crew.ForEach(p => p.RaceRest(BoatPositions.SingleOrDefault(bp => bp.CrewMember == p) != null));
+			crew.ForEach(p => p.RaceRest(BoatPositions.Any(bp => bp.CrewMember == p)));
 		}
 
 		/// <summary>
 		/// Get every possible combination of CrewMembers in every order
 		/// </summary>
-		private IEnumerable<IEnumerable<T>>GetOrderedPermutations<T>(IEnumerable<T> list, int length)
+		private List<List<T>>GetOrderedPermutations<T>(List<T> list, int length)
 		{
 			if (length == 0)
 			{
-				return list.Select(t => new [] { t }.AsEnumerable());
+				return list.Select(t => new [] { t }.ToList()).ToList();
 				
 			}
 			return GetOrderedPermutations(list, length - 1)
 				.SelectMany(t => list.Where(o => !t.Contains(o)),
-					(t1, t2) => t1.Concat(new [] { t2 }));
+					(t1, t2) => t1.Concat(new [] { t2 }).ToList()).ToList();
 		}
 
 		/// <summary>
 		/// Get every possible combination of CrewMembers in no order
 		/// </summary>
-		private IEnumerable<IEnumerable<T>> GetPermutations<T>(IEnumerable<T> list, int length) where T : IComparable<T>
+		private List<List<T>> GetPermutations<T>(List<T> list, int length) where T : IComparable<T>
 		{
 			if (length == 0)
 			{
-				return list.Select(t => new[] { t }.AsEnumerable());
+				return list.Select(t => new[] { t }.ToList()).ToList();
 
 			}
 			return GetPermutations(list, length - 1)
 				.SelectMany(t => list.Where(o => o.CompareTo(t.Last()) > 0),
-					(t1, t2) => t1.Concat(new[] { t2 }));
+					(t1, t2) => t1.Concat(new[] { t2 }).ToList()).ToList();
 		}
 	}
 }

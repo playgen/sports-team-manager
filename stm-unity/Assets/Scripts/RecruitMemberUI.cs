@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
-using System.Collections.Generic;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.UI;
 
@@ -130,7 +129,7 @@ public class RecruitMemberUI : MonoBehaviour
 			var selected = skills[i];
 			_questionButtons[i].gameObject.SetActive(true);
 			_questionButtons[i].interactable = true;
-			var questionText = _recruitMember.GetQuestionText("Recruit" + selected).OrderBy(s => Guid.NewGuid()).FirstOrDefault();
+			var questionText = _recruitMember.GetQuestionText("Recruit" + selected).OrderBy(s => Guid.NewGuid()).First();
 			_questionButtons[i].transform.Find("Text").GetComponent<Text>().text = questionText;
 			_questionButtons[i].transform.Find("Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost).ToString();
 			_questionButtons[i].onClick.RemoveAllListeners();
@@ -163,10 +162,10 @@ public class RecruitMemberUI : MonoBehaviour
 		var replies = _recruitMember.AskQuestion(skill);
 		foreach (var recruit in _recruitUI)
 		{
-			var reply = replies.FirstOrDefault(r => r.Key.Name == recruit.name);
+			var reply = replies.First(r => r.Key.Name == recruit.name);
 			recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = reply.Value;
 			recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = true;
-			recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value).Image;
+			recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = _opinionSprites.First(o => o.Name == reply.Value).Image;
 			recruit.transform.Find("Image").GetComponentInChildren<AvatarDisplay>().UpdateMood(reply.Key.Avatar, reply.Value);
 		}
 		CostCheck();

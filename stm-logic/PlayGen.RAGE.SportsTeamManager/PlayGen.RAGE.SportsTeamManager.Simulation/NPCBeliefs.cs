@@ -58,9 +58,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		AvatarHairType,
 		[Description("Avatar(EyeType)")]
 		AvatarEyeType,
-        [Description("Avatar(EyeColor)")]
-        AvatarEyeColor,
-        [Description("Avatar(EyebrowType)")]
+		[Description("Avatar(EyeColor)")]
+		AvatarEyeColor,
+		[Description("Avatar(EyebrowType)")]
 		AvatarEyebrowType,
 		[Description("Avatar(NoseType)")]
 		AvatarNoseType,
@@ -69,7 +69,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		[Description("Avatar(MouthColor)")]
 		AvatarMouthColor,
 		[Description("Avatar(TeethType)")]
-        AvatarTeethType,
+		AvatarTeethType,
 		[Description("Avatar(Height)")]
 		AvatarHeight,
 		[Description("Avatar(Weight)")]
