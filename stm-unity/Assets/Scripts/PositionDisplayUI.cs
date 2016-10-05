@@ -44,13 +44,13 @@ public class PositionDisplayUI : MonoBehaviour
 	/// </summary>
 	private string SplitName(string original, bool shortName = true)
 	{
-		string[] splitName = original.Split(' ');
-		string lastName = splitName.Last();
+		var splitName = original.Split(' ');
+		var lastName = splitName.Last();
 		if (!shortName)
 		{
 			lastName += ", ";
 		}
-		foreach (string split in splitName)
+		foreach (var split in splitName)
 		{
 			if (split != splitName.Last())
 			{
@@ -124,10 +124,10 @@ public class PositionDisplayUI : MonoBehaviour
 		{
 			Destroy(child.gameObject);
 		}
-		foreach (Image skill in _skillImages)
+		foreach (var skill in _skillImages)
 		{
 			skill.enabled = false;
-			foreach (CrewMemberSkill actualSkill in position.RequiredSkills)
+			foreach (var actualSkill in position.RequiredSkills)
 			{
 				if (skill.name == actualSkill.ToString())
 				{
@@ -135,13 +135,13 @@ public class PositionDisplayUI : MonoBehaviour
 				}
 			}
 		}
-		Dictionary<CrewMember, int> positionMembers = new Dictionary<CrewMember, int>();
+		var positionMembers = new Dictionary<CrewMember, int>();
 		foreach (var boat in _positionDisplay.GetLineUpHistory())
 		{
-			BoatPosition[] boatPositions = boat.BoatPositions.Where(bp => bp.Position.Name == position.Name).ToArray();
-			foreach (BoatPosition boatPosition in boatPositions)
+			var boatPositions = boat.BoatPositions.Where(bp => bp.Position.Name == position.Name).ToArray();
+			foreach (var boatPosition in boatPositions)
 			{
-				CrewMember positionMember = boatPosition.CrewMember;
+				var positionMember = boatPosition.CrewMember;
 				if (positionMembers.ContainsKey(positionMember))
 				{
 					positionMembers[positionMember]++;
@@ -155,7 +155,7 @@ public class PositionDisplayUI : MonoBehaviour
 		var orderedMembers = positionMembers.OrderByDescending(pm => pm.Value).ThenBy(pm => SplitName(pm.Key.Name, false));
 		foreach (var member in orderedMembers)
 		{
-			GameObject positionHistory = Instantiate(_historyPrefab);
+			var positionHistory = Instantiate(_historyPrefab);
 			positionHistory.transform.SetParent(_historyContainer.transform, false);
 			positionHistory.transform.Find("Name").GetComponent<Text>().text = SplitName(member.Key.Name);
 			if (_positionDisplay.GetBoat().GetAllCrewMembers().Contains(member.Key))

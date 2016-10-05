@@ -66,19 +66,19 @@ public class RecruitMemberUI : MonoBehaviour
 		_allowanceBar.fillAmount = _recruitMember.QuestionAllowance() / (float)_recruitMember.StartingQuestionAllowance();
 		_allowanceText.text = _recruitMember.QuestionAllowance().ToString();
 		SetDialogueText("Your recruits are here. What do you want to ask them all or who do you want to hire?");
-		List<CrewMember> recruits = _recruitMember.GetRecruits().OrderBy(r => Guid.NewGuid()).ToList();
-		for (int i = 0; i < _recruitUI.Length; i++)
+		var recruits = _recruitMember.GetRecruits().OrderBy(r => Guid.NewGuid()).ToList();
+		for (var i = 0; i < _recruitUI.Length; i++)
 		{
 			if (recruits.Count <= i)
 			{
 				_recruitUI[i].SetActive(false);
 				continue;
 			}
-			CrewMember thisRecruit = recruits[i];
+			var thisRecruit = recruits[i];
 			_recruitUI[i].SetActive(true);
-			string[] splitName = thisRecruit.Name.Split(' ');
-			string lastName = splitName.Last() + ",\n";
-			foreach (string split in splitName)
+			var splitName = thisRecruit.Name.Split(' ');
+			var lastName = splitName.Last() + ",\n";
+			foreach (var split in splitName)
 			{
 				if (split != splitName.Last())
 				{
@@ -95,7 +95,7 @@ public class RecruitMemberUI : MonoBehaviour
 			_recruitUI[i].transform.Find("Button").GetComponent<Button>().interactable = true;
 			_recruitUI[i].transform.Find("Button").GetComponent<Button>().onClick.RemoveAllListeners();
 			_recruitUI[i].transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { HireCrewWarning(thisRecruit); });
-			int rand = UnityEngine.Random.Range(0, 8);
+			var rand = UnityEngine.Random.Range(0, 8);
 			switch (rand % 4)
 			{
 				case 0:
@@ -120,17 +120,17 @@ public class RecruitMemberUI : MonoBehaviour
 			_recruitUI[i].name = recruits[i].Name;
 		}
 		var skills = (CrewMemberSkill[])Enum.GetValues(typeof(CrewMemberSkill));
-		for (int i = 0; i < _questionButtons.Length; i++)
+		for (var i = 0; i < _questionButtons.Length; i++)
 		{
 			if (skills.Length <= i)
 			{
 				_questionButtons[i].gameObject.SetActive(false);
 				continue;
 			}
-			CrewMemberSkill selected = skills[i];
+			var selected = skills[i];
 			_questionButtons[i].gameObject.SetActive(true);
 			_questionButtons[i].interactable = true;
-			string questionText = _recruitMember.GetQuestionText("Recruit" + selected).OrderBy(s => Guid.NewGuid()).FirstOrDefault();
+			var questionText = _recruitMember.GetQuestionText("Recruit" + selected).OrderBy(s => Guid.NewGuid()).FirstOrDefault();
 			_questionButtons[i].transform.Find("Text").GetComponent<Text>().text = questionText;
 			_questionButtons[i].transform.Find("Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost).ToString();
 			_questionButtons[i].onClick.RemoveAllListeners();
@@ -144,7 +144,7 @@ public class RecruitMemberUI : MonoBehaviour
 	/// </summary>
 	private void CostCheck()
 	{
-		int allowance = _recruitMember.QuestionAllowance();
+		var allowance = _recruitMember.QuestionAllowance();
 		_allowanceBar.fillAmount = allowance / (float)_recruitMember.StartingQuestionAllowance();
 		_allowanceText.text = allowance.ToString();
 		if (allowance < _recruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost))
@@ -160,8 +160,8 @@ public class RecruitMemberUI : MonoBehaviour
 	{
 		Tracker.T.alternative.Selected("Recruitment", skill + " Question", AlternativeTracker.Alternative.Question);
 		SetDialogueText(questionText);
-		Dictionary<CrewMember, string> replies = _recruitMember.AskQuestion(skill);
-		foreach (GameObject recruit in _recruitUI)
+		var replies = _recruitMember.AskQuestion(skill);
+		foreach (var recruit in _recruitUI)
 		{
 			var reply = replies.FirstOrDefault(r => r.Key.Name == recruit.name);
 			recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = reply.Value;

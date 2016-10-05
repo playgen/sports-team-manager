@@ -127,7 +127,7 @@ public class MemberMeetingUI : MonoBehaviour
 		{
 			_roleButton.gameObject.SetActive(false);
 		}
-		for (int i = 0; i < _barBackgrounds.Length; i++)
+		for (var i = 0; i < _barBackgrounds.Length; i++)
 		{
 			_barForegrounds[i].fillAmount = _currentMember.RevealedSkills[(CrewMemberSkill)i] * 0.1f;
 			_barBackgrounds[i].sprite = _currentMember.RevealedSkills[(CrewMemberSkill)i] == 0 ? _unknownBackBar : _knownBackBar;
@@ -143,7 +143,7 @@ public class MemberMeetingUI : MonoBehaviour
 		_opinionPositiveQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionPositiveRevealCost).ToString();
 		_opinionNegativeQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionNegativeRevealCost).ToString();
 		_fireButton.transform.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.FiringCost).ToString();
-		int allowance = _memberMeeting.QuestionAllowance();
+		var allowance = _memberMeeting.QuestionAllowance();
 		_fireButton.interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.FiringCost) && _memberMeeting.CrewEditAllowance() != 0 && _memberMeeting.CanRemoveCheck();
 		_statQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.SkillRevealCost);
 		_roleQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost);
@@ -159,7 +159,7 @@ public class MemberMeetingUI : MonoBehaviour
 			if (crewMember.Current)
 			{
 				var crewName = crewMember.CrewMember.Name;
-				Image opinionImage = crewMember.transform.Find("Opinion").GetComponent<Image>();
+				var opinionImage = crewMember.transform.Find("Opinion").GetComponent<Image>();
 				if (crewName != _currentMember.Name)
 				{
 					opinionImage.enabled = true;
@@ -177,7 +177,7 @@ public class MemberMeetingUI : MonoBehaviour
 	public void AskStatQuestion()
 	{
 		Tracker.T.alternative.Selected("Crew Member Meeting", "Stat Reveal", AlternativeTracker.Alternative.Question);
-		string reply = _memberMeeting.AskQuestion("StatReveal", _currentMember);
+		var reply = _memberMeeting.AskQuestion("StatReveal", _currentMember);
 		AnswerUpdate(reply);
 	}
 
@@ -187,7 +187,7 @@ public class MemberMeetingUI : MonoBehaviour
 	public void AskRoleQuestion()
 	{
 		Tracker.T.alternative.Selected("Crew Member Meeting", "Role Reveal", AlternativeTracker.Alternative.Question);
-		string reply = _memberMeeting.AskQuestion("RoleReveal", _currentMember);
+		var reply = _memberMeeting.AskQuestion("RoleReveal", _currentMember);
 		AnswerUpdate(reply);
 	}
 
@@ -197,7 +197,7 @@ public class MemberMeetingUI : MonoBehaviour
 	public void AskOpinionPositiveQuestion()
 	{
 		Tracker.T.alternative.Selected("Crew Member Meeting", "Positive Opinion Reveal", AlternativeTracker.Alternative.Question);
-		string reply = _memberMeeting.AskQuestion("OpinionRevealPositive", _currentMember);
+		var reply = _memberMeeting.AskQuestion("OpinionRevealPositive", _currentMember);
 		AnswerUpdate(reply);
 	}
 
@@ -207,7 +207,7 @@ public class MemberMeetingUI : MonoBehaviour
 	public void AskOpinionNegativeQuestion()
 	{
 		Tracker.T.alternative.Selected("Crew Member Meeting", "Negative Opinion Reveal", AlternativeTracker.Alternative.Question);
-		string reply = _memberMeeting.AskQuestion("OpinionRevealNegative", _currentMember);
+		var reply = _memberMeeting.AskQuestion("OpinionRevealNegative", _currentMember);
 		AnswerUpdate(reply);
 	}
 

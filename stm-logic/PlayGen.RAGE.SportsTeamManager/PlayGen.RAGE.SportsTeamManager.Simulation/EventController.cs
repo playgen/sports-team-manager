@@ -16,7 +16,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string[] GetEventStrings(IntegratedAuthoringToolAsset iat, string eventKey)
 		{
-			IEnumerable<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey.ToName());
+			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey.ToName());
 			return dialogueOptions.Select(dia => dia.Utterance).ToArray();
 		}
 
@@ -25,7 +25,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public DialogueStateActionDTO[] GetEvents(IntegratedAuthoringToolAsset iat, string eventKey)
 		{
-			IEnumerable<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey.ToName());
+			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey.ToName());
 			return dialogueOptions.OrderBy(c => Guid.NewGuid()).ToArray();
 		}
 
@@ -34,7 +34,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public DialogueStateActionDTO SelectPostRaceEvent(IntegratedAuthoringToolAsset iat, int chance, int sessionEventCount, Random random, bool raceSession = false)
 		{
-			List<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PostRaceEventStart".ToName()).OrderBy(c => Guid.NewGuid()).ToList();
+			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PostRaceEventStart".ToName()).OrderBy(c => Guid.NewGuid()).ToList();
 			if (raceSession)
 			{
 				dialogueOptions = dialogueOptions.Where(dia => dia.Style.Contains("Race")).ToList();
@@ -45,10 +45,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (dialogueOptions.Any())
 			{
 				chance = (int)Math.Pow(chance, sessionEventCount + 1);
-				int dialogueIndex = random.Next(0, dialogueOptions.Count * chance);
+				var dialogueIndex = random.Next(0, dialogueOptions.Count * chance);
 				if (dialogueIndex % chance == 0)
 				{
-					DialogueStateActionDTO selectedDialogue = dialogueOptions.ToArray()[dialogueIndex / chance];
+					var selectedDialogue = dialogueOptions.ToArray()[dialogueIndex / chance];
 					return selectedDialogue;
 				}
 			}
@@ -60,8 +60,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public Dictionary<CrewMember, string> SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, List<CrewMember> crewMembers, Boat boat, Boat previous)
 		{
-			Dictionary<CrewMember, string> replies = new Dictionary<CrewMember, string>();
-			foreach (CrewMember member in crewMembers)
+			var replies = new Dictionary<CrewMember, string>();
+			foreach (var member in crewMembers)
 			{
 				var reply = member.SendPostRaceEvent(iat, selected, boat, previous);
 				if (reply != null)

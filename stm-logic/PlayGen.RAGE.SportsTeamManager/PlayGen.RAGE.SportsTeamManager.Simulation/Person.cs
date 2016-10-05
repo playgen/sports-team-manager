@@ -164,7 +164,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void TickUpdate(int amount = 1)
 		{
-			for (int i = 0; i < amount; i++)
+			for (var i = 0; i < amount; i++)
 			{
 				RolePlayCharacter.Update();
 			}

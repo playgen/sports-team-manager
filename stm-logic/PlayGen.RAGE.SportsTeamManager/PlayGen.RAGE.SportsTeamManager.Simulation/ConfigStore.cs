@@ -15,9 +15,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public ConfigStore()
 		{
 			ConfigValues = new Dictionary<string, float>();
-			string configText = Templates.ResourceManager.GetString("config");
+			var configText = Templates.ResourceManager.GetString("config");
 			ConfigValues = JsonConvert.DeserializeObject<Dictionary<string, float>>(configText);
-			foreach (string key in Enum.GetNames(typeof(ConfigKeys)))
+			foreach (var key in Enum.GetNames(typeof(ConfigKeys)))
 			{
 				if (!ConfigValues.Keys.Contains(key))
 				{

@@ -8,7 +8,7 @@ public class HoverPopUpUI : MonoBehaviour {
 
 	public void SetHoverObject(Transform trans)
 	{
-		Vector2 adjust = (Vector2.one * 0.5f) - trans.GetComponent<RectTransform>().pivot;
+		var adjust = (Vector2.one * 0.5f) - trans.GetComponent<RectTransform>().pivot;
 		_currentHovered = (Vector2)trans.position + new Vector2(trans.GetComponent<RectTransform>().rect.width * adjust.x, trans.GetComponent<RectTransform>().rect.height * adjust.y);
 	}
 
@@ -26,7 +26,7 @@ public class HoverPopUpUI : MonoBehaviour {
 			transform.SetAsLastSibling();
 			GetComponentInChildren<Text>().text = _currentText;
 			transform.position = Input.mousePosition;
-			Vector2 canvasSize = GetComponentInParent<CanvasScaler>().referenceResolution;
+			var canvasSize = GetComponentInParent<CanvasScaler>().referenceResolution;
 			if (_currentHovered.x < transform.position.x)
 			{
 				GetComponent<RectTransform>().anchoredPosition += new Vector2(GetComponent<RectTransform>().rect.width * 0.5f, 0);

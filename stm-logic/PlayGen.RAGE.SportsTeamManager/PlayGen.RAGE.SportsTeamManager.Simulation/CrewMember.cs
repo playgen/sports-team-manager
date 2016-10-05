@@ -71,7 +71,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RevealedCrewOpinions = new List<CrewOpinion>();
 			boat.UniqueNameCheck(random, this);
 			//select a position that is in need of a new crew member
-			Position selectedPerferred = boat.GetWeakPosition(random);
+			var selectedPerferred = boat.GetWeakPosition(random);
 			//set the skills of the new CrewMember according to the required skills for the selected position
 			Skills = new Dictionary<CrewMemberSkill, int>();
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
@@ -146,7 +146,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void CreateInitialOpinions(Random random, Boat boat)
 		{
-			foreach (CrewMember otherMember in boat.GetAllCrewMembers())
+			foreach (var otherMember in boat.GetAllCrewMembers())
 			{
 				if (this != otherMember)
 				{
@@ -253,12 +253,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					RevealedSkills.Add(skill, 0);
 				}
 			}
-			foreach (CrewMember member in boat.GetAllCrewMembers())
+			foreach (var member in boat.GetAllCrewMembers())
 			{
 				AddOrUpdateOpinion(member, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), member.Name.Replace(" ", "")))), true);
 			}
 			AddOrUpdateOpinion(boat.Manager, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), boat.Manager.Name.Replace(" ", "")))), true);
-			foreach (CrewMember member in boat.GetAllCrewMembers())
+			foreach (var member in boat.GetAllCrewMembers())
 			{
 				AddOrUpdateRevealedOpinion(member, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), member.Name.Replace(" ", "")))));
 			}
@@ -274,7 +274,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (LoadBelief(NPCBeliefs.Position.GetDescription()) != "null")
 			{
 				var boatPosition = boat.BoatPositions.Where(bp => bp.Position.Name == LoadBelief(NPCBeliefs.Position.GetDescription()));
-				foreach (BoatPosition bp in boatPosition)
+				foreach (var bp in boatPosition)
 				{
 					if (bp.CrewMember == null)
 					{
@@ -289,7 +289,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public int GetMood()
 		{
-			int mood = 0;
+			var mood = 0;
 			if (RolePlayCharacter != null)
 			{
 				mood = (int)Math.Round(RolePlayCharacter.Mood);
@@ -393,15 +393,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string SendMeetingEvent(IntegratedAuthoringToolAsset iat, string style, Boat boat)
 		{
-			string reply = "";
-			Random rand = new Random();
-			List<DialogueStateActionDTO> dialogueOptions = new List<DialogueStateActionDTO>();
+			var reply = "";
+			var rand = new Random();
+			var dialogueOptions = new List<DialogueStateActionDTO>();
 			switch (style)
 			{
 				case "StatReveal":
-					int randomStat = rand.Next(0, Skills.Count);
-					string statName = ((CrewMemberSkill)randomStat).ToString();
-					int statValue = Skills[(CrewMemberSkill)randomStat];
+					var randomStat = rand.Next(0, Skills.Count);
+					var statName = ((CrewMemberSkill)randomStat).ToString();
+					var statValue = Skills[(CrewMemberSkill)randomStat];
 					RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
 					if (statValue <= (int)_config.ConfigValues[ConfigKeys.BadSkillRating.ToString()])
 					{
@@ -422,7 +422,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
 					break;
 				case "RoleReveal":
-					Position pos = boat.BoatPositions[rand.Next(0, boat.BoatPositions.Count)].Position;
+					var pos = boat.BoatPositions[rand.Next(0, boat.BoatPositions.Count)].Position;
 					if (pos.GetPositionRating(this) <= 5)
 					{
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Bad").ToName()).ToList();
@@ -543,7 +543,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public DialogueStateActionDTO[] CurrentEventCheck(Boat boat, IntegratedAuthoringToolAsset iat, bool afterRaceSession)
 		{
-			List<DialogueStateActionDTO> replies = new List<DialogueStateActionDTO>();
+			var replies = new List<DialogueStateActionDTO>();
 			List<DialogueStateActionDTO> dialogueOptions;
 			var spacelessName = RolePlayCharacter.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
@@ -569,7 +569,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				if (dialogueOptions.Any())
 				{
-					DialogueStateActionDTO selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
+					var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
 					replies.Add(selectedNext);
 				}
 				TickUpdate();
@@ -590,7 +590,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "RetirementTriggered".ToName()).ToList();
 					if (dialogueOptions.Any())
 					{
-						DialogueStateActionDTO selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
+						var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
 						replies.Add(selectedNext);
 					}
 				}
@@ -604,7 +604,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Boat boat, Boat previousBoat)
 		{
 			string reply = null;
-			string nextState = selected.NextState;
+			var nextState = selected.NextState;
 			switch (nextState)
 			{
 				case "NotPickedSorry":
@@ -614,7 +614,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 						break;
 				case "NotPickedSkill":
-					foreach (BoatPosition bp in previousBoat.BoatPositions)
+					foreach (var bp in previousBoat.BoatPositions)
 					{
 						if (bp.Position.GetPositionRating(this) >= bp.PositionScore)
 						{
@@ -624,10 +624,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					break;
 			}
-			List<DialogueStateActionDTO> dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, nextState.ToName()).ToList();
+			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, nextState.ToName()).ToList();
 			if (dialogueOptions.Any())
 			{
-				DialogueStateActionDTO selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
+				var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
 				iat.SetDialogueState("Player", selectedNext.NextState);
 				reply = selectedNext.Utterance;
 				if (selectedNext.NextState == "-")
@@ -654,7 +654,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var eventString = string.Format("PostRace({0})", lastEvent);
 			EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
 			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new [] { string.Format(eventBase, eventString, spacelessName) });
-			Random rand = new Random();
+			var rand = new Random();
 			switch (lastEvent)
 			{
 				case "NotPickedSorry":
@@ -670,7 +670,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				case "NotPickedFiredYes":
 					AddOrUpdateOpinion(boat.Manager, -10);
 					boat.RetireCrew(this);
-					foreach (CrewMember cm in boat.GetAllCrewMembers())
+					foreach (var cm in boat.GetAllCrewMembers())
 					{
 						cm.AddOrUpdateOpinion(boat.Manager, -2);
 						cm.SaveStatus();
@@ -681,9 +681,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					break;
 				case "NotPickedSkillTrain":
 					AddOrUpdateOpinion(boat.Manager, 2);
-					for (int i = 0; i < 2; i++)
+					for (var i = 0; i < 2; i++)
 					{
-						int randomStat = rand.Next(0, Skills.Count);
+						var randomStat = rand.Next(0, Skills.Count);
 						Skills[(CrewMemberSkill)randomStat]++;
 						if (Skills[(CrewMemberSkill)randomStat] > 10)
 						{
@@ -694,12 +694,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					break;
 				case "NotPickedSkillFriends":
 					AddOrUpdateOpinion(boat.Manager, 1);
-					List<CrewMember> allCrew = boat.GetAllCrewMembers();
+					var allCrew = boat.GetAllCrewMembers();
 					allCrew.Remove(this);
-					for (int i = 0; i < 2; i++)
+					for (var i = 0; i < 2; i++)
 					{
-						int randomCrew = rand.Next(0, allCrew.Count);
-						CrewMember cm = allCrew[randomCrew];
+						var randomCrew = rand.Next(0, allCrew.Count);
+						var cm = allCrew[randomCrew];
 						AddOrUpdateOpinion(cm, 2);
 						cm.AddOrUpdateOpinion(this, 2);
 						cm.SaveStatus();
@@ -711,7 +711,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				case "NotPickedSkillLeave":
 					AddOrUpdateOpinion(boat.Manager, -10);
 					boat.RetireCrew(this);
-					foreach (CrewMember cm in boat.GetAllCrewMembers())
+					foreach (var cm in boat.GetAllCrewMembers())
 					{
 						cm.AddOrUpdateOpinion(boat.Manager, -1);
 						cm.SaveStatus();

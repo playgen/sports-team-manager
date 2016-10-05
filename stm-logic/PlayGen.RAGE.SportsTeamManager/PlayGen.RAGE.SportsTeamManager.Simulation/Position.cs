@@ -16,9 +16,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public int GetPositionRating(CrewMember crewMember)
 		{
-			int positionCount = 0;
-			int crewScore = 0;
-			foreach (CrewMemberSkill skill in RequiredSkills)
+			var positionCount = 0;
+			var crewScore = 0;
+			foreach (var skill in RequiredSkills)
 			{
 				crewScore += crewMember.Skills[skill];
 				positionCount++;

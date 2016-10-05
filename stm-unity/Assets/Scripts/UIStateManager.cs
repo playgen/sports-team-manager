@@ -57,7 +57,7 @@ public class UIStateManager : MonoBehaviour {
 		go.SetActive(false);
 		_mainMenu.SetActive(true);
 		Tracker.T.accessible.Accessed("Main Menu", AccessibleTracker.Accessible.Screen);
-		GameManager gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+		var gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = gameManager.GetGameNames(Application.persistentDataPath).Count != 0;
 	}
 

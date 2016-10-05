@@ -53,12 +53,12 @@ public class PostRaceEventUI : MonoBehaviour
 		GetComponent<CanvasGroup>().alpha = 0;
 		_closeButton.SetActive(false);
 		gameObject.SetActive(true);
-		KeyValuePair<List<CrewMember>, DialogueStateActionDTO> current = _postRaceEvent.CurrentEvent;
+		var current = _postRaceEvent.CurrentEvent;
 		_nameText.text = "";
 		if (current.Key != null && current.Value != null)
 		{
 			_avatarDisplay.SetAvatar(current.Key[0].Avatar, current.Key[0].GetMood());
-			foreach (CrewMember cm in current.Key)
+			foreach (var cm in current.Key)
 			{
 				if (_nameText.text.Length > 0)
 				{
@@ -80,10 +80,10 @@ public class PostRaceEventUI : MonoBehaviour
 	/// </summary>
 	private void ResetQuestions()
 	{
-		KeyValuePair<List<CrewMember>, DialogueStateActionDTO> current = _postRaceEvent.CurrentEvent;
-		CrewMember eventMember = current.Key != null ? current.Key[0] : null;
-		DialogueStateActionDTO[] replies = _postRaceEvent.GetEventReplies();
-		for (int i = 0; i < _questions.Length; i++)
+		var current = _postRaceEvent.CurrentEvent;
+		var eventMember = current.Key != null ? current.Key[0] : null;
+		var replies = _postRaceEvent.GetEventReplies();
+		for (var i = 0; i < _questions.Length; i++)
 		{
 			if (replies.Length <= i)
 			{
@@ -92,7 +92,7 @@ public class PostRaceEventUI : MonoBehaviour
 			}
 			_questions[i].SetActive(true);
 			_questions[i].GetComponentInChildren<Text>().text = replies[i].Utterance;
-			DialogueStateActionDTO currentReply = replies[i];
+			var currentReply = replies[i];
 			_questions[i].GetComponent<Button>().onClick.RemoveAllListeners();
 			_questions[i].GetComponent<Button>().onClick.AddListener(delegate { SendReply(currentReply); });
 		}
@@ -121,7 +121,7 @@ public class PostRaceEventUI : MonoBehaviour
 	public void SendReply(DialogueStateActionDTO reply)
 	{
 		Tracker.T.alternative.Selected("Post Race Event", reply.NextState, AlternativeTracker.Alternative.Dialog);
-		Dictionary<CrewMember, string> response = _postRaceEvent.SendReply(reply);
+		var response = _postRaceEvent.SendReply(reply);
 		if (response != null)
 		{
 			_dialogueText.text = response.FirstOrDefault().Value;

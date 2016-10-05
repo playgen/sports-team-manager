@@ -23,16 +23,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return;
 			}
 			//Get the average skill rating for this CrewMember in this Position
-			int crewScore = Position.GetPositionRating(CrewMember);
+			var crewScore = Position.GetPositionRating(CrewMember);
 
-			int opinion = 0;
-			int opinionCount = 0;
-			int managerOpinion = 0;
+			var opinion = 0;
+			var opinionCount = 0;
+			var managerOpinion = 0;
 
 			//get the average opinion of every other positioned crew member and the manager
 			if (CrewMember.CrewOpinions != null && CrewMember.CrewOpinions.Count > 0)
 			{
-				foreach (BoatPosition bp in boat.BoatPositions)
+				foreach (var bp in boat.BoatPositions)
 				{
 					if (bp != this && bp.CrewMember != null)
 					{

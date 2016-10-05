@@ -55,11 +55,11 @@ public class NewGameUI : MonoBehaviour {
 		//code for tabbing between input fields
 		if (Input.GetKeyDown(KeyCode.Tab) && EventSystem.current.currentSelectedGameObject != null)
 		{
-			Selectable next = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().navigation.selectOnDown;
+			var next = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().navigation.selectOnDown;
 
 			if (next != null)
 			{
-				InputField inputfield = next.GetComponent<InputField>();
+				var inputfield = next.GetComponent<InputField>();
 				if (inputfield != null) inputfield.OnPointerClick(new PointerEventData(EventSystem.current));
 				inputfield.MoveTextEnd(true);
 				EventSystem.current.SetSelectedGameObject(next.gameObject, new BaseEventData(EventSystem.current));
@@ -76,11 +76,11 @@ public class NewGameUI : MonoBehaviour {
 	/// </summary>
 	public void RandomColor()
 	{
-		foreach (Slider s in _colorSliderPrimary)
+		foreach (var s in _colorSliderPrimary)
 		{
 			s.value = Random.Range(0, 1f);
 		}
-		foreach (Slider s in _colorSliderSecondary)
+		foreach (var s in _colorSliderSecondary)
 		{
 			s.value = Random.Range(0, 1f);
 		}
@@ -137,7 +137,7 @@ public class NewGameUI : MonoBehaviour {
 		}
 		if (valid)
 		{
-			bool exists = _newGame.ExistingGameCheck(_boatName.text);
+			var exists = _newGame.ExistingGameCheck(_boatName.text);
 			if (exists)
 			{
 				_overwritePopUp.SetActive(true);
@@ -155,19 +155,19 @@ public class NewGameUI : MonoBehaviour {
 	public void NewGame()
 	{
 		Tracker.T.alternative.Selected("New Game", "Created Game", AlternativeTracker.Alternative.Menu);
-		int[] colorsPri = new int[]
+		var colorsPri = new int[]
 			{
 				(int)(_colorImagePrimary.color.r * 255),
 				(int)(_colorImagePrimary.color.g * 255),
 				(int)(_colorImagePrimary.color.b * 255)
 			};
-		int[] colorsSec = new int[]
+		var colorsSec = new int[]
 		{
 				(int)(_colorImageSecondary.color.r * 255),
 				(int)(_colorImageSecondary.color.g * 255),
 				(int)(_colorImageSecondary.color.b * 255)
 		};
-		bool success = _newGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text);
+		var success = _newGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text);
 		if (success)
 		{
 			_stateManager.GoToGame(gameObject);

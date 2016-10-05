@@ -42,7 +42,7 @@ public class CrewMemberUI : MonoBehaviour {
 		_roleIcons = roleIcons;
 		Usable = usable;
 		Current = current;
-		EventTrigger trigger = GetComponent<EventTrigger>();
+		var trigger = GetComponent<EventTrigger>();
 		if (_crewMember.RestCount <= 0 && Usable)
 		{
 			SetEventTriggers(trigger, true);
@@ -61,18 +61,18 @@ public class CrewMemberUI : MonoBehaviour {
 		trigger.triggers.Clear();
 		if (isActive)
 		{
-			EventTrigger.Entry drag = new EventTrigger.Entry();
+			var drag = new EventTrigger.Entry();
 			drag.eventID = EventTriggerType.PointerDown;
 			drag.callback.AddListener(data => { BeginDrag(); });
 			trigger.triggers.Add(drag);
-			EventTrigger.Entry drop = new EventTrigger.Entry();
+			var drop = new EventTrigger.Entry();
 			drop.eventID = EventTriggerType.PointerUp;
 			drop.callback.AddListener(data => { EndDrag(); });
 			trigger.triggers.Add(drop);
 		} else
 		{
 			GetComponentInChildren<Image>().color = Color.gray;
-			EventTrigger.Entry click = new EventTrigger.Entry();
+			var click = new EventTrigger.Entry();
 			click.eventID = EventTriggerType.PointerClick;
 			click.callback.AddListener(data => { ShowPopUp(); });
 			trigger.triggers.Add(click);
@@ -146,7 +146,7 @@ public class CrewMemberUI : MonoBehaviour {
 		var raycastResults = new List<RaycastResult>();
 		//gets all UI objects below the cursor
 		EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
-		bool placed = false;
+		var placed = false;
 		foreach (var result in raycastResults)
 		{
 			if (result.gameObject.GetComponent<PositionUI>())
@@ -181,7 +181,7 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	public void Place(GameObject position)
 	{
-		RectTransform positionTransform = position.gameObject.GetComponent<RectTransform>();
+		var positionTransform = position.gameObject.GetComponent<RectTransform>();
 		transform.SetParent(positionTransform, false);
 		GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
 		GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);

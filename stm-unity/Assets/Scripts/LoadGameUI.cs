@@ -66,7 +66,7 @@ public class LoadGameUI : MonoBehaviour
 		var gameNames = _loadGame.GetGames();
 		foreach (var game in gameNames)
 		{
-			GameObject gameButton = Instantiate(_gameButtonPrefab);
+			var gameButton = Instantiate(_gameButtonPrefab);
 			gameButton.transform.SetParent(_gameContainer.transform, false);
 			gameButton.GetComponentInChildren<Text>().text = game;
 			gameButton.GetComponent<Button>().onClick.AddListener(() => SelectGame(gameButton.GetComponentInChildren<Text>()));
@@ -94,10 +94,10 @@ public class LoadGameUI : MonoBehaviour
 		Tracker.T.alternative.Selected("Load Game", "Loaded Game", AlternativeTracker.Alternative.Menu);
 		_errorText.text = "";
 		//check if the game exists
-		bool exists = _loadGame.ExistingGameCheck();
+		var exists = _loadGame.ExistingGameCheck();
 		if (exists)
 		{
-			bool success = _loadGame.LoadSelectedGame();
+			var success = _loadGame.LoadSelectedGame();
 			if (success)
 			{
 				_stateManager.GoToGame(gameObject);

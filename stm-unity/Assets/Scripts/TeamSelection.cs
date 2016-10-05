@@ -24,10 +24,10 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public Dictionary<Boat, int> GetLineUpHistory()
 	{
-		List<Boat> boats = _gameManager.LineUpHistory;
-		List<int> offsets = _gameManager.HistoricTimeOffset;
-		Dictionary<Boat, int> boatOffsets = new Dictionary<Boat, int>();
-		for (int i = 0; i < boats.Count; i++)
+		var boats = _gameManager.LineUpHistory;
+		var offsets = _gameManager.HistoricTimeOffset;
+		var boatOffsets = new Dictionary<Boat, int>();
+		for (var i = 0; i < boats.Count; i++)
 		{
 			if (i < offsets.Count)
 			{
@@ -95,7 +95,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public Boat ConfirmLineUp(int offset = 0, bool historical = false)
 	{
-		int score = 0;
+		var score = 0;
 		_confirmCount++;
 		if (historical)
 		{
