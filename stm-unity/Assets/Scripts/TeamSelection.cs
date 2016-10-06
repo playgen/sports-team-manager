@@ -70,7 +70,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public void RemoveCrew(CrewMember crewMember)
 	{
-		_gameManager.AssignCrew(null, crewMember);
+		_gameManager.AssignCrew(0, crewMember);
 	}
 
 	/// <summary>

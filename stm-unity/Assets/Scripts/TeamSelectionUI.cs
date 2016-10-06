@@ -194,9 +194,9 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			var positionObject = Instantiate(_positionPrefab);
 			positionObject.transform.SetParent(newBoat.transform.Find("Position Container"), false);
-			positionObject.transform.Find("Name").GetComponent<Text>().text = pos.Name;
-			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.Name).Image;
-			positionObject.name = pos.Name;
+			positionObject.transform.Find("Name").GetComponent<Text>().text = pos.GetName();
+			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.GetName()).Image;
+			positionObject.name = pos.GetName();
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
 		}
 		newBoat.transform.Find("Light Container").gameObject.SetActive(false);
@@ -520,7 +520,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			memberObject.transform.SetParent(_postRacePopUp.transform.Find("Crew"), false);
 			memberObject.name = currentPositions[i].CrewMember.Name;
 			memberObject.transform.Find("Avatar").GetComponentInChildren<AvatarDisplay>().SetAvatar(currentPositions[i].CrewMember.Avatar, -(finishPosition - 3) * 2);
-			memberObject.transform.Find("Position").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == currentPositions[i].Position.Name).Image;
+			memberObject.transform.Find("Position").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == currentPositions[i].Position.GetName()).Image;
 			memberObject.transform.Find("Position").GetComponent<RectTransform>().offsetMin = new Vector2(10, 0);
 			if (i % 2 != 0)
 			{
@@ -570,7 +570,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var sortedPositions = positions.OrderBy(p => p.transform.GetSiblingIndex());
 		foreach (var position in sortedPositions)
 		{
-			var boatPosition = currentPositions.FirstOrDefault(bp => bp.Position.Name == position.Position.Name);
+			var boatPosition = currentPositions.FirstOrDefault(bp => bp.Position.GetName() == position.Position.GetName());
 			if (boatPosition != null && boatPosition.CrewMember != null)
 			{
 				foreach (var crewMember in crewMembers)

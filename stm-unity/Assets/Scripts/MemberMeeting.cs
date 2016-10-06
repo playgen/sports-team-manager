@@ -19,7 +19,7 @@ public class MemberMeeting : MonoBehaviour
 	public Position GetCrewMemberPosition(CrewMember crewMember)
 	{
 		var boatPosition = crewMember.GetBoatPosition(_gameManager.Boat);
-		return boatPosition != null ? boatPosition.Position : null;
+		return boatPosition != null ? boatPosition.Position : 0;
 	}
 
 	/// <summary>

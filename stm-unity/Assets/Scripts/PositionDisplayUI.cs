@@ -78,7 +78,7 @@ public class PositionDisplayUI : MonoBehaviour
 	{
 		if (gameObject.activeSelf)
 		{
-			Display(_positionDisplay.GetBoat().BoatPositions.Select(bp => bp.Position).First(p => p.Name == _textList[0].text));
+			Display(_positionDisplay.GetBoat().BoatPositions.Select(bp => bp.Position).First(p => p.GetName() == _textList[0].text));
 		}
 	}
 
@@ -104,13 +104,13 @@ public class PositionDisplayUI : MonoBehaviour
 	{
 		var currentBoat = _positionDisplay.GetBoat();
 		CrewMember currentCrew = null;
-		if (currentBoat.BoatPositions.Any(bp => bp.Position.Name == position.Name))
+		if (currentBoat.BoatPositions.Any(bp => bp.Position.GetName() == position.GetName()))
 		{
-			currentCrew = currentBoat.BoatPositions.First(bp => bp.Position.Name == position.Name).CrewMember;
+			currentCrew = currentBoat.BoatPositions.First(bp => bp.Position.GetName() == position.GetName()).CrewMember;
 		}
-		_textList[0].text = position.Name;
-		_textList[1].text = position.Description;
-		_roleImage.sprite = _roleSprites.First(mo => mo.Name == position.Name).Image;
+		_textList[0].text = position.GetName();
+		_textList[1].text = position.GetDescription();
+		_roleImage.sprite = _roleSprites.First(mo => mo.Name == position.GetName()).Image;
 		_currentButton.onClick.RemoveAllListeners();
 		_currentAvatar.gameObject.SetActive(currentCrew != null);
 		_currentName.gameObject.SetActive(currentCrew != null);
@@ -127,7 +127,7 @@ public class PositionDisplayUI : MonoBehaviour
 		foreach (var skill in _skillImages)
 		{
 			skill.enabled = false;
-			foreach (var actualSkill in position.RequiredSkills)
+			foreach (var actualSkill in position.RequiredSkills())
 			{
 				if (skill.name == actualSkill.ToString())
 				{
@@ -138,7 +138,7 @@ public class PositionDisplayUI : MonoBehaviour
 		var positionMembers = new Dictionary<CrewMember, int>();
 		foreach (var boat in _positionDisplay.GetLineUpHistory())
 		{
-			var boatPositions = boat.BoatPositions.Where(bp => bp.Position.Name == position.Name).ToArray();
+			var boatPositions = boat.BoatPositions.Where(bp => bp.Position.GetName() == position.GetName()).ToArray();
 			foreach (var boatPosition in boatPositions)
 			{
 				var positionMember = boatPosition.CrewMember;

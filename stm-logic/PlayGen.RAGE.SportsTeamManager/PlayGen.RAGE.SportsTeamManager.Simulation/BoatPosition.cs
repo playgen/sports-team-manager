@@ -15,7 +15,7 @@
 		public void UpdateCrewMemberScore(Boat boat, ConfigStore config)
 		{
 			//set score as 0 if no Position or CrewMember is provided
-			if (CrewMember == null || Position == null)
+			if (CrewMember == null || Position == 0)
 			{
 				PositionScore = 0;
 				return;

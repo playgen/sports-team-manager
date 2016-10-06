@@ -114,14 +114,14 @@ public class MemberMeetingUI : MonoBehaviour
 		_textList[0].text = _currentMember.Name;
 		_textList[1].text = _currentMember.Age.ToString();
 		var currentRole = _memberMeeting.GetCrewMemberPosition(_currentMember);
-		_textList[2].text = currentRole == null ? "No Role" : "";
+		_textList[2].text = currentRole == 0 ? "No Role" : "";
 		_roleButton.onClick.RemoveAllListeners();
-		if (currentRole != null)
+		if (currentRole != 0)
 		{
 			_roleButton.gameObject.SetActive(true);
 			_roleButton.onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentRole); });
-			_roleButton.GetComponentInChildren<Text>().text = currentRole.Name.ToUpper();
-			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = _teamSelectionUI.RoleLogos.First(mo => mo.Name == currentRole.Name).Image;
+			_roleButton.GetComponentInChildren<Text>().text = currentRole.GetName().ToUpper();
+			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = _teamSelectionUI.RoleLogos.First(mo => mo.Name == currentRole.GetName()).Image;
 		}
 		else
 		{

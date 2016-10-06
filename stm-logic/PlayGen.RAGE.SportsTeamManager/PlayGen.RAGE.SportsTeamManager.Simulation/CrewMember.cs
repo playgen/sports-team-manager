@@ -77,9 +77,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Skills = new Dictionary<CrewMemberSkill, int>();
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
 			{
-				if (selectedPerferred != null)
+				if (selectedPerferred != 0)
 				{
-					if (selectedPerferred.RequiredSkills.Contains(skill))
+					if (selectedPerferred.RequiresSkill(skill))
 					{
 						Skills.Add(skill, random.Next((int)_config.ConfigValues[ConfigKeys.GoodPositionRating], 11));
 					}
@@ -248,7 +248,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			if (LoadBelief(NPCBeliefs.Position.GetDescription()) != "null")
 			{
-				var boatPosition = boat.BoatPositions.Where(bp => bp.Position.Name == LoadBelief(NPCBeliefs.Position.GetDescription()));
+				var boatPosition = boat.BoatPositions.Where(bp => bp.Position.GetName() == LoadBelief(NPCBeliefs.Position.GetDescription()));
 				foreach (var bp in boatPosition)
 				{
 					if (bp.CrewMember == null)
@@ -408,7 +408,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					if (dialogueOptions.Any())
 					{
-						reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pos.Name);
+						reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pos.GetName());
 					}
 					break;
 				case "OpinionRevealPositive":

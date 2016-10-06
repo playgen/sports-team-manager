@@ -189,7 +189,7 @@ public class CrewMemberUI : MonoBehaviour {
 		position.gameObject.GetComponent<PositionUI>().LinkCrew(this);
 		var positionImage = transform.Find("Position").gameObject;
 		positionImage.GetComponent<Image>().enabled = true;
-		positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == position.gameObject.GetComponent<PositionUI>().Position.Name).Image;
+		positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == position.gameObject.GetComponent<PositionUI>().Position.GetName()).Image;
 		_positionUI.UpdateDisplay();
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 		var currentPosition = position.gameObject.GetComponent<PositionUI>().Position;
