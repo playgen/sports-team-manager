@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
@@ -75,10 +74,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			HairColor = _config.RandomHairColor ? GetRandomHairColor(random) : GetHairColorForSkin(SkinColor, random);
 
 			//Set Primary Color
-			PrimaryOutfitColor = CustomOutfitColor ? GetRandomColor(random) : Color.White;
+			PrimaryOutfitColor = CustomOutfitColor ? GetRandomColor(random) : new Color(255, 255, 255, 255);
 
 			//Set Secondary Color
-			SecondaryOutfitColor = CustomOutfitColor ? GetRandomColor(random) : Color.Black;
+			SecondaryOutfitColor = CustomOutfitColor ? GetRandomColor(random) : new Color(0, 0, 0, 0);
 
 			//Set Body Type
 			BodyType = string.Format("Body{0}_{1}", gender, GetBodyType(BestSkill));
@@ -196,7 +195,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		private Color GetRandomColor(Random rand)
 		{
-			return Color.FromArgb(255, rand.Next(0, 256), rand.Next(0, 256), rand.Next(0, 256));
+			var randomBytes = new byte[3];
+			rand.NextBytes(randomBytes);
+			return new Color(randomBytes[0], randomBytes[1], randomBytes[2], 255);
 		}
 
 		private string GetBodyType(CrewMemberSkill skill)
@@ -235,20 +236,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			EyebrowType = crewMember.LoadBelief(NPCBeliefs.AvatarEyebrowType.GetDescription());
 			EyeType = crewMember.LoadBelief(NPCBeliefs.AvatarEyeType.GetDescription());
 			EyeColor = crewMember.LoadBelief(NPCBeliefs.AvatarEyeColor.GetDescription());
-			var hairColorRed = Convert.ToInt32(crewMember.LoadBelief(NPCBeliefs.AvatarHairColorRed.GetDescription()));
-			var hairColorGreen = Convert.ToInt32(crewMember.LoadBelief(NPCBeliefs.AvatarHairColorGreen.GetDescription()));
-			var hairColorBlue = Convert.ToInt32(crewMember.LoadBelief(NPCBeliefs.AvatarHairColorBlue.GetDescription()));
-			HairColor = Color.FromArgb(255, hairColorRed, hairColorGreen, hairColorBlue);
+			var hairColorRed = Convert.ToByte(crewMember.LoadBelief(NPCBeliefs.AvatarHairColorRed.GetDescription()));
+			var hairColorGreen = Convert.ToByte(crewMember.LoadBelief(NPCBeliefs.AvatarHairColorGreen.GetDescription()));
+			var hairColorBlue = Convert.ToByte(crewMember.LoadBelief(NPCBeliefs.AvatarHairColorBlue.GetDescription()));
+			HairColor = new Color(hairColorRed, hairColorGreen, hairColorBlue, 255);
 			HairType = crewMember.LoadBelief(NPCBeliefs.AvatarHairType.GetDescription());
 			Height = float.Parse(crewMember.LoadBelief(NPCBeliefs.AvatarHeight.GetDescription()));
 			MouthType = crewMember.LoadBelief(NPCBeliefs.AvatarMouthType.GetDescription());
 			MouthColor = crewMember.LoadBelief(NPCBeliefs.AvatarMouthColor.GetDescription());
 			TeethType = crewMember.LoadBelief(NPCBeliefs.AvatarTeethType.GetDescription());
 			NoseType = crewMember.LoadBelief(NPCBeliefs.AvatarNoseType.GetDescription());
-			var skinColorRed = Convert.ToInt32(crewMember.LoadBelief(NPCBeliefs.AvatarSkinColorRed.GetDescription()));
-			var skinColorGreen = Convert.ToInt32(crewMember.LoadBelief(NPCBeliefs.AvatarSkinColorGreen.GetDescription()));
-			var skinColorBlue = Convert.ToInt32(crewMember.LoadBelief(NPCBeliefs.AvatarSkinColorBlue.GetDescription()));
-			SkinColor = Color.FromArgb(255, skinColorRed, skinColorGreen, skinColorBlue);
+			var skinColorRed = Convert.ToByte(crewMember.LoadBelief(NPCBeliefs.AvatarSkinColorRed.GetDescription()));
+			var skinColorGreen = Convert.ToByte(crewMember.LoadBelief(NPCBeliefs.AvatarSkinColorGreen.GetDescription()));
+			var skinColorBlue = Convert.ToByte(crewMember.LoadBelief(NPCBeliefs.AvatarSkinColorBlue.GetDescription()));
+			SkinColor = new Color(skinColorRed, skinColorGreen, skinColorBlue, 255);
 			Weight = float.Parse(crewMember.LoadBelief(NPCBeliefs.AvatarWeight.GetDescription()));
 		}
 

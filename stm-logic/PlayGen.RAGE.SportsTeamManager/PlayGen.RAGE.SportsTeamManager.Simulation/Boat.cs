@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -22,8 +20,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private readonly ConfigStore _config;
 
 		public string Name { get; set; }
-		public int[] TeamColorsPrimary { get; set; }
-		public int[] TeamColorsSecondary { get; set; }
+		public byte[] TeamColorsPrimary { get; set; }
+		public byte[] TeamColorsSecondary { get; set; }
 		public List<BoatPosition> BoatPositions { get; set; }
 		public List<CrewMember> UnassignedCrew { get; }
 		public List<CrewMember> RetiredCrew { get; }
@@ -96,8 +94,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void SetCrewColors(Avatar avatar)
 		{
-			avatar.PrimaryOutfitColor = Color.FromArgb(255, TeamColorsPrimary[0], TeamColorsPrimary[1], TeamColorsPrimary[2]);
-			avatar.SecondaryOutfitColor = Color.FromArgb(255, TeamColorsPrimary[0], TeamColorsPrimary[1], TeamColorsPrimary[2]);
+			avatar.PrimaryOutfitColor = new Color(TeamColorsPrimary[0], TeamColorsPrimary[1], TeamColorsPrimary[2], 255);
+			avatar.SecondaryOutfitColor = new Color(TeamColorsPrimary[0], TeamColorsPrimary[1], TeamColorsPrimary[2], 255);
 		}
 
 		/// <summary>
@@ -183,7 +181,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			foreach (var member in Recruits)
 			{
 				iat.RemoveCharacters(new List<string>() { member.Name });
-				if (rand.Next(0, 100) % (int)_config.ConfigValues[ConfigKeys.RecruitChangeChance.ToString()] != 0)
+				if (rand.Next(0, 100) % (int)_config.ConfigValues[ConfigKeys.RecruitChangeChance] != 0)
 				{
 					recuritsToRemove.Add(member);
 				}
@@ -194,7 +192,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 
 			//for the amount of empty recruit spaces, create a new recruit
-			var amount = (int)_config.ConfigValues[ConfigKeys.RecruitCount.ToString()] - Recruits.Count;
+			var amount = (int)_config.ConfigValues[ConfigKeys.RecruitCount] - Recruits.Count;
 			for (var i = 0; i < amount; i++)
 			{
 				var newMember = new CrewMember(rand, this, _config);
@@ -238,14 +236,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				positionStrength.Add(pos, 0);
 				foreach (var cm in GetAllCrewMembers())
 				{
-					if (pos.GetPositionRating(cm) >= (int)_config.ConfigValues[ConfigKeys.GoodPositionRating.ToString()])
+					if (pos.GetPositionRating(cm) >= (int)_config.ConfigValues[ConfigKeys.GoodPositionRating])
 					{
 						positionStrength[pos]++;
 					}
 				}
 				foreach (var cm in Recruits)
 				{
-					if (pos.GetPositionRating(cm) >= (int)_config.ConfigValues[ConfigKeys.GoodPositionRating.ToString()])
+					if (pos.GetPositionRating(cm) >= (int)_config.ConfigValues[ConfigKeys.GoodPositionRating])
 					{
 						positionStrength[pos]++;
 					}
@@ -481,25 +479,35 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				//add the difference in mood to mistakeScores
 				mistakeScores["Mood"] += _nearestIdealMatch[i].CrewMember.GetMood() - BoatPositions[i].CrewMember.GetMood();
-				//find the total score caused by crew opinion in the ideal set-up
-				var idealOpinion = _nearestIdealMatch[i].PositionScore - _nearestIdealMatch[i].Position.GetPositionRating(_nearestIdealMatch[i].CrewMember) - _nearestIdealMatch[i].CrewMember.GetMood() - _nearestIdealMatch[i].CrewMember.CrewOpinions[Manager];
-				//find the total score caused by crew opinion in the current set-up
-				var currentOpinion = BoatPositions[i].PositionScore - BoatPositions[i].Position.GetPositionRating(BoatPositions[i].CrewMember) - BoatPositions[i].CrewMember.GetMood() - BoatPositions[i].CrewMember.CrewOpinions[Manager];
-				//add the difference to mistakeScores
-				mistakeScores["CrewOpinion"] += idealOpinion - currentOpinion;
-				//if the percentage of unknown opinions is above the given amount, add the difference to hiddenScores
+				//calculate the average opinion for this position in the ideal crew
+				var idealOpinion = 0;
+				foreach (var bp in _nearestIdealMatch)
+				{
+					if (bp.CrewMember != _nearestIdealMatch[i].CrewMember)
+					{
+						idealOpinion += _nearestIdealMatch[i].CrewMember.CrewOpinions[bp.CrewMember];
+					}
+				}
+				idealOpinion /= BoatPositions.Count - 1;
+				//calculate the average opinion for this position in the current crew and how many opinions are currently unknown
+				var currentOpinion = 0;
 				var unknownCrewOpinions = 0;
 				foreach (var bp in BoatPositions)
 				{
 					if (bp.CrewMember != BoatPositions[i].CrewMember)
 					{
+						currentOpinion += BoatPositions[i].CrewMember.CrewOpinions[bp.CrewMember];
 						if (BoatPositions[i].CrewMember.CrewOpinions[bp.CrewMember] != BoatPositions[i].CrewMember.RevealedCrewOpinions[bp.CrewMember])
 						{
 							unknownCrewOpinions++;
 						}
 					}
 				}
-				if (unknownCrewOpinions >= (BoatPositions.Count - 1) * _config.ConfigValues[ConfigKeys.HiddenOpinionLimit.ToString()])
+				currentOpinion /= BoatPositions.Count - 1;
+				//add the difference to mistakeScores
+				mistakeScores["CrewOpinion"] += idealOpinion - currentOpinion;
+				//if the percentage of unknown opinions is above the given amount, add the difference to hiddenScores
+				if (unknownCrewOpinions >= (BoatPositions.Count - 1) * _config.ConfigValues[ConfigKeys.HiddenOpinionLimit])
 				{
 					hiddenScores["CrewOpinion"] += idealOpinion - currentOpinion;
 				}
@@ -509,7 +517,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//if the value of the mistake in hiddenScores is more than the given percentage of that in mistakeScores, set this mistake to be 'hidden'
 			for (var i = 0; i < mistakes.Count; i++)
 			{
-				if (hiddenScores[mistakes[i]] >= mistakeScores[mistakes[i]] * _config.ConfigValues[ConfigKeys.HiddenMistakeLimit.ToString()])
+				if (hiddenScores[mistakes[i]] >= mistakeScores[mistakes[i]] * _config.ConfigValues[ConfigKeys.HiddenMistakeLimit])
 				{
 					mistakes[i] = "Hidden";
 				}

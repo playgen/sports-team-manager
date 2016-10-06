@@ -81,16 +81,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					if (selectedPerferred.RequiredSkills.Contains(skill))
 					{
-						Skills.Add(skill, random.Next((int)_config.ConfigValues[ConfigKeys.GoodPositionRating.ToString()], 11));
+						Skills.Add(skill, random.Next((int)_config.ConfigValues[ConfigKeys.GoodPositionRating], 11));
 					}
 					else
 					{
-						Skills.Add(skill, random.Next(1, (int)_config.ConfigValues[ConfigKeys.BadPositionRating.ToString()] + 1));
+						Skills.Add(skill, random.Next(1, (int)_config.ConfigValues[ConfigKeys.BadPositionRating] + 1));
 					}
 				}
 				else
 				{
-					Skills.Add(skill, random.Next((int)_config.ConfigValues[ConfigKeys.RandomSkillLow.ToString()], (int)_config.ConfigValues[ConfigKeys.RandomSkillHigh.ToString()] + 1));
+					Skills.Add(skill, random.Next((int)_config.ConfigValues[ConfigKeys.RandomSkillLow], (int)_config.ConfigValues[ConfigKeys.RandomSkillHigh] + 1));
 				}
 			}
 		}
@@ -159,10 +159,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void CreateInitialOpinion(Random random, Person person)
 		{
-			AddOrUpdateOpinion(person, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin.ToString()], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax.ToString()] + 1));
+			AddOrUpdateOpinion(person, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax] + 1));
 			if (person.GetType() == typeof(CrewMember) && Name.Split(' ').Last() == person.Name.Split(' ').Last())
 			{
-				AddOrUpdateOpinion(person, (int)_config.ConfigValues[ConfigKeys.LastNameBonusOpinion.ToString()]);
+				AddOrUpdateOpinion(person, (int)_config.ConfigValues[ConfigKeys.LastNameBonusOpinion]);
 			}
 			AddOrUpdateRevealedOpinion(person, 0);
 			SaveStatus();
@@ -358,7 +358,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RestCount--;
 			if (assigned)
 			{
-				RestCount = (int)_config.ConfigValues[ConfigKeys.PostRaceRest.ToString()];
+				RestCount = (int)_config.ConfigValues[ConfigKeys.PostRaceRest];
 			}
 			UpdateSingleBelief(NPCBeliefs.Rest.GetDescription(), RestCount.ToString());
 		}
@@ -378,11 +378,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var statName = ((CrewMemberSkill)randomStat).ToString();
 					var statValue = Skills[(CrewMemberSkill)randomStat];
 					RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
-					if (statValue <= (int)_config.ConfigValues[ConfigKeys.BadSkillRating.ToString()])
+					if (statValue <= (int)_config.ConfigValues[ConfigKeys.BadSkillRating])
 					{
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Bad").ToName()).ToList();
 					}
-					else if (statValue >= (int)_config.ConfigValues[ConfigKeys.GoodSkillRating.ToString()])
+					else if (statValue >= (int)_config.ConfigValues[ConfigKeys.GoodSkillRating])
 					{
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Good").ToName()).ToList();
 					}
@@ -414,11 +414,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				case "OpinionRevealPositive":
 					var crewOpinionsPositive = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Key.Name)).ToDictionary(p => p.Key, p => p.Value);
 					crewOpinionsPositive.Add(boat.Manager, CrewOpinions[boat.Manager]);
-					var opinionsPositive = crewOpinionsPositive.Where(co => co.Value >= (int)_config.ConfigValues[ConfigKeys.OpinionLike.ToString()]);
+					var opinionsPositive = crewOpinionsPositive.Where(co => co.Value >= (int)_config.ConfigValues[ConfigKeys.OpinionLike]).ToDictionary(o => o.Key, o => o.Value);
 					if (opinionsPositive.Any())
 					{
 						var pickedOpinionPositive = opinionsPositive.OrderBy(o => Guid.NewGuid()).First();
-						if (pickedOpinionPositive.Value >= (int)_config.ConfigValues[ConfigKeys.OpinionStrongLike.ToString()])
+						if (pickedOpinionPositive.Value >= (int)_config.ConfigValues[ConfigKeys.OpinionStrongLike])
 						{
 							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "High").ToName()).ToList();
 						}
@@ -448,11 +448,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				case "OpinionRevealNegative":
 					var crewOpinionsNegative = CrewOpinions.Where(c => boat.GetAllCrewMembers().Select(cm => cm.Name).Contains(c.Key.Name)).ToDictionary(p => p.Key, p => p.Value);
 					crewOpinionsNegative.Add(boat.Manager, CrewOpinions[boat.Manager]);
-					var opinionsNegative = crewOpinionsNegative.Where(co => co.Value <= (int)_config.ConfigValues[ConfigKeys.OpinionDislike.ToString()]);
+					var opinionsNegative = crewOpinionsNegative.Where(co => co.Value <= (int)_config.ConfigValues[ConfigKeys.OpinionDislike]).ToDictionary(o => o.Key, o => o.Value);
 					if (opinionsNegative.Any())
 					{
 						var pickedOpinionNegative = opinionsNegative.OrderBy(o => Guid.NewGuid()).First();
-						if (pickedOpinionNegative.Value <= (int)_config.ConfigValues[ConfigKeys.OpinionStrongDislike.ToString()])
+						if (pickedOpinionNegative.Value <= (int)_config.ConfigValues[ConfigKeys.OpinionStrongDislike])
 						{
 							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "High").ToName()).ToList();
 						}

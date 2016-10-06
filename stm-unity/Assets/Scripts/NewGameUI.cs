@@ -157,15 +157,15 @@ public class NewGameUI : MonoBehaviour {
 		Tracker.T.alternative.Selected("New Game", "Created Game", AlternativeTracker.Alternative.Menu);
 		var colorsPri = new []
 			{
-				(int)(_colorImagePrimary.color.r * 255),
-				(int)(_colorImagePrimary.color.g * 255),
-				(int)(_colorImagePrimary.color.b * 255)
+				(byte)(_colorImagePrimary.color.r * 255),
+				(byte)(_colorImagePrimary.color.g * 255),
+				(byte)(_colorImagePrimary.color.b * 255)
 			};
 		var colorsSec = new []
 		{
-				(int)(_colorImageSecondary.color.r * 255),
-				(int)(_colorImageSecondary.color.g * 255),
-				(int)(_colorImageSecondary.color.b * 255)
+				(byte)(_colorImageSecondary.color.r * 255),
+				(byte)(_colorImageSecondary.color.g * 255),
+				(byte)(_colorImageSecondary.color.b * 255)
 		};
 		var success = _newGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text);
 		if (success)

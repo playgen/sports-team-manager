@@ -71,7 +71,7 @@ public class CrewMemberUI : MonoBehaviour {
 			trigger.triggers.Add(drop);
 		} else
 		{
-			GetComponentInChildren<Image>().color = Color.gray;
+			GetComponentInChildren<Image>().color = UnityEngine.Color.gray;
 			var click = new EventTrigger.Entry();
 			click.eventID = EventTriggerType.PointerClick;
 			click.callback.AddListener(data => { ShowPopUp(); });

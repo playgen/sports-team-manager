@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace PlayGen.RAGE.SportsTeamManager.Simulation
+﻿namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	/// <summary>
 	/// Used to store CrewMember for a Position and the current score for that Position
@@ -49,11 +47,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 
 			//add average opinion, manager opinion and current mood to score
-			crewScore += (int)(opinion * config.ConfigValues[ConfigKeys.OpinionRatingWeighting.ToString()]);
+			crewScore += (int)(opinion * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
 
-			crewScore += (int)(managerOpinion * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting.ToString()]);
+			crewScore += (int)(managerOpinion * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]);
 
-			crewScore += (int)(CrewMember.GetMood() * config.ConfigValues[ConfigKeys.MoodRatingWeighting.ToString()]);
+			crewScore += (int)(CrewMember.GetMood() * config.ConfigValues[ConfigKeys.MoodRatingWeighting]);
 
 			PositionScore = crewScore;
 		}

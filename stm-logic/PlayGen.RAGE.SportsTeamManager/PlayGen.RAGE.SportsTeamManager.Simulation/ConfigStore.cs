@@ -10,16 +10,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class ConfigStore
 	{
-		public Dictionary<string, float> ConfigValues { get; set; }
+		public Dictionary<ConfigKeys, float> ConfigValues { get; set; }
 
 		public ConfigStore()
 		{
-			ConfigValues = new Dictionary<string, float>();
+			ConfigValues = new Dictionary<ConfigKeys, float>();
 			var configText = Templates.ResourceManager.GetString("config");
-			ConfigValues = JsonConvert.DeserializeObject<Dictionary<string, float>>(configText);
-			foreach (var key in Enum.GetNames(typeof(ConfigKeys)))
+			ConfigValues = JsonConvert.DeserializeObject<Dictionary<ConfigKeys, float>>(configText);
+			foreach (var key in Enum.GetValues(typeof(ConfigKeys)) as ConfigKeys[])
 			{
-				if (!ConfigValues.Keys.Contains(key))
+				if (!ConfigValues.ContainsKey(key))
 				{
 					throw new Exception("Config key " + key + " not included in config!");
 				}

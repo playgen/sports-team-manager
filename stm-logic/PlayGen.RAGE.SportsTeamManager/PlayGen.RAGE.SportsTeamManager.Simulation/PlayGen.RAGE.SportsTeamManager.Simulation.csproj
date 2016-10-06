@@ -73,7 +73,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="Utilities">
       <HintPath>..\..\RAGE Assets\Utilities.dll</HintPath>
     </Reference>
@@ -89,6 +88,7 @@
     <Compile Include="AvatarGeneratorConfig.cs" />
     <Compile Include="Boat.cs" />
     <Compile Include="BoatPosition.cs" />
+    <Compile Include="Color.cs" />
     <Compile Include="ConfigKeys.cs" />
     <Compile Include="ConfigStore.cs" />
     <Compile Include="CrewMember.cs" />

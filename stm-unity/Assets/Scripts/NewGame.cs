@@ -22,7 +22,7 @@ public class NewGame : MonoBehaviour {
 	/// <summary>
 	/// Create a new game
 	/// </summary>
-	public bool CreateNewGame(string boatName, int[] colorsPri, int[] colorsSec, string managerName, string managerAge, string managerGender)
+	public bool CreateNewGame(string boatName, byte[] colorsPri, byte[] colorsSec, string managerName, string managerAge, string managerGender)
 	{
 		_gameManager.NewGame(Application.persistentDataPath, boatName, colorsPri, colorsSec, managerName, managerAge, managerGender);
 		if (_gameManager.Boat != null && _gameManager.Boat.Name == boatName)
