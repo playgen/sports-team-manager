@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+
 using AssetManagerPackage;
 using IntegratedAuthoringTool.DTOs;
 
@@ -26,6 +28,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int ActionAllowance { get; private set; }
 		public int CrewEditAllowance { get; private set; }
 		public int RaceSessionLength { get; private set; }
+
+		public bool Running { get { return _threadRunning; } }
+		private bool _threadRunning;
+		Thread _thread;
 
 		/// <summary>
 		/// GameManager Constructor
@@ -270,14 +276,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Remove all CrewMember from their Position
-		/// </summary>
-		public void RemoveAllCrew()
-		{
-			Boat.RemoveAllCrew();
-		}
-
-		/// <summary>
 		/// Load the history of line-ups from the manager's EA file
 		/// </summary>
 		public void LoadLineUpHistory()
@@ -376,13 +374,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return Boat.GetAssignmentMistakes(amount);
 		}
 
-		/// <summary>
-		/// Save the current boat line-up to the manager's EA file
-		/// </summary>
 		public void SaveLineUp(int offset)
 		{
 			Boat.UpdateBoatScore();
-			Boat.GetIdealCrew();
+			_thread = new Thread(SaveLineUpThreaded);
+			_threadRunning = true;
+			_thread.Start(offset);
+		}
+
+		/// <summary>
+		/// Save the current boat line-up to the manager's EA file
+		/// </summary>
+		private void SaveLineUpThreaded(object offset)
+		{
 			var manager = Boat.Manager;
 			var spacelessName = manager.RolePlayCharacter.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
@@ -400,11 +404,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					crew += boatPosition.CrewMember.Name.Replace(" ", "");
 					crew += "," + boatPosition.PositionScore;
-				} else
+				}
+				else
 				{
 					crew += "null,0";
 				}
 			}
+			Boat.GetIdealCrew();
 			crew += "," + Boat.IdealMatchScore;
 			Boat.SelectionMistakes.ForEach(sm => crew += "," + sm);
 			crew += "," + offset;
@@ -417,7 +423,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			manager.SaveStatus();
 			var lastBoat = new Boat(_config);
-			//Boat lastBoat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + Boat.GetType().Name), _config);
 			foreach (var bp in Boat.BoatPositions)
 			{
 				lastBoat.BoatPositions.Add(new BoatPosition
@@ -432,7 +437,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			lastBoat.BoatScore = lastBoat.BoatPositions.Sum(bp => bp.PositionScore);
 			lastBoat.Manager = Boat.Manager;
 			LineUpHistory.Add(lastBoat);
-			HistoricTimeOffset.Add(offset);
+			HistoricTimeOffset.Add((int)offset);
+			_threadRunning = false;
 		}
 
 		/// <summary>

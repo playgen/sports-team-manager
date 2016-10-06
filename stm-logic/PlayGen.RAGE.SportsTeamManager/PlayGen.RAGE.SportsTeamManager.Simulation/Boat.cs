@@ -6,8 +6,6 @@ using System.Text;
 using AssetManagerPackage;
 using IntegratedAuthoringTool;
 
-using System.Threading;
-
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	/// <summary>
@@ -30,10 +28,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public float IdealMatchScore { get; set; }
 		public List<string> SelectionMistakes { get; set; }
 		public Person Manager { get; set; }
-
-		public bool Running { get { return _threadRunning; } }
-		private bool _threadRunning;
-		Thread _thread;
 
 		/// <summary>
 		/// Boat constructor
@@ -137,20 +131,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UnassignedCrew.Add(boatPosition.CrewMember);
 			boatPosition.CrewMember.UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "null");
 			boatPosition.CrewMember = null;
-		}
-
-		/// <summary>
-		/// Remove all assigned CrewMembers
-		/// </summary>
-		public void RemoveAllCrew()
-		{
-			foreach (var boatPosition in BoatPositions)
-			{
-				if (boatPosition.CrewMember != null)
-				{
-					RemoveCrew(boatPosition);
-				}
-			}
 		}
 
 		public void UniqueNameCheck(Random random, CrewMember cm)
@@ -287,18 +267,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			BoatScore = BoatPositions.Sum(bp => bp.PositionScore);
 		}
 
-		public void GetIdealCrew()
-		{
-			_idealCrew = null;
-			_thread = new Thread(GetIdealCrewThread);
-			_threadRunning = true;
-			_thread.Start();
-		}
-
 		/// <summary>
 		/// Get the crew set-up(s) that would be worth the highest BoatScore
 		/// </summary>
-		public void GetIdealCrewThread()
+		public void GetIdealCrew()
 		{
 			var availableCrew = GetAllCrewMembers().Where(cm => cm.RestCount <= 0).ToList();
 			if (availableCrew.Count < BoatPositions.Count)
@@ -382,7 +354,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			_idealCrew = bestCrew;
 			UpdateIdealScore();
-			_threadRunning = false;
 		}
 
 		/// <summary>

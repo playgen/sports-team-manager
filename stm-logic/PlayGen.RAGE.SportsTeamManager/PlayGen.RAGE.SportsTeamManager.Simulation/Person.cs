@@ -149,9 +149,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				AssetManager.Instance.Bridge = new BaseBridge();
 				edm.SaveToFile(Path.Combine(filePath, noSpaceName + ".edm"));
 				si.SaveToFile(Path.Combine(filePath, noSpaceName + ".si"));
-				templateRpc.EmotionalAppraisalAssetSource = Path.Combine(filePath, noSpaceName + ".ea");
-				templateRpc.EmotionalDecisionMakingSource = Path.Combine(filePath, noSpaceName + ".edm");
-				templateRpc.SocialImportanceAssetSource = Path.Combine(filePath, noSpaceName + ".si");
+				templateRpc.SaveToFile(Path.Combine(filePath, noSpaceName + ".rpc"));
+				//assign asset files to RPC
+				templateRpc.EmotionalAppraisalAssetSource = noSpaceName + ".ea";
+				templateRpc.EmotionalDecisionMakingSource = noSpaceName + ".edm";
+				templateRpc.SocialImportanceAssetSource = noSpaceName + ".si";
 				templateRpc.SaveToFile(Path.Combine(filePath, noSpaceName + ".rpc"));
 				RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(Path.Combine(filePath, noSpaceName + ".rpc"));
 				RolePlayCharacter.SaveToFile(RolePlayCharacter.AssetFilePath);

@@ -27,7 +27,6 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			gameManager.AssignCrew(gameManager.Boat.BoatPositions.Single(p => p.Position.Name == "Mid-Bowman").Position, gameManager.Boat.GetAllCrewMembers().Single(c => c.Name == "Dim Wobnam"));
 			gameManager.Boat.UpdateBoatScore();
 			Assert.AreEqual(30, gameManager.Boat.BoatScore);
-			gameManager.Boat.GetIdealCrew();
 		}
 
 		[TestMethod]
@@ -552,8 +551,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			gameManager.AddRecruit(gameManager.Boat.Recruits[0]);
 			gameManager.AddRecruit(gameManager.Boat.Recruits[0]);
 			Assert.AreEqual(14, gameManager.Boat.UnassignedCrew.Count);
-			gameManager.Boat.GetIdealCrew();
-			while (gameManager.Boat.Running)
+			gameManager.SaveLineUp(0);
+			while (gameManager.Running)
 			{
 				
 			}

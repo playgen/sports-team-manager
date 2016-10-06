@@ -73,10 +73,6 @@ public class TeamSelectionUI : MonoBehaviour {
 	[SerializeField]
 	private HoverPopUpUI _hoverPopUp;
 
-#if UNITY_EDITOR
-	private List<BoatPosition> _lastCrew = new List<BoatPosition>();
-#endif
-
 	private void Awake()
 	{
 		_teamSelection = GetComponent<TeamSelection>();
@@ -127,10 +123,7 @@ public class TeamSelectionUI : MonoBehaviour {
 #if UNITY_EDITOR
 		if (Input.GetKeyDown(KeyCode.R))
 		{
-			if (_lastCrew.Count > 0)
-			{
-				RepeatLineUp(_lastCrew);
-			}
+			RepeatLineUp();
 		}
 #endif
 	}
@@ -145,7 +138,6 @@ public class TeamSelectionUI : MonoBehaviour {
 				boat.GetComponent<LayoutElement>().preferredHeight = Mathf.Abs(currentPosition) * 0.2f;
 			}
 		}
-		Debug.Log(_teamSelection.GetBoat().Running);
 	}
 
 	/// <summary>
@@ -492,9 +484,6 @@ public class TeamSelectionUI : MonoBehaviour {
 			Destroy(b.gameObject);
 		}
 		_recruitButtons.Clear();
-#if UNITY_EDITOR
-		_lastCrew = currentPositions;
-#endif
 		Destroy(_raceButton.gameObject);
 		CreateNewBoat();
 		if (!_teamSelection.IsRace())
@@ -505,6 +494,7 @@ public class TeamSelectionUI : MonoBehaviour {
 				_meetingUI.Display();
 			}
 		}
+		RepeatLineUp();
 	}
 
 	/// <summary>
@@ -561,37 +551,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Repeat the line-up (or what can be repeated) from what is passed to it
 	/// </summary>
-	private void RepeatLineUp(List<BoatPosition> boatPositions)
-	{
-		var tempBoatPositions = new List<BoatPosition>();
-		tempBoatPositions.AddRange(boatPositions);
-		var crewMembers = (FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[]).Where(cm => cm.Current && cm.Usable).ToList();
-		var positions = (FindObjectsOfType(typeof(PositionUI)) as PositionUI[]).ToList();
-		var sortedPositions = positions.OrderBy(p => p.transform.GetSiblingIndex());
-		foreach (var position in sortedPositions)
-		{
-			var boatPosition = tempBoatPositions.FirstOrDefault(bp => bp.Position.Name == position.Position.Name);
-			if (boatPosition != null)
-			{
-				foreach (var crewMember in crewMembers)
-				{
-					if (crewMember.name == SplitName(boatPosition.CrewMember.Name))
-					{
-						crewMember.PlacedEvent();
-						crewMember.Place(position.gameObject);
-						crewMembers.Remove(crewMember);
-						tempBoatPositions.Remove(boatPosition);
-						break;
-					}
-				}
-			}
-		}
-	}
-
-	/// <summary>
-	/// Destroy the currently created CrewMember object and adjust any older CrewMember objects where the member has retired/been fired
-	/// </summary>
-	public void ResetCrew()
+	private void RepeatLineUp()
 	{
 		var currentPositions = new List<BoatPosition>();
 		foreach (var bp in _teamSelection.GetBoat().BoatPositions)
@@ -605,6 +565,34 @@ public class TeamSelectionUI : MonoBehaviour {
 				});
 			}
 		}
+		var crewMembers = (FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[]).Where(cm => cm.Current && cm.Usable).ToList();
+		var positions = (FindObjectsOfType(typeof(PositionUI)) as PositionUI[]).ToList();
+		var sortedPositions = positions.OrderBy(p => p.transform.GetSiblingIndex());
+		foreach (var position in sortedPositions)
+		{
+			var boatPosition = currentPositions.FirstOrDefault(bp => bp.Position.Name == position.Position.Name);
+			if (boatPosition != null && boatPosition.CrewMember != null)
+			{
+				foreach (var crewMember in crewMembers)
+				{
+					if (crewMember.name == SplitName(boatPosition.CrewMember.Name))
+					{
+						crewMember.PlacedEvent();
+						crewMember.Place(position.gameObject);
+						crewMembers.Remove(crewMember);
+						currentPositions.Remove(boatPosition);
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Destroy the currently created CrewMember object and adjust any older CrewMember objects where the member has retired/been fired
+	/// </summary>
+	public void ResetCrew()
+	{
 		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
 		{
 			position.RemoveCrew();
@@ -632,7 +620,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		_recruitButtons.Clear();
 		_positionsEmpty = (FindObjectsOfType(typeof(PositionUI)) as PositionUI[]).Length;
 		CreateCrew();
-		RepeatLineUp(currentPositions);
+		RepeatLineUp();
 		_meetingUI.gameObject.SetActive(false);
 		_positionUI.ClosePositionPopUp();
 	}
