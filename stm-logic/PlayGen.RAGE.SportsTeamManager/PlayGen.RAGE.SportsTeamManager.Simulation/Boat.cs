@@ -286,12 +286,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					positionCrewCombos.Add(string.Format("{0} {1}", bp.Position.Name, cm.Name), bp.Position.GetPositionRating(cm) + cm.GetMood() + cm.CrewOpinions[Manager]);
 				}
 			}
-			var crewOpinionCombos = GetPermutations(availableCrew, BoatPositions.Count - 1);
-			var crewOpinions = new Dictionary<string, int>(crewOpinionCombos.Count);
-			foreach (var possibleCrew in crewOpinionCombos)
+			var crewCombos = GetPermutations(availableCrew.Select(ac => ac.Name).ToList(), BoatPositions.Count - 1);
+			var crewOpinions = new Dictionary<string, int>(crewCombos.Count);
+			foreach (var possibleCrew in crewCombos)
 			{
-				var crewList = possibleCrew.Select(pc => pc.Name);
-				var crewComboKey = crewList.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString();
+				var crewComboKey = possibleCrew.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString();
 				crewOpinions.Add(crewComboKey, 0);
 				foreach (var crewMember in possibleCrew)
 				{
@@ -301,7 +300,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						if (crewMember != otherMember)
 						{
-							opinion += crewMember.CrewOpinions[otherMember];
+							opinion += availableCrew.First(ac => ac.Name == crewMember).CrewOpinions[availableCrew.First(ac => ac.Name == otherMember)];
 							opinionCount++;
 						}
 					}
@@ -310,40 +309,46 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			var opinionMax = crewOpinions.Values.Max();
-			var crewCombos = GetOrderedPermutations(availableCrew.Select(ac => ac.Name).ToList(), BoatPositions.Count - 1);
 			var positionNames = BoatPositions.Select(bp => bp.Position.Name).ToList();
 			var bestScore = 0;
 			var bestCrew = new List<List<string>>();
-			var crewNames = new List<string>();
+			var crewPositionScores = new Dictionary<string, int>();
 			int score;
 			//for each possible combination
 			foreach (var possibleCrew in crewCombos)
 			{
-				score = 0;
-				crewNames.Clear();
-				//assign crew members to their positions and get the score for this set-up
-				for (var i = 0; i < possibleCrew.Count; i++)
+				crewPositionScores.Clear();
+				positionNames.ForEach(pn => possibleCrew.ForEach(pc => crewPositionScores.Add(string.Format("{0} {1}", pn, pc), positionCrewCombos[string.Format("{0} {1}", pn, pc)])));
+				crewPositionScores = crewPositionScores.OrderByDescending(cps => cps.Value).ToDictionary(cps => cps.Key, cps => cps.Value);
+				if (crewPositionScores.Values.Take(positionNames.Count).Sum() + opinionMax >= bestScore)
 				{
-					crewNames.Add(possibleCrew[i]);
-					score += positionCrewCombos[string.Format("{0} {1}", positionNames[i], possibleCrew[i])];
-				}
-				if (score + opinionMax < bestScore)
-				{
-					continue;
-				}
-				crewNames.Sort();
-				score += crewOpinions[crewNames.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString()];
-				//if the score for this set-up is higher or equal than the current highest, set up a new list of BoatPositions for the set-up
-				if (score >= bestScore)
-				{
-					//if the set-up has a higher score, clear the current list
-					if (score > bestScore)
+					var combos = GetOrderedPermutations(possibleCrew, positionNames.Count - 1);
+					foreach (var combo in combos)
 					{
-						bestCrew.Clear();
-						bestScore = score;
+						score = 0;
+						//assign crew members to their positions and get the score for this set-up
+						for (var i = 0; i < combo.Count; i++)
+						{
+							score += crewPositionScores[string.Format("{0} {1}", positionNames[i], combo[i])];
+						}
+						if (score + opinionMax < bestScore)
+						{
+							continue;
+						}
+						score += crewOpinions[possibleCrew.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString()];
+						//if the score for this set-up is higher or equal than the current highest, set up a new list of BoatPositions for the set-up
+						if (score >= bestScore)
+						{
+							//if the set-up has a higher score, clear the current list
+							if (score > bestScore)
+							{
+								bestCrew.Clear();
+								bestScore = score;
+							}
+							//add this set-up to the list of best crews
+							bestCrew.Add(combo);
+						}
 					}
-					//add this set-up to the list of best crews
-					bestCrew.Add(possibleCrew);
 				}
 			}
 			_idealCrew.Clear();
@@ -552,7 +557,39 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private List<List<T>>GetOrderedPermutations<T>(List<T> list, int length)
 		{
-			if (length == 0)
+			/*var crewComboCount = list.Count;
+			for (int i = list.Count - 1; i > list.Count - BoatPositions.Count; i--)
+			{
+				crewComboCount *= i;
+			}
+			var finalList = new List<List<T>>(crewComboCount);
+			var listLength = list.Count - 1;
+			var intArray = new int[length];
+			for (int i = 0; i < intArray.Length; i++)
+			{
+				intArray[i] = i;
+			}
+			var index = intArray.Length - 1;
+			while (index >= 0)
+			{
+				intArray[index]--;
+				var current = 0;
+				if (index % 2 == 1)
+				{
+					current = intArray[index];
+				}
+				var indexMember = list[current];
+				var currentMember = list[index];
+				list[current] = indexMember;
+				list[index] = currentMember;
+				while (intArray[index] == 0)
+				{
+					intArray[index] = index;
+					index++;
+				}
+			}*/
+
+		   if (length == 0)
 			{
 				return list.Select(t => new [] { t }.ToList()).ToList();
 				
