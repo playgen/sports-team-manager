@@ -309,36 +309,30 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					crewOpinions[crewComboKey] += opinion;
 				}
 			}
-			var opinionDifference = crewOpinions.Values.Max() - crewOpinions.Values.Min();
-			var crewCombos = GetOrderedPermutations(availableCrew, BoatPositions.Count - 1);
+			var opinionMax = crewOpinions.Values.Max();
+			var crewCombos = GetOrderedPermutations(availableCrew.Select(ac => ac.Name).ToList(), BoatPositions.Count - 1);
+			var positionNames = BoatPositions.Select(bp => bp.Position.Name).ToList();
 			var bestScore = 0;
-			var bestCrew = new List<List<BoatPosition>>();
+			var bestCrew = new List<List<string>>();
+			var crewNames = new List<string>();
+			int score;
 			//for each possible combination
 			foreach (var possibleCrew in crewCombos)
 			{
-				var score = 0;
-				var crewList = possibleCrew.ToList();
-				var positionedCrew = new List<BoatPosition>(BoatPositions.Count);
+				score = 0;
+				crewNames.Clear();
 				//assign crew members to their positions and get the score for this set-up
-				for (var i = 0; i < BoatPositions.Count; i++)
+				for (var i = 0; i < possibleCrew.Count; i++)
 				{
-					positionedCrew.Add(new BoatPosition
-					{
-						Position = BoatPositions[i].Position,
-						CrewMember = crewList[i],
-						PositionScore = positionCrewCombos[string.Format("{0} {1}", BoatPositions[i].Position.Name, crewList[i].Name)]
-					});
-					score += positionedCrew[i].PositionScore;
+					crewNames.Add(possibleCrew[i]);
+					score += positionCrewCombos[string.Format("{0} {1}", positionNames[i], possibleCrew[i])];
 				}
-				if (score + opinionDifference < bestScore)
+				if (score + opinionMax < bestScore)
 				{
 					continue;
 				}
-				var nameList = crewList.Select(pc => pc.Name).ToList();
-				nameList.Sort();
-				var crewComboKey = nameList.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString();
-				var opinion = crewOpinions[crewComboKey];
-				score += opinion;
+				crewNames.Sort();
+				score += crewOpinions[crewNames.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString()];
 				//if the score for this set-up is higher or equal than the current highest, set up a new list of BoatPositions for the set-up
 				if (score >= bestScore)
 				{
@@ -349,10 +343,24 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						bestScore = score;
 					}
 					//add this set-up to the list of best crews
-					bestCrew.Add(positionedCrew);
+					bestCrew.Add(possibleCrew);
 				}
 			}
-			_idealCrew = bestCrew;
+			_idealCrew.Clear();
+			foreach (var crew in bestCrew)
+			{
+				var positionedCrew = new List<BoatPosition>(crew.Count);
+				for (var i = 0; i < crew.Count; i++)
+				{
+					positionedCrew.Add(new BoatPosition
+					{
+						Position = BoatPositions[i].Position,
+						CrewMember = availableCrew.First(ac => ac.Name == crew[i]),
+						PositionScore = positionCrewCombos[string.Format("{0} {1}", positionNames[i], crew[i])]
+					});
+				}
+				_idealCrew.Add(positionedCrew);
+			}
 			UpdateIdealScore();
 		}
 
