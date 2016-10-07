@@ -48,7 +48,6 @@ public class AvatarDisplay : MonoBehaviour
 #endif
 		// TODO reference the texture packed images
 		// HACK: Just load the images from resources 
-		_lastMood = mood;
 		_body.sprite = Resources.Load<Sprite>(string.Format("Avatars/Body/{0}", avatar.BodyType));
 		_outfit.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitBaseType));
 		_outfitHighlight.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitHighlightType));
@@ -149,6 +148,7 @@ public class AvatarDisplay : MonoBehaviour
 		_mouth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.MouthType, moodStr));
 		_teeth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.TeethType, moodStr));
 		_teeth.color = _teeth.sprite != null ? Color.white : new Color(0, 0, 0, 0);
+		_lastMood = mood;
 	}
 
 	/// <summary>

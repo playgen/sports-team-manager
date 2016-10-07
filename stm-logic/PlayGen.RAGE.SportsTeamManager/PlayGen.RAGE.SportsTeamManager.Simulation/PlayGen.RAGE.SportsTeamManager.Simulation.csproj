@@ -82,8 +82,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseBridge.cs" />
-    <Compile Include="BiggestDingy.cs" />
-    <Compile Include="BiggerDinghy.cs" />
     <Compile Include="Avatar.cs" />
     <Compile Include="AvatarGeneratorConfig.cs" />
     <Compile Include="Boat.cs" />
@@ -92,11 +90,9 @@
     <Compile Include="ConfigStore.cs" />
     <Compile Include="CrewMember.cs" />
     <Compile Include="CrewMemberSkill.cs" />
-    <Compile Include="AltDinghy.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="EventController.cs" />
     <Compile Include="GameManager.cs" />
-    <Compile Include="Dinghy.cs" />
     <Compile Include="NameExtensions.cs" />
     <Compile Include="NPCBeliefs.cs" />
     <Compile Include="Person.cs" />
@@ -111,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AvatarConfig.json" />
+    <None Include="BoatConfig.json" />
     <None Include="config.json" />
     <None Include="NPC Templates\Template.ea" />
     <None Include="NPC Templates\Template.edm" />

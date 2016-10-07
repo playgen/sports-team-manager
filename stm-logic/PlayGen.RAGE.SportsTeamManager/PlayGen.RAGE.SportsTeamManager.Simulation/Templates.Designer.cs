@@ -39,7 +39,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    var temp = new global::System.Resources.ResourceManager("PlayGen.RAGE.SportsTeamManager.Simulation.Templates", typeof(Templates).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PlayGen.RAGE.SportsTeamManager.Simulation.Templates", typeof(Templates).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -110,6 +110,41 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         
         /// <summary>
         ///   Looks up a localized string similar to {
+        ///	&quot;Dinghy&quot;: [
+        ///		&quot;Skipper&quot;,
+        ///		&quot;Navigator&quot;,
+        ///		&quot;MidBowman&quot;
+        ///	],
+        ///	&quot;AltDinghy&quot;: [
+        ///		&quot;Skipper&quot;,
+        ///		&quot;Helmsman&quot;,
+        ///		&quot;MidBowman&quot;
+        ///	],
+        ///	&quot;BiggerDinghy&quot;: [
+        ///		&quot;Skipper&quot;,
+        ///		&quot;Navigator&quot;,
+        ///		&quot;Helmsman&quot;,
+        ///		&quot;Pitman&quot;
+        ///	],
+        ///	&quot;BiggestDinghy&quot;: [
+        ///		&quot;Skipper&quot;,
+        ///		&quot;Navigator&quot;,
+        ///		&quot;Helmsman&quot;,
+        ///		&quot;Trimmer&quot;,
+        ///		&quot;Pitman&quot;,
+        ///		&quot;MidBowman&quot;
+        ///	]
+        ///}
+        ///.
+        /// </summary>
+        public static string boat_config {
+            get {
+                return ResourceManager.GetString("boat_config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
         ///    &quot;GoodPositionRating&quot;: 7,
         ///    &quot;BadPositionRating&quot;: 4,
         ///    &quot;RandomSkillLow&quot;: 3,
@@ -124,9 +159,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///    &quot;LikeEventOpinionRequired&quot;: 3,
         ///    &quot;OpinionRatingWeighting&quot;: 1,
         ///    &quot;ManagerOpinionRatingWeighting&quot;: 1,
-        ///    &quot;MoodRatingWeighting&quot;: 1,
+        ///    &quot;MoodRatingWeighting&quot;: 0.5,
         ///    &quot;DefaultOpinionMin&quot;: 0,
-        ///    &quot;DefaultOpinionMa [rest of string was truncated]&quot;;.
+        ///    &quot;DefaultOpinion [rest of string was truncated]&quot;;.
         /// </summary>
         public static string config {
             get {
@@ -178,7 +213,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///					&quot;Action&quot;: &quot;RatingFeedback(Good)&quot;,
         ///					&quot;Conditions&quot;:
         ///						{
-        ///							&quot;Set&quot;: [&quot;EventId(Action-Start, *, PositionRating([x]), SELF) = [id]&quot;, &quot;[x] &gt; 6&quot;, &quot;EventElapsedTime([id]) &lt; 1&quot;]
+        ///							&quot;Set&quot;: [&quot;LastEventId(Action-Start, *, PositionRating([x]), SELF) = [id]&quot;, &quot;[x] &gt; 6&quot;]
         ///						},
         ///					&quot;Priority&quot;: 0
         ///				}, 
@@ -186,7 +221,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///					&quot;Action&quot;: &quot;RatingFeedback(Bad)&quot;,
         ///					&quot;Conditions&quot;:
         ///						{
-        ///							&quot;Set&quot;: [&quot;EventId(Action-Start, *, PositionRating([x]), SELF) = [id]&quot;, &quot;[x] &lt; 5&quot;, &quot;[x] != 0&quot;, &quot;EventEla [rest of string was truncated]&quot;;.
+        ///							&quot;Set&quot;: [&quot;LastEventId(Action-Start, *, PositionRating([x]), SELF) = [id]&quot;, &quot;[x] &lt; 5&quot;, &quot;[x] != 0&quot;]
+        ///						},
+        ///					&quot;Priority&quot;: 0
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string template_edm {
             get {
@@ -203,7 +241,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///			&quot;Characters&quot;: [],
         ///			&quot;PlayerDialogues&quot;: [
         ///				{
-        ///					&quot;Id&quot;: &quot;0373149f-a1d3-43aa-9909-2d7bc4c37087&quot;,
         ///					&quot;CurrentState&quot;: &quot;RoleReveal&quot;,
         ///					&quot;NextState&quot;: &quot;-&quot;,
         ///					&quot;Meaning&quot;: [&quot;RoleReveal&quot;],
@@ -211,10 +248,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///					&quot;Utterance&quot;: &quot;What role do you think you can do well in?&quot;
         ///				}, 
         ///				{
-        ///					&quot;Id&quot;: &quot;b6aec58f-d1b1-42a1-bfa9-b4ff8176f41b&quot;,
         ///					&quot;CurrentState&quot;: &quot;StatReveal&quot;,
         ///					&quot;NextState&quot;: &quot;-&quot;,
-        ///					&quot;Meaning&quot;: [&quot;Stat [rest of string was truncated]&quot;;.
+        ///					&quot;Meaning&quot;: [&quot;StatReveal&quot;],
+        ///					&quot;Style&quot;: [&quot;StatReveal&quot;],
+        ///					&quot;Utterance&quot;: &quot;Tell me more about your skillset&quot;
+        ///				},         /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string template_iat {
             get {

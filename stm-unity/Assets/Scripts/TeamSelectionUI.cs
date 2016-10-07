@@ -553,6 +553,10 @@ public class TeamSelectionUI : MonoBehaviour {
 		var sortedPositions = positions.OrderBy(p => p.transform.GetSiblingIndex());
 		foreach (var position in sortedPositions)
 		{
+			if (!currentPositions.ContainsKey(position.Position))
+			{
+				continue;
+			}
 			var boatPosition = currentPositions[position.Position];
 			foreach (var crewMember in crewMembers)
 			{

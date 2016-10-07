@@ -48,8 +48,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Directory.CreateDirectory(combinedStorageLocation);
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
 			//set up first boat
-			Boat = new Dinghy(_config);
-			Boat.Name = boatName;
+			Boat = new Boat(_config, boatName, "Dinghy");
 			Boat.TeamColorsPrimary = teamColorsPrimary;
 			Boat.TeamColorsSecondary = teamColorsSecondary;
 			iat.ScenarioName = Boat.Name;
@@ -84,7 +83,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//create manager files and store game attribute details
 			manager.CreateFile(iat, combinedStorageLocation);
 			manager.UpdateBeliefs("Manager");
-			manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.GetType().Name);
+			manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.Type);
 			manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
 			manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString());
 			manager.UpdateSingleBelief(NPCBeliefs.TeamColorRedPrimary.GetDescription(), teamColorsPrimary[0].ToString());
@@ -187,7 +186,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void LoadGame(string storageLocation, string boatName)
 		{
 			UnloadGame();
-			Boat = new Boat(_config);
 			//get the iat file and all characters for this game
 			var combinedStorageLocation = Path.Combine(storageLocation, boatName);
 			AssetManager.Instance.Bridge = new BaseBridge();
@@ -204,11 +202,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (position == "Manager")
 				{
 					var person = new Person(rpc);
-					Boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + person.LoadBelief(NPCBeliefs.BoatType.GetDescription())), _config);
+					Boat = new Boat(_config, iat.ScenarioName, person.LoadBelief(NPCBeliefs.BoatType.GetDescription()));
 					ActionAllowance = Convert.ToInt32(person.LoadBelief(NPCBeliefs.ActionAllowance.GetDescription()));
 					CrewEditAllowance = Convert.ToInt32(person.LoadBelief(NPCBeliefs.CrewEditAllowance.GetDescription()));
 					RaceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength];
-					Boat.Name = iat.ScenarioName;
 					Boat.TeamColorsPrimary = new byte[3];
 					Boat.TeamColorsPrimary[0] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorRedPrimary.GetDescription()));
 					Boat.TeamColorsPrimary[1] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorGreenPrimary.GetDescription()));
@@ -293,7 +290,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				splitAfter = splitAfter.Split(')')[0];
 				var subjectSplit = splitAfter.Split(',');
 				//set up the version of boat this was
-				var boat = (Boat)Activator.CreateInstance(Type.GetType("PlayGen.RAGE.SportsTeamManager.Simulation." + subjectSplit[0]), _config);
+				var boat = new Boat(_config, Boat.Name, subjectSplit[0]);
 				//position crew members and gather set-up information using details from split string
 				for (var i = 0; i < boat.BoatPositions.Count; i++)
 				{
@@ -317,28 +314,28 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void PromoteBoat()
 		{
-			Boat newBoat;
-			switch (Boat.GetType().Name)
+			string newType;
+			switch (Boat.Type)
 			{
 				case "Dinghy":
-					newBoat = new AltDinghy(_config);
+					newType = "AltDinghy";
 					break;
 				case "AltDinghy":
-					newBoat = new BiggerDinghy(_config);
+					newType = "BiggerDinghy";
 					break;
 				case "BiggerDinghy":
-					newBoat = new BiggestDinghy(_config);
+					newType = "BiggestDinghy";
 					break;
 				default:
 					return;
 			}
 			//store that the boat type has been changed
-			Boat.Manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), newBoat.GetType().Name);
+			Boat.Manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), newType);
 			Boat.Manager.SaveStatus();
 			//calculate how many new members should be created
-			var extraMembers = (newBoat.BoatPositions.Count - Boat.BoatPositions.Count) * 2;
-			//reload the current game
-			LoadGame(_storageLocation, Boat.Name);
+			var extraMembers = (_config.BoatTypes[newType].Count - Boat.BoatPositions.Count) * 2;
+			//reset the positions on the boat to those for the new type
+			Boat.ChangeBoatType(newType);
 			var rand = new Random();
 			for (var i = 0; i < extraMembers; i++)
 			{
@@ -387,7 +384,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var spacelessName = manager.RolePlayCharacter.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			var eventStringUnformatted = "SelectedLineUp({0},{1})";
-			var boatType = Boat.GetType().Name;
+			var boatType = Boat.Type;
 			var crew = "";
 			//set up string to save
 			foreach (var boatPosition in Boat.BoatPositions)
@@ -417,7 +414,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				manager.RolePlayCharacter.ActionFinished(eventRpc);
 			}
 			manager.SaveStatus();
-			var lastBoat = new Boat(_config);
+			var lastBoat = new Boat(_config, Boat.Name, Boat.Type);
 			foreach (var bp in Boat.BoatPositions)
 			{
 				if (Boat.BoatPositionCrew.ContainsKey(bp))

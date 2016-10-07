@@ -1,0 +1,26 @@
+﻿{
+	"Dinghy": [
+		"Skipper",
+		"Navigator",
+		"MidBowman"
+	],
+	"AltDinghy": [
+		"Skipper",
+		"Helmsman",
+		"MidBowman"
+	],
+	"BiggerDinghy": [
+		"Skipper",
+		"Navigator",
+		"Helmsman",
+		"Pitman"
+	],
+	"BiggestDinghy": [
+		"Skipper",
+		"Navigator",
+		"Helmsman",
+		"Trimmer",
+		"Pitman",
+		"MidBowman"
+	]
+}
