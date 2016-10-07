@@ -8,6 +8,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	[Flags]
 	public enum Position
 	{
+		[Name("No Position")]
+		[Description("")]
+		Null = 0,
 		[Description("The team captain. They'll have to be able to lead the crew and handle the pressure of doing so, all the while knowing how to react in tough situations.")]
 		[RequiredSkills(CrewMemberSkill.Charisma | CrewMemberSkill.Willpower | CrewMemberSkill.Wisdom)]
 		Skipper,

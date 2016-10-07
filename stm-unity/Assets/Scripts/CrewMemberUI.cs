@@ -179,13 +179,16 @@ public class CrewMemberUI : MonoBehaviour {
 	/// <summary>
 	/// Place the CrewMember to be in-line with the Position it is now paired with
 	/// </summary>
-	public void Place(GameObject position)
+	public void Place(GameObject position, bool historical = false)
 	{
 		var positionTransform = position.gameObject.GetComponent<RectTransform>();
 		transform.SetParent(positionTransform, false);
 		GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
 		GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);
-		_teamSelection.AssignCrew(_crewMember, position.gameObject.GetComponent<PositionUI>().Position);
+		if (!historical)
+		{
+			_teamSelection.AssignCrew(_crewMember, position.gameObject.GetComponent<PositionUI>().Position);
+		}
 		position.gameObject.GetComponent<PositionUI>().LinkCrew(this);
 		var positionImage = transform.Find("Position").gameObject;
 		positionImage.GetComponent<Image>().enabled = true;

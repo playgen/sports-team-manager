@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
+
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 
 /// <summary>
@@ -19,7 +21,7 @@ public class RecruitMember : MonoBehaviour {
 	/// </summary>
 	public List<CrewMember> GetRecruits()
 	{
-		return _gameManager.Boat.Recruits;
+		return _gameManager.Boat.Recruits.Values.ToList();
 	}
 
 	/// <summary>
@@ -35,7 +37,7 @@ public class RecruitMember : MonoBehaviour {
 	/// </summary>
 	public Dictionary<CrewMember, string> AskQuestion(CrewMemberSkill skill)
 	{
-		return _gameManager.SendRecruitMembersEvent(skill, _gameManager.Boat.Recruits);
+		return _gameManager.SendRecruitMembersEvent(skill, GetRecruits());
 	}
 
 	/// <summary>

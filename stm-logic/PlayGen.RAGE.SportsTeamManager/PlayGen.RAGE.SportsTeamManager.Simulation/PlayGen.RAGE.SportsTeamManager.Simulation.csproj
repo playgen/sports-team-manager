@@ -87,7 +87,6 @@
     <Compile Include="Avatar.cs" />
     <Compile Include="AvatarGeneratorConfig.cs" />
     <Compile Include="Boat.cs" />
-    <Compile Include="BoatPosition.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="ConfigKeys.cs" />
     <Compile Include="ConfigStore.cs" />

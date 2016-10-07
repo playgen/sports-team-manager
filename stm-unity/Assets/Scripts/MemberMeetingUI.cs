@@ -114,9 +114,9 @@ public class MemberMeetingUI : MonoBehaviour
 		_textList[0].text = _currentMember.Name;
 		_textList[1].text = _currentMember.Age.ToString();
 		var currentRole = _memberMeeting.GetCrewMemberPosition(_currentMember);
-		_textList[2].text = currentRole == 0 ? "No Role" : "";
+		_textList[2].text = currentRole == Position.Null ? "No Role" : "";
 		_roleButton.onClick.RemoveAllListeners();
-		if (currentRole != 0)
+		if (currentRole != Position.Null)
 		{
 			_roleButton.gameObject.SetActive(true);
 			_roleButton.onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentRole); });
@@ -129,8 +129,8 @@ public class MemberMeetingUI : MonoBehaviour
 		}
 		for (var i = 0; i < _barBackgrounds.Length; i++)
 		{
-			_barForegrounds[i].fillAmount = _currentMember.RevealedSkills[(CrewMemberSkill)i] * 0.1f;
-			_barBackgrounds[i].sprite = _currentMember.RevealedSkills[(CrewMemberSkill)i] == 0 ? _unknownBackBar : _knownBackBar;
+			_barForegrounds[i].fillAmount = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] * 0.1f;
+			_barBackgrounds[i].sprite = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] == 0 ? _unknownBackBar : _knownBackBar;
 		}
 		_dialogueText.text = "You wanted to see me?";
 		_nameText.text = "What do you want to ask?";
@@ -164,7 +164,7 @@ public class MemberMeetingUI : MonoBehaviour
 				{
 					opinionImage.enabled = true;
 					opinionImage.sprite = null;
-					var opinion = _currentMember.RevealedCrewOpinions[crewMember.CrewMember];
+					var opinion = _currentMember.RevealedCrewOpinions[crewMember.CrewMember.Name];
 					opinionImage.sprite = _opinionIcons[(opinion > 0 ? Mathf.CeilToInt(opinion / 3f) : Mathf.FloorToInt(opinion / 3f)) + 2];
 				}
 			}

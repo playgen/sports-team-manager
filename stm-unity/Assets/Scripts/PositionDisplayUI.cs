@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
@@ -78,7 +79,7 @@ public class PositionDisplayUI : MonoBehaviour
 	{
 		if (gameObject.activeSelf)
 		{
-			Display(_positionDisplay.GetBoat().BoatPositions.Select(bp => bp.Position).First(p => p.GetName() == _textList[0].text));
+			Display((Position)Enum.Parse(typeof(Position), _textList[0].text));
 		}
 	}
 
@@ -104,9 +105,9 @@ public class PositionDisplayUI : MonoBehaviour
 	{
 		var currentBoat = _positionDisplay.GetBoat();
 		CrewMember currentCrew = null;
-		if (currentBoat.BoatPositions.Any(bp => bp.Position.GetName() == position.GetName()))
+		if (currentBoat.BoatPositionCrew.ContainsKey(position))
 		{
-			currentCrew = currentBoat.BoatPositions.First(bp => bp.Position.GetName() == position.GetName()).CrewMember;
+			currentCrew = currentBoat.BoatPositionCrew[position];
 		}
 		_textList[0].text = position.GetName();
 		_textList[1].text = position.GetDescription();
@@ -138,10 +139,10 @@ public class PositionDisplayUI : MonoBehaviour
 		var positionMembers = new Dictionary<CrewMember, int>();
 		foreach (var boat in _positionDisplay.GetLineUpHistory())
 		{
-			var boatPositions = boat.BoatPositions.Where(bp => bp.Position.GetName() == position.GetName()).ToArray();
+			var boatPositions = boat.BoatPositions.Where(bp => bp == position).ToArray();
 			foreach (var boatPosition in boatPositions)
 			{
-				var positionMember = boatPosition.CrewMember;
+				var positionMember = boat.BoatPositionCrew[boatPosition];
 				if (positionMembers.ContainsKey(positionMember))
 				{
 					positionMembers[positionMember]++;
@@ -158,7 +159,7 @@ public class PositionDisplayUI : MonoBehaviour
 			var positionHistory = Instantiate(_historyPrefab);
 			positionHistory.transform.SetParent(_historyContainer.transform, false);
 			positionHistory.transform.Find("Name").GetComponent<Text>().text = SplitName(member.Key.Name);
-			if (_positionDisplay.GetBoat().GetAllCrewMembers().Contains(member.Key))
+			if (_positionDisplay.GetBoat().GetAllCrewMembers().ContainsKey(member.Key.Name))
 			{
 				var current = member.Key;
 				positionHistory.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { _meetingUI.SetUpDisplay(current); });

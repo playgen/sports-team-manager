@@ -46,7 +46,7 @@ public class TeamSelection : MonoBehaviour {
 		{
 			_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		}
-		return _gameManager.Boat.GetAllCrewMembers();
+		return _gameManager.Boat.GetAllCrewMembers().Values.ToList();
 	}
 
 	/// <summary>

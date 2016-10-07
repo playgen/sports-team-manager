@@ -9,20 +9,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	{
 		public Dinghy(ConfigStore config) : base(config)
 		{
-			BoatPositions = new List<BoatPosition>()
+			BoatPositions = new List<Position>()
 			{
-				new BoatPosition
-				{
-					Position = Position.Skipper
-				},
-				new BoatPosition
-				{
-					Position = Position.Navigator
-				},
-				new BoatPosition
-				{
-					Position = Position.MidBowman
-				}
+				Position.Skipper,
+				Position.Navigator,
+				Position.MidBowman
 			};
 		}
 	}
