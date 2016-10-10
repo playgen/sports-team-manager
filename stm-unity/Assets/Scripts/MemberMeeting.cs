@@ -18,7 +18,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public Position GetCrewMemberPosition(CrewMember crewMember)
 	{
-		var boatPosition = crewMember.GetBoatPosition(_gameManager.Boat);
+		var boatPosition = crewMember.GetBoatPosition(_gameManager.Team.Boat.BoatPositionCrew);
 		return boatPosition;
 	}
 
@@ -27,7 +27,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public string[] GetEventText(string eventKey)
 	{
-		return _gameManager.GetEventStrings(eventKey);
+		return _gameManager.EventController.GetEventStrings(eventKey);
 	}
 
 	/// <summary>
@@ -75,7 +75,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public bool CanRemoveCheck()
 	{
-		return _gameManager.CanRemoveFromCrew();
+		return _gameManager.Team.CanRemoveFromCrew();
 	}
 
 	/// <summary>

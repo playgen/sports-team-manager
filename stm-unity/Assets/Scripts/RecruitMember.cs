@@ -21,7 +21,7 @@ public class RecruitMember : MonoBehaviour {
 	/// </summary>
 	public List<CrewMember> GetRecruits()
 	{
-		return _gameManager.Boat.Recruits.Values.ToList();
+		return _gameManager.Team.Recruits.Values.ToList();
 	}
 
 	/// <summary>
@@ -29,7 +29,7 @@ public class RecruitMember : MonoBehaviour {
 	/// </summary>
 	public string[] GetQuestionText(string eventKey)
 	{
-		return _gameManager.GetEventStrings(eventKey);
+		return _gameManager.EventController.GetEventStrings(eventKey);
 	}
 
 	/// <summary>

@@ -17,9 +17,9 @@ public class PositionDisplay : MonoBehaviour
 	/// <summary>
 	/// Get the current boat being used throughout the game
 	/// </summary>
-	public Boat GetBoat()
+	public Team GetTeam()
 	{
-		return _gameManager.Boat;
+		return _gameManager.Team;
 	}
 
 	/// <summary>
@@ -27,6 +27,6 @@ public class PositionDisplay : MonoBehaviour
 	/// </summary>
 	public List<Boat> GetLineUpHistory()
 	{
-		return _gameManager.LineUpHistory;
+		return _gameManager.Team.LineUpHistory;
 	}
 }

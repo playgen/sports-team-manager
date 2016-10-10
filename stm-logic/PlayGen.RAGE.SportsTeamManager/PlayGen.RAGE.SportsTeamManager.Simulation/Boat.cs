@@ -73,7 +73,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private void GetPositions()
 		{
 			BoatPositions.Clear();
-			BoatPositions = _config.BoatTypes[Type];
+			BoatPositions = new List<Position>(_config.BoatTypes[Type]);
 			var oldPositions = BoatPositionCrew.Keys.Where(bp => !BoatPositions.Contains(bp)).ToList();
 			foreach (var oldPosition in oldPositions)
 			{

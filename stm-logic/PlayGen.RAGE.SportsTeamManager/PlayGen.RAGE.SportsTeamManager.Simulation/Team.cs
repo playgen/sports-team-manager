@@ -127,11 +127,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				var position = Boat.GetWeakPosition(rand, CrewMembers.Values.ToList());
 				var newMember = new CrewMember(rand, position, _config);
 				UniqueNameCheck(rand, newMember);
-				newMember.CreateFile(_iat, _storageLocation, "Recruit" + i);
-				newMember.Avatar = new Avatar(newMember, false);
-				newMember.UpdateBeliefs("Recruit");
-				newMember.SaveStatus();
 				Recruits.Add(newMember.Name, newMember);
+			}
+			var storeNum = 0;
+			foreach (var recruit in Recruits)
+			{
+				recruit.Value.CreateFile(_iat, _storageLocation, "Recruit" + storeNum);
+				storeNum++;
+				recruit.Value.Avatar = new Avatar(recruit.Value, false);
+				recruit.Value.UpdateBeliefs("Recruit");
+				recruit.Value.SaveStatus();
 			}
 			AssetManager.Instance.Bridge = new BaseBridge();
 			_iat.SaveToFile(_iat.AssetFilePath);

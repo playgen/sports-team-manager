@@ -23,6 +23,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int ActionAllowance { get; private set; }
 		public int CrewEditAllowance { get; private set; }
 		public int RaceSessionLength { get; private set; }
+		public EventController EventController
+		{
+			get { return _eventController; }
+		}
 
 		/// <summary>
 		/// GameManager Constructor
@@ -270,7 +274,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var managerEvents = ea.EventRecords;
 			var lineUpEvents = managerEvents.Where(e => e.Event.Contains("SelectedLineUp")).Select(e => e.Event);
 			var crewMembers = Team.CrewMembers.Values.ToList();
-			crewMembers.Concat(Team.RetiredCrew.Values.ToList());
+			foreach (var crewMember in Team.RetiredCrew.Values.ToList())
+			{
+				crewMembers.Add(crewMember);
+			}
+
 			foreach (var lineup in lineUpEvents)
 			{
 				//split up the string of details saved with this event

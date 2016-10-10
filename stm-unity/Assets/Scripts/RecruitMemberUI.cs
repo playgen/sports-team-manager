@@ -162,11 +162,14 @@ public class RecruitMemberUI : MonoBehaviour
 		var replies = _recruitMember.AskQuestion(skill);
 		foreach (var recruit in _recruitUI)
 		{
-			var reply = replies.First(r => r.Key.Name == recruit.name);
-			recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = reply.Value;
-			recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = true;
-			recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = _opinionSprites.First(o => o.Name == reply.Value).Image;
-			recruit.transform.Find("Image").GetComponentInChildren<AvatarDisplay>().UpdateMood(reply.Key.Avatar, reply.Value);
+			var reply = replies.FirstOrDefault(r => r.Key.Name == recruit.name);
+			if (reply.Key != null)
+			{
+				recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = reply.Value;
+				recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = true;
+				recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value).Image;
+				recruit.transform.Find("Image").GetComponentInChildren<AvatarDisplay>().UpdateMood(reply.Key.Avatar, reply.Value);
+			}
 		}
 		CostCheck();
 	}

@@ -18,7 +18,7 @@ public class ScreenSideUI : MonoBehaviour {
 	private void OnEnable()
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
-		_nameText.text = _gameManager.Boat.Name.ToUpper();
+		_nameText.text = _gameManager.Team.Name.ToUpper();
 	}
 
 	/// <summary>

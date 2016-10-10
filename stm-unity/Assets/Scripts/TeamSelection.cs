@@ -24,8 +24,8 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public Dictionary<Boat, int> GetLineUpHistory()
 	{
-		var boats = _gameManager.LineUpHistory;
-		var offsets = _gameManager.HistoricTimeOffset;
+		var boats = _gameManager.Team.LineUpHistory;
+		var offsets = _gameManager.Team.HistoricTimeOffset;
 		var boatOffsets = new Dictionary<Boat, int>();
 		for (var i = 0; i < boats.Count; i++)
 		{
@@ -46,15 +46,15 @@ public class TeamSelection : MonoBehaviour {
 		{
 			_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		}
-		return _gameManager.Boat.GetAllCrewMembers().Values.ToList();
+		return _gameManager.Team.CrewMembers.Values.ToList();
 	}
 
 	/// <summary>
 	/// Get the history of line-ups
 	/// </summary>
-	public Boat GetBoat()
+	public Team GetTeam()
 	{
-		return _gameManager.Boat;
+		return _gameManager.Team;
 	}
 
 	/// <summary>
@@ -62,7 +62,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public void AssignCrew(CrewMember crewMember, Position position)
 	{
-		_gameManager.AssignCrew(position, crewMember);
+		_gameManager.Team.Boat.AssignCrew(position, crewMember);
 	}
 
 	/// <summary>
@@ -70,7 +70,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public void RemoveCrew(CrewMember crewMember)
 	{
-		_gameManager.AssignCrew(0, crewMember);
+		_gameManager.Team.Boat.AssignCrew(0, crewMember);
 	}
 
 	/// <summary>
@@ -112,7 +112,7 @@ public class TeamSelection : MonoBehaviour {
 			}
 			_postRaceEvent.GetEvent();
 		}
-		return _gameManager.LineUpHistory.Last();
+		return _gameManager.Team.LineUpHistory.Last();
 	}
 
 	/// <summary>
@@ -132,7 +132,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public float IdealCheck()
 	{
-		return _gameManager.Boat.IdealMatchScore;
+		return _gameManager.Team.Boat.IdealMatchScore;
 	}
 
 	/// <summary>
@@ -164,7 +164,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public bool CanAddCheck()
 	{
-		return _gameManager.CanAddToCrew();
+		return _gameManager.Team.CanAddToCrew();
 	}
 
 	/// <summary>
@@ -172,7 +172,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public int CanAddAmount()
 	{
-		return _gameManager.CrewLimitLeft();
+		return _gameManager.Team.CrewLimitLeft();
 	}
 
 	/// <summary>
@@ -180,6 +180,6 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public List<string> GetAssignmentMistakes(int amount)
 	{
-		return _gameManager.GetAssignmentMistakes(amount);
+		return _gameManager.Team.Boat.GetAssignmentMistakes(amount);
 	}
 }

@@ -103,11 +103,11 @@ public class PositionDisplayUI : MonoBehaviour
 	/// </summary>
 	private void Display(Position position)
 	{
-		var currentBoat = _positionDisplay.GetBoat();
+		var team = _positionDisplay.GetTeam();
 		CrewMember currentCrew = null;
-		if (currentBoat.BoatPositionCrew.ContainsKey(position))
+		if (team.Boat.BoatPositionCrew.ContainsKey(position))
 		{
-			currentCrew = currentBoat.BoatPositionCrew[position];
+			currentCrew = team.Boat.BoatPositionCrew[position];
 		}
 		_textList[0].text = position.GetName();
 		_textList[1].text = position.GetDescription();
@@ -159,7 +159,7 @@ public class PositionDisplayUI : MonoBehaviour
 			var positionHistory = Instantiate(_historyPrefab);
 			positionHistory.transform.SetParent(_historyContainer.transform, false);
 			positionHistory.transform.Find("Name").GetComponent<Text>().text = SplitName(member.Key.Name);
-			if (_positionDisplay.GetBoat().GetAllCrewMembers().ContainsKey(member.Key.Name))
+			if (team.CrewMembers.ContainsKey(member.Key.Name))
 			{
 				var current = member.Key;
 				positionHistory.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { _meetingUI.SetUpDisplay(current); });

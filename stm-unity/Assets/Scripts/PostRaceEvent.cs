@@ -27,7 +27,7 @@ public class PostRaceEvent : MonoBehaviour
 		{
 			_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		}
-		_currentEvents = _gameManager.SelectPostRaceEvent();
+		_currentEvents = _gameManager.SelectPostRaceEvents();
 		if (_currentEvents.Count > 0)
 		{
 			SetEvent();
@@ -40,7 +40,7 @@ public class PostRaceEvent : MonoBehaviour
 	/// </summary>
 	public DialogueStateActionDTO[] GetEventReplies()
 	{
-		var replies = _gameManager.GetPostRaceEvents();
+		var replies = _gameManager.EventController.GetEvents();
 		if (replies == null || replies.Length == 0)
 		{
 			_currentEvent = new KeyValuePair<List<CrewMember>, DialogueStateActionDTO>(null, null);
@@ -59,7 +59,7 @@ public class PostRaceEvent : MonoBehaviour
 	{
 		_currentEvent = _currentEvents.First();
 		_currentEvents.Remove(_currentEvent);
-		_gameManager.SetPlayerState(_currentEvent.Value);
+		_gameManager.EventController.SetPlayerState(_currentEvent.Value);
 	}
 
 	/// <summary>
