@@ -79,7 +79,7 @@ public class PositionDisplayUI : MonoBehaviour
 	{
 		if (gameObject.activeSelf)
 		{
-			Display((Position)Enum.Parse(typeof(Position), _textList[0].text));
+			Display((Position)Enum.Parse(typeof(Position), _textList[0].text.Replace("-", "")));
 		}
 	}
 
