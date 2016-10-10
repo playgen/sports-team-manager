@@ -10,7 +10,7 @@ public class AvatarDisplay : MonoBehaviour
 {
 	private const byte _eyebrowAlpha = 128;
 	private const float _maleOffsetPercent = 18f;
-	private float _lastMood { get; set; }
+	private float _lastMood;
 	[SerializeField]
 	private Image _body;
 	[SerializeField]

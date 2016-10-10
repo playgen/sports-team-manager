@@ -57,7 +57,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Constructor for creating a CrewMember with a random age/gender/name
 		/// </summary>
-		public CrewMember(Random random, Boat boat, ConfigStore config)
+		public CrewMember(Random random, Position position, ConfigStore config)
 		{
 			_config = config;
 			Gender = SelectGender(random);
@@ -70,16 +70,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			CrewOpinions = new Dictionary<string, int>();
 			RevealedCrewOpinions = new Dictionary<string, int>();
-			boat.UniqueNameCheck(random, this);
-			//select a position that is in need of a new crew member
-			var selectedPerferred = boat.GetWeakPosition(random);
 			//set the skills of the new CrewMember according to the required skills for the selected position
 			Skills = new Dictionary<CrewMemberSkill, int>();
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
 			{
-				if (selectedPerferred != Position.Null)
+				if (position != Position.Null)
 				{
-					if (selectedPerferred.RequiresSkill(skill))
+					if (position.RequiresSkill(skill))
 					{
 						Skills.Add(skill, random.Next((int)_config.ConfigValues[ConfigKeys.GoodPositionRating], 11));
 					}
@@ -145,20 +142,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
-		public void CreateInitialOpinions(Random random, Boat boat)
+		public void CreateInitialOpinions(Random random, List<string> people)
 		{
-			foreach (var otherMember in boat.GetAllCrewMembers().Values)
+			foreach (var person in people)
 			{
-				if (this != otherMember)
-				{
-					CreateInitialOpinion(random, otherMember.Name);
-				}
+				CreateInitialOpinion(random, person);
 			}
-			CreateInitialOpinion(random, boat.Manager.Name);
 		}
 
 		public void CreateInitialOpinion(Random random, string person)
 		{
+			if (person == Name)
+			{
+				return;
+			}
 			AddOrUpdateOpinion(person, random.Next((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax] + 1));
 			if (person.GetType() == typeof(CrewMember) && Name.Split(' ').Last() == person.Split(' ').Last())
 			{
@@ -209,7 +206,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the saved stats and opinions for this CrewMember
 		/// </summary>
-		public void LoadBeliefs(Boat boat)
+		public void LoadBeliefs(List<string> people)
 		{
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
 			{
@@ -228,16 +225,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					RevealedSkills.Add(skill, 0);
 				}
 			}
-			foreach (var member in boat.GetAllCrewMembers())
+			foreach (var person in people)
 			{
-				AddOrUpdateOpinion(member.Key, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), member.Key.NoSpaces()))), true);
+				AddOrUpdateOpinion(person, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), person.NoSpaces()))), true);
 			}
-			AddOrUpdateOpinion(boat.Manager.Name, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), boat.Manager.Name.NoSpaces()))), true);
-			foreach (var member in boat.GetAllCrewMembers())
+			foreach (var person in people)
 			{
-				AddOrUpdateRevealedOpinion(member.Key, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), member.Key.NoSpaces()))));
+				AddOrUpdateRevealedOpinion(person, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), person.NoSpaces()))));
 			}
-			AddOrUpdateRevealedOpinion(boat.Manager.Name, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), boat.Manager.Name.NoSpaces()))));
 			RestCount = Convert.ToInt32(LoadBelief(NPCBeliefs.Rest.GetDescription()));
 		}
 
@@ -246,13 +241,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void LoadPosition(Boat boat)
 		{
-			if (LoadBelief(NPCBeliefs.Position.GetDescription()) != "null")
+			var boatPosition = boat.BoatPositions.FirstOrDefault(bp => bp.GetName() == LoadBelief(NPCBeliefs.Position.GetDescription()));
+			if (boatPosition != Position.Null)
 			{
-				var boatPosition = boat.BoatPositions.Where(bp => bp.GetName() == LoadBelief(NPCBeliefs.Position.GetDescription()));
-				foreach (var bp in boatPosition)
-				{
-					boat.AssignCrew(bp, this);
-				}
+				boat.AssignCrew(boatPosition, this);
 			}
 		}
 
@@ -272,9 +264,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the current position on this Boat (if any) for this CrewMember
 		/// </summary>
-		public Position GetBoatPosition(Boat boat)
+		public Position GetBoatPosition(Dictionary<Position, CrewMember> currentPositioned)
 		{
-			return boat.BoatPositionCrew.SingleOrDefault(bpc => bpc.Value == this).Key;
+			return currentPositioned.SingleOrDefault(bpc => bpc.Value == this).Key;
 		}
 
 		/// <summary>
@@ -337,7 +329,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						{
 							case "DislikedInBetter":
 								AddOrUpdateOpinion(boatPosition.CrewMember, -1);
-								AddOrUpdateOpinion(boat.Manager, -1);
+								AddOrUpdateOpinion(team.Manager, -1);
 								break;
 						}
 						RolePlayCharacter.ActionFinished(opinionRpc);
@@ -363,7 +355,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send an event to the EA/RPC to get CrewMember information
 		/// </summary>
-		public string SendMeetingEvent(IntegratedAuthoringToolAsset iat, string style, Boat boat)
+		public string SendMeetingEvent(IntegratedAuthoringToolAsset iat, string style, Team team)
 		{
 			var reply = "";
 			var rand = new Random();
@@ -394,7 +386,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
 					break;
 				case "RoleReveal":
-					var pos = boat.BoatPositions[rand.Next(0, boat.BoatPositions.Count)];
+					var pos = team.Boat.BoatPositions[rand.Next(0, team.Boat.BoatPositions.Count)];
 					if (pos.GetPositionRating(this) <= 5)
 					{
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Bad").ToName()).ToList();
@@ -409,8 +401,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					break;
 				case "OpinionRevealPositive":
-					var crewOpinionsPositive = CrewOpinions.Where(c => boat.GetAllCrewMembers().ContainsKey(c.Key)).ToDictionary(p => p.Key, p => p.Value);
-					crewOpinionsPositive.Add(boat.Manager.Name, CrewOpinions[boat.Manager.Name]);
+					var crewOpinionsPositive = CrewOpinions.Where(c => team.CrewMembers.ContainsKey(c.Key)).ToDictionary(p => p.Key, p => p.Value);
+					crewOpinionsPositive.Add(team.Manager.Name, CrewOpinions[team.Manager.Name]);
 					var opinionsPositive = crewOpinionsPositive.Where(co => co.Value >= (int)_config.ConfigValues[ConfigKeys.OpinionLike]).ToDictionary(o => o.Key, o => o.Value);
 					if (opinionsPositive.Any())
 					{
@@ -426,7 +418,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						if (dialogueOptions.Any())
 						{
 							reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionPositive.Key);
-							if (pickedOpinionPositive.Key == boat.Manager.Name)
+							if (pickedOpinionPositive.Key == team.Manager.Name)
 							{
 								reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, "you");
 							}
@@ -443,8 +435,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					break;
 				case "OpinionRevealNegative":
-					var crewOpinionsNegative = CrewOpinions.Where(c => boat.GetAllCrewMembers().ContainsKey(c.Key)).ToDictionary(p => p.Key, p => p.Value);
-					crewOpinionsNegative.Add(boat.Manager.Name, CrewOpinions[boat.Manager.Name]);
+					var crewOpinionsNegative = CrewOpinions.Where(c => team.CrewMembers.ContainsKey(c.Key)).ToDictionary(p => p.Key, p => p.Value);
+					crewOpinionsNegative.Add(team.Manager.Name, CrewOpinions[team.Manager.Name]);
 					var opinionsNegative = crewOpinionsNegative.Where(co => co.Value <= (int)_config.ConfigValues[ConfigKeys.OpinionDislike]).ToDictionary(o => o.Key, o => o.Value);
 					if (opinionsNegative.Any())
 					{
@@ -460,7 +452,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						if (dialogueOptions.Any())
 						{
 							reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionNegative.Key);
-							if (pickedOpinionNegative.Key == boat.Manager.Name)
+							if (pickedOpinionNegative.Key == team.Manager.Name)
 							{
 								reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, "you");
 							}
@@ -513,7 +505,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Check to see if any events are about to be triggered
 		/// </summary>
-		public DialogueStateActionDTO[] CurrentEventCheck(Boat boat, IntegratedAuthoringToolAsset iat, bool afterRaceSession)
+		public DialogueStateActionDTO[] CurrentEventCheck(Team team, IntegratedAuthoringToolAsset iat, bool afterRaceSession)
 		{
 			var replies = new List<DialogueStateActionDTO>();
 			List<DialogueStateActionDTO> dialogueOptions;
@@ -521,9 +513,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			if (afterRaceSession && (LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "true")
 			{
-				if (GetBoatPosition(boat) == Position.Null)
+				if (GetBoatPosition(team.Boat.BoatPositionCrew) == Position.Null)
 				{
-					AddOrUpdateOpinion(boat.Manager.Name, -3);
+					AddOrUpdateOpinion(team.Manager.Name, -3);
 					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "false");
 					var eventString = "PostRace(NotPickedAfterSorry)";
 					EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
@@ -558,7 +550,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						RolePlayCharacter.ActionFinished(eventRpc);
 					}
-					boat.RetireCrew(this);
+					team.RetireCrew(this);
 					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "RetirementTriggered".ToName()).ToList();
 					if (dialogueOptions.Any())
 					{
@@ -573,7 +565,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get CrewMember reply to player dialogue during a post-race event
 		/// </summary>
-		public string SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Boat boat, Boat previousBoat)
+		public string SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Team team, Boat previousBoat)
 		{
 			string reply = null;
 			var nextState = selected.NextState;
@@ -604,13 +596,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				reply = selectedNext.Utterance;
 				if (selectedNext.NextState == "-")
 				{
-					PostRaceFeedback(nextState, boat);
+					PostRaceFeedback(nextState, team);
 				}
 			}
 			else
 			{
 				iat.SetDialogueState("Player", "-");
-				PostRaceFeedback(nextState, boat);
+				PostRaceFeedback(nextState, team);
 			}
 			return reply;
 		}
@@ -618,7 +610,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Make changes based off of post-race events
 		/// </summary>
-		private void PostRaceFeedback(string lastEvent, Boat boat)
+		private void PostRaceFeedback(string lastEvent, Team team)
 		{
 			SaveStatus();
 			var spacelessName = RolePlayCharacter.Perspective;
@@ -630,29 +622,29 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			switch (lastEvent)
 			{
 				case "NotPickedSorry":
-					AddOrUpdateOpinion(boat.Manager.Name, 1);
+					AddOrUpdateOpinion(team.Manager.Name, 1);
 					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "true");
 					break;
 				case "NotPickedSorryAgain":
 					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "true");
 					break;
 				case "NotPickedSkillIncorrect":
-					AddOrUpdateOpinion(boat.Manager.Name, -1);
+					AddOrUpdateOpinion(team.Manager.Name, -1);
 					break;
 				case "NotPickedFiredYes":
-					AddOrUpdateOpinion(boat.Manager.Name, -10);
-					boat.RetireCrew(this);
-					foreach (var cm in boat.GetAllCrewMembers().Values)
+					AddOrUpdateOpinion(team.Manager.Name, -10);
+					team.RetireCrew(this);
+					foreach (var cm in team.CrewMembers.Values)
 					{
-						cm.AddOrUpdateOpinion(boat.Manager.Name, -2);
+						cm.AddOrUpdateOpinion(team.Manager.Name, -2);
 						cm.SaveStatus();
 					}
 					break;
 				case "NotPickedFiredNo":
-					AddOrUpdateOpinion(boat.Manager.Name, -10);
+					AddOrUpdateOpinion(team.Manager.Name, -10);
 					break;
 				case "NotPickedSkillTrain":
-					AddOrUpdateOpinion(boat.Manager.Name, 2);
+					AddOrUpdateOpinion(team.Manager.Name, 2);
 					for (var i = 0; i < 2; i++)
 					{
 						var randomStat = Math.Pow(2, rand.Next(0, Skills.Count));
@@ -665,8 +657,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					break;
 				case "NotPickedSkillFriends":
-					AddOrUpdateOpinion(boat.Manager.Name, 1);
-					var allCrew = boat.GetAllCrewMembers();
+					AddOrUpdateOpinion(team.Manager.Name, 1);
+					var allCrew = team.CrewMembers;
 					allCrew.Remove(Name);
 					for (var i = 0; i < 2; i++)
 					{
@@ -678,14 +670,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					break;
 				case "NotPickedSkillNothing":
-					AddOrUpdateOpinion(boat.Manager.Name, -10);
+					AddOrUpdateOpinion(team.Manager.Name, -10);
 					break;
 				case "NotPickedSkillLeave":
-					AddOrUpdateOpinion(boat.Manager.Name, -10);
-					boat.RetireCrew(this);
-					foreach (var cm in boat.GetAllCrewMembers())
+					AddOrUpdateOpinion(team.Manager.Name, -10);
+					team.RetireCrew(this);
+					foreach (var cm in team.CrewMembers)
 					{
-						cm.Value.AddOrUpdateOpinion(boat.Manager.Name, -1);
+						cm.Value.AddOrUpdateOpinion(team.Manager.Name, -1);
 						cm.Value.SaveStatus();
 					}
 					break;

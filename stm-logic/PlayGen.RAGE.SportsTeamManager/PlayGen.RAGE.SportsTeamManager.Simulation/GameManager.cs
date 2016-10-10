@@ -16,14 +16,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class GameManager
 	{
-		private IntegratedAuthoringToolAsset _iat;
-		private string _storageLocation;
 		private readonly ConfigStore _config;
+		private EventController _eventController;
 
-		public Boat Boat { get; private set; }
-		public EventController EventController { get; private set; }
-		public List<Boat> LineUpHistory { get; private set; }
-		public List<int> HistoricTimeOffset { get; private set; }
+		public Team Team { get; private set; }
 		public int ActionAllowance { get; private set; }
 		public int CrewEditAllowance { get; private set; }
 		public int RaceSessionLength { get; private set; }
@@ -39,21 +35,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create a new game
 		/// </summary>
-		public void NewGame(string storageLocation, string boatName, byte[] teamColorsPrimary, byte[] teamColorsSecondary, string managerName, string managerAge, string managerGender, List<CrewMember> crew = null)
+		public void NewGame(string storageLocation, string name, byte[] teamColorsPrimary, byte[] teamColorsSecondary, string managerName, string managerAge, string managerGender, List<CrewMember> crew = null)
 		{
 			UnloadGame();
 			AssetManager.Instance.Bridge = new TemplateBridge();
 			//create folder and iat file for game
-			var combinedStorageLocation = Path.Combine(storageLocation, boatName);
+			var combinedStorageLocation = Path.Combine(storageLocation, name);
 			Directory.CreateDirectory(combinedStorageLocation);
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
 			//set up first boat
-			Boat = new Boat(_config, boatName, "Dinghy");
-			Boat.TeamColorsPrimary = teamColorsPrimary;
-			Boat.TeamColorsSecondary = teamColorsSecondary;
-			iat.ScenarioName = Boat.Name;
+			var boat = new Boat(_config, "Dinghy");
+			Team = new Team(iat, storageLocation, _config, name, boat);
+			var positionCount = boat.BoatPositions.Count;
+			Team.TeamColorsPrimary = new Color(teamColorsPrimary[0], teamColorsPrimary[1], teamColorsPrimary[2], 255);
+			Team.TeamColorsSecondary = new Color(teamColorsSecondary[0], teamColorsSecondary[1], teamColorsSecondary[2], 255);
+			iat.ScenarioName = name;
 			AssetManager.Instance.Bridge = new BaseBridge();
-			iat.SaveToFile(Path.Combine(combinedStorageLocation, boatName + ".iat"));
+			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
 			var random = new Random();
 			var manager = new Person
 			{
@@ -61,29 +59,28 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Age = Convert.ToInt32(managerAge),
 				Gender = managerGender
 			};
-			Boat.Manager = manager;
+			Team.Manager = manager;
 			//create the initial crew members
 			var initialCrew = false;
 			if (crew == null)
 			{
 				initialCrew = true;
-				crew = new List<CrewMember>();
-				for (var i = 0; i < Boat.BoatPositions.Count * 2; i++)
+				for (var i = 0; i < positionCount * 2; i++)
 				{
-					Boat.AddCrew(new CrewMember(random, Boat, _config));
+					Team.AddCrewMember(new CrewMember(random, boat.GetWeakPosition(random, Team.CrewMembers.Values.ToList()), _config));
 				}
 			}
 			if (!initialCrew)
 			{
-				crew.ForEach(cm => Boat.AddCrew(cm));
+				crew.ForEach(cm => Team.AddCrewMember(cm));
 			}
-			ActionAllowance = (int)_config.ConfigValues[ConfigKeys.DefaultActionAllowance] + ((int)_config.ConfigValues[ConfigKeys.ActionAllowancePerPosition] * Boat.BoatPositions.Count);
-			CrewEditAllowance = (int)_config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition] * Boat.BoatPositions.Count;
+			ActionAllowance = (int)_config.ConfigValues[ConfigKeys.DefaultActionAllowance] + ((int)_config.ConfigValues[ConfigKeys.ActionAllowancePerPosition] * positionCount);
+			CrewEditAllowance = (int)_config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition] * positionCount;
 			RaceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength];
 			//create manager files and store game attribute details
 			manager.CreateFile(iat, combinedStorageLocation);
 			manager.UpdateBeliefs("Manager");
-			manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.Type);
+			manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), boat.Type);
 			manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
 			manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString());
 			manager.UpdateSingleBelief(NPCBeliefs.TeamColorRedPrimary.GetDescription(), teamColorsPrimary[0].ToString());
@@ -95,39 +92,36 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			
 			manager.SaveStatus();
 
+			var names = Team.CrewMembers.Keys.ToList();
+			names.Add(managerName);
+
 			//set up files and details for each CrewMember
-			foreach (var member in Boat.GetAllCrewMembers().Values)
+			foreach (var member in Team.CrewMembers.Values)
 			{
 				member.CreateFile(iat, combinedStorageLocation);
 				member.Avatar = new Avatar(member);
-				Boat.SetCrewColors(member.Avatar);
+				Team.SetCrewColors(member.Avatar);
 				if (!initialCrew)
 				{
-					foreach (var otherMember in crew)
+					foreach (var otherMember in names)
 					{
-						if (member != otherMember)
+						if (member.Name != otherMember)
 						{
-							member.AddOrUpdateOpinion(otherMember.Name, 0);
-							member.AddOrUpdateRevealedOpinion(otherMember.Name, 0);
+							member.AddOrUpdateOpinion(otherMember, 0);
+							member.AddOrUpdateRevealedOpinion(otherMember, 0);
 						}
-						member.AddOrUpdateOpinion(Boat.Manager.Name, 0);
-						member.AddOrUpdateRevealedOpinion(Boat.Manager.Name, 0);
 					}
 				}
 				else
 				{
-					member.CreateInitialOpinions(random, Boat);
+					member.CreateInitialOpinions(random, names);
 				}
 				member.UpdateBeliefs("null");
 				member.SaveStatus();
 			}
-			iat.SaveToFile(Path.Combine(combinedStorageLocation, boatName + ".iat"));
-			EventController = new EventController();
-			_iat = iat;
-			_storageLocation = storageLocation;
-			LineUpHistory = new List<Boat>();
-			HistoricTimeOffset = new List<int>();
-			Boat.CreateRecruits(iat, combinedStorageLocation);
+			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
+			_eventController = new EventController(iat);
+			Team.CreateRecruits();
 		}
 
 		/// <summary>
@@ -193,7 +187,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var rpcList = iat.GetAllCharacters();
 
 			var crewList = new List<CrewMember>();
-
+			var nameList = new List<string>();
 			foreach (var rpc in rpcList)
 			{
 				var tempea = EmotionalAppraisalAsset.LoadFromFile(rpc.EmotionalAppraisalAssetSource);
@@ -202,57 +196,59 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (position == "Manager")
 				{
 					var person = new Person(rpc);
-					Boat = new Boat(_config, iat.ScenarioName, person.LoadBelief(NPCBeliefs.BoatType.GetDescription()));
+					nameList.Add(person.Name);
+					var boat = new Boat(_config, person.LoadBelief(NPCBeliefs.BoatType.GetDescription()));
+					Team = new Team(iat, storageLocation, _config, iat.ScenarioName, boat);
 					ActionAllowance = Convert.ToInt32(person.LoadBelief(NPCBeliefs.ActionAllowance.GetDescription()));
 					CrewEditAllowance = Convert.ToInt32(person.LoadBelief(NPCBeliefs.CrewEditAllowance.GetDescription()));
 					RaceSessionLength = (int)_config.ConfigValues[ConfigKeys.RaceSessionLength];
-					Boat.TeamColorsPrimary = new byte[3];
-					Boat.TeamColorsPrimary[0] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorRedPrimary.GetDescription()));
-					Boat.TeamColorsPrimary[1] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorGreenPrimary.GetDescription()));
-					Boat.TeamColorsPrimary[2] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorBluePrimary.GetDescription()));
-					Boat.TeamColorsSecondary = new byte[3];
-					Boat.TeamColorsSecondary[0] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorRedSecondary.GetDescription()));
-					Boat.TeamColorsSecondary[1] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorGreenSecondary.GetDescription()));
-					Boat.TeamColorsSecondary[2] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorBlueSecondary.GetDescription()));
-					Boat.Manager = person;
+					var primary = new byte[3];
+					primary[0] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorRedPrimary.GetDescription()));
+					primary[1] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorGreenPrimary.GetDescription()));
+					primary[2] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorBluePrimary.GetDescription()));
+					Team.TeamColorsPrimary = new Color(primary[0], primary[1], primary[2], 255);
+					var secondary = new byte[3];
+					secondary[0] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorRedSecondary.GetDescription()));
+					secondary[1] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorGreenSecondary.GetDescription()));
+					secondary[2] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorBlueSecondary.GetDescription()));
+					Team.Manager = person;
+					Team.TeamColorsSecondary = new Color(secondary[0], secondary[1], secondary[2], 255);
 					continue;
 				}
 				//set up every other character as a CrewManager, making sure to separate retired and recruits
 				var crewMember = new CrewMember(rpc, _config);
+				nameList.Add(crewMember.Name);
 				if (position == "Retired")
 				{
 					crewMember.Avatar = new Avatar(crewMember, false, true);
-					Boat.RetiredCrew.Add(crewMember.Name, crewMember);
+					Team.RetiredCrew.Add(crewMember.Name, crewMember);
 					continue;
 				}
 				if (position == "Recruit")
 				{
 					crewMember.Avatar = new Avatar(crewMember, false, true);
-					Boat.Recruits.Add(crewMember.Name, crewMember);
+					Team.Recruits.Add(crewMember.Name, crewMember);
 					continue;
 				}
 				crewList.Add(crewMember);
 			}
 			//add all non-retired and non-recruits to the list of unassigned crew
-			crewList.ForEach(cm => Boat.UnassignedCrew.Add(cm.Name, cm));
+			crewList.ForEach(cm => Team.AddCrewMember(cm));
 			//load the 'beliefs' (aka, stats and opinions) of all crew members
-			foreach (var cm in Boat.Recruits.Values)
+			foreach (var cm in Team.Recruits.Values)
 			{
-				cm.LoadBeliefs(Boat);
+				cm.LoadBeliefs(nameList);
 			}
-			foreach (var cm in Boat.RetiredCrew.Values)
+			foreach (var cm in Team.RetiredCrew.Values)
 			{
-				cm.LoadBeliefs(Boat);
+				cm.LoadBeliefs(nameList);
 			}
-			crewList.ForEach(cm => cm.LoadBeliefs(Boat));
-			crewList.ForEach(cm => cm.LoadPosition(Boat));
+			crewList.ForEach(cm => cm.LoadBeliefs(nameList));
+			crewList.ForEach(cm => cm.LoadPosition(Team.Boat));
 			//set up crew avatars
 			crewList.ForEach(cm => cm.Avatar = new Avatar(cm, true, true));
-			crewList.ForEach(cm => cm.Avatar.PrimaryOutfitColor = new Color(Boat.TeamColorsPrimary[0], Boat.TeamColorsPrimary[1], Boat.TeamColorsPrimary[2], 255));
-			crewList.ForEach(cm => cm.Avatar.SecondaryOutfitColor = new Color(Boat.TeamColorsPrimary[0], Boat.TeamColorsPrimary[1], Boat.TeamColorsPrimary[2], 255));
-			EventController = new EventController();
-			_iat = iat;
-			_storageLocation = storageLocation;
+			crewList.ForEach(cm => Team.SetCrewColors(cm.Avatar));
+			_eventController = new EventController(iat);
 			LoadLineUpHistory();
 		}
 
@@ -261,15 +257,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void UnloadGame()
 		{
-			Boat = null;
-		}
-
-		/// <summary>
-		/// Assign the CrewMember provided to the Position provided
-		/// </summary>
-		public void AssignCrew(Position position, CrewMember crewMember)
-		{
-			Boat.AssignCrew(position, crewMember);
+			Team = null;
 		}
 
 		/// <summary>
@@ -277,12 +265,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void LoadLineUpHistory()
 		{
-			LineUpHistory = new List<Boat>();
-			HistoricTimeOffset = new List<int>();
 			//get all events that feature 'SelectedLineUp' from their EA file
-			var ea = EmotionalAppraisalAsset.LoadFromFile(Boat.Manager.RolePlayCharacter.EmotionalAppraisalAssetSource);
+			var ea = EmotionalAppraisalAsset.LoadFromFile(Team.Manager.RolePlayCharacter.EmotionalAppraisalAssetSource);
 			var managerEvents = ea.EventRecords;
 			var lineUpEvents = managerEvents.Where(e => e.Event.Contains("SelectedLineUp")).Select(e => e.Event);
+			var crewMembers = Team.CrewMembers.Values.ToList();
+			crewMembers.Concat(Team.RetiredCrew.Values.ToList());
 			foreach (var lineup in lineUpEvents)
 			{
 				//split up the string of details saved with this event
@@ -290,11 +278,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				splitAfter = splitAfter.Split(')')[0];
 				var subjectSplit = splitAfter.Split(',');
 				//set up the version of boat this was
-				var boat = new Boat(_config, Boat.Name, subjectSplit[0]);
+				var boat = new Boat(_config, subjectSplit[0]);
 				//position crew members and gather set-up information using details from split string
 				for (var i = 0; i < boat.BoatPositions.Count; i++)
 				{
-					boat.BoatPositionCrew.Add(boat.BoatPositions[i], Boat.GetAllCrewMembersIncludingRetired().Values.Single(c => c.Name.NoSpaces() == subjectSplit[((i + 1) * 2) - 1].NoSpaces()));
+					boat.BoatPositionCrew.Add(boat.BoatPositions[i], crewMembers.Single(c => c.Name.NoSpaces() == subjectSplit[((i + 1) * 2) - 1].NoSpaces()));
 					boat.BoatPositionScores.Add(boat.BoatPositions[i], Convert.ToInt32(subjectSplit[(i + 1) * 2]));
 				}
 				boat.IdealMatchScore = float.Parse(subjectSplit[(boat.BoatPositions.Count * 2) + 1]);
@@ -304,74 +292,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					boat.SelectionMistakes.Add(subjectSplit[i].NoSpaces());
 				}
-				HistoricTimeOffset.Add(Convert.ToInt32(subjectSplit[subjectSplit.Length - 1]));
-				LineUpHistory.Add(boat);
+				Team.HistoricTimeOffset.Add(Convert.ToInt32(subjectSplit[subjectSplit.Length - 1]));
+				Team.LineUpHistory.Add(boat);
 			}
-		}
-
-		/// <summary>
-		/// Change the current type of boat to a different type
-		/// </summary>
-		public void PromoteBoat()
-		{
-			string newType;
-			switch (Boat.Type)
-			{
-				case "Dinghy":
-					newType = "AltDinghy";
-					break;
-				case "AltDinghy":
-					newType = "BiggerDinghy";
-					break;
-				case "BiggerDinghy":
-					newType = "BiggestDinghy";
-					break;
-				default:
-					return;
-			}
-			//store that the boat type has been changed
-			Boat.Manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), newType);
-			Boat.Manager.SaveStatus();
-			//calculate how many new members should be created
-			var extraMembers = (_config.BoatTypes[newType].Count - Boat.BoatPositions.Count) * 2;
-			//reset the positions on the boat to those for the new type
-			Boat.ChangeBoatType(newType);
-			var rand = new Random();
-			for (var i = 0; i < extraMembers; i++)
-			{
-			//only create a new CrewMember if the crew limit can support it
-				if (CanAddToCrew())
-				{
-					var newMember = new CrewMember(rand, Boat, _config);
-					var combinedStorageLocation = Path.Combine(_storageLocation, Boat.Name);
-					newMember.CreateFile(_iat, combinedStorageLocation);
-					newMember.Avatar = new Avatar(newMember);
-					Boat.SetCrewColors(newMember.Avatar);
-					newMember.CreateInitialOpinions(rand, Boat);
-					foreach (var cm in Boat.GetAllCrewMembers().Values)
-					{
-						cm.CreateInitialOpinion(rand, newMember.Name);
-					}
-					newMember.UpdateBeliefs("null");
-					newMember.SaveStatus();
-					AssetManager.Instance.Bridge = new BaseBridge();
-					_iat.SaveToFile(_iat.AssetFilePath);
-					//if the boat is under-staffed for the current boat size, this new CrewMember is not counted
-					if (!CanRemoveFromCrew())
-					{
-						i--;
-					}
-					Boat.AddCrew(newMember);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Get the amount provided of current selection mistakes
-		/// </summary>
-		public List<string> GetAssignmentMistakes(int amount)
-		{
-			return Boat.GetAssignmentMistakes(amount);
 		}
 
 		/// <summary>
@@ -379,32 +302,33 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void SaveLineUp(int offset)
 		{
-			Boat.UpdateBoatScore();
-			var manager = Boat.Manager;
+			var boat = Team.Boat;
+			var manager = Team.Manager;
+			boat.UpdateBoatScore(manager.Name);
+			boat.GetIdealCrew(Team.CrewMembers, manager.Name);
 			var spacelessName = manager.RolePlayCharacter.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			var eventStringUnformatted = "SelectedLineUp({0},{1})";
-			var boatType = Boat.Type;
+			var boatType = boat.Type;
 			var crew = "";
 			//set up string to save
-			foreach (var boatPosition in Boat.BoatPositions)
+			foreach (var boatPosition in boat.BoatPositions)
 			{
 				if (!string.IsNullOrEmpty(crew))
 				{
 					crew += ",";
 				}
-				if (Boat.BoatPositionCrew.ContainsKey(boatPosition))
+				if (boat.BoatPositionCrew.ContainsKey(boatPosition))
 				{
-					crew += Boat.BoatPositionCrew[boatPosition].Name.NoSpaces();
-					crew += "," + Boat.BoatPositionScores[boatPosition];
+					crew += boat.BoatPositionCrew[boatPosition].Name.NoSpaces();
+					crew += "," + boat.BoatPositionScores[boatPosition];
 				} else
 				{
 					crew += "null,0";
 				}
 			}
-			Boat.GetIdealCrew();
-			crew += "," + Boat.IdealMatchScore;
-			Boat.SelectionMistakes.ForEach(sm => crew += "," + sm);
+			crew += "," + boat.IdealMatchScore;
+			boat.SelectionMistakes.ForEach(sm => crew += "," + sm);
 			crew += "," + offset;
 			var eventString = string.Format(eventStringUnformatted, boatType, crew);
 			manager.EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
@@ -414,21 +338,21 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				manager.RolePlayCharacter.ActionFinished(eventRpc);
 			}
 			manager.SaveStatus();
-			var lastBoat = new Boat(_config, Boat.Name, Boat.Type);
-			foreach (var bp in Boat.BoatPositions)
+			var lastBoat = new Boat(_config, boat.Type);
+			foreach (var bp in boat.BoatPositions)
 			{
-				if (Boat.BoatPositionCrew.ContainsKey(bp))
+				if (boat.BoatPositionCrew.ContainsKey(bp))
 				{
-					lastBoat.BoatPositionCrew.Add(bp, Boat.BoatPositionCrew[bp]);
-					lastBoat.BoatPositionScores.Add(bp, Boat.BoatPositionScores[bp]);
+					lastBoat.BoatPositionCrew.Add(bp, boat.BoatPositionCrew[bp]);
+					lastBoat.BoatPositionScores.Add(bp, boat.BoatPositionScores[bp]);
 				}
 			}
-			lastBoat.SelectionMistakes = Boat.SelectionMistakes;
-			lastBoat.IdealMatchScore = Boat.IdealMatchScore;
+			lastBoat.SelectionMistakes = boat.SelectionMistakes;
+			lastBoat.IdealMatchScore = boat.IdealMatchScore;
 			lastBoat.BoatScore = lastBoat.BoatPositionScores.Values.Sum();
-			lastBoat.Manager = Boat.Manager;
-			LineUpHistory.Add(lastBoat);
-			HistoricTimeOffset.Add(offset);
+			Team.LineUpHistory.Add(lastBoat);
+			Team.HistoricTimeOffset.Add(offset);
+			Team.TickCrewMembers((int)_config.ConfigValues[ConfigKeys.TicksPerSession]);
 		}
 
 		/// <summary>
@@ -436,14 +360,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void ConfirmLineUp()
 		{
-			Boat.ConfirmChanges(ActionAllowance);
+			Team.ConfirmChanges(ActionAllowance);
 			//TODO: Change trigger for promotion
-			if (((LineUpHistory.Count + 1) / RaceSessionLength) % 2 != 0)
+			if (((Team.LineUpHistory.Count + 1) / RaceSessionLength) % 2 != 0)
 			{
-				PromoteBoat();
+				Team.PromoteBoat();
 			}
 			//update available recruits for the next race
-			Boat.CreateRecruits(_iat, Path.Combine(_storageLocation, Boat.Name));
+			Team.CreateRecruits();
 			//reset the limits on actions and hiring/firing
 			ResetActionAllowance();
 			ResetCrewEditAllowance();
@@ -452,11 +376,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Select a random post-race event
 		/// </summary>
-		public List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> SelectPostRaceEvent()
+		public List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> SelectPostRaceEvents()
 		{
 			var afterRace = false;
 			var chance = (int)_config.ConfigValues[ConfigKeys.EventChance];
-			if (LineUpHistory.Count % RaceSessionLength == 0)
+			if (Team.LineUpHistory.Count % RaceSessionLength == 0)
 			{
 				afterRace = true;
 			}
@@ -464,120 +388,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				chance += (int)_config.ConfigValues[ConfigKeys.PracticeEventChanceReduction];
 			}
-			Boat.TickCrewMembers((int)_config.ConfigValues[ConfigKeys.TicksPerSession]);
-			var reactionEvents = new List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>>();
-			foreach (var crewMember in Boat.GetAllCrewMembers().Values)
-			{
-				var delayedReactions = crewMember.CurrentEventCheck(Boat, _iat, afterRace);
-				foreach (var reply in delayedReactions)
-				{
-					reactionEvents.Add(new KeyValuePair<List<CrewMember>, DialogueStateActionDTO>(new List<CrewMember> { crewMember }, reply));
-				}
-			}
 			var random = new Random();
-			var selectedEvents = new List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>>();
-			var findEvents = true;
-			while (findEvents)
-			{
-				//attempt to select a random post-race event
-				var postRaceEvent = EventController.SelectPostRaceEvent(_iat, chance, selectedEvents.Count, random, afterRace);
-				//if no post-race event was selected, stop searching for events
-				if (postRaceEvent == null)
-				{
-					findEvents = false;
-					continue;
-				}
-				var eventMembers = new List<CrewMember>();
-				var allCrew = Boat.GetAllCrewMembers();
-				var allCrewRemovals = new List<CrewMember>();
-				switch (postRaceEvent.NextState)
-				{
-					case "NotPicked":
-						//for this event, select a crew member who was not selected in the previous race
-						foreach (var bp in LineUpHistory.Last().BoatPositionCrew)
-						{
-							allCrew.Remove(bp.Value.Name);
-						}
-						foreach (var kvp in selectedEvents)
-						{
-							foreach (var crewMember in kvp.Key)
-							{
-								allCrew.Remove(crewMember.Name);
-							}
-						}
-						foreach (var crewMember in allCrew.Values)
-						{
-							if ((crewMember.LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "true")
-							{
-								allCrewRemovals.Add(crewMember);
-							}
-							else if (crewMember.LoadBelief("Event(Retire)") != null)
-							{
-								allCrewRemovals.Add(crewMember);
-							}
-						}
-						foreach (var crewMember in allCrewRemovals)
-						{
-							allCrew.Remove(crewMember.Name);
-						}
-						if (allCrew.Count == 0)
-						{
-							findEvents = false;
-							continue;
-						}
-						var notSelected = allCrew.OrderBy(c => Guid.NewGuid()).First();
-						eventMembers.Add(notSelected.Value);
-						selectedEvents.Add(new KeyValuePair<List<CrewMember>, DialogueStateActionDTO>(eventMembers, postRaceEvent));
-						continue;
-					case "Retirement":
-						allCrew = allCrew.Where(cm => cm.Value.RestCount <= -5).ToDictionary(ac => ac.Key, ac => ac.Value);
-						foreach (var crewMember in allCrew.Values)
-						{
-							if ((crewMember.LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "true")
-							{
-								allCrewRemovals.Add(crewMember);
-							}
-							else if (crewMember.LoadBelief("Event(Retire)") != null)
-							{
-								allCrewRemovals.Add(crewMember);
-							}
-						}
-						foreach (var crewMember in allCrewRemovals)
-						{
-							allCrew.Remove(crewMember.Name);
-						}
-						if (allCrew.Count == 0)
-						{
-							findEvents = false;
-							continue;
-						}
-						var retiree = allCrew.OrderBy(c => Guid.NewGuid()).First();
-						retiree.Value.UpdateSingleBelief("Event(Retire)", "1");
-						eventMembers.Add(retiree.Value);
-						selectedEvents.Add(new KeyValuePair<List<CrewMember>, DialogueStateActionDTO>(eventMembers, postRaceEvent));
-						continue;
-					default:
-						findEvents = false;
-						continue;
-				}
-			}
-			return reactionEvents.Concat(selectedEvents).ToList();
-		}
-
-		/// <summary>
-		/// Set the player dialogue state
-		/// </summary>
-		public void SetPlayerState(DialogueStateActionDTO currentEvent)
-		{
-			_iat.SetDialogueState("Player", currentEvent.NextState);
-		}
-
-		/// <summary>
-		/// Get all player dialogue for their current state
-		/// </summary>
-		public DialogueStateActionDTO[] GetPostRaceEvents()
-		{
-			return EventController.GetEvents(_iat, _iat.GetCurrentDialogueState("Player"));
+			return _eventController.SelectPostRaceEvents(Team, chance, random, afterRace);
 		}
 
 		/// <summary>
@@ -585,7 +397,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public Dictionary<CrewMember, string> SendPostRaceEvent(DialogueStateActionDTO dialogue, List<CrewMember> members)
 		{
-			var replies = EventController.SendPostRaceEvent(_iat, dialogue, members, Boat, LineUpHistory.Last());
+			var replies = _eventController.SendPostRaceEvent(dialogue, members, Team, Team.LineUpHistory.Last());
 			return replies;
 		}
 
@@ -595,9 +407,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		void DeductCost(int cost)
 		{
 			ActionAllowance -= cost;
-			Boat.TickCrewMembers(cost);
-			Boat.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
-			Boat.Manager.SaveStatus();
+			Team.TickCrewMembers(cost);
+			Team.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
+			Team.Manager.SaveStatus();
 		}
 
 		/// <summary>
@@ -606,8 +418,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		void ResetActionAllowance()
 		{
 			ActionAllowance = GetStartingActionAllowance();
-			Boat.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
-			Boat.Manager.SaveStatus();
+			Team.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
+			Team.Manager.SaveStatus();
 		}
 
 		/// <summary>
@@ -615,7 +427,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public int GetStartingActionAllowance()
 		{
-			return (int)_config.ConfigValues[ConfigKeys.DefaultActionAllowance] + ((int)_config.ConfigValues[ConfigKeys.ActionAllowancePerPosition] * Boat.BoatPositions.Count);
+			return (int)_config.ConfigValues[ConfigKeys.DefaultActionAllowance] + ((int)_config.ConfigValues[ConfigKeys.ActionAllowancePerPosition] * Team.Boat.BoatPositions.Count);
 		}
 
 		/// <summary>
@@ -624,8 +436,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		void DeductCrewEditAllowance()
 		{
 			CrewEditAllowance--;
-			Boat.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString());
-			Boat.Manager.SaveStatus();
+			Team.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString());
+			Team.Manager.SaveStatus();
 		}
 
 		/// <summary>
@@ -634,8 +446,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		void ResetCrewEditAllowance()
 		{
 			CrewEditAllowance = GetStartingCrewEditAllowance();
-			Boat.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString());
-			Boat.Manager.SaveStatus();
+			Team.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString());
+			Team.Manager.SaveStatus();
 		}
 
 		/// <summary>
@@ -643,69 +455,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public int GetStartingCrewEditAllowance()
 		{
-			return (int)_config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition] * Boat.BoatPositions.Count;
-		}
-
-		/// <summary>
-		/// Calculate if the player should be able to hire new characters into their crew
-		/// </summary>
-		public bool CanAddToCrew()
-		{
-			if (Boat.GetAllCrewMembers().Count + 1 > (Boat.BoatPositions.Count + 1) * 2 || Boat.Recruits.Count == 0)
-			{
-				return false;
-			}
-			return true;
-		}
-
-		/// <summary>
-		/// Calculate how many hiring actions the player can still perform before reaching the limit
-		/// </summary>
-		public int CrewLimitLeft()
-		{
-			return ((Boat.BoatPositions.Count + 1) * 2) - Boat.GetAllCrewMembers().Count;
+			return (int)_config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition] * Team.Boat.BoatPositions.Count;
 		}
 
 		public void AddRecruit(CrewMember member)
 		{
 			//if the player is able to take this action
 			var cost = (int)_config.ConfigValues[ConfigKeys.RecruitmentCost];
-			if (cost <= ActionAllowance && CrewEditAllowance > 0 && CanAddToCrew())
+			if (cost <= ActionAllowance && CrewEditAllowance > 0 && Team.CanAddToCrew())
 			{
-			//remove recruit from the current list of characters in the game
-				_iat.RemoveCharacters(new List<string>() { member.Name });
-				//set up recruit as a 'proper' character in the game
-				member.CreateFile(_iat, Path.Combine(_storageLocation, Boat.Name));
-				member.Avatar.UpdateAvatarBeliefs(member);
-				member.Avatar = new Avatar(member, true, true);
-				Boat.SetCrewColors(member.Avatar);
-				var random = new Random();
-				member.CreateInitialOpinions(random, Boat);
-				foreach (var cm in Boat.GetAllCrewMembers().Values)
-				{
-					cm.CreateInitialOpinion(random, member.Name);
-				}
-				Boat.AddCrew(member);
-				member.UpdateBeliefs("null");
-				member.SaveStatus();
+				Team.AddRecruit(member);
 				DeductCost(cost);
-				Boat.Recruits.Remove(member.Name);
-				AssetManager.Instance.Bridge = new BaseBridge();
-				_iat.SaveToFile(_iat.AssetFilePath);
 				DeductCrewEditAllowance();
 			}
-		}
-
-		/// <summary>
-		/// Calculate if the player should be able to fire characters from their crew
-		/// </summary>
-		public bool CanRemoveFromCrew()
-		{
-			if (Boat.GetAllCrewMembers().Count - 1 < Boat.BoatPositions.Count)
-			{
-				return false;
-			}
-			return true;
 		}
 
 		/// <summary>
@@ -714,20 +476,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void RetireCrewMember(CrewMember crewMember)
 		{
 			var cost = (int)_config.ConfigValues[ConfigKeys.FiringCost];
-			if (cost <= ActionAllowance && CrewEditAllowance > 0 && CanRemoveFromCrew())
+			if (cost <= ActionAllowance && CrewEditAllowance > 0 && Team.CanRemoveFromCrew())
 			{
-				Boat.RetireCrew(crewMember);
+				Team.RetireCrew(crewMember);
 				DeductCost(cost);
 				DeductCrewEditAllowance();
 			}
-		}
-
-		/// <summary>
-		/// Get event utterances for player dialogue that match the eventKey provided
-		/// </summary>
-		public string[] GetEventStrings(string eventKey)
-		{
-			return EventController.GetEventStrings(_iat, eventKey);
 		}
 
 		/// <summary>
@@ -735,34 +489,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string SendMeetingEvent(string eventName, CrewMember member)
 		{
-			var cost = GetQuestionCost(eventName);
+			var cost = (int)GetConfigValue((ConfigKeys)Enum.Parse(typeof(ConfigKeys), eventName + "Cost"));
 			if (cost <= ActionAllowance)
 			{
-				var reply = member.SendMeetingEvent(_iat, eventName, Boat);
+				var reply = _eventController.SendMeetingEvent(eventName, member, Team);
 				DeductCost(cost);
 				return reply;
 			}
 			return "";
-		}
-
-		/// <summary>
-		/// Get the cost of sending the below questions
-		/// </summary>
-		public int GetQuestionCost(string eventName)
-		{
-			switch (eventName)
-			{
-				case "StatReveal":
-					return (int)_config.ConfigValues[ConfigKeys.SkillRevealCost];
-				case "RoleReveal":
-					return (int)_config.ConfigValues[ConfigKeys.RoleRevealCost];
-				case "OpinionRevealPositive":
-					return (int)_config.ConfigValues[ConfigKeys.OpinionPositiveRevealCost];
-				case "OpinionRevealNegative":
-					return (int)_config.ConfigValues[ConfigKeys.OpinionNegativeRevealCost];
-				default:
-					return 0;
-			}
 		}
 
 		/// <summary>
@@ -781,21 +515,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var cost = (int)_config.ConfigValues[ConfigKeys.SendRecruitmentQuestionCost];
 			if (cost <= ActionAllowance)
 			{
-				var replies = new Dictionary<CrewMember, string>();
-				foreach (var member in members)
-				{
-					var reply = member.SendRecruitEvent(_iat, skill);
-					replies.Add(member, reply ?? "");
-				}
-				DeductCost(cost);
-				return replies;
+				return _eventController.SendRecruitEvent(skill, members);
 			}
-			else
-			{
-				var replies = new Dictionary<CrewMember, string>();
-				members.ForEach(member => replies.Add(member, ""));
-				return replies;
-			}
+			var replies = new Dictionary<CrewMember, string>();
+			members.ForEach(member => replies.Add(member, ""));
+			return replies;
 		}
 	}
 }
