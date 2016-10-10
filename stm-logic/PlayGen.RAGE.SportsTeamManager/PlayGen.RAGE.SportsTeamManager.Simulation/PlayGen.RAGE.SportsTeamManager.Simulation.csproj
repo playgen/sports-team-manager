@@ -97,6 +97,7 @@
     <Compile Include="NPCBeliefs.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Position.cs" />
+    <Compile Include="PositionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="TemplateBridge.cs" />
