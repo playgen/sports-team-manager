@@ -53,7 +53,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			iat.ScenarioName = name;
 			AssetManager.Instance.Bridge = new BaseBridge();
 			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
-			var random = new Random();
 			var manager = new Person
 			{
 				Name = managerName,
@@ -68,7 +67,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				initialCrew = true;
 				for (var i = 0; i < positionCount * 2; i++)
 				{
-					Team.AddCrewMember(new CrewMember(random, boat.GetWeakPosition(random, Team.CrewMembers.Values.ToList()), config));
+					Team.AddCrewMember(new CrewMember(boat.GetWeakPosition(Team.CrewMembers.Values.ToList()), config));
 				}
 			}
 			if (!initialCrew)
@@ -115,7 +114,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				else
 				{
-					member.CreateInitialOpinions(random, names);
+					member.CreateInitialOpinions(names);
 				}
 				member.UpdateBeliefs("null");
 				member.SaveStatus();
@@ -392,8 +391,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				chance += (int)config.ConfigValues[ConfigKeys.PracticeEventChanceReduction];
 			}
-			var random = new Random();
-			return eventController.SelectPostRaceEvents(Team, chance, random, afterRace);
+			return eventController.SelectPostRaceEvents(Team, chance, afterRace);
 		}
 
 		/// <summary>

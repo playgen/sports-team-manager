@@ -57,12 +57,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Constructor for creating a CrewMember with a random age/gender/name
 		/// </summary>
-		public CrewMember(Random random, Position position, ConfigStore con)
+		public CrewMember(Position position, ConfigStore con)
 		{
 			config = con;
-			Gender = SelectGender(random);
-			Age = random.Next(18, 45);
-			Name = SelectRandomName(Gender, random);
+			Gender = SelectGender();
+			Age = StaticRandom.Int(18, 45);
+			Name = SelectRandomName(Gender);
 			RevealedSkills = new Dictionary<CrewMemberSkill, int>();
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
 			{
@@ -78,16 +78,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					if (position.RequiresSkill(skill))
 					{
-						Skills.Add(skill, random.Next((int)config.ConfigValues[ConfigKeys.GoodPositionRating], 11));
+						Skills.Add(skill, StaticRandom.Int((int)config.ConfigValues[ConfigKeys.GoodPositionRating], 11));
 					}
 					else
 					{
-						Skills.Add(skill, random.Next(1, (int)config.ConfigValues[ConfigKeys.BadPositionRating] + 1));
+						Skills.Add(skill, StaticRandom.Int(1, (int)config.ConfigValues[ConfigKeys.BadPositionRating] + 1));
 					}
 				}
 				else
 				{
-					Skills.Add(skill, random.Next((int)config.ConfigValues[ConfigKeys.RandomSkillLow], (int)config.ConfigValues[ConfigKeys.RandomSkillHigh] + 1));
+					Skills.Add(skill, StaticRandom.Int((int)config.ConfigValues[ConfigKeys.RandomSkillLow], (int)config.ConfigValues[ConfigKeys.RandomSkillHigh] + 1));
 				}
 			}
 		}
@@ -95,23 +95,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Randomly select the gender of the CrewMember
 		/// </summary>
-		private string SelectGender(Random random)
+		private string SelectGender()
 		{
-			return random.Next(0, 1000) % 2 == 0 ? "Male" : "Female";
+			return StaticRandom.Int(0, 1000) % 2 == 0 ? "Male" : "Female";
 		}
 
 		/// <summary>
 		/// Randomly select a new name for this CrewMember
 		/// </summary>
-		public string SelectNewName(string gender, Random random)
+		public string SelectNewName(string gender)
 		{
-			return SelectRandomName(gender, random);
+			return SelectRandomName(gender);
 		}
 
 		/// <summary>
 		/// Randomly select a name for this CrewMember
 		/// </summary>
-		private string SelectRandomName(string gender, Random random)
+		private string SelectRandomName(string gender)
 		{
 			var name = "";
 			switch (gender)
@@ -119,19 +119,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				case "Male":
 					{
 						var names = new []{"Oliver", "Jack", "Harry", "Jacob", "Charlie", "Thomas", "George", "Oscar", "James", "William", "Noah", "Alfie", "Joshua", "Muhammad", "Henry", "Leo", "Archie", "Ethan", "Joseph", "Freddie", "Samuel", "Alexander", "Logan", "Daniel", "Isaac", "Max", "Mohammed", "Benjamin", "Mason", "Lucas", "Edward", "Harrison", "Jake", "Dylan", "Riley", "Finley", "Theo", "Sebastian", "Adam", "Zachary", "Arthur", "Toby", "Jayden", "Luke", "Harley", "Lewis", "Tyler", "Harvey", "Matthew", "David", "Reuben", "Michael", "Elijah", "Kian", "Tommy", "Mohammad", "Blake", "Luca", "Theodore", "Stanley", "Jenson", "Nathan", "Charles", "Frankie", "Jude", "Teddy", "Louie", "Louis", "Ryan", "Hugo", "Bobby", "Elliott", "Dexter", "Ollie", "Alex", "Liam", "Kai", "Gabriel", "Connor", "Aaron", "Frederick", "Callum", "Elliot", "Albert", "Leon", "Ronnie", "Rory", "Jamie", "Austin", "Seth", "Ibrahim", "Owen", "Caleb", "Ellis", "Sonny", "Robert", "Joey", "Felix", "Finlay", "Jackson" };
-						name += names[random.Next(0, names.Length)];
+						name += names[StaticRandom.Int(0, names.Length)];
 					}
 					break;
 				case "Female":
 					{
 						var names = new [] {"Amelia", "Olivia", "Isla", "Emily", "Poppy", "Ava", "Isabella", "Jessica", "Lily", "Sophie", "Grace", "Sophia", "Mia", "Evie", "Ruby", "Ella", "Scarlett", "Isabelle", "Chloe", "Sienna", "Freya", "Phoebe", "Charlotte", "Daisy", "Alice", "Florence", "Eva", "Sofia", "Millie", "Lucy", "Evelyn", "Elsie", "Rosie", "Imogen", "Lola", "Matilda", "Elizabeth", "Layla", "Holly", "Lilly", "Molly", "Erin", "Ellie", "Maisie", "Maya", "Abigail", "Eliza", "Georgia", "Jasmine", "Esme", "Willow", "Bella", "Annabelle", "Ivy", "Amber", "Emilia", "Emma", "Summer", "Hannah", "Eleanor", "Harriet", "Rose", "Amelie", "Lexi", "Megan", "Gracie", "Zara", "Lacey", "Martha", "Anna", "Violet", "Darcey", "Maria", "Maryam", "Brooke", "Aisha", "Katie", "Leah", "Thea", "Darcie", "Hollie", "Amy", "Mollie", "Heidi", "Lottie", "Bethany", "Francesca", "Faith", "Harper", "Nancy", "Beatrice", "Isabel", "Darcy", "Lydia", "Sarah", "Sara", "Julia", "Victoria", "Zoe", "Robyn" };
-						name += names[random.Next(0, names.Length)];
+						name += names[StaticRandom.Int(0, names.Length)];
 					}
 					break;
 			}
 			name += " ";
 			var surnames = new [] {"Smith", "Jones", "Williams", "Taylor", "Brown", "Davies", "Evans", "Thomas", "Wilson", "Johnson", "Roberts", "Robinson", "Thompson", "Wright", "Walker", "White", "Edwards", "Hughes", "Green", "Hall", "Lewis", "Harris", "Clarke", "Patel", "Jackson", "Wood", "Turner", "Martin", "Cooper", "Hill", "Morris", "Ward", "Moore", "Clark", "Baker", "Harrison", "King", "Morgan", "Lee", "Allen", "James", "Phillips", "Scott", "Watson", "Davis", "Parker", "Bennett", "Price", "Griffiths", "Young"};
-			name += surnames[random.Next(0, surnames.Length)];
+			name += surnames[StaticRandom.Int(0, surnames.Length)];
 			return name;
 		}
 
@@ -147,21 +147,21 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
-		public void CreateInitialOpinions(Random random, List<string> people)
+		public void CreateInitialOpinions(List<string> people)
 		{
 			foreach (var person in people)
 			{
-				CreateInitialOpinion(random, person);
+				CreateInitialOpinion(person);
 			}
 		}
 
-		public void CreateInitialOpinion(Random random, string person)
+		public void CreateInitialOpinion(string person)
 		{
 			if (person == Name)
 			{
 				return;
 			}
-			AddOrUpdateOpinion(person, random.Next((int)config.ConfigValues[ConfigKeys.DefaultOpinionMin], (int)config.ConfigValues[ConfigKeys.DefaultOpinionMax] + 1));
+			AddOrUpdateOpinion(person, StaticRandom.Int((int)config.ConfigValues[ConfigKeys.DefaultOpinionMin], (int)config.ConfigValues[ConfigKeys.DefaultOpinionMax] + 1));
 			if (person.GetType() == typeof(CrewMember) && Name.Split(' ').Last() == person.Split(' ').Last())
 			{
 				AddOrUpdateOpinion(person, (int)config.ConfigValues[ConfigKeys.LastNameBonusOpinion]);
@@ -363,12 +363,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string SendMeetingEvent(IntegratedAuthoringToolAsset iat, string style, Team team)
 		{
 			var reply = "";
-			var rand = new Random();
 			var dialogueOptions = new List<DialogueStateActionDTO>();
 			switch (style)
 			{
 				case "StatReveal":
-					var randomStat = Math.Pow(2, rand.Next(0, Skills.Count));
+					var randomStat = Math.Pow(2, StaticRandom.Int(0, Skills.Count));
 					var statName = ((CrewMemberSkill)randomStat).ToString();
 					var statValue = Skills[(CrewMemberSkill)randomStat];
 					RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
@@ -391,7 +390,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
 					break;
 				case "RoleReveal":
-					var pos = team.Boat.BoatPositions[rand.Next(0, team.Boat.BoatPositions.Count)];
+					var pos = team.Boat.BoatPositions[StaticRandom.Int(0, team.Boat.BoatPositions.Count)];
 					if (pos.GetPositionRating(this) <= 5)
 					{
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Bad").ToName()).ToList();
@@ -623,7 +622,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var eventString = string.Format("PostRace({0})", lastEvent);
 			EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
 			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new [] { string.Format(eventBase, eventString, spacelessName) });
-			var rand = new Random();
 			switch (lastEvent)
 			{
 				case "NotPickedSorry":
@@ -652,7 +650,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					AddOrUpdateOpinion(team.Manager.Name, 2);
 					for (var i = 0; i < 2; i++)
 					{
-						var randomStat = Math.Pow(2, rand.Next(0, Skills.Count));
+						var randomStat = Math.Pow(2, StaticRandom.Int(0, Skills.Count));
 						Skills[(CrewMemberSkill)randomStat]++;
 						if (Skills[(CrewMemberSkill)randomStat] > 10)
 						{
@@ -667,7 +665,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					allCrew.Remove(Name);
 					for (var i = 0; i < 2; i++)
 					{
-						var randomCrew = rand.Next(0, allCrew.Count);
+						var randomCrew = StaticRandom.Int(0, allCrew.Count);
 						var cm = allCrew.Values.ToList()[randomCrew];
 						AddOrUpdateOpinion(cm.Name, 2);
 						cm.AddOrUpdateOpinion(Name, 2);

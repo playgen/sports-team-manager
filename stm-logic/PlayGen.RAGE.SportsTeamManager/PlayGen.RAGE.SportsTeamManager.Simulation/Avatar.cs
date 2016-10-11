@@ -36,9 +36,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Avatar (CrewMember crewMember, bool isActive = true, bool canLoad = false)
 		{
 			GetConfig();
-			var random = new Random();
 			//set outfit type
-			var outfit = !isActive ? "01" : ("0" + ((random.Next(0, 100) % 2) + 2));
+			var outfit = !isActive ? "01" : ("0" + ((StaticRandom.Int(0, 100) % 2) + 2));
 			var gender = crewMember.Gender == "Male" ? "M" : "F";
 			IsMale = crewMember.Gender == "Male";
 			CustomOutfitColor = outfit != "01";
@@ -48,7 +47,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			else
 			{
-				CreateAvatar(crewMember, gender, random);
+				CreateAvatar(crewMember, gender);
 			}
 			//set outfit according to type, best skill and gender
 			OutfitBaseType = string.Format("Outfit{0}_Base_{1}_{2}", gender, GetBodyType(BestSkill), outfit);
@@ -61,34 +60,34 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			config = new AvatarGeneratorConfig().GetConfig();
 		}
 
-		private void CreateAvatar(CrewMember crewMember, string gender, Random random)
+		private void CreateAvatar(CrewMember crewMember, string gender)
 		{
 			//Get Best Skill
-			BestSkill = GetBestSkill(crewMember, random);
+			BestSkill = GetBestSkill(crewMember);
 
 			//Set Skin Color
-			SkinColor = GetRandomSkinColor(random);
+			SkinColor = GetRandomSkinColor();
 
 			//Set Hair Color
-			HairColor = config.RandomHairColor ? GetRandomHairColor(random) : GetHairColorForSkin(SkinColor, random);
+			HairColor = config.RandomHairColor ? GetRandomHairColor() : GetHairColorForSkin(SkinColor);
 
 			//Set Primary Color
-			PrimaryOutfitColor = CustomOutfitColor ? GetRandomColor(random) : new Color(255, 255, 255, 255);
+			PrimaryOutfitColor = CustomOutfitColor ? StaticRandom.Color() : new Color(255, 255, 255, 255);
 
 			//Set Secondary Color
-			SecondaryOutfitColor = CustomOutfitColor ? GetRandomColor(random) : new Color(0, 0, 0, 0);
+			SecondaryOutfitColor = CustomOutfitColor ? StaticRandom.Color() : new Color(0, 0, 0, 0);
 
 			//Set Body Type
 			BodyType = string.Format("Body{0}_{1}", gender, GetBodyType(BestSkill));
 
 			//Set Hair Type
-			HairType = string.Format("Hair{0:00}{1}", random.Next(1, config.HairTypesCount + 1), gender);
+			HairType = string.Format("Hair{0:00}{1}", StaticRandom.Int(1, config.HairTypesCount + 1), gender);
 
 			//Set Eye Type
 			EyeType = string.Format("Eye{0}_{1}", gender, BestSkill);
 
 			//Set Eye Color
-			EyeColor = GetRandomEyeColor(random);
+			EyeColor = GetRandomEyeColor();
 
 			//Set Face type
 			EyebrowType = string.Format("Face{0}_{1}_Eyebrows", gender, BestSkill);
@@ -104,8 +103,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			MouthType = string.Format("Face{0}_{1}_Mouth", gender, BestSkill);
 
 			// Set Height and Width
-			Height = 1 + (((float)random.NextDouble() * 0.15f) - 0.075f);
-			Weight = 1 + (((float)random.NextDouble() * 0.15f) - 0.075f);
+			Height = 1 + StaticRandom.Float(-0.075f, 0.075f);
+			Weight = 1 + StaticRandom.Float(-0.075f, 0.075f);
 
 			//Save attributes to 
 			UpdateAvatarBeliefs(crewMember);
@@ -114,7 +113,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// get the highest rated skill for this CrewMember
 		/// </summary>
-		private CrewMemberSkill GetBestSkill(CrewMember crewMember, Random rand)
+		private CrewMemberSkill GetBestSkill(CrewMember crewMember)
 		{
 			var bestSkill = CrewMemberSkill.Charisma;
 			var bestSkillLevel = 0;
@@ -128,7 +127,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//if the skill rating is equal to the current highest, randomly select if it should become the new bestSkill
 				if (crewMember.Skills[skill] == bestSkillLevel)
 				{
-					if (rand.Next(0, 100) % 2 == 0)
+					if (StaticRandom.Int(0, 100) % 2 == 0)
 					{
 						bestSkillLevel = crewMember.Skills[skill];
 						bestSkill = skill;
@@ -144,9 +143,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return bestSkill;
 		}
 
-		private Color GetRandomSkinColor(Random rand)
+		private Color GetRandomSkinColor()
 		{
-			switch (rand.Next(0, 3))
+			switch (StaticRandom.Int(0, 3))
 			{
 				case 0:
 					MouthColor = "Light";
@@ -160,15 +159,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
-		private Color GetHairColorForSkin(Color skin, Random rand)
+		private Color GetHairColorForSkin(Color skin)
 		{
 			// We want to limit the hair colors that are available, so dark skin does not give bright colored hair
 			if (skin == config.LightSkinColor || skin == config.MediumSkinColor)
 			{
 				//lighter color skin tones have all hair colors
-				return GetRandomHairColor(rand);
+				return GetRandomHairColor();
 			}
-			switch (rand.Next(0, 2))
+			switch (StaticRandom.Int(0, 2))
 			{
 				case 0:
 					return config.BlackHairColor;
@@ -177,9 +176,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
-		private Color GetRandomHairColor(Random rand)
+		private Color GetRandomHairColor()
 		{
-			switch (rand.Next(0, 4))
+			switch (StaticRandom.Int(0, 4))
 			{
 				case 0:
 					return config.BlondeHairColor;
@@ -190,13 +189,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				default:
 					return config.BrownHairColor;
 			}
-		}
-
-		private Color GetRandomColor(Random rand)
-		{
-			var randomBytes = new byte[3];
-			rand.NextBytes(randomBytes);
-			return new Color(randomBytes[0], randomBytes[1], randomBytes[2], 255);
 		}
 
 		private string GetBodyType(CrewMemberSkill skill)
@@ -212,9 +204,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
-		private string GetRandomEyeColor(Random rand)
+		private string GetRandomEyeColor()
 		{
-			switch (rand.Next(0, 3))
+			switch (StaticRandom.Int(0, 3))
 			{
 				case 0:
 					return "Blue";

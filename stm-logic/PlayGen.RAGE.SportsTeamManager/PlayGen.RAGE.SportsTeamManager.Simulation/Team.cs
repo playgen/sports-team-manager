@@ -60,7 +60,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			avatar.SecondaryOutfitColor = TeamColorsSecondary;
 		}
 
-		public void UniqueNameCheck(Random random, CrewMember cm)
+		public void UniqueNameCheck(CrewMember cm)
 		{
 			var unqiue = false;
 			//if the name is already in use by another character, reset their name
@@ -68,7 +68,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				if (crewMembers.ContainsKey(cm.Name) || RetiredCrew.ContainsKey(cm.Name) || Recruits.ContainsKey(cm.Name) || cm.Name == Manager.Name)
 				{
-					cm.Name = cm.SelectNewName(cm.Gender, random);
+					cm.Name = cm.SelectNewName(cm.Gender);
 				}
 				else
 				{
@@ -98,13 +98,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void CreateRecruits()
 		{
-			var rand = new Random();
 			var recuritsToRemove = new List<string>();
 			//remove recruits from iat and randomly select to remove them from pool of available recruits
 			foreach (var member in Recruits)
 			{
 				iat.RemoveCharacters(new List<string> { member.Key });
-				if (rand.Next(0, 100) % (int)config.ConfigValues[ConfigKeys.RecruitChangeChance] != 0)
+				if (StaticRandom.Int(0, 100) % (int)config.ConfigValues[ConfigKeys.RecruitChangeChance] != 0)
 				{
 					recuritsToRemove.Add(member.Key);
 				}
@@ -118,9 +117,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var amount = (int)config.ConfigValues[ConfigKeys.RecruitCount] - Recruits.Count;
 			for (var i = 0; i < amount; i++)
 			{
-				var position = Boat.GetWeakPosition(rand, CrewMembers.Values.ToList());
-				var newMember = new CrewMember(rand, position, config);
-				UniqueNameCheck(rand, newMember);
+				var position = Boat.GetWeakPosition(CrewMembers.Values.ToList());
+				var newMember = new CrewMember(position, config);
+				UniqueNameCheck(newMember);
 				Recruits.Add(newMember.Name, newMember);
 			}
 			var storeNum = 0;
@@ -145,13 +144,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			member.Avatar.UpdateAvatarBeliefs(member);
 			member.Avatar = new Avatar(member, true, true);
 			SetCrewColors(member.Avatar);
-			var random = new Random();
 			var currentNames = crewMembers.Keys.ToList();
 			currentNames.Add(Manager.Name);
-			member.CreateInitialOpinions(random, currentNames);
+			member.CreateInitialOpinions(currentNames);
 			foreach (var cm in crewMembers.Values)
 			{
-				cm.CreateInitialOpinion(random, member.Name);
+				cm.CreateInitialOpinion(member.Name);
 			}
 			AddCrewMember(member);
 			member.UpdateBeliefs("null");
@@ -226,7 +224,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//calculate how many new members should be created
 			extraMembers = (Boat.BoatPositions.Count - extraMembers) * 2;
 			//reset the positions on the boat to those for the new type
-			var rand = new Random();
 			for (var i = 0; i < extraMembers; i++)
 			{
 				var currentNames = crewMembers.Keys.ToList();
@@ -234,15 +231,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//only create a new CrewMember if the crew limit can support it
 				if (CanAddToCrew())
 				{
-					var position = Boat.GetWeakPosition(rand, CrewMembers.Values.ToList());
-					var newMember = new CrewMember(rand, position, config);
+					var position = Boat.GetWeakPosition(CrewMembers.Values.ToList());
+					var newMember = new CrewMember(position, config);
 					newMember.CreateFile(iat, storageLocation);
 					newMember.Avatar = new Avatar(newMember);
 					SetCrewColors(newMember.Avatar);
-					newMember.CreateInitialOpinions(rand, currentNames);
+					newMember.CreateInitialOpinions(currentNames);
 					foreach (var cm in crewMembers.Values)
 					{
-						cm.CreateInitialOpinion(rand, newMember.Name);
+						cm.CreateInitialOpinion(newMember.Name);
 					}
 					newMember.UpdateBeliefs("null");
 					newMember.SaveStatus();

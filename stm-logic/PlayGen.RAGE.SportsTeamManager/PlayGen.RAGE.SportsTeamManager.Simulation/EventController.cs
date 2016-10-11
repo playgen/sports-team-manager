@@ -68,7 +68,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Select a random (if any) event to trigger post race
 		/// </summary>
-		public List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> SelectPostRaceEvents(Team team, int chance, Random random, bool raceSession)
+		public List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> SelectPostRaceEvents(Team team, int chance, bool raceSession)
 		{
 			var postRaceEvents = GetLastingEvents(team, raceSession);
 			var selectedEvents = new List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>>();
@@ -166,8 +166,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public DialogueStateActionDTO GetRandomEvent(int chance, List<DialogueStateActionDTO> availableDialogue)
 		{
-			var rand = new Random();
-			var dialogueIndex = rand.Next(0, availableDialogue.Count * chance);
+			var dialogueIndex = StaticRandom.Int(0, availableDialogue.Count * chance);
 			if (dialogueIndex % chance == 0)
 			{
 				var selectedDialogue = availableDialogue.ToArray()[dialogueIndex / chance];

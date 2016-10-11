@@ -115,7 +115,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			BoatPositionScores.Remove(boatPosition);
 		}
 
-		public Position GetWeakPosition(Random random, List<CrewMember> crewMembers)
+		public Position GetWeakPosition(List<CrewMember> crewMembers)
 		{
 			var positionStrength = new Dictionary<Position, int>();
 			foreach (var pos in BoatPositions)
@@ -133,7 +133,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//if there is no position that has more available than another, select one at random
 			if (positionStrength.Values.Max() - positionStrength.Values.Min() == 0)
 			{
-				var positionValue = random.Next(0, BoatPositions.Count + 1);
+				var positionValue = StaticRandom.Int(0, BoatPositions.Count + 1);
 				return positionValue < BoatPositions.Count ? BoatPositions[positionValue] : Position.Null;
 			}
 			//select from weaker positions if at least one position has less available members than another 
