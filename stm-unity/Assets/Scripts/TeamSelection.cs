@@ -120,11 +120,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public bool IsRace()
 	{
-		if (_confirmCount == 0)
-		{
-			return true;
-		}
-		return false;
+		return _confirmCount == 0;
 	}
 
 	/// <summary>

@@ -118,11 +118,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				return ea.GetBeliefValue(belief);
 			}*/
-			if (EmotionalAppraisal.BeliefExists(belief))
-			{
-				return EmotionalAppraisal.GetBeliefValue(belief);
-			}
-			return null;
+			return EmotionalAppraisal.BeliefExists(belief) ? EmotionalAppraisal.GetBeliefValue(belief) : null;
 		}
 
 		/// <summary>

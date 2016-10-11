@@ -219,11 +219,11 @@ public class TeamSelectionUI : MonoBehaviour {
 		_raceButton = boatObject.transform.Find("Race").GetComponent<Button>();
 		if (_teamSelection.GetStage() == _teamSelection.GetSessionLength())
 		{
-			_raceButton.onClick.AddListener(delegate { ConfirmPopUp(); });
+			_raceButton.onClick.AddListener(ConfirmPopUp);
 		}
 		else
 		{
-			_raceButton.onClick.AddListener(delegate { ConfirmLineUp(); });
+			_raceButton.onClick.AddListener(ConfirmLineUp);
 		}
 		_currentBoat = boatObject;
 		CreateCrew();
@@ -341,15 +341,13 @@ public class TeamSelectionUI : MonoBehaviour {
 
 	private void FeedbackHoverOver(Transform feedback, string text)
 	{
-		var enter = new EventTrigger.Entry();
-		enter.eventID = EventTriggerType.PointerEnter;
+		var enter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
 		var trans = feedback;
 		var mis = text;
 		enter.callback.AddListener(data => { _hoverPopUp.SetHoverObject(trans); });
 		enter.callback.AddListener(data => { _hoverPopUp.DisplayHover(mis); });
 		trans.GetComponent<EventTrigger>().triggers.Add(enter);
-		var exit = new EventTrigger.Entry();
-		exit.eventID = EventTriggerType.PointerExit;
+		var exit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
 		exit.callback.AddListener(data => { _hoverPopUp.HideHover(); });
 		trans.GetComponent<EventTrigger>().triggers.Add(exit);
 	}
@@ -413,7 +411,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		_preRacePopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(delegate { CloseConfirmPopUp(); });
+		_popUpBlocker.onClick.AddListener(CloseConfirmPopUp);
 	}
 
 	/// <summary>
@@ -497,7 +495,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		_postRacePopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(delegate { ClosePostRacePopUp(); });
+		_popUpBlocker.onClick.AddListener(ClosePostRacePopUp);
 		foreach (Transform child in _postRacePopUp.transform.Find("Crew"))
 		{
 			Destroy(child.gameObject);
@@ -590,7 +588,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			}
 			else
 			{
-				if (!currentCrew.Any(cm => cm.Key == crewMember.CrewMember.Name))
+				if (currentCrew.All(cm => cm.Key != crewMember.CrewMember.Name))
 				{
 					crewMember.GetComponentInChildren<AvatarDisplay>().UpdateAvatar(crewMember.CrewMember.Avatar, true);
 					Destroy(crewMember);

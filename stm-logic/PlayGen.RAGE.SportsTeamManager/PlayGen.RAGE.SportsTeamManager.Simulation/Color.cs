@@ -19,6 +19,24 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return Equals(other, this);
 		}
 
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			return obj is Color && Equals((Color)obj);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				var hashCode = R.GetHashCode();
+				hashCode = (hashCode * 397) ^ G.GetHashCode();
+				hashCode = (hashCode * 397) ^ B.GetHashCode();
+				hashCode = (hashCode * 397) ^ A.GetHashCode();
+				return hashCode;
+			}
+		}
+
 		public static bool operator ==(Color c1, Color c2)
 		{
 			return c1.Equals(c2);

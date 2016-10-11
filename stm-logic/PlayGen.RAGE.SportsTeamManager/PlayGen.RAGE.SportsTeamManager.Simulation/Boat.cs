@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-
-using AssetManagerPackage;
-using IntegratedAuthoringTool;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
@@ -14,9 +10,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class Boat
 	{
-		private readonly List<List<KeyValuePair<CrewMember, int>>> _idealCrew;
-		private List<KeyValuePair<CrewMember, int>> _nearestIdealMatch;
-		private readonly ConfigStore _config;
+		private readonly List<List<KeyValuePair<CrewMember, int>>> idealCrew;
+		private List<KeyValuePair<CrewMember, int>> nearestIdealMatch;
+		private readonly ConfigStore config;
 
 		public string Type { get; private set; }
 		public List<Position> BoatPositions { get; set; }
@@ -29,14 +25,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Boat constructor
 		/// </summary>
-		public Boat(ConfigStore config, string type)
+		public Boat(ConfigStore con, string type)
 		{
 			BoatPositions = new List<Position>();
 			BoatPositionCrew = new Dictionary<Position, CrewMember>();
 			BoatPositionScores = new Dictionary<Position, int>();
-			_idealCrew = new List<List<KeyValuePair<CrewMember, int>>>();
+			idealCrew = new List<List<KeyValuePair<CrewMember, int>>>();
 			SelectionMistakes = new List<string>();
-			_config = config;
+			config = con;
 			Type = type;
 			GetPositions();
 		}
@@ -73,7 +69,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private void GetPositions()
 		{
 			BoatPositions.Clear();
-			BoatPositions = new List<Position>(_config.BoatTypes[Type]);
+			BoatPositions = new List<Position>(config.BoatTypes[Type]);
 			var oldPositions = BoatPositionCrew.Keys.Where(bp => !BoatPositions.Contains(bp)).ToList();
 			foreach (var oldPosition in oldPositions)
 			{
@@ -127,7 +123,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				positionStrength.Add(pos, 0);
 				foreach (var cm in crewMembers)
 				{
-					if (pos.GetPositionRating(cm) >= (int)_config.ConfigValues[ConfigKeys.GoodPositionRating])
+					if (pos.GetPositionRating(cm) >= (int)config.ConfigValues[ConfigKeys.GoodPositionRating])
 					{
 						positionStrength[pos]++;
 					}
@@ -193,11 +189,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 
 			//add average opinion, manager opinion and current mood to score
-			crewScore += (int)(opinion * _config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
+			crewScore += (int)(opinion * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
 
-			crewScore += (int)(managerOpinion * _config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]);
+			crewScore += (int)(managerOpinion * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]);
 
-			crewScore += (int)(crewMember.GetMood() * _config.ConfigValues[ConfigKeys.MoodRatingWeighting]);
+			crewScore += (int)(crewMember.GetMood() * config.ConfigValues[ConfigKeys.MoodRatingWeighting]);
 
 			BoatPositionScores[position] = crewScore;
 		}
@@ -218,7 +214,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				foreach (var cm in availableCrew)
 				{
-					positionCrewCombos.Add(string.Concat(bp.GetName(), cm.Key), bp.GetPositionRating(cm.Value) + (int)(cm.Value.GetMood() * _config.ConfigValues[ConfigKeys.MoodRatingWeighting]) + (int)(cm.Value.CrewOpinions[managerName] * _config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]));
+					positionCrewCombos.Add(string.Concat(bp.GetName(), cm.Key), bp.GetPositionRating(cm.Value) + (int)(cm.Value.GetMood() * config.ConfigValues[ConfigKeys.MoodRatingWeighting]) + (int)(cm.Value.CrewOpinions[managerName] * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]));
 				}
 			}
 			var crewCombos = GetPermutations(availableCrew.Keys.ToList(), BoatPositions.Count - 1);
@@ -239,7 +235,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							opinionCount++;
 						}
 					}
-					opinion = (int)((opinion / opinionCount) * _config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
+					// ReSharper disable once PossibleLossOfFraction
+					opinion = (int)((opinion / opinionCount) * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
 					crewOpinions[crewComboKey] += opinion;
 				}
 			}
@@ -248,7 +245,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var bestScore = 0;
 			var bestCrew = new List<List<string>>();
 			var crewPositionScores = new Dictionary<string, int>();
-			int score;
 			//for each possible combination
 			foreach (var possibleCrew in crewCombos)
 			{
@@ -268,7 +264,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var combos = GetOrderedPermutations(possibleCrew, positionNames.Count - 1);
 					foreach (var combo in combos)
 					{
-						score = 0;
+						int score = 0;
 						//assign crew members to their positions and get the score for this set-up
 						for (var i = 0; i < combo.Count; i++)
 						{
@@ -294,7 +290,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 				}
 			}
-			_idealCrew.Clear();
+			idealCrew.Clear();
 			foreach (var crew in bestCrew)
 			{
 				var positionedCrew = new List<KeyValuePair<CrewMember, int>>();
@@ -302,7 +298,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					positionedCrew.Add(new KeyValuePair<CrewMember, int>(availableCrew[crew[i]], positionCrewCombos[string.Concat(positionNames[i], crew[i])]));
 				}
-				_idealCrew.Add(positionedCrew);
+				idealCrew.Add(positionedCrew);
 			}
 			UpdateIdealScore();
 			FindAssignmentMistakes(managerName);
@@ -315,13 +311,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			//reset current values
 			IdealMatchScore = 0;
-			_nearestIdealMatch = null;
+			nearestIdealMatch = null;
 			if (BoatPositionCrew.Count < BoatPositions.Count)
 			{
 				return;
 			}
 			//check the current positioned crew against every ideal crew layout
-			foreach (var crew in _idealCrew)
+			foreach (var crew in idealCrew)
 			{
 				float currentIdealMatch = 0;
 				for (var i = 0; i < crew.Count; i++)
@@ -343,11 +339,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 				}
-				//if the final currentIdealMatch score is higher than the current IdealMatchScore, or _nearestIdealMatch is null (meaning no other ideals have been checked), set this ideal crew to the nearest match
-				if (currentIdealMatch > IdealMatchScore || _nearestIdealMatch == null)
+				//if the final currentIdealMatch score is higher than the current IdealMatchScore, or nearestIdealMatch is null (meaning no other ideals have been checked), set this ideal crew to the nearest match
+				if (currentIdealMatch > IdealMatchScore || nearestIdealMatch == null)
 				{
 					IdealMatchScore = currentIdealMatch;
-					_nearestIdealMatch = crew;
+					nearestIdealMatch = crew;
 				}
 			}
 		}
@@ -378,36 +374,36 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			for (var i = 0; i < BoatPositions.Count; i++)
 			{
 				//if the position is correctly assigned, there's no need for further checks
-				if (BoatPositionCrew[BoatPositions[i]] == _nearestIdealMatch[i].Key)
+				if (BoatPositionCrew[BoatPositions[i]] == nearestIdealMatch[i].Key)
 				{
 					continue;
 				}
 				//for each required skill for this position, get the difference between the rating of the ideal and the current and add to mistakeScores
 				foreach (var skill in BoatPositions[i].RequiredSkills())
 				{
-					mistakeScores[skill.ToString()] += (_nearestIdealMatch[i].Key.Skills[skill] - BoatPositionCrew[BoatPositions[i]].Skills[skill])/(float)BoatPositions[i].RequiredSkills().Count();
+					mistakeScores[skill.ToString()] += (nearestIdealMatch[i].Key.Skills[skill] - BoatPositionCrew[BoatPositions[i]].Skills[skill])/(float)BoatPositions[i].RequiredSkills().Count();
 					//if the rating of the current positioned CrewMember is not known to the player, add to hiddenScores
 					if (BoatPositionCrew[BoatPositions[i]].RevealedSkills[skill] == 0)
 					{
-						hiddenScores[skill.ToString()] += (_nearestIdealMatch[i].Key.Skills[skill] - BoatPositionCrew[BoatPositions[i]].Skills[skill]) / (float)BoatPositions[i].RequiredSkills().Count();
+						hiddenScores[skill.ToString()] += (nearestIdealMatch[i].Key.Skills[skill] - BoatPositionCrew[BoatPositions[i]].Skills[skill]) / (float)BoatPositions[i].RequiredSkills().Count();
 					}
 				}
 				//add the difference in opinion of the manager to mistakeScores
-				mistakeScores["ManagerOpinion"] += (int)((_nearestIdealMatch[i].Key.CrewOpinions[managerName] - BoatPositionCrew[BoatPositions[i]].CrewOpinions[managerName]) * _config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]);
+				mistakeScores["ManagerOpinion"] += (int)((nearestIdealMatch[i].Key.CrewOpinions[managerName] - BoatPositionCrew[BoatPositions[i]].CrewOpinions[managerName]) * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]);
 				//if the player does not know this opinion, add the difference to hiddenScores
 				if (BoatPositionCrew[BoatPositions[i]].CrewOpinions[managerName] != BoatPositionCrew[BoatPositions[i]].RevealedCrewOpinions[managerName])
 				{
-					hiddenScores["ManagerOpinion"] += (int)((_nearestIdealMatch[i].Key.CrewOpinions[managerName] - BoatPositionCrew[BoatPositions[i]].CrewOpinions[managerName]) * _config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]);
+					hiddenScores["ManagerOpinion"] += (int)((nearestIdealMatch[i].Key.CrewOpinions[managerName] - BoatPositionCrew[BoatPositions[i]].CrewOpinions[managerName]) * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]);
 				}
 				//add the difference in mood to mistakeScores
-				mistakeScores["Mood"] += (int)((_nearestIdealMatch[i].Key.GetMood() - BoatPositionCrew[BoatPositions[i]].GetMood()) * _config.ConfigValues[ConfigKeys.MoodRatingWeighting]);
+				mistakeScores["Mood"] += (int)((nearestIdealMatch[i].Key.GetMood() - BoatPositionCrew[BoatPositions[i]].GetMood()) * config.ConfigValues[ConfigKeys.MoodRatingWeighting]);
 			//calculate the average opinion for this position in the ideal crew
 			var idealOpinion = 0;
-				foreach (var bp in _nearestIdealMatch)
+				foreach (var bp in nearestIdealMatch)
 				{
-					if (bp.Key != _nearestIdealMatch[i].Key)
+					if (bp.Key != nearestIdealMatch[i].Key)
 					{
-						idealOpinion += _nearestIdealMatch[i].Key.CrewOpinions[bp.Key.Name];
+						idealOpinion += nearestIdealMatch[i].Key.CrewOpinions[bp.Key.Name];
 					}
 				}
 				idealOpinion /= BoatPositions.Count - 1;
@@ -427,11 +423,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				currentOpinion /= BoatPositions.Count - 1;
 				//add the difference to mistakeScores
-				mistakeScores["CrewOpinion"] += (int)((idealOpinion - currentOpinion) * _config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
+				mistakeScores["CrewOpinion"] += (int)((idealOpinion - currentOpinion) * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
 				//if the percentage of unknown opinions is above the given amount, add the difference to hiddenScores
-				if (unknownCrewOpinions >= (BoatPositions.Count - 1) * _config.ConfigValues[ConfigKeys.HiddenOpinionLimit])
+				if (unknownCrewOpinions >= (BoatPositions.Count - 1) * config.ConfigValues[ConfigKeys.HiddenOpinionLimit])
 				{
-					hiddenScores["CrewOpinion"] += (int)((idealOpinion - currentOpinion) * _config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
+					hiddenScores["CrewOpinion"] += (int)((idealOpinion - currentOpinion) * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
 				}
 			}
 			//sort the 'mistakes' by their values, removing all with a score of 0 and below (aka, equal or better to the ideal crew)
@@ -439,7 +435,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//if the value of the mistake in hiddenScores is more than the given percentage of that in mistakeScores, set this mistake to be 'hidden'
 			for (var i = 0; i < mistakes.Count; i++)
 			{
-				if (hiddenScores[mistakes[i]] >= mistakeScores[mistakes[i]] * _config.ConfigValues[ConfigKeys.HiddenMistakeLimit])
+				if (hiddenScores[mistakes[i]] >= mistakeScores[mistakes[i]] * config.ConfigValues[ConfigKeys.HiddenMistakeLimit])
 				{
 					mistakes[i] = "Hidden";
 				}

@@ -192,7 +192,7 @@ public class RecruitMemberUI : MonoBehaviour
 		_hireWarningPopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(delegate { CloseHireCrewWarning(); });
+		_popUpBlocker.onClick.AddListener(CloseHireCrewWarning);
 		if (_recruitMember.QuestionAllowance() < _recruitMember.GetConfigValue(ConfigKeys.RecruitmentCost))
 		{
 			_hireWarningText.text = "You don't have enough time left to hire this person.";

@@ -231,7 +231,7 @@ public class MemberMeetingUI : MonoBehaviour
 		_fireWarningPopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(delegate { CloseFireCrewWarning(); });
+		_popUpBlocker.onClick.AddListener(CloseFireCrewWarning);
 	}
 
 	/// <summary>

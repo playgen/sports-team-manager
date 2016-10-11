@@ -94,7 +94,7 @@ public class PositionDisplayUI : MonoBehaviour
 		gameObject.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(delegate { ClosePositionPopUp(); });
+		_popUpBlocker.onClick.AddListener(ClosePositionPopUp);
 		Display(position);
 	}
 
@@ -202,7 +202,7 @@ public class PositionDisplayUI : MonoBehaviour
 			_popUpBlocker.transform.SetAsLastSibling();
 			gameObject.transform.SetAsLastSibling();
 			_popUpBlocker.onClick.RemoveAllListeners();
-			_popUpBlocker.onClick.AddListener(delegate { ClosePositionPopUp(); });
+			_popUpBlocker.onClick.AddListener(ClosePositionPopUp);
 
 		}
 		else

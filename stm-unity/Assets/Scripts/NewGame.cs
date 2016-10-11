@@ -25,10 +25,6 @@ public class NewGame : MonoBehaviour {
 	public bool CreateNewGame(string boatName, byte[] colorsPri, byte[] colorsSec, string managerName, string managerAge, string managerGender)
 	{
 		_gameManager.NewGame(Application.persistentDataPath, boatName, colorsPri, colorsSec, managerName, managerAge, managerGender);
-		if (_gameManager.Team != null && _gameManager.Team.Name == boatName)
-		{
-			return true;
-		}
-		return false;
+		return _gameManager.Team != null && _gameManager.Team.Name == boatName;
 	}
 }

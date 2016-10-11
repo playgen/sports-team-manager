@@ -2,20 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 using AssetManagerPackage;
-
 using IntegratedAuthoringTool;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	public class Team
 	{
-		private IntegratedAuthoringToolAsset _iat;
-		private string _storageLocation;
-		private readonly ConfigStore _config;
-		private readonly Dictionary<string, CrewMember> _crewMembers;
+		private readonly IntegratedAuthoringToolAsset iat;
+		private readonly string storageLocation;
+		private readonly ConfigStore config;
+		private readonly Dictionary<string, CrewMember> crewMembers;
 
 		public Boat Boat { get; }
 		public List<Boat> LineUpHistory { get; set; }
@@ -25,20 +23,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Color TeamColorsSecondary { get; set; }
 		public Dictionary<string, CrewMember> CrewMembers
 		{
-			get { return _crewMembers.OrderBy(c => c.Key).ToDictionary(c => c.Key, c => c.Value); }
+			get { return crewMembers.OrderBy(c => c.Key).ToDictionary(c => c.Key, c => c.Value); }
 		}
 		public Dictionary<string, CrewMember> RetiredCrew { get; }
 		public Dictionary<string, CrewMember> Recruits { get; }
 		public Person Manager { get; set; }
 
-		public Team (IntegratedAuthoringToolAsset iat, string storageLocation, ConfigStore config, string name, Boat boat)
+		public Team (IntegratedAuthoringToolAsset i, string storage, ConfigStore con, string name, Boat boat)
 		{
-			_iat = iat;
-			_storageLocation = Path.Combine(storageLocation, name);
-			_config = config;
+			iat = i;
+			storageLocation = Path.Combine(storage, name);
+			config = con;
 			Name = name;
 			Boat = boat;
-			_crewMembers = new Dictionary<string, CrewMember>();
+			crewMembers = new Dictionary<string, CrewMember>();
 			RetiredCrew = new Dictionary<string, CrewMember>();
 			Recruits = new Dictionary<string, CrewMember>();
 			LineUpHistory = new List<Boat>();
@@ -50,7 +48,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void AddCrewMember(CrewMember crewMember)
 		{
-			_crewMembers.Add(crewMember.Name, crewMember);
+			crewMembers.Add(crewMember.Name, crewMember);
 		}
 
 		/// <summary>
@@ -68,7 +66,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//if the name is already in use by another character, reset their name
 			while (!unqiue)
 			{
-				if (_crewMembers.ContainsKey(cm.Name) || RetiredCrew.ContainsKey(cm.Name) || Recruits.ContainsKey(cm.Name) || cm.Name == Manager.Name)
+				if (crewMembers.ContainsKey(cm.Name) || RetiredCrew.ContainsKey(cm.Name) || Recruits.ContainsKey(cm.Name) || cm.Name == Manager.Name)
 				{
 					cm.Name = cm.SelectNewName(cm.Gender, random);
 				}
@@ -84,11 +82,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public bool CanAddToCrew()
 		{
-			if (_crewMembers.Count + 1 > (Boat.BoatPositions.Count + 1) * 2 || Recruits.Count == 0)
-			{
-				return false;
-			}
-			return true;
+			return crewMembers.Count + 1 <= (Boat.BoatPositions.Count + 1) * 2 && Recruits.Count != 0;
 		}
 
 		/// <summary>
@@ -96,7 +90,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public int CrewLimitLeft()
 		{
-			return ((Boat.BoatPositions.Count + 1) * 2) - _crewMembers.Count;
+			return ((Boat.BoatPositions.Count + 1) * 2) - crewMembers.Count;
 		}
 
 		/// <summary>
@@ -109,8 +103,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//remove recruits from iat and randomly select to remove them from pool of available recruits
 			foreach (var member in Recruits)
 			{
-				_iat.RemoveCharacters(new List<string> { member.Key });
-				if (rand.Next(0, 100) % (int)_config.ConfigValues[ConfigKeys.RecruitChangeChance] != 0)
+				iat.RemoveCharacters(new List<string> { member.Key });
+				if (rand.Next(0, 100) % (int)config.ConfigValues[ConfigKeys.RecruitChangeChance] != 0)
 				{
 					recuritsToRemove.Add(member.Key);
 				}
@@ -121,41 +115,41 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 
 			//for the amount of empty recruit spaces, create a new recruit
-			var amount = (int)_config.ConfigValues[ConfigKeys.RecruitCount] - Recruits.Count;
+			var amount = (int)config.ConfigValues[ConfigKeys.RecruitCount] - Recruits.Count;
 			for (var i = 0; i < amount; i++)
 			{
 				var position = Boat.GetWeakPosition(rand, CrewMembers.Values.ToList());
-				var newMember = new CrewMember(rand, position, _config);
+				var newMember = new CrewMember(rand, position, config);
 				UniqueNameCheck(rand, newMember);
 				Recruits.Add(newMember.Name, newMember);
 			}
 			var storeNum = 0;
 			foreach (var recruit in Recruits)
 			{
-				recruit.Value.CreateFile(_iat, _storageLocation, "Recruit" + storeNum);
+				recruit.Value.CreateFile(iat, storageLocation, "Recruit" + storeNum);
 				storeNum++;
 				recruit.Value.Avatar = new Avatar(recruit.Value, false);
 				recruit.Value.UpdateBeliefs("Recruit");
 				recruit.Value.SaveStatus();
 			}
 			AssetManager.Instance.Bridge = new BaseBridge();
-			_iat.SaveToFile(_iat.AssetFilePath);
+			iat.SaveToFile(iat.AssetFilePath);
 		}
 
 		public void AddRecruit(CrewMember member)
 		{
 			//remove recruit from the current list of characters in the game
-			_iat.RemoveCharacters(new List<string> { member.Name });
+			iat.RemoveCharacters(new List<string> { member.Name });
 			//set up recruit as a 'proper' character in the game
-			member.CreateFile(_iat, _storageLocation);
+			member.CreateFile(iat, storageLocation);
 			member.Avatar.UpdateAvatarBeliefs(member);
 			member.Avatar = new Avatar(member, true, true);
 			SetCrewColors(member.Avatar);
 			var random = new Random();
-			var currentNames = _crewMembers.Keys.ToList();
+			var currentNames = crewMembers.Keys.ToList();
 			currentNames.Add(Manager.Name);
 			member.CreateInitialOpinions(random, currentNames);
-			foreach (var cm in _crewMembers.Values)
+			foreach (var cm in crewMembers.Values)
 			{
 				cm.CreateInitialOpinion(random, member.Name);
 			}
@@ -164,7 +158,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			member.SaveStatus();
 			Recruits.Remove(member.Name);
 			AssetManager.Instance.Bridge = new BaseBridge();
-			_iat.SaveToFile(_iat.AssetFilePath);
+			iat.SaveToFile(iat.AssetFilePath);
 		}
 
 		/// <summary>
@@ -172,11 +166,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public bool CanRemoveFromCrew()
 		{
-			if (CrewMembers.Count - 1 < Boat.BoatPositions.Count)
-			{
-				return false;
-			}
-			return true;
+			return CrewMembers.Count - 1 >= Boat.BoatPositions.Count;
 		}
 
 		/// <summary>
@@ -189,10 +179,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				Boat.RemoveCrew(current);
 			}
-			_crewMembers.Remove(crewMember.Name);
+			crewMembers.Remove(crewMember.Name);
 			RetiredCrew.Add(crewMember.Name, crewMember);
 			crewMember.Retire();
-			foreach (var cm in _crewMembers.Values)
+			foreach (var cm in crewMembers.Values)
 			{
 				cm.CrewOpinions.Remove(crewMember.Name);
 				cm.RevealedCrewOpinions.Remove(crewMember.Name);
@@ -202,7 +192,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		//Tick all CrewMembers
 		public void TickCrewMembers(int amount)
 		{
-			foreach (var cm in _crewMembers.Values)
+			foreach (var cm in crewMembers.Values)
 			{
 				cm.TickUpdate(amount);
 			}
@@ -217,7 +207,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void ConfirmChanges(int actionAllowance)
 		{
-			foreach (var crewMember in _crewMembers.Values)
+			foreach (var crewMember in crewMembers.Values)
 			{
 				crewMember.DecisionFeedback(Boat);
 			}
@@ -239,25 +229,25 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var rand = new Random();
 			for (var i = 0; i < extraMembers; i++)
 			{
-				var currentNames = _crewMembers.Keys.ToList();
+				var currentNames = crewMembers.Keys.ToList();
 				currentNames.Add(Manager.Name);
 				//only create a new CrewMember if the crew limit can support it
 				if (CanAddToCrew())
 				{
 					var position = Boat.GetWeakPosition(rand, CrewMembers.Values.ToList());
-					var newMember = new CrewMember(rand, position, _config);
-					newMember.CreateFile(_iat, _storageLocation);
+					var newMember = new CrewMember(rand, position, config);
+					newMember.CreateFile(iat, storageLocation);
 					newMember.Avatar = new Avatar(newMember);
 					SetCrewColors(newMember.Avatar);
 					newMember.CreateInitialOpinions(rand, currentNames);
-					foreach (var cm in _crewMembers.Values)
+					foreach (var cm in crewMembers.Values)
 					{
 						cm.CreateInitialOpinion(rand, newMember.Name);
 					}
 					newMember.UpdateBeliefs("null");
 					newMember.SaveStatus();
 					AssetManager.Instance.Bridge = new BaseBridge();
-					_iat.SaveToFile(_iat.AssetFilePath);
+					iat.SaveToFile(iat.AssetFilePath);
 					//if the boat is under-staffed for the current boat size, this new CrewMember is not counted
 					if (!CanRemoveFromCrew())
 					{
@@ -273,7 +263,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void PostRaceRest()
 		{
-			foreach (var crewMember in _crewMembers.Values)
+			foreach (var crewMember in crewMembers.Values)
 			{
 				crewMember.RaceRest(Boat.BoatPositionCrew.ContainsValue(crewMember));
 			}

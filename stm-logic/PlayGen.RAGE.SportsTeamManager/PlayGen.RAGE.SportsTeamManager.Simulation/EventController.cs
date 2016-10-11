@@ -12,11 +12,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	public class EventController
 	{
 
-		private IntegratedAuthoringToolAsset _iat;
+		private readonly IntegratedAuthoringToolAsset iat;
 
-		public EventController(IntegratedAuthoringToolAsset iat)
+		public EventController(IntegratedAuthoringToolAsset i)
 		{
-			_iat = iat;
+			iat = i;
 		}
 
 		/// <summary>
@@ -24,7 +24,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void SetPlayerState(DialogueStateActionDTO currentEvent)
 		{
-			_iat.SetDialogueState("Player", currentEvent.NextState);
+			iat.SetDialogueState("Player", currentEvent.NextState);
 		}
 
 		/// <summary>
@@ -32,8 +32,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public DialogueStateActionDTO[] GetEvents()
 		{
-			var state = _iat.GetCurrentDialogueState("Player");
-			var dialogueOptions = _iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, state.ToName());
+			var state = iat.GetCurrentDialogueState("Player");
+			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, state.ToName());
 			return dialogueOptions.OrderBy(c => Guid.NewGuid()).ToArray();
 		}
 
@@ -42,7 +42,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string[] GetEventStrings(string eventKey)
 		{
-			var dialogueOptions = _iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey.ToName());
+			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey.ToName());
 			return dialogueOptions.Select(dia => dia.Utterance).ToArray();
 		}
 
@@ -51,7 +51,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string SendMeetingEvent(string eventName, CrewMember member, Team team)
 		{
-			return member.SendMeetingEvent(_iat, eventName, team);
+			return member.SendMeetingEvent(iat, eventName, team);
 		}
 
 		public Dictionary<CrewMember, string> SendRecruitEvent(CrewMemberSkill skill, List<CrewMember> members)
@@ -59,7 +59,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var replies = new Dictionary<CrewMember, string>();
 			foreach (var member in members)
 			{
-				var reply = member.SendRecruitEvent(_iat, skill);
+				var reply = member.SendRecruitEvent(iat, skill);
 				replies.Add(member, reply ?? "");
 			}
 			return replies;
@@ -145,15 +145,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public List<DialogueStateActionDTO> GetPossiblePostRaceDialogue(bool raceSession)
 		{
-			var dialogueOptions = _iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PostRaceEventStart".ToName()).OrderBy(c => Guid.NewGuid()).ToList();
-			if (raceSession)
-			{
-				dialogueOptions = dialogueOptions.Where(dia => dia.Style.Contains("Race")).ToList();
-			}
-			else
-			{
-				dialogueOptions = dialogueOptions.Where(dia => dia.Style.Contains("Practice")).ToList();
-			}
+			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PostRaceEventStart".ToName()).OrderBy(c => Guid.NewGuid()).ToList();
+			dialogueOptions = dialogueOptions.Where(dia => dia.Style.Contains(raceSession ? "Race" : "Practice")).ToList();
 			return dialogueOptions;
 		}
 
@@ -162,7 +155,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var reactionEvents = new List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>>();
 			foreach (var crewMember in team.CrewMembers.Values)
 			{
-				var delayedReactions = crewMember.CurrentEventCheck(team, _iat, raceSession);
+				var delayedReactions = crewMember.CurrentEventCheck(team, iat, raceSession);
 				foreach (var reply in delayedReactions)
 				{
 					reactionEvents.Add(new KeyValuePair<List<CrewMember>, DialogueStateActionDTO>(new List<CrewMember> { crewMember }, reply));
@@ -191,7 +184,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var replies = new Dictionary<CrewMember, string>();
 			foreach (var member in crewMembers)
 			{
-				var reply = member.SendPostRaceEvent(_iat, selected, team, previous);
+				var reply = member.SendPostRaceEvent(iat, selected, team, previous);
 				if (reply != null)
 				{
 					replies.Add(member, reply);

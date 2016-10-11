@@ -49,11 +49,7 @@ public class LoadGame : MonoBehaviour
 	/// </summary>
 	public bool ExistingGameCheck()
 	{
-		if (_selectedName != null)
-		{
-			return _gameManager.CheckIfGameExists(Application.persistentDataPath, _selectedName);
-		}
-		return false;
+		return _selectedName != null && _gameManager.CheckIfGameExists(Application.persistentDataPath, _selectedName);
 	}
 
 	/// <summary>

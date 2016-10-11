@@ -7,7 +7,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class Avatar
 	{
-		private AvatarGeneratorConfig _config;
+		private AvatarGeneratorConfig config;
 
 		public string BodyType { get; private set; }
 		public string OutfitBaseType { get; private set; }
@@ -58,8 +58,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		private void GetConfig()
 		{
-			var config = new AvatarGeneratorConfig().GetConfig();
-			_config = config;
+			config = new AvatarGeneratorConfig().GetConfig();
 		}
 
 		private void CreateAvatar(CrewMember crewMember, string gender, Random random)
@@ -71,7 +70,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			SkinColor = GetRandomSkinColor(random);
 
 			//Set Hair Color
-			HairColor = _config.RandomHairColor ? GetRandomHairColor(random) : GetHairColorForSkin(SkinColor, random);
+			HairColor = config.RandomHairColor ? GetRandomHairColor(random) : GetHairColorForSkin(SkinColor, random);
 
 			//Set Primary Color
 			PrimaryOutfitColor = CustomOutfitColor ? GetRandomColor(random) : new Color(255, 255, 255, 255);
@@ -83,7 +82,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			BodyType = string.Format("Body{0}_{1}", gender, GetBodyType(BestSkill));
 
 			//Set Hair Type
-			HairType = string.Format("Hair{0:00}{1}", random.Next(1, _config.HairTypesCount + 1), gender);
+			HairType = string.Format("Hair{0:00}{1}", random.Next(1, config.HairTypesCount + 1), gender);
 
 			//Set Eye Type
 			EyeType = string.Format("Eye{0}_{1}", gender, BestSkill);
@@ -151,20 +150,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				case 0:
 					MouthColor = "Light";
-					return _config.LightSkinColor;
+					return config.LightSkinColor;
 				case 1:
 					MouthColor = "Dark";
-					return _config.DarkSkinColor;
+					return config.DarkSkinColor;
 				default:
 					MouthColor = "Medium";
-					return _config.MediumSkinColor;
+					return config.MediumSkinColor;
 			}
 		}
 
 		private Color GetHairColorForSkin(Color skin, Random rand)
 		{
 			// We want to limit the hair colors that are available, so dark skin does not give bright colored hair
-			if (skin == _config.LightSkinColor || skin == _config.MediumSkinColor)
+			if (skin == config.LightSkinColor || skin == config.MediumSkinColor)
 			{
 				//lighter color skin tones have all hair colors
 				return GetRandomHairColor(rand);
@@ -172,9 +171,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			switch (rand.Next(0, 2))
 			{
 				case 0:
-					return _config.BlackHairColor;
+					return config.BlackHairColor;
 				default:
-					return _config.BrownHairColor;
+					return config.BrownHairColor;
 			}
 		}
 
@@ -183,13 +182,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			switch (rand.Next(0, 4))
 			{
 				case 0:
-					return _config.BlondeHairColor;
+					return config.BlondeHairColor;
 				case 1:
-					return _config.BlackHairColor;
+					return config.BlackHairColor;
 				case 2:
-					return _config.GingerHairColor;
+					return config.GingerHairColor;
 				default:
-					return _config.BrownHairColor;
+					return config.BrownHairColor;
 			}
 		}
 

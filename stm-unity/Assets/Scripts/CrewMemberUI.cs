@@ -61,19 +61,16 @@ public class CrewMemberUI : MonoBehaviour {
 		trigger.triggers.Clear();
 		if (isActive)
 		{
-			var drag = new EventTrigger.Entry();
-			drag.eventID = EventTriggerType.PointerDown;
+			var drag = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
 			drag.callback.AddListener(data => { BeginDrag(); });
 			trigger.triggers.Add(drag);
-			var drop = new EventTrigger.Entry();
-			drop.eventID = EventTriggerType.PointerUp;
+			var drop = new EventTrigger.Entry { eventID = EventTriggerType.PointerUp };
 			drop.callback.AddListener(data => { EndDrag(); });
 			trigger.triggers.Add(drop);
 		} else
 		{
 			GetComponentInChildren<Image>().color = UnityEngine.Color.gray;
-			var click = new EventTrigger.Entry();
-			click.eventID = EventTriggerType.PointerClick;
+			var click = new EventTrigger.Entry { eventID = EventTriggerType.PointerClick };
 			click.callback.AddListener(data => { ShowPopUp(); });
 			trigger.triggers.Add(click);
 		}
