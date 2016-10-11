@@ -85,6 +85,7 @@
     <Compile Include="Avatar.cs" />
     <Compile Include="AvatarGeneratorConfig.cs" />
     <Compile Include="Boat.cs" />
+    <Compile Include="BoatPromotionTrigger.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="ConfigKeys.cs" />
     <Compile Include="ConfigStore.cs" />
@@ -92,6 +93,8 @@
     <Compile Include="CrewMemberSkill.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="EventController.cs" />
+    <Compile Include="EventTrigger.cs" />
+    <Compile Include="GameConfig.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="NameExtensions.cs" />
     <Compile Include="NPCBeliefs.cs" />
@@ -112,6 +115,7 @@
     <None Include="AvatarConfig.json" />
     <None Include="BoatConfig.json" />
     <None Include="config.json" />
+    <None Include="GameConfig.json" />
     <None Include="NPC Templates\Template.ea" />
     <None Include="NPC Templates\Template.edm" />
     <None Include="NPC Templates\Template.iat" />

@@ -1,0 +1,50 @@
+﻿{
+	"PromotionTriggers": [
+		{
+			"StartType": "Start",
+			"NewType": "Dinghy",
+			"ScoreRequired": 0,
+			"ScoreMetSinceLast": 0
+		},
+		{
+			"StartType": "Dinghy",
+			"NewType": "AltDinghy",
+			"ScoreRequired": 0,
+			"ScoreMetSinceLast": 1
+		},
+		{
+			"StartType": "AltDinghy",
+			"NewType": "BiggerDinghy",
+			"ScoreRequired": 0,
+			"ScoreMetSinceLast": 3
+		},
+		{
+			"StartType": "BiggerDinghy",
+			"NewType": "BiggestDinghy",
+			"ScoreRequired": 0,
+			"ScoreMetSinceLast": 5
+		}
+	],
+	"EventTriggers": [
+		{
+			"Name": "NotPicked",
+			"RaceTrigger": 1,
+			"SessionTrigger": 0
+		},
+		{
+			"Name": "NotPicked",
+			"RaceTrigger": 2,
+			"SessionTrigger": 0
+		},
+		{
+			"Name": "NotPicked",
+			"RaceTrigger": 2,
+			"SessionTrigger": 3
+		},
+		{
+			"Name": "Retirement",
+			"RaceTrigger": 5,
+			"SessionTrigger": 0
+		}
+	]
+}

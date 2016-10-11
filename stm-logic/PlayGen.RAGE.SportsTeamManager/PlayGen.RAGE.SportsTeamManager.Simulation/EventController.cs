@@ -11,7 +11,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class EventController
 	{
-
 		private readonly IntegratedAuthoringToolAsset iat;
 
 		public EventController(IntegratedAuthoringToolAsset i)

@@ -145,27 +145,41 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///    &quot;GoodPositionRating&quot;: 7,
-        ///    &quot;BadPositionRating&quot;: 4,
-        ///    &quot;RandomSkillLow&quot;: 3,
-        ///    &quot;RandomSkillHigh&quot;: 8,
-        ///    &quot;GoodSkillRating&quot;: 8,
-        ///    &quot;BadSkillRating&quot;: 3,
-        ///    &quot;OpinionStrongLike&quot;: 4,
-        ///    &quot;OpinionLike&quot;: 1,
-        ///    &quot;OpinionDislike&quot;: -1,
-        ///    &quot;OpinionStrongDislike&quot;: -4,
-        ///    &quot;DislikeEventOpinionRequired&quot;: -3,
-        ///    &quot;LikeEventOpinionRequired&quot;: 3,
-        ///    &quot;OpinionRatingWeighting&quot;: 1,
-        ///    &quot;ManagerOpinionRatingWeighting&quot;: 1,
-        ///    &quot;MoodRatingWeighting&quot;: 0.5,
-        ///    &quot;DefaultOpinionMin&quot;: 0,
-        ///    &quot;DefaultOpinion [rest of string was truncated]&quot;;.
+        ///	&quot;GoodPositionRating&quot;: 7,
+        ///	&quot;BadPositionRating&quot;: 4,
+        ///	&quot;RandomSkillLow&quot;: 3,
+        ///	&quot;RandomSkillHigh&quot;: 8,
+        ///	&quot;GoodSkillRating&quot;: 8,
+        ///	&quot;BadSkillRating&quot;: 3,
+        ///	&quot;OpinionStrongLike&quot;: 4,
+        ///	&quot;OpinionLike&quot;: 1,
+        ///	&quot;OpinionDislike&quot;: -1,
+        ///	&quot;OpinionStrongDislike&quot;: -4,
+        ///	&quot;DislikeEventOpinionRequired&quot;: -3,
+        ///	&quot;LikeEventOpinionRequired&quot;: 3,
+        ///	&quot;OpinionRatingWeighting&quot;: 1,
+        ///	&quot;ManagerOpinionRatingWeighting&quot;: 1,
+        ///	&quot;MoodRatingWeighting&quot;: 0.5,
+        ///	&quot;DefaultOpinionMin&quot;: 0,
+        ///	&quot;DefaultOpinionMax&quot;: 0,
+        ///	&quot;DefaultMoodMin&quot;: 0,
+        ///	&quot;DefaultMoodMax&quot;: [rest of string was truncated]&quot;;.
         /// </summary>
         public static string config {
             get {
                 return ResourceManager.GetString("config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///	
+        ///}
+        ///.
+        /// </summary>
+        public static string game_config {
+            get {
+                return ResourceManager.GetString("game_config", resourceCulture);
             }
         }
         
