@@ -38,7 +38,7 @@ public class TeamSelection : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Get the currently available crew for the active Boat
+	/// Get the currently available crew
 	/// </summary>
 	public List<CrewMember> LoadCrew()
 	{
@@ -58,19 +58,19 @@ public class TeamSelection : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Assign a CrewMember to a Position on the active boat
+	/// Assign a CrewMember to a Position
 	/// </summary>
 	public void AssignCrew(CrewMember crewMember, Position position)
 	{
-		_gameManager.Team.Boat.AssignCrew(position, crewMember);
+		_gameManager.Team.Boat.AssignCrewMember(position, crewMember);
 	}
 
 	/// <summary>
-	/// Remove a CrewMember from their position on the active boat
+	/// Remove a CrewMember from their position
 	/// </summary>
 	public void RemoveCrew(CrewMember crewMember)
 	{
-		_gameManager.Team.Boat.AssignCrew(0, crewMember);
+		_gameManager.Team.Boat.AssignCrewMember(0, crewMember);
 	}
 
 	/// <summary>
@@ -105,12 +105,12 @@ public class TeamSelection : MonoBehaviour {
 		else
 		{
 			_gameManager.SaveLineUp(offset);
+			_postRaceEvent.GetEvent();
 			if (_confirmCount >= _sessionLength)
 			{
 				_gameManager.ConfirmLineUp();
 				_confirmCount -= _sessionLength;
 			}
-			_postRaceEvent.GetEvent();
 		}
 		return _gameManager.Team.LineUpHistory.Last();
 	}
@@ -121,14 +121,6 @@ public class TeamSelection : MonoBehaviour {
 	public bool IsRace()
 	{
 		return _confirmCount == 0;
-	}
-
-	/// <summary>
-	/// Get the current ideal score
-	/// </summary>
-	public float IdealCheck()
-	{
-		return _gameManager.Team.Boat.IdealMatchScore;
 	}
 
 	/// <summary>

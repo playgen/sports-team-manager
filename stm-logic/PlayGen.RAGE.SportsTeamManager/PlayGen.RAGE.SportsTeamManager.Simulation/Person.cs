@@ -112,6 +112,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			});
 		}
 
+		/// <summary>
+		/// Loaded stored information if it already exists
+		/// </summary>
 		public string LoadBelief(string belief)
 		{
 			/*if (ea.BeliefExists(belief))

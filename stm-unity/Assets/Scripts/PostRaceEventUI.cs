@@ -30,6 +30,7 @@ public class PostRaceEventUI : MonoBehaviour
 
 	private void OnEnable()
 	{
+		//reorder pop-ups and blockers
 		ResetDisplay();
 		_popUpBlocker.transform.SetAsLastSibling();
 		transform.SetAsLastSibling();
@@ -53,9 +54,11 @@ public class PostRaceEventUI : MonoBehaviour
 		gameObject.SetActive(true);
 		var current = _postRaceEvent.CurrentEvent;
 		_nameText.text = "";
+		//if there is an event
 		if (current.Key != null && current.Value != null)
-		{
+		{	//display avatar of first CrewMember involved
 			_avatarDisplay.SetAvatar(current.Key[0].Avatar, current.Key[0].GetMood());
+			//display names of all involved
 			foreach (var cm in current.Key)
 			{
 				if (_nameText.text.Length > 0)
@@ -64,7 +67,9 @@ public class PostRaceEventUI : MonoBehaviour
 				}
 				_nameText.text += cm.Name;
 			}
+			//set alpha to 1 (fully visible)
 			GetComponent<CanvasGroup>().alpha = 1;
+			//set current NPC dialogue
 			_dialogueText.text = current.Value.Utterance;
 			ResetQuestions();
 		} else
@@ -81,6 +86,7 @@ public class PostRaceEventUI : MonoBehaviour
 		var current = _postRaceEvent.CurrentEvent;
 		var eventMember = current.Key != null ? current.Key[0] : null;
 		var replies = _postRaceEvent.GetEventReplies();
+		//set text and onclick handlers for each question UI object
 		for (var i = 0; i < _questions.Length; i++)
 		{
 			if (replies.Length <= i)
@@ -99,6 +105,7 @@ public class PostRaceEventUI : MonoBehaviour
 		{
 			_closeButton.SetActive(true);
 			_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
+			//update displayed avatar moods
 			if (eventMember != null)
 			{
 				_avatarDisplay.UpdateMood(eventMember.Avatar, eventMember.GetMood());

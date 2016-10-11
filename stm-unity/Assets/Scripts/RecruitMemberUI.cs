@@ -62,19 +62,26 @@ public class RecruitMemberUI : MonoBehaviour
 	/// </summary>
 	private void ResetDisplay()
 	{
+		//ActionAllowance display
 		_allowanceBar.fillAmount = _recruitMember.QuestionAllowance() / (float)_recruitMember.StartingQuestionAllowance();
 		_allowanceText.text = _recruitMember.QuestionAllowance().ToString();
+		//set initial text displayed in center of pop-up
 		SetDialogueText("Your recruits are here. What do you want to ask them all or who do you want to hire?");
+		//get recruits
 		var recruits = _recruitMember.GetRecruits().OrderBy(r => Guid.NewGuid()).ToList();
+		//for each recruitUI element
 		for (var i = 0; i < _recruitUI.Length; i++)
 		{
+			//hide display if not needed
 			if (recruits.Count <= i)
 			{
 				_recruitUI[i].SetActive(false);
 				continue;
 			}
+			//make UI element active
 			var thisRecruit = recruits[i];
 			_recruitUI[i].SetActive(true);
+			//set-up displayed name
 			var splitName = thisRecruit.Name.Split(' ');
 			var lastName = splitName.Last() + ",\n";
 			foreach (var split in splitName)
@@ -86,15 +93,19 @@ public class RecruitMemberUI : MonoBehaviour
 			}
 			lastName = lastName.Remove(lastName.Length - 1, 1);
 			_recruitUI[i].transform.Find("Name").GetComponent<Text>().text = lastName;
+			//set-up avatar for this recruit
 			_recruitUI[i].transform.Find("Image").GetComponentInChildren<AvatarDisplay>().SetAvatar(thisRecruit.Avatar, 0);
+			//flip direction they are facing for every other recruit
 			if (i % 2 != 0)
 			{
 				_recruitUI[i].transform.Find("Image").localScale = new Vector3(-1, 1, 1);
 			}
+			//set-up button onclick handler
 			_recruitUI[i].transform.Find("Button").GetComponent<Button>().interactable = true;
 			_recruitUI[i].transform.Find("Button").GetComponent<Button>().onClick.RemoveAllListeners();
 			_recruitUI[i].transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { HireCrewWarning(thisRecruit); });
 			var rand = UnityEngine.Random.Range(0, 8);
+			//set initial greeting dialogue
 			switch (rand % 4)
 			{
 				case 0:
@@ -118,6 +129,7 @@ public class RecruitMemberUI : MonoBehaviour
 			_recruitUI[i].transform.Find("Cost Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString();
 			_recruitUI[i].name = recruits[i].Name;
 		}
+		//set-up question text and click handlers
 		var skills = (CrewMemberSkill[])Enum.GetValues(typeof(CrewMemberSkill));
 		for (var i = 0; i < _questionButtons.Length; i++)
 		{
@@ -187,12 +199,15 @@ public class RecruitMemberUI : MonoBehaviour
 	/// </summary>
 	public void HireCrewWarning(CrewMember recruit)
 	{
+		//pop-up and blocker reordering
 		_hireWarningPopUp.SetActive(true);
 		_popUpBlocker.transform.SetAsLastSibling();
 		_hireWarningPopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
+		//update of blocker click handling
 		_popUpBlocker.onClick.RemoveAllListeners();
 		_popUpBlocker.onClick.AddListener(CloseHireCrewWarning);
+		//adjust text, button text and button positioning based on context
 		if (_recruitMember.QuestionAllowance() < _recruitMember.GetConfigValue(ConfigKeys.RecruitmentCost))
 		{
 			_hireWarningText.text = "You don't have enough time left to hire this person.";

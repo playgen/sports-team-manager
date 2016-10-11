@@ -29,11 +29,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		}
 
+		/// <summary>
+		/// Get if a Skill is required for the given Position
+		/// </summary>
 		public static bool RequiresSkill(this Position position, CrewMemberSkill skill)
 		{
 			return RequiredSkillsCache[position].RequiresSkills(skill);
 		}
 
+		/// <summary>
+		/// Get a list of RequiredSkills for the given Position
+		/// </summary>
 		public static IEnumerable<CrewMemberSkill> RequiredSkills(this Position position)
 		{
 			return EnumerableRequiredSkillsCache[position];

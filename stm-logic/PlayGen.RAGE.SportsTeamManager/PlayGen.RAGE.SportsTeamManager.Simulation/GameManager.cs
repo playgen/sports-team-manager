@@ -10,9 +10,8 @@ using IntegratedAuthoringTool.DTOs;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	//Two starting crew members and random starting opinions currently commented out
 	/// <summary>
-	/// Used to access functionality contained within other classes
+	/// Used to access functionality contained within other classes and create/load/save games
 	/// </summary>
 	public class GameManager
 	{
@@ -44,15 +43,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var combinedStorageLocation = Path.Combine(storageLocation, name);
 			Directory.CreateDirectory(combinedStorageLocation);
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
-			//set up first boat
+			//set up boat and team
 			var boat = new Boat(config, "Dinghy");
 			Team = new Team(iat, storageLocation, config, name, boat);
-			var positionCount = boat.BoatPositions.Count;
+			var positionCount = boat.Positions.Count;
 			Team.TeamColorsPrimary = new Color(teamColorsPrimary[0], teamColorsPrimary[1], teamColorsPrimary[2], 255);
 			Team.TeamColorsSecondary = new Color(teamColorsSecondary[0], teamColorsSecondary[1], teamColorsSecondary[2], 255);
 			iat.ScenarioName = name;
 			AssetManager.Instance.Bridge = new BaseBridge();
 			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
+			//create manager
 			var manager = new Person
 			{
 				Name = managerName,
@@ -67,7 +67,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				initialCrew = true;
 				for (var i = 0; i < positionCount * 2; i++)
 				{
-					Team.AddCrewMember(new CrewMember(boat.GetWeakPosition(Team.CrewMembers.Values.ToList()), config));
+					Team.AddCrewMember(new CrewMember(boat.GetWeakPosition(Team.CrewMembers.Values.Concat(Team.Recruits.Values).ToList()), config));
 				}
 			}
 			if (!initialCrew)
@@ -135,11 +135,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				var file = Path.GetFileName(folder);
 				gameNames.Add(file);
-				/*foreach(var file in files)
-				{
-					var name = IntegratedAuthoringToolAsset.LoadFromFile(LocalStorageProvider.Instance, file).ScenarioName;
-					gameNames.Add(name);
-				}*/
 			}
 			return gameNames;
 		}
@@ -165,6 +160,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							break;
 						}
 					}
+					//do not want loading errors to result in exceptions, so catch all
 					catch
 					{
 
@@ -231,7 +227,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				crewList.Add(crewMember);
 			}
-			//add all non-retired and non-recruits to the list of unassigned crew
+			//add all non-retired and non-recruits to the list of crew
 			crewList.ForEach(cm => Team.AddCrewMember(cm));
 			//load the 'beliefs' (aka, stats and opinions) of all crew members
 			foreach (var cm in Team.Recruits.Values)
@@ -280,18 +276,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				var splitAfter = lineup.Split('(')[2];
 				splitAfter = splitAfter.Split(')')[0];
 				var subjectSplit = splitAfter.Split(',');
-				//set up the version of boat this was
+				//set up the boat
 				var boat = new Boat(config, subjectSplit[0]);
 				//position crew members and gather set-up information using details from split string
-				for (var i = 0; i < boat.BoatPositions.Count; i++)
+				for (var i = 0; i < boat.Positions.Count; i++)
 				{
-					boat.BoatPositionCrew.Add(boat.BoatPositions[i], crewMembers.Single(c => c.Name.NoSpaces() == subjectSplit[((i + 1) * 2) - 1].NoSpaces()));
-					boat.BoatPositionScores.Add(boat.BoatPositions[i], Convert.ToInt32(subjectSplit[(i + 1) * 2]));
+					boat.PositionCrew.Add(boat.Positions[i], crewMembers.Single(c => c.Name.NoSpaces() == subjectSplit[((i + 1) * 2) - 1].NoSpaces()));
+					boat.PositionScores.Add(boat.Positions[i], Convert.ToInt32(subjectSplit[(i + 1) * 2]));
 				}
-				boat.IdealMatchScore = float.Parse(subjectSplit[(boat.BoatPositions.Count * 2) + 1]);
-				boat.BoatScore = boat.BoatPositionScores.Values.Sum();
+				boat.IdealMatchScore = float.Parse(subjectSplit[(boat.Positions.Count * 2) + 1]);
+				boat.Score = boat.PositionScores.Values.Sum();
 				boat.SelectionMistakes = new List<string>();
-				for (var i = (boat.BoatPositions.Count + 1) * 2; i < subjectSplit.Length - 1; i++)
+				for (var i = (boat.Positions.Count + 1) * 2; i < subjectSplit.Length - 1; i++)
 				{
 					boat.SelectionMistakes.Add(subjectSplit[i].NoSpaces());
 				}
@@ -305,6 +301,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void SaveLineUp(int offset)
 		{
+			//set-up boat for saving
 			var boat = Team.Boat;
 			var manager = Team.Manager;
 			boat.UpdateBoatScore(manager.Name);
@@ -315,24 +312,31 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var boatType = boat.Type;
 			var crew = "";
 			//set up string to save
-			foreach (var boatPosition in boat.BoatPositions)
+			foreach (var position in boat.Positions)
 			{
+				//add comma to split information if this isn't the first part of the string
 				if (!string.IsNullOrEmpty(crew))
 				{
 					crew += ",";
 				}
-				if (boat.BoatPositionCrew.ContainsKey(boatPosition))
+				//add positioned crewmembers and their position rating to the string
+				if (boat.PositionCrew.ContainsKey(position))
 				{
-					crew += boat.BoatPositionCrew[boatPosition].Name.NoSpaces();
-					crew += "," + boat.BoatPositionScores[boatPosition];
-				} else
+					crew += boat.PositionCrew[position].Name.NoSpaces();
+					crew += "," + boat.PositionScores[position];
+				}
+				else
 				{
 					crew += "null,0";
 				}
 			}
+			//add idealmatchscore to the string
 			crew += "," + boat.IdealMatchScore;
+			//add every selection mistake to the string 
 			boat.SelectionMistakes.ForEach(sm => crew += "," + sm);
+			//add time offset to the string 
 			crew += "," + offset;
+			//send event with string of information within
 			var eventString = string.Format(eventStringUnformatted, boatType, crew);
 			manager.EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
 			var eventRpc = manager.RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
@@ -341,18 +345,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				manager.RolePlayCharacter.ActionFinished(eventRpc);
 			}
 			manager.SaveStatus();
+			//store saved details in new local boat copy
 			var lastBoat = new Boat(config, boat.Type);
-			foreach (var bp in boat.BoatPositions)
+			foreach (var position in boat.Positions)
 			{
-				if (boat.BoatPositionCrew.ContainsKey(bp))
+				if (boat.PositionCrew.ContainsKey(position))
 				{
-					lastBoat.BoatPositionCrew.Add(bp, boat.BoatPositionCrew[bp]);
-					lastBoat.BoatPositionScores.Add(bp, boat.BoatPositionScores[bp]);
+					lastBoat.PositionCrew.Add(position, boat.PositionCrew[position]);
+					lastBoat.PositionScores.Add(position, boat.PositionScores[position]);
 				}
 			}
 			lastBoat.SelectionMistakes = boat.SelectionMistakes;
 			lastBoat.IdealMatchScore = boat.IdealMatchScore;
-			lastBoat.BoatScore = lastBoat.BoatPositionScores.Values.Sum();
+			lastBoat.Score = lastBoat.PositionScores.Values.Sum();
 			Team.LineUpHistory.Add(lastBoat);
 			Team.HistoricTimeOffset.Add(offset);
 			Team.TickCrewMembers((int)config.ConfigValues[ConfigKeys.TicksPerSession]);
@@ -381,6 +386,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> SelectPostRaceEvents()
 		{
+			//work out if it is currently directly after a race session and the chance of an event occurring as a result
 			var afterRace = false;
 			var chance = (int)config.ConfigValues[ConfigKeys.EventChance];
 			if (Team.LineUpHistory.Count % RaceSessionLength == 0)
@@ -399,8 +405,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public Dictionary<CrewMember, string> SendPostRaceEvent(DialogueStateActionDTO dialogue, List<CrewMember> members)
 		{
-			var replies = eventController.SendPostRaceEvent(dialogue, members, Team, Team.LineUpHistory.Last());
-			return replies;
+			return eventController.SendPostRaceEvent(dialogue, members, Team, Team.LineUpHistory.Last());
 		}
 
 		/// <summary>
@@ -409,7 +414,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		void DeductCost(int cost)
 		{
 			ActionAllowance -= cost;
-			Team.TickCrewMembers(cost);
 			Team.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
 			Team.Manager.SaveStatus();
 		}
@@ -429,7 +433,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public int GetStartingActionAllowance()
 		{
-			return (int)config.ConfigValues[ConfigKeys.DefaultActionAllowance] + ((int)config.ConfigValues[ConfigKeys.ActionAllowancePerPosition] * Team.Boat.BoatPositions.Count);
+			return (int)config.ConfigValues[ConfigKeys.DefaultActionAllowance] + ((int)config.ConfigValues[ConfigKeys.ActionAllowancePerPosition] * Team.Boat.Positions.Count);
 		}
 
 		/// <summary>
@@ -457,9 +461,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public int GetStartingCrewEditAllowance()
 		{
-			return (int)config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition] * Team.Boat.BoatPositions.Count;
+			return (int)config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition] * Team.Boat.Positions.Count;
 		}
 
+		/// <summary>
+		/// If the player has enough time, hire the selected recruit and take the cost from the allowances
+		/// </summary>
 		public void AddRecruit(CrewMember member)
 		{
 			//if the player is able to take this action
@@ -473,7 +480,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Remove a CrewMember from the crew
+		/// Remove a CrewMember from the crew if the player has the allowances to do so
 		/// </summary>
 		public void RetireCrewMember(CrewMember crewMember)
 		{
@@ -510,7 +517,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Send an event to the EventController that'll be triggered for all members within the list
+		/// Send an event to the EventController that'll be triggered for all recruits
 		/// </summary>
 		public Dictionary<CrewMember, string> SendRecruitMembersEvent(CrewMemberSkill skill, List<CrewMember> members)
 		{

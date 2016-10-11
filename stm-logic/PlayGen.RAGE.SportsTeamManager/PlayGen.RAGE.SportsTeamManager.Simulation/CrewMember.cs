@@ -136,7 +136,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Update the EA file for this CrewMember with updated stats and opinions
+		/// Update the EA file for this CrewMember with updated stats
 		/// </summary>
 		public override void UpdateBeliefs(string position = null)
 		{
@@ -147,6 +147,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Create opinions for everyone included in the list for this CrewMember
+		/// </summary>
 		public void CreateInitialOpinions(List<string> people)
 		{
 			foreach (var person in people)
@@ -155,6 +158,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Create an initial opinion on this person based on the given allowed range from the config
+		/// </summary>
 		public void CreateInitialOpinion(string person)
 		{
 			if (person == Name)
@@ -162,6 +168,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return;
 			}
 			AddOrUpdateOpinion(person, StaticRandom.Int((int)config.ConfigValues[ConfigKeys.DefaultOpinionMin], (int)config.ConfigValues[ConfigKeys.DefaultOpinionMax] + 1));
+			//if the two people share the same last name, give the bonus stated in the config to their opinion
 			if (person.GetType() == typeof(CrewMember) && Name.Split(' ').Last() == person.Split(' ').Last())
 			{
 				AddOrUpdateOpinion(person, (int)config.ConfigValues[ConfigKeys.LastNameBonusOpinion]);
@@ -198,6 +205,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UpdateSingleBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), person.NoSpaces()), CrewOpinions[person].ToString());
 		}
 
+		/// <summary>
+		/// Update the known opinion on this Person
+		/// </summary>
 		public void AddOrUpdateRevealedOpinion(string person, int change)
 		{
 			if (!RevealedCrewOpinions.ContainsKey(person))
@@ -246,10 +256,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void LoadPosition(Boat boat)
 		{
-			var boatPosition = boat.BoatPositions.FirstOrDefault(bp => bp.GetName() == LoadBelief(NPCBeliefs.Position.GetDescription()));
-			if (boatPosition != Position.Null)
+			var pos = boat.Positions.FirstOrDefault(position => position.GetName() == LoadBelief(NPCBeliefs.Position.GetDescription()));
+			if (pos != Position.Null)
 			{
-				boat.AssignCrew(boatPosition, this);
+				boat.AssignCrewMember(pos, this);
 			}
 		}
 
@@ -267,11 +277,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Get the current position on this Boat (if any) for this CrewMember
+		/// Get the current position (if any) for this CrewMember
 		/// </summary>
 		public Position GetBoatPosition(Dictionary<Position, CrewMember> currentPositioned)
 		{
-			return currentPositioned.SingleOrDefault(bpc => bpc.Value == this).Key;
+			return currentPositioned.SingleOrDefault(pair => pair.Value == this).Key;
 		}
 
 		/// <summary>
@@ -281,7 +291,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			/*var spacelessName = RolePlayCharacter.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			var currentPosition = boat.BoatPositions.Single(bp => bp.CrewMember == this);
+			var currentPosition = boat.Positions.Single(bp => bp.CrewMember == this);
 			int positionScore = currentPosition != null ? currentPosition.Position.GetPositionRating(this) : 0;
 			var eventString = string.Format("PositionRating({0})", positionScore);
 			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
@@ -314,7 +324,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			TickUpdate();
 
-			foreach (BoatPosition boatPosition in boat.BoatPositions.OrderBy(b => b.Position.Name))
+			foreach (BoatPosition boatPosition in boat.Positions.OrderBy(b => b.Position.Name))
 			{
 				if (boatPosition.CrewMember != null && boatPosition.CrewMember != this)
 				{
@@ -367,10 +377,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			switch (style)
 			{
 				case "StatReveal":
+					//select a random skill
 					var randomStat = Math.Pow(2, StaticRandom.Int(0, Skills.Count));
 					var statName = ((CrewMemberSkill)randomStat).ToString();
 					var statValue = Skills[(CrewMemberSkill)randomStat];
+					//add this skill rating to the dictionary to revealed skills
 					RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
+					//get available dialogue based off of the rating in the skill
 					if (statValue <= (int)config.ConfigValues[ConfigKeys.BadSkillRating])
 					{
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Bad").ToName()).ToList();
@@ -383,6 +396,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Middle").ToName()).ToList();
 					}
+					//select a random reply from those available
 					if (dialogueOptions.Any())
 					{
 						reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, statName.ToLower());
@@ -390,7 +404,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
 					break;
 				case "RoleReveal":
-					var pos = team.Boat.BoatPositions[StaticRandom.Int(0, team.Boat.BoatPositions.Count)];
+					//select a random position
+					var pos = team.Boat.Positions[StaticRandom.Int(0, team.Boat.Positions.Count)];
+					//get dialogue based on if they would be above or below mid-range in this position
 					if (pos.GetPositionRating(this) <= 5)
 					{
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Bad").ToName()).ToList();
@@ -405,12 +421,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					break;
 				case "OpinionRevealPositive":
+					//get all opinions for active crewmembers and the manager
 					var crewOpinionsPositive = CrewOpinions.Where(c => team.CrewMembers.ContainsKey(c.Key)).ToDictionary(p => p.Key, p => p.Value);
 					crewOpinionsPositive.Add(team.Manager.Name, CrewOpinions[team.Manager.Name]);
+					//get all opinions where the value is equal/greater than the OpinionLike value in the config
 					var opinionsPositive = crewOpinionsPositive.Where(co => co.Value >= (int)config.ConfigValues[ConfigKeys.OpinionLike]).ToDictionary(o => o.Key, o => o.Value);
+					//if there are any positive opinions
 					if (opinionsPositive.Any())
 					{
+						//select an opinion at random
 						var pickedOpinionPositive = opinionsPositive.OrderBy(o => Guid.NewGuid()).First();
+						//get available dialogue based on strength of opinion
 						if (pickedOpinionPositive.Value >= (int)config.ConfigValues[ConfigKeys.OpinionStrongLike])
 						{
 							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "High").ToName()).ToList();
@@ -429,6 +450,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						AddOrUpdateRevealedOpinion(pickedOpinionPositive.Key, pickedOpinionPositive.Value);
 					}
+					//if there are no positive opinions, get dialogue based on that
 					else
 					{
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "None").ToName()).ToList();
@@ -515,12 +537,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			List<DialogueStateActionDTO> dialogueOptions;
 			var spacelessName = RolePlayCharacter.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
+			//if this CrewMember is expecting to be picked for the next race and this is after that race
 			if (afterRaceSession && (LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "true")
 			{
-				if (GetBoatPosition(team.Boat.BoatPositionCrew) == Position.Null)
+				//if they are currently unpositioned
+				if (GetBoatPosition(team.Boat.PositionCrew) == Position.Null)
 				{
+					//reduce opinion of the manager
 					AddOrUpdateOpinion(team.Manager.Name, -3);
+					//set their belief to 'false'
 					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "false");
+					//send event on record that this happened
 					var eventString = "PostRace(NotPickedAfterSorry)";
 					EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
 					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
@@ -528,13 +555,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						RolePlayCharacter.ActionFinished(eventRpc);
 					}
+					//get dialogue for this happening
 					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "NotPickedAfterSorry".ToName()).ToList();
 				}
+				//if they were positioned
 				else
 				{
+					//set their belief to 'not'
 					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "not");
+					//get dialogue for this happening
 					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PickedAfterSorry".ToName()).ToList();
 				}
+				//if there are any dialogue options, select one at random and add to the list of replies
 				if (dialogueOptions.Any())
 				{
 					var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
@@ -542,11 +574,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				TickUpdate();
 			}
+			//if the CrewMember is planning to retire
 			if (afterRaceSession && !string.IsNullOrEmpty(LoadBelief("Event(Retire)")))
 			{
+				//update retirement countdown belief
 				UpdateSingleBelief("Event(Retire)", (Convert.ToInt32(LoadBelief("Event(Retire)")) - 1).ToString());
+				//if countdown has reached zero
 				if (Convert.ToInt32(LoadBelief("Event(Retire)")) == 0)
 				{
+					//send event on record this event being triggered
 					var eventString = "PostRace(RetirementTriggered)";
 					EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
 					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
@@ -575,16 +611,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var nextState = selected.NextState;
 			switch (nextState)
 			{
+				//adjust nextstate based on if the player has said they would pick them in the past and did not
 				case "NotPickedSorry":
 					if ((LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "false")
 					{
 						nextState = selected.NextState + "Again";
 					}
 						break;
+				//adjust nextstate based on if the player has said they were not the best in any position when they could have been
 				case "NotPickedSkill":
-					foreach (var bp in previousBoat.BoatPositions)
+					foreach (var position in previousBoat.Positions)
 					{
-						if (bp.GetPositionRating(this) >= previousBoat.BoatPositionScores[bp])
+						if (position.GetPositionRating(this) >= previousBoat.PositionScores[position])
 						{
 							nextState = selected.NextState + "Incorrect";
 						}
@@ -592,17 +630,22 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					break;
 			}
+			//get dialogue
 			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, nextState.ToName()).ToList();
 			if (dialogueOptions.Any())
 			{
+				//select reply
 				var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
+				//set player state
 				iat.SetDialogueState("Player", selectedNext.NextState);
 				reply = selectedNext.Utterance;
+				//trigger this if the player has no next state
 				if (selectedNext.NextState == "-")
 				{
 					PostRaceFeedback(nextState, team);
 				}
 			}
+			//trigger this if the CrewMember has no dialogue to the current event
 			else
 			{
 				iat.SetDialogueState("Player", "-");
@@ -622,6 +665,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var eventString = string.Format("PostRace({0})", lastEvent);
 			EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
 			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new [] { string.Format(eventBase, eventString, spacelessName) });
+			//trigger different changes based off of what dialogue the player last picked
 			switch (lastEvent)
 			{
 				case "NotPickedSorry":
@@ -713,7 +757,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public int CompareTo(CrewMember other)
 		{
-			return Name.CompareTo(other.Name);
+			return String.Compare(Name, other.Name, StringComparison.Ordinal);
 		}
 	}
 }

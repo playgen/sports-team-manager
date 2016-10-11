@@ -41,6 +41,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var gender = crewMember.Gender == "Male" ? "M" : "F";
 			IsMale = crewMember.Gender == "Male";
 			CustomOutfitColor = outfit != "01";
+			//recreate pre-existing avatar if one already exists
 			if (canLoad)
 			{
 				LoadAvatar(crewMember);
@@ -106,12 +107,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Height = 1 + StaticRandom.Float(-0.075f, 0.075f);
 			Weight = 1 + StaticRandom.Float(-0.075f, 0.075f);
 
-			//Save attributes to 
+			//Save attributes
 			UpdateAvatarBeliefs(crewMember);
 		}
 
 		/// <summary>
-		/// get the highest rated skill for this CrewMember
+		/// Get the highest rated skill for this CrewMember
 		/// </summary>
 		private CrewMemberSkill GetBestSkill(CrewMember crewMember)
 		{
@@ -120,6 +121,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//for each available skill
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
 			{
+				//no Body avatar parts at the moment, so this skill is skipped
 				if (skill == CrewMemberSkill.Body)
 				{
 					continue;

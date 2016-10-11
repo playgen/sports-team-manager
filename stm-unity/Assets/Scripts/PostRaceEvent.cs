@@ -41,10 +41,12 @@ public class PostRaceEvent : MonoBehaviour
 	public DialogueStateActionDTO[] GetEventReplies()
 	{
 		var replies = _gameManager.EventController.GetEvents();
+		//if there are no replies, reset the current event
 		if (replies == null || replies.Length == 0)
 		{
 			_currentEvent = new KeyValuePair<List<CrewMember>, DialogueStateActionDTO>(null, null);
 		}
+		//if there is another event that can be set as current, do so
 		if (_currentEvent.Key == null && _currentEvents.Count > 0)
 		{
 			SetEvent();

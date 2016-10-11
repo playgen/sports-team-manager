@@ -84,8 +84,10 @@ public class MemberMeetingUI : MonoBehaviour
 	public void SetUpDisplay(CrewMember crewMember)
 	{
 		_currentMember = crewMember;
+		//make pop-up visible and firing warning not visible
 		gameObject.SetActive(true);
 		_fireWarningPopUp.SetActive(false);
+		//disable opinion images on CrewMember UI objects
 		foreach (var cmui in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
 			if (cmui.Current)
@@ -95,6 +97,7 @@ public class MemberMeetingUI : MonoBehaviour
 		}
 		Tracker.T.alternative.Selected("Crew Member", "Meeting", AlternativeTracker.Alternative.Menu);
 		Display();
+		//set the order of the pop-ups and pop-up blockers and set-up the click event for the blocker
 		_popUpBlocker.transform.SetAsLastSibling();
 		transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
@@ -107,15 +110,18 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void Display(bool postQuestion = false)
 	{
+		//ActionAllowance display
 		_allowanceBar.fillAmount = _memberMeeting.QuestionAllowance() / (float)_memberMeeting.StartingQuestionAllowance();
 		_allowanceText.text = _memberMeeting.QuestionAllowance().ToString();
-		_fireButton.interactable = true;
+		//CrewMember avatar
 		_avatarDisplay.SetAvatar(_currentMember.Avatar, _currentMember.GetMood());
+		//CrewMember information
 		_textList[0].text = _currentMember.Name;
 		_textList[1].text = _currentMember.Age.ToString();
 		var currentRole = _memberMeeting.GetCrewMemberPosition(_currentMember);
 		_textList[2].text = currentRole == Position.Null ? "No Role" : "";
 		_roleButton.onClick.RemoveAllListeners();
+		//set up button onclick if CrewMember is positioned
 		if (currentRole != Position.Null)
 		{
 			_roleButton.gameObject.SetActive(true);
@@ -123,37 +129,45 @@ public class MemberMeetingUI : MonoBehaviour
 			_roleButton.GetComponentInChildren<Text>().text = currentRole.GetName().ToUpper();
 			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = _teamSelectionUI.RoleLogos.First(mo => mo.Name == currentRole.GetName()).Image;
 		}
+		//hide if not positioned
 		else
 		{
 			_roleButton.gameObject.SetActive(false);
 		}
+		//set stat bar fill amount (foreground) and sprite (background)
 		for (var i = 0; i < _barBackgrounds.Length; i++)
 		{
 			_barForegrounds[i].fillAmount = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] * 0.1f;
 			_barBackgrounds[i].sprite = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] == 0 ? _unknownBackBar : _knownBackBar;
 		}
+		//set default starting dialogue
 		_dialogueText.text = "You wanted to see me?";
 		_nameText.text = "What do you want to ask?";
+		//set question text for the player
 		_statQuestion.text = _memberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).First();
 		_roleQuestion.text = _memberMeeting.GetEventText("RoleReveal").OrderBy(s => Guid.NewGuid()).First();
 		_opinionPositiveQuestion.text = _memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).First();
 		_opinionNegativeQuestion.text = _memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).First();
+		//set the cost shown for each question and for firing
 		_statQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.StatRevealCost).ToString();
 		_roleQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost).ToString();
 		_opinionPositiveQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealPositiveCost).ToString();
 		_opinionNegativeQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealNegativeCost).ToString();
 		_fireButton.transform.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.FiringCost).ToString();
 		var allowance = _memberMeeting.QuestionAllowance();
+		//set if each button is interactable according to if the player has enough allowance
 		_fireButton.interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.FiringCost) && _memberMeeting.CrewEditAllowance() != 0 && _memberMeeting.CanRemoveCheck();
 		_statQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.StatRevealCost);
 		_roleQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost);
 		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealPositiveCost);
 		_opinionNegativeQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealNegativeCost);
+		//set closing text
 		_closeText.text = "Nevermind, goodbye";
 		if (postQuestion)
 		{
 			_closeText.text = "OK, thank you for telling me that.";
 		}
+		//display revealed opinions for each other active CrewMember
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
 			if (crewMember.Current)
@@ -172,50 +186,12 @@ public class MemberMeetingUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Triggered by button. Sends StatReveal question to Simulation, gets reply from NPC in response.
+	/// Triggered by button. Sends provided question to Simulation, gets and displays reply from NPC in response.
 	/// </summary>
-	public void AskStatQuestion()
+	public void AskQuestion(string questionType)
 	{
-		Tracker.T.alternative.Selected("Crew Member Meeting", "Stat Reveal", AlternativeTracker.Alternative.Question);
-		var reply = _memberMeeting.AskQuestion("StatReveal", _currentMember);
-		AnswerUpdate(reply);
-	}
-
-	/// <summary>
-	/// Triggered by button. Sends RoleReveal question to Simulation, gets reply from NPC in response.
-	/// </summary>
-	public void AskRoleQuestion()
-	{
-		Tracker.T.alternative.Selected("Crew Member Meeting", "Role Reveal", AlternativeTracker.Alternative.Question);
-		var reply = _memberMeeting.AskQuestion("RoleReveal", _currentMember);
-		AnswerUpdate(reply);
-	}
-
-	/// <summary>
-	/// Triggered by button. Sends OpinionRevealPositive question to Simulation, gets reply from NPC in response.
-	/// </summary>
-	public void AskOpinionPositiveQuestion()
-	{
-		Tracker.T.alternative.Selected("Crew Member Meeting", "Positive Opinion Reveal", AlternativeTracker.Alternative.Question);
-		var reply = _memberMeeting.AskQuestion("OpinionRevealPositive", _currentMember);
-		AnswerUpdate(reply);
-	}
-
-	/// <summary>
-	/// Triggered by button. Sends OpinionRevealNegative question to Simulation, gets reply from NPC in response.
-	/// </summary>
-	public void AskOpinionNegativeQuestion()
-	{
-		Tracker.T.alternative.Selected("Crew Member Meeting", "Negative Opinion Reveal", AlternativeTracker.Alternative.Question);
-		var reply = _memberMeeting.AskQuestion("OpinionRevealNegative", _currentMember);
-		AnswerUpdate(reply);
-	}
-
-	/// <summary>
-	/// Reset displayed information and display reply from NPC.
-	/// </summary>
-	private void AnswerUpdate(string reply)
-	{
+		Tracker.T.alternative.Selected("Crew Member Meeting", questionType, AlternativeTracker.Alternative.Question);
+		var reply = _memberMeeting.AskQuestion(questionType, _currentMember);
 		Display(true);
 		_dialogueText.text = reply.Length > 0 ? reply : "";
 	}

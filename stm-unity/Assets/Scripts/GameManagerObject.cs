@@ -8,6 +8,9 @@ public class GameManagerObject : MonoBehaviour
 {
 	public GameManager GameManager;
 
+	/// <summary>
+	/// Create a new GameManager at start-up
+	/// </summary>
 	private void Awake()
 	{
 		if (FindObjectsOfType<GameManagerObject>().Length > 1)
@@ -21,6 +24,7 @@ public class GameManagerObject : MonoBehaviour
 #if UNITY_EDITOR
 	private void Update()
 	{
+		//takes a screenshot whenever P is pressed
 		if (Input.GetKeyDown(KeyCode.P))
 		{
 			Application.CaptureScreenshot(System.DateTime.UtcNow.ToFileTimeUtc() + ".png");

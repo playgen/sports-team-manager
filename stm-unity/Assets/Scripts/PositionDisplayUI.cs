@@ -105,26 +105,33 @@ public class PositionDisplayUI : MonoBehaviour
 	{
 		var team = _positionDisplay.GetTeam();
 		CrewMember currentCrew = null;
-		if (team.Boat.BoatPositionCrew.ContainsKey(position))
+		//get current CrewMember in this position if any
+		if (team.Boat.PositionCrew.ContainsKey(position))
 		{
-			currentCrew = team.Boat.BoatPositionCrew[position];
+			currentCrew = team.Boat.PositionCrew[position];
 		}
+		//set title and description text
 		_textList[0].text = position.GetName();
 		_textList[1].text = position.GetDescription();
+		//set role image (displayed if no-one is in this position)
 		_roleImage.sprite = _roleSprites.First(mo => mo.Name == position.GetName()).Image;
 		_currentButton.onClick.RemoveAllListeners();
+		//display avatar and CrewMember name accordingly
 		_currentAvatar.gameObject.SetActive(currentCrew != null);
 		_currentName.gameObject.SetActive(currentCrew != null);
+		//set-up avatar, name and onclick handler if CrewMember is in this position
 		if (currentCrew != null)
 		{
 			_currentAvatar.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), true);
 			_currentName.text = currentCrew.Name;
 			_currentButton.onClick.AddListener(delegate { _meetingUI.SetUpDisplay(currentCrew); });
 		}
+		//wipe previous position history objects
 		foreach (Transform child in _historyContainer.transform)
 		{
 			Destroy(child.gameObject);
 		}
+		//display skill images for this position
 		foreach (var skill in _skillImages)
 		{
 			skill.enabled = false;
@@ -136,13 +143,14 @@ public class PositionDisplayUI : MonoBehaviour
 				}
 			}
 		}
+		//gather a count of how many times CrewMembers have been placed in this position
 		var positionMembers = new Dictionary<CrewMember, int>();
 		foreach (var boat in _positionDisplay.GetLineUpHistory())
 		{
-			var boatPositions = boat.BoatPositions.Where(bp => bp == position).ToArray();
-			foreach (var boatPosition in boatPositions)
+			var positions = boat.Positions.Where(pos => pos == position).ToArray();
+			foreach (var pos in positions)
 			{
-				var positionMember = boat.BoatPositionCrew[boatPosition];
+				var positionMember = boat.PositionCrew[pos];
 				if (positionMembers.ContainsKey(positionMember))
 				{
 					positionMembers[positionMember]++;
@@ -154,6 +162,7 @@ public class PositionDisplayUI : MonoBehaviour
 			}
 		}
 		var orderedMembers = positionMembers.OrderByDescending(pm => pm.Value).ThenBy(pm => SplitName(pm.Key.Name, false));
+		//for every CrewMember ever placed in this position, create a Position History object displaying their avatar and their number of appearences
 		foreach (var member in orderedMembers)
 		{
 			var positionHistory = Instantiate(_historyPrefab);
@@ -193,7 +202,7 @@ public class PositionDisplayUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Adjust blocker position in hierarchy according to another pop-up that uses it is displayed as well
+	/// Adjust blocker position in hierarchy according to if another pop-up that uses it is displayed as well
 	/// </summary>
 	public void ChangeBlockerOrder()
 	{

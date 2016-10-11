@@ -19,6 +19,9 @@ public class PositionUI : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Bring in elements that need to be known to this object
+	/// </summary>
 	public void SetUp(TeamSelectionUI teamSelectionUI, PositionDisplayUI positionUI, Position position)
 	{
 		_teamSelectionUI = teamSelectionUI;

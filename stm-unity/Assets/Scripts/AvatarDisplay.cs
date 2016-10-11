@@ -46,7 +46,6 @@ public class AvatarDisplay : MonoBehaviour
 #if USE_SPRITESHEET
 		LoadDictionary();
 #endif
-		// TODO reference the texture packed images
 		// HACK: Just load the images from resources 
 		_body.sprite = Resources.Load<Sprite>(string.Format("Avatars/Body/{0}", avatar.BodyType));
 		_outfit.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitBaseType));
@@ -63,7 +62,6 @@ public class AvatarDisplay : MonoBehaviour
 		_hairFront.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
 		_hairBack.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
 		_eyebrow.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, _eyebrowAlpha);
-
 
 		var primary = new Color32(avatar.PrimaryOutfitColor.R, avatar.PrimaryOutfitColor.G, avatar.PrimaryOutfitColor.B, avatar.PrimaryOutfitColor.A);
 		var secondary = new Color32(avatar.SecondaryOutfitColor.R, avatar.SecondaryOutfitColor.G, avatar.SecondaryOutfitColor.B, avatar.SecondaryOutfitColor.A);
@@ -91,14 +89,21 @@ public class AvatarDisplay : MonoBehaviour
 		{
 			SetFullBodyProperties(avatar);
 		}
+		//update avatar facial expression
 		UpdateMood(avatar, mood);
 	}
 
+	/// <summary>
+	/// update the displayed avatar to currently stored values (usually used to switch between causal and non-causal outfits)
+	/// </summary>
 	public void UpdateAvatar(Avatar avatar, bool isIcon = false)
 	{
 		SetAvatar(avatar, _lastMood, isIcon);
 	}
 
+	/// <summary>
+	/// update the avatar's facial expression based on their agreement with the statement passed to them
+	/// </summary>
 	public void UpdateMood(Avatar avatar, string reaction)
 	{
 		switch (reaction.Replace(" ", ""))
@@ -121,6 +126,9 @@ public class AvatarDisplay : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// update the avatar's facial expression based on the mood value provided
+	/// </summary>
 	public void UpdateMood(Avatar avatar, float mood)
 	{
 		var moodStr = "Neutral";

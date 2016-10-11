@@ -40,6 +40,9 @@ public class NewGameUI : MonoBehaviour {
 		RandomColor();
 	}
 
+	/// <summary>
+	/// Remove any invalid puncuation not already blocked by each inputfield
+	/// </summary>
 	public void ExtraNameValidation(InputField inputField)
 	{
 		inputField.text = inputField.text.Replace("'", "");
@@ -47,6 +50,7 @@ public class NewGameUI : MonoBehaviour {
 
 	private void Update()
 	{
+		//ensure that age does not go below 0
 		int ageTest;
 		if (int.TryParse(_managerAge.text, out ageTest) && ageTest < 0)
 		{
@@ -155,6 +159,7 @@ public class NewGameUI : MonoBehaviour {
 	public void NewGame()
 	{
 		Tracker.T.alternative.Selected("New Game", "Created Game", AlternativeTracker.Alternative.Menu);
+		//convert selected colors to bytes
 		var colorsPri = new []
 			{
 				(byte)(_colorImagePrimary.color.r * 255),

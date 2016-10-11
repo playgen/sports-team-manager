@@ -30,7 +30,7 @@ public class CrewMemberUI : MonoBehaviour {
 	public event EventHandler ReplacedEvent = delegate { };
 
 	/// <summary>
-	/// Bring in elements that need to be known to this class
+	/// Bring in elements that need to be known to this object
 	/// </summary>
 	public void SetUp(bool usable, bool current, TeamSelection teamSelection, MemberMeetingUI meetingUI, PositionDisplayUI positionUI, CrewMember crewMember, Transform parent, Icon[] roleIcons)
 	{
@@ -91,6 +91,7 @@ public class CrewMemberUI : MonoBehaviour {
 		//set as child of container so this displays above all other CrewMember objects
 		transform.SetParent(_defaultParent.parent.parent.parent, false);
 		transform.position = (Vector2)Input.mousePosition - _dragPosition;
+		//set as last sibling so this always appears in front of other UI objects (except pop-ups)
 		transform.SetAsLastSibling();
 	}
 
@@ -113,7 +114,7 @@ public class CrewMemberUI : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// MouseUp ends the current drag. Check if the CrewMember has been placed into a position.If beingClicked is true, the CrewMember pop-up is displayed.
+	/// MouseUp ends the current drag. Check if the CrewMember has been placed into a position. If beingClicked is true, the CrewMember pop-up is displayed.
 	/// </summary>
 	private void EndDrag()
 	{
@@ -159,6 +160,7 @@ public class CrewMemberUI : MonoBehaviour {
 			_teamSelection.RemoveCrew(_crewMember);
 			Reset();
 		}
+		//reset the meeting UI if it is currently being displayed
 		if (_meetingUI.gameObject.activeSelf)
 		{
 			_meetingUI.Display();
@@ -179,15 +181,18 @@ public class CrewMemberUI : MonoBehaviour {
 	public void Place(GameObject position, bool historical = false)
 	{
 		var positionTransform = position.gameObject.GetComponent<RectTransform>();
+		//set size and position
 		transform.SetParent(positionTransform, false);
 		GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
 		GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);
+		//assign if this is not an historical placement
 		if (!historical)
 		{
 			_teamSelection.AssignCrew(_crewMember, position.gameObject.GetComponent<PositionUI>().Position);
 		}
 		position.gameObject.GetComponent<PositionUI>().LinkCrew(this);
 		var positionImage = transform.Find("Position").gameObject;
+		//update current position button
 		positionImage.GetComponent<Image>().enabled = true;
 		positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == position.gameObject.GetComponent<PositionUI>().Position.GetName()).Image;
 		_positionUI.UpdateDisplay();
@@ -201,6 +206,7 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	public void Reset()
 	{
+		//set back to default parent and position
 		transform.SetParent(_defaultParent, true);
 		transform.position = _defaultParent.position;
 		transform.SetAsLastSibling();
@@ -209,8 +215,10 @@ public class CrewMemberUI : MonoBehaviour {
 			Tracker.T.trackedGameObject.Interacted("Unpositioned Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 		}
 		var positionImage = transform.Find("Position").gameObject;
+		//hide current position button and remove all listeners
 		positionImage.GetComponent<Image>().enabled = false;
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
+		//reset position pop-up if it is currently being shown
 		_positionUI.UpdateDisplay();
 	}
 }

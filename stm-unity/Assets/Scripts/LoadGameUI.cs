@@ -53,7 +53,7 @@ public class LoadGameUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Get a list of the current game and instantiate a new button for each one
+	/// Get a list of the current games and instantiate a new button for each one
 	/// </summary>
 	private void GetGames()
 	{

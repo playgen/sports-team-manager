@@ -8,6 +8,9 @@ using IntegratedAuthoringTool;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	/// <summary>
+	/// Stores crew details and contains functionality related to adjusting and adding to crew
+	/// </summary>
 	public class Team
 	{
 		private readonly IntegratedAuthoringToolAsset iat;
@@ -29,6 +32,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Dictionary<string, CrewMember> Recruits { get; }
 		public Person Manager { get; set; }
 
+		/// <summary>
+		/// Team constructor
+		/// </summary>
 		public Team (IntegratedAuthoringToolAsset i, string storage, ConfigStore con, string name, Boat boat)
 		{
 			iat = i;
@@ -60,6 +66,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			avatar.SecondaryOutfitColor = TeamColorsSecondary;
 		}
 
+		/// <summary>
+		/// Check that a CrewMember name is unique within this Team
+		/// </summary>
 		public void UniqueNameCheck(CrewMember cm)
 		{
 			var unqiue = false;
@@ -82,7 +91,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public bool CanAddToCrew()
 		{
-			return crewMembers.Count + 1 <= (Boat.BoatPositions.Count + 1) * 2 && Recruits.Count != 0;
+			return crewMembers.Count + 1 <= (Boat.Positions.Count + 1) * 2 && Recruits.Count != 0;
 		}
 
 		/// <summary>
@@ -90,11 +99,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public int CrewLimitLeft()
 		{
-			return ((Boat.BoatPositions.Count + 1) * 2) - crewMembers.Count;
+			return ((Boat.Positions.Count + 1) * 2) - crewMembers.Count;
 		}
 
 		/// <summary>
-		/// Update the set of recruits for this Boat
+		/// Update the set of recruits
 		/// </summary>
 		public void CreateRecruits()
 		{
@@ -117,12 +126,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var amount = (int)config.ConfigValues[ConfigKeys.RecruitCount] - Recruits.Count;
 			for (var i = 0; i < amount; i++)
 			{
-				var position = Boat.GetWeakPosition(CrewMembers.Values.ToList());
+				var position = Boat.GetWeakPosition(CrewMembers.Values.Concat(Recruits.Values).ToList());
 				var newMember = new CrewMember(position, config);
 				UniqueNameCheck(newMember);
 				Recruits.Add(newMember.Name, newMember);
 			}
 			var storeNum = 0;
+			//set up the files for each recruit and their avatar
 			foreach (var recruit in Recruits)
 			{
 				recruit.Value.CreateFile(iat, storageLocation, "Recruit" + storeNum);
@@ -135,6 +145,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			iat.SaveToFile(iat.AssetFilePath);
 		}
 
+		/// <summary>
+		/// Add a recruit into crewMembers
+		/// </summary>
 		public void AddRecruit(CrewMember member)
 		{
 			//remove recruit from the current list of characters in the game
@@ -164,18 +177,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public bool CanRemoveFromCrew()
 		{
-			return CrewMembers.Count - 1 >= Boat.BoatPositions.Count;
+			return CrewMembers.Count - 1 >= Boat.Positions.Count;
 		}
 
 		/// <summary>
-		/// Retire a CrewMember, meaning they can no longer be assigned to a position (used for historical positions)
+		/// Retire a CrewMember, meaning they can no longer be assigned to a position (mostly used for historical positions)
 		/// </summary>
 		public void RetireCrew(CrewMember crewMember)
 		{
-			var current = crewMember.GetBoatPosition(Boat.BoatPositionCrew);
+			var current = crewMember.GetBoatPosition(Boat.PositionCrew);
 			if (current != Position.Null)
 			{
-				Boat.RemoveCrew(current);
+				Boat.UnassignCrewMember(current);
 			}
 			crewMembers.Remove(crewMember.Name);
 			RetiredCrew.Add(crewMember.Name, crewMember);
@@ -187,7 +200,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
-		//Tick all CrewMembers
+		//Tick all CrewMembers in crewMembers and Retired
 		public void TickCrewMembers(int amount)
 		{
 			foreach (var cm in crewMembers.Values)
@@ -201,7 +214,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Save the current status of each CrewMember for this Boat
+		/// Save the current status of each CrewMember for this Team
 		/// </summary>
 		public void ConfirmChanges(int actionAllowance)
 		{
@@ -214,15 +227,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			TickCrewMembers(0);
 		}
 
+		/// <summary>
+		/// Update the current type of Boat to use for this Team
+		/// </summary>
 		public void PromoteBoat()
 		{
-			var extraMembers = Boat.BoatPositions.Count;
+			var extraMembers = Boat.Positions.Count;
 			Boat.PromoteBoat();
 			//store that the boat type has been changed
 			Manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.Type);
 			Manager.SaveStatus();
 			//calculate how many new members should be created
-			extraMembers = (Boat.BoatPositions.Count - extraMembers) * 2;
+			extraMembers = (Boat.Positions.Count - extraMembers) * 2;
 			//reset the positions on the boat to those for the new type
 			for (var i = 0; i < extraMembers; i++)
 			{
@@ -231,7 +247,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//only create a new CrewMember if the crew limit can support it
 				if (CanAddToCrew())
 				{
-					var position = Boat.GetWeakPosition(CrewMembers.Values.ToList());
+					var position = Boat.GetWeakPosition(CrewMembers.Values.Concat(Recruits.Values).ToList());
 					var newMember = new CrewMember(position, config);
 					newMember.CreateFile(iat, storageLocation);
 					newMember.Avatar = new Avatar(newMember);
@@ -262,7 +278,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			foreach (var crewMember in crewMembers.Values)
 			{
-				crewMember.RaceRest(Boat.BoatPositionCrew.ContainsValue(crewMember));
+				crewMember.RaceRest(Boat.PositionCrew.ContainsValue(crewMember));
 			}
 		}
 	}
