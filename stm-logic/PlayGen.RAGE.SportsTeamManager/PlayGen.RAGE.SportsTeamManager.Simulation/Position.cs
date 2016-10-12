@@ -27,6 +27,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		Pitman,
 		[Description("Responsible for controlling the shape of the sails. Attention to detail and durability will bring success to those in this position.")]
 		[RequiredSkills(CrewMemberSkill.Body | CrewMemberSkill.Perception)]
-		Trimmer
+		Trimmer,
+		[Description("Tasked with hoisting the sails, only the super strong will do well here.")]
+		[RequiredSkills(CrewMemberSkill.Body)]
+		Grinder,
+		[Description("Awareness, fast reactions and being able to handle fear is required here, as those in this position will need to climb the maist/bow to help chnage the sails.")]
+		[RequiredSkills(CrewMemberSkill.Perception | CrewMemberSkill.Quickness | CrewMemberSkill.Willpower)]
+		Bowman
 	}
 }
