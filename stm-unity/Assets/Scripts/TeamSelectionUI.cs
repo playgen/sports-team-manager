@@ -106,7 +106,10 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			_raceButton.interactable = true;
 		}
-		if ((_teamSelection.QuestionAllowance() < _recruitCost|| _teamSelection.CrewEditAllowance() == 0 || !_teamSelection.CanAddCheck()) && _recruitButtons.Count > 0 && _recruitButtons[0].IsInteractable())
+		var actionAllowance = _teamSelection.QuestionAllowance();
+		var crewAllowance = _teamSelection.CrewEditAllowance();
+		var canAdd = _teamSelection.CanAddCheck();
+		if ((actionAllowance < _recruitCost || crewAllowance == 0 || !canAdd) && _recruitButtons.Count > 0 && _recruitButtons[0].IsInteractable())
 		{
 			foreach (var b in _recruitButtons)
 			{
@@ -114,7 +117,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			}
 			
 		}
-		else if (_teamSelection.QuestionAllowance() >= _recruitCost && _teamSelection.CrewEditAllowance() > 0 && _teamSelection.CanAddCheck() && _recruitButtons.Count > 0 && !_recruitButtons[0].IsInteractable())
+		else if (actionAllowance >= _recruitCost && crewAllowance > 0 && canAdd && _recruitButtons.Count > 0 && !_recruitButtons[0].IsInteractable())
 		{
 			foreach (var b in _recruitButtons)
 			{
@@ -271,14 +274,6 @@ public class TeamSelectionUI : MonoBehaviour {
 			recruit.GetComponent<Button>().onClick.AddListener(delegate { _recruitPopUp.SetActive(true); });
 			_recruitButtons.Add(recruit.GetComponent<Button>());
 			sortedCrew.Add(recruit.transform);
-			if ((_teamSelection.QuestionAllowance() < _recruitCost || _teamSelection.CrewEditAllowance() == 0 || !_teamSelection.CanAddCheck()))
-			{
-				recruit.GetComponent<Button>().interactable = false;
-			}
-			else if (_teamSelection.QuestionAllowance() >= _recruitCost && _teamSelection.CrewEditAllowance() > 0 && _teamSelection.CanAddCheck())
-			{
-				recruit.GetComponent<Button>().interactable = true;
-			}
 		}
 		//sort CrewMembers by their surnames
 		sortedCrew = sortedCrew.OrderBy(c => c.name).ToList();
@@ -441,6 +436,10 @@ public class TeamSelectionUI : MonoBehaviour {
 			{
 				layout.enabled = visibility;
 			}
+		}
+		foreach (var crewMember in boat.GetComponentsInChildren<CrewMemberUI>())
+		{
+			crewMember.enabled = visibility;
 		}
 	}
 

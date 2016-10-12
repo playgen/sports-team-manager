@@ -86,8 +86,6 @@ public class CrewMemberUI : MonoBehaviour {
 		_beingClicked = true;
 		//_dragPosition is used to offset according to where the click occurred
 		_dragPosition = Input.mousePosition - transform.position;
-		//disable layoutgroup to avoiding jumping to different position
-		_defaultParent.parent.GetComponent<HorizontalLayoutGroup>().enabled = false;
 		//set as child of container so this displays above all other CrewMember objects
 		transform.SetParent(_defaultParent.parent.parent.parent, false);
 		transform.position = (Vector2)Input.mousePosition - _dragPosition;
@@ -124,7 +122,6 @@ public class CrewMemberUI : MonoBehaviour {
 			ShowPopUp();
 		}
 		_beingClicked = false;
-		_defaultParent.parent.GetComponent<HorizontalLayoutGroup>().enabled = true;
 	}
 
 	/// <summary>
