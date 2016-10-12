@@ -10,7 +10,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	public class GameConfig
 	{
 		public BoatPromotionTrigger[] PromotionTriggers { get; set; }
-		public EventTrigger[] EventTriggers { get; set; }
+		public PostSessionEventTrigger[] EventTriggers { get; set; }
 
 		//get and return values for avatar configs
 		public GameConfig GetConfig()

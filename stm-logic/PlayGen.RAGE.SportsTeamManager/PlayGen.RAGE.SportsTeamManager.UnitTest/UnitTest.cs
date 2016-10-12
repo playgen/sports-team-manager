@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using System.Diagnostics;
 
 namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 {
@@ -351,8 +353,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				gameManager.Team.Boat.AssignCrewMember(Position.MidBowman, gameManager.Team.CrewMembers["Dim Wobnam"]);
 				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(30, gameManager.Team.Boat.Score);
+				gameManager.SaveLineUp(0);
 				gameManager.ConfirmLineUp();
-				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(30, gameManager.Team.Boat.Score);
 				//Assert.AreEqual(33, gameManager.Team.Boat.Score); opinion changes
 
@@ -399,8 +401,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				gameManager.Team.Boat.AssignCrewMember(Position.MidBowman, gameManager.Team.CrewMembers["Dim Wobnam"]);
 				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(22, gameManager.Team.Boat.Score);
+				gameManager.SaveLineUp(0);
 				gameManager.ConfirmLineUp();
-				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(22, gameManager.Team.Boat.Score);
 				//Assert.AreEqual(24, gameManager.Team.Boat.Score); opinion changes
 
@@ -447,8 +449,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				gameManager.Team.Boat.AssignCrewMember(Position.MidBowman, gameManager.Team.CrewMembers["Dim Wobnam"]);
 				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(22, gameManager.Team.Boat.Score);
+				gameManager.SaveLineUp(0);
 				gameManager.ConfirmLineUp();
-				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(22, gameManager.Team.Boat.Score);
 				//Assert.AreEqual(24, gameManager.Team.Boat.Score); opinion changes
 
@@ -483,17 +485,15 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(25, gameManager.Team.Boat.Score);
 				//Assert.AreEqual(27, gameManager.Team.Boat.Score); opinion changes
+				gameManager.SaveLineUp(0);
 				gameManager.ConfirmLineUp();
-				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(25, gameManager.Team.Boat.Score);
-				//Assert.AreEqual(25, gameManager.Team.Boat.Score); promotion
 				//Assert.AreEqual(29, gameManager.Team.Boat.Score); opinion changes
 
 				gameManager.LoadGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace");
 
 				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(25, gameManager.Team.Boat.Score);
-				//Assert.AreEqual(25, gameManager.Team.Boat.Score); promotion
 				//Assert.AreEqual(29, gameManager.Team.Boat.Score); opinion changes
 			}
 		}
@@ -523,8 +523,8 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				gameManager.Team.Boat.AssignCrewMember(Position.MidBowman, gameManager.Team.CrewMembers["Skippy Skip"]);
 				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(10, gameManager.Team.Boat.Score);
+				gameManager.SaveLineUp(0);
 				gameManager.ConfirmLineUp();
-				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(10, gameManager.Team.Boat.Score);
 				//Assert.AreEqual(4, gameManager.Team.Boat.Score); opinion changes
 
@@ -546,11 +546,19 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			{
 				var gameManager = new GameManager();
 				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Ideal Test", new byte[] { 0, 0, 0 }, new byte[] { 0, 0, 0 }, "Player Manager", "18", "Male");
-				gameManager.Team.Boat.PromoteBoat();
-				gameManager.Team.Boat.PromoteBoat();
-				gameManager.Team.Boat.PromoteBoat();
-				gameManager.AddRecruit(gameManager.Team.Recruits.First().Value);
-				gameManager.AddRecruit(gameManager.Team.Recruits.First().Value);
+				var config = new ConfigStore();
+				while (gameManager.Team.Boat.Positions.Count < 6)
+				{
+					for (int j = 0; j < gameManager.RaceSessionLength; j++)
+					{
+						gameManager.Team.LineUpHistory.Add(new Boat(config, gameManager.Team.Boat.Type));
+					}
+					gameManager.Team.PromoteBoat();
+				}
+				for (int j = 0; j < gameManager.Team.CrewLimitLeft(); j++)
+				{
+					gameManager.AddRecruit(gameManager.Team.Recruits.First().Value);
+				}
 				gameManager.SaveLineUp(0);
 			}
 		}

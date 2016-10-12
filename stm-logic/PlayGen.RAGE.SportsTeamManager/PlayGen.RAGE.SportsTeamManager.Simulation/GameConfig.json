@@ -16,13 +16,13 @@
 			"StartType": "AltDinghy",
 			"NewType": "BiggerDinghy",
 			"ScoreRequired": 0,
-			"ScoreMetSinceLast": 3
+			"ScoreMetSinceLast": 2
 		},
 		{
 			"StartType": "BiggerDinghy",
 			"NewType": "BiggestDinghy",
 			"ScoreRequired": 0,
-			"ScoreMetSinceLast": 5
+			"ScoreMetSinceLast": 2
 		}
 	],
 	"EventTriggers": [

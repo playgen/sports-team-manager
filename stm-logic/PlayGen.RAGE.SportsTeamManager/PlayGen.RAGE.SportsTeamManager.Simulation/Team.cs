@@ -225,6 +225,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Manager.SaveStatus();
 			PostRaceRest();
 			TickCrewMembers(0);
+			PromoteBoat();
+			//update available recruits for the next race
+			CreateRecruits();
 		}
 
 		/// <summary>
@@ -233,7 +236,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void PromoteBoat()
 		{
 			var extraMembers = Boat.Positions.Count;
-			Boat.PromoteBoat();
+			var raceHistory = LineUpHistory.Where((boat, i) => (i + 1) % (int)config.ConfigValues[ConfigKeys.RaceSessionLength] == 0).ToList();
+			Boat.PromoteBoat(raceHistory);
 			//store that the boat type has been changed
 			Manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.Type);
 			Manager.SaveStatus();
@@ -249,6 +253,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					var position = Boat.GetWeakPosition(CrewMembers.Values.Concat(Recruits.Values).ToList());
 					var newMember = new CrewMember(position, config);
+					UniqueNameCheck(newMember);
 					newMember.CreateFile(iat, storageLocation);
 					newMember.Avatar = new Avatar(newMember);
 					SetCrewColors(newMember.Avatar);

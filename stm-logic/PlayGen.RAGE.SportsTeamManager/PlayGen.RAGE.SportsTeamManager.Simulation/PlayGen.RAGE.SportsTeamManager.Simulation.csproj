@@ -93,7 +93,7 @@
     <Compile Include="CrewMemberSkill.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="EventController.cs" />
-    <Compile Include="EventTrigger.cs" />
+    <Compile Include="PostSessionEventTrigger.cs" />
     <Compile Include="GameConfig.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="NameExtensions.cs" />

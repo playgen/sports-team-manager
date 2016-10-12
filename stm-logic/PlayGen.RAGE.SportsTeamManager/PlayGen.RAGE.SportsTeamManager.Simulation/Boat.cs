@@ -37,25 +37,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Change the current type of boat to a different type and get the positions for this new type
 		/// </summary>
-		public void PromoteBoat()
+		public void PromoteBoat(List<Boat> previous)
 		{
-			string newType;
-			switch (Type)
+			var possibleTypes = config.GameConfig.PromotionTriggers.Where(pt => pt.StartType == Type);
+			previous = previous.Where(pb => pb.Type == Type).ToList();
+			foreach (var type in possibleTypes)
 			{
-				case "Dinghy":
-					newType = "AltDinghy";
-					break;
-				case "AltDinghy":
-					newType = "BiggerDinghy";
-					break;
-				case "BiggerDinghy":
-					newType = "BiggestDinghy";
-					break;
-				default:
+				if (previous.Count(pb => pb.Score >= type.ScoreRequired) >= type.ScoreMetSinceLast)
+				{
+					Type = type.NewType;
+					GetPositions();
 					return;
+				}
 			}
-			Type = newType;
-			GetPositions();
 		}
 
 		/// <summary>

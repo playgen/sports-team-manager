@@ -44,7 +44,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Directory.CreateDirectory(combinedStorageLocation);
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
 			//set up boat and team
-			var boat = new Boat(config, "Dinghy");
+			var initialType = config.GameConfig.PromotionTriggers.First(pt => pt.StartType == "Start").NewType;
+			var boat = new Boat(config, initialType);
 			Team = new Team(iat, storageLocation, config, name, boat);
 			var positionCount = boat.Positions.Count;
 			Team.TeamColorsPrimary = new Color(teamColorsPrimary[0], teamColorsPrimary[1], teamColorsPrimary[2], 255);
@@ -67,7 +68,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				initialCrew = true;
 				for (var i = 0; i < positionCount * 2; i++)
 				{
-					Team.AddCrewMember(new CrewMember(boat.GetWeakPosition(Team.CrewMembers.Values.Concat(Team.Recruits.Values).ToList()), config));
+					var newMember = new CrewMember(boat.GetWeakPosition(Team.CrewMembers.Values.Concat(Team.Recruits.Values).ToList()), config);
+					Team.UniqueNameCheck(newMember);
+					Team.AddCrewMember(newMember);
 				}
 			}
 			if (!initialCrew)
@@ -281,8 +284,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//position crew members and gather set-up information using details from split string
 				for (var i = 0; i < boat.Positions.Count; i++)
 				{
-					boat.PositionCrew.Add(boat.Positions[i], crewMembers.Single(c => c.Name.NoSpaces() == subjectSplit[((i + 1) * 2) - 1].NoSpaces()));
-					boat.PositionScores.Add(boat.Positions[i], Convert.ToInt32(subjectSplit[(i + 1) * 2]));
+					if (subjectSplit[((i + 1) * 2) - 1].NoSpaces() != "null")
+					{
+						boat.PositionCrew.Add(boat.Positions[i], crewMembers.Single(c => c.Name.NoSpaces() == subjectSplit[((i + 1) * 2) - 1].NoSpaces()));
+						boat.PositionScores.Add(boat.Positions[i], Convert.ToInt32(subjectSplit[(i + 1) * 2]));
+					}
 				}
 				boat.IdealMatchScore = float.Parse(subjectSplit[(boat.Positions.Count * 2) + 1]);
 				boat.Score = boat.PositionScores.Values.Sum();
@@ -369,13 +375,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void ConfirmLineUp()
 		{
 			Team.ConfirmChanges(ActionAllowance);
-			//TODO: Change trigger for promotion
-			if (((Team.LineUpHistory.Count + 1) / RaceSessionLength) % 2 != 0)
-			{
-				Team.PromoteBoat();
-			}
-			//update available recruits for the next race
-			Team.CreateRecruits();
 			//reset the limits on actions and hiring/firing
 			ResetActionAllowance();
 			ResetCrewEditAllowance();
