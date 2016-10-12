@@ -396,7 +396,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				chance += (int)config.ConfigValues[ConfigKeys.PracticeEventChanceReduction];
 			}
-			return eventController.SelectPostRaceEvents(Team, chance, afterRace);
+			return eventController.SelectPostRaceEvents(config, Team, chance, afterRace);
 		}
 
 		/// <summary>

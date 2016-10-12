@@ -70,16 +70,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Select a random (if any) event to trigger post race
 		/// </summary>
-		public List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> SelectPostRaceEvents(Team team, int chance, bool raceSession)
+		public List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> SelectPostRaceEvents(ConfigStore config, Team team, int chance, bool raceSession)
 		{
 			//get the state of currrently running events
 			var postRaceEvents = GetLastingEvents(team, raceSession);
 			var selectedEvents = new List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>>();
 			//get all possible post-race event starting dialogue
 			var dialogueOptions = GetPossiblePostRaceDialogue(raceSession);
-			if (dialogueOptions.Any())
+			var events = GetEvents(dialogueOptions, config.GameConfig.EventTriggers.ToList(), team, (int)config.ConfigValues[ConfigKeys.RaceSessionLength]);
+			if (events.Any())
 			{
-				var findEvents = true;
 				var allCrew = team.CrewMembers;
 				var allCrewRemovals = new List<CrewMember>();
 				//remove those already involved in a running event to not be selected
@@ -98,21 +98,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					allCrew.Remove(crewMember.Name);
 				}
-				while (findEvents)
+				foreach (var ev in events)
 				{
 					//if there is no-one to select for an event, stop looking
 					if (allCrew.Count == 0)
 					{
-						findEvents = false;
 						continue;
 					}
-					//get a random event
-					var selected = GetRandomEvent((int)Math.Pow(chance, selectedEvents.Count + 1), dialogueOptions);
-					//if no event is elected, stop this process
-					if (selected == null)
+					var selected = dialogueOptions.Where(a => a.NextState == ev.EventName).OrderBy(o => Guid.NewGuid()).First();
+					if (ev.Random)
 					{
-						findEvents = false;
-						continue;
+						if (StaticRandom.Int(0, (int)Math.Pow(chance, selectedEvents.Count + 1)) != 0)
+						{
+							continue;
+						}
 					}
 					var eventSelected = new List<CrewMember>();
 					switch (selected.NextState)
@@ -125,24 +124,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							}
 							if (allCrew.Count == 0)
 							{
-								findEvents = false;
 								continue;
 							}
 							eventSelected.Add(allCrew.OrderBy(c => Guid.NewGuid()).First().Value);
 							break;
 						case "Retirement":
 							//for this event, select a crew member who has not been selected in the past five race sessions
-							allCrew = allCrew.Where(cm => cm.Value.RestCount <= -5).ToDictionary(ac => ac.Key, ac => ac.Value);
+							allCrew = allCrew.Where(cm => cm.Value.RestCount <= -4).ToDictionary(ac => ac.Key, ac => ac.Value);
+							foreach (var pair in team.LineUpHistory.Last().PositionCrew)
+							{
+								allCrew.Remove(pair.Value.Name);
+							}
 							if (allCrew.Count == 0)
 							{
-								findEvents = false;
 								continue;
 							}
 							eventSelected.Add(allCrew.OrderBy(c => Guid.NewGuid()).First().Value);
 							eventSelected.ForEach(es => es.UpdateSingleBelief("Event(Retire)", "1"));
-							break;
-						default:
-							findEvents = false;
 							break;
 					}
 					eventSelected.ForEach(es => allCrew.Remove(es.Name));
@@ -179,18 +177,53 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return reactionEvents;
 		}
 
-		/// <summary>
-		/// select a random event from those avalble (or none at all)
-		/// </summary>
-		public DialogueStateActionDTO GetRandomEvent(int chance, List<DialogueStateActionDTO> availableDialogue)
+		public List<PostSessionEventTrigger> GetEvents(List<DialogueStateActionDTO> available, List<PostSessionEventTrigger> triggers, Team team, int sessionsPerRace)
 		{
-			var dialogueIndex = StaticRandom.Int(0, availableDialogue.Count * chance);
-			if (dialogueIndex % chance == 0)
+			var history = team.LineUpHistory;
+			var setEvents = new List<PostSessionEventTrigger>();
+			var repeatedEvents = new List<PostSessionEventTrigger>();
+			var randomEvents = new List<PostSessionEventTrigger>();
+			foreach (var trigger in triggers)
 			{
-				var selectedDialogue = availableDialogue.ToArray()[dialogueIndex / chance];
-				return selectedDialogue;
+				if (available.Any(a => a.NextState == trigger.EventName))
+				{
+					if (trigger.StartBoatType == null || history.Any(h => h.Type == trigger.StartBoatType) || trigger.StartBoatType == team.Boat.Type)
+					{
+						var sessionCount = history.Count;
+						var sessionsNeeded = (trigger.RaceTrigger * sessionsPerRace) + trigger.SessionTrigger;
+						if (trigger.RepeatEvery == 0 && (trigger.StartBoatType == team.Boat.Type || trigger.StartBoatType == null))
+						{
+							if (trigger.StartBoatType != null)
+							{
+								sessionCount = history.Count(h => h.Type == trigger.StartBoatType);
+							}
+							if (sessionCount == sessionsNeeded)
+							{
+								setEvents.Add(trigger);
+							}
+						}
+						else if (trigger.RepeatEvery > 0 && history.All(h => h.Type != trigger.EndBoatType))
+						{
+							if (trigger.StartBoatType != null)
+							{
+								sessionCount = history.Count - history.FindIndex(h => h.Type == trigger.StartBoatType);
+							}
+							if (sessionCount - sessionsNeeded >= 0 && (sessionCount - sessionsNeeded) % trigger.RepeatEvery == 0)
+							{
+								if (trigger.Random)
+								{
+									randomEvents.Add(trigger);
+								}
+								else
+								{
+									repeatedEvents.Add(trigger);
+								}
+							}
+						}
+					}
+				}
 			}
-			return null;
+			return setEvents.Concat(repeatedEvents).Concat(randomEvents).ToList();
 		}
 
 		/// <summary>
