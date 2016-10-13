@@ -5,7 +5,14 @@
 			"ScenarioName": null,
 			"Characters": [],
 			"PlayerDialogues": [],
-			"AgentDialogues": []
+			"AgentDialogues": [
+			{
+				"CurrentState": "Help",
+				"NextState": "StartGame",
+				"Meaning": ["StartGame"],
+				"Style": ["StartGame"],
+				"Utterance": "Start playing!"
+			}]
 		},
 	"types": [
 		{

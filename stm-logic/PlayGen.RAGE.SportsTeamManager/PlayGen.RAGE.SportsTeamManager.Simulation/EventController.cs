@@ -52,8 +52,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string GetHelpText(string key)
 		{
-			var dialogueOptions = helpDialogue.Where(hd => hd.CurrentState == key).OrderBy(o => Guid.NewGuid()).ToList();
-			return dialogueOptions.Count != 0 ? dialogueOptions.First().Utterance : "";
+			var dialogueOptions = helpDialogue.Where(hd => hd.NextState == key).OrderBy(o => Guid.NewGuid()).ToList();
+			return dialogueOptions.Count != 0 ? dialogueOptions.First().Utterance : key;
 		}
 
 		/// <summary>

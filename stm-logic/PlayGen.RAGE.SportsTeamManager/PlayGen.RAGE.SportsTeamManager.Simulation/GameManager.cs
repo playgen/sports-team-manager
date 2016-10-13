@@ -43,7 +43,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var combinedStorageLocation = Path.Combine(storageLocation, name);
 			Directory.CreateDirectory(combinedStorageLocation);
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
-			var help = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue").GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Help".ToName()).ToList();
+			var helpIat = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue");
+			var help = helpIat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Help".ToName()).ToList();
 			//set up boat and team
 			var initialType = config.GameConfig.PromotionTriggers.First(pt => pt.StartType == "Start").NewType;
 			var boat = new Boat(config, initialType);
@@ -181,7 +182,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			UnloadGame();
 			AssetManager.Instance.Bridge = new TemplateBridge();
-			var help = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue").GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Help".ToName()).ToList();
+			var helpIat = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue");
+			var help = helpIat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Help".ToName()).ToList();
 			//get the iat file and all characters for this game
 			var combinedStorageLocation = Path.Combine(storageLocation, boatName);
 			AssetManager.Instance.Bridge = new BaseBridge();

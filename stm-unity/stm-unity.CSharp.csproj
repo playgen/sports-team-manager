@@ -130,6 +130,8 @@
     <Compile Include="Assets\Scripts\CrewMemberUI.cs" />
     <Compile Include="Assets\Scripts\GameManagerObject.cs" />
     <Compile Include="Assets\Scripts\HoverPopUpUI.cs" />
+    <Compile Include="Assets\Scripts\LearningPill.cs" />
+    <Compile Include="Assets\Scripts\LearningPillUI.cs" />
     <Compile Include="Assets\Scripts\LoadGame.cs" />
     <Compile Include="Assets\Scripts\LoadGameUI.cs" />
     <Compile Include="Assets\Scripts\MemberMeeting.cs" />
