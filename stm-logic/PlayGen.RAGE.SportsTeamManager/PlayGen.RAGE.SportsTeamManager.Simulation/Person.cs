@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using AssetManagerPackage;
 using EmotionalAppraisal;
@@ -6,6 +7,8 @@ using EmotionalAppraisal.DTOs;
 
 using EmotionalDecisionMaking;
 using IntegratedAuthoringTool;
+using IntegratedAuthoringTool.DTOs;
+
 using RolePlayCharacter;
 using SocialImportance;
 
@@ -25,22 +28,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Constructor for creating a Person
 		/// </summary>
-		public Person()
-		{
-			
-		}
-
-		/// <summary>
-		/// Constructor for creating a Person from a saved game
-		/// </summary>
 		public Person(RolePlayCharacterAsset rpc)
 		{
-			AssetManager.Instance.Bridge = new BaseBridge();
-			RolePlayCharacter = rpc;
-			EmotionalAppraisal = EmotionalAppraisalAsset.LoadFromFile(rpc.EmotionalAppraisalAssetSource);
-			Name = rpc.CharacterName;
-			Age = Convert.ToInt32(LoadBelief(NPCBeliefs.Age.GetDescription()));
-			Gender = LoadBelief(NPCBeliefs.Gender.GetDescription());
+			if (rpc != null)
+			{
+				AssetManager.Instance.Bridge = new BaseBridge();
+				RolePlayCharacter = rpc;
+				EmotionalAppraisal = EmotionalAppraisalAsset.LoadFromFile(rpc.EmotionalAppraisalAssetSource);
+				Name = rpc.CharacterName;
+				Age = Convert.ToInt32(LoadBelief(NPCBeliefs.Age.GetDescription()));
+				Gender = LoadBelief(NPCBeliefs.Gender.GetDescription());
+			}
 		}
 
 		/// <summary>

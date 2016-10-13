@@ -116,6 +116,7 @@
     <None Include="BoatConfig.json" />
     <None Include="config.json" />
     <None Include="GameConfig.json" />
+    <None Include="NPC Templates\HelpDialogue.iat" />
     <None Include="NPC Templates\Template.ea" />
     <None Include="NPC Templates\Template.edm" />
     <None Include="NPC Templates\Template.iat" />

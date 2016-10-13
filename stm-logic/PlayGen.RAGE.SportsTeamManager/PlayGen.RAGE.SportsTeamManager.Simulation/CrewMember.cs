@@ -23,9 +23,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Avatar Avatar { get; set; }
 
 		/// <summary>
-		/// Constructor for creating a CrewMember with a non-random age/gender/name
+		/// Base constructor for creating a CrewMember
 		/// </summary>
-		public CrewMember(ConfigStore con)
+		public CrewMember(ConfigStore con, RolePlayCharacterAsset rpc) : base(rpc)
 		{
 			config = con;
 			RevealedSkills = new Dictionary<CrewMemberSkill, int>();
@@ -35,41 +35,36 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			CrewOpinions = new Dictionary<string, int>();
 			RevealedCrewOpinions = new Dictionary<string, int>();
+		}
+
+		/// <summary>
+		/// Constructor for creating a CrewMember with a non-random age/gender/name
+		/// </summary>
+		public CrewMember(ConfigStore con) : this(con, null)
+		{
+			
 		}
 
 		/// <summary>
 		/// Constructor for creating a CrewMember from a saved game
 		/// </summary>
-		public CrewMember(RolePlayCharacterAsset rpc, ConfigStore con) : base(rpc)
+		public CrewMember(RolePlayCharacterAsset rpc, ConfigStore con) : this(con, rpc)
 		{
-			config = con;
 			Skills = new Dictionary<CrewMemberSkill, int>();
-			RevealedSkills = new Dictionary<CrewMemberSkill, int>();
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
 			{
 				Skills.Add(skill, 0);
-				RevealedSkills.Add(skill, 0);
 			}
-			CrewOpinions = new Dictionary<string, int>();
-			RevealedCrewOpinions = new Dictionary<string, int>();
 		}
 
 		/// <summary>
 		/// Constructor for creating a CrewMember with a random age/gender/name
 		/// </summary>
-		public CrewMember(Position position, ConfigStore con)
+		public CrewMember(Position position, ConfigStore con) : this(con, null)
 		{
-			config = con;
 			Gender = SelectGender();
 			Age = StaticRandom.Int(18, 45);
 			Name = SelectRandomName(Gender);
-			RevealedSkills = new Dictionary<CrewMemberSkill, int>();
-			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
-			{
-				RevealedSkills.Add(skill, 0);
-			}
-			CrewOpinions = new Dictionary<string, int>();
-			RevealedCrewOpinions = new Dictionary<string, int>();
 			//set the skills of the new CrewMember according to the required skills for the selected position
 			Skills = new Dictionary<CrewMemberSkill, int>();
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))

@@ -356,7 +356,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 				}
 				//if the final currentIdealMatch score is higher than the current IdealMatchScore, or nearestIdealMatch is null (meaning no other ideals have been checked), set this ideal crew to the nearest match
-				if (currentIdealMatch > IdealMatchScore || nearestIdealMatch == null)
+				if (currentIdealMatch > IdealMatchScore || nearestIdealMatch.Count == 0)
 				{
 					IdealMatchScore = currentIdealMatch;
 					nearestIdealMatch = crew;

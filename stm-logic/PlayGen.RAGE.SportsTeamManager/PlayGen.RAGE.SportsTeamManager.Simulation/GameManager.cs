@@ -43,6 +43,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var combinedStorageLocation = Path.Combine(storageLocation, name);
 			Directory.CreateDirectory(combinedStorageLocation);
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
+			var help = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue").GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Help".ToName()).ToList();
 			//set up boat and team
 			var initialType = config.GameConfig.PromotionTriggers.First(pt => pt.StartType == "Start").NewType;
 			var boat = new Boat(config, initialType);
@@ -54,7 +55,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			AssetManager.Instance.Bridge = new BaseBridge();
 			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
 			//create manager
-			var manager = new Person
+			var manager = new Person(null)
 			{
 				Name = managerName,
 				Age = Convert.ToInt32(managerAge),
@@ -123,7 +124,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.SaveStatus();
 			}
 			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
-			eventController = new EventController(iat);
+			eventController = new EventController(iat, help);
 			Team.CreateRecruits();
 		}
 
@@ -179,6 +180,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void LoadGame(string storageLocation, string boatName)
 		{
 			UnloadGame();
+			AssetManager.Instance.Bridge = new TemplateBridge();
+			var help = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue").GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Help".ToName()).ToList();
 			//get the iat file and all characters for this game
 			var combinedStorageLocation = Path.Combine(storageLocation, boatName);
 			AssetManager.Instance.Bridge = new BaseBridge();
@@ -246,7 +249,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//set up crew avatars
 			crewList.ForEach(cm => cm.Avatar = new Avatar(cm, true, true));
 			crewList.ForEach(cm => Team.SetCrewColors(cm.Avatar));
-			eventController = new EventController(iat);
+			eventController = new EventController(iat, help);
 			LoadLineUpHistory();
 		}
 
