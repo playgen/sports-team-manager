@@ -309,7 +309,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var idealScore = boat.IdealMatchScore;
 		var currentCrew = _teamSelection.GetTeam().CrewMembers;
 		//get selection mistakes for this line-up and set-up feedback UI
-		var mistakeList = boat.GetAssignmentMistakes(3);
+		var mistakeList = boat.GetAssignmentMistakes(6);
 		CreateMistakeIcons(mistakeList, oldBoat, idealScore, boat.Positions.Count);
 		_teamSelection.ConfirmLineUp(0, true);
 		var scoreDiff = GetResult(_teamSelection.IsRace(), teamScore, boat.Positions.Count, offset, oldBoat.transform.Find("Score").GetComponent<Text>());
@@ -332,6 +332,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			if (!currentCrew.ContainsKey(pair.Value.Name))
 			{
 				Destroy(crewMember.GetComponent<CrewMemberUI>());
+				crewMember.transform.Find("Name").GetComponent<Text>().color = UnityEngine.Color.grey;
 			}
 			crewMember.transform.SetParent(position.transform.parent, true);
 			Destroy(position.gameObject);
@@ -345,18 +346,19 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// </summary>
 	private void CreateMistakeIcons(List<string> mistakes, GameObject boat, float idealScore, int positionCount)
 	{
-		var mistakeParent = boat.transform.Find("Icon Container");
+		var mistakeParentTop = boat.transform.Find("Icon Container Top");
+		var mistakeParentBottom = boat.transform.Find("Icon Container Bottom");
 		//create new mistake icon for each mistake
-		foreach (var mistake in mistakes)
+		for (int i = 0; i < mistakes.Count; i++)
 		{
 			var mistakeObject = Instantiate(_mistakePrefab);
-			mistakeObject.transform.SetParent(mistakeParent, false);
-			mistakeObject.name = mistake;
+			mistakeObject.transform.SetParent(mistakes.Count / 2 > i ? mistakeParentTop : mistakeParentBottom, false);
+			mistakeObject.name = mistakes[i];
 			//set image based on mistake name
-			var mistakeIcon = _mistakeIcons.First(mo => mo.Name == mistake).Image;
+			var mistakeIcon = _mistakeIcons.First(mo => mo.Name == mistakes[i]).Image;
 			mistakeObject.GetComponent<Image>().sprite = mistakeIcon;
 			//add spaces between words where needed
-			FeedbackHoverOver(mistakeObject.transform, Regex.Replace(mistake, "([a-z])([A-Z])", "$1 $2"));
+			FeedbackHoverOver(mistakeObject.transform, Regex.Replace(mistakes[i], "([a-z])([A-Z])", "$1 $2"));
 		}
 		//set numbers for each 'light'
 		var unideal = positionCount - (int)idealScore - ((idealScore % 1) * 10);
@@ -412,6 +414,7 @@ public class TeamSelectionUI : MonoBehaviour {
 				AdjustBoatVisibility(boat, false);
 			}
 		}
+		_boatContainerScroll.value = Mathf.Round(_boatContainerScroll.value * _boatContainerScroll.numberOfSteps) / _boatContainerScroll.numberOfSteps;
 	}
 
 	/// <summary>
@@ -488,7 +491,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		//confirm the line-up with the simulation 
 		var currentBoat = _teamSelection.ConfirmLineUp(offset);
 		var idealScore = currentBoat.IdealMatchScore;
-		var mistakeList = currentBoat.GetAssignmentMistakes(3);
+		var mistakeList = currentBoat.GetAssignmentMistakes(6);
 		CreateMistakeIcons(mistakeList, _currentBoat, idealScore, currentPositions.Count);
 		var scoreDiff = GetResult(_teamSelection.IsRace(), currentBoat.Score, currentPositions.Count, offset, _currentBoat.transform.Find("Score").GetComponent<Text>(), currentPositions);
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
@@ -651,6 +654,7 @@ public class TeamSelectionUI : MonoBehaviour {
 				{
 					crewMember.GetComponentInChildren<AvatarDisplay>().UpdateAvatar(crewMember.CrewMember.Avatar, true);
 					Destroy(crewMember);
+					crewMember.transform.Find("Name").GetComponent<Text>().color = UnityEngine.Color.grey;
 				}
 			}
 		}
@@ -676,6 +680,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	private float GetResult(bool isRace, int teamScore, int positions, int offset, Text scoreText, Dictionary<Position, CrewMember> currentPositions = null)
 	{
 		var expected = 7.5f * positions;
+		var scoreDiff = teamScore - expected;
 		if (!isRace)
 		{
 			var timeTaken = TimeSpan.FromSeconds(1800 - ((teamScore - 20) * 10) + offset);
@@ -711,6 +716,6 @@ public class TeamSelectionUI : MonoBehaviour {
 				DisplayPostRacePopUp(currentPositions, finishPosition, finishPositionText);
 			}
 		}
-		return teamScore - expected;
+		return scoreDiff;
 	}
 }
