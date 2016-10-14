@@ -42,8 +42,11 @@ public class LearningPillUI : MonoBehaviour {
 		{
 			_postRaceEvent.transform.SetAsLastSibling();
 		}
-		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.gameObject.SetActive(false);
+		else
+		{
+			_popUpBlocker.onClick.RemoveAllListeners();
+			_popUpBlocker.gameObject.SetActive(false);
+		}
 	}
 
 	private IEnumerator Animate(bool upward = false, string tip = "")
@@ -63,7 +66,7 @@ public class LearningPillUI : MonoBehaviour {
 			for (int i = 0; i < tip.Length; i++)
 			{
 				_helpText.text += tip[i];
-				yield return new WaitForSecondsRealtime(0.1f);
+				yield return new WaitForSecondsRealtime(0.04f);
 			}
 			_popUpBlocker.onClick.AddListener(ClosePill);
 		}

@@ -12,12 +12,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	public class EventController
 	{
 		private readonly IntegratedAuthoringToolAsset iat;
-		private readonly List<DialogueStateActionDTO> helpDialogue;
+		private readonly List<DialogueStateActionDTO> learningPills;
 
 		public EventController(IntegratedAuthoringToolAsset i, List<DialogueStateActionDTO> help)
 		{
 			iat = i;
-			helpDialogue = help;
+			learningPills = help;
 		}
 
 		/// <summary>
@@ -52,7 +52,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string GetHelpText(string key)
 		{
-			var dialogueOptions = helpDialogue.Where(hd => hd.NextState == key).OrderBy(o => Guid.NewGuid()).ToList();
+			var dialogueOptions = learningPills.Where(hd => hd.NextState == key).OrderBy(o => Guid.NewGuid()).ToList();
 			return dialogueOptions.Count != 0 ? dialogueOptions.First().Utterance : null;
 		}
 

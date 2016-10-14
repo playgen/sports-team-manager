@@ -67,6 +67,10 @@ public class PostRaceEventUI : MonoBehaviour
 		if (current.Key != null && current.Value != null)
 		{   //display avatar of first CrewMember involved
 			_lastState = current.Value.NextState;
+			if (current.Value.NextState == "-")
+			{
+				_lastState = current.Value.CurrentState;
+			}
 			_avatarDisplay.SetAvatar(current.Key[0].Avatar, current.Key[0].GetMood());
 			//display names of all involved
 			foreach (var cm in current.Key)
@@ -130,6 +134,10 @@ public class PostRaceEventUI : MonoBehaviour
 					crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(crewMember.CrewMember.Avatar, crewMember.CrewMember.GetMood());
 				}
 			}
+		}
+		else
+		{
+			_popUpBlocker.onClick.RemoveAllListeners();
 		}
 	}
 
