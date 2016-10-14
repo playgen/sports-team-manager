@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using AssetManagerPackage;
 using EmotionalAppraisal;
@@ -7,7 +6,6 @@ using EmotionalAppraisal.DTOs;
 
 using EmotionalDecisionMaking;
 using IntegratedAuthoringTool;
-using IntegratedAuthoringTool.DTOs;
 
 using RolePlayCharacter;
 using SocialImportance;

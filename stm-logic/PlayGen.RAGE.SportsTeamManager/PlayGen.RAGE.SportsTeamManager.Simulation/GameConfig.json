@@ -2,26 +2,21 @@
 	"PromotionTriggers": [
 		{
 			"StartType": "Start",
-			"NewType": "Dinghy",
-			"ScoreRequired": 0,
-			"ScoreMetSinceLast": 0
+			"NewType": "Dinghy"
 		},
 		{
 			"StartType": "Dinghy",
 			"NewType": "AltDinghy",
-			"ScoreRequired": 0,
 			"ScoreMetSinceLast": 1
 		},
 		{
 			"StartType": "AltDinghy",
 			"NewType": "BiggerDinghy",
-			"ScoreRequired": 0,
 			"ScoreMetSinceLast": 2
 		},
 		{
 			"StartType": "BiggerDinghy",
 			"NewType": "BiggestDinghy",
-			"ScoreRequired": 0,
 			"ScoreMetSinceLast": 2
 		}
 	],

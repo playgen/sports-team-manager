@@ -32,6 +32,82 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			config = new ConfigStore();
 		}
 
+		private void ValidateGameConfig()
+		{
+			var invalidString = "";
+			var promotionTriggers = config.GameConfig.PromotionTriggers;
+			if (promotionTriggers.All(pt => pt.StartType != "Start"))
+			{
+				invalidString += "Game Config requires one PromotionTrigger with StartTpe \"Start\".\n";
+			}
+			
+			foreach (var promotion in promotionTriggers)
+			{
+				if (promotion.StartType != "Start" && promotion.ScoreMetSinceLast <= 0)
+				{
+					invalidString += string.Format("ScoreMetSinceLast for StartType {0} and NewType {1} should be greater than 0.\n", promotion.StartType, promotion.NewType);
+				}
+				if (promotion.StartType == promotion.NewType)
+				{
+					invalidString += string.Format("Invalid PromotionTrigger in Game Config for {0}, will result in changing to same boat type.\n", promotion.StartType);
+				}
+				if (promotion.StartType != "Start" && config.BoatTypes.All(bt => bt.Key != promotion.StartType))
+				{
+					invalidString += string.Format("StartType {0} is not an existing BoatType.\n", promotion.StartType);
+				}
+				if (config.BoatTypes.All(bt => bt.Key != promotion.NewType))
+				{
+					invalidString += string.Format("NewType {0} is not an existing BoatType.\n", promotion.NewType);
+				}
+				if (promotionTriggers.Any(pt => pt != promotion && pt.StartType == promotion.StartType && pt.ScoreMetSinceLast <= promotion.ScoreMetSinceLast && pt.ScoreRequired <= promotion.ScoreRequired))
+				{
+					invalidString += string.Format("PromotionTrigger with StartType {0}, NewType {1} will never be triggered.\n", promotion.StartType, promotion.NewType);
+				}
+				if (promotion.StartType != "Start" && promotionTriggers.All(pt => pt.NewType != promotion.StartType))
+				{
+					invalidString += string.Format("PromotionTrigger with StartType {0}, NewType {1} will never be triggered.\n", promotion.StartType, promotion.NewType);
+				}
+			}
+			var eventTriggers = config.GameConfig.EventTriggers;
+			var postRaceEvents = EventController.GetPossiblePostRaceDialogue(true).Concat(EventController.GetPossiblePostRaceDialogue(false));
+			var postRaceNames = postRaceEvents.Select(pre => pre.NextState).ToList();
+			foreach (var ev in eventTriggers)
+			{
+				if (postRaceNames.All(prn => prn != ev.EventName))
+				{
+					invalidString += string.Format("{0} is not an existing event name.\n", ev.EventName);
+				}
+				if (ev.StartBoatType != null && config.BoatTypes.All(bt => bt.Key != ev.StartBoatType))
+				{
+					invalidString += string.Format("StartBoatType {0} is not an existing BoatType.\n", ev.StartBoatType);
+				}
+				if (ev.EndBoatType != null && config.BoatTypes.All(bt => bt.Key != ev.EndBoatType))
+				{
+					invalidString += string.Format("EndBoatType {0} is not an existing BoatType.\n", ev.EndBoatType);
+				}
+				if (ev.SessionTrigger >= config.ConfigValues[ConfigKeys.RaceSessionLength])
+				{
+					invalidString += string.Format("SessionTrigger must be less than {0}, the number of sessions in a race.\n", config.ConfigValues[ConfigKeys.RaceSessionLength]);
+				}
+				if (ev.SessionTrigger < 0)
+				{
+					invalidString += "SessionTrigger must be at least 0.\n";
+				}
+				if (ev.RaceTrigger < 0)
+				{
+					invalidString += "RaceTrigger must be at least 0.\n";
+				}
+				if (ev.RaceTrigger <= 0 && ev.SessionTrigger <= 0)
+				{
+					invalidString += "RaceTrigger and SessionTrigger cannot both be 0.\n";
+				}
+			}
+			if (!string.IsNullOrEmpty(invalidString))
+			{
+				throw new Exception(invalidString);
+			}
+		}
+
 		/// <summary>
 		/// Create a new game
 		/// </summary>
@@ -45,6 +121,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
 			var helpIat = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue");
 			var help = helpIat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Help".ToName()).ToList();
+			eventController = new EventController(iat, help);
+			ValidateGameConfig();
 			//set up boat and team
 			var initialType = config.GameConfig.PromotionTriggers.First(pt => pt.StartType == "Start").NewType;
 			var boat = new Boat(config, initialType);
@@ -125,7 +203,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.SaveStatus();
 			}
 			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
-			eventController = new EventController(iat, help);
 			Team.CreateRecruits();
 		}
 
@@ -188,6 +265,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var combinedStorageLocation = Path.Combine(storageLocation, boatName);
 			AssetManager.Instance.Bridge = new BaseBridge();
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile(Path.Combine(combinedStorageLocation, boatName + ".iat"));
+			eventController = new EventController(iat, help);
+			ValidateGameConfig();
 			var rpcList = iat.GetAllCharacters();
 
 			var crewList = new List<CrewMember>();
@@ -251,7 +330,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//set up crew avatars
 			crewList.ForEach(cm => cm.Avatar = new Avatar(cm, true, true));
 			crewList.ForEach(cm => Team.SetCrewColors(cm.Avatar));
-			eventController = new EventController(iat, help);
 			LoadLineUpHistory();
 		}
 

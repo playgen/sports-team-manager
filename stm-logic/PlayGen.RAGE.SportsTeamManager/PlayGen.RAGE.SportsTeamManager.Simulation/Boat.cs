@@ -43,11 +43,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			previous = previous.Where(pb => pb.Type == Type).ToList();
 			foreach (var type in possibleTypes)
 			{
-				if (previous.Count(pb => pb.Score >= type.ScoreRequired) >= type.ScoreMetSinceLast)
+				int consecutiveMatches = 0;
+				foreach (var boat in previous)
 				{
-					Type = type.NewType;
-					GetPositions();
-					return;
+					if (boat.Score >= type.ScoreRequired)
+					{
+						consecutiveMatches++;
+						if (consecutiveMatches >= type.ScoreMetSinceLast)
+						{
+							Type = type.NewType;
+							GetPositions();
+							return;
+						}
+					}
+					else
+					{
+						consecutiveMatches = 0;
+					}
 				}
 			}
 		}
