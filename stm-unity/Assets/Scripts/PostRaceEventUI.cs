@@ -11,6 +11,8 @@ public class PostRaceEventUI : MonoBehaviour
 {
 	private PostRaceEvent _postRaceEvent;
 	[SerializeField]
+	private LearningPillUI _learningPill;
+	[SerializeField]
 	private AvatarDisplay _avatarDisplay;
 	[SerializeField]
 	private Text _dialogueText;
@@ -22,6 +24,7 @@ public class PostRaceEventUI : MonoBehaviour
 	private GameObject _closeButton;
 	[SerializeField]
 	private Button _popUpBlocker;
+	private string _lastState;
 
 	private void Awake()
 	{
@@ -40,7 +43,13 @@ public class PostRaceEventUI : MonoBehaviour
 
 	private void OnDisable()
 	{
-		_popUpBlocker.gameObject.SetActive(false);
+		if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
+		{
+			_popUpBlocker.transform.SetAsLastSibling();
+			transform.SetAsLastSibling();
+			_popUpBlocker.onClick.RemoveAllListeners();
+			_popUpBlocker.gameObject.SetActive(false);
+		}
 	}
 
 	/// <summary>
@@ -56,7 +65,8 @@ public class PostRaceEventUI : MonoBehaviour
 		_nameText.text = "";
 		//if there is an event
 		if (current.Key != null && current.Value != null)
-		{	//display avatar of first CrewMember involved
+		{   //display avatar of first CrewMember involved
+			_lastState = current.Value.NextState;
 			_avatarDisplay.SetAvatar(current.Key[0].Avatar, current.Key[0].GetMood());
 			//display names of all involved
 			foreach (var cm in current.Key)
@@ -104,7 +114,10 @@ public class PostRaceEventUI : MonoBehaviour
 		if (replies.Length == 0)
 		{
 			_closeButton.SetActive(true);
-			_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
+			_popUpBlocker.onClick.AddListener(GetLearningPill);
+			_popUpBlocker.onClick.AddListener(ResetDisplay);
+			var teamSelection = FindObjectOfType(typeof(TeamSelectionUI)) as TeamSelectionUI;
+			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
 			//update displayed avatar moods
 			if (eventMember != null)
 			{
@@ -120,6 +133,11 @@ public class PostRaceEventUI : MonoBehaviour
 		}
 	}
 
+	public void GetLearningPill()
+	{
+		_learningPill.SetHelp(_lastState);
+	}
+
 	/// <summary>
 	/// Triggered by button. Send the selected dialogue to the character
 	/// </summary>
@@ -129,7 +147,8 @@ public class PostRaceEventUI : MonoBehaviour
 		var response = _postRaceEvent.SendReply(reply);
 		if (response != null)
 		{
-			_dialogueText.text = response.First().Value;
+			_dialogueText.text = response.First().Value.Utterance;
+			_lastState = response.First().Value.CurrentState;
 			ResetQuestions();
 		}
 	}

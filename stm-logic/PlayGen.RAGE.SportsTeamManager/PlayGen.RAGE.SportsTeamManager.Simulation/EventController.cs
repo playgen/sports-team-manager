@@ -53,7 +53,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string GetHelpText(string key)
 		{
 			var dialogueOptions = helpDialogue.Where(hd => hd.NextState == key).OrderBy(o => Guid.NewGuid()).ToList();
-			return dialogueOptions.Count != 0 ? dialogueOptions.First().Utterance : key;
+			return dialogueOptions.Count != 0 ? dialogueOptions.First().Utterance : null;
 		}
 
 		/// <summary>
@@ -240,9 +240,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send dialogue from the player to (an) NPC(s) and get their replies 
 		/// </summary>
-		public Dictionary<CrewMember, string> SendPostRaceEvent(DialogueStateActionDTO selected, List<CrewMember> crewMembers, Team team, Boat previous)
+		public Dictionary<CrewMember, DialogueStateActionDTO> SendPostRaceEvent(DialogueStateActionDTO selected, List<CrewMember> crewMembers, Team team, Boat previous)
 		{
-			var replies = new Dictionary<CrewMember, string>();
+			var replies = new Dictionary<CrewMember, DialogueStateActionDTO>();
 			foreach (var member in crewMembers)
 			{
 				var reply = member.SendPostRaceEvent(iat, selected, team, previous);

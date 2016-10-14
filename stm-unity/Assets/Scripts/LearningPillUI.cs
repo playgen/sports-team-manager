@@ -7,6 +7,8 @@ public class LearningPillUI : MonoBehaviour {
 
 	private LearningPill _learningPill;
 	[SerializeField]
+	private PostRaceEventUI _postRaceEvent;
+	[SerializeField]
 	private Text _helpText;
 	[SerializeField]
 	private Animation _popUpAnim;
@@ -19,13 +21,16 @@ public class LearningPillUI : MonoBehaviour {
 		{
 			_learningPill = GetComponent<LearningPill>();
 		}
-		_popUpBlocker.transform.SetAsLastSibling();
-		transform.SetAsLastSibling();
-		_popUpBlocker.gameObject.SetActive(true);
-		_popUpBlocker.onClick.RemoveAllListeners();
 		var tip = _learningPill.GetHelpText(key);
 		_helpText.text = "";
-		StartCoroutine(Animate(true, tip));
+		if (tip != null)
+		{
+			_popUpBlocker.transform.SetAsLastSibling();
+			transform.SetAsLastSibling();
+			_popUpBlocker.gameObject.SetActive(true);
+			_popUpBlocker.onClick.RemoveAllListeners();
+			StartCoroutine(Animate(true, tip));
+		}
 	}
 
 	public void ClosePill()
@@ -33,6 +38,10 @@ public class LearningPillUI : MonoBehaviour {
 		StartCoroutine(Animate());
 		_popUpBlocker.transform.SetAsLastSibling();
 		transform.SetAsLastSibling();
+		if (_postRaceEvent.gameObject.activeSelf)
+		{
+			_postRaceEvent.transform.SetAsLastSibling();
+		}
 		_popUpBlocker.onClick.RemoveAllListeners();
 		_popUpBlocker.gameObject.SetActive(false);
 	}

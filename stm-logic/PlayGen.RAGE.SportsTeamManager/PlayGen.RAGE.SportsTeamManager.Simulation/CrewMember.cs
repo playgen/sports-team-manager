@@ -600,9 +600,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get CrewMember reply to player dialogue during a post-race event
 		/// </summary>
-		public string SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Team team, Boat previousBoat)
+		public DialogueStateActionDTO SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Team team, Boat previousBoat)
 		{
-			string reply = null;
+			DialogueStateActionDTO reply = null;
 			var nextState = selected.NextState;
 			switch (nextState)
 			{
@@ -633,7 +633,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
 				//set player state
 				iat.SetDialogueState("Player", selectedNext.NextState);
-				reply = selectedNext.Utterance;
+				reply = selectedNext;
 				//trigger this if the player has no next state
 				if (selectedNext.NextState == "-")
 				{

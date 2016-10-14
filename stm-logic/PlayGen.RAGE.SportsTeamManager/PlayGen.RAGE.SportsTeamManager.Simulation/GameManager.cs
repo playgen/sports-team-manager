@@ -485,7 +485,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send player dialogue to characters involved in the event and get their replies
 		/// </summary>
-		public Dictionary<CrewMember, string> SendPostRaceEvent(DialogueStateActionDTO dialogue, List<CrewMember> members)
+		public Dictionary<CrewMember, DialogueStateActionDTO> SendPostRaceEvent(DialogueStateActionDTO dialogue, List<CrewMember> members)
 		{
 			return eventController.SendPostRaceEvent(dialogue, members, Team, Team.LineUpHistory.Last());
 		}

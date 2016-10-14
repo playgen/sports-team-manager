@@ -91,7 +91,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		//force rebuild of layout in order to ensure historical boats are laid out correctly after being created
 		LayoutRebuilder.ForceRebuildLayoutImmediate(_boatContainer.GetComponent<RectTransform>());
 		CreateNewBoat();
-		FindObjectOfType<LearningPillUI>().SetHelp("StartGame");
 	}
 
 	/// <summary>

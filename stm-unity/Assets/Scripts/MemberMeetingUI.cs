@@ -133,6 +133,7 @@ public class MemberMeetingUI : MonoBehaviour
 		{
 			_barForegrounds[i].fillAmount = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] * 0.1f;
 			_barForegrounds[i].transform.parent.FindChild("Hidden Image").GetComponent<Image>().enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] == 0;
+			_barForegrounds[i].transform.parent.FindChild("Skill Image").GetComponent<Image>().enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] != 0;
 		}
 		//set default starting dialogue
 		_dialogueText.text = "You wanted to see me?";

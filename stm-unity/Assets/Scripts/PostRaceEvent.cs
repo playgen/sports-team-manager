@@ -67,7 +67,7 @@ public class PostRaceEvent : MonoBehaviour
 	/// <summary>
 	/// Send player dialogue to the NPC involved in the event, get their reply in response
 	/// </summary>
-	public Dictionary<CrewMember, string> SendReply(DialogueStateActionDTO selectedEvent)
+	public Dictionary<CrewMember, DialogueStateActionDTO> SendReply(DialogueStateActionDTO selectedEvent)
 	{
 		var replies = _gameManager.SendPostRaceEvent(selectedEvent, _currentEvent.Key);
 		return replies;
