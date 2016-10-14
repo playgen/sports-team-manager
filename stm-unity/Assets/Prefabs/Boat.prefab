@@ -1302,8 +1302,8 @@ MonoBehaviour:
   m_Padding:
     m_Left: 1
     m_Right: 2
-    m_Top: 0
-    m_Bottom: 6
+    m_Top: 3
+    m_Bottom: 0
   m_ChildAlignment: 4
   m_Spacing: 2
   m_ChildForceExpandWidth: 0
@@ -1322,8 +1322,8 @@ MonoBehaviour:
   m_Padding:
     m_Left: 1
     m_Right: 2
-    m_Top: 6
-    m_Bottom: 0
+    m_Top: 0
+    m_Bottom: 3
   m_ChildAlignment: 4
   m_Spacing: 2
   m_ChildForceExpandWidth: 0
@@ -1342,10 +1342,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 2
-    m_Top: 3
-    m_Bottom: 3
+    m_Top: 6
+    m_Bottom: 6
   m_ChildAlignment: 4
-  m_Spacing: 6
+  m_Spacing: 4
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
 --- !u!224 &224000012577569668

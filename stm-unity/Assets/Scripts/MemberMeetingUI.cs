@@ -23,12 +23,6 @@ public class MemberMeetingUI : MonoBehaviour
 	[SerializeField]
 	private Button _roleButton;
 	[SerializeField]
-	private Image[] _barBackgrounds;
-	[SerializeField]
-	private Sprite _unknownBackBar;
-	[SerializeField]
-	private Sprite _knownBackBar;
-	[SerializeField]
 	private Image[] _barForegrounds;
 	[SerializeField]
 	private Text _dialogueText;
@@ -135,10 +129,10 @@ public class MemberMeetingUI : MonoBehaviour
 			_roleButton.gameObject.SetActive(false);
 		}
 		//set stat bar fill amount (foreground) and sprite (background)
-		for (var i = 0; i < _barBackgrounds.Length; i++)
+		for (var i = 0; i < _barForegrounds.Length; i++)
 		{
 			_barForegrounds[i].fillAmount = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] * 0.1f;
-			_barBackgrounds[i].sprite = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] == 0 ? _unknownBackBar : _knownBackBar;
+			_barForegrounds[i].transform.parent.FindChild("Hidden Image").GetComponent<Image>().enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] == 0;
 		}
 		//set default starting dialogue
 		_dialogueText.text = "You wanted to see me?";
