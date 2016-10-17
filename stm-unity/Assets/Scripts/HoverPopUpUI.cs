@@ -8,6 +8,12 @@ public class HoverPopUpUI : MonoBehaviour {
 
 	private Vector2 _currentHovered;
 	private string _currentText;
+	private Vector2 _canvasSize;
+
+	private void Start()
+	{
+		_canvasSize = GetComponentInParent<CanvasScaler>().gameObject.GetComponent<RectTransform>().rect.size;
+	}
 
 	/// <summary>
 	/// Triggered by PointerEnter on some UI objects. Stores position relative to pivot for the hovered object
@@ -28,21 +34,33 @@ public class HoverPopUpUI : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Triggered by OnClick on some UI objects. Sets the text on this object and triggers the HoverCheck method with no delay
+	/// </summary>
+	public void DisplayHoverNoDelay(string text)
+	{
+		_currentText = text;
+		HoverCheck();
+	}
+
+	/// <summary>
 	/// If object is still being hovered over, display hover-over pop-up and text and position accordingly
 	/// </summary>
 	private void HoverCheck()
 	{
+		if (gameObject.activeSelf)
+		{
+			return;
+		}
 		if (_currentHovered != Vector2.zero)
 		{
 			gameObject.SetActive(true);
 			transform.SetAsLastSibling();
 			GetComponentInChildren<Text>().text = _currentText;
 			transform.position = Input.mousePosition;
-			var canvasSize = GetComponentInParent<CanvasScaler>().referenceResolution;
 			if (_currentHovered.x < transform.position.x)
 			{
 				GetComponent<RectTransform>().anchoredPosition += new Vector2(GetComponent<RectTransform>().rect.width * 0.5f, 0);
-				if (GetComponent<RectTransform>().anchoredPosition.x + GetComponent<RectTransform>().rect.width * 0.5f > canvasSize.x * 0.5f)
+				if (GetComponent<RectTransform>().anchoredPosition.x + GetComponent<RectTransform>().rect.width * 0.5f > _canvasSize.x * 0.5f)
 				{
 					GetComponent<RectTransform>().anchoredPosition -= new Vector2(GetComponent<RectTransform>().rect.width, 0);
 				}
@@ -50,7 +68,7 @@ public class HoverPopUpUI : MonoBehaviour {
 			else
 			{
 				GetComponent<RectTransform>().anchoredPosition -= new Vector2(GetComponent<RectTransform>().rect.width * 0.5f, 0);
-				if (GetComponent<RectTransform>().anchoredPosition.x - GetComponent<RectTransform>().rect.width * 0.5f < -canvasSize.x * 0.5f)
+				if (GetComponent<RectTransform>().anchoredPosition.x - GetComponent<RectTransform>().rect.width * 0.5f < -_canvasSize.x * 0.5f)
 				{
 					GetComponent<RectTransform>().anchoredPosition += new Vector2(GetComponent<RectTransform>().rect.width, 0);
 				}
@@ -58,7 +76,7 @@ public class HoverPopUpUI : MonoBehaviour {
 			if (_currentHovered.y < transform.position.y)
 			{
 				GetComponent<RectTransform>().anchoredPosition += new Vector2(0, GetComponent<RectTransform>().rect.height * 0.5f);
-				if (GetComponent<RectTransform>().anchoredPosition.y + GetComponent<RectTransform>().rect.height * 0.5f > canvasSize.y * 0.5f)
+				if (GetComponent<RectTransform>().anchoredPosition.y + GetComponent<RectTransform>().rect.height * 0.5f > _canvasSize.y * 0.5f)
 				{
 					GetComponent<RectTransform>().anchoredPosition -= new Vector2(0, -GetComponent<RectTransform>().rect.height);
 				}
@@ -66,7 +84,7 @@ public class HoverPopUpUI : MonoBehaviour {
 			else
 			{
 				GetComponent<RectTransform>().anchoredPosition -= new Vector2(0, GetComponent<RectTransform>().rect.height * 0.5f);
-				if (GetComponent<RectTransform>().anchoredPosition.y - GetComponent<RectTransform>().rect.height * 0.5f < -canvasSize.y * 0.5f)
+				if (GetComponent<RectTransform>().anchoredPosition.y - GetComponent<RectTransform>().rect.height * 0.5f < -_canvasSize.y * 0.5f)
 				{
 					GetComponent<RectTransform>().anchoredPosition += new Vector2(0, -GetComponent<RectTransform>().rect.height);
 				}

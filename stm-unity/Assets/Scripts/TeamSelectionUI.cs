@@ -376,12 +376,16 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// </summary>
 	private void FeedbackHoverOver(Transform feedback, string text)
 	{
-		var enter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
 		var trans = feedback;
 		var mis = text;
+		var enter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
 		enter.callback.AddListener(data => { _hoverPopUp.SetHoverObject(trans); });
 		enter.callback.AddListener(data => { _hoverPopUp.DisplayHover(mis); });
 		trans.GetComponent<EventTrigger>().triggers.Add(enter);
+		var click = new EventTrigger.Entry { eventID = EventTriggerType.PointerClick };
+		click.callback.AddListener(data => { _hoverPopUp.SetHoverObject(trans); });
+		click.callback.AddListener(data => { _hoverPopUp.DisplayHoverNoDelay(mis); });
+		trans.GetComponent<EventTrigger>().triggers.Add(click);
 		var exit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
 		exit.callback.AddListener(data => { _hoverPopUp.HideHover(); });
 		trans.GetComponent<EventTrigger>().triggers.Add(exit);
@@ -443,6 +447,14 @@ public class TeamSelectionUI : MonoBehaviour {
 		foreach (var crewMember in boat.GetComponentsInChildren<CrewMemberUI>())
 		{
 			crewMember.enabled = visibility;
+		}
+		foreach (var image in boat.GetComponentsInChildren<Image>())
+		{
+			image.enabled = image.sprite != null && visibility;
+		}
+		foreach (var text in boat.GetComponentsInChildren<Text>())
+		{
+			text.enabled = visibility;
 		}
 	}
 
