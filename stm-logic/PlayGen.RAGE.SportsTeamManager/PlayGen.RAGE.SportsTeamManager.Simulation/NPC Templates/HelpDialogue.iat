@@ -10,91 +10,91 @@
 					"NextState": "Retirement",
 					"Meaning": ["Retirement"],
 					"Style": ["Retirement"],
-					"Utterance": "Looks like they got fed up of sitting on the sidelines. It sometimes helps to mix up your race line-ups in order to ensure your crew sticks around."
+					"Utterance": ""
 				}, 
 				{
 					"CurrentState": "LearningPill",
 					"NextState": "NotPickedAfterSorry",
 					"Meaning": ["NotPickedAfterSorry"],
 					"Style": ["NotPickedAfterSorry"],
-					"Utterance": "People tend to remember when you don't stick to your word..."
+					"Utterance": ""
 				}, 
 				{
 					"CurrentState": "LearningPill",
 					"NextState": "NotPickedFiredNo",
 					"Meaning": ["NotPickedFiredNo"],
 					"Style": ["NotPickedFiredNo"],
-					"Utterance": "You might have found that funny, but that crew member is displeased about that 'joke', to say the least."
+					"Utterance": ""
 				}, 
 				{
 					"CurrentState": "LearningPill",
 					"NextState": "NotPickedFiredYes",
 					"Meaning": ["NotPickedFiredYes"],
 					"Style": ["NotPickedFiredYes"],
-					"Utterance": "Firing people because they question your decisions will always lead to a smaller crew who now also dislike you more than before."
+					"Utterance": ""
 				}, 
 				{
 					"CurrentState": "LearningPill",
 					"NextState": "NotPickedSkillIncorrect",
 					"Meaning": ["NotPickedSkillIncorrect"],
 					"Style": ["NotPickedSkillIncorrect"],
-					"Utterance": "Sometimes, crew members know best. They won't be pleased that they do, though."
+					"Utterance": ""
 				}, 
 				{
 					"CurrentState": "LearningPill",
 					"NextState": "NotPickedSkillFriends",
 					"Meaning": ["NotPickedSkillFriends"],
 					"Style": ["NotPickedSkillFriends"],
-					"Utterance": "Advising crew members to make friends leads to a happier person and a crew that now gets on better."
+					"Utterance": ""
 				}, 
 				{
 					"CurrentState": "LearningPill",
 					"NextState": "NotPickedSkillTrain",
 					"Meaning": ["NotPickedSkillTrain"],
 					"Style": ["NotPickedSkillTrain"],
-					"Utterance": "Although it's not a promise that they'll be picked for their hard work, as others may still be better, asking them to train at least gives them hope and happiness as well as improved abilities."
+					"Utterance": ""
 				}, 
 				{
 					"CurrentState": "LearningPill",
 					"NextState": "NotPickedSkillNothing",
 					"Meaning": ["NotPickedSkillNothing"],
 					"Style": ["NotPickedSkillNothing"],
-					"Utterance": "Sometimes it's better to give crew members some hope rather than letting them down heavily."
+					"Utterance": ""
 				}, 
 				{
 					"CurrentState": "LearningPill",
 					"NextState": "NotPickedSkillLeave",
 					"Meaning": ["NotPickedSkillLeave"],
 					"Style": ["NotPickedSkillLeave"],
-					"Utterance": "A move that only leads to one less crew member and a remainder disappointed in your decision."
+					"Utterance": ""
 				}, 
 				{
 					"CurrentState": "LearningPill",
 					"NextState": "NotPickedSorry",
 					"Meaning": ["NotPickedSorry"],
 					"Style": ["NotPickedSorry"],
-					"Utterance": "Be careful what you promise, they'll remember that you told them."
+					"Utterance": ""
 				}, 
 				{
 					"CurrentState": "LearningPill",
 					"NextState": "NotPickedSorryAgain",
 					"Meaning": ["NotPickedSorryAgain"],
 					"Style": ["NotPickedSorryAgain"],
-					"Utterance": "You're already not followed your word once, it's likely not for the best to do so again..."
+					"Utterance": ""
 				}, 
 				{
 					"CurrentState": "LearningPill",
 					"NextState": "PickedAfterSorry",
 					"Meaning": ["PickedAfterSorry"],
 					"Style": ["PickedAfterSorry"],
-					"Utterance": "You stuck to your word, and you're got a happier crew member to show for it."
+					"Utterance": ""
 				}, 
 				{
 					"CurrentState": "LearningPill",
 					"NextState": "RetirementTriggered",
 					"Meaning": ["RetirementTriggered"],
 					"Style": ["RetirementTriggered"],
-					"Utterance": "Looks like they stuck to their word and left. Hope you were prepared for this..."
+					"Utterance": ""
 				}]
 		},
 	"types": [

@@ -587,6 +587,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			_postRaceEventUI.transform.SetAsLastSibling();
 			_popUpBlocker.gameObject.SetActive(true);
 			_popUpBlocker.onClick.RemoveAllListeners();
+			_postRaceEventUI.SetBlockerOnClick();
 		}
 	}
 

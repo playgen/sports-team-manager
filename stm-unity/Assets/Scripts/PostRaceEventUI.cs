@@ -118,10 +118,10 @@ public class PostRaceEventUI : MonoBehaviour
 		if (replies.Length == 0)
 		{
 			_closeButton.SetActive(true);
-			_popUpBlocker.onClick.AddListener(GetLearningPill);
-			_popUpBlocker.onClick.AddListener(ResetDisplay);
-			var teamSelection = FindObjectOfType(typeof(TeamSelectionUI)) as TeamSelectionUI;
-			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
+			if (!_learningPill.gameObject.activeSelf)
+			{
+				SetBlockerOnClick();
+			}
 			//update displayed avatar moods
 			if (eventMember != null)
 			{
@@ -138,6 +138,17 @@ public class PostRaceEventUI : MonoBehaviour
 		else
 		{
 			_popUpBlocker.onClick.RemoveAllListeners();
+		}
+	}
+
+	public void SetBlockerOnClick()
+	{
+		if (!_questions[0].activeSelf)
+		{
+			_popUpBlocker.onClick.AddListener(GetLearningPill);
+			_popUpBlocker.onClick.AddListener(ResetDisplay);
+			var teamSelection = FindObjectOfType(typeof(TeamSelectionUI)) as TeamSelectionUI;
+			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
 		}
 	}
 

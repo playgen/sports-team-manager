@@ -38,13 +38,14 @@ public class LearningPillUI : MonoBehaviour {
 		StartCoroutine(Animate());
 		_popUpBlocker.transform.SetAsLastSibling();
 		transform.SetAsLastSibling();
+		_popUpBlocker.onClick.RemoveAllListeners();
 		if (_postRaceEvent.gameObject.activeSelf)
 		{
 			_postRaceEvent.transform.SetAsLastSibling();
+			_postRaceEvent.SetBlockerOnClick();
 		}
 		else
 		{
-			_popUpBlocker.onClick.RemoveAllListeners();
 			_popUpBlocker.gameObject.SetActive(false);
 		}
 	}

@@ -23,28 +23,29 @@
 	"EventTriggers": [
 		{
 			"EventName": "NotPicked",
-			"StartBoatType": "Dinghy",
-			"RaceTrigger": 1,
-			"SessionTrigger": 0
-		},
-		{
-			"EventName": "NotPicked",
-			"StartBoatType": "AltDinghy",
-			"RaceTrigger": 1,
-			"SessionTrigger": 0
-		},
-		{
-			"EventName": "NotPicked",
-			"StartBoatType": "AltDinghy",
-			"RaceTrigger": 1,
-			"SessionTrigger": 3,
+			"RaceTrigger": 0,
+			"SessionTrigger": 1,
 			"Random": true,
-			"RepeatEvery": 3
+			"RepeatEvery": 1
+		},
+		{
+			"EventName": "NotPicked",
+			"RaceTrigger": 0,
+			"SessionTrigger": 1,
+			"Random": true,
+			"RepeatEvery": 1
+		},
+		{
+			"EventName": "NotPicked",
+			"RaceTrigger": 0,
+			"SessionTrigger": 1,
+			"Random": true,
+			"RepeatEvery": 1
 		},
 		{
 			"EventName": "Retirement",
 			"RaceTrigger": 5,
-			"SessionTrigger": 0,
+			"Random": true,
 			"RepeatEvery": 5
 		}
 	]
