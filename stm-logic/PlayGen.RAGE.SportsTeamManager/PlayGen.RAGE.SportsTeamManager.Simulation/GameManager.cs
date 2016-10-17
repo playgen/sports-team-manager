@@ -331,6 +331,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewList.ForEach(cm => cm.Avatar = new Avatar(cm, true, true));
 			crewList.ForEach(cm => Team.SetCrewColors(cm.Avatar));
 			LoadLineUpHistory();
+			LoadCurrentEvents();
 		}
 
 		/// <summary>
@@ -344,7 +345,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Load the history of line-ups from the manager's EA file
 		/// </summary>
-		public void LoadLineUpHistory()
+		private void LoadLineUpHistory()
 		{
 			//get all events that feature 'SelectedLineUp' from their EA file
 			var ea = EmotionalAppraisalAsset.LoadFromFile(Team.Manager.RolePlayCharacter.EmotionalAppraisalAssetSource);
@@ -382,6 +383,55 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				Team.HistoricTimeOffset.Add(Convert.ToInt32(subjectSplit[subjectSplit.Length - 1]));
 				Team.LineUpHistory.Add(boat);
+			}
+		}
+
+		private void LoadCurrentEvents()
+		{
+			bool noEventFound = false;
+			int eventsFound = 0;
+			int eventSectionsFound = 0;
+			while (!noEventFound)
+			{
+				var evName = Team.Manager.LoadBelief(String.Format("PREEvent{0}({1})", eventsFound, eventSectionsFound));
+				var ev = eventController.GetPossibleAgentDialogue(evName).FirstOrDefault()
+						?? eventController.GetPossibleAgentDialogue("PostRaceEventStart").FirstOrDefault(e => e.NextState == evName);
+				if (ev != null)
+				{
+					var crewMemberName = Team.Manager.LoadBelief(String.Format("PRECrew{0}({1})", eventsFound, eventSectionsFound));
+					var crewMember = Team.CrewMembers.FirstOrDefault(cm => cm.Key.NoSpaces() == crewMemberName).Value
+									?? Team.RetiredCrew.FirstOrDefault(cm => cm.Key.NoSpaces() == crewMemberName).Value;
+					if (crewMember != null)
+					{
+						if (eventSectionsFound == 0)
+						{
+							eventController.PostRaceEvents.Add(new KeyValuePair<List<CrewMember>, List<DialogueStateActionDTO>>(new List<CrewMember>(), new List<DialogueStateActionDTO>()));
+						}
+						eventController.PostRaceEvents[eventsFound].Key.Add(crewMember);
+						eventController.PostRaceEvents[eventsFound].Value.Add(ev);
+						eventSectionsFound++;
+						continue;
+					}
+				}
+				if (eventSectionsFound == 0)
+				{
+					if (eventsFound != 0)
+					{
+						if (eventController.PostRaceEvents.First().Value.Count == 1)
+						{
+							eventController.SetPlayerState(eventController.PostRaceEvents.First().Value.First());
+						}
+						else
+						{
+							//TODO: Way of calculating player state from multiple previous dialogues
+						}
+					}
+					noEventFound = true;
+				} else
+				{
+					eventsFound++;
+					eventSectionsFound = 0;
+				}
 			}
 		}
 
@@ -450,6 +500,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Team.LineUpHistory.Add(lastBoat);
 			Team.HistoricTimeOffset.Add(offset);
 			Team.TickCrewMembers((int)config.ConfigValues[ConfigKeys.TicksPerSession]);
+			SelectPostRaceEvents();
 		}
 
 		/// <summary>
@@ -466,7 +517,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Select a random post-race event
 		/// </summary>
-		public List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> SelectPostRaceEvents()
+		public void SelectPostRaceEvents()
 		{
 			//work out if it is currently directly after a race session and the chance of an event occurring as a result
 			var afterRace = false;
@@ -479,7 +530,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				chance += (int)config.ConfigValues[ConfigKeys.PracticeEventChanceReduction];
 			}
-			return eventController.SelectPostRaceEvents(config, Team, chance, afterRace);
+			eventController.SelectPostRaceEvents(config, Team, chance, afterRace);
 		}
 
 		/// <summary>

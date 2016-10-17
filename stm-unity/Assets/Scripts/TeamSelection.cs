@@ -17,6 +17,7 @@ public class TeamSelection : MonoBehaviour {
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		_sessionLength = _gameManager.RaceSessionLength;
+		_postRaceEvent.GetEvent();
 	}
 
 	/// <summary>

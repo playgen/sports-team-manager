@@ -3,7 +3,6 @@
 		{
 			"classId": 0,
 			"ScenarioName": null,
-			"Characters": [],
 			"AgentDialogues": [
 				{
 					"CurrentState": "LearningPill",

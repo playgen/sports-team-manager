@@ -11,9 +11,8 @@ using IntegratedAuthoringTool.DTOs;
 public class PostRaceEvent : MonoBehaviour
 {
 	private GameManager _gameManager;
-	private List<KeyValuePair<List<CrewMember>, DialogueStateActionDTO>> _currentEvents;
-	private KeyValuePair<List<CrewMember>, DialogueStateActionDTO> _currentEvent;
-	public KeyValuePair<List<CrewMember>, DialogueStateActionDTO> CurrentEvent
+	private KeyValuePair<List<CrewMember>, List<DialogueStateActionDTO>> _currentEvent;
+	public KeyValuePair<List<CrewMember>, List<DialogueStateActionDTO>> CurrentEvent
 	{
 		get { return _currentEvent; }
 	}
@@ -27,10 +26,9 @@ public class PostRaceEvent : MonoBehaviour
 		{
 			_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		}
-		_currentEvents = _gameManager.SelectPostRaceEvents();
-		if (_currentEvents.Count > 0)
+		if (_gameManager.EventController.PostRaceEvents.Count > 0)
 		{
-			SetEvent();
+			_currentEvent = _gameManager.EventController.PostRaceEvents.First();
 			gameObject.SetActive(true);
 		}
 	}
@@ -40,28 +38,18 @@ public class PostRaceEvent : MonoBehaviour
 	/// </summary>
 	public DialogueStateActionDTO[] GetEventReplies()
 	{
-		var replies = _gameManager.EventController.GetEvents();
+		var replies = _gameManager.EventController.GetEventDialogues(_gameManager.Team.Manager);
 		//if there are no replies, reset the current event
 		if (replies == null || replies.Length == 0)
 		{
-			_currentEvent = new KeyValuePair<List<CrewMember>, DialogueStateActionDTO>(null, null);
+			_currentEvent = new KeyValuePair<List<CrewMember>, List<DialogueStateActionDTO>>(null, null);
 		}
 		//if there is another event that can be set as current, do so
-		if (_currentEvent.Key == null && _currentEvents.Count > 0)
+		if (_currentEvent.Key == null && _gameManager.EventController.PostRaceEvents.Count > 0)
 		{
-			SetEvent();
+			_currentEvent = _gameManager.EventController.PostRaceEvents.First();
 		}
 		return replies;
-	}
-
-	/// <summary>
-	/// Set the event that the player is currently progressing through
-	/// </summary>
-	private void SetEvent()
-	{
-		_currentEvent = _currentEvents.First();
-		_currentEvents.Remove(_currentEvent);
-		_gameManager.EventController.SetPlayerState(_currentEvent.Value);
 	}
 
 	/// <summary>

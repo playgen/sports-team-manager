@@ -23,24 +23,15 @@
 	"EventTriggers": [
 		{
 			"EventName": "NotPicked",
-			"RaceTrigger": 0,
-			"SessionTrigger": 1,
+			"RaceTrigger": 1,
 			"Random": true,
-			"RepeatEvery": 1
+			"RepeatEvery": 5
 		},
 		{
 			"EventName": "NotPicked",
-			"RaceTrigger": 0,
-			"SessionTrigger": 1,
+			"RaceTrigger": 1,
 			"Random": true,
-			"RepeatEvery": 1
-		},
-		{
-			"EventName": "NotPicked",
-			"RaceTrigger": 0,
-			"SessionTrigger": 1,
-			"Random": true,
-			"RepeatEvery": 1
+			"RepeatEvery": 5
 		},
 		{
 			"EventName": "Retirement",

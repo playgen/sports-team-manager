@@ -10,6 +10,6 @@ public class BuildExe : MonoBehaviour
 		string[] scenes = { "Assets/Scenes/Menu.unity" };
 		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.StandaloneWindows);
 		PlayerSettings.apiCompatibilityLevel = ApiCompatibilityLevel.NET_2_0;
-		BuildPipeline.BuildPlayer(scenes, @"Builds/Sports Team Manager/Sports Team Manager", BuildTarget.StandaloneWindows, BuildOptions.None);
+		BuildPipeline.BuildPlayer(scenes, @"Builds/Sports Team Manager/Sports Team Manager.exe", BuildTarget.StandaloneWindows, BuildOptions.None);
 	}
 }

@@ -66,10 +66,10 @@ public class PostRaceEventUI : MonoBehaviour
 		//if there is an event
 		if (current.Key != null && current.Value != null)
 		{   //display avatar of first CrewMember involved
-			_lastState = current.Value.NextState;
-			if (current.Value.NextState == "-")
+			_lastState = current.Value[0].NextState;
+			if (current.Value[0].NextState == "-")
 			{
-				_lastState = current.Value.CurrentState;
+				_lastState = current.Value[0].CurrentState;
 			}
 			_avatarDisplay.SetAvatar(current.Key[0].Avatar, current.Key[0].GetMood());
 			//display names of all involved
@@ -84,7 +84,7 @@ public class PostRaceEventUI : MonoBehaviour
 			//set alpha to 1 (fully visible)
 			GetComponent<CanvasGroup>().alpha = 1;
 			//set current NPC dialogue
-			_dialogueText.text = current.Value.Utterance;
+			_dialogueText.text = current.Value[0].Utterance;
 			ResetQuestions();
 		} else
 		{
