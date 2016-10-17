@@ -336,7 +336,6 @@ public class TeamSelectionUI : MonoBehaviour {
 			}
 			crewMember.transform.SetParent(position.transform.parent, true);
 			Destroy(position.gameObject);
-			position.name = "Old Position";
 		}
 		Destroy(oldBoat.transform.Find("Race").gameObject);
 	}
@@ -494,10 +493,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			currentPositions.Add(pair.Key, pair.Value);
 		}
-		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
-		{
-			Destroy(position);
-		}
 		//select random time offset
 		var offset = UnityEngine.Random.Range(0, 10);
 		//confirm the line-up with the simulation 
@@ -528,6 +523,13 @@ public class TeamSelectionUI : MonoBehaviour {
 					crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(crewMember.CrewMember.Avatar, scoreDiff * (2f / _teamSelection.GetTeam().Boat.Positions.Count) + 3);
 				}
 			}
+		}
+		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
+		{
+			var crewMember = position.transform.GetChild(2);
+			position.transform.GetChild(2).SetParent(position.transform.parent, true);
+			Destroy(position.gameObject);
+			crewMember.SetAsFirstSibling();
 		}
 		//destroy recruitment buttons
 		foreach (var b in _recruitButtons)
