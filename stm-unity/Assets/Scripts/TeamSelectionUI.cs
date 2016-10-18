@@ -182,7 +182,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Instantiate a new UI object for a Boat line-up
 	/// </summary>
-	private GameObject CreateBoat(Boat boat)
+	private GameObject CreateBoat(Boat boat, bool historical)
 	{
 		var newBoat = Instantiate(_boatPrefab);
 		newBoat.transform.SetParent(_boatContainer.transform, false);
@@ -198,14 +198,17 @@ public class TeamSelectionUI : MonoBehaviour {
 			newBoat.transform.Find("Race").GetComponentInChildren<Text>().fontSize = 16;
 		}
 		//create UI object for each position (aka, what CrewMembers are dragged onto)
-		foreach (var pos in boat.Positions)
+		if (!historical)
 		{
-			var positionObject = Instantiate(_positionPrefab);
-			positionObject.transform.SetParent(newBoat.transform.Find("Position Container"), false);
-			positionObject.transform.Find("Name").GetComponent<Text>().text = pos.GetName();
-			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.GetName()).Image;
-			positionObject.name = pos.GetName();
-			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
+			foreach (var pos in boat.Positions)
+			{
+				var positionObject = Instantiate(_positionPrefab);
+				positionObject.transform.SetParent(newBoat.transform.Find("Position Container"), false);
+				positionObject.transform.Find("Name").GetComponent<Text>().text = pos.GetName();
+				positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.GetName()).Image;
+				positionObject.name = pos.GetName();
+				positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
+			}
 		}
 		//hide feedback 'lights'/icons
 		newBoat.transform.Find("Light Container").gameObject.SetActive(false);
@@ -225,7 +228,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	private void CreateNewBoat()
 	{
 		var team = _teamSelection.GetTeam();
-		var boatObject = CreateBoat(team.Boat);
+		var boatObject = CreateBoat(team.Boat, false);
 		//adjust visible boats so that this newly created one is displayed
 		ChangeVisibleBoats();
 		_raceButton = boatObject.transform.Find("Race").GetComponent<Button>();
@@ -265,6 +268,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			var crewMemberDraggable = CreateCrewMember(cm, crewMember.transform, true, true);
 			crewMemberDraggable.transform.position = crewMember.transform.position;
 		}
+		AdjustCrewMemberVisibility(_crewContainer, true);
 		//create a recruitment UI object for each empty spot in the crew
 		for (var i = 0; i < _teamSelection.CanAddAmount(); i++)
 		{
@@ -304,7 +308,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// </summary>
 	private void CreateHistoricalBoat(Boat boat, int offset)
 	{
-		var oldBoat = CreateBoat(boat);
+		var oldBoat = CreateBoat(boat, true);
 		var teamScore = boat.Score;
 		var idealScore = boat.IdealMatchScore;
 		var currentCrew = _teamSelection.GetTeam().CrewMembers;
@@ -313,29 +317,27 @@ public class TeamSelectionUI : MonoBehaviour {
 		CreateMistakeIcons(mistakeList, oldBoat, idealScore, boat.Positions.Count);
 		_teamSelection.ConfirmLineUp(0, true);
 		var scoreDiff = GetResult(_teamSelection.IsRace(), teamScore, boat.Positions.Count, offset, oldBoat.transform.Find("Score").GetComponent<Text>());
+		var crewContainer = oldBoat.transform.Find("Position Container");
 		//for each position, create a new CrewMember UI object and place accordingly
 		foreach (var pair in boat.PositionCrew)
 		{
-			//get UI object for this position
-			var position = oldBoat.GetComponentsInChildren<PositionUI>().FirstOrDefault(p => p.Position == pair.Key);
-			if (position == null)
-			{
-				continue;
-			}
 			//create CrewMember UI object for the CrewMember that was in this position
-			var crewMember = CreateCrewMember(pair.Value, position.transform, false, false);
-			crewMember.transform.position = position.transform.position;
-			crewMember.GetComponent<CrewMemberUI>().Place(position.gameObject, true);
+			var crewMember = CreateCrewMember(pair.Value, crewContainer.transform, false, false);
 			Destroy(crewMember.transform.Find("Opinion").GetComponent<Image>());
 			crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(pair.Value.Avatar, scoreDiff * (2f / boat.Positions.Count) + 3);
+			var positionImage = crewMember.transform.Find("Position").gameObject;
+			//update current position button
+			positionImage.GetComponent<Image>().enabled = true;
+			positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == pair.Key.GetName()).Image;
+			positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
+			var currentPosition = pair.Key;
+			positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentPosition); });
 			//if CrewMember has since retired, remove CrewMemberUI from  the object
 			if (!currentCrew.ContainsKey(pair.Value.Name))
 			{
 				Destroy(crewMember.GetComponent<CrewMemberUI>());
 				crewMember.transform.Find("Name").GetComponent<Text>().color = UnityEngine.Color.grey;
 			}
-			crewMember.transform.SetParent(position.transform.parent, true);
-			Destroy(position.gameObject);
 		}
 		Destroy(oldBoat.transform.Find("Race").gameObject);
 	}
@@ -428,30 +430,35 @@ public class TeamSelectionUI : MonoBehaviour {
 		boat.alpha = visibility ? 1 : 0;
 		boat.interactable = visibility;
 		boat.blocksRaycasts = visibility;
-		foreach (var aspect in boat.GetComponentsInChildren<AspectRatioFitter>())
+		AdjustCrewMemberVisibility(boat.gameObject, visibility);
+	}
+
+	private void AdjustCrewMemberVisibility(GameObject group, bool visibility)
+	{
+		foreach (var aspect in group.GetComponentsInChildren<AspectRatioFitter>())
 		{
 			aspect.enabled = visibility;
 		}
-		foreach (var layout in boat.GetComponentsInChildren<LayoutGroup>())
+		foreach (var layout in group.GetComponentsInChildren<LayoutGroup>())
 		{
 			layout.enabled = visibility;
 		}
-		foreach (var layout in boat.GetComponentsInChildren<LayoutElement>())
+		foreach (var layout in group.GetComponentsInChildren<LayoutElement>())
 		{
-			if (layout.gameObject != boat.gameObject)
+			if (layout.gameObject != group.gameObject)
 			{
 				layout.enabled = visibility;
 			}
 		}
-		foreach (var crewMember in boat.GetComponentsInChildren<CrewMemberUI>())
+		foreach (var crewMember in group.GetComponentsInChildren<CrewMemberUI>())
 		{
 			crewMember.enabled = visibility;
 		}
-		foreach (var image in boat.GetComponentsInChildren<Image>())
+		foreach (var image in group.GetComponentsInChildren<Image>())
 		{
 			image.enabled = image.sprite != null && visibility;
 		}
-		foreach (var text in boat.GetComponentsInChildren<Text>())
+		foreach (var text in group.GetComponentsInChildren<Text>())
 		{
 			text.enabled = visibility;
 		}
