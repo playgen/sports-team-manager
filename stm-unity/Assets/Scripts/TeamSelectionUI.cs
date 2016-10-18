@@ -486,7 +486,6 @@ public class TeamSelectionUI : MonoBehaviour {
 	public void ConfirmLineUp()
 	{
 		CloseConfirmPopUp();
-		Tracker.T.completable.Completed("Crew Confirmed", CompletableTracker.Completable.Stage);
 		//store current positions
 		var currentPositions = new Dictionary<Position, CrewMember>();
 		foreach (var pair in _teamSelection.GetTeam().Boat.PositionCrew)
@@ -497,6 +496,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var offset = UnityEngine.Random.Range(0, 10);
 		//confirm the line-up with the simulation 
 		var currentBoat = _teamSelection.ConfirmLineUp(offset);
+		Tracker.T.completable.Completed("Crew Confirmed", CompletableTracker.Completable.Stage, true, currentBoat.Score);
 		var idealScore = currentBoat.IdealMatchScore;
 		var mistakeList = currentBoat.GetAssignmentMistakes(6);
 		CreateMistakeIcons(mistakeList, _currentBoat, idealScore, currentPositions.Count);
