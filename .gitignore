@@ -259,3 +259,5 @@ sysinfo.txt
 *.exe
 *.unitypackage
 stm-unity/Assets/Plugins/stm-logic/
+!stm-logic/PlayGen.RAGE.SportsTeamManager/nuget/*.nupkg
+
