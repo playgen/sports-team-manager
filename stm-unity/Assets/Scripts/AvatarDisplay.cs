@@ -179,9 +179,7 @@ public class AvatarDisplay : MonoBehaviour
 
 		_eyebrow.sprite = avatarSprites[string.Format("{0}_{1}", avatar.EyebrowType, moodStr)];
 		_mouth.sprite = avatarSprites[string.Format("{0}_{1}", avatar.MouthType, moodStr)];
-		if (avatarSprites.ContainsKey(string.Format("{0}_{1}", avatar.TeethType, moodStr))) {
-			_teeth.sprite = avatarSprites[string.Format("{0}_{1}", avatar.TeethType, moodStr)];
-		}
+		_teeth.sprite = avatarSprites.ContainsKey(string.Format("{0}_{1}", avatar.TeethType, moodStr)) ? avatarSprites[string.Format("{0}_{1}", avatar.TeethType, moodStr)] : null;
 		_teeth.enabled = _teeth.sprite != null;
 		_lastMood = mood;
 	}

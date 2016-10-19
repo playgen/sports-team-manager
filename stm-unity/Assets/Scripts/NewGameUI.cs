@@ -183,12 +183,4 @@ public class NewGameUI : MonoBehaviour {
 			_errorText.text = "Game not created. Please try again.";
 		}
 	}
-
-	/// <summary>
-	/// Send message to UIStateManager to reset UI panels back to the Main Menu
-	/// </summary>
-	public void BackToMenu()
-	{
-		_stateManager.BackToMenu(gameObject);
-	}
 }
