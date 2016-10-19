@@ -186,8 +186,6 @@ public class MemberMeetingUI : MonoBehaviour
 		var managerName = _memberMeeting.GetManagerName();
 		var managerOpinion = _currentMember.RevealedCrewOpinions[managerName];
 		var managerOpinionColorValue = 0.25f + (0.075f * (10 + _currentMember.RevealedCrewOpinionAges[managerName]));
-		print(_currentMember.RevealedCrewOpinionAges[managerName]);
-		print(managerOpinionColorValue);
 		managerOpinionImage.color = new UnityEngine.Color(managerOpinionColorValue, managerOpinionColorValue, managerOpinionColorValue);
 		managerOpinionImage.sprite = _opinionIcons[(managerOpinion > 0 ? Mathf.CeilToInt(managerOpinion / 3f) : Mathf.FloorToInt(managerOpinion / 3f)) + 2];
 	}

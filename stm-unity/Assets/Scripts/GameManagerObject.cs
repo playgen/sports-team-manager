@@ -18,6 +18,7 @@ public class GameManagerObject : MonoBehaviour
 			Destroy(gameObject);
 			return;
 		}
+		AvatarDisplay.LoadSprites();
 		GameManager = new GameManager();
 		DontDestroyOnLoad(gameObject);
 	}

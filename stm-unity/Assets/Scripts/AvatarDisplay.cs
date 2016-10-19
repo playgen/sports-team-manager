@@ -1,4 +1,8 @@
 ﻿//#define USE_SPRITESHEET
+
+using System.Collections.Generic;
+using System.Linq;
+
 using UnityEngine;
 using UnityEngine.UI;
 using Avatar = PlayGen.RAGE.SportsTeamManager.Simulation.Avatar;
@@ -10,6 +14,7 @@ public class AvatarDisplay : MonoBehaviour
 {
 	private const byte _eyebrowAlpha = 128;
 	private const float _maleOffsetPercent = 18f;
+	private static Dictionary<string, Sprite> avatarSprites;
 	private float _lastMood;
 	[SerializeField]
 	private Image _body;
@@ -38,6 +43,12 @@ public class AvatarDisplay : MonoBehaviour
 #if USE_SPRITESHEET
 	Dictionary<string, Sprite> Sprites = new Dictionary<string, Sprite>();
 #endif
+
+	public static void LoadSprites()
+	{
+		avatarSprites = Resources.LoadAll("", typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name, a => a);
+	}
+
 	/// <summary>
 	/// Load the images for each part of the avatar.
 	/// </summary>
@@ -46,14 +57,19 @@ public class AvatarDisplay : MonoBehaviour
 #if USE_SPRITESHEET
 		LoadDictionary();
 #endif
-		// HACK: Just load the images from resources 
-		_body.sprite = Resources.Load<Sprite>(string.Format("Avatars/Body/{0}", avatar.BodyType));
-		_outfit.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitBaseType));
-		_outfitHighlight.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitHighlightType));
-		_outfitShadow.sprite = Resources.Load<Sprite>(string.Format("Avatars/Outfit/{0}", avatar.OutfitShadowType));
-		_nose.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}", avatar.NoseType));
-		_hairBack.sprite = Resources.Load<Sprite>(string.Format("Avatars/Hair/{0}_Back", avatar.HairType));
-		_hairFront.sprite = Resources.Load<Sprite>(string.Format("Avatars/Hair/{0}_Front", avatar.HairType));
+		_body.sprite = avatarSprites[avatar.BodyType];
+		_outfit.sprite = avatarSprites[avatar.OutfitBaseType];
+		if (avatarSprites.ContainsKey(avatar.OutfitHighlightType))
+		{
+			_outfitHighlight.sprite = avatarSprites[avatar.OutfitHighlightType];
+		}
+		if (avatarSprites.ContainsKey(avatar.OutfitShadowType))
+		{
+			_outfitShadow.sprite = avatarSprites[avatar.OutfitShadowType];
+		}
+		_nose.sprite = avatarSprites[avatar.NoseType];
+		_hairBack.sprite = avatarSprites[string.Format("{0}_Back", avatar.HairType)];
+		_hairFront.sprite = avatarSprites[string.Format("{0}_Front", avatar.HairType)];
 
 		// Set colors
 		_body.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
@@ -148,13 +164,24 @@ public class AvatarDisplay : MonoBehaviour
 		{
 			moodStr = "Disagree";
 		}
-		_eyes.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}_{2}", avatar.EyeType, avatar.EyeColor, moodStr));
-		_eyes.sprite = _eyes.sprite ?? Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.EyeType, moodStr));
-		_eyes.sprite = _eyes.sprite ?? Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}_Neutral", avatar.EyeType, avatar.EyeColor));
+		if (avatarSprites.ContainsKey(string.Format("{0}_{1}_{2}", avatar.EyeType, avatar.EyeColor, moodStr)))
+		{
+			_eyes.sprite = avatarSprites[string.Format("{0}_{1}_{2}", avatar.EyeType, avatar.EyeColor, moodStr)];
+		}
+		else if (avatarSprites.ContainsKey(string.Format("{0}_{1}", avatar.EyeType, moodStr)))
+		{
+			_eyes.sprite = avatarSprites[string.Format("{0}_{1}", avatar.EyeType, moodStr)];
+		}
+		else
+		{
+			_eyes.sprite = avatarSprites[string.Format("{0}_{1}_Neutral", avatar.EyeType, avatar.EyeColor)];
+		}
 
-		_eyebrow.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.EyebrowType, moodStr));
-		_mouth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.MouthType, moodStr));
-		_teeth.sprite = Resources.Load<Sprite>(string.Format("Avatars/Head/{0}_{1}", avatar.TeethType, moodStr));
+		_eyebrow.sprite = avatarSprites[string.Format("{0}_{1}", avatar.EyebrowType, moodStr)];
+		_mouth.sprite = avatarSprites[string.Format("{0}_{1}", avatar.MouthType, moodStr)];
+		if (avatarSprites.ContainsKey(string.Format("{0}_{1}", avatar.TeethType, moodStr))) {
+			_teeth.sprite = avatarSprites[string.Format("{0}_{1}", avatar.TeethType, moodStr)];
+		}
 		_teeth.enabled = _teeth.sprite != null;
 		_lastMood = mood;
 	}

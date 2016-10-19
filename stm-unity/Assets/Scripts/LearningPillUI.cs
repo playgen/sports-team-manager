@@ -52,22 +52,24 @@ public class LearningPillUI : MonoBehaviour {
 
 	private IEnumerator Animate(bool upward = false, string tip = "")
 	{
+		WaitForEndOfFrame endFrame = new WaitForEndOfFrame();
+		WaitForSecondsRealtime endReal = new WaitForSecondsRealtime(0.04f);
 		int start = upward ? 0 : 1;
 		_popUpAnim["LearningPill"].speed = 1;
 		_popUpAnim["LearningPill"].time = start;
 		_popUpAnim.Play();
 		while (_popUpAnim["LearningPill"].time < start + 1)
 		{
-			yield return new WaitForEndOfFrame();
+			yield return endFrame;
 		}
 		_popUpAnim["LearningPill"].speed = 0;
 		_popUpAnim["LearningPill"].time = start + 1;
 		if (upward)
 		{
-			for (int i = 0; i < tip.Length; i++)
+			foreach (char t in tip)
 			{
-				_helpText.text += tip[i];
-				yield return new WaitForSecondsRealtime(0.04f);
+				_helpText.text += t;
+				yield return endReal;
 			}
 			_popUpBlocker.onClick.AddListener(ClosePill);
 		}
