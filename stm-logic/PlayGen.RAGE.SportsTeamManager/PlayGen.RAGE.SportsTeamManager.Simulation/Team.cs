@@ -196,6 +196,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				cm.CrewOpinions.Remove(crewMember.Name);
 				cm.RevealedCrewOpinions.Remove(crewMember.Name);
+				cm.RevealedCrewOpinionAges.Remove(crewMember.Name);
 			}
 		}
 
@@ -220,6 +221,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			foreach (var crewMember in crewMembers.Values)
 			{
 				crewMember.DecisionFeedback(Boat);
+				crewMember.TickRevealedOpinionAge();
 			}
 			Manager.SaveStatus();
 			PostRaceRest();

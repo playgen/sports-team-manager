@@ -19,6 +19,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Dictionary<CrewMemberSkill, int> RevealedSkills { get; }
 		public Dictionary<string, int> CrewOpinions { get; }
 		public Dictionary<string, int> RevealedCrewOpinions { get; }
+		public Dictionary<string, int> RevealedCrewOpinionAges { get; }
 		public int RestCount { get; private set; }
 		public Avatar Avatar { get; set; }
 
@@ -35,6 +36,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			CrewOpinions = new Dictionary<string, int>();
 			RevealedCrewOpinions = new Dictionary<string, int>();
+			RevealedCrewOpinionAges = new Dictionary<string, int>();
 		}
 
 		/// <summary>
@@ -175,7 +177,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Adjust or overwrite an opinion on another Person
 		/// </summary>
-		public void AddOrUpdateOpinion(string person, int change, bool replace = false)
+		public void AddOrUpdateOpinion(string person, int change, bool replace = false, bool load = false)
 		{
 			if (!CrewOpinions.ContainsKey(person))
 			{
@@ -197,20 +199,29 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				CrewOpinions[person] = 5;
 			}
-			UpdateSingleBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), person.NoSpaces()), CrewOpinions[person].ToString());
+			if (!load)
+			{
+				UpdateSingleBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), person.NoSpaces()), CrewOpinions[person].ToString());
+			}
 		}
 
 		/// <summary>
 		/// Update the known opinion on this Person
 		/// </summary>
-		public void AddOrUpdateRevealedOpinion(string person, int change)
+		public void AddOrUpdateRevealedOpinion(string person, int change, bool load = false)
 		{
 			if (!RevealedCrewOpinions.ContainsKey(person))
 			{
 				RevealedCrewOpinions.Add(person, 0);
+				RevealedCrewOpinionAges.Add(person, 0);
 			}
 			RevealedCrewOpinions[person] = change;
-			UpdateSingleBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), person.NoSpaces()), RevealedCrewOpinions[person].ToString());
+			RevealedCrewOpinionAges[person] = 0;
+			if (!load)
+			{
+				UpdateSingleBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), person.NoSpaces()), RevealedCrewOpinions[person].ToString());
+				UpdateSingleBelief(string.Format(NPCBeliefs.RevealedOpinionAge.GetDescription(), person.NoSpaces()), RevealedCrewOpinionAges[person].ToString());
+			}
 		}
 
 		/// <summary>
@@ -237,11 +248,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			foreach (var person in people)
 			{
-				AddOrUpdateOpinion(person, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), person.NoSpaces()))), true);
-			}
-			foreach (var person in people)
-			{
-				AddOrUpdateRevealedOpinion(person, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), person.NoSpaces()))));
+				AddOrUpdateOpinion(person, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), person.NoSpaces()))), true, true);
+				AddOrUpdateRevealedOpinion(person, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), person.NoSpaces()))), true);
+				RevealedCrewOpinionAges[person] = Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.RevealedOpinionAge.GetDescription(), person.NoSpaces())));
 			}
 			RestCount = Convert.ToInt32(LoadBelief(NPCBeliefs.Rest.GetDescription()));
 		}
@@ -360,6 +369,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				RestCount = (int)config.ConfigValues[ConfigKeys.PostRaceRest];
 			}
 			UpdateSingleBelief(NPCBeliefs.Rest.GetDescription(), RestCount.ToString());
+		}
+
+		public void TickRevealedOpinionAge()
+		{
+			foreach (var opinion in RevealedCrewOpinionAges.Keys.ToList())
+			{
+				RevealedCrewOpinionAges[opinion]--;
+				UpdateSingleBelief(string.Format(NPCBeliefs.RevealedOpinionAge.GetDescription(), opinion.NoSpaces()), RevealedCrewOpinionAges[opinion].ToString());
+			}
 		}
 
 		/// <summary>

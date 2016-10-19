@@ -22,6 +22,11 @@ public class MemberMeeting : MonoBehaviour
 		return position;
 	}
 
+	public string GetManagerName()
+	{
+		return _gameManager.Team.Manager.Name;
+	}
+
 	/// <summary>
 	/// Get player text for a question
 	/// </summary>
