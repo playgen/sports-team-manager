@@ -158,7 +158,7 @@ public class AvatarDisplay : MonoBehaviour
 		}
 		else if (mood <= -3)
 		{
-			moodStr = "StronglyDisAgree";
+			moodStr = "StronglyDisagree";
 		}
 		else if (mood <= -1)
 		{

@@ -35,6 +35,7 @@ public class TeamSelection : MonoBehaviour {
 				boatOffsets.Add(boats[i], offsets[i]);
 			}
 		}
+		_confirmCount = boats.Count;
 		return boatOffsets;
 	}
 
@@ -93,35 +94,17 @@ public class TeamSelection : MonoBehaviour {
 	/// <summary>
 	/// Confirm the line-up and get its score
 	/// </summary>
-	public Boat ConfirmLineUp(int offset = 0, bool historical = false)
+	public Boat ConfirmLineUp(int offset = 0)
 	{
 		_confirmCount++;
-		if (historical)
+		_gameManager.SaveLineUp(offset);
+		_postRaceEvent.GetEvent();
+		if (_confirmCount % _sessionLength == 0)
 		{
-			if (_confirmCount >= _sessionLength)
-			{
-				_confirmCount -= _sessionLength;
-			}
-		}
-		else
-		{
-			_gameManager.SaveLineUp(offset);
-			_postRaceEvent.GetEvent();
-			if (_confirmCount >= _sessionLength)
-			{
-				_gameManager.ConfirmLineUp();
-				_confirmCount -= _sessionLength;
-			}
+			_gameManager.ConfirmLineUp();
+			_confirmCount -= _sessionLength;
 		}
 		return _gameManager.Team.LineUpHistory.Last();
-	}
-
-	/// <summary>
-	/// If a race has just occured, return true
-	/// </summary>
-	public bool IsRace()
-	{
-		return _confirmCount == 0;
 	}
 
 	/// <summary>

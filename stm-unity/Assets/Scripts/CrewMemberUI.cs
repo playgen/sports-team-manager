@@ -76,6 +76,11 @@ public class CrewMemberUI : MonoBehaviour {
 		}
 	}
 
+	public void RemoveEvents()
+	{
+		GetComponent<EventTrigger>().triggers.Clear();
+	}
+
 	/// <summary>
 	/// MouseDown start the current drag
 	/// </summary>
