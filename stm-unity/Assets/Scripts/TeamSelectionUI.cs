@@ -32,6 +32,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	private List<GameObject> _boatPool;
 	[SerializeField]
 	private Scrollbar _boatContainerScroll;
+	private int _previousScrollValue;
 	[SerializeField]
 	private GameObject _crewContainer;
 	[SerializeField]
@@ -82,18 +83,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	private void Start()
 	{
 		_recruitCost = _teamSelection.GetConfigValue(ConfigKeys.RecruitmentCost);
-		var setUpCount = 1;
-		foreach (var boat in _teamSelection.GetLineUpHistory().Reverse().Take(4).ToList())
-		{
-			var firstBoat = _boatPool.Last();
-			_boatPool.Remove(firstBoat);
-			CreateHistoricalBoat(firstBoat, boat.Key, boat.Value, _teamSelection.GetStage() - setUpCount);
-			setUpCount++;
-			_boatPool.Insert(0, firstBoat);
-			firstBoat.transform.SetAsFirstSibling();
-
-		}
-		_boatContainerScroll.numberOfSteps = _teamSelection.GetStage() - _teamSelection.GetSessionLength();
+		ResetScrollbar();
 		CreateNewBoat();
 	}
 
@@ -312,6 +302,9 @@ public class TeamSelectionUI : MonoBehaviour {
 			{
 				crewMember.GetComponent<CrewMemberUI>().RemoveEvents();
 				crewMember.transform.Find("Name").GetComponent<Text>().color = UnityEngine.Color.grey;
+			} else
+			{
+				crewMember.transform.Find("Name").GetComponent<Text>().color = UnityEngine.Color.white;
 			}
 			crewCount++;
 		}
@@ -382,12 +375,42 @@ public class TeamSelectionUI : MonoBehaviour {
 		_positionsEmpty -= change;
 	}
 
-	/// <summary>
-	/// Make it so only boats visible on screen are drawn. Improves frame rate greatly after many races.
-	/// </summary>
-	private void ChangeVisibleBoats(bool up, int value)
+	public void ResetScrollbar()
 	{
-		
+		_boatContainerScroll.numberOfSteps = _teamSelection.GetStage() - _teamSelection.GetSessionLength() + 1;
+		_boatContainerScroll.size = 1f / _boatContainerScroll.numberOfSteps;
+		_boatContainerScroll.value = 0;
+		_previousScrollValue = 1;
+		if (_boatContainerScroll.numberOfSteps < 2)
+		{
+			_boatContainerScroll.gameObject.SetActive(false);
+		} else
+		{
+			_boatContainerScroll.gameObject.SetActive(true);
+		}
+		ChangeVisibleBoats();
+	}
+
+	public void ChangeVisibleBoats()
+	{
+		if (_previousScrollValue == Mathf.RoundToInt(_boatContainerScroll.value * (_boatContainerScroll.numberOfSteps - 1)))
+		{
+			return;
+		}
+		var skipAmount = _boatContainerScroll.size > 0 ? Mathf.RoundToInt(_boatContainerScroll.value * (_boatContainerScroll.numberOfSteps - 1)) : 0;
+		var setUpCount = 0;
+		foreach (var boat in _teamSelection.GetLineUpHistory().Reverse().Skip(skipAmount).Take(4).ToList())
+		{
+			var boatObject = _boatPool[setUpCount];
+			boatObject.SetActive(true);
+			CreateHistoricalBoat(boatObject, boat.Key, boat.Value, _teamSelection.GetStage() - setUpCount - skipAmount - 1);
+			setUpCount++;
+		}
+		for (int i = setUpCount; i < _boatPool.Count; i++)
+		{
+			_boatPool[i].SetActive(false);
+		}
+		_previousScrollValue = skipAmount;
 	}
 
 	/// <summary>
@@ -423,11 +446,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		var offset = UnityEngine.Random.Range(0, 10);
 		//confirm the line-up with the simulation 
 		var currentBoat = _teamSelection.ConfirmLineUp(offset);
-		var firstBoat = _boatPool.First();
-		_boatPool.Remove(firstBoat);
-		CreateHistoricalBoat(firstBoat, currentBoat, offset, _teamSelection.GetStage() - 1);
-		_boatPool.Add(firstBoat);
-		firstBoat.transform.SetSiblingIndex(_boatPool.Count - 1);
+		ResetScrollbar();
 		Tracker.T.completable.Completed("Crew Confirmed", CompletableTracker.Completable.Stage, true, currentBoat.Score);
 		//set-up next boat
 		CreateNewBoat();

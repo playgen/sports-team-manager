@@ -17,6 +17,7 @@ public class TeamSelection : MonoBehaviour {
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		_sessionLength = _gameManager.RaceSessionLength;
+		_confirmCount = _gameManager.Team.LineUpHistory.Count;
 		_postRaceEvent.GetEvent();
 	}
 
@@ -35,7 +36,6 @@ public class TeamSelection : MonoBehaviour {
 				boatOffsets.Add(boats[i], offsets[i]);
 			}
 		}
-		_confirmCount = boats.Count;
 		return boatOffsets;
 	}
 
@@ -102,7 +102,6 @@ public class TeamSelection : MonoBehaviour {
 		if (_confirmCount % _sessionLength == 0)
 		{
 			_gameManager.ConfirmLineUp();
-			_confirmCount -= _sessionLength;
 		}
 		return _gameManager.Team.LineUpHistory.Last();
 	}

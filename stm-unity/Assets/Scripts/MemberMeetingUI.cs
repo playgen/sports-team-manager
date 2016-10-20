@@ -175,6 +175,7 @@ public class MemberMeetingUI : MonoBehaviour
 					opinionImage.sprite = null;
 					var opinion = _currentMember.RevealedCrewOpinions[crewName];
 					var opinionColorValue = 0.25f + (0.075f*(10 + _currentMember.RevealedCrewOpinionAges[crewName]));
+					opinionColorValue = opinionColorValue < 0.25f ? 0.25f : opinionColorValue;
 					opinionImage.color = new UnityEngine.Color(opinionColorValue, opinionColorValue, opinionColorValue);
 					opinionImage.sprite = _opinionIcons[(opinion > 0 ? Mathf.CeilToInt(opinion / 3f) : Mathf.FloorToInt(opinion / 3f)) + 2];
 				}
@@ -186,6 +187,7 @@ public class MemberMeetingUI : MonoBehaviour
 		var managerName = _memberMeeting.GetManagerName();
 		var managerOpinion = _currentMember.RevealedCrewOpinions[managerName];
 		var managerOpinionColorValue = 0.25f + (0.075f * (10 + _currentMember.RevealedCrewOpinionAges[managerName]));
+		managerOpinionColorValue = managerOpinionColorValue < 0.25f ? 0.25f : managerOpinionColorValue;
 		managerOpinionImage.color = new UnityEngine.Color(managerOpinionColorValue, managerOpinionColorValue, managerOpinionColorValue);
 		managerOpinionImage.sprite = _opinionIcons[(managerOpinion > 0 ? Mathf.CeilToInt(managerOpinion / 3f) : Mathf.FloorToInt(managerOpinion / 3f)) + 2];
 	}
