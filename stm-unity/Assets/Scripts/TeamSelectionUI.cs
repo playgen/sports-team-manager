@@ -22,7 +22,7 @@ public class Icon
 /// Contains all UI logic related to the Team Management screen
 /// </summary>
 [RequireComponent(typeof(TeamSelection))]
-public class TeamSelectionUI : MonoBehaviour {
+public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private TeamSelection _teamSelection;
 	[SerializeField]
 	private GameObject _boatContainer;
@@ -373,6 +373,19 @@ public class TeamSelectionUI : MonoBehaviour {
 	public void PositionChange(int change)
 	{
 		_positionsEmpty -= change;
+	}
+
+	public void OnScroll(PointerEventData eventData)
+	{
+		_boatContainerScroll.value += eventData.scrollDelta.y * _boatContainerScroll.size;
+	}
+
+	public void OnDrag(PointerEventData eventData)
+	{
+		if (Mathf.Abs(eventData.delta.y) > 0.5f)
+		{
+			_boatContainerScroll.value += Mathf.Clamp(eventData.delta.y, -1, 1) * _boatContainerScroll.size;
+		}
 	}
 
 	public void ResetScrollbar()
