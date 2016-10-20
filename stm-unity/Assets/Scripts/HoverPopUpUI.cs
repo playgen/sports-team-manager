@@ -55,7 +55,7 @@ public class HoverPopUpUI : MonoBehaviour {
 		{
 			gameObject.SetActive(true);
 			transform.SetAsLastSibling();
-			GetComponentInChildren<Text>().text = _currentText;
+			GetComponentInChildren<Text>().text = _currentText.Localize();
 			transform.position = Input.mousePosition;
 			if (_currentHovered.x < transform.position.x)
 			{

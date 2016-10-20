@@ -178,6 +178,12 @@
     <Reference Include="WellFormedNames">
       <HintPath>Assets\Plugins\stm-logic\WellFormedNames.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data">
+      <HintPath>Assets\Editor\ExcelToJsonConverter\Mono\System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Excel">
+      <HintPath>Assets\Editor\ExcelToJsonConverter\ExcelDataReader\Excel.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="stm-unity.CSharp.csproj">
@@ -187,8 +193,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\BuildExe.cs" />
+    <Compile Include="Assets\Editor\ExcelToJsonConverter\ExcelToJsonConverter.cs" />
+    <Compile Include="Assets\Editor\ExcelToJsonConverter\ExcelToJsonConverterWindow.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Editor\ExcelToJsonConverter\Json\license.txt" />
     <None Include="Assets\Plugins\stm-logic\Newtonsoft.Json.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />

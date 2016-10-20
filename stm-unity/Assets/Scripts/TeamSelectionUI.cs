@@ -201,7 +201,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			}
 			positionObject.SetActive(true);
 			var pos = team.Boat.Positions[i];
-			positionObject.transform.Find("Name").GetComponent<Text>().text = pos.GetName();
+			positionObject.transform.Find("Name").GetComponent<Text>().text = pos.ToString().Localize();
 			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.GetName()).Image;
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
 		}
@@ -333,17 +333,17 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			var mistakeIcon = _mistakeIcons.First(mo => mo.Name == mistakes[i]).Image;
 			mistakeObject.GetComponent<Image>().sprite = mistakeIcon;
 			//add spaces between words where needed
-			FeedbackHoverOver(mistakeObject.transform, Regex.Replace(mistakes[i], "([a-z])([A-Z])", "$1 $2"));
+			FeedbackHoverOver(mistakeObject.transform, Regex.Replace(mistakes[i], "([a-z])([A-Z])", "$1_$2"));
 		}
 		//set numbers for each 'light'
 		var unideal = positionCount - (int)idealScore - ((idealScore % 1) * 10);
 		boat.transform.Find("Light Container").gameObject.SetActive(true);
 		boat.transform.Find("Light Container/Green").GetComponentInChildren<Text>().text = ((int)idealScore).ToString();
-		FeedbackHoverOver(boat.transform.Find("Light Container/Green"), "Ideal Placements");
+		FeedbackHoverOver(boat.transform.Find("Light Container/Green"), "GREEN_PLACEMENT");
 		boat.transform.Find("Light Container/Yellow").GetComponentInChildren<Text>().text = Mathf.RoundToInt(((idealScore % 1) * 10)).ToString();
-		FeedbackHoverOver(boat.transform.Find("Light Container/Yellow"), "Ideal In Another Position");
+		FeedbackHoverOver(boat.transform.Find("Light Container/Yellow"), "YELLOW_PLACEMENT");
 		boat.transform.Find("Light Container/Red").GetComponentInChildren<Text>().text = Mathf.RoundToInt(unideal).ToString();
-		FeedbackHoverOver(boat.transform.Find("Light Container/Red"), "Unideal Placements");
+		FeedbackHoverOver(boat.transform.Find("Light Container/Red"), "RED_PLACEMENT");
 	}
 
 	/// <summary>
@@ -394,13 +394,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		_boatContainerScroll.size = 1f / _boatContainerScroll.numberOfSteps;
 		_boatContainerScroll.value = 0;
 		_previousScrollValue = 1;
-		if (_boatContainerScroll.numberOfSteps < 2)
-		{
-			_boatContainerScroll.gameObject.SetActive(false);
-		} else
-		{
-			_boatContainerScroll.gameObject.SetActive(true);
-		}
+		_boatContainerScroll.gameObject.SetActive(_boatContainerScroll.numberOfSteps >= 2);
 		ChangeVisibleBoats();
 	}
 
@@ -461,6 +455,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		var currentBoat = _teamSelection.ConfirmLineUp(offset);
 		ResetScrollbar();
 		Tracker.T.completable.Completed("Crew Confirmed", CompletableTracker.Completable.Stage, true, currentBoat.Score);
+		GetResult((_teamSelection.GetStage() - 1) % _teamSelection.GetSessionLength() == 0, currentBoat.Score, currentBoat.Positions.Count, offset, _raceButton.GetComponentInChildren<Text>(), currentBoat.PositionCrew);
 		//set-up next boat
 		CreateNewBoat();
 	}

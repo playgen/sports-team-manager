@@ -134,6 +134,7 @@
     <Compile Include="Assets\Scripts\LearningPillUI.cs" />
     <Compile Include="Assets\Scripts\LoadGame.cs" />
     <Compile Include="Assets\Scripts\LoadGameUI.cs" />
+    <Compile Include="Assets\Scripts\Localization.cs" />
     <Compile Include="Assets\Scripts\MemberMeeting.cs" />
     <Compile Include="Assets\Scripts\MemberMeetingUI.cs" />
     <Compile Include="Assets\Scripts\NewGame.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="Assets\unity-tracker-master\Tracker\Tracker.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Editor\ExcelToJsonConverter\Json\license.txt" />
     <None Include="Assets\Plugins\stm-logic\Newtonsoft.Json.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />

@@ -35,6 +35,8 @@ public class PositionDisplayUI : MonoBehaviour
 	[SerializeField]
 	private GameObject _historyPrefab;
 
+	private Position _current;
+
 	private void Awake()
 	{
 		_positionDisplay = GetComponent<PositionDisplay>();
@@ -79,7 +81,7 @@ public class PositionDisplayUI : MonoBehaviour
 	{
 		if (gameObject.activeSelf)
 		{
-			Display((Position)Enum.Parse(typeof(Position), _textList[0].text.Replace("-", "")));
+			Display(_current);
 		}
 	}
 
@@ -103,6 +105,7 @@ public class PositionDisplayUI : MonoBehaviour
 	/// </summary>
 	private void Display(Position position)
 	{
+		_current = position;
 		var team = _positionDisplay.GetTeam();
 		CrewMember currentCrew = null;
 		//get current CrewMember in this position if any
@@ -111,7 +114,7 @@ public class PositionDisplayUI : MonoBehaviour
 			currentCrew = team.Boat.PositionCrew[position];
 		}
 		//set title and description text
-		_textList[0].text = position.GetName();
+		_textList[0].text = position.ToString().Localize();
 		_textList[1].text = position.GetDescription();
 		//set role image (displayed if no-one is in this position)
 		_roleImage.sprite = _roleSprites.First(mo => mo.Name == position.GetName()).Image;

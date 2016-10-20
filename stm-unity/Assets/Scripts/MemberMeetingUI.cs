@@ -120,7 +120,7 @@ public class MemberMeetingUI : MonoBehaviour
 		{
 			_roleButton.gameObject.SetActive(true);
 			_roleButton.onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentRole); });
-			_roleButton.GetComponentInChildren<Text>().text = currentRole.GetName().ToUpper();
+			_roleButton.GetComponentInChildren<Text>().text = currentRole.ToString().LocalizeToUpper();
 			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = _teamSelectionUI.RoleLogos.First(mo => mo.Name == currentRole.GetName()).Image;
 		}
 		//hide if not positioned
