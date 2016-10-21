@@ -93,6 +93,7 @@
     <Compile Include="CrewMemberSkill.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="EventController.cs" />
+    <Compile Include="NameConfig.cs" />
     <Compile Include="PostSessionEventTrigger.cs" />
     <Compile Include="GameConfig.cs" />
     <Compile Include="GameManager.cs" />
@@ -116,6 +117,7 @@
     <None Include="BoatConfig.json" />
     <None Include="config.json" />
     <None Include="GameConfig.json" />
+    <None Include="NameConfig.json" />
     <None Include="NPC Templates\HelpDialogue.iat" />
     <None Include="NPC Templates\Template.ea" />
     <None Include="NPC Templates\Template.edm" />

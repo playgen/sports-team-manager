@@ -3,7 +3,6 @@
 		{
 			"classId": 0,
 			"ScenarioName": "Template",
-			"Characters": [],
 			"PlayerDialogues": [
 				{
 					"CurrentState": "RoleReveal",
@@ -355,27 +354,55 @@
 					"Meaning": ["PickedAfterSorry"],
 					"Style": ["After"],
 					"Utterance": "Thanks for sticking to your word and picking me for that race."
-				},
+				}, 
 				{
 					"CurrentState": "PostRaceEventStart",
 					"NextState": "Retirement",
 					"Meaning": ["Retirement"],
 					"Style": ["Race"],
 					"Utterance": "Well, I've had enough of not being picked. I'm going to retire after the next race, no matter what."
-				},
+				}, 
 				{
 					"CurrentState": "RetirementTriggered",
 					"NextState": "-",
 					"Meaning": ["RetirementTriggered"],
 					"Style": ["After"],
 					"Utterance": "Off I go. See you round on the sailing circuit!"
-				},
+				}, 
 				{
 					"CurrentState": "RetirementTriggered",
 					"NextState": "-",
 					"Meaning": ["RetirementTriggered"],
 					"Style": ["After"],
 					"Utterance": "Late wake-ups and lazy days, here I come. Retirement doesn't sound so bad after all..."
+				}, 
+				{
+					"CurrentState": "OpinionRevealNegativeManager",
+					"NextState": "-",
+					"Meaning": ["OpinionRevealNegativeManager"],
+					"Style": ["OpinionRevealNegativeManager"],
+					"Utterance": "Myself and you aren't on the best of terms."
+				}, 
+				{
+					"CurrentState": "OpinionRevealNegativeHighManager",
+					"NextState": "-",
+					"Meaning": ["OpinionRevealNegativeHighManager"],
+					"Style": ["OpinionRevealNegativeHighManager"],
+					"Utterance": "I don't get along with you at all."
+				}, 
+				{
+					"CurrentState": "OpinionRevealPositiveHighManager",
+					"NextState": "-",
+					"Meaning": ["OpinionRevealPositiveHighManager"],
+					"Style": ["OpinionRevealPositiveHighManager"],
+					"Utterance": "I'm good friends with you."
+				}, 
+				{
+					"CurrentState": "OpinionRevealPositiveManager",
+					"NextState": "-",
+					"Meaning": ["OpinionRevealPositiveManager"],
+					"Style": ["OpinionRevealPositiveManager"],
+					"Utterance": "I somewhat get along with you."
 				}]
 		},
 	"types": [

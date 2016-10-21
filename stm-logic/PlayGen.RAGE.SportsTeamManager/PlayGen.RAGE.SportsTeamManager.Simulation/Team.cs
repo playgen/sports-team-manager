@@ -21,6 +21,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public List<Boat> LineUpHistory { get; set; }
 		public List<int> HistoricTimeOffset { get; set; }
 		public string Name { get; }
+		public string Nationality { get; }
 		public Color TeamColorsPrimary { get; set; }
 		public Color TeamColorsSecondary { get; set; }
 		public Dictionary<string, CrewMember> CrewMembers
@@ -34,12 +35,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Team constructor
 		/// </summary>
-		public Team (IntegratedAuthoringToolAsset i, string storage, ConfigStore con, string name, Boat boat)
+		public Team (IntegratedAuthoringToolAsset i, string storage, ConfigStore con, string name, string nation, Boat boat)
 		{
 			iat = i;
 			storageLocation = Path.Combine(storage, name);
 			config = con;
 			Name = name;
+			Nationality = nation;
 			Boat = boat;
 			crewMembers = new Dictionary<string, CrewMember>();
 			RetiredCrew = new Dictionary<string, CrewMember>();
@@ -76,7 +78,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				if (crewMembers.ContainsKey(cm.Name) || RetiredCrew.ContainsKey(cm.Name) || Recruits.ContainsKey(cm.Name) || cm.Name == Manager.Name)
 				{
-					cm.Name = cm.SelectNewName(cm.Gender);
+					cm.Name = cm.SelectNewName();
 				}
 				else
 				{
@@ -126,7 +128,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			for (var i = 0; i < amount; i++)
 			{
 				var position = Boat.GetWeakPosition(CrewMembers.Values.Concat(Recruits.Values).ToList());
-				var newMember = new CrewMember(position, config);
+				var newMember = new CrewMember(position, Nationality, config);
 				UniqueNameCheck(newMember);
 				Recruits.Add(newMember.Name, newMember);
 			}
@@ -253,7 +255,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (CanAddToCrew())
 				{
 					var position = Boat.GetWeakPosition(CrewMembers.Values.Concat(Recruits.Values).ToList());
-					var newMember = new CrewMember(position, config);
+					var newMember = new CrewMember(position, Nationality, config);
 					UniqueNameCheck(newMember);
 					newMember.CreateFile(iat, storageLocation);
 					newMember.Avatar = new Avatar(newMember);

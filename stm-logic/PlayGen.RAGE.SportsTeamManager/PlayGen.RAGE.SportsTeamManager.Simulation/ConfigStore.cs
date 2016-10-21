@@ -12,6 +12,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Dictionary<ConfigKeys, float> ConfigValues { get; set; }
 		public Dictionary<string, List<Position>> BoatTypes { get; set; }
 		public GameConfig GameConfig { get; set; }
+		public NameConfig NameConfig { get; set; }
 
 		public ConfigStore()
 		{
@@ -29,6 +30,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var boatText = Templates.ResourceManager.GetString("boat_config");
 			BoatTypes = JsonConvert.DeserializeObject<Dictionary<string, List<Position>>>(boatText);
 			GameConfig = new GameConfig().GetConfig();
+			NameConfig = new NameConfig().GetConfig();
 		}
 	}
 }

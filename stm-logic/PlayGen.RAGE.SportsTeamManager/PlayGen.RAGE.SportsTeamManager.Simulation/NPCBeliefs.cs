@@ -24,6 +24,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		Rest,
 		[Description("Value(BoatType)")]
 		BoatType,
+		[Description("Value(Nationality)")]
+		Nationality,
 		[Description("CrewEdit(Allowance)")]
 		CrewEditAllowance,
 		[Description("Action(Allowance)")]

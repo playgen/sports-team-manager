@@ -176,30 +176,31 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///	&quot;PromotionTriggers&quot;: [
         ///		{
         ///			&quot;StartType&quot;: &quot;Start&quot;,
-        ///			&quot;NewType&quot;: &quot;Dinghy&quot;,
-        ///			&quot;ScoreRequired&quot;: 0,
-        ///			&quot;ScoreMetSinceLast&quot;: 0
+        ///			&quot;NewType&quot;: &quot;Dinghy&quot;
         ///		},
         ///		{
         ///			&quot;StartType&quot;: &quot;Dinghy&quot;,
         ///			&quot;NewType&quot;: &quot;AltDinghy&quot;,
-        ///			&quot;ScoreRequired&quot;: 0,
         ///			&quot;ScoreMetSinceLast&quot;: 1
         ///		},
         ///		{
         ///			&quot;StartType&quot;: &quot;AltDinghy&quot;,
         ///			&quot;NewType&quot;: &quot;BiggerDinghy&quot;,
-        ///			&quot;ScoreRequired&quot;: 0,
         ///			&quot;ScoreMetSinceLast&quot;: 2
         ///		},
         ///		{
         ///			&quot;StartType&quot;: &quot;BiggerDinghy&quot;,
         ///			&quot;NewType&quot;: &quot;BiggestDinghy&quot;,
-        ///			&quot;ScoreRequired&quot;: 0,
         ///			&quot;ScoreMetSinceLast&quot;: 2
         ///		}
         ///	],
-        /// [rest of string was truncated]&quot;;.
+        ///	&quot;EventTriggers&quot;: [
+        ///		{
+        ///			&quot;EventName&quot;: &quot;NotPicked&quot;,
+        ///			&quot;RaceTrigger&quot;: 1,
+        ///			&quot;Random&quot;: true,
+        ///			&quot;RepeatEvery&quot;: 5
+        ///		},        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string game_config {
             get {
@@ -213,20 +214,40 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///		{
         ///			&quot;classId&quot;: 0,
         ///			&quot;ScenarioName&quot;: null,
-        ///			&quot;Characters&quot;: [],
-        ///			&quot;PlayerDialogues&quot;: [],
-        ///			&quot;AgentDialogues&quot;: []
-        ///		},
-        ///	&quot;types&quot;: [
-        ///		{
-        ///			&quot;TypeId&quot;: 0,
-        ///			&quot;ClassName&quot;: &quot;IntegratedAuthoringTool.IntegratedAuthoringToolAsset, IntegratedAuthoringTool, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;
-        ///		}]
-        ///}.
+        ///			&quot;AgentDialogues&quot;: [
+        ///				{
+        ///					&quot;CurrentState&quot;: &quot;LearningPill&quot;,
+        ///					&quot;NextState&quot;: &quot;Retirement&quot;,
+        ///					&quot;Meaning&quot;: [&quot;Retirement&quot;],
+        ///					&quot;Style&quot;: [&quot;Retirement&quot;],
+        ///					&quot;Utterance&quot;: &quot;&quot;
+        ///				}, 
+        ///				{
+        ///					&quot;CurrentState&quot;: &quot;LearningPill&quot;,
+        ///					&quot;NextState&quot;: &quot;NotPickedAfterSorry&quot;,
+        ///					&quot;Meaning&quot;: [&quot;NotPickedAfterSorry&quot;],
+        ///					&quot;Style&quot;: [&quot;NotPickedAfterSorry&quot;],
+        ///					&quot;Utterance&quot;: &quot;&quot;
+        ///				}, 
+        ///				{
+        ///					&quot;CurrentState&quot;: &quot;LearningPill&quot;,
+        ///					&quot;Ne [rest of string was truncated]&quot;;.
         /// </summary>
         public static string help_dialogue {
             get {
                 return ResourceManager.GetString("help_dialogue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///
+        ///}
+        ///.
+        /// </summary>
+        public static string name_config {
+            get {
+                return ResourceManager.GetString("name_config", resourceCulture);
             }
         }
         
@@ -299,7 +320,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///		{
         ///			&quot;classId&quot;: 0,
         ///			&quot;ScenarioName&quot;: &quot;Template&quot;,
-        ///			&quot;Characters&quot;: [],
         ///			&quot;PlayerDialogues&quot;: [
         ///				{
         ///					&quot;CurrentState&quot;: &quot;RoleReveal&quot;,
@@ -314,7 +334,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///					&quot;Meaning&quot;: [&quot;StatReveal&quot;],
         ///					&quot;Style&quot;: [&quot;StatReveal&quot;],
         ///					&quot;Utterance&quot;: &quot;Tell me more about your skillset&quot;
-        ///				},         /// [rest of string was truncated]&quot;;.
+        ///				}, 
+        ///				{
+        ///					&quot;CurrentS [rest of string was truncated]&quot;;.
         /// </summary>
         public static string template_iat {
             get {

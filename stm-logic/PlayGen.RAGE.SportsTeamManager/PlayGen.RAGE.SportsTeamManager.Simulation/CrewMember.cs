@@ -62,11 +62,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Constructor for creating a CrewMember with a random age/gender/name
 		/// </summary>
-		public CrewMember(Position position, ConfigStore con) : this(con, null)
+		public CrewMember(Position position, string nationality, ConfigStore con) : this(con, null)
 		{
 			Gender = SelectGender();
 			Age = StaticRandom.Int(18, 45);
-			Name = SelectRandomName(Gender);
+			Nationality = nationality;
+			Name = SelectRandomName();
 			//set the skills of the new CrewMember according to the required skills for the selected position
 			Skills = new Dictionary<CrewMemberSkill, int>();
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
@@ -100,35 +101,58 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Randomly select a new name for this CrewMember
 		/// </summary>
-		public string SelectNewName(string gender)
+		public string SelectNewName()
 		{
-			return SelectRandomName(gender);
+			return SelectRandomName();
 		}
 
 		/// <summary>
 		/// Randomly select a name for this CrewMember
 		/// </summary>
-		private string SelectRandomName(string gender)
+		private string SelectRandomName()
 		{
 			var name = "";
-			switch (gender)
+			switch (Gender)
 			{
 				case "Male":
 					{
-						var names = new []{"Oliver", "Jack", "Harry", "Jacob", "Charlie", "Thomas", "George", "Oscar", "James", "William", "Noah", "Alfie", "Joshua", "Muhammad", "Henry", "Leo", "Archie", "Ethan", "Joseph", "Freddie", "Samuel", "Alexander", "Logan", "Daniel", "Isaac", "Max", "Mohammed", "Benjamin", "Mason", "Lucas", "Edward", "Harrison", "Jake", "Dylan", "Riley", "Finley", "Theo", "Sebastian", "Adam", "Zachary", "Arthur", "Toby", "Jayden", "Luke", "Harley", "Lewis", "Tyler", "Harvey", "Matthew", "David", "Reuben", "Michael", "Elijah", "Kian", "Tommy", "Mohammad", "Blake", "Luca", "Theodore", "Stanley", "Jenson", "Nathan", "Charles", "Frankie", "Jude", "Teddy", "Louie", "Louis", "Ryan", "Hugo", "Bobby", "Elliott", "Dexter", "Ollie", "Alex", "Liam", "Kai", "Gabriel", "Connor", "Aaron", "Frederick", "Callum", "Elliot", "Albert", "Leon", "Ronnie", "Rory", "Jamie", "Austin", "Seth", "Ibrahim", "Owen", "Caleb", "Ellis", "Sonny", "Robert", "Joey", "Felix", "Finlay", "Jackson" };
-						name += names[StaticRandom.Int(0, names.Length)];
+						if (Nationality != null && config.NameConfig.MaleForename.ContainsKey(Nationality))
+						{
+							var names = config.NameConfig.MaleForename[Nationality];
+							name += names[StaticRandom.Int(0, names.Count)];
+						} else
+						{
+							var names = config.NameConfig.MaleForename.Values.ToList().SelectMany(n => n).ToList();
+							name += names[StaticRandom.Int(0, names.Count)];
+						}
 					}
 					break;
 				case "Female":
 					{
-						var names = new [] {"Amelia", "Olivia", "Isla", "Emily", "Poppy", "Ava", "Isabella", "Jessica", "Lily", "Sophie", "Grace", "Sophia", "Mia", "Evie", "Ruby", "Ella", "Scarlett", "Isabelle", "Chloe", "Sienna", "Freya", "Phoebe", "Charlotte", "Daisy", "Alice", "Florence", "Eva", "Sofia", "Millie", "Lucy", "Evelyn", "Elsie", "Rosie", "Imogen", "Lola", "Matilda", "Elizabeth", "Layla", "Holly", "Lilly", "Molly", "Erin", "Ellie", "Maisie", "Maya", "Abigail", "Eliza", "Georgia", "Jasmine", "Esme", "Willow", "Bella", "Annabelle", "Ivy", "Amber", "Emilia", "Emma", "Summer", "Hannah", "Eleanor", "Harriet", "Rose", "Amelie", "Lexi", "Megan", "Gracie", "Zara", "Lacey", "Martha", "Anna", "Violet", "Darcey", "Maria", "Maryam", "Brooke", "Aisha", "Katie", "Leah", "Thea", "Darcie", "Hollie", "Amy", "Mollie", "Heidi", "Lottie", "Bethany", "Francesca", "Faith", "Harper", "Nancy", "Beatrice", "Isabel", "Darcy", "Lydia", "Sarah", "Sara", "Julia", "Victoria", "Zoe", "Robyn" };
-						name += names[StaticRandom.Int(0, names.Length)];
+						if (Nationality != null && config.NameConfig.FemaleForename.ContainsKey(Nationality))
+						{
+							var names = config.NameConfig.FemaleForename[Nationality];
+							name += names[StaticRandom.Int(0, names.Count)];
+						}
+						else
+						{
+							var names = config.NameConfig.FemaleForename.Values.ToList().SelectMany(n => n).ToList();
+							name += names[StaticRandom.Int(0, names.Count)];
+						}
 					}
 					break;
 			}
 			name += " ";
-			var surnames = new [] {"Smith", "Jones", "Williams", "Taylor", "Brown", "Davies", "Evans", "Thomas", "Wilson", "Johnson", "Roberts", "Robinson", "Thompson", "Wright", "Walker", "White", "Edwards", "Hughes", "Green", "Hall", "Lewis", "Harris", "Clarke", "Patel", "Jackson", "Wood", "Turner", "Martin", "Cooper", "Hill", "Morris", "Ward", "Moore", "Clark", "Baker", "Harrison", "King", "Morgan", "Lee", "Allen", "James", "Phillips", "Scott", "Watson", "Davis", "Parker", "Bennett", "Price", "Griffiths", "Young"};
-			name += surnames[StaticRandom.Int(0, surnames.Length)];
+			if (Nationality != null && config.NameConfig.Surname.ContainsKey(Nationality))
+			{
+				var names = config.NameConfig.Surname[Nationality];
+				name += names[StaticRandom.Int(0, names.Count)];
+			}
+			else
+			{
+				var names = config.NameConfig.Surname.Values.ToList().SelectMany(n => n).ToList();
+				name += names[StaticRandom.Int(0, names.Count)];
+			}
 			return name;
 		}
 
@@ -399,16 +423,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					//get available dialogue based off of the rating in the skill
 					if (statValue <= (int)config.ConfigValues[ConfigKeys.BadSkillRating])
 					{
-						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Bad").ToName()).ToList();
+						style += "Bad";
 					}
 					else if (statValue >= (int)config.ConfigValues[ConfigKeys.GoodSkillRating])
 					{
-						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Good").ToName()).ToList();
+						style += "Good";
 					}
 					else
 					{
-						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Middle").ToName()).ToList();
+						style += "Middle";
 					}
+					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
 					//select a random reply from those available
 					if (dialogueOptions.Any())
 					{
@@ -422,12 +447,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					//get dialogue based on if they would be above or below mid-range in this position
 					if (pos.GetPositionRating(this) <= 5)
 					{
-						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Bad").ToName()).ToList();
+						style += "Bad";
 					}
 					else if (pos.GetPositionRating(this) >= 6)
 					{
-						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "Good").ToName()).ToList();
+						style += "Good";
 					}
+					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
 					if (dialogueOptions.Any())
 					{
 						reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pos.GetName());
@@ -444,22 +470,27 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						//select an opinion at random
 						var pickedOpinionPositive = opinionsPositive.OrderBy(o => Guid.NewGuid()).First();
-						//get available dialogue based on strength of opinion
 						if (pickedOpinionPositive.Value >= (int)config.ConfigValues[ConfigKeys.OpinionStrongLike])
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "High").ToName()).ToList();
+							style += "High";
 						}
-						else
+						if (pickedOpinionPositive.Key == team.Manager.Name)
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
+							style += "Manager";
 						}
+						//get available dialogue
+						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
 						if (dialogueOptions.Any())
 						{
-							reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionPositive.Key);
 							if (pickedOpinionPositive.Key == team.Manager.Name)
 							{
-								reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, "you");
+								reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
 							}
+							else
+							{
+								reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionPositive.Key);
+							}
+							
 						}
 						AddOrUpdateRevealedOpinion(pickedOpinionPositive.Key, pickedOpinionPositive.Value);
 					}
@@ -480,20 +511,24 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					if (opinionsNegative.Any())
 					{
 						var pickedOpinionNegative = opinionsNegative.OrderBy(o => Guid.NewGuid()).First();
-						if (pickedOpinionNegative.Value <= (int)config.ConfigValues[ConfigKeys.OpinionStrongDislike])
+						if (pickedOpinionNegative.Value >= (int)config.ConfigValues[ConfigKeys.OpinionStrongDislike])
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "High").ToName()).ToList();
+							style += "High";
 						}
-						else
+						if (pickedOpinionNegative.Key == team.Manager.Name)
 						{
-							dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
+							style += "Manager";
 						}
+						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
 						if (dialogueOptions.Any())
 						{
-							reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionNegative.Key);
 							if (pickedOpinionNegative.Key == team.Manager.Name)
 							{
-								reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, "you");
+								reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+							}
+							else
+							{
+								reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionNegative.Key);
 							}
 						}
 						AddOrUpdateRevealedOpinion(pickedOpinionNegative.Key, pickedOpinionNegative.Value);
