@@ -13,50 +13,36 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	{
 		private readonly IntegratedAuthoringToolAsset iat;
 		private readonly List<DialogueStateActionDTO> learningPills;
-		public List<KeyValuePair<List<CrewMember>, List<DialogueStateActionDTO>>> PostRaceEvents { get; private set; }
+		public List<List<KeyValuePair<CrewMember, DialogueStateActionDTO>>> PostRaceEvents { get; private set; }
 
 		public EventController(IntegratedAuthoringToolAsset i, List<DialogueStateActionDTO> help)
 		{
 			iat = i;
 			learningPills = help;
-			PostRaceEvents = new List<KeyValuePair<List<CrewMember>, List<DialogueStateActionDTO>>>();
-		}
-
-		/// <summary>
-		/// Set the player dialogue state
-		/// </summary>
-		public void SetPlayerState(DialogueStateActionDTO currentEvent)
-		{
-			iat.SetDialogueState("Player", currentEvent.NextState);
+			PostRaceEvents = new List<List<KeyValuePair<CrewMember, DialogueStateActionDTO>>>();
 		}
 
 		/// <summary>
 		/// Get all player dialogues for their current state
 		/// </summary>
-		public DialogueStateActionDTO[] GetEventDialogues(Person manager)
+		public Dictionary<CrewMember, List<DialogueStateActionDTO>> GetEventDialogues(Person manager)
 		{
-			var state = iat.GetCurrentDialogueState("Player");
-			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, state.ToName()).ToList();
-			if (!dialogueOptions.Any())
+			Dictionary<CrewMember, List<DialogueStateActionDTO>> dialogueOptions = new Dictionary<CrewMember, List<DialogueStateActionDTO>>();
+			foreach (var current in PostRaceEvents.First())
 			{
-				for (int i = 0; i < PostRaceEvents[PostRaceEvents.Count - 1].Key.Count; i++)
+				dialogueOptions.Add(current.Key, iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, current.Value.NextState.ToName()).OrderBy(c => Guid.NewGuid()).ToList());
+			}
+			if (dialogueOptions.Values.Sum(dos => dos.Count) == 0)
+			{
+				for (int i = 0; i < PostRaceEvents[0].Count; i++)
 				{
 					manager.EmotionalAppraisal.RemoveBelief(string.Format("PRECrew{0}({1})", PostRaceEvents.Count - 1, i), "SELF");
 					manager.EmotionalAppraisal.RemoveBelief(string.Format("PREEvent{0}({1})", PostRaceEvents.Count - 1, i), "SELF");
 				}
 				PostRaceEvents.RemoveAt(0);
 				SaveEvents(manager);
-				if (PostRaceEvents.Count > 0) {
-					if (PostRaceEvents.First().Value.Count == 1)
-					{
-						SetPlayerState(PostRaceEvents.First().Value.First());
-					} else
-					{
-						//TODO: Way of calculating player state from multiple previous dialogues
-					}
-				}
 			}
-			return dialogueOptions.OrderBy(c => Guid.NewGuid()).ToArray();
+			return dialogueOptions;
 		}
 
 		/// <summary>
@@ -106,7 +92,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			//get the state of currrently running events
 			var currentEvents = GetLastingEvents(team, raceSession);
-			var selectedEvents = new List<KeyValuePair<List<CrewMember>, List<DialogueStateActionDTO>>>();
+			var selectedEvents = new List<List<KeyValuePair<CrewMember, DialogueStateActionDTO>>>();
 			//get all possible post-race event starting dialogue
 			var dialogueOptions = GetPossiblePostRaceDialogue(raceSession);
 			var events = GetEvents(dialogueOptions, config.GameConfig.EventTriggers.ToList(), team, (int)config.ConfigValues[ConfigKeys.RaceSessionLength]);
@@ -145,8 +131,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							continue;
 						}
 					}
-					var crewSelected = new List<CrewMember>();
-					var eventSelected = new List<DialogueStateActionDTO>();
+					var eventSelected = new List<KeyValuePair<CrewMember, DialogueStateActionDTO>>();
 					switch (selected.NextState)
 					{
 						case "NotPicked":
@@ -159,8 +144,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							{
 								continue;
 							}
-							crewSelected.Add(allCrew.OrderBy(c => Guid.NewGuid()).First().Value);
-							eventSelected.Add(selected);
+							eventSelected.Add(new KeyValuePair<CrewMember, DialogueStateActionDTO>(allCrew.OrderBy(c => Guid.NewGuid()).First().Value, selected));
 							break;
 						case "Retirement":
 							//for this event, select a crew member who has not been selected in the past five race sessions
@@ -173,28 +157,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							{
 								continue;
 							}
-							crewSelected.Add(allCrew.OrderBy(c => Guid.NewGuid()).First().Value);
-							eventSelected.Add(selected);
-							crewSelected.ForEach(es => es.UpdateSingleBelief("Event(Retire)", "1"));
+							eventSelected.Add(new KeyValuePair<CrewMember, DialogueStateActionDTO>(allCrew.OrderBy(c => Guid.NewGuid()).First().Value, selected));
+							eventSelected.ForEach(es => es.Key.UpdateSingleBelief("Event(Retire)", "1"));
 							break;
 					}
-					crewSelected.ForEach(es => allCrew.Remove(es.Name));
-					selectedEvents.Add(new KeyValuePair<List<CrewMember>, List<DialogueStateActionDTO>>(crewSelected, eventSelected));
+					eventSelected.ForEach(es => allCrew.Remove(es.Key.Name));
+					selectedEvents.Add(eventSelected);
 				}
 			}
 			PostRaceEvents = currentEvents.Concat(selectedEvents).ToList();
 			SaveEvents(team.Manager);
-			if (PostRaceEvents.Count > 0)
-			{
-				if (PostRaceEvents.First().Value.Count == 1)
-				{
-					SetPlayerState(PostRaceEvents.First().Value.First());
-				}
-				else
-				{
-					//TODO: Way of calculating player state from multiple previous dialogues
-				}
-			}
 		}
 
 		/// <summary>
@@ -218,15 +190,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// get the currently running events for all CrewMembers
 		/// </summary>
-		public List<KeyValuePair<List<CrewMember>, List<DialogueStateActionDTO>>> GetLastingEvents(Team team, bool raceSession)
+		public List<List<KeyValuePair<CrewMember, DialogueStateActionDTO>>> GetLastingEvents(Team team, bool raceSession)
 		{
-			var reactionEvents = new List<KeyValuePair<List<CrewMember>, List<DialogueStateActionDTO>>>();
+			var reactionEvents = new List<List<KeyValuePair<CrewMember, DialogueStateActionDTO>>>();
 			foreach (var crewMember in team.CrewMembers.Values)
 			{
+				var crewEvents = new List<KeyValuePair<CrewMember, DialogueStateActionDTO>>();
 				var delayedReactions = crewMember.CurrentEventCheck(team, iat, raceSession);
 				foreach (var reply in delayedReactions)
 				{
-					reactionEvents.Add(new KeyValuePair<List<CrewMember>, List<DialogueStateActionDTO>>(new List<CrewMember> { crewMember }, new List<DialogueStateActionDTO> { reply }));
+					crewEvents.Add(new KeyValuePair<CrewMember, DialogueStateActionDTO>(crewMember, reply));
+				}
+				if (crewEvents.Count > 0)
+				{
+					reactionEvents.Add(crewEvents);
 				}
 			}
 			return reactionEvents;
@@ -284,25 +261,25 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send dialogue from the player to (an) NPC(s) and get their replies 
 		/// </summary>
-		public Dictionary<CrewMember, DialogueStateActionDTO> SendPostRaceEvent(DialogueStateActionDTO selected, List<CrewMember> crewMembers, Team team, Boat previous)
+		public Dictionary<CrewMember, DialogueStateActionDTO> SendPostRaceEvent(Dictionary<CrewMember, DialogueStateActionDTO> selected, Team team, Boat previous)
 		{
 			var replies = new Dictionary<CrewMember, DialogueStateActionDTO>();
 			var replyCount = 0;
-			foreach (var member in crewMembers)
+			foreach (var response in selected)
 			{
-				var reply = member.SendPostRaceEvent(iat, selected, team, previous);
-				team.Manager.UpdateSingleBelief(string.Format("PRECrew0({0})", replyCount), member.Name.NoSpaces());
-				PostRaceEvents[0].Key[replyCount] = member;
+				var reply = response.Key.SendPostRaceEvent(iat, response.Value, team, previous);
+				team.Manager.UpdateSingleBelief(string.Format("PRECrew0({0})", replyCount), response.Key.Name.NoSpaces());
 				if (reply != null)
 				{
-					replies.Add(member, reply);
+					replies.Add(response.Key, reply);
 					team.Manager.UpdateSingleBelief(string.Format("PREEvent0({0})", replyCount), reply.CurrentState);
 				}
 				else
 				{
+					replies.Add(response.Key, null);
 					team.Manager.UpdateSingleBelief(string.Format("PREEvent0({0})", replyCount), "-");
 				}
-				PostRaceEvents[0].Value[replyCount] = reply;
+				PostRaceEvents[0][replyCount] = new KeyValuePair<CrewMember, DialogueStateActionDTO>(response.Key, reply);
 				replyCount++;
 			}
 			team.Manager.SaveStatus();
@@ -313,15 +290,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			for (int i = 0; i < PostRaceEvents.Count; i++)
 			{
-				for (int j = 0; j < PostRaceEvents[i].Key.Count; j++)
+				for (int j = 0; j < PostRaceEvents[i].Count; j++)
 				{
-					manager.UpdateSingleBelief(string.Format("PRECrew{0}({1})", i, j), PostRaceEvents[i].Key[j].Name.NoSpaces());
-					if (PostRaceEvents[i].Value[j].NextState != "-")
+					manager.UpdateSingleBelief(string.Format("PRECrew{0}({1})", i, j), PostRaceEvents[i][j].Key.Name.NoSpaces());
+					if (PostRaceEvents[i][j].Value.NextState != "-")
 					{
-						manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), PostRaceEvents[i].Value[j].NextState);
+						manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), PostRaceEvents[i][j].Value.NextState);
 					} else
 					{
-						manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), PostRaceEvents[i].Value[j].CurrentState);
+						manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), PostRaceEvents[i][j].Value.CurrentState);
 					}
 				}
 			}

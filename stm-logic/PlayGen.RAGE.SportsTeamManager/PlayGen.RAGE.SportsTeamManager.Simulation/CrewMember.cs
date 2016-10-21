@@ -410,7 +410,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string SendMeetingEvent(IntegratedAuthoringToolAsset iat, string style, Team team)
 		{
 			var reply = "";
-			var dialogueOptions = new List<DialogueStateActionDTO>();
+			List<DialogueStateActionDTO> dialogueOptions;
 			switch (style)
 			{
 				case "StatReveal":
@@ -655,6 +655,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public DialogueStateActionDTO SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Team team, Boat previousBoat)
 		{
+			if (selected == null)
+			{
+				return null;
+			}
 			DialogueStateActionDTO reply = null;
 			var nextState = selected.NextState;
 			switch (nextState)
@@ -683,22 +687,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (dialogueOptions.Any())
 			{
 				//select reply
-				var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
-				//set player state
-				iat.SetDialogueState("Player", selectedNext.NextState);
-				reply = selectedNext;
-				//trigger this if the player has no next state
-				if (selectedNext.NextState == "-")
-				{
-					PostRaceFeedback(nextState, team);
-				}
+				reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
 			}
-			//trigger this if the CrewMember has no dialogue to the current event
-			else
-			{
-				iat.SetDialogueState("Player", "-");
-				PostRaceFeedback(nextState, team);
-			}
+			PostRaceFeedback(nextState, team);
 			return reply;
 		}
 

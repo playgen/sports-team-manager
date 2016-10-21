@@ -1,5 +1,9 @@
 ﻿using System.Linq;
+using System.Collections.Generic;
 using IntegratedAuthoringTool.DTOs;
+
+using PlayGen.RAGE.SportsTeamManager.Simulation;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -64,27 +68,27 @@ public class PostRaceEventUI : MonoBehaviour
 		var current = _postRaceEvent.CurrentEvent;
 		_nameText.text = "";
 		//if there is an event
-		if (current.Key != null && current.Value != null)
+		if (current != null && current.Count != 0)
 		{   //display avatar of first CrewMember involved
-			_lastState = current.Value[0].NextState;
-			if (current.Value[0].NextState == "-")
+			_lastState = current[0].Value.NextState;
+			if (current[0].Value.NextState == "-")
 			{
-				_lastState = current.Value[0].CurrentState;
+				_lastState = current[0].Value.CurrentState;
 			}
-			_avatarDisplay.SetAvatar(current.Key[0].Avatar, current.Key[0].GetMood());
+			_avatarDisplay.SetAvatar(current[0].Key.Avatar, current[0].Key.GetMood());
 			//display names of all involved
-			foreach (var cm in current.Key)
+			foreach (var cm in current)
 			{
 				if (_nameText.text.Length > 0)
 				{
 					_nameText.text += Localization.Get("AMPERSAND");
 				}
-				_nameText.text += cm.Name;
+				_nameText.text += cm.Key.Name;
 			}
 			//set alpha to 1 (fully visible)
 			GetComponent<CanvasGroup>().alpha = 1;
 			//set current NPC dialogue
-			_dialogueText.text = current.Value[0].Utterance;
+			_dialogueText.text = current[0].Value.Utterance;
 			ResetQuestions();
 		} else
 		{
@@ -98,24 +102,25 @@ public class PostRaceEventUI : MonoBehaviour
 	private void ResetQuestions()
 	{
 		var current = _postRaceEvent.CurrentEvent;
-		var eventMember = current.Key != null ? current.Key[0] : null;
+		var eventMember = current != null && current.Count != 0 ? current[0].Key : null;
 		var replies = _postRaceEvent.GetEventReplies();
 		//set text and onclick handlers for each question UI object
 		for (var i = 0; i < _questions.Length; i++)
 		{
-			if (replies.Length <= i)
+			if (replies[current[0].Key].Count <= i)
 			{
 				_questions[i].SetActive(false);
 				continue;
 			}
 			_questions[i].SetActive(true);
-			_questions[i].GetComponentInChildren<Text>().text = replies[i].Utterance;
-			var currentReply = replies[i];
+			_questions[i].GetComponentInChildren<Text>().text = replies[current[0].Key][i].Utterance;
+			var currentMember = current[0].Key;
+			var currentReply = replies[current[0].Key][i];
 			_questions[i].GetComponent<Button>().onClick.RemoveAllListeners();
-			_questions[i].GetComponent<Button>().onClick.AddListener(delegate { SendReply(currentReply); });
+			_questions[i].GetComponent<Button>().onClick.AddListener(delegate { SendReply(currentMember, currentReply); });
 		}
 		//display the button for closing the pop-up and update the displayed character mood if there are no more dialogue options
-		if (replies.Length == 0)
+		if (replies[current[0].Key].Count == 0)
 		{
 			_closeButton.SetActive(true);
 			if (!_learningPill.gameObject.activeSelf)
@@ -160,10 +165,10 @@ public class PostRaceEventUI : MonoBehaviour
 	/// <summary>
 	/// Triggered by button. Send the selected dialogue to the character
 	/// </summary>
-	public void SendReply(DialogueStateActionDTO reply)
+	public void SendReply(CrewMember cm, DialogueStateActionDTO reply)
 	{
 		Tracker.T.alternative.Selected("Post Race Event", reply.NextState, AlternativeTracker.Alternative.Dialog);
-		var response = _postRaceEvent.SendReply(reply);
+		var response = _postRaceEvent.AddReply(cm, reply);
 		if (response != null)
 		{
 			_dialogueText.text = response.First().Value.Utterance;
