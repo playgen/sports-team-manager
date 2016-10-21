@@ -66,7 +66,7 @@ public class RecruitMemberUI : MonoBehaviour
 		_allowanceBar.fillAmount = _recruitMember.QuestionAllowance() / (float)_recruitMember.StartingQuestionAllowance();
 		_allowanceText.text = _recruitMember.QuestionAllowance().ToString();
 		//set initial text displayed in center of pop-up
-		SetDialogueText("Your recruits are here. What do you want to ask them all or who do you want to hire?");
+		SetDialogueText(Localization.Get("RECRUITMENT_INTRO"));
 		//get recruits
 		var recruits = _recruitMember.GetRecruits().OrderBy(r => Guid.NewGuid()).ToList();
 		//for each recruitUI element
@@ -106,24 +106,10 @@ public class RecruitMemberUI : MonoBehaviour
 			_recruitUI[i].transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { HireCrewWarning(thisRecruit); });
 			var rand = UnityEngine.Random.Range(0, 8);
 			//set initial greeting dialogue
-			switch (rand % 4)
-			{
-				case 0:
-					_recruitUI[i].transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = "Hello";
-					break;
-				case 1:
-					_recruitUI[i].transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = "Hey";
-					break;
-				case 2:
-					_recruitUI[i].transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = "Hi";
-					break;
-				case 3:
-					_recruitUI[i].transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = "Hey there";
-					break;
-			}
+			_recruitUI[i].transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = Localization.Get("RECRUIT_GREETING_" + (rand % 4));
 			if (rand / 4 > 0)
 			{
-				_recruitUI[i].transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text += "!";
+				_recruitUI[i].transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text += Localization.Get("EXCLAIMATION_MARK");
 			}
 			_recruitUI[i].transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = false;
 			_recruitUI[i].transform.Find("Cost Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString();
@@ -210,22 +196,22 @@ public class RecruitMemberUI : MonoBehaviour
 		//adjust text, button text and button positioning based on context
 		if (_recruitMember.QuestionAllowance() < _recruitMember.GetConfigValue(ConfigKeys.RecruitmentCost))
 		{
-			_hireWarningText.text = "You don't have enough time left to hire this person.";
+			_hireWarningText.text = Localization.Get("HIRE_WARNING_NOT_POSSIBLE");
 			_hireWarningAccept.gameObject.SetActive(false);
 			_hireWarningReject.GetComponent<RectTransform>().anchorMin = new Vector2(0.375f, 0.1f);
 			_hireWarningReject.GetComponent<RectTransform>().anchorMax = new Vector2(0.625f, 0.35f);
 			_hireWarningReject.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-			_hireWarningReject.GetComponentInChildren<Text>().text = "OK";
+			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("OK", true);
 		} else
 		{
 			_hireWarningAccept.onClick.RemoveAllListeners();
 			_hireWarningAccept.onClick.AddListener(delegate { Recruit(recruit); });
 			_hireWarningAccept.gameObject.SetActive(true);
-			_hireWarningText.text = "Are you sure you want to hire " + recruit.Name + "?";
+			_hireWarningText.text = Localization.GetAndFormat("HIRE_WARNING_POSSIBLE", false, recruit.Name);
 			_hireWarningReject.GetComponent<RectTransform>().anchorMin = new Vector2(0.55f, 0.1f);
 			_hireWarningReject.GetComponent<RectTransform>().anchorMax = new Vector2(0.8f, 0.35f);
 			_hireWarningReject.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-			_hireWarningReject.GetComponentInChildren<Text>().text = "NO";
+			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("NO", true);
 		}
 	}
 

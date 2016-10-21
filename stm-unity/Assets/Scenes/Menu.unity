@@ -895,7 +895,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: TEAM_COLOURS
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &18678698
 GameObject:
   m_ObjectHideFlags: 0
@@ -1850,7 +1850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: TALK_TIME_REMAINING
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &86864000
 GameObject:
   m_ObjectHideFlags: 0
@@ -2097,7 +2097,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: SEASON_RANKING
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &97704933
 GameObject:
   m_ObjectHideFlags: 0
@@ -2577,6 +2577,7 @@ GameObject:
   - 224: {fileID: 121471305}
   - 222: {fileID: 121471307}
   - 114: {fileID: 121471306}
+  - 114: {fileID: 121471308}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -2641,6 +2642,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 121471304}
+--- !u!114 &121471308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 121471304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88e0378b041f6944a88d60a575d8f3b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: CANCEL
+  ToUpper: 1
 --- !u!1 &131672701
 GameObject:
   m_ObjectHideFlags: 0
@@ -2850,7 +2864,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: EXIT
-  toUpper: 0
+  ToUpper: 0
 --- !u!1 &136742134
 GameObject:
   m_ObjectHideFlags: 0
@@ -3165,7 +3179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: RESULT_HEADER
-  toUpper: 0
+  ToUpper: 0
 --- !u!1 &142592389
 GameObject:
   m_ObjectHideFlags: 0
@@ -4241,7 +4255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: MEETING_HEADER
-  toUpper: 0
+  ToUpper: 0
 --- !u!1 &205444506
 GameObject:
   m_ObjectHideFlags: 0
@@ -5480,7 +5494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: MAIN_MENU
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &267044094
 GameObject:
   m_ObjectHideFlags: 0
@@ -6405,7 +6419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: NAME
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &310833414
 GameObject:
   m_ObjectHideFlags: 0
@@ -6616,7 +6630,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: AGE
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &315030170
 GameObject:
   m_ObjectHideFlags: 0
@@ -6738,7 +6752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: HELP
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &341909291
 GameObject:
   m_ObjectHideFlags: 0
@@ -7685,7 +7699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: REQUIRED
-  toUpper: 0
+  ToUpper: 0
 --- !u!1 &384251534
 GameObject:
   m_ObjectHideFlags: 0
@@ -9464,7 +9478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: MANAGER_OPINION
-  toUpper: 0
+  ToUpper: 0
 --- !u!1 &572999003
 GameObject:
   m_ObjectHideFlags: 0
@@ -9552,7 +9566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: NO
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &577796999
 GameObject:
   m_ObjectHideFlags: 0
@@ -10311,7 +10325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: TALK_TIME_REMAINING
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &636844174
 GameObject:
   m_ObjectHideFlags: 0
@@ -10669,7 +10683,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: REQUIRED
-  toUpper: 0
+  ToUpper: 0
 --- !u!1 &657064478
 GameObject:
   m_ObjectHideFlags: 0
@@ -11591,7 +11605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: REQUIRED
-  toUpper: 0
+  ToUpper: 0
 --- !u!1 &731641931
 GameObject:
   m_ObjectHideFlags: 0
@@ -12289,7 +12303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: FIRE
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &773936535
 GameObject:
   m_ObjectHideFlags: 0
@@ -12860,7 +12874,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: FEEDBACK
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &831459814
 GameObject:
   m_ObjectHideFlags: 0
@@ -13157,7 +13171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: MAIN_MENU
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &838314067
 GameObject:
   m_ObjectHideFlags: 0
@@ -13774,7 +13788,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: RECRUIT_LEAVE
-  toUpper: 0
+  ToUpper: 0
 --- !u!1 &870204636
 GameObject:
   m_ObjectHideFlags: 0
@@ -14485,7 +14499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: OK
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &937972400
 GameObject:
   m_ObjectHideFlags: 0
@@ -15548,7 +15562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: MANAGER_AGE
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1008730708
 GameObject:
   m_ObjectHideFlags: 0
@@ -16104,7 +16118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: NO
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1097446822
 GameObject:
   m_ObjectHideFlags: 0
@@ -17312,7 +17326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: YES
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1135824895
 GameObject:
   m_ObjectHideFlags: 0
@@ -17619,7 +17633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: NO
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1170832925
 GameObject:
   m_ObjectHideFlags: 0
@@ -19073,6 +19087,7 @@ GameObject:
   - 224: {fileID: 1235888827}
   - 222: {fileID: 1235888829}
   - 114: {fileID: 1235888828}
+  - 114: {fileID: 1235888830}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -19137,6 +19152,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1235888826}
+--- !u!114 &1235888830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1235888826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88e0378b041f6944a88d60a575d8f3b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: OVERWRITE
+  ToUpper: 1
 --- !u!1 &1235973848
 GameObject:
   m_ObjectHideFlags: 0
@@ -19224,7 +19252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: TEAM_NAME
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1241060978
 GameObject:
   m_ObjectHideFlags: 0
@@ -19828,7 +19856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: LOAD_GAME
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1283097194
 GameObject:
   m_ObjectHideFlags: 0
@@ -20415,7 +20443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: ROLE
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1302108837
 GameObject:
   m_ObjectHideFlags: 0
@@ -22447,7 +22475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: CREATE_GAME
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1420109971
 GameObject:
   m_ObjectHideFlags: 0
@@ -22603,7 +22631,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: YES
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1431687138
 GameObject:
   m_ObjectHideFlags: 0
@@ -23411,7 +23439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: SKILLS_REQUIRED
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1445804135
 GameObject:
   m_ObjectHideFlags: 0
@@ -24003,7 +24031,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: RESULT
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1486988288
 GameObject:
   m_ObjectHideFlags: 0
@@ -24400,7 +24428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: EXIT
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1514634574
 GameObject:
   m_ObjectHideFlags: 0
@@ -24804,7 +24832,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: FIRE_WARNING
-  toUpper: 0
+  ToUpper: 0
 --- !u!1 &1535831463
 GameObject:
   m_ObjectHideFlags: 0
@@ -24966,7 +24994,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: SETTINGS
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1560014012
 GameObject:
   m_ObjectHideFlags: 0
@@ -26983,7 +27011,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: NEW_GAME
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1701430467
 GameObject:
   m_ObjectHideFlags: 0
@@ -27769,7 +27797,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: MANAGER_NAME
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1740980381
 GameObject:
   m_ObjectHideFlags: 0
@@ -30468,7 +30496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: PREVIOUS_MEMBERS
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1919122499
 GameObject:
   m_ObjectHideFlags: 0
@@ -30479,7 +30507,6 @@ GameObject:
   - 224: {fileID: 1919122500}
   - 222: {fileID: 1919122501}
   - 114: {fileID: 1919122502}
-  - 114: {fileID: 1919122503}
   m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
@@ -30544,19 +30571,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: POSITION NAME
---- !u!114 &1919122503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1919122499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88e0378b041f6944a88d60a575d8f3b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Key: POSITION_NAME
-  toUpper: 1
 --- !u!1 &1925372652
 GameObject:
   m_ObjectHideFlags: 0
@@ -30961,7 +30975,6 @@ MonoBehaviour:
   - {fileID: 1740980383}
   - {fileID: 341909293}
   _dialogueText: {fileID: 1732577634}
-  _nameText: {fileID: 202269921}
   _statQuestion: {fileID: 1102365753}
   _roleQuestion: {fileID: 585712154}
   _opinionPositiveQuestion: {fileID: 784060693}
@@ -31310,7 +31323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: RANDOMISE
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &1988280017
 GameObject:
   m_ObjectHideFlags: 0
@@ -31807,7 +31820,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: LOAD_GAME
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &2032280038
 GameObject:
   m_ObjectHideFlags: 0
@@ -31967,7 +31980,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: MANAGER_GENDER
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &2047018135
 GameObject:
   m_ObjectHideFlags: 0
@@ -32123,6 +32136,7 @@ GameObject:
   - 224: {fileID: 2057001019}
   - 222: {fileID: 2057001021}
   - 114: {fileID: 2057001020}
+  - 114: {fileID: 2057001022}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -32189,6 +32203,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2057001018}
+--- !u!114 &2057001022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2057001018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88e0378b041f6944a88d60a575d8f3b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: NEW_GAME_OVERWRITE
+  ToUpper: 0
 --- !u!1 &2062139242
 GameObject:
   m_ObjectHideFlags: 0
@@ -32639,7 +32666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: YES
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &2081567037
 GameObject:
   m_ObjectHideFlags: 0
@@ -33266,7 +33293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Key: TEAM_MANAGEMENT
-  toUpper: 1
+  ToUpper: 1
 --- !u!1 &2137271404
 GameObject:
   m_ObjectHideFlags: 0

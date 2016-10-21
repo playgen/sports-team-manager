@@ -181,13 +181,13 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		if (_teamSelection.GetStage() % _teamSelection.GetSessionLength() != 0)
 		{
 			_raceButton.onClick.AddListener(ConfirmLineUp);
-			_raceButton.GetComponentInChildren<Text>().text = "PRACTICE " + (_teamSelection.GetStage() % _teamSelection.GetSessionLength()) + "/" + (_teamSelection.GetSessionLength() - 1);
+			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, _teamSelection.GetStage() % _teamSelection.GetSessionLength(), _teamSelection.GetSessionLength() - 1);
 			_raceButton.GetComponentInChildren<Text>().fontSize = 16;
 		}
 		else
 		{
 			_raceButton.onClick.AddListener(ConfirmPopUp);
-			_raceButton.GetComponentInChildren<Text>().text = "RACE!";
+			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_RACE", true);
 			_raceButton.GetComponentInChildren<Text>().fontSize = 20;
 		}
 		var positionContainer = _boatMain.transform.Find("Position Container");
@@ -201,7 +201,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			}
 			positionObject.SetActive(true);
 			var pos = team.Boat.Positions[i];
-			positionObject.transform.Find("Name").GetComponent<Text>().text = pos.ToString().Localize();
+			positionObject.transform.Find("Name").GetComponent<Text>().text = Localization.Get(pos.ToString());
 			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.GetName()).Image;
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
 		}
@@ -426,7 +426,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private void ConfirmPopUp()
 	{
 		_preRacePopUp.SetActive(true);
-		_preRacePopUp.GetComponentInChildren<Text>().text = _teamSelection.QuestionAllowance() > 0 ? string.Format("You have {0} Talk Time remaining! If you don't use it before the race, they will be lost.\n\nAre you sure you want to race with this line-up now?", _teamSelection.QuestionAllowance()) : "Are you sure you want to race with this line-up now?";
+		_preRacePopUp.GetComponentInChildren<Text>().text = _teamSelection.QuestionAllowance() > 0 ? Localization.GetAndFormat("RACE_CONFIRM_ALLOWANCE_REMAINING", false, _teamSelection.QuestionAllowance()) : Localization.Get("RACE_CONFIRM_NO_ALLOWANCE");
 		_popUpBlocker.transform.SetAsLastSibling();
 		_preRacePopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
@@ -495,7 +495,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			crewCount++;
 			memberObject.transform.SetAsLastSibling();
 		}
-		_postRacePopUp.transform.Find("Result").GetComponent<Text>().text = _teamSelection.GetTeam().Name + " finished " + finishPositionText + "!";
+		_postRacePopUp.transform.Find("Result").GetComponent<Text>().text = Localization.GetAndFormat("RACE_RESULT_POSTION", false, _teamSelection.GetTeam().Name, finishPositionText);
 	}
 
 	/// <summary>
@@ -620,22 +620,8 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 				expected -= positions;
 			}
 			string finishPositionText;
-			switch (finishPosition)
-			{
-				case 1:
-					finishPositionText = "1st";
-					break;
-				case 2:
-					finishPositionText = "2nd";
-					break;
-				case 3:
-					finishPositionText = "3rd";
-					break;
-				default:
-					finishPositionText = finishPosition + "th";
-					break;
-			}
-			scoreText.text = "POSITION: " + finishPositionText;
+			finishPositionText = Localization.Get("POSITION_" + finishPosition);
+			scoreText.text = string.Format("{0} {1}", Localization.Get("RACE_POSITION", true), finishPositionText);
 			if (currentPositions != null)
 			{
 				DisplayPostRacePopUp(currentPositions, finishPosition, finishPositionText);

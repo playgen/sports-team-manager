@@ -114,7 +114,7 @@ public class PositionDisplayUI : MonoBehaviour
 			currentCrew = team.Boat.PositionCrew[position];
 		}
 		//set title and description text
-		_textList[0].text = position.ToString().Localize();
+		_textList[0].text = Localization.Get(position.ToString());
 		_textList[1].text = position.GetDescription();
 		//set role image (displayed if no-one is in this position)
 		_roleImage.sprite = _roleSprites.First(mo => mo.Name == position.GetName()).Image;

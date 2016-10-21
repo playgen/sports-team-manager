@@ -180,7 +180,7 @@ public class NewGameUI : MonoBehaviour {
 		}
 		else
 		{
-			_errorText.text = "Game not created. Please try again.";
+			_errorText.text = Localization.Get("NEW_GAME_CREATION_ERROR");
 		}
 	}
 }

@@ -77,7 +77,7 @@ public class PostRaceEventUI : MonoBehaviour
 			{
 				if (_nameText.text.Length > 0)
 				{
-					_nameText.text += " & ";
+					_nameText.text += Localization.Get("AMPERSAND");
 				}
 				_nameText.text += cm.Name;
 			}

@@ -14,32 +14,17 @@ public class Localization : MonoBehaviour {
 	private static readonly Dictionary<Language, Dictionary<string, string>> LocalizationDict = new Dictionary<Language, Dictionary<string, string>>();
 
 	public string Key;
-	public bool toUpper;
+	public bool ToUpper;
 
 	public static string filePath = "StringLocalizations";
-
 	public static Language SelectedLanguage { get; set; }
 
 	void Awake()
 	{
-		ConvertJsonToDict();
-		if (PlayerPrefs.HasKey("Language"))
+		if (SelectedLanguage != 0)
 		{
-			SelectedLanguage = (Language)Enum.Parse(typeof(Language), PlayerPrefs.GetString("Language"));
+			return;
 		}
-		else
-		{
-			SelectedLanguage = Language.Italian;
-		}
-	}
-
-	void OnEnable()
-	{
-		Set();
-	}
-
-	static void ConvertJsonToDict()
-	{
 		TextAsset jsonTextAsset = Resources.Load(filePath) as TextAsset;
 
 		var N = JSON.Parse(jsonTextAsset.text);
@@ -57,8 +42,21 @@ public class Localization : MonoBehaviour {
 			}
 			LocalizationDict[(Language)l] = languageStrings;
 		}
+		if (PlayerPrefs.HasKey("Language"))
+		{
+			SelectedLanguage = (Language)Enum.Parse(typeof(Language), PlayerPrefs.GetString("Language"));
+		}
+		else
+		{
+			SelectedLanguage = Language.English;
+		}
 	}
-	
+
+	void OnEnable()
+	{
+		Set();
+	}
+
 	public static string Get(string key, bool toUpper = false)
 	{
 		string txt;
@@ -74,6 +72,11 @@ public class Localization : MonoBehaviour {
 			txt = txt.ToUpper();
 		}
 		return txt;
+	}
+
+	public static string GetAndFormat(string key, bool toUpper, params object[] args)
+	{
+		return string.Format(Get(key, toUpper), args);
 	}
 
 	public static string GetByLanguage(string key, Language language)
@@ -100,25 +103,7 @@ public class Localization : MonoBehaviour {
 		{
 			Debug.LogError("Could not find string with key: " + Key);
 		}
-		if (toUpper)
+		if (ToUpper)
 			_text.text = _text.text.ToUpper();
-	}
-}
-
-public static class LocalizationExtensions
-{
-	public static string Localize (this string key)
-	{
-		return Localization.Get(key);
-	}
-
-	public static string LocalizeToUpper(this string key)
-	{
-		return Localization.Get(key, true);
-	}
-
-	public static string LocalizeFromEnglish(this string text)
-	{
-		return Localization.GetByLanguage(text, Language.English);
 	}
 }

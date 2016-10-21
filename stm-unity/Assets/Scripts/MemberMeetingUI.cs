@@ -27,8 +27,6 @@ public class MemberMeetingUI : MonoBehaviour
 	[SerializeField]
 	private Text _dialogueText;
 	[SerializeField]
-	private Text _nameText;
-	[SerializeField]
 	private Text _statQuestion;
 	[SerializeField]
 	private Text _roleQuestion;
@@ -113,14 +111,14 @@ public class MemberMeetingUI : MonoBehaviour
 		_textList[0].text = _currentMember.Name;
 		_textList[1].text = _currentMember.Age.ToString();
 		var currentRole = _memberMeeting.GetCrewMemberPosition(_currentMember);
-		_textList[2].text = currentRole == Position.Null ? "No Role" : "";
+		_textList[2].text = currentRole == Position.Null ? Localization.Get("NO_ROLE") : "";
 		_roleButton.onClick.RemoveAllListeners();
 		//set up button onclick if CrewMember is positioned
 		if (currentRole != Position.Null)
 		{
 			_roleButton.gameObject.SetActive(true);
 			_roleButton.onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentRole); });
-			_roleButton.GetComponentInChildren<Text>().text = currentRole.ToString().LocalizeToUpper();
+			_roleButton.GetComponentInChildren<Text>().text = Localization.Get(currentRole.ToString(), true);
 			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = _teamSelectionUI.RoleLogos.First(mo => mo.Name == currentRole.GetName()).Image;
 		}
 		//hide if not positioned
@@ -136,8 +134,7 @@ public class MemberMeetingUI : MonoBehaviour
 			_barForegrounds[i].transform.parent.FindChild("Skill Image").GetComponent<Image>().enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] != 0;
 		}
 		//set default starting dialogue
-		_dialogueText.text = "You wanted to see me?";
-		_nameText.text = "What do you want to ask?";
+		_dialogueText.text = Localization.Get("MEETING_INTRO");
 		//set question text for the player
 		_statQuestion.text = _memberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).First();
 		_roleQuestion.text = _memberMeeting.GetEventText("RoleReveal").OrderBy(s => Guid.NewGuid()).First();
@@ -157,10 +154,10 @@ public class MemberMeetingUI : MonoBehaviour
 		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealPositiveCost);
 		_opinionNegativeQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealNegativeCost);
 		//set closing text
-		_closeText.text = "Nevermind, goodbye";
+		_closeText.text = Localization.Get("MEETING_EARLY_EXIT");
 		if (postQuestion)
 		{
-			_closeText.text = "OK, thank you for telling me that.";
+			_closeText.text = Localization.Get("MEETING_EXIT");
 		}
 		//display revealed opinions for each other active CrewMember
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
