@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
@@ -38,6 +40,7 @@ public class NewGameUI : MonoBehaviour {
 		_overwritePopUp.SetActive(false);
 		WarningDisable();
 		RandomColor();
+		_managerGender.AddOptions(new List<string> { Localization.Get("MALE"), Localization.Get("FEMALE") });
 	}
 
 	/// <summary>
