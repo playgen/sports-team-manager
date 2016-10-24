@@ -41,6 +41,7 @@
 {"key":"MIDBOWMAN","en":"Mid-Bowman","it":"x"},
 {"key":"MIDBOWMAN_DESCRIPTION","en":"Stows sails below deck and helps with sail changes. Crew positioned here will need to be physically fit, agile and able to deal with being in this hot, dark and wet position.","it":"x"},
 {"key":"MOOD","en":"Mood","it":"x"},
+{"key":"MY_CREW","en":"My Crew","it":"x"},
 {"key":"NAME","en":"Name:","it":"x"},
 {"key":"NAVIGATOR","en":"Navigator","it":"x"},
 {"key":"NAVIGATOR_DESCRIPTION","en":"In charge of manoeuvres. Situational awareness and reactions are key to succeed in this position.","it":"x"},

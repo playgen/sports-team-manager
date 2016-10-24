@@ -54,7 +54,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	[SerializeField]
 	private PositionDisplayUI _positionUI;
 	[SerializeField]
-	private PostRaceEventUI _postRaceEventUI;
+	private PostRaceEventUI[] _postRaceEvents;
 	private int _positionsEmpty;
 	[SerializeField]
 	private GameObject _preRacePopUp;
@@ -505,13 +505,17 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	{
 		_postRacePopUp.SetActive(false);
 		_popUpBlocker.gameObject.SetActive(false);
-		if (_postRaceEventUI.gameObject.activeSelf)
+		foreach (var pre in _postRaceEvents)
 		{
-			_popUpBlocker.transform.SetAsLastSibling();
-			_postRaceEventUI.transform.SetAsLastSibling();
-			_popUpBlocker.gameObject.SetActive(true);
-			_popUpBlocker.onClick.RemoveAllListeners();
-			_postRaceEventUI.SetBlockerOnClick();
+			if (pre.gameObject.activeSelf && pre.GetComponent<CanvasGroup>().alpha != 0)
+			{
+				_popUpBlocker.transform.SetAsLastSibling();
+				pre.transform.parent.SetAsLastSibling();
+				_popUpBlocker.gameObject.SetActive(true);
+				_popUpBlocker.onClick.RemoveAllListeners();
+				pre.SetBlockerOnClick();
+				return;
+			}
 		}
 	}
 

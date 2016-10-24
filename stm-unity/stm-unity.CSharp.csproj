@@ -144,6 +144,7 @@
     <Compile Include="Assets\Scripts\PositionUI.cs" />
     <Compile Include="Assets\Scripts\PostRaceEvent.cs" />
     <Compile Include="Assets\Scripts\PostRaceEventUI.cs" />
+    <Compile Include="Assets\Scripts\PostRacePersonUI.cs" />
     <Compile Include="Assets\Scripts\RecruitMember.cs" />
     <Compile Include="Assets\Scripts\RecruitMemberUI.cs" />
     <Compile Include="Assets\Scripts\ScreenSideUI.cs" />

@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using IntegratedAuthoringTool.DTOs;
 
 using PlayGen.RAGE.SportsTeamManager.Simulation;
@@ -10,47 +10,40 @@ using UnityEngine.UI;
 /// <summary>
 /// Contains all UI logic related to the Post Race pop-up
 /// </summary>
-[RequireComponent(typeof(PostRaceEvent))]
 public class PostRaceEventUI : MonoBehaviour
 {
 	private PostRaceEvent _postRaceEvent;
+	private CanvasGroup _canvasGroup;
 	[SerializeField]
 	private LearningPillUI _learningPill;
-	[SerializeField]
-	private AvatarDisplay _avatarDisplay;
-	[SerializeField]
-	private Text _dialogueText;
-	[SerializeField]
-	private Text _nameText;
-	[SerializeField]
-	private GameObject[] _questions;
 	[SerializeField]
 	private GameObject _closeButton;
 	[SerializeField]
 	private Button _popUpBlocker;
-	private string _lastState;
-
-	private void Awake()
-	{
-		_postRaceEvent = GetComponent<PostRaceEvent>();
-	}
+	[SerializeField]
+	private PostRacePersonUI[] _postRacePeople;
 
 	private void OnEnable()
 	{
+		if (_postRaceEvent == null)
+		{
+			_postRaceEvent = GetComponentInParent<PostRaceEvent>();
+			_canvasGroup = GetComponent<CanvasGroup>();
+		}
 		//reorder pop-ups and blockers
-		ResetDisplay();
 		_popUpBlocker.transform.SetAsLastSibling();
-		transform.SetAsLastSibling();
+		_postRaceEvent.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
+		ResetDisplay();
 	}
 
 	private void OnDisable()
 	{
-		if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
+		if (_postRaceEvent.transform.GetSiblingIndex() == _postRaceEvent.transform.parent.childCount - 1)
 		{
 			_popUpBlocker.transform.SetAsLastSibling();
-			transform.SetAsLastSibling();
+			_postRaceEvent.transform.SetAsLastSibling();
 			_popUpBlocker.onClick.RemoveAllListeners();
 			_popUpBlocker.gameObject.SetActive(false);
 		}
@@ -61,39 +54,35 @@ public class PostRaceEventUI : MonoBehaviour
 	/// </summary>
 	public void ResetDisplay()
 	{
-		//hide the pop-up in case no event is selected
-		GetComponent<CanvasGroup>().alpha = 0;
 		_closeButton.SetActive(false);
-		gameObject.SetActive(true);
 		var current = _postRaceEvent.CurrentEvent;
-		_nameText.text = "";
 		//if there is an event
-		if (current != null && current.Count != 0)
-		{   //display avatar of first CrewMember involved
-			_lastState = current[0].Value.NextState;
-			if (current[0].Value.NextState == "-")
+		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length && _postRaceEvent.EnableCounter == 0)
+		{
+			_postRaceEvent.EnableCheck();
+			for (int i = 0; i < _postRacePeople.Length; i++)
 			{
-				_lastState = current[0].Value.CurrentState;
-			}
-			_avatarDisplay.SetAvatar(current[0].Key.Avatar, current[0].Key.GetMood());
-			//display names of all involved
-			foreach (var cm in current)
-			{
-				if (_nameText.text.Length > 0)
-				{
-					_nameText.text += Localization.Get("AMPERSAND");
-				}
-				_nameText.text += cm.Key.Name;
+				_postRacePeople[i].ResetDisplay(current[i]);
 			}
 			//set alpha to 1 (fully visible)
 			GetComponent<CanvasGroup>().alpha = 1;
+			_canvasGroup.interactable = true;
+			_canvasGroup.blocksRaycasts = true;
 			//set current NPC dialogue
-			_dialogueText.text = current[0].Value.Utterance;
 			ResetQuestions();
-		} else
-		{
-			gameObject.SetActive(false);
 		}
+		else
+		{
+			Hide();
+		}
+	}
+
+	public void Hide()
+	{
+		_canvasGroup.alpha = 0;
+		_canvasGroup.interactable = false;
+		_canvasGroup.blocksRaycasts = false;
+		_postRaceEvent.DisableCheck();
 	}
 
 	/// <summary>
@@ -102,44 +91,16 @@ public class PostRaceEventUI : MonoBehaviour
 	private void ResetQuestions()
 	{
 		var current = _postRaceEvent.CurrentEvent;
-		var eventMember = current != null && current.Count != 0 ? current[0].Key : null;
 		var replies = _postRaceEvent.GetEventReplies();
-		//set text and onclick handlers for each question UI object
-		for (var i = 0; i < _questions.Length; i++)
+		for (int i = 0; i < _postRacePeople.Length; i++)
 		{
-			if (replies[current[0].Key].Count <= i)
-			{
-				_questions[i].SetActive(false);
-				continue;
-			}
-			_questions[i].SetActive(true);
-			_questions[i].GetComponentInChildren<Text>().text = replies[current[0].Key][i].Utterance;
-			var currentMember = current[0].Key;
-			var currentReply = replies[current[0].Key][i];
-			_questions[i].GetComponent<Button>().onClick.RemoveAllListeners();
-			_questions[i].GetComponent<Button>().onClick.AddListener(delegate { SendReply(currentMember, currentReply); });
+			_postRacePeople[i].ResetQuestions(current[i], replies[current[i].Key]);
 		}
-		//display the button for closing the pop-up and update the displayed character mood if there are no more dialogue options
-		if (replies[current[0].Key].Count == 0)
+		if (replies.Values.Sum(dos => dos.Count) == 0)
 		{
 			_closeButton.SetActive(true);
-			if (!_learningPill.gameObject.activeSelf)
-			{
-				SetBlockerOnClick();
-			}
-			//update displayed avatar moods
-			if (eventMember != null)
-			{
-				_avatarDisplay.UpdateMood(eventMember.Avatar, eventMember.GetMood());
-			}
-			foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
-			{
-				if (crewMember.Current)
-				{
-					crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(crewMember.CrewMember.Avatar, crewMember.CrewMember.GetMood());
-				}
-			}
-		}
+			SetBlockerOnClick();
+		} 
 		else
 		{
 			_popUpBlocker.onClick.RemoveAllListeners();
@@ -148,18 +109,24 @@ public class PostRaceEventUI : MonoBehaviour
 
 	public void SetBlockerOnClick()
 	{
-		if (!_questions[0].activeSelf)
+		if (_postRacePeople.All(prp => prp.ActiveQuestions() == false))
 		{
-			_popUpBlocker.onClick.AddListener(GetLearningPill);
-			_popUpBlocker.onClick.AddListener(ResetDisplay);
+			_popUpBlocker.onClick.AddListener(Hide);
+			_popUpBlocker.onClick.AddListener(_postRaceEvent.GetEvent);
 			var teamSelection = FindObjectOfType(typeof(TeamSelectionUI)) as TeamSelectionUI;
 			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
+			_popUpBlocker.onClick.AddListener(GetLearningPill);
 		}
 	}
 
 	public void GetLearningPill()
 	{
-		_learningPill.SetHelp(_lastState);
+		var lastStates = new List<string>();
+		for (int i = 0; i < _postRacePeople.Length; i++)
+		{
+			lastStates.Add(_postRacePeople[i].LastState);
+		}
+		_learningPill.SetHelp(lastStates);
 	}
 
 	/// <summary>
@@ -168,11 +135,19 @@ public class PostRaceEventUI : MonoBehaviour
 	public void SendReply(CrewMember cm, DialogueStateActionDTO reply)
 	{
 		Tracker.T.alternative.Selected("Post Race Event", reply.NextState, AlternativeTracker.Alternative.Dialog);
-		var response = _postRaceEvent.AddReply(cm, reply);
-		if (response != null)
+		var responses = _postRaceEvent.AddReply(cm, reply);
+		if (responses != null)
 		{
-			_dialogueText.text = response.First().Value.Utterance;
-			_lastState = response.First().Value.CurrentState;
+			for (int i = 0; i < _postRacePeople.Length; i++)
+			{
+				foreach (var res in responses)
+				{
+					if (res.Key == _postRacePeople[i].CurrentCrewMember)
+					{
+						_postRacePeople[i].UpdateDialogue(res.Value);
+					}
+				}
+			}
 			ResetQuestions();
 		}
 	}

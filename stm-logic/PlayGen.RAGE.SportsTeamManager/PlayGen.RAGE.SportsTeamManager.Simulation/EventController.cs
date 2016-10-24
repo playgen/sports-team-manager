@@ -34,11 +34,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			if (dialogueOptions.Values.Sum(dos => dos.Count) == 0)
 			{
-				for (int i = 0; i < PostRaceEvents[0].Count; i++)
-				{
-					manager.EmotionalAppraisal.RemoveBelief(string.Format("PRECrew{0}({1})", PostRaceEvents.Count - 1, i), "SELF");
-					manager.EmotionalAppraisal.RemoveBelief(string.Format("PREEvent{0}({1})", PostRaceEvents.Count - 1, i), "SELF");
-				}
+				RemoveEvents(manager);
 				PostRaceEvents.RemoveAt(0);
 				SaveEvents(manager);
 			}
@@ -144,7 +140,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							{
 								continue;
 							}
-							eventSelected.Add(new KeyValuePair<CrewMember, DialogueStateActionDTO>(allCrew.OrderBy(c => Guid.NewGuid()).First().Value, selected));
+							allCrew = allCrew.OrderBy(c => Guid.NewGuid()).ToDictionary(d => d.Key, d => d.Value);
+							eventSelected.Add(new KeyValuePair<CrewMember, DialogueStateActionDTO>(allCrew.First().Value, selected));
 							break;
 						case "Retirement":
 							//for this event, select a crew member who has not been selected in the past five race sessions
@@ -264,26 +261,38 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Dictionary<CrewMember, DialogueStateActionDTO> SendPostRaceEvent(Dictionary<CrewMember, DialogueStateActionDTO> selected, Team team, Boat previous)
 		{
 			var replies = new Dictionary<CrewMember, DialogueStateActionDTO>();
-			var replyCount = 0;
 			foreach (var response in selected)
 			{
+				var replyCount = PostRaceEvents[0].FindIndex(pre => pre.Key == response.Key);
 				var reply = response.Key.SendPostRaceEvent(iat, response.Value, team, previous);
 				team.Manager.UpdateSingleBelief(string.Format("PRECrew0({0})", replyCount), response.Key.Name.NoSpaces());
 				if (reply != null)
 				{
 					replies.Add(response.Key, reply);
 					team.Manager.UpdateSingleBelief(string.Format("PREEvent0({0})", replyCount), reply.CurrentState);
+					PostRaceEvents[0][replyCount] = new KeyValuePair<CrewMember, DialogueStateActionDTO>(response.Key, reply);
 				}
 				else
 				{
-					replies.Add(response.Key, null);
-					team.Manager.UpdateSingleBelief(string.Format("PREEvent0({0})", replyCount), "-");
+					replies.Add(response.Key, PostRaceEvents[0][replyCount].Value);
 				}
-				PostRaceEvents[0][replyCount] = new KeyValuePair<CrewMember, DialogueStateActionDTO>(response.Key, reply);
 				replyCount++;
 			}
 			team.Manager.SaveStatus();
 			return replies;
+		}
+
+		public void RemoveEvents(Person manager)
+		{
+			for (int i = 0; i < PostRaceEvents.Count; i++)
+			{
+				for (int j = 0; j < PostRaceEvents[i].Count; j++)
+				{
+					manager.EmotionalAppraisal.RemoveBelief(string.Format("PRECrew{0}({1})", i, j), "SELF");
+					manager.EmotionalAppraisal.RemoveBelief(string.Format("PREEvent{0}({1})", i, j), "SELF");
+				}
+			}
+			manager.SaveStatus();
 		}
 
 		public void SaveEvents(Person manager)

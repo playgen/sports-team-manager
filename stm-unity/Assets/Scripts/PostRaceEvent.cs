@@ -17,12 +17,20 @@ public class PostRaceEvent : MonoBehaviour
 		get { return _currentEvent; }
 	}
 	private Dictionary<CrewMember, DialogueStateActionDTO> _selectedResponses;
+	private int _disableCounter;
+	private int _enableCounter;
+	public int EnableCounter
+	{
+		get { return _enableCounter; }
+	}
 
 	/// <summary>
 	/// Trigger chance for an event, display pop-up is one is returned
 	/// </summary>
 	public void GetEvent()
 	{
+		_disableCounter = 0;
+		_enableCounter = 0;
 		if (_gameManager == null)
 		{
 			_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
@@ -30,7 +38,21 @@ public class PostRaceEvent : MonoBehaviour
 		if (_gameManager.EventController.PostRaceEvents.Count > 0)
 		{
 			_currentEvent = _gameManager.EventController.PostRaceEvents.First();
-			gameObject.SetActive(true);
+		}
+		gameObject.SetActive(true);
+	}
+
+	public void EnableCheck()
+	{
+		_enableCounter++;
+	}
+
+	public void DisableCheck()
+	{
+		_disableCounter++;
+		if (_disableCounter == transform.childCount)
+		{
+			gameObject.SetActive(false);
 		}
 	}
 
