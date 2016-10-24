@@ -65,6 +65,8 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	[SerializeField]
 	private Button _popUpBlocker;
 	[SerializeField]
+	private Button _smallerPopUpBlocker;
+	[SerializeField]
 	private Sprite _practiceIcon;
 	[SerializeField]
 	private Sprite _raceIcon;
@@ -377,14 +379,20 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 
 	public void OnScroll(PointerEventData eventData)
 	{
-		_boatContainerScroll.value += eventData.scrollDelta.y * _boatContainerScroll.size;
+		if (!_popUpBlocker.gameObject.activeSelf && !_smallerPopUpBlocker.gameObject.activeSelf)
+		{
+			_boatContainerScroll.value += eventData.scrollDelta.y * _boatContainerScroll.size;
+		}
 	}
 
 	public void OnDrag(PointerEventData eventData)
 	{
-		if (Mathf.Abs(eventData.delta.y) > 0.5f)
+		if (!_popUpBlocker.gameObject.activeSelf && !_smallerPopUpBlocker.gameObject.activeSelf)
 		{
-			_boatContainerScroll.value += Mathf.Clamp(eventData.delta.y, -1, 1) * _boatContainerScroll.size;
+			if (Mathf.Abs(eventData.delta.y) > 0.5f)
+			{
+				_boatContainerScroll.value += Mathf.Clamp(eventData.delta.y, -1, 1) * _boatContainerScroll.size;
+			}
 		}
 	}
 

@@ -44,6 +44,7 @@ public class PostRacePersonUI : MonoBehaviour
 
 	public void ResetQuestions(KeyValuePair<CrewMember, DialogueStateActionDTO> current, List<DialogueStateActionDTO> replies)
 	{
+		UpdateSelected(null);
 		var eventMember = current.Key;
 		//set text and onclick handlers for each question UI object
 		for (var i = 0; i < _questions.Length; i++)
@@ -58,7 +59,9 @@ public class PostRacePersonUI : MonoBehaviour
 			var currentMember = current.Key;
 			var currentReply = replies[i];
 			var postRaceEvent = GetComponentInParent<PostRaceEventUI>();
+			var question = _questions[i];
 			_questions[i].GetComponent<Button>().onClick.RemoveAllListeners();
+			_questions[i].GetComponent<Button>().onClick.AddListener(delegate { UpdateSelected(question); });
 			_questions[i].GetComponent<Button>().onClick.AddListener(delegate { postRaceEvent.SendReply(currentMember, currentReply); });
 		}
 		//display the button for closing the pop-up and update the displayed character mood if there are no more dialogue options
@@ -85,6 +88,21 @@ public class PostRacePersonUI : MonoBehaviour
 		{
 			_dialogueText.text = response.Utterance;
 			_lastState = response.CurrentState;
+		}
+	}
+
+	public void UpdateSelected(GameObject question)
+	{
+		foreach (var q in _questions)
+		{
+			if (q == question)
+			{
+				q.GetComponent<Image>().color = new UnityEngine.Color(0, 244, 214);
+			}
+			else
+			{
+				q.GetComponent<Image>().color = UnityEngine.Color.white;
+			}
 		}
 	}
 
