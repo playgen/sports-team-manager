@@ -392,20 +392,26 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			while (!noEventFound)
 			{
 				var crewMemberName = Team.Manager.LoadBelief(String.Format("PRECrew{0}({1})", eventsFound, eventSectionsFound));
-				var crewMember = Team.CrewMembers.FirstOrDefault(cm => cm.Key.NoSpaces() == crewMemberName).Value
-								?? Team.RetiredCrew.FirstOrDefault(cm => cm.Key.NoSpaces() == crewMemberName).Value;
-				if (crewMember != null)
+				if (crewMemberName != "null")
 				{
-					var evName = Team.Manager.LoadBelief(String.Format("PREEvent{0}({1})", eventsFound, eventSectionsFound));
-					var ev = eventController.GetPossibleAgentDialogue(evName).FirstOrDefault()
-							?? eventController.GetPossibleAgentDialogue("PostRaceEventStart").FirstOrDefault(e => e.NextState == evName);
-					if (eventSectionsFound == 0)
+					var crewMember = Team.CrewMembers.FirstOrDefault(cm => cm.Key.NoSpaces() == crewMemberName).Value
+									?? Team.RetiredCrew.FirstOrDefault(cm => cm.Key.NoSpaces() == crewMemberName).Value;
+					if (crewMember != null)
 					{
-						eventController.PostRaceEvents.Add(new List<KeyValuePair<CrewMember, DialogueStateActionDTO>>());
+						var evName = Team.Manager.LoadBelief(String.Format("PREEvent{0}({1})", eventsFound, eventSectionsFound));
+						if (evName != "null")
+						{
+							var ev = eventController.GetPossibleAgentDialogue(evName).FirstOrDefault()
+								?? eventController.GetPossibleAgentDialogue("PostRaceEventStart").FirstOrDefault(e => e.NextState == evName);
+							if (eventSectionsFound == 0)
+							{
+								eventController.PostRaceEvents.Add(new List<KeyValuePair<CrewMember, DialogueStateActionDTO>>());
+							}
+							eventController.PostRaceEvents[eventsFound].Add(new KeyValuePair<CrewMember, DialogueStateActionDTO>(crewMember, ev));
+							eventSectionsFound++;
+							continue;
+						}
 					}
-					eventController.PostRaceEvents[eventsFound].Add(new KeyValuePair<CrewMember, DialogueStateActionDTO>(crewMember, ev));
-					eventSectionsFound++;
-					continue;
 				}
 				if (eventSectionsFound == 0)
 				{
@@ -461,7 +467,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crew += "," + offset;
 			//send event with string of information within
 			var eventString = string.Format(eventStringUnformatted, boatType, crew);
-			manager.EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
 			var eventRpc = manager.RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
 			if (eventRpc != null)
 			{

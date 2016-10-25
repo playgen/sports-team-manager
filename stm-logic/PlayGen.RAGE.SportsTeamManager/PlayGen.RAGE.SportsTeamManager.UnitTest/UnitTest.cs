@@ -544,9 +544,9 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		{
 			for (var i = 0; i < _testCount; i++)
 			{
+				var config = new ConfigStore();
 				var gameManager = new GameManager();
 				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Ideal Test", new byte[] { 0, 0, 0 }, new byte[] { 0, 0, 0 }, "Player Manager", "18", "Male", "English");
-				var config = new ConfigStore();
 				while (gameManager.Team.Boat.Positions.Count < 6)
 				{
 					for (int j = 0; j < gameManager.RaceSessionLength; j++)

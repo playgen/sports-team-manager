@@ -414,7 +414,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		}
 		var skipAmount = _boatContainerScroll.size > 0 ? Mathf.RoundToInt(_boatContainerScroll.value * (_boatContainerScroll.numberOfSteps - 1)) : 0;
 		var setUpCount = 0;
-		foreach (var boat in _teamSelection.GetLineUpHistory().Reverse().Skip(skipAmount).Take(4).ToList())
+		foreach (var boat in _teamSelection.GetLineUpHistory(skipAmount, 4))
 		{
 			var boatObject = _boatPool[setUpCount];
 			boatObject.SetActive(true);

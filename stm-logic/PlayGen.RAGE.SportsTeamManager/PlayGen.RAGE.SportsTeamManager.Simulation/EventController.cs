@@ -287,8 +287,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				for (int j = 0; j < PostRaceEvents[i].Count; j++)
 				{
-					manager.EmotionalAppraisal.RemoveBelief(string.Format("PRECrew{0}({1})", i, j), "SELF");
-					manager.EmotionalAppraisal.RemoveBelief(string.Format("PREEvent{0}({1})", i, j), "SELF");
+					manager.UpdateSingleBelief(string.Format("PRECrew{0}({1})", i, j), "null");
+					manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), "null");
 				}
 			}
 			manager.SaveStatus();

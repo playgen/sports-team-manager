@@ -24,16 +24,16 @@ public class TeamSelection : MonoBehaviour {
 	/// <summary>
 	/// Get the history of line-ups
 	/// </summary>
-	public Dictionary<Boat, int> GetLineUpHistory()
+	public List<KeyValuePair<Boat, int>> GetLineUpHistory(int skipAmount, int takeAmount)
 	{
-		var boats = _gameManager.Team.LineUpHistory;
-		var offsets = _gameManager.Team.HistoricTimeOffset;
-		var boatOffsets = new Dictionary<Boat, int>();
+		var boats = _gameManager.Team.LineUpHistory.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
+		var offsets = _gameManager.Team.HistoricTimeOffset.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
+		var boatOffsets = new List<KeyValuePair<Boat, int>>();
 		for (var i = 0; i < boats.Count; i++)
 		{
 			if (i < offsets.Count)
 			{
-				boatOffsets.Add(boats[i], offsets[i]);
+				boatOffsets.Add(new KeyValuePair<Boat, int>(boats[i], offsets[i]));
 			}
 		}
 		return boatOffsets;

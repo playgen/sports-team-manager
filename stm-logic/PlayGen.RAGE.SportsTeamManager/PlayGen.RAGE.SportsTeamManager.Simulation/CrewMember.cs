@@ -597,7 +597,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "false");
 					//send event on record that this happened
 					var eventString = "PostRace(NotPickedAfterSorry)";
-					EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
 					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
 					if (eventRpc != null)
 					{
@@ -632,7 +631,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					//send event on record this event being triggered
 					var eventString = "PostRace(RetirementTriggered)";
-					EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
 					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
 					if (eventRpc != null)
 					{
@@ -702,7 +700,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var spacelessName = RolePlayCharacter.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			var eventString = string.Format("PostRace({0})", lastEvent);
-			EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, eventString, spacelessName) });
 			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new [] { string.Format(eventBase, eventString, spacelessName) });
 			//trigger different changes based off of what dialogue the player last picked
 			switch (lastEvent)
@@ -784,7 +781,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "Retired");
 			var spacelessName = RolePlayCharacter.Perspective;
 			var eventBase = "Event(Action-Start,Player,Status(Retired),{0})";
-			EmotionalAppraisal.AppraiseEvents(new[] { string.Format(eventBase, spacelessName) });
 			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, spacelessName) });
 			if (eventRpc != null)
 			{
