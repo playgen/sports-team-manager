@@ -276,7 +276,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					replies.Add(response.Key, PostRaceEvents[0][replyCount].Value);
 				}
-				replyCount++;
 			}
 			team.Manager.SaveStatus();
 			return replies;

@@ -240,7 +240,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			var extraMembers = Boat.Positions.Count;
 			var raceHistory = LineUpHistory.Where((boat, i) => (i + 1) % (int)config.ConfigValues[ConfigKeys.RaceSessionLength] == 0).ToList();
-			Boat.PromoteBoat(raceHistory);
+			if (!Boat.PromoteBoat(raceHistory))
+			{
+				return;
+			}
 			//store that the boat type has been changed
 			Manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.Type);
 			Manager.SaveStatus();

@@ -1,6 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using AssetManagerPackage;
+using EmotionalAppraisal;
+using EmotionalDecisionMaking;
+
+using IntegratedAuthoringTool;
+
 using Newtonsoft.Json;
+using RolePlayCharacter;
+using SocialImportance;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
@@ -13,6 +21,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Dictionary<string, List<Position>> BoatTypes { get; set; }
 		public GameConfig GameConfig { get; set; }
 		public NameConfig NameConfig { get; set; }
+		public static IntegratedAuthoringToolAsset IntegratedAuthoringTool { get; set; }
+		public static IntegratedAuthoringToolAsset HelpIntegratedAuthoringTool { get; set; }
+		public static RolePlayCharacterAsset RolePlayCharacter { get; set; }
+		public static EmotionalAppraisalAsset EmotionalAppraisal { get; set; }
+		public static EmotionalDecisionMakingAsset EmotionalDecisionMaking { get; set; }
+		public static SocialImportanceAsset SocialImportance { get; set; }
 
 		public ConfigStore()
 		{
@@ -31,6 +45,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			BoatTypes = JsonConvert.DeserializeObject<Dictionary<string, List<Position>>>(boatText);
 			GameConfig = new GameConfig().GetConfig();
 			NameConfig = new NameConfig().GetConfig();
+			Avatar.Config = new AvatarGeneratorConfig().GetConfig();
+			AssetManager.Instance.Bridge = new TemplateBridge();
+			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile("template_rpc");
+			EmotionalAppraisal = EmotionalAppraisalAsset.LoadFromFile(RolePlayCharacter.EmotionalAppraisalAssetSource);
+			EmotionalDecisionMaking = EmotionalDecisionMakingAsset.LoadFromFile(RolePlayCharacter.EmotionalDecisionMakingSource);
+			SocialImportance = SocialImportanceAsset.LoadFromFile(RolePlayCharacter.SocialImportanceAssetSource);
+			IntegratedAuthoringTool = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
+			HelpIntegratedAuthoringTool = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue");
 		}
 	}
 }

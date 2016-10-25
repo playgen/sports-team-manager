@@ -45,33 +45,32 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void CreateFile(IntegratedAuthoringToolAsset iat, string storageLocation, string fileName = "")
 		{
-			//Create Storytelling Framework files
-			AssetManager.Instance.Bridge = new TemplateBridge();
-			var templateRpc = RolePlayCharacterAsset.LoadFromFile("template_rpc");
-			var ea = EmotionalAppraisalAsset.LoadFromFile(templateRpc.EmotionalAppraisalAssetSource);
-			var edm = EmotionalDecisionMakingAsset.LoadFromFile(templateRpc.EmotionalDecisionMakingSource);
-			var si = SocialImportanceAsset.LoadFromFile(templateRpc.SocialImportanceAssetSource);
+			//Get Storytelling Framework files
+			AssetManager.Instance.Bridge = new BaseBridge();
+			var rpc = ConfigStore.RolePlayCharacter;
+			var ea = ConfigStore.EmotionalAppraisal;
+			var edm = ConfigStore.EmotionalDecisionMaking;
+			var si = ConfigStore.SocialImportance;
 			//set values
-			templateRpc.CharacterName = Name;
-			var noSpaceName = templateRpc.CharacterName.Replace(" ", "");
+			rpc.CharacterName = Name;
+			var noSpaceName = rpc.CharacterName.Replace(" ", "");
 			if (string.IsNullOrEmpty(fileName))
 			{
 				fileName = noSpaceName;
 			}
-			ea.SetPerspective("NPC" + noSpaceName);
+			ea.SetPerspective(string.Format("NPC{0}", noSpaceName));
 			//save files
-			AssetManager.Instance.Bridge = new BaseBridge();
 			ea.SaveToFile(Path.Combine(storageLocation, fileName + ".ea"));
 			edm.SaveToFile(Path.Combine(storageLocation, fileName + ".edm"));
 			si.SaveToFile(Path.Combine(storageLocation, fileName + ".si"));
 			//add character to iat asset
-			templateRpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
-			iat.AddCharacter(templateRpc);
+			rpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
+			iat.AddCharacter(rpc);
 			//assign asset files to RPC
-			templateRpc.EmotionalAppraisalAssetSource = fileName + ".ea";
-			templateRpc.EmotionalDecisionMakingSource = fileName + ".edm";
-			templateRpc.SocialImportanceAssetSource = fileName + ".si";
-			templateRpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
+			rpc.EmotionalAppraisalAssetSource = fileName + ".ea";
+			rpc.EmotionalDecisionMakingSource = fileName + ".edm";
+			rpc.SocialImportanceAssetSource = fileName + ".si";
+			rpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
 			//store RPC locally
 			EmotionalAppraisal = EmotionalAppraisalAsset.LoadFromFile(Path.Combine(storageLocation, fileName + ".ea"));
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(Path.Combine(storageLocation, fileName + ".rpc"));
@@ -135,22 +134,21 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			catch
 			{
 				var filePath = EmotionalAppraisal.AssetFilePath.Replace(Name.Replace(" ", "") + ".ea", "");
-				AssetManager.Instance.Bridge = new TemplateBridge();
-				var templateRpc = RolePlayCharacterAsset.LoadFromFile("template_rpc");
-				var edm = EmotionalDecisionMakingAsset.LoadFromFile(templateRpc.EmotionalDecisionMakingSource);
-				var si = SocialImportanceAsset.LoadFromFile(templateRpc.SocialImportanceAssetSource);
+				var rpc = ConfigStore.RolePlayCharacter;
+				var edm = ConfigStore.EmotionalDecisionMaking;
+				var si = ConfigStore.SocialImportance;
 				si.BindEmotionalAppraisalAsset(EmotionalAppraisal);
-				templateRpc.CharacterName = Name;
-				var noSpaceName = templateRpc.CharacterName.Replace(" ", "");
+				rpc.CharacterName = Name;
+				var noSpaceName = rpc.CharacterName.Replace(" ", "");
 				AssetManager.Instance.Bridge = new BaseBridge();
 				edm.SaveToFile(Path.Combine(filePath, noSpaceName + ".edm"));
 				si.SaveToFile(Path.Combine(filePath, noSpaceName + ".si"));
-				templateRpc.SaveToFile(Path.Combine(filePath, noSpaceName + ".rpc"));
+				rpc.SaveToFile(Path.Combine(filePath, noSpaceName + ".rpc"));
 				//assign asset files to RPC
-				templateRpc.EmotionalAppraisalAssetSource = noSpaceName + ".ea";
-				templateRpc.EmotionalDecisionMakingSource = noSpaceName + ".edm";
-				templateRpc.SocialImportanceAssetSource = noSpaceName + ".si";
-				templateRpc.SaveToFile(Path.Combine(filePath, noSpaceName + ".rpc"));
+				rpc.EmotionalAppraisalAssetSource = noSpaceName + ".ea";
+				rpc.EmotionalDecisionMakingSource = noSpaceName + ".edm";
+				rpc.SocialImportanceAssetSource = noSpaceName + ".si";
+				rpc.SaveToFile(Path.Combine(filePath, noSpaceName + ".rpc"));
 				RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(Path.Combine(filePath, noSpaceName + ".rpc"));
 				RolePlayCharacter.SaveToFile(RolePlayCharacter.AssetFilePath);
 			}

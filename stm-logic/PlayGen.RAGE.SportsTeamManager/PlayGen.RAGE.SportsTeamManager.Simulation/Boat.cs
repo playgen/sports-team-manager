@@ -37,7 +37,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Change the current type of boat to a different type and get the positions for this new type
 		/// </summary>
-		public void PromoteBoat(List<Boat> previous)
+		public bool PromoteBoat(List<Boat> previous)
 		{
 			var possibleTypes = config.GameConfig.PromotionTriggers.Where(pt => pt.StartType == Type);
 			previous = previous.Where(pb => pb.Type == Type).ToList();
@@ -53,7 +53,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						{
 							Type = type.NewType;
 							GetPositions();
-							return;
+							return true;
 						}
 					}
 					else
@@ -62,6 +62,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 				}
 			}
+			return false;
 		}
 
 		/// <summary>

@@ -114,13 +114,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void NewGame(string storageLocation, string name, byte[] teamColorsPrimary, byte[] teamColorsSecondary, string managerName, string managerAge, string managerGender, string nation, List<CrewMember> crew = null)
 		{
 			UnloadGame();
-			AssetManager.Instance.Bridge = new TemplateBridge();
 			//create folder and iat file for game
 			var combinedStorageLocation = Path.Combine(storageLocation, name);
 			Directory.CreateDirectory(combinedStorageLocation);
-			var iat = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
-			var helpIat = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue");
-			var help = helpIat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "LearningPill".ToName()).ToList();
+			var iat = ConfigStore.IntegratedAuthoringTool;
+			var help = ConfigStore.HelpIntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "LearningPill".ToName()).ToList();
 			eventController = new EventController(iat, help);
 			ValidateGameConfig();
 			//set up boat and team
@@ -259,9 +257,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void LoadGame(string storageLocation, string boatName)
 		{
 			UnloadGame();
-			AssetManager.Instance.Bridge = new TemplateBridge();
-			var helpIat = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue");
-			var help = helpIat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "LearningPill".ToName()).ToList();
+			var help = ConfigStore.HelpIntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "LearningPill".ToName()).ToList();
 			//get the iat file and all characters for this game
 			var combinedStorageLocation = Path.Combine(storageLocation, boatName);
 			AssetManager.Instance.Bridge = new BaseBridge();
