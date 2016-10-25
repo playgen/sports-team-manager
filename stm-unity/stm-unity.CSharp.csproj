@@ -148,6 +148,7 @@
     <Compile Include="Assets\Scripts\RecruitMember.cs" />
     <Compile Include="Assets\Scripts\RecruitMemberUI.cs" />
     <Compile Include="Assets\Scripts\ScreenSideUI.cs" />
+    <Compile Include="Assets\Scripts\SettingsUI.cs" />
     <Compile Include="Assets\Scripts\TeamSelection.cs" />
     <Compile Include="Assets\Scripts\TeamSelectionUI.cs" />
     <Compile Include="Assets\Scripts\UIStateManager.cs" />

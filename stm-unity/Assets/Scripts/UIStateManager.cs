@@ -6,6 +6,8 @@ using UnityEngine.UI;
 /// Controls switching between different game state panels
 /// </summary>
 public class UIStateManager : MonoBehaviour {
+	public static bool MusicOn = true;
+	public static bool SoundOn = true;
 	[SerializeField]
 	private GameObject _mainMenu;
 	[SerializeField]
@@ -25,6 +27,22 @@ public class UIStateManager : MonoBehaviour {
 
 	void Start()
 	{
+		if (PlayerPrefs.HasKey("Music"))
+		{
+			MusicOn = PlayerPrefs.GetInt("Music") == 1;
+		}
+		else
+		{
+			PlayerPrefs.SetInt("Music", 1);
+		}
+		if (PlayerPrefs.HasKey("Sound"))
+		{
+			SoundOn = PlayerPrefs.GetInt("Sound") == 1;
+		}
+		else
+		{
+			PlayerPrefs.SetInt("Sound", 1);
+		}
 		BackToMenu(_mainMenu);
 	}
 

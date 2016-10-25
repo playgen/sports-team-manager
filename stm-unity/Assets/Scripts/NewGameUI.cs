@@ -40,6 +40,11 @@ public class NewGameUI : MonoBehaviour {
 		_overwritePopUp.SetActive(false);
 		WarningDisable();
 		RandomColor();
+	}
+
+	private void OnEnable()
+	{
+		_managerGender.ClearOptions();
 		_managerGender.AddOptions(new List<string> { Localization.Get("MALE"), Localization.Get("FEMALE") });
 	}
 

@@ -44,11 +44,12 @@ public class Localization : MonoBehaviour {
 		}
 		if (PlayerPrefs.HasKey("Language"))
 		{
-			SelectedLanguage = (Language)Enum.Parse(typeof(Language), PlayerPrefs.GetString("Language"));
+			SelectedLanguage = (Language)PlayerPrefs.GetInt("Language");
 		}
 		else
 		{
 			SelectedLanguage = Language.English;
+			PlayerPrefs.SetInt("Language", (int)SelectedLanguage);
 		}
 	}
 

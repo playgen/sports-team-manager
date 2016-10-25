@@ -100,4 +100,10 @@
 {"key":"WILLPOWER","en":"Willpower","it":"x"},
 {"key":"WISDOM","en":"Wisdom","it":"x"},
 {"key":"YELLOW_PLACEMENT","en":"Ideal In Another Position","it":"x"},
-{"key":"YES","en":"Yes","it":"x"}]
+{"key":"YES","en":"Yes","it":"x"},
+{"key":"SETTINGS","en":"Settings","it":"x"},
+{"key":"MUSIC","en":"Music","it":"x"},
+{"key":"SOUND","en":"Sound FX","it":"x"},
+{"key":"LANGUAGE","en":"Language","it":"x"},
+{"key":"ENGLISH","en":"English","it":"x"},
+{"key":"ITALIAN","en":"Italian","it":"x"}]
