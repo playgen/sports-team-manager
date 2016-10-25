@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
-using AssetManagerPackage;
 using IntegratedAuthoringTool.DTOs;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
@@ -129,7 +127,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Team.TeamColorsPrimary = new Color(teamColorsPrimary[0], teamColorsPrimary[1], teamColorsPrimary[2], 255);
 			Team.TeamColorsSecondary = new Color(teamColorsSecondary[0], teamColorsSecondary[1], teamColorsSecondary[2], 255);
 			iat.ScenarioName = name;
-			AssetManager.Instance.Bridge = new BaseBridge();
 			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
 			//create manager
 			var manager = new Person(null)
@@ -171,7 +168,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			manager.UpdateSingleBelief(NPCBeliefs.TeamColorRedSecondary.GetDescription(), teamColorsSecondary[0].ToString());
 			manager.UpdateSingleBelief(NPCBeliefs.TeamColorGreenSecondary.GetDescription(), teamColorsSecondary[1].ToString());
 			manager.UpdateSingleBelief(NPCBeliefs.TeamColorBlueSecondary.GetDescription(), teamColorsSecondary[2].ToString());
-			
 			manager.SaveStatus();
 
 			var names = Team.CrewMembers.Keys.ToList();
@@ -233,7 +229,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					try
 					{
-						AssetManager.Instance.Bridge = new BaseBridge();
 						var game = IntegratedAuthoringToolAsset.LoadFromFile(file);
 						if (game != null && game.ScenarioName == gameName)
 						{
@@ -260,7 +255,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var help = ConfigStore.HelpIntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "LearningPill".ToName()).ToList();
 			//get the iat file and all characters for this game
 			var combinedStorageLocation = Path.Combine(storageLocation, boatName);
-			AssetManager.Instance.Bridge = new BaseBridge();
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile(Path.Combine(combinedStorageLocation, boatName + ".iat"));
 			eventController = new EventController(iat, help);
 			ValidateGameConfig();

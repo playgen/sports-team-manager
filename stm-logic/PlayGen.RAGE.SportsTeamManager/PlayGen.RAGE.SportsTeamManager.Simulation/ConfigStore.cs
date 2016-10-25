@@ -53,6 +53,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			SocialImportance = SocialImportanceAsset.LoadFromFile(RolePlayCharacter.SocialImportanceAssetSource);
 			IntegratedAuthoringTool = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
 			HelpIntegratedAuthoringTool = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue");
+			AssetManager.Instance.Bridge = new BaseBridge();
 		}
 	}
 }

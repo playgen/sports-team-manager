@@ -696,7 +696,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void PostRaceFeedback(string lastEvent, Team team)
 		{
-			SaveStatus();
 			var spacelessName = RolePlayCharacter.Perspective;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			var eventString = string.Format("PostRace({0})", lastEvent);
@@ -770,7 +769,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				RolePlayCharacter.ActionFinished(eventRpc);
 			}
 			TickUpdate();
-			SaveStatus();
 		}
 
 		/// <summary>

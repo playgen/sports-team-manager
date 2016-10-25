@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using AssetManagerPackage;
 using IntegratedAuthoringTool;
 using RolePlayCharacter;
 
@@ -24,7 +23,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			if (rpc != null)
 			{
-				AssetManager.Instance.Bridge = new BaseBridge();
 				RolePlayCharacter = rpc;
 				Name = rpc.CharacterName;
 				Age = Convert.ToInt32(LoadBelief(NPCBeliefs.Age.GetDescription()));
@@ -38,7 +36,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void CreateFile(IntegratedAuthoringToolAsset iat, string storageLocation, string fileName = "")
 		{
 			//Get Storytelling Framework files
-			AssetManager.Instance.Bridge = new BaseBridge();
 			var rpc = ConfigStore.RolePlayCharacter;
 			var ea = ConfigStore.EmotionalAppraisal;
 			var edm = ConfigStore.EmotionalDecisionMaking;
@@ -102,7 +99,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Tick EmotionalAppraisal asset amount passed through
+		/// Tick RolePlayCharacter asset amount passed through
 		/// </summary>
 		public void TickUpdate(int amount = 1)
 		{

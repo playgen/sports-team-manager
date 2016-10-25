@@ -234,7 +234,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var crewOpinions = new Dictionary<string, int>(crewCombos.Count);
 			foreach (var possibleCrew in crewCombos)
 			{
-				var crewComboKey = possibleCrew.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString();
+				var crewComboKey = string.Concat(possibleCrew.ToArray());
 				crewOpinions.Add(crewComboKey, 0);
 				foreach (var crewMember in possibleCrew)
 				{
@@ -269,20 +269,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//if the combined total of the top scores and highest possible opinion could beat the current top score, continue. Otherwise, this combination can never have the best combination, so stop
 				if (crewPositionScores.Values.Take(positionNames.Count).Sum() + opinionMax >= bestScore)
 				{
+					//find the combined average opinion for this combination
+					var opinionScore = crewOpinions[string.Concat(possibleCrew.ToArray())];
 					//if the highest score in each position plus the highest possible opinion is lower than the best score so far, stop this loop
-					if (positionNames.Select(pn => crewPositionScores.First(cps => cps.Key.Contains(pn)).Value).Sum() + opinionMax < bestScore)
+					if (positionNames.Select(pn => crewPositionScores.First(cps => cps.Key.Contains(pn)).Value).Sum() + opinionScore < bestScore)
 					{
 						continue;
 					}
 					//if the highest score in for each crewmember plus the highest possible opinion is lower than the best score so far, stop this loop
-					if (possibleCrew.Select(pc => crewPositionScores.First(cps => cps.Key.Contains(pc)).Value).Sum() + opinionMax < bestScore)
+					if (possibleCrew.Select(pc => crewPositionScores.First(cps => cps.Key.Contains(pc)).Value).Sum() + opinionScore < bestScore)
 					{
 						continue;
 					}
 					//get every combination in every order for these crewmembers
 					var combos = GetOrderedPermutations(possibleCrew, positionNames.Count - 1);
-					//find the combined average opinion for this combination
-					var opinionScore = crewOpinions[possibleCrew.Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString()];
 					//for each combination
 					foreach (var combo in combos)
 					{
@@ -291,11 +291,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						for (var i = 0; i < combo.Count; i++)
 						{
 							score += crewPositionScores[string.Concat(positionNames[i], combo[i])];
-						}
-						//if the score plus the highest possible opinion is lower than the best score, stop this loop
-						if (score + opinionMax < bestScore)
-						{
-							continue;
 						}
 						//add the combined average opinion for this combination
 						score += opinionScore;
@@ -427,8 +422,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				//add the difference in mood to mistakeScores
 				mistakeScores["Mood"] += (int)((nearestIdealMatch[i].Key.GetMood() - PositionCrew[Positions[i]].GetMood()) * config.ConfigValues[ConfigKeys.MoodRatingWeighting]);
-			//calculate the average opinion for this position in the ideal crew
-			var idealOpinion = 0;
+				//calculate the average opinion for this position in the ideal crew
+				var idealOpinion = 0;
 				foreach (var pair in nearestIdealMatch)
 				{
 					if (pair.Key != nearestIdealMatch[i].Key)

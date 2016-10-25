@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
-using AssetManagerPackage;
 using IntegratedAuthoringTool;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
@@ -138,11 +136,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				recruit.Value.CreateFile(iat, storageLocation, "Recruit" + storeNum);
 				storeNum++;
-				recruit.Value.Avatar = new Avatar(recruit.Value, false);
 				recruit.Value.UpdateBeliefs("Recruit");
-				recruit.Value.SaveStatus();
+				recruit.Value.Avatar = new Avatar(recruit.Value, false);
 			}
-			AssetManager.Instance.Bridge = new BaseBridge();
 			iat.SaveToFile(iat.AssetFilePath);
 		}
 
@@ -169,7 +165,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			member.UpdateBeliefs("null");
 			member.SaveStatus();
 			Recruits.Remove(member.Name);
-			AssetManager.Instance.Bridge = new BaseBridge();
 			iat.SaveToFile(iat.AssetFilePath);
 		}
 
@@ -270,7 +265,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					newMember.UpdateBeliefs("null");
 					newMember.SaveStatus();
-					AssetManager.Instance.Bridge = new BaseBridge();
 					iat.SaveToFile(iat.AssetFilePath);
 					//if the boat is under-staffed for the current boat size, this new CrewMember is not counted
 					if (!CanRemoveFromCrew())
