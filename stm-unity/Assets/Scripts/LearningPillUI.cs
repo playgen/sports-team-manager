@@ -18,7 +18,7 @@ public class LearningPillUI : MonoBehaviour {
 	private Button _popUpBlocker;
 	private List<string> _furtherHelp;
 
-	public void SetHelp(List<string> keys)
+	public void SetHelp(List<string> keys, bool further = false)
 	{
 		if (_learningPill == null)
 		{
@@ -34,28 +34,29 @@ public class LearningPillUI : MonoBehaviour {
 			transform.SetAsLastSibling();
 			_popUpBlocker.gameObject.SetActive(true);
 			_popUpBlocker.onClick.RemoveAllListeners();
-			StartCoroutine(Animate(true, tip));
+			StartCoroutine(Animate(true, further, tip));
 		}
 	}
 
 	public void SetFurtherHelp()
 	{
-		SetHelp(_furtherHelp);
+		SetHelp(_furtherHelp, true);
 	}
 
 	public void ClosePill()
 	{
-		StartCoroutine(Animate());
 		_popUpBlocker.onClick.RemoveAllListeners();
 		if (_furtherHelp.Count == 0)
 		{
+			StartCoroutine(Animate());
 			_popUpBlocker.transform.SetAsLastSibling();
 			transform.SetAsLastSibling();
 			_popUpBlocker.gameObject.SetActive(false);
 		}
 		if (_furtherHelp.Count > 0)
 		{
-			Invoke("SetFurtherHelp", 1);
+			StartCoroutine(Animate(false, true));
+			Invoke("SetFurtherHelp", 1.1f);
 		}
 		else
 		{
@@ -72,20 +73,24 @@ public class LearningPillUI : MonoBehaviour {
 		}
 	}
 
-	private IEnumerator Animate(bool upward = false, string tip = "")
+	private IEnumerator Animate(bool upward = false, bool keep = false, string tip = "")
 	{
 		WaitForEndOfFrame endFrame = new WaitForEndOfFrame();
 		WaitForSecondsRealtime endReal = new WaitForSecondsRealtime(0.04f);
-		int start = upward ? 0 : 1;
+		int start = upward ? keep ? 1 : 0 : 2;
+		int limit = keep ? 1 : 2;
+		Debug.Log(start + " " + limit);
+		Debug.Log(start + limit);
 		_popUpAnim["LearningPill"].speed = 1;
 		_popUpAnim["LearningPill"].time = start;
 		_popUpAnim.Play();
-		while (_popUpAnim["LearningPill"].time < start + 1)
+		while (_popUpAnim["LearningPill"].time <= start + limit)
 		{
 			yield return endFrame;
 		}
+		Debug.Log(_popUpAnim["LearningPill"].time);
 		_popUpAnim["LearningPill"].speed = 0;
-		_popUpAnim["LearningPill"].time = start + 1;
+		_popUpAnim["LearningPill"].time = start + limit;
 		if (upward)
 		{
 			foreach (char t in tip)

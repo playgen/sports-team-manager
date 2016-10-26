@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using IntegratedAuthoringTool.DTOs;
 
 using PlayGen.RAGE.SportsTeamManager.Simulation;
@@ -21,6 +22,7 @@ public class PostRaceEventUI : MonoBehaviour
 	private Button _popUpBlocker;
 	[SerializeField]
 	private PostRacePersonUI[] _postRacePeople;
+	private List<string> _lastStates;
 
 	private void OnEnable()
 	{
@@ -110,18 +112,23 @@ public class PostRaceEventUI : MonoBehaviour
 	{
 		if (_postRacePeople.All(prp => prp.ActiveQuestions() == false))
 		{
+			_popUpBlocker.onClick.AddListener(GetLearningPill);
 			_popUpBlocker.onClick.AddListener(Hide);
 			_popUpBlocker.onClick.AddListener(_postRaceEvent.GetEvent);
 			var teamSelection = FindObjectOfType(typeof(TeamSelectionUI)) as TeamSelectionUI;
 			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
-			_popUpBlocker.onClick.AddListener(GetLearningPill);
+			_popUpBlocker.onClick.AddListener(SendLearningPill);
 		}
 	}
 
 	public void GetLearningPill()
 	{
-		var lastStates = _postRacePeople.Select(t => t.LastState).ToList();
-		_learningPill.SetHelp(lastStates);
+		_lastStates = _postRacePeople.Select(t => t.LastState).ToList();
+	}
+
+	public void SendLearningPill()
+	{
+		_learningPill.SetHelp(_lastStates);
 	}
 
 	/// <summary>

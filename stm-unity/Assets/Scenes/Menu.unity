@@ -9523,8 +9523,8 @@ RectTransform:
   - {fileID: 800811308}
   m_Father: {fileID: 936595974}
   m_RootOrder: 0
-  m_AnchorMin: {x: -0.75, y: -0.95}
-  m_AnchorMax: {x: 0.55, y: -0.25}
+  m_AnchorMin: {x: 0.125, y: 0.4}
+  m_AnchorMax: {x: 0.775, y: 0.75}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10200,6 +10200,17 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 396689105}
+        m_MethodName: GetLearningPill
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 396689105}
         m_MethodName: Hide
         m_Mode: 1
         m_Arguments:
@@ -10233,7 +10244,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 396689105}
-        m_MethodName: GetLearningPill
+        m_MethodName: SendLearningPill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16201,10 +16212,10 @@ RectTransform:
   - {fileID: 1230058306}
   m_Father: {fileID: 698457889}
   m_RootOrder: 11
-  m_AnchorMin: {x: 0, y: -1.125}
-  m_AnchorMax: {x: 1, y: -0.525}
-  m_AnchoredPosition: {x: 237.5, y: 0}
-  m_SizeDelta: {x: -475, y: 0}
+  m_AnchorMin: {x: 0, y: -1.75}
+  m_AnchorMax: {x: 1, y: -0.55}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &936595975
 MonoBehaviour:
@@ -21255,8 +21266,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 936595974}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0.1, y: -2}
-  m_AnchorMax: {x: 0.9, y: 0.5}
+  m_AnchorMin: {x: 0.35, y: -0.125}
+  m_AnchorMax: {x: 1.15, y: 1.125}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0}
@@ -33071,6 +33082,17 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2028613896}
+        m_MethodName: GetLearningPill
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2028613896}
         m_MethodName: Hide
         m_Mode: 1
         m_Arguments:
@@ -33104,7 +33126,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 2028613896}
-        m_MethodName: GetLearningPill
+        m_MethodName: SendLearningPill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
