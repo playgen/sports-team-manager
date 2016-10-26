@@ -46,7 +46,7 @@ public class AvatarDisplay : MonoBehaviour
 
 	public static void LoadSprites()
 	{
-		avatarSprites = Resources.LoadAll("", typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name, a => a);
+		avatarSprites = Resources.LoadAll("", typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name.ToLower(), a => a);
 	}
 
 	/// <summary>
@@ -57,19 +57,19 @@ public class AvatarDisplay : MonoBehaviour
 #if USE_SPRITESHEET
 		LoadDictionary();
 #endif
-		_body.sprite = avatarSprites[avatar.BodyType];
-		_outfit.sprite = avatarSprites[avatar.OutfitBaseType];
-		if (avatarSprites.ContainsKey(avatar.OutfitHighlightType))
+		_body.sprite = avatarSprites[avatar.BodyType.ToLower()];
+		_outfit.sprite = avatarSprites[avatar.OutfitBaseType.ToLower()];
+		if (avatarSprites.ContainsKey(avatar.OutfitHighlightType.ToLower()))
 		{
-			_outfitHighlight.sprite = avatarSprites[avatar.OutfitHighlightType];
+			_outfitHighlight.sprite = avatarSprites[avatar.OutfitHighlightType.ToLower()];
 		}
-		if (avatarSprites.ContainsKey(avatar.OutfitShadowType))
+		if (avatarSprites.ContainsKey(avatar.OutfitShadowType.ToLower()))
 		{
-			_outfitShadow.sprite = avatarSprites[avatar.OutfitShadowType];
+			_outfitShadow.sprite = avatarSprites[avatar.OutfitShadowType.ToLower()];
 		}
-		_nose.sprite = avatarSprites[avatar.NoseType];
-		_hairBack.sprite = avatarSprites[string.Format("{0}_Back", avatar.HairType)];
-		_hairFront.sprite = avatarSprites[string.Format("{0}_Front", avatar.HairType)];
+		_nose.sprite = avatarSprites[avatar.NoseType.ToLower()];
+		_hairBack.sprite = avatarSprites[string.Format("{0}_Back", avatar.HairType).ToLower()];
+		_hairFront.sprite = avatarSprites[string.Format("{0}_Front", avatar.HairType).ToLower()];
 
 		// Set colors
 		_body.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
@@ -164,22 +164,21 @@ public class AvatarDisplay : MonoBehaviour
 		{
 			moodStr = "Disagree";
 		}
-		if (avatarSprites.ContainsKey(string.Format("{0}_{1}_{2}", avatar.EyeType, avatar.EyeColor, moodStr)))
+		if (avatarSprites.ContainsKey(string.Format("{0}_{1}_{2}", avatar.EyeType, avatar.EyeColor, moodStr).ToLower()))
 		{
-			_eyes.sprite = avatarSprites[string.Format("{0}_{1}_{2}", avatar.EyeType, avatar.EyeColor, moodStr)];
+			_eyes.sprite = avatarSprites[string.Format("{0}_{1}_{2}", avatar.EyeType, avatar.EyeColor, moodStr).ToLower()];
 		}
-		else if (avatarSprites.ContainsKey(string.Format("{0}_{1}", avatar.EyeType, moodStr)))
+		else if (avatarSprites.ContainsKey(string.Format("{0}_{1}", avatar.EyeType, moodStr).ToLower()))
 		{
-			_eyes.sprite = avatarSprites[string.Format("{0}_{1}", avatar.EyeType, moodStr)];
+			_eyes.sprite = avatarSprites[string.Format("{0}_{1}", avatar.EyeType, moodStr).ToLower()];
 		}
 		else
 		{
-			_eyes.sprite = avatarSprites[string.Format("{0}_{1}_Neutral", avatar.EyeType, avatar.EyeColor)];
+			_eyes.sprite = avatarSprites[string.Format("{0}_{1}_Neutral", avatar.EyeType, avatar.EyeColor).ToLower()];
 		}
-
-		_eyebrow.sprite = avatarSprites[string.Format("{0}_{1}", avatar.EyebrowType, moodStr)];
-		_mouth.sprite = avatarSprites[string.Format("{0}_{1}", avatar.MouthType, moodStr)];
-		_teeth.sprite = avatarSprites.ContainsKey(string.Format("{0}_{1}", avatar.TeethType, moodStr)) ? avatarSprites[string.Format("{0}_{1}", avatar.TeethType, moodStr)] : null;
+		_eyebrow.sprite = avatarSprites[string.Format("{0}_{1}", avatar.EyebrowType, moodStr).ToLower()];
+		_mouth.sprite = avatarSprites[string.Format("{0}_{1}", avatar.MouthType, moodStr).ToLower()];
+		_teeth.sprite = avatarSprites.ContainsKey(string.Format("{0}_{1}", avatar.TeethType, moodStr).ToLower()) ? avatarSprites[string.Format("{0}_{1}", avatar.TeethType, moodStr).ToLower()] : null;
 		_teeth.enabled = _teeth.sprite != null;
 		_lastMood = mood;
 	}
