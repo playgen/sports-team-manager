@@ -47,8 +47,8 @@ public class SettingsUI : MonoBehaviour {
 
 	public void ChangeLanguage()
 	{
-		Localization.SelectedLanguage = (Language)(_languageDropdown.value + 1);
-		PlayerPrefs.SetInt("Language", (int)Localization.SelectedLanguage);
-		Setup();
+		Localization.UpdateLanguage((Language)(_languageDropdown.value + 1));
+		gameObject.SetActive(false);
+		gameObject.SetActive(true);
 	}
 }

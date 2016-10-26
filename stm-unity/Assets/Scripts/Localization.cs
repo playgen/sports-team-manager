@@ -18,6 +18,7 @@ public class Localization : MonoBehaviour {
 
 	public static string filePath = "StringLocalizations";
 	public static Language SelectedLanguage { get; set; }
+	public static event EventHandler LanguageChange = delegate { };
 
 	void Awake()
 	{
@@ -80,21 +81,6 @@ public class Localization : MonoBehaviour {
 		return string.Format(Get(key, toUpper), args);
 	}
 
-	public static string GetByLanguage(string key, Language language)
-	{
-		if (language == SelectedLanguage)
-		{
-			return key;
-		}
-		var singleOrDefault = LocalizationDict[language].SingleOrDefault(k => k.Value.ToLower() == key.ToLower()).Key;
-		if (singleOrDefault == null)
-		{
-			Debug.LogError("Multiple values in " + language + " equal " + key);
-			return string.Empty;
-		}
-		return Get(singleOrDefault);
-	}
-
 	public void Set() {
 		Text _text = GetComponent<Text>();
 		if (_text == null)
@@ -106,5 +92,13 @@ public class Localization : MonoBehaviour {
 		}
 		if (ToUpper)
 			_text.text = _text.text.ToUpper();
+	}
+
+	public static void UpdateLanguage(Language language)
+	{
+		SelectedLanguage = language;
+		PlayerPrefs.SetInt("Language", (int)SelectedLanguage);
+		((Localization[])FindObjectsOfType(typeof(Localization))).ToList().ForEach(l => l.Set());
+		LanguageChange(null, new EventArgs());
 	}
 }

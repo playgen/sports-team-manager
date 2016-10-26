@@ -77,6 +77,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private void Awake()
 	{
 		_teamSelection = GetComponent<TeamSelection>();
+		Localization.LanguageChange += OnLanguageChange;
 	}
 
 	/// <summary>
@@ -406,9 +407,9 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		ChangeVisibleBoats();
 	}
 
-	public void ChangeVisibleBoats()
+	public void ChangeVisibleBoats(bool forceOverwrite = false)
 	{
-		if (_previousScrollValue == Mathf.RoundToInt(_boatContainerScroll.value * (_boatContainerScroll.numberOfSteps - 1)))
+		if (!forceOverwrite && _previousScrollValue == Mathf.RoundToInt(_boatContainerScroll.value * (_boatContainerScroll.numberOfSteps - 1)))
 		{
 			return;
 		}
@@ -515,7 +516,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		_popUpBlocker.gameObject.SetActive(false);
 		foreach (var pre in _postRaceEvents)
 		{
-			if (pre.gameObject.activeSelf && pre.GetComponent<CanvasGroup>().alpha != 0)
+			if (pre.gameObject.activeSelf && !Mathf.Approximately(pre.GetComponent<CanvasGroup>().alpha, 0))
 			{
 				_popUpBlocker.transform.SetAsLastSibling();
 				pre.transform.parent.SetAsLastSibling();
@@ -631,8 +632,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 				finishPosition++;
 				expected -= positions;
 			}
-			string finishPositionText;
-			finishPositionText = Localization.Get("POSITION_" + finishPosition);
+			var finishPositionText = Localization.Get("POSITION_" + finishPosition);
 			scoreText.text = string.Format("{0} {1}", Localization.Get("RACE_POSITION", true), finishPositionText);
 			if (currentPositions != null)
 			{
@@ -640,5 +640,24 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			}
 		}
 		return scoreDiff;
+	}
+
+	private void OnLanguageChange(object o, EventArgs e)
+	{
+		if (_teamSelection.GetStage() % _teamSelection.GetSessionLength() != 0)
+		{
+			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, _teamSelection.GetStage() % _teamSelection.GetSessionLength(), _teamSelection.GetSessionLength() - 1);
+		}
+		else
+		{
+			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_RACE", true);
+		}
+		ChangeVisibleBoats(true);
+		_preRacePopUp.GetComponentInChildren<Text>().text = _teamSelection.QuestionAllowance() > 0 ? Localization.GetAndFormat("RACE_CONFIRM_ALLOWANCE_REMAINING", false, _teamSelection.QuestionAllowance()) : Localization.Get("RACE_CONFIRM_NO_ALLOWANCE");
+		if (_postRacePopUp.activeSelf)
+		{
+			var lastRace = _teamSelection.GetLineUpHistory(0, 1).First();
+			GetResult(true, lastRace.Key.Score, lastRace.Key.Positions.Count, lastRace.Value, _boatPool[0].transform.Find("Score").GetComponent<Text>(), lastRace.Key.PositionCrew);
+		}
 	}
 }

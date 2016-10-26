@@ -36,14 +36,19 @@ public class RecruitMemberUI : MonoBehaviour
 	[SerializeField]
 	private Icon[] _opinionSprites;
 
+	private bool _questionAsked;
+	private string _currentSelected;
+
 	private void Awake()
 	{
 		_recruitMember = GetComponent<RecruitMember>();
+		Localization.LanguageChange += OnLanguageChange;
 	}
 
 	private void OnEnable()
 	{
 		Tracker.T.alternative.Selected("Recruitment", "Recruitment", AlternativeTracker.Alternative.Menu);
+		_questionAsked = false;
 		ResetDisplay();
 		_popUpBlocker.transform.SetAsLastSibling();
 		transform.SetAsLastSibling();
@@ -156,6 +161,7 @@ public class RecruitMemberUI : MonoBehaviour
 	public void AskQuestion(CrewMemberSkill skill, string questionText)
 	{
 		Tracker.T.alternative.Selected("Recruitment", skill + " Question", AlternativeTracker.Alternative.Question);
+		_questionAsked = true;
 		SetDialogueText(questionText);
 		var replies = _recruitMember.AskQuestion(skill);
 		foreach (var recruit in _recruitUI)
@@ -185,6 +191,7 @@ public class RecruitMemberUI : MonoBehaviour
 	/// </summary>
 	public void HireCrewWarning(CrewMember recruit)
 	{
+		_currentSelected = recruit.Name;
 		//pop-up and blocker reordering
 		_hireWarningPopUp.SetActive(true);
 		_popUpBlocker.transform.SetAsLastSibling();
@@ -220,6 +227,7 @@ public class RecruitMemberUI : MonoBehaviour
 	/// </summary>
 	public void CloseHireCrewWarning()
 	{
+		_currentSelected = string.Empty;
 		_hireWarningPopUp.SetActive(false);
 		if (gameObject.activeSelf)
 		{
@@ -244,5 +252,23 @@ public class RecruitMemberUI : MonoBehaviour
 		_teamSelectionUI.ResetCrew();
 		gameObject.SetActive(false);
 		CloseHireCrewWarning();
+	}
+
+	private void OnLanguageChange(object o, EventArgs e)
+	{
+		if (!_questionAsked)
+		{
+			SetDialogueText(Localization.Get("RECRUITMENT_INTRO"));
+		}
+		if (_recruitMember.QuestionAllowance() < _recruitMember.GetConfigValue(ConfigKeys.RecruitmentCost))
+		{
+			_hireWarningText.text = Localization.Get("HIRE_WARNING_NOT_POSSIBLE");
+			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("OK", true);
+		}
+		else
+		{
+			_hireWarningText.text = Localization.GetAndFormat("HIRE_WARNING_POSSIBLE", false, _currentSelected);
+			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("NO", true);
+		}
 	}
 }

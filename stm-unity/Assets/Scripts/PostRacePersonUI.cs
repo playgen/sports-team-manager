@@ -95,23 +95,12 @@ public class PostRacePersonUI : MonoBehaviour
 	{
 		foreach (var q in _questions)
 		{
-			if (q == question)
-			{
-				q.GetComponent<Image>().color = new UnityEngine.Color(0, 244, 214);
-			}
-			else
-			{
-				q.GetComponent<Image>().color = UnityEngine.Color.white;
-			}
+			q.GetComponent<Image>().color = q == question ? new UnityEngine.Color(0, 244, 214) : UnityEngine.Color.white;
 		}
 	}
 
 	public bool ActiveQuestions()
 	{
-		if (!_questions[0].activeSelf)
-		{
-			return false;
-		}
-		return true;
+		return _questions[0].activeSelf;
 	}
 }

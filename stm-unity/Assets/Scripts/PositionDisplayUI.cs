@@ -40,6 +40,7 @@ public class PositionDisplayUI : MonoBehaviour
 	private void Awake()
 	{
 		_positionDisplay = GetComponent<PositionDisplay>();
+		Localization.LanguageChange += OnLanguageChange;
 	}
 
 	/// <summary>
@@ -221,5 +222,11 @@ public class PositionDisplayUI : MonoBehaviour
 		{
 			_popUpBlocker.gameObject.SetActive(false);
 		}
+	}
+
+	private void OnLanguageChange(object o, EventArgs e)
+	{
+		_textList[0].text = Localization.Get(_current.ToString());
+		_textList[1].text = Localization.Get(_current + "_DESCRIPTION");
 	}
 }

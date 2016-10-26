@@ -48,10 +48,12 @@ public class MemberMeetingUI : MonoBehaviour
 	private Image _allowanceBar;
 	[SerializeField]
 	private Text _allowanceText;
+	private bool _postQuestion;
 
 	private void Awake()
 	{
 		_memberMeeting = GetComponent<MemberMeeting>();
+		Localization.LanguageChange += OnLanguageChange;
 	}
 
 	/// <summary>
@@ -102,6 +104,7 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void Display(bool postQuestion = false)
 	{
+		_postQuestion = postQuestion;
 		//ActionAllowance display
 		_allowanceBar.fillAmount = _memberMeeting.QuestionAllowance() / (float)_memberMeeting.StartingQuestionAllowance();
 		_allowanceText.text = _memberMeeting.QuestionAllowance().ToString();
@@ -241,5 +244,20 @@ public class MemberMeetingUI : MonoBehaviour
 		Tracker.T.trackedGameObject.Interacted("Fired Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 		_memberMeeting.FireCrewMember(_currentMember);
 		_teamSelectionUI.ResetCrew();
+	}
+
+	private void OnLanguageChange(object o, EventArgs e)
+	{
+		var currentRole = _memberMeeting.GetCrewMemberPosition(_currentMember);
+		_textList[2].text = currentRole == Position.Null ? Localization.Get("NO_ROLE") : "";
+		if (currentRole != Position.Null)
+		{
+			_roleButton.GetComponentInChildren<Text>().text = Localization.Get(currentRole.ToString(), true);
+		}
+		_closeText.text = Localization.Get("MEETING_EARLY_EXIT");
+		if (_postQuestion)
+		{
+			_closeText.text = Localization.Get("MEETING_EXIT");
+		}
 	}
 }

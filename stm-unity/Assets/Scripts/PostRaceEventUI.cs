@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using IntegratedAuthoringTool.DTOs;
 
 using PlayGen.RAGE.SportsTeamManager.Simulation;
@@ -121,11 +120,7 @@ public class PostRaceEventUI : MonoBehaviour
 
 	public void GetLearningPill()
 	{
-		var lastStates = new List<string>();
-		for (int i = 0; i < _postRacePeople.Length; i++)
-		{
-			lastStates.Add(_postRacePeople[i].LastState);
-		}
+		var lastStates = _postRacePeople.Select(t => t.LastState).ToList();
 		_learningPill.SetHelp(lastStates);
 	}
 
@@ -138,13 +133,13 @@ public class PostRaceEventUI : MonoBehaviour
 		var responses = _postRaceEvent.AddReply(cm, reply);
 		if (responses != null)
 		{
-			for (int i = 0; i < _postRacePeople.Length; i++)
+			foreach (PostRacePersonUI person in _postRacePeople)
 			{
 				foreach (var res in responses)
 				{
-					if (res.Key == _postRacePeople[i].CurrentCrewMember)
+					if (res.Key == person.CurrentCrewMember)
 					{
-						_postRacePeople[i].UpdateDialogue(res.Value);
+						person.UpdateDialogue(res.Value);
 					}
 				}
 			}

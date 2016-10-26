@@ -61,7 +61,7 @@ public class LearningPillUI : MonoBehaviour {
 		{
 			foreach (var pre in _postRaceEvents)
 			{
-				if (pre.gameObject.activeSelf && pre.GetComponent<CanvasGroup>().alpha != 0)
+				if (pre.gameObject.activeSelf && !Mathf.Approximately(pre.GetComponent<CanvasGroup>().alpha, 0))
 				{
 					_popUpBlocker.gameObject.SetActive(true);
 					pre.transform.parent.SetAsLastSibling();
