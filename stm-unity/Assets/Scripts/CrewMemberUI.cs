@@ -182,11 +182,11 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	public void Place(GameObject position, bool historical = false)
 	{
-		var positionTransform = position.gameObject.GetComponent<RectTransform>();
+		var positionTransform = (RectTransform)position.gameObject.transform;
 		//set size and position
 		transform.SetParent(positionTransform, false);
-		GetComponent<RectTransform>().sizeDelta = positionTransform.sizeDelta;
-		GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -GetComponent<RectTransform>().sizeDelta.y * 0.5f);
+		((RectTransform)transform).sizeDelta = positionTransform.sizeDelta;
+		((RectTransform)transform).anchoredPosition = new Vector2(0, -((RectTransform)transform).sizeDelta.y * 0.5f);
 		//assign if this is not an historical placement
 		if (!historical)
 		{

@@ -55,11 +55,13 @@ public class RecruitMemberUI : MonoBehaviour
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
 		_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
+		Localization.LanguageChange += OnLanguageChange;
 	}
 
 	private void OnDisable()
 	{
 		_popUpBlocker.gameObject.SetActive(false);
+		Localization.LanguageChange -= OnLanguageChange;
 	}
 
 	/// <summary>
@@ -205,9 +207,9 @@ public class RecruitMemberUI : MonoBehaviour
 		{
 			_hireWarningText.text = Localization.Get("HIRE_WARNING_NOT_POSSIBLE");
 			_hireWarningAccept.gameObject.SetActive(false);
-			_hireWarningReject.GetComponent<RectTransform>().anchorMin = new Vector2(0.375f, 0.1f);
-			_hireWarningReject.GetComponent<RectTransform>().anchorMax = new Vector2(0.625f, 0.35f);
-			_hireWarningReject.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+			((RectTransform)_hireWarningReject.transform).anchorMin = new Vector2(0.375f, 0.1f);
+			((RectTransform)_hireWarningReject.transform).anchorMax = new Vector2(0.625f, 0.35f);
+			((RectTransform)_hireWarningReject.transform).anchoredPosition = Vector2.zero;
 			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("OK", true);
 		} else
 		{
@@ -215,9 +217,9 @@ public class RecruitMemberUI : MonoBehaviour
 			_hireWarningAccept.onClick.AddListener(delegate { Recruit(recruit); });
 			_hireWarningAccept.gameObject.SetActive(true);
 			_hireWarningText.text = Localization.GetAndFormat("HIRE_WARNING_POSSIBLE", false, recruit.Name);
-			_hireWarningReject.GetComponent<RectTransform>().anchorMin = new Vector2(0.55f, 0.1f);
-			_hireWarningReject.GetComponent<RectTransform>().anchorMax = new Vector2(0.8f, 0.35f);
-			_hireWarningReject.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+			((RectTransform)_hireWarningReject.transform).anchorMin = new Vector2(0.55f, 0.1f);
+			((RectTransform)_hireWarningReject.transform).anchorMax = new Vector2(0.8f, 0.35f);
+			((RectTransform)_hireWarningReject.transform).anchoredPosition = Vector2.zero;
 			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("NO", true);
 		}
 	}

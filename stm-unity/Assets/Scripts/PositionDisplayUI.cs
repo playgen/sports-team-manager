@@ -43,6 +43,16 @@ public class PositionDisplayUI : MonoBehaviour
 		Localization.LanguageChange += OnLanguageChange;
 	}
 
+	private void OnEnable()
+	{
+		Localization.LanguageChange += OnLanguageChange;
+	}
+
+	private void OnDisable()
+	{
+		Localization.LanguageChange -= OnLanguageChange;
+	}
+
 	/// <summary>
 	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last name, first names
 	/// </summary>

@@ -56,6 +56,11 @@ public class MemberMeetingUI : MonoBehaviour
 		Localization.LanguageChange += OnLanguageChange;
 	}
 
+	private void OnEnable()
+	{
+		Localization.LanguageChange += OnLanguageChange;
+	}
+
 	/// <summary>
 	/// On the GameObject being disabled, hide the fire warning pop-up, all displayed opinions and adjust the order of the pop-ups
 	/// </summary>
@@ -70,6 +75,7 @@ public class MemberMeetingUI : MonoBehaviour
 			}
 		}
 		_positionUI.ChangeBlockerOrder();
+		Localization.LanguageChange -= OnLanguageChange;
 	}
 
 	/// <summary>

@@ -77,7 +77,16 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private void Awake()
 	{
 		_teamSelection = GetComponent<TeamSelection>();
+	}
+
+	private void OnEnable()
+	{
 		Localization.LanguageChange += OnLanguageChange;
+	}
+
+	private void OnDisable()
+	{
+		Localization.LanguageChange -= OnLanguageChange;
 	}
 
 	/// <summary>
@@ -128,7 +137,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	private void FixedUpdate()
 	{
-		var currentPosition = _boatContainer.transform.localPosition.y - _boatContainer.GetComponent<RectTransform>().anchoredPosition.y;
+		var currentPosition = _boatContainer.transform.localPosition.y - ((RectTransform)_boatContainer.transform).anchoredPosition.y;
 		if (!Mathf.Approximately(_boatMain.GetComponent<LayoutElement>().preferredHeight, Mathf.Abs(currentPosition) * 0.2f))
 		{
 			foreach (Transform boat in _boatContainer.transform)
@@ -224,10 +233,10 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			//create the static CrewMember UI (aka, the one that remains greyed out within the container at all times)
 			var crewMember = CreateCrewMember(cm, _crewContainer.transform, false, true);
 			//set anchoring, pivot and anchoredPosition so that they are positioned correctly within the container at the bottom of the screen
-			crewMember.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
-			crewMember.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
-			crewMember.GetComponent<RectTransform>().pivot = new Vector2(0, 0.5f);
-			crewMember.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+			((RectTransform)crewMember.transform).anchorMin = new Vector2(0.5f, 0.5f);
+			((RectTransform)crewMember.transform).anchorMax = new Vector2(0.5f, 0.5f);
+			((RectTransform)crewMember.transform).pivot = new Vector2(0, 0.5f);
+			((RectTransform)crewMember.transform).anchoredPosition = Vector2.zero;
 			sortedCrew.Add(crewMember.transform);
 			//create the draggable copy of the above
 			var crewMemberDraggable = CreateCrewMember(cm, crewMember.transform, true, true);
@@ -494,12 +503,12 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			memberObject.name = pair.Value.Name;
 			memberObject.transform.Find("Avatar").GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, -(finishPosition - 3) * 2);
 			memberObject.transform.Find("Position").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pair.Key.GetName()).Image;
-			memberObject.transform.Find("Position").GetComponent<RectTransform>().offsetMin = new Vector2(10, 0);
+			((RectTransform)memberObject.transform.Find("Position").transform).offsetMin = new Vector2(10, 0);
 			if (crewCount % 2 != 0)
 			{
 				var currentScale = memberObject.transform.Find("Avatar").localScale;
 				memberObject.transform.Find("Avatar").localScale = new Vector3(-currentScale.x, currentScale.y, currentScale.z);
-				memberObject.transform.Find("Position").GetComponent<RectTransform>().offsetMin = new Vector2(-10, 0);
+				((RectTransform)memberObject.transform.Find("Position").transform).offsetMin = new Vector2(-10, 0);
 			}
 			crewCount++;
 			memberObject.transform.SetAsLastSibling();

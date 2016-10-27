@@ -7,7 +7,7 @@ using UnityEngine;
 public class NewGame : MonoBehaviour {
 	private GameManager _gameManager;
 
-	private void Start () {
+	private void Awake () {
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 	}
 
@@ -26,5 +26,10 @@ public class NewGame : MonoBehaviour {
 	{
 		_gameManager.NewGame(Application.persistentDataPath, boatName, colorsPri, colorsSec, managerName, managerAge, managerGender, Localization.SelectedLanguage.ToString());
 		return _gameManager.Team != null && _gameManager.Team.Name == boatName;
+	}
+
+	public bool ExistingSaves()
+	{
+		return _gameManager.GetGameNames(Application.persistentDataPath).Count != 0;
 	}
 }

@@ -32,6 +32,8 @@ public class NewGameUI : MonoBehaviour {
 	private Image _colorImagePrimary;
 	[SerializeField]
 	private Image _colorImageSecondary;
+	[SerializeField]
+	private Toggle _tutorialToggle;
 
 	private void Awake()
 	{
@@ -46,6 +48,7 @@ public class NewGameUI : MonoBehaviour {
 	{
 		_managerGender.ClearOptions();
 		_managerGender.AddOptions(new List<string> { Localization.Get("MALE"), Localization.Get("FEMALE") });
+		_tutorialToggle.enabled = _newGame.ExistingSaves();
 	}
 
 	/// <summary>

@@ -12,7 +12,7 @@ public class HoverPopUpUI : MonoBehaviour {
 
 	private void Start()
 	{
-		_canvasSize = GetComponentInParent<CanvasScaler>().gameObject.GetComponent<RectTransform>().rect.size;
+		_canvasSize = ((RectTransform)GetComponentInParent<CanvasScaler>().gameObject.transform).rect.size;
 	}
 
 	/// <summary>
@@ -20,8 +20,8 @@ public class HoverPopUpUI : MonoBehaviour {
 	/// </summary>
 	public void SetHoverObject(Transform trans)
 	{
-		var adjust = (Vector2.one * 0.5f) - trans.GetComponent<RectTransform>().pivot;
-		_currentHovered = (Vector2)trans.position + new Vector2(trans.GetComponent<RectTransform>().rect.width * adjust.x, trans.GetComponent<RectTransform>().rect.height * adjust.y);
+		var adjust = (Vector2.one * 0.5f) - ((RectTransform)trans.transform).pivot;
+		_currentHovered = (Vector2)trans.position + new Vector2(((RectTransform)trans.transform).rect.width * adjust.x, ((RectTransform)trans.transform).rect.height * adjust.y);
 	}
 
 	/// <summary>
@@ -59,34 +59,34 @@ public class HoverPopUpUI : MonoBehaviour {
 			transform.position = Input.mousePosition;
 			if (_currentHovered.x < transform.position.x)
 			{
-				GetComponent<RectTransform>().anchoredPosition += new Vector2(GetComponent<RectTransform>().rect.width * 0.5f, 0);
-				if (GetComponent<RectTransform>().anchoredPosition.x + GetComponent<RectTransform>().rect.width * 0.5f > _canvasSize.x * 0.5f)
+				((RectTransform)transform).anchoredPosition += new Vector2(((RectTransform)transform).rect.width * 0.5f, 0);
+				if (((RectTransform)transform).anchoredPosition.x + ((RectTransform)transform).rect.width * 0.5f > _canvasSize.x * 0.5f)
 				{
-					GetComponent<RectTransform>().anchoredPosition -= new Vector2(GetComponent<RectTransform>().rect.width, 0);
+					((RectTransform)transform).anchoredPosition -= new Vector2(((RectTransform)transform).rect.width, 0);
 				}
 			}
 			else
 			{
-				GetComponent<RectTransform>().anchoredPosition -= new Vector2(GetComponent<RectTransform>().rect.width * 0.5f, 0);
-				if (GetComponent<RectTransform>().anchoredPosition.x - GetComponent<RectTransform>().rect.width * 0.5f < -_canvasSize.x * 0.5f)
+				((RectTransform)transform).anchoredPosition -= new Vector2(((RectTransform)transform).rect.width * 0.5f, 0);
+				if (((RectTransform)transform).anchoredPosition.x - ((RectTransform)transform).rect.width * 0.5f < -_canvasSize.x * 0.5f)
 				{
-					GetComponent<RectTransform>().anchoredPosition += new Vector2(GetComponent<RectTransform>().rect.width, 0);
+					((RectTransform)transform).anchoredPosition += new Vector2(((RectTransform)transform).rect.width, 0);
 				}
 			}
 			if (_currentHovered.y < transform.position.y)
 			{
-				GetComponent<RectTransform>().anchoredPosition += new Vector2(0, GetComponent<RectTransform>().rect.height * 0.5f);
-				if (GetComponent<RectTransform>().anchoredPosition.y + GetComponent<RectTransform>().rect.height * 0.5f > _canvasSize.y * 0.5f)
+				((RectTransform)transform).anchoredPosition += new Vector2(0, ((RectTransform)transform).rect.height * 0.5f);
+				if (((RectTransform)transform).anchoredPosition.y + ((RectTransform)transform).rect.height * 0.5f > _canvasSize.y * 0.5f)
 				{
-					GetComponent<RectTransform>().anchoredPosition -= new Vector2(0, -GetComponent<RectTransform>().rect.height);
+					((RectTransform)transform).anchoredPosition -= new Vector2(0, -((RectTransform)transform).rect.height);
 				}
 			}
 			else
 			{
-				GetComponent<RectTransform>().anchoredPosition -= new Vector2(0, GetComponent<RectTransform>().rect.height * 0.5f);
-				if (GetComponent<RectTransform>().anchoredPosition.y - GetComponent<RectTransform>().rect.height * 0.5f < -_canvasSize.y * 0.5f)
+				((RectTransform)transform).anchoredPosition -= new Vector2(0, ((RectTransform)transform).rect.height * 0.5f);
+				if (((RectTransform)transform).anchoredPosition.y - ((RectTransform)transform).rect.height * 0.5f < -_canvasSize.y * 0.5f)
 				{
-					GetComponent<RectTransform>().anchoredPosition += new Vector2(0, -GetComponent<RectTransform>().rect.height);
+					((RectTransform)transform).anchoredPosition += new Vector2(0, -((RectTransform)transform).rect.height);
 				}
 			}
 		}

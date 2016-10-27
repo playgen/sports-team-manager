@@ -198,7 +198,7 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	private void SetFullBodyProperties(Avatar a)
 	{
-		GetComponent<RectTransform>().localScale = new Vector3(a.Weight, a.Height, 1f);
+		((RectTransform)transform).localScale = new Vector3(a.Weight, a.Height, 1f);
 	}
 
 #if USE_SPRITESHEET

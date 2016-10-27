@@ -57,9 +57,9 @@ namespace UnityEngine.UI.Extensions
         // Use this for initialization
         void Start()
         {
-            myRect = GetComponent<RectTransform>();
+            myRect = (RectTransform)transform;
 
-            if (!MaskArea)
+			if (!MaskArea)
             {
                 MaskArea = myRect;
             }

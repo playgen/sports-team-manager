@@ -128,6 +128,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\AvatarDisplay.cs" />
     <Compile Include="Assets\Scripts\CrewMemberUI.cs" />
+    <Compile Include="Assets\Scripts\DynamicPadding.cs" />
     <Compile Include="Assets\Scripts\GameManagerObject.cs" />
     <Compile Include="Assets\Scripts\HoverPopUpUI.cs" />
     <Compile Include="Assets\Scripts\LearningPill.cs" />
