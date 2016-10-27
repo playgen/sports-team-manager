@@ -79,8 +79,6 @@ public class LearningPillUI : MonoBehaviour {
 		WaitForSecondsRealtime endReal = new WaitForSecondsRealtime(0.04f);
 		int start = upward ? keep ? 1 : 0 : 2;
 		int limit = keep ? 1 : 2;
-		Debug.Log(start + " " + limit);
-		Debug.Log(start + limit);
 		_popUpAnim["LearningPill"].speed = 1;
 		_popUpAnim["LearningPill"].time = start;
 		_popUpAnim.Play();
@@ -88,7 +86,6 @@ public class LearningPillUI : MonoBehaviour {
 		{
 			yield return endFrame;
 		}
-		Debug.Log(_popUpAnim["LearningPill"].time);
 		_popUpAnim["LearningPill"].speed = 0;
 		_popUpAnim["LearningPill"].time = start + limit;
 		if (upward)
