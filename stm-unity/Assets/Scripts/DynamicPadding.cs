@@ -4,7 +4,7 @@ using System.Collections;
 
 public class DynamicPadding : MonoBehaviour {
 
-	public void OnEnable()
+	public void Adjust()
 	{
 		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
 		GetComponent<LayoutGroup>().padding.bottom = (int)(((RectTransform)transform).sizeDelta.y * 0.25f) + 20;

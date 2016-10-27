@@ -153,6 +153,7 @@
     <Compile Include="Assets\Scripts\SettingsUI.cs" />
     <Compile Include="Assets\Scripts\TeamSelection.cs" />
     <Compile Include="Assets\Scripts\TeamSelectionUI.cs" />
+    <Compile Include="Assets\Scripts\TutorialSectionUI.cs" />
     <Compile Include="Assets\Scripts\UIStateManager.cs" />
     <Compile Include="Assets\unity-tracker-master\Tracker\Format\AccessibleTracker.cs" />
     <Compile Include="Assets\unity-tracker-master\Tracker\Format\AlternativeTracker.cs" />

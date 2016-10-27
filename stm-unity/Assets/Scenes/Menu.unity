@@ -1966,6 +1966,8 @@ GameObject:
   - 222: {fileID: 86481515}
   - 114: {fileID: 86481514}
   - 114: {fileID: 86481513}
+  - 114: {fileID: 86481517}
+  - 114: {fileID: 86481516}
   m_Layer: 5
   m_Name: Settings Blocker
   m_TagString: Untagged
@@ -1985,6 +1987,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 108226952}
+  - {fileID: 1685483830}
   m_Father: {fileID: 389740746}
   m_RootOrder: 7
   m_AnchorMin: {x: -0.2, y: -0.1}
@@ -2055,7 +2058,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 1081370899}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -2077,6 +2080,38 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 86481511}
+--- !u!114 &86481516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 86481511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8ee60af491978345bc197ed4e1316bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaskArea: {fileID: 86481512}
+  maskScalingRect: {fileID: 1685483830}
+  AlphaMask: {fileID: 2800000, guid: 3a4c416d080226c4a89132d383c263bd, type: 3}
+  CutOff: 1
+  HardBlend: 0
+  FlipAlphaMask: 0
+  DontClipMaskScalingRect: 1
+  CascadeToALLChildren: 0
+--- !u!114 &86481517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 86481511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e529c8c9c4c7f5140969dec717c7ef83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaskRect:
+  - {fileID: 1685483830}
 --- !u!1 &86864000
 GameObject:
   m_ObjectHideFlags: 0
@@ -11356,77 +11391,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!21 &596482068
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: UI Extensions/SoftMaskShader
-  m_Shader: {fileID: 4800000, guid: 947afae4d36f1274ea2e4098262ceef6, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-    - first:
-        name: _AlphaMask
-      second:
-        m_Texture: {fileID: 2800000, guid: 3a4c416d080226c4a89132d383c263bd, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - first:
-        name: _MainTex
-      second:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - first:
-        name: _ColorMask
-      second: 15
-    - first:
-        name: _CutOff
-      second: 1
-    - first:
-        name: _FlipAlphaMask
-      second: 0
-    - first:
-        name: _HardBlend
-      second: 0
-    - first:
-        name: _NoOuterClip
-      second: 1
-    - first:
-        name: _Stencil
-      second: 0
-    - first:
-        name: _StencilComp
-      second: 8
-    - first:
-        name: _StencilOp
-      second: 0
-    - first:
-        name: _StencilReadMask
-      second: 255
-    - first:
-        name: _StencilWriteMask
-      second: 255
-    m_Colors:
-    - first:
-        name: _AlphaUV
-      second: {r: 0.14285715, g: 0.06250004, b: 0, a: 0}
-    - first:
-        name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _Max
-      second: {r: 0.5714286, g: 0.43749994, b: 0, a: 0}
-    - first:
-        name: _Min
-      second: {r: 0.42857143, g: 0.3749999, b: 0, a: 0}
 --- !u!1001 &610936535
 Prefab:
   m_ObjectHideFlags: 0
@@ -15839,7 +15803,37 @@ Prefab:
         type: 2}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 596482068}
+      objectReference: {fileID: 1640983719}
+    - target: {fileID: 224000014192800370, guid: 21095ee2d49966e45aed719c57d8984e,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 122
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000012423376704, guid: 21095ee2d49966e45aed719c57d8984e,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000012423376704, guid: 21095ee2d49966e45aed719c57d8984e,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000012423376704, guid: 21095ee2d49966e45aed719c57d8984e,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000012423376704, guid: 21095ee2d49966e45aed719c57d8984e,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -42.3275
+      objectReference: {fileID: 0}
+    - target: {fileID: 224000012423376704, guid: 21095ee2d49966e45aed719c57d8984e,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 13.345004
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 21095ee2d49966e45aed719c57d8984e, type: 2}
   m_IsPrefabParent: 0
@@ -18924,7 +18918,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e529c8c9c4c7f5140969dec717c7ef83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaskRect: {fileID: 964938502}
+  MaskRect:
+  - {fileID: 964938502}
 --- !u!114 &1047302249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19188,6 +19183,77 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1080330958}
+--- !u!21 &1081370899
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: UI Extensions/SoftMaskShader
+  m_Shader: {fileID: 4800000, guid: 947afae4d36f1274ea2e4098262ceef6, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _AlphaMask
+      second:
+        m_Texture: {fileID: 2800000, guid: 3a4c416d080226c4a89132d383c263bd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: _ColorMask
+      second: 15
+    - first:
+        name: _CutOff
+      second: 1
+    - first:
+        name: _FlipAlphaMask
+      second: 0
+    - first:
+        name: _HardBlend
+      second: 0
+    - first:
+        name: _NoOuterClip
+      second: 1
+    - first:
+        name: _Stencil
+      second: 0
+    - first:
+        name: _StencilComp
+      second: 8
+    - first:
+        name: _StencilOp
+      second: 0
+    - first:
+        name: _StencilReadMask
+      second: 255
+    - first:
+        name: _StencilWriteMask
+      second: 255
+    m_Colors:
+    - first:
+        name: _AlphaUV
+      second: {r: 0.08213182, g: 0.06679044, b: 0, a: 0}
+    - first:
+        name: _Color
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _Max
+      second: {r: 0.20729199, g: 0.9230169, b: 0, a: 0}
+    - first:
+        name: _Min
+      second: {r: 0.12516022, g: 0.85622644, b: 0, a: 0}
 --- !u!1 &1102365751
 GameObject:
   m_ObjectHideFlags: 0
@@ -19678,7 +19744,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e529c8c9c4c7f5140969dec717c7ef83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaskRect: {fileID: 1446816433}
+  MaskRect:
+  - {fileID: 1446816433}
 --- !u!114 &1116239692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30321,6 +30388,77 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!21 &1640983719
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: UI Extensions/SoftMaskShader
+  m_Shader: {fileID: 4800000, guid: 947afae4d36f1274ea2e4098262ceef6, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _AlphaMask
+      second:
+        m_Texture: {fileID: 2800000, guid: 3a4c416d080226c4a89132d383c263bd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: _ColorMask
+      second: 15
+    - first:
+        name: _CutOff
+      second: 1
+    - first:
+        name: _FlipAlphaMask
+      second: 0
+    - first:
+        name: _HardBlend
+      second: 0
+    - first:
+        name: _NoOuterClip
+      second: 1
+    - first:
+        name: _Stencil
+      second: 0
+    - first:
+        name: _StencilComp
+      second: 8
+    - first:
+        name: _StencilOp
+      second: 0
+    - first:
+        name: _StencilReadMask
+      second: 255
+    - first:
+        name: _StencilWriteMask
+      second: 255
+    m_Colors:
+    - first:
+        name: _AlphaUV
+      second: {r: 0.08485736, g: 0.07142853, b: 0, a: 0}
+    - first:
+        name: _Color
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _Max
+      second: {r: 0.18873441, g: 0.93000007, b: 0, a: 0}
+    - first:
+        name: _Min
+      second: {r: 0.10387707, g: 0.8585715, b: 0, a: 0}
 --- !u!1 &1642863306
 GameObject:
   m_ObjectHideFlags: 0
@@ -30793,6 +30931,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Key: NEW_GAME
   ToUpper: 1
+--- !u!1 &1685483829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1000010505007740, guid: 21095ee2d49966e45aed719c57d8984e,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 1685483830}
+  m_Layer: 5
+  m_Name: Highlighted
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1685483830
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 224000012394097768, guid: 21095ee2d49966e45aed719c57d8984e,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1685483829}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 86481512}
+  m_RootOrder: 1
+  m_AnchorMin: {x: 0.1, y: 0.64}
+  m_AnchorMax: {x: 0.185, y: 0.72}
+  m_AnchoredPosition: {x: 31.886269, y: 135.84183}
+  m_SizeDelta: {x: -3.8546753, y: -8.560272}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1701430467
 GameObject:
   m_ObjectHideFlags: 0
