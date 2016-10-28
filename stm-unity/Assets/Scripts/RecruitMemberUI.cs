@@ -42,7 +42,6 @@ public class RecruitMemberUI : MonoBehaviour
 	private void Awake()
 	{
 		_recruitMember = GetComponent<RecruitMember>();
-		Localization.LanguageChange += OnLanguageChange;
 	}
 
 	private void OnEnable()
@@ -256,7 +255,7 @@ public class RecruitMemberUI : MonoBehaviour
 		CloseHireCrewWarning();
 	}
 
-	private void OnLanguageChange(object o, EventArgs e)
+	private void OnLanguageChange()
 	{
 		if (!_questionAsked)
 		{

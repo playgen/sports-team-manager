@@ -651,7 +651,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		return scoreDiff;
 	}
 
-	private void OnLanguageChange(object o, EventArgs e)
+	private void OnLanguageChange()
 	{
 		if (_teamSelection.GetStage() % _teamSelection.GetSessionLength() != 0)
 		{

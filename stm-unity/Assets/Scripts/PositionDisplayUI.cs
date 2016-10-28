@@ -40,7 +40,6 @@ public class PositionDisplayUI : MonoBehaviour
 	private void Awake()
 	{
 		_positionDisplay = GetComponent<PositionDisplay>();
-		Localization.LanguageChange += OnLanguageChange;
 	}
 
 	private void OnEnable()
@@ -234,7 +233,7 @@ public class PositionDisplayUI : MonoBehaviour
 		}
 	}
 
-	private void OnLanguageChange(object o, EventArgs e)
+	private void OnLanguageChange()
 	{
 		_textList[0].text = Localization.Get(_current.ToString());
 		_textList[1].text = Localization.Get(_current + "_DESCRIPTION");

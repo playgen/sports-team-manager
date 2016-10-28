@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
-using System.Collections;
-
 using UnityEngine.UI;
 
-public class TutorialSectionUI : MonoBehaviour {
-
+public class TutorialSectionUI : ObserverMonoBehaviour
+{
+	[Header("UI")]
 	[SerializeField]
 	private Vector2 _highlightedAreaMin;
 	[SerializeField]
 	private Vector2 _highlightedAreaMax;
 	[SerializeField]
+	[TextArea]
 	private string[] _sectionText;
 	[SerializeField]
 	private bool _reversed;
@@ -20,43 +20,19 @@ public class TutorialSectionUI : MonoBehaviour {
 	private DynamicPadding _dynamicPadding;
 	private int _currentText;
 
-	private void OnEnable()
+	[Header("Tutorial Trigger")]
+	[SerializeField]
+	private int _eventTriggerCountRequired;
+	private int _eventTriggerCount;
+
+	protected override void OnEnable()
 	{
+		base.OnEnable();
 		_highlighted = (RectTransform)transform.Find("Highlighted");
 		_menuHighlighted = (RectTransform)transform.Find("Menu Highlighted");
 		_tutorialText = GetComponentInChildren<Text>();
 		_buttons = (RectTransform)transform.Find("Tutorial Helper/Buttons");
 		_dynamicPadding = GetComponentInChildren<DynamicPadding>();
-		if (_reversed)
-		{
-			transform.localScale = new Vector2(-1, 1);
-			_tutorialText.transform.localScale = new Vector2(-1, 1);
-			_buttons.transform.localScale = new Vector2(-1, 1);
-			_highlighted.transform.localScale = new Vector2(-1, 1);
-			var mhMin = _menuHighlighted.anchorMin.x;
-			if (mhMin < 0)
-			{
-				var mhMax = _menuHighlighted.anchorMax.x;
-				_menuHighlighted.anchorMin = new Vector2(1 - mhMax, _menuHighlighted.anchorMin.y);
-				_menuHighlighted.anchorMax = new Vector2(1 - mhMin, _menuHighlighted.anchorMax.y);
-				GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.MiddleRight;
-			}
-		} else
-		{
-			transform.localScale = Vector2.one;
-			_tutorialText.transform.localScale = Vector2.one;
-			_buttons.transform.localScale = Vector2.one;
-			_highlighted.transform.localScale = Vector2.one;
-			var mhMin = _menuHighlighted.anchorMin.x;
-			if (mhMin > 0)
-			{
-				var mhMax = _menuHighlighted.anchorMax.x;
-				_menuHighlighted.anchorMin = new Vector2(1 - mhMax, _menuHighlighted.anchorMin.y);
-				_menuHighlighted.anchorMax = new Vector2(1 - mhMin, _menuHighlighted.anchorMax.y);
-				GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.MiddleRight;
-			}
-			GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
-		}
 		SetUp();
 	}
 
@@ -72,8 +48,40 @@ public class TutorialSectionUI : MonoBehaviour {
 		SetUp();
 	}
 
+	[ContextMenu("Set Up")]
 	private void SetUp()
 	{
+		if (_reversed)
+		{
+			transform.localScale = new Vector2(-1, 1);
+			_tutorialText.transform.localScale = new Vector2(-1, 1);
+			_buttons.transform.localScale = new Vector2(-1, 1);
+			_highlighted.transform.localScale = new Vector2(-1, 1);
+			var mhMin = _menuHighlighted.anchorMin.x;
+			if (mhMin < 0)
+			{
+				var mhMax = _menuHighlighted.anchorMax.x;
+				_menuHighlighted.anchorMin = new Vector2(1 - mhMax, _menuHighlighted.anchorMin.y);
+				_menuHighlighted.anchorMax = new Vector2(1 - mhMin, _menuHighlighted.anchorMax.y);
+				GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.MiddleRight;
+			}
+		}
+		else
+		{
+			transform.localScale = Vector2.one;
+			_tutorialText.transform.localScale = Vector2.one;
+			_buttons.transform.localScale = Vector2.one;
+			_highlighted.transform.localScale = Vector2.one;
+			var mhMin = _menuHighlighted.anchorMin.x;
+			if (mhMin > 0)
+			{
+				var mhMax = _menuHighlighted.anchorMax.x;
+				_menuHighlighted.anchorMin = new Vector2(1 - mhMax, _menuHighlighted.anchorMin.y);
+				_menuHighlighted.anchorMax = new Vector2(1 - mhMin, _menuHighlighted.anchorMax.y);
+				GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.MiddleRight;
+			}
+			GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
+		}
 		var back = _buttons.Find("Back").gameObject;
 		var forward = _buttons.Find("Forward").gameObject;
 		_highlighted.anchorMin = _highlightedAreaMin;

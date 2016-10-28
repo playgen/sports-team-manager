@@ -1,11 +1,11 @@
-﻿using System;
-using UnityEngine;
+﻿using System.Reflection;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 
 /// <summary>
 /// Contains all logic related to Position prefabs
 /// </summary>
-public class PositionUI : MonoBehaviour {
+public class PositionUI : ObservableMonoBehaviour
+{
 
 	private TeamSelectionUI _teamSelectionUI;
 	private PositionDisplayUI _positionUI;
@@ -35,6 +35,7 @@ public class PositionUI : MonoBehaviour {
 	public void ShowPopUp()
 	{
 		_positionUI.SetUpDisplay(_position);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -71,7 +72,7 @@ public class PositionUI : MonoBehaviour {
 	/// <summary>
 	/// Triggered by a CrewMember being removed from the position. Removes listener and updates number of currently empty positions
 	/// </summary>
-	private void OnReset(object sender, EventArgs e)
+	private void OnReset()
 	{
 		RemoveCrew();
 	}

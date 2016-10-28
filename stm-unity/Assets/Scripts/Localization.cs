@@ -18,7 +18,7 @@ public class Localization : MonoBehaviour {
 
 	public static string filePath = "StringLocalizations";
 	public static Language SelectedLanguage { get; set; }
-	public static event EventHandler LanguageChange = delegate { };
+	public static event Action LanguageChange = delegate {};
 
 	void Awake()
 	{
@@ -99,6 +99,6 @@ public class Localization : MonoBehaviour {
 		SelectedLanguage = language;
 		PlayerPrefs.SetInt("Language", (int)SelectedLanguage);
 		((Localization[])FindObjectsOfType(typeof(Localization))).ToList().ForEach(l => l.Set());
-		LanguageChange(null, new EventArgs());
+		LanguageChange();
 	}
 }

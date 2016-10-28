@@ -118,6 +118,9 @@
     <Reference Include="SocialImportanceAsset">
       <HintPath>Assets\Plugins\stm-logic\SocialImportanceAsset.dll</HintPath>
     </Reference>
+    <Reference Include="System.Reactive">
+      <HintPath>Assets\Plugins\stm-logic\System.Reactive.dll</HintPath>
+    </Reference>
     <Reference Include="Utilities">
       <HintPath>Assets\Plugins\stm-logic\Utilities.dll</HintPath>
     </Reference>
@@ -131,6 +134,7 @@
     <Compile Include="Assets\Scripts\DynamicPadding.cs" />
     <Compile Include="Assets\Scripts\GameManagerObject.cs" />
     <Compile Include="Assets\Scripts\HoverPopUpUI.cs" />
+    <Compile Include="Assets\Scripts\KeyValueMessage.cs" />
     <Compile Include="Assets\Scripts\LearningPill.cs" />
     <Compile Include="Assets\Scripts\LearningPillUI.cs" />
     <Compile Include="Assets\Scripts\LoadGame.cs" />
@@ -140,6 +144,8 @@
     <Compile Include="Assets\Scripts\MemberMeetingUI.cs" />
     <Compile Include="Assets\Scripts\NewGame.cs" />
     <Compile Include="Assets\Scripts\NewGameUI.cs" />
+    <Compile Include="Assets\Scripts\ObservableMonoBehaviour.cs" />
+    <Compile Include="Assets\Scripts\ObserverMonoBehaviour.cs" />
     <Compile Include="Assets\Scripts\PositionDisplay.cs" />
     <Compile Include="Assets\Scripts\PositionDisplayUI.cs" />
     <Compile Include="Assets\Scripts\PositionUI.cs" />
@@ -173,6 +179,7 @@
   <ItemGroup>
     <None Include="Assets\Editor\ExcelToJsonConverter\Json\license.txt" />
     <None Include="Assets\Plugins\stm-logic\Newtonsoft.Json.xml" />
+    <None Include="Assets\Plugins\stm-logic\System.Reactive.xml" />
     <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShader.shader" />
     <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShaderText.shader" />
   </ItemGroup>

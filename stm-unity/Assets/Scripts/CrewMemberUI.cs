@@ -27,7 +27,7 @@ public class CrewMemberUI : MonoBehaviour {
 	}
 	public bool Usable;
 	public bool Current;
-	public event EventHandler ReplacedEvent = delegate { };
+	public event Action ReplacedEvent = delegate { };
 
 	/// <summary>
 	/// Bring in elements that need to be known to this object
@@ -174,7 +174,7 @@ public class CrewMemberUI : MonoBehaviour {
 	/// </summary>
 	public void PlacedEvent()
 	{
-		ReplacedEvent(this, new EventArgs());
+		ReplacedEvent();
 	}
 
 	/// <summary>

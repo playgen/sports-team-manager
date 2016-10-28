@@ -252,7 +252,7 @@ public class MemberMeetingUI : MonoBehaviour
 		_teamSelectionUI.ResetCrew();
 	}
 
-	private void OnLanguageChange(object o, EventArgs e)
+	private void OnLanguageChange()
 	{
 		var currentRole = _memberMeeting.GetCrewMemberPosition(_currentMember);
 		_textList[2].text = currentRole == Position.Null ? Localization.Get("NO_ROLE") : "";

@@ -184,6 +184,9 @@
     <Reference Include="WellFormedNames">
       <HintPath>Assets\Plugins\stm-logic\WellFormedNames.dll</HintPath>
     </Reference>
+    <Reference Include="System.Reactive">
+      <HintPath>Assets\Plugins\stm-logic\System.Reactive.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="stm-unity.CSharp.csproj">
@@ -199,6 +202,7 @@
   <ItemGroup>
     <None Include="Assets\Editor\ExcelToJsonConverter\Json\license.txt" />
     <None Include="Assets\Plugins\stm-logic\Newtonsoft.Json.xml" />
+    <None Include="Assets\Plugins\stm-logic\System.Reactive.xml" />
     <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShader.shader" />
     <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShaderText.shader" />
   </ItemGroup>
