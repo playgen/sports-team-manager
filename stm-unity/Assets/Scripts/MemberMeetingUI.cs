@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
+
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +10,7 @@ using UnityEngine.UI;
 /// Contains all logic related to the CrewMember Meeting pop-up
 /// </summary>
 [RequireComponent(typeof(MemberMeeting))]
-public class MemberMeetingUI : MonoBehaviour
+public class MemberMeetingUI : ObservableMonoBehaviour
 {
 	private MemberMeeting _memberMeeting;
 	private CrewMember _currentMember;
@@ -76,6 +78,7 @@ public class MemberMeetingUI : MonoBehaviour
 		}
 		_positionUI.ChangeBlockerOrder();
 		Localization.LanguageChange -= OnLanguageChange;
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -207,6 +210,7 @@ public class MemberMeetingUI : MonoBehaviour
 		var reply = _memberMeeting.AskQuestion(questionType, _currentMember);
 		Display(true);
 		_dialogueText.text = reply.Length > 0 ? reply : "";
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>

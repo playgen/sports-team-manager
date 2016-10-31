@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ObservableMonoBehaviour : MonoBehaviour, IObservable<KeyValueMessage>
 {
-    private List<IObserver<KeyValueMessage>> _observers = new List<IObserver<KeyValueMessage>>();
+    protected readonly List<IObserver<KeyValueMessage>> _observers = new List<IObserver<KeyValueMessage>>();
 
     public IDisposable Subscribe(IObserver<KeyValueMessage> observer)
     {
@@ -17,16 +17,20 @@ public class ObservableMonoBehaviour : MonoBehaviour, IObservable<KeyValueMessag
 
     protected void ShareEvent(string typeName, string methodName)
     {
-        foreach (var observer in _observers)
+        var currentObservers = new List<IObserver<KeyValueMessage>>(_observers);
+        foreach (var observer in currentObservers)
         {
-            observer.OnNext(new KeyValueMessage(typeName, methodName));
+            if (_observers.Contains(observer))
+            {
+                observer.OnNext(new KeyValueMessage(typeName, methodName, gameObject));
+            }
         }
     }
 
     private class Unsubscriber : IDisposable
     {
-        private List<IObserver<KeyValueMessage>> _observers;
-        private IObserver<KeyValueMessage> _observer;
+        private readonly List<IObserver<KeyValueMessage>> _observers;
+        private readonly IObserver<KeyValueMessage> _observer;
 
         public Unsubscriber(List<IObserver<KeyValueMessage>> observers, IObserver<KeyValueMessage> observer)
         {

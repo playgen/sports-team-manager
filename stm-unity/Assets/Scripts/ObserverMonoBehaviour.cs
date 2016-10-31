@@ -1,40 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-
+using System.Reflection;
 using UnityEngine;
 
 public class ObserverMonoBehaviour : MonoBehaviour, IObserver<KeyValueMessage>
 {
     [SerializeField]
-    private string _typeName;
-    [SerializeField]
-    private string _methodName;
-    private List<IDisposable> _unsubscribers = new List<IDisposable>();
+    protected KeyValueMessage[] _triggers;
+    protected readonly List<IDisposable> _unsubscribers = new List<IDisposable>();
 
     protected virtual void OnEnable()
     {
-        var type = Type.GetType(_typeName);
-        if (type != null && type.IsSubclassOf(typeof(ObservableMonoBehaviour)))
+        foreach (var trigger in _triggers)
         {
-            if (type.GetMethod(_methodName) != null)
+            var type = Type.GetType(trigger.TypeName);
+            if (type != null && type.IsSubclassOf(typeof(ObservableMonoBehaviour)))
             {
-                var providers = FindObjectsOfType(type).ToList();
-                foreach (var provider in providers)
+                var flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+                if (type.GetMethod(trigger.MethodName, flags) != null)
                 {
-                    Subscribe(provider as IObservable<KeyValueMessage>);
+                    var providers = transform.root.gameObject.GetComponentsInChildren(type, true);
+                    foreach (var provider in providers)
+                    {
+                        Subscribe(provider as IObservable<KeyValueMessage>);
+                    }
+                }
+                else
+                {
+                    Debug.LogError(trigger.MethodName + " is invalid", this);
                 }
             }
             else
             {
-                Debug.LogError(_methodName + " is invalid", this);
+                Debug.LogError(trigger.TypeName + " is invalid", this);
             }
         }
-        else
-        {
-            Debug.LogError(_typeName + " is invalid", this);
-        }
-        
     }
 
     protected virtual void OnDisable()
@@ -69,11 +69,8 @@ public class ObserverMonoBehaviour : MonoBehaviour, IObserver<KeyValueMessage>
 
     }
 
-    public void OnNext(KeyValueMessage message)
+    public virtual void OnNext(KeyValueMessage message)
     {
-        if (message.TypeName == _typeName && message.MethodName == _methodName)
-        {
-            Debug.Log("It worked!");
-        }
+        
     }
 }

@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ using UnityEngine.UI;
 /// Contains all UI logic related to the Position pop-up
 /// </summary>
 [RequireComponent(typeof(PositionDisplay))]
-public class PositionDisplayUI : MonoBehaviour
+public class PositionDisplayUI : ObservableMonoBehaviour
 {
 	private PositionDisplay _positionDisplay;
 	[SerializeField]
@@ -212,7 +213,8 @@ public class PositionDisplayUI : MonoBehaviour
 		{
 			_popUpBlocker.gameObject.SetActive(false);
 		}
-	}
+        ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+    }
 
 	/// <summary>
 	/// Adjust blocker position in hierarchy according to if another pop-up that uses it is displayed as well

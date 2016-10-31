@@ -5,11 +5,12 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 /// <summary>
 /// Contains all logic related to CrewMember prefabs
 /// </summary>
-public class CrewMemberUI : MonoBehaviour {
+public class CrewMemberUI : ObservableMonoBehaviour {
 
 	private TeamSelection _teamSelection;
 	private MemberMeetingUI _meetingUI;
@@ -135,6 +136,7 @@ public class CrewMemberUI : MonoBehaviour {
 	private void ShowPopUp()
 	{
 		_meetingUI.SetUpDisplay(_crewMember);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>

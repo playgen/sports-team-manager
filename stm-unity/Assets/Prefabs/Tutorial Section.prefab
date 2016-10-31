@@ -161,7 +161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1000013924046980
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,13 +432,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2caf71bacc480a049be32749926481b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _highlightedAreaMin: {x: 0.075, y: 0.175}
-  _highlightedAreaMax: {x: 0.75, y: 0.34}
-  _sectionText:
-  - This is a test.
-  - Yes, really.
-  - Honest.
-  _reversed: 1
+  _triggers: []
+  _highlightedAreaMin: {x: 0, y: 0}
+  _highlightedAreaMax: {x: 0, y: 0}
+  _sectionText: []
+  _reversed: 0
+  _uniqueEvents: 0
+  _eventTriggerCountRequired: 0
 --- !u!114 &114000012419585564
 MonoBehaviour:
   m_ObjectHideFlags: 1
