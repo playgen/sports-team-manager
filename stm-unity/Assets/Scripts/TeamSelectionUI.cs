@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 using PlayGen.RAGE.SportsTeamManager.Simulation;
@@ -22,7 +23,7 @@ public class Icon
 /// Contains all UI logic related to the Team Management screen
 /// </summary>
 [RequireComponent(typeof(TeamSelection))]
-public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
+public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHandler {
 	private TeamSelection _teamSelection;
 	[SerializeField]
 	private GameObject _boatContainer;
@@ -106,11 +107,11 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	{
 		if (_positionsEmpty > 0 && _raceButton.interactable)
 		{
-			_raceButton.interactable = false;
+			DisableRacing();
 		}
 		else if (_positionsEmpty == 0 && !_raceButton.interactable)
 		{
-			_raceButton.interactable = true;
+			EnableRacing();
 		}
 		var actionAllowance = _teamSelection.QuestionAllowance();
 		var crewAllowance = _teamSelection.CrewEditAllowance();
@@ -130,6 +131,18 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 				b.interactable = true;
 			}
 		}
+	}
+
+	private void EnableRacing()
+	{
+		_raceButton.interactable = true;
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+	}
+
+	private void DisableRacing()
+	{
+		_raceButton.interactable = false;
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -218,7 +231,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
 		}
 		ResetCrew();
-		RepeatLineUp();
+		//RepeatLineUp();
 	}
 
 	/// <summary>
@@ -476,6 +489,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		GetResult((_teamSelection.GetStage() - 1) % _teamSelection.GetSessionLength() == 0, currentBoat.Score, currentBoat.Positions.Count, offset, _raceButton.GetComponentInChildren<Text>(), currentBoat.PositionCrew);
 		//set-up next boat
 		CreateNewBoat();
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -535,6 +549,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 				return;
 			}
 		}
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -615,7 +630,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		_positionsEmpty = (FindObjectsOfType(typeof(PositionUI)) as PositionUI[]).Length;
 		//recreate crew and repeat previous line-up
 		CreateCrew();
-		RepeatLineUp();
+		//RepeatLineUp();
 		//close any open pop-ups
 		_meetingUI.gameObject.SetActive(false);
 		_positionUI.ClosePositionPopUp();

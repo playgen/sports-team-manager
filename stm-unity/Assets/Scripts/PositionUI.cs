@@ -54,7 +54,8 @@ public class PositionUI : ObservableMonoBehaviour
 			_teamSelectionUI.PositionChange(1);
 			crewmember.ReplacedEvent += OnReset;
 		}
-	}
+        ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+    }
 
 	/// <summary>
 	/// Remove the reference to the CrewMember previously attached to this Position

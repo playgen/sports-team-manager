@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
+
 using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.UI;
@@ -8,7 +10,7 @@ using UnityEngine.UI;
 /// Contains all UI logic related to the Recruitment pop-up
 /// </summary>
 [RequireComponent(typeof(RecruitMember))]
-public class RecruitMemberUI : MonoBehaviour
+public class RecruitMemberUI : ObservableMonoBehaviour
 {
 	private RecruitMember _recruitMember;
 	[SerializeField]
@@ -140,6 +142,7 @@ public class RecruitMemberUI : MonoBehaviour
 			_questionButtons[i].onClick.AddListener(delegate { AskQuestion(selected, questionText); });
 		}
 		CostCheck();
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -177,7 +180,8 @@ public class RecruitMemberUI : MonoBehaviour
 			}
 		}
 		CostCheck();
-	}
+        ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+    }
 
 	/// <summary>
 	/// Set the previously asked question to be displayed
@@ -253,7 +257,8 @@ public class RecruitMemberUI : MonoBehaviour
 		_teamSelectionUI.ResetCrew();
 		gameObject.SetActive(false);
 		CloseHireCrewWarning();
-	}
+        ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+    }
 
 	private void OnLanguageChange()
 	{

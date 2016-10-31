@@ -9,10 +9,6 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	private TutorialController _tutorial;
 	[Header("UI")]
 	[SerializeField]
-	private Vector2 _highlightedAreaMin;
-	[SerializeField]
-	private Vector2 _highlightedAreaMax;
-	[SerializeField]
 	[TextArea]
 	private string[] _sectionText;
 	[SerializeField]
@@ -33,11 +29,9 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	private int _eventTriggerCountRequired;
 	private int _eventTriggerCount;
 
-	public void Construct(string[] text, Vector2 min, Vector2 max, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered)
+	public void Construct(string[] text, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered)
 	{
 		_sectionText = text;
-		_highlightedAreaMin = min;
-		_highlightedAreaMax = max;
 		_reversed = reversed;
 		_triggers = triggers;
 		_eventTriggerCountRequired = triggerCount;
@@ -112,8 +106,6 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		}
 		var back = _buttons.Find("Back").gameObject;
 		var forward = _buttons.Find("Forward").gameObject;
-		_highlighted.anchorMin = _highlightedAreaMin;
-		_highlighted.anchorMax = _highlightedAreaMax;
 		if (_sectionText.Length == 0)
 		{
 			_tutorialObject.SetActive(false);

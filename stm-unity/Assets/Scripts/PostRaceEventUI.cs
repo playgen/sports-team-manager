@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+
 using IntegratedAuthoringTool.DTOs;
 
 using PlayGen.RAGE.SportsTeamManager.Simulation;
@@ -10,7 +12,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Contains all UI logic related to the Post Race pop-up
 /// </summary>
-public class PostRaceEventUI : MonoBehaviour
+public class PostRaceEventUI : ObservableMonoBehaviour
 {
 	private PostRaceEvent _postRaceEvent;
 	private CanvasGroup _canvasGroup;
@@ -37,6 +39,7 @@ public class PostRaceEventUI : MonoBehaviour
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
 		ResetDisplay();
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	private void OnDisable()
@@ -99,7 +102,6 @@ public class PostRaceEventUI : MonoBehaviour
 		}
 		if (replies.Values.Sum(dos => dos.Count) == 0)
 		{
-			_closeButton.SetActive(true);
 			SetBlockerOnClick();
 		} 
 		else
@@ -112,6 +114,7 @@ public class PostRaceEventUI : MonoBehaviour
 	{
 		if (_postRacePeople.All(prp => prp.ActiveQuestions() == false))
 		{
+			_closeButton.SetActive(true);
 			_popUpBlocker.onClick.AddListener(GetLearningPill);
 			_popUpBlocker.onClick.AddListener(Hide);
 			_popUpBlocker.onClick.AddListener(_postRaceEvent.GetEvent);
@@ -119,6 +122,7 @@ public class PostRaceEventUI : MonoBehaviour
 			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
 			_popUpBlocker.onClick.AddListener(SendLearningPill);
 		}
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	public void GetLearningPill()
@@ -152,5 +156,6 @@ public class PostRaceEventUI : MonoBehaviour
 			}
 			ResetQuestions();
 		}
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 }
