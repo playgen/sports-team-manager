@@ -213,8 +213,8 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 		{
 			_popUpBlocker.gameObject.SetActive(false);
 		}
-        ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _current.GetName());
-    }
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _current.GetName());
+	}
 
 	/// <summary>
 	/// Adjust blocker position in hierarchy according to if another pop-up that uses it is displayed as well

@@ -8,7 +8,6 @@ using UnityEngine.UI.Extensions;
 public class TutorialController : MonoBehaviour
 {
     private GameManager _gameManager;
-    private int _stage;
     [SerializeField]
     private GameObject _tutorialSectionPrefab;
 
@@ -41,29 +40,35 @@ public class TutorialController : MonoBehaviour
             var triggerCount = int.Parse(parsedAsset[i]["Trigger Count Required"].RemoveJSONNodeChars());
             var uniqueTriggers = bool.Parse(parsedAsset[i]["Unique Triggers"].RemoveJSONNodeChars());
             var wipeTriggers = bool.Parse(parsedAsset[i]["Wipe Triggered Objects"].RemoveJSONNodeChars());
-            section.Construct(text, reversed, triggers, triggerCount, uniqueTriggers, wipeTriggers);
+            var saveToSection = int.Parse(parsedAsset[i]["Save Progress"].RemoveJSONNodeChars());
+            section.Construct(text, reversed, triggers, triggerCount, uniqueTriggers, wipeTriggers, saveToSection);
             tutorialSection.name = _tutorialSectionPrefab.name;
         }
         foreach (Transform child in transform)
         {
-            if (child.GetSiblingIndex() == _stage)
-            {
-                child.gameObject.SetActive(true);
-            }
-            else
-            {
-                child.gameObject.SetActive(false);
-            }
+            child.gameObject.SetActive(false);
+        }
+    }
+
+    public void Start()
+    {
+        _gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+        gameObject.SetActive(_gameManager.ShowTutorial);
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(child.GetSiblingIndex() == _gameManager.TutorialStage);
         }
     }
 
     public void AdvanceStage()
     {
-        transform.GetChild(_stage).gameObject.SetActive(false);
-        _stage++;
-        if (_stage < transform.childCount)
+        var stage = _gameManager.TutorialStage;
+        transform.GetChild(stage).gameObject.SetActive(false);
+        var saveAmount = transform.GetChild(stage).GetComponent<TutorialSectionUI>().SaveNextSection;
+        _gameManager.SaveTutorialProgress(saveAmount, transform.childCount < stage + 1);
+        if (_gameManager.ShowTutorial)
         {
-            transform.GetChild(_stage).gameObject.SetActive(true);
+            transform.GetChild(stage + 1).gameObject.SetActive(true);
         }
         else
         {

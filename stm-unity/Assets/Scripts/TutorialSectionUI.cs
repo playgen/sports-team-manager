@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UI.Extensions;
 
 public class TutorialSectionUI : ObserverMonoBehaviour
 {
@@ -23,14 +21,20 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	[Header("Tutorial Trigger")]
 	[SerializeField]
 	private bool _uniqueEvents;
-	private static List<object[]> _triggeredObjects = new List<object[]>();
+	private static readonly List<object[]> _triggeredObjects = new List<object[]>();
 	[SerializeField]
 	private int _eventTriggerCountRequired;
 	private int _eventTriggerCount;
 	[SerializeField]
 	private bool _wipeTriggered;
+	[SerializeField]
+	private int _saveNextSection;
+	public int SaveNextSection
+	{
+		get { return _saveNextSection; }
+	}
 
-	public void Construct(string[] text, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered)
+	public void Construct(string[] text, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered, int saveSection)
 	{
 		_sectionText = text;
 		_reversed = reversed;
@@ -38,6 +42,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		_eventTriggerCountRequired = triggerCount;
 		_uniqueEvents = uniqueTriggers;
 		_wipeTriggered = wipeTriggered;
+		_saveNextSection = saveSection;
 	}
 
 	private void Start()

@@ -231,7 +231,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
 		}
 		ResetCrew();
-		//RepeatLineUp();
+		RepeatLineUp();
 	}
 
 	/// <summary>
@@ -588,6 +588,10 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				}
 			}
 		}
+		if (_positionsEmpty == 0)
+		{
+			EnableRacing();
+		}
 	}
 
 	/// <summary>
@@ -630,7 +634,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		_positionsEmpty = (FindObjectsOfType(typeof(PositionUI)) as PositionUI[]).Length;
 		//recreate crew and repeat previous line-up
 		CreateCrew();
-		//RepeatLineUp();
+		RepeatLineUp();
 		//close any open pop-ups
 		_meetingUI.gameObject.SetActive(false);
 		_positionUI.ClosePositionPopUp();

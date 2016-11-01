@@ -22,9 +22,9 @@ public class NewGame : MonoBehaviour {
 	/// <summary>
 	/// Create a new game
 	/// </summary>
-	public bool CreateNewGame(string boatName, byte[] colorsPri, byte[] colorsSec, string managerName, string managerAge, string managerGender)
+	public bool CreateNewGame(string boatName, byte[] colorsPri, byte[] colorsSec, string managerName, string managerAge, string managerGender, bool showTutorial)
 	{
-		_gameManager.NewGame(Application.persistentDataPath, boatName, colorsPri, colorsSec, managerName, managerAge, managerGender, Localization.SelectedLanguage.ToString());
+		_gameManager.NewGame(Application.persistentDataPath, boatName, colorsPri, colorsSec, managerName, managerAge, managerGender, showTutorial, Localization.SelectedLanguage.ToString());
 		return _gameManager.Team != null && _gameManager.Team.Name == boatName;
 	}
 

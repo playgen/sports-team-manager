@@ -184,7 +184,7 @@ public class NewGameUI : MonoBehaviour {
 				(byte)(_colorImageSecondary.color.g * 255),
 				(byte)(_colorImageSecondary.color.b * 255)
 		};
-		var success = _newGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text);
+		var success = _newGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text, _tutorialToggle.isOn);
 		if (success)
 		{
 			_stateManager.GoToGame(gameObject);

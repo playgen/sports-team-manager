@@ -19,7 +19,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var config = new ConfigStore();
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
-			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 			gameManager.Team.Boat.AssignCrewMember(Position.Skipper, gameManager.Team.CrewMembers["Skippy Skip"]);
 			gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 			Assert.AreEqual(10, gameManager.Team.Boat.Score);
@@ -37,7 +37,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var config = new ConfigStore();
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
-			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 			gameManager.Team.Boat.AssignCrewMember(Position.Skipper, gameManager.Team.CrewMembers["Nick Pony"]);
 			gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 			Assert.AreEqual(4, gameManager.Team.Boat.Score);
@@ -55,7 +55,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var config = new ConfigStore();
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
-			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 			gameManager.Team.Boat.AssignCrewMember(Position.Skipper, gameManager.Team.CrewMembers["Rav Age"]);
 			gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 			Assert.AreEqual(5, gameManager.Team.Boat.Score);
@@ -73,7 +73,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var config = new ConfigStore();
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
-			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 			var skip = gameManager.Team.CrewMembers["Skippy Skip"];
 			var nav = gameManager.Team.CrewMembers["Wise Nav"];
 			var bow = gameManager.Team.CrewMembers["Dim Wobnam"];
@@ -100,7 +100,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var config = new ConfigStore();
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
-			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 			var skip = gameManager.Team.CrewMembers["Skippy Skip"];
 			var nav = gameManager.Team.CrewMembers["Wise Nav"];
 			var bow = gameManager.Team.CrewMembers["Dim Wobnam"];
@@ -127,7 +127,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var config = new ConfigStore();
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
-			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 			var skip = gameManager.Team.CrewMembers["Skippy Skip"];
 			var nav = gameManager.Team.CrewMembers["Wise Nav"];
 			var bow = gameManager.Team.CrewMembers["Dim Wobnam"];
@@ -154,7 +154,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var config = new ConfigStore();
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
-			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 			var skip = gameManager.Team.CrewMembers["Skippy Skip"];
 			var nav = gameManager.Team.CrewMembers["Wise Nav"];
 			var bow = gameManager.Team.CrewMembers["Dim Wobnam"];
@@ -177,7 +177,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var config = new ConfigStore();
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
-			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 			var skip = gameManager.Team.CrewMembers["Skippy Skip"];
 			var nav = gameManager.Team.CrewMembers["Wise Nav"];
 			var bow = gameManager.Team.CrewMembers["Dim Wobnam"];
@@ -202,7 +202,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var config = new ConfigStore();
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
-			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 			var skip = gameManager.Team.CrewMembers["Skippy Skip"];
 			var nav = gameManager.Team.CrewMembers["Wise Nav"];
 			var bow = gameManager.Team.CrewMembers["Dim Wobnam"];
@@ -234,7 +234,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var config = new ConfigStore();
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
-			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 			var skip = gameManager.Team.CrewMembers["Skippy Skip"];
 			var nav = gameManager.Team.CrewMembers["Wise Nav"];
 			var bow = gameManager.Team.CrewMembers["Dim Wobnam"];
@@ -270,7 +270,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var config = new ConfigStore();
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
-			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 			var skip = gameManager.Team.CrewMembers["Skippy Skip"];
 			var nav = gameManager.Team.CrewMembers["Wise Nav"];
 			var bow = gameManager.Team.CrewMembers["Dim Wobnam"];
@@ -317,7 +317,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var config = new ConfigStore();
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
-			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 		}
 
 		[TestMethod]
@@ -326,7 +326,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var config = new ConfigStore();
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
-			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 			gameManager.LoadGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace");
 
 			Assert.AreEqual("Testy McTestFace", gameManager.Team.Name);
@@ -342,7 +342,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				var config = new ConfigStore();
 				var crew = CreateInitialCrew(config);
 				var gameManager = new GameManager();
-				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 
 				gameManager.Team.Boat.AssignCrewMember(Position.Skipper, gameManager.Team.CrewMembers["Skippy Skip"]);
 				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
@@ -377,7 +377,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				var config = new ConfigStore();
 				var crew = CreateInitialCrew(config);
 				var gameManager = new GameManager();
-				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 
 				var skip = gameManager.Team.CrewMembers["Skippy Skip"];
 				var nav = gameManager.Team.CrewMembers["Wise Nav"];
@@ -425,7 +425,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				var config = new ConfigStore();
 				var crew = CreateInitialCrew(config);
 				var gameManager = new GameManager();
-				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 
 				var skip = gameManager.Team.CrewMembers["Skippy Skip"];
 				var nav = gameManager.Team.CrewMembers["Wise Nav"];
@@ -506,7 +506,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				var config = new ConfigStore();
 				var crew = CreateInitialCrew(config);
 				var gameManager = new GameManager();
-				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", "English", crew);
+				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", "18", "Male", false, "English", crew);
 
 				var skip = gameManager.Team.CrewMembers["Nick Pony"];
 				var nav = gameManager.Team.CrewMembers["Rav Age"];
@@ -546,7 +546,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			{
 				var config = new ConfigStore();
 				var gameManager = new GameManager();
-				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Ideal Test", new byte[] { 0, 0, 0 }, new byte[] { 0, 0, 0 }, "Player Manager", "18", "Male", "English");
+				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Ideal Test", new byte[] { 0, 0, 0 }, new byte[] { 0, 0, 0 }, "Player Manager", "18", "Male", false, "English");
 				while (gameManager.Team.Boat.Positions.Count < 6)
 				{
 					for (int j = 0; j < gameManager.RaceSessionLength; j++)

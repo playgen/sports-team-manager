@@ -20,6 +20,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int ActionAllowance { get; private set; }
 		public int CrewEditAllowance { get; private set; }
 		public int RaceSessionLength { get; private set; }
+		public bool ShowTutorial { get; private set; }
+		public int TutorialStage { get; private set; }
 		public EventController EventController => eventController;
 
 		/// <summary>
@@ -109,7 +111,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create a new game
 		/// </summary>
-		public void NewGame(string storageLocation, string name, byte[] teamColorsPrimary, byte[] teamColorsSecondary, string managerName, string managerAge, string managerGender, string nation, List<CrewMember> crew = null)
+		public void NewGame(string storageLocation, string name, byte[] teamColorsPrimary, byte[] teamColorsSecondary, string managerName, string managerAge, string managerGender, bool showTutorial, string nation, List<CrewMember> crew = null)
 		{
 			UnloadGame();
 			//create folder and iat file for game
@@ -155,10 +157,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			ActionAllowance = (int)config.ConfigValues[ConfigKeys.DefaultActionAllowance] + ((int)config.ConfigValues[ConfigKeys.ActionAllowancePerPosition] * positionCount);
 			CrewEditAllowance = (int)config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition] * positionCount;
 			RaceSessionLength = (int)config.ConfigValues[ConfigKeys.RaceSessionLength];
+			ShowTutorial = showTutorial;
 			//create manager files and store game attribute details
 			manager.CreateFile(iat, combinedStorageLocation);
 			manager.UpdateBeliefs("Manager");
 			manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), boat.Type);
+			manager.UpdateSingleBelief(NPCBeliefs.ShowTutorial.GetDescription(), ShowTutorial.ToString());
+			manager.UpdateSingleBelief(NPCBeliefs.TutorialStage.GetDescription(), TutorialStage.ToString());
 			manager.UpdateSingleBelief(NPCBeliefs.Nationality.GetDescription(), nation);
 			manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
 			manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString());
@@ -273,6 +278,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					nameList.Add(person.Name);
 					var boat = new Boat(config, person.LoadBelief(NPCBeliefs.BoatType.GetDescription()));
 					var nation = person.LoadBelief(NPCBeliefs.Nationality.GetDescription());
+					ShowTutorial = bool.Parse(person.LoadBelief(NPCBeliefs.ShowTutorial.GetDescription()));
+					TutorialStage = int.Parse(person.LoadBelief(NPCBeliefs.TutorialStage.GetDescription()));
 					Team = new Team(iat, storageLocation, config, iat.ScenarioName, nation, boat);
 					ActionAllowance = Convert.ToInt32(person.LoadBelief(NPCBeliefs.ActionAllowance.GetDescription()));
 					CrewEditAllowance = Convert.ToInt32(person.LoadBelief(NPCBeliefs.CrewEditAllowance.GetDescription()));
@@ -646,6 +653,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var replies = new Dictionary<CrewMember, string>();
 			members.ForEach(member => replies.Add(member, ""));
 			return replies;
+		}
+
+		public void SaveTutorialProgress(int saveAmount, bool finished = false)
+		{
+			var stageToSave = TutorialStage + saveAmount;
+			Team.Manager.UpdateSingleBelief(NPCBeliefs.TutorialStage.GetDescription(), stageToSave.ToString());
+			TutorialStage++;
+			if (finished)
+			{
+				ShowTutorial = false;
+				Team.Manager.UpdateSingleBelief(NPCBeliefs.ShowTutorial.GetDescription(), ShowTutorial.ToString());
+			}
+			Team.Manager.SaveStatus();
 		}
 	}
 }
