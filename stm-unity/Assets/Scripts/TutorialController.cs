@@ -9,6 +9,8 @@ public class TutorialController : MonoBehaviour
     private GameManager _gameManager;
     [SerializeField]
     private GameObject _tutorialSectionPrefab;
+    [SerializeField]
+    private GameObject _tutorialQuitButton;
 
     [ContextMenu("Create Tutorial")]
     public void Createtutorial()
@@ -55,6 +57,7 @@ public class TutorialController : MonoBehaviour
     {
         _gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
         gameObject.SetActive(_gameManager.ShowTutorial);
+        _tutorialQuitButton.SetActive(_gameManager.ShowTutorial);
         foreach (Transform child in transform)
         {
             child.gameObject.SetActive(child.GetSiblingIndex() == _gameManager.TutorialStage);
@@ -74,7 +77,17 @@ public class TutorialController : MonoBehaviour
         else
         {
             gameObject.SetActive(false);
+            _tutorialQuitButton.SetActive(false);
         }
+    }
+
+    public void QuitTutorial()
+    {
+        var stage = _gameManager.TutorialStage;
+        transform.GetChild(stage).gameObject.SetActive(false);
+        _gameManager.SaveTutorialProgress(0, true);
+        gameObject.SetActive(false);
+        _tutorialQuitButton.SetActive(false);
     }
 }
 

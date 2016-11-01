@@ -107,4 +107,5 @@
 {"key":"WISDOM","en":"Wisdom","it":"x"},
 {"key":"YELLOW_PLACEMENT","en":"Ideal In Another Position","it":"x"},
 {"key":"YES","en":"Yes","it":"x"},
-{"key":"SHOW_TUTORIAL","en":"Show Tutorial:","it":"x"}]
+{"key":"SHOW_TUTORIAL","en":"Show Tutorial:","it":"x"},
+{"key":"TUTORIAL_WARNING","en":"Are you sure you want to quit out of the tutorial?\n\nIf yes, you'll need to start a new game in order to take the tutorial.","it":"X"}]
