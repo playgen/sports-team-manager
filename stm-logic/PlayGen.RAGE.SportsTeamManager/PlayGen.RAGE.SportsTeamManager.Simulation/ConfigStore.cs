@@ -55,5 +55,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			HelpIntegratedAuthoringTool = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue");
 			AssetManager.Instance.Bridge = new BaseBridge();
 		}
+
+		public void ReloadAssets()
+		{
+			AssetManager.Instance.Bridge = new TemplateBridge();
+			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile("template_rpc");
+			EmotionalAppraisal = EmotionalAppraisalAsset.LoadFromFile(RolePlayCharacter.EmotionalAppraisalAssetSource);
+			EmotionalDecisionMaking = EmotionalDecisionMakingAsset.LoadFromFile(RolePlayCharacter.EmotionalDecisionMakingSource);
+			SocialImportance = SocialImportanceAsset.LoadFromFile(RolePlayCharacter.SocialImportanceAssetSource);
+			IntegratedAuthoringTool = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
+			HelpIntegratedAuthoringTool = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue");
+			AssetManager.Instance.Bridge = new BaseBridge();
+		}
 	}
 }

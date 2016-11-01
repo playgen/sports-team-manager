@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,12 +30,14 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	private bool _wipeTriggered;
 	[SerializeField]
 	private int _saveNextSection;
+	[SerializeField]
+	private List<string> _blacklistButtons;
 	public int SaveNextSection
 	{
 		get { return _saveNextSection; }
 	}
 
-	public void Construct(string[] text, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered, int saveSection)
+	public void Construct(string[] text, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered, int saveSection, List<string> blacklist)
 	{
 		_sectionText = text;
 		_reversed = reversed;
@@ -43,6 +46,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		_uniqueEvents = uniqueTriggers;
 		_wipeTriggered = wipeTriggered;
 		_saveNextSection = saveSection;
+		_blacklistButtons = blacklist;
 	}
 
 	private void Start()
@@ -58,6 +62,12 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		_tutorialObject = transform.Find("Tutorial Helper").gameObject;
 		_buttons = (RectTransform)transform.Find("Tutorial Helper/Buttons");
 		_dynamicPadding = GetComponentInChildren<DynamicPadding>();
+		var reverseRaycast = GetComponentInChildren<ReverseRaycastTarget>();
+		if (_blacklistButtons != null)
+		{
+			var blacklistButtons = _blacklistButtons.Select(blb => reverseRaycast.MaskRect[1].FindAll(blb)).SelectMany(x => x).Select(x => (RectTransform)x).ToList();
+			reverseRaycast.BlacklistRect.AddRange(blacklistButtons);
+		}
 		SetUp();
 	}
 
@@ -120,7 +130,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 			{
 				back.SetActive(false);
 			}
-			else if (_currentText == _sectionText.Length - 1)
+			if (_currentText == _sectionText.Length - 1)
 			{
 				forward.SetActive(false);
 			}

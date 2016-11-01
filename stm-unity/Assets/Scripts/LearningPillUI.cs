@@ -90,6 +90,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 		}
 		_popUpAnim["LearningPill"].speed = 0;
 		_popUpAnim["LearningPill"].time = start + limit;
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, upward, keep, tip);
 		if (upward)
 		{
 			foreach (char t in tip)

@@ -158,6 +158,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			CrewEditAllowance = (int)config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition] * positionCount;
 			RaceSessionLength = (int)config.ConfigValues[ConfigKeys.RaceSessionLength];
 			ShowTutorial = showTutorial;
+			TutorialStage = 0;
 			//create manager files and store game attribute details
 			manager.CreateFile(iat, combinedStorageLocation);
 			manager.UpdateBeliefs("Manager");
@@ -204,7 +205,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
 			Team.CreateRecruits();
-		}
+            config.ReloadAssets();
+
+        }
 
 		/// <summary>
 		/// Get the name of every folder stored in the directory provided

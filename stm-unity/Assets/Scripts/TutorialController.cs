@@ -2,7 +2,6 @@
 using SimpleJSON;
 using UnityEngine;
 using System.Linq;
-
 using UnityEngine.UI.Extensions;
 
 public class TutorialController : MonoBehaviour
@@ -32,6 +31,8 @@ public class TutorialController : MonoBehaviour
             {
                 anchorObject = (RectTransform)anchorObject.FindInactive(obj) ?? anchorObject;
             }
+            var blacklistObjectNames = parsedAsset[i]["Button Blacklist"].RemoveJSONNodeChars().Split('\n').ToList();
+            var blacklistNames = blacklistObjectNames.Where(blon => blon.Length > 0).ToList();
             tutorialSection.GetComponentInChildren<SoftMaskScript>().maskScalingRect = anchorObject;
             tutorialSection.GetComponentInChildren<ReverseRaycastTarget>().MaskRect.Add(anchorObject);
             var reversed = bool.Parse(parsedAsset[i]["Reversed UI"].RemoveJSONNodeChars());
@@ -41,7 +42,7 @@ public class TutorialController : MonoBehaviour
             var uniqueTriggers = bool.Parse(parsedAsset[i]["Unique Triggers"].RemoveJSONNodeChars());
             var wipeTriggers = bool.Parse(parsedAsset[i]["Wipe Triggered Objects"].RemoveJSONNodeChars());
             var saveToSection = int.Parse(parsedAsset[i]["Save Progress"].RemoveJSONNodeChars());
-            section.Construct(text, reversed, triggers, triggerCount, uniqueTriggers, wipeTriggers, saveToSection);
+            section.Construct(text, reversed, triggers, triggerCount, uniqueTriggers, wipeTriggers, saveToSection, blacklistNames);
             tutorialSection.name = _tutorialSectionPrefab.name;
         }
         foreach (Transform child in transform)
@@ -65,7 +66,7 @@ public class TutorialController : MonoBehaviour
         var stage = _gameManager.TutorialStage;
         transform.GetChild(stage).gameObject.SetActive(false);
         var saveAmount = transform.GetChild(stage).GetComponent<TutorialSectionUI>().SaveNextSection;
-        _gameManager.SaveTutorialProgress(saveAmount, transform.childCount < stage + 1);
+        _gameManager.SaveTutorialProgress(saveAmount, transform.childCount <= stage + 1);
         if (_gameManager.ShowTutorial)
         {
             transform.GetChild(stage + 1).gameObject.SetActive(true);
