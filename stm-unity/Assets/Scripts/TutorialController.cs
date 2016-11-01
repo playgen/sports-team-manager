@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using PlayGen.RAGE.SportsTeamManager.Simulation;
+﻿using PlayGen.RAGE.SportsTeamManager.Simulation;
 using SimpleJSON;
 using UnityEngine;
 using System.Linq;

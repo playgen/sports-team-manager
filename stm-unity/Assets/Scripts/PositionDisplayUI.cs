@@ -213,7 +213,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 		{
 			_popUpBlocker.gameObject.SetActive(false);
 		}
-        ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+        ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _current.GetName());
     }
 
 	/// <summary>

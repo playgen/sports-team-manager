@@ -39,7 +39,6 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
 		ResetDisplay();
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	private void OnDisable()
@@ -87,6 +86,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		_canvasGroup.interactable = false;
 		_canvasGroup.blocksRaycasts = false;
 		_postRaceEvent.DisableCheck();
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -121,8 +121,8 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			var teamSelection = FindObjectOfType(typeof(TeamSelectionUI)) as TeamSelectionUI;
 			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
 			_popUpBlocker.onClick.AddListener(SendLearningPill);
+			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	public void GetLearningPill()
@@ -156,6 +156,6 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			}
 			ResetQuestions();
 		}
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, reply.Utterance);
 	}
 }

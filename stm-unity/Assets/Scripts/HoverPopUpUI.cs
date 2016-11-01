@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Reflection;
+
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
 /// Used on hover text object to set text and reposition when needed
 /// </summary>
-public class HoverPopUpUI : MonoBehaviour {
+public class HoverPopUpUI : ObservableMonoBehaviour {
 
 	private Vector2 _currentHovered;
 	private string _currentText;
@@ -90,6 +92,7 @@ public class HoverPopUpUI : MonoBehaviour {
 				}
 			}
 		}
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, gameObject.name, transform.parent.name, _currentText);
 	}
 
 	/// <summary>
@@ -99,6 +102,6 @@ public class HoverPopUpUI : MonoBehaviour {
 	{
 		gameObject.SetActive(false);
 		_currentHovered = Vector2.zero;
-
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 }

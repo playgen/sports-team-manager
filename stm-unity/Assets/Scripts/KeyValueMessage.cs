@@ -5,8 +5,7 @@ public class KeyValueMessage
 {
     public string TypeName;
     public string MethodName;
-    [HideInInspector]
-    public GameObject SourceObject;
+    public object[] Additional;
 
     public KeyValueMessage(string type, string method)
     {
@@ -14,10 +13,10 @@ public class KeyValueMessage
         MethodName = method;
     }
 
-    public KeyValueMessage (string type, string method, GameObject obj)
+    public KeyValueMessage (string type, string method, params object[] obj)
     {
         TypeName = type;
         MethodName = method;
-        SourceObject = obj;
+        Additional = obj;
     }
 }

@@ -345,8 +345,8 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	/// </summary>
 	private void SetMistakeIcons(List<string> mistakes, GameObject boat, float idealScore, int positionCount)
 	{
-		var mistakeParentTop = boat.transform.Find("Icon Container Top");
-		var mistakeParentBottom = boat.transform.Find("Icon Container Bottom");
+		var mistakeParentTop = boat.transform.Find("Icon Container/Icon Container Top");
+		var mistakeParentBottom = boat.transform.Find("Icon Container/Icon Container Bottom");
 		//create new mistake icon for each mistake
 		mistakeParentTop.gameObject.SetActive(true);
 		mistakeParentBottom.gameObject.SetActive(true);
@@ -537,6 +537,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		_postRacePopUp.SetActive(false);
 		_popUpBlocker.gameObject.SetActive(false);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		foreach (var pre in _postRaceEvents)
 		{
 			if (pre.gameObject.activeSelf && !Mathf.Approximately(pre.GetComponent<CanvasGroup>().alpha, 0))
@@ -549,7 +550,6 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				return;
 			}
 		}
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>

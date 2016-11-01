@@ -23,13 +23,11 @@
 	"EventTriggers": [
 		{
 			"EventName": "NotPicked",
-			"RaceTrigger": 1,
-			"Random": true,
-			"RepeatEvery": 5
+			"RaceTrigger": 2
 		},
 		{
 			"EventName": "NotPicked",
-			"RaceTrigger": 1,
+			"RaceTrigger": 3,
 			"Random": true,
 			"RepeatEvery": 5
 		},

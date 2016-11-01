@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(LearningPill))]
-public class LearningPillUI : MonoBehaviour {
+public class LearningPillUI : ObservableMonoBehaviour {
 
 	private LearningPill _learningPill;
 	[SerializeField]
@@ -71,6 +72,7 @@ public class LearningPillUI : MonoBehaviour {
 				}
 			}
 		}
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	private IEnumerator Animate(bool upward = false, bool keep = false, string tip = "")

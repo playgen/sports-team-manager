@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
@@ -13,7 +13,6 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	private string[] _sectionText;
 	[SerializeField]
 	private bool _reversed;
-	private RectTransform _highlighted;
 	private RectTransform _menuHighlighted;
 	private GameObject _tutorialObject;
 	private Text _tutorialText;
@@ -24,10 +23,12 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	[Header("Tutorial Trigger")]
 	[SerializeField]
 	private bool _uniqueEvents;
-	private static List<GameObject> _triggeredObjects = new List<GameObject>();
+	private static List<object[]> _triggeredObjects = new List<object[]>();
 	[SerializeField]
 	private int _eventTriggerCountRequired;
 	private int _eventTriggerCount;
+	[SerializeField]
+	private bool _wipeTriggered;
 
 	public void Construct(string[] text, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered)
 	{
@@ -36,10 +37,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		_triggers = triggers;
 		_eventTriggerCountRequired = triggerCount;
 		_uniqueEvents = uniqueTriggers;
-		if (wipeTriggered)
-		{
-			_triggeredObjects.Clear();
-		}
+		_wipeTriggered = wipeTriggered;
 	}
 
 	private void Start()
@@ -50,7 +48,6 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	protected override void OnEnable()
 	{
 		base.OnEnable();
-		_highlighted = (RectTransform)transform.Find("Highlighted");
 		_menuHighlighted = (RectTransform)transform.Find("Menu Highlighted");
 		_tutorialText = GetComponentInChildren<Text>();
 		_tutorialObject = transform.Find("Tutorial Helper").gameObject;
@@ -78,7 +75,6 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 			transform.localScale = new Vector2(-1, 1);
 			_tutorialText.transform.localScale = new Vector2(-1, 1);
 			_buttons.transform.localScale = new Vector2(-1, 1);
-			_highlighted.transform.localScale = new Vector2(-1, 1);
 			var mhMin = _menuHighlighted.anchorMin.x;
 			if (mhMin < 0)
 			{
@@ -93,7 +89,6 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 			transform.localScale = Vector2.one;
 			_tutorialText.transform.localScale = Vector2.one;
 			_buttons.transform.localScale = Vector2.one;
-			_highlighted.transform.localScale = Vector2.one;
 			var mhMin = _menuHighlighted.anchorMin.x;
 			if (mhMin > 0)
 			{
@@ -114,23 +109,21 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		{
 			_tutorialObject.SetActive(true);
 			_tutorialText.text = _sectionText[_currentText];
+			back.SetActive(true);
+			forward.SetActive(true);
+			if (_currentText == 0)
+			{
+				back.SetActive(false);
+			}
+			else if (_currentText == _sectionText.Length - 1)
+			{
+				forward.SetActive(false);
+			}
 		}
 		_dynamicPadding.Adjust();
-		if (_currentText == 0)
+		if (_wipeTriggered)
 		{
-			back.SetActive(false);
-			forward.SetActive(true);
-		}
-		else if (_currentText == _sectionText.Length - 1)
-		{
-			back.SetActive(true);
-			forward.SetActive(false);
-
-		}
-		else
-		{
-			back.SetActive(true);
-			forward.SetActive(true);
+			_triggeredObjects.Clear();
 		}
 	}
 
@@ -142,12 +135,26 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 			{
 				if (_uniqueEvents)
 				{
-					if (_triggeredObjects.Contains(message.SourceObject))
+					foreach (var to in _triggeredObjects)
 					{
-						return;
+						if (to.Length == message.Additional.Length)
+						{
+							bool match = true;
+							for (int i = 0; i < to.Length; i++)
+							{
+								if (match && to[i] != message.Additional[i])
+								{
+									match = false;
+								}
+							}
+							if (match)
+							{
+								return;
+							}
+						}
 					}
 				}
-				_triggeredObjects.Add(message.SourceObject);
+				_triggeredObjects.Add(message.Additional);
 				_eventTriggerCount++;
 				if (_eventTriggerCount >= _eventTriggerCountRequired)
 				{

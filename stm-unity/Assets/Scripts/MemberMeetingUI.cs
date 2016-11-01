@@ -78,7 +78,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		}
 		_positionUI.ChangeBlockerOrder();
 		Localization.LanguageChange -= OnLanguageChange;
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name);
 	}
 
 	/// <summary>
@@ -210,7 +210,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		var reply = _memberMeeting.AskQuestion(questionType, _currentMember);
 		Display(true);
 		_dialogueText.text = reply.Length > 0 ? reply : "";
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, questionType);
 	}
 
 	/// <summary>

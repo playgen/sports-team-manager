@@ -180,8 +180,8 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			}
 		}
 		CostCheck();
-        ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
-    }
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill);
+	}
 
 	/// <summary>
 	/// Set the previously asked question to be displayed
@@ -257,8 +257,8 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		_teamSelectionUI.ResetCrew();
 		gameObject.SetActive(false);
 		CloseHireCrewWarning();
-        ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
-    }
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+	}
 
 	private void OnLanguageChange()
 	{

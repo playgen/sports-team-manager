@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class ObservableMonoBehaviour : MonoBehaviour, IObservable<KeyValueMessage>
 {
@@ -15,14 +16,17 @@ public class ObservableMonoBehaviour : MonoBehaviour, IObservable<KeyValueMessag
         return new Unsubscriber(_observers, observer);
     }
 
-    protected void ShareEvent(string typeName, string methodName)
+    protected void ShareEvent(string typeName, string methodName, params object[] passed)
     {
         var currentObservers = new List<IObserver<KeyValueMessage>>(_observers);
+        var passedList = passed.ToList();
+        passedList.Insert(0, gameObject);
+        passed = passedList.ToArray();
         foreach (var observer in currentObservers)
         {
             if (_observers.Contains(observer))
             {
-                observer.OnNext(new KeyValueMessage(typeName, methodName, gameObject));
+                observer.OnNext(new KeyValueMessage(typeName, methodName, passed));
             }
         }
     }

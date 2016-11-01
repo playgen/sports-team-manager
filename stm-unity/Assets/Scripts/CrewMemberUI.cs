@@ -106,7 +106,17 @@ public class CrewMemberUI : ObservableMonoBehaviour {
 	{
 		if (_beingDragged)
 		{
-			transform.position = (Vector2)Input.mousePosition - _dragPosition;	
+			transform.position = (Vector2)Input.mousePosition - _dragPosition;
+			var raycastResults = new List<RaycastResult>();
+			//gets all UI objects below the cursor
+			EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
+			foreach (var result in raycastResults)
+			{
+				if (result.gameObject.layer == 8)
+				{
+					EndDrag();
+				}
+			}
 		}
 		if (_beingClicked)
 		{
@@ -136,7 +146,7 @@ public class CrewMemberUI : ObservableMonoBehaviour {
 	private void ShowPopUp()
 	{
 		_meetingUI.SetUpDisplay(_crewMember);
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
 	}
 
 	/// <summary>

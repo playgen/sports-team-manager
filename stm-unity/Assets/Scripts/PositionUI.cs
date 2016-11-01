@@ -35,26 +35,26 @@ public class PositionUI : ObservableMonoBehaviour
 	public void ShowPopUp()
 	{
 		_positionUI.SetUpDisplay(_position);
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.GetName());
 	}
 
 	/// <summary>
 	/// Store a reference to the CrewMemberUI for the CrewMember currently attached to this PositionUI's Position
 	/// </summary>
-	public void LinkCrew(CrewMemberUI crewmember)
+	public void LinkCrew(CrewMemberUI crewMember)
 	{
-		if (crewmember != _crewMemberUI)
+		if (crewMember != _crewMemberUI)
 		{
 			if (_crewMemberUI != null)
 			{
 				_crewMemberUI.Reset();
 			}
 			RemoveCrew();
-			_crewMemberUI = crewmember;
+			_crewMemberUI = crewMember;
 			_teamSelectionUI.PositionChange(1);
-			crewmember.ReplacedEvent += OnReset;
+			crewMember.ReplacedEvent += OnReset;
 		}
-        ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+        ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.GetName(), crewMember);
     }
 
 	/// <summary>
