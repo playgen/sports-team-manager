@@ -157,7 +157,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 							bool match = true;
 							for (int i = 0; i < to.Length; i++)
 							{
-								if (match && to[i] != message.Additional[i])
+								if (match && !to[i].Equals(message.Additional[i]))
 								{
 									match = false;
 								}
