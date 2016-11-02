@@ -178,14 +178,14 @@
     <Reference Include="SocialImportanceAsset">
       <HintPath>Assets\Plugins\stm-logic\SocialImportanceAsset.dll</HintPath>
     </Reference>
+    <Reference Include="System.Reactive">
+      <HintPath>Assets\Plugins\stm-logic\System.Reactive.dll</HintPath>
+    </Reference>
     <Reference Include="Utilities">
       <HintPath>Assets\Plugins\stm-logic\Utilities.dll</HintPath>
     </Reference>
     <Reference Include="WellFormedNames">
       <HintPath>Assets\Plugins\stm-logic\WellFormedNames.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive">
-      <HintPath>Assets\Plugins\stm-logic\System.Reactive.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

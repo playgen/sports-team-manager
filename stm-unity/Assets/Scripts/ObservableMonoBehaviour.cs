@@ -5,7 +5,7 @@ using System.Linq;
 
 public class ObservableMonoBehaviour : MonoBehaviour, IObservable<KeyValueMessage>
 {
-    protected readonly List<IObserver<KeyValueMessage>> _observers = new List<IObserver<KeyValueMessage>>();
+    protected static readonly List<IObserver<KeyValueMessage>> _observers = new List<IObserver<KeyValueMessage>>();
 
     public IDisposable Subscribe(IObserver<KeyValueMessage> observer)
     {

@@ -73,20 +73,24 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			_canvasGroup.blocksRaycasts = true;
 			//set current NPC dialogue
 			ResetQuestions();
+			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Post Race Event", "Post-Race Event Open", AlternativeTracker.Alternative.Dialog));
 		}
 		else
 		{
-			Hide();
+			Hide(true);
 		}
 	}
 
-	public void Hide()
+	public void Hide(bool autoHide = false)
 	{
 		_canvasGroup.alpha = 0;
 		_canvasGroup.interactable = false;
 		_canvasGroup.blocksRaycasts = false;
 		_postRaceEvent.DisableCheck();
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		if (!autoHide)
+		{
+			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Post Race Event", "Post-Race Event Closed", AlternativeTracker.Alternative.Dialog));
+		}
 	}
 
 	/// <summary>
@@ -116,7 +120,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		{
 			_closeButton.SetActive(true);
 			_popUpBlocker.onClick.AddListener(GetLearningPill);
-			_popUpBlocker.onClick.AddListener(Hide);
+			_popUpBlocker.onClick.AddListener(delegate { Hide(); });
 			_popUpBlocker.onClick.AddListener(_postRaceEvent.GetEvent);
 			var teamSelection = FindObjectOfType(typeof(TeamSelectionUI)) as TeamSelectionUI;
 			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
@@ -140,7 +144,6 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	/// </summary>
 	public void SendReply(CrewMember cm, DialogueStateActionDTO reply)
 	{
-		Tracker.T.alternative.Selected("Post Race Event", reply.NextState, AlternativeTracker.Alternative.Dialog);
 		var responses = _postRaceEvent.AddReply(cm, reply);
 		if (responses != null)
 		{
@@ -156,6 +159,6 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			}
 			ResetQuestions();
 		}
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, reply.Utterance);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, reply.Utterance, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Post Race Event", reply.NextState, AlternativeTracker.Alternative.Dialog));
 	}
 }

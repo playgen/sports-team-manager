@@ -1,11 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Reflection;
+
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
 /// Controls switching between different game state panels
 /// </summary>
-public class UIStateManager : MonoBehaviour {
+public class UIStateManager : ObservableMonoBehaviour {
 	public static bool MusicOn = true;
 	public static bool SoundOn = true;
 	[SerializeField]
@@ -53,7 +55,6 @@ public class UIStateManager : MonoBehaviour {
 	{
 		_mainMenu.SetActive(false);
 		_newGame.SetActive(true);
-		Tracker.T.accessible.Accessed("New Game", AccessibleTracker.Accessible.Screen);
 	}
 
 	/// <summary>
@@ -63,7 +64,6 @@ public class UIStateManager : MonoBehaviour {
 	{
 		_mainMenu.SetActive(false);
 		_loadGame.SetActive(true);
-		Tracker.T.accessible.Accessed("Load Game", AccessibleTracker.Accessible.Screen);
 	}
 
 	/// <summary>
@@ -73,7 +73,6 @@ public class UIStateManager : MonoBehaviour {
 	{
 		go.SetActive(false);
 		_mainMenu.SetActive(true);
-		Tracker.T.accessible.Accessed("Main Menu", AccessibleTracker.Accessible.Screen);
 		var gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = gameManager.GetGameNames(Application.persistentDataPath).Count != 0;
 	}
@@ -84,7 +83,6 @@ public class UIStateManager : MonoBehaviour {
 	public void ReloadScene()
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-		Tracker.T.completable.Completed("End Session", CompletableTracker.Completable.Session);
 	}
 
 	/// <summary>
@@ -92,7 +90,7 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	public void GoToGame(GameObject go)
 	{
-		Tracker.T.completable.Initialized("Start Session", CompletableTracker.Completable.Session);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Initialized", "Start Session", CompletableTracker.Completable.Session));
 		go.SetActive(false);
 		_topDetails.SetActive(true);
 		_sideMenu.SetActive(true);
@@ -108,7 +106,6 @@ public class UIStateManager : MonoBehaviour {
 		_seasonStandings.SetActive(false);
 		_helpPages.SetActive(false);
 		(FindObjectOfType(typeof(ScreenSideUI)) as ScreenSideUI).ChangeSelected(0);
-		Tracker.T.accessible.Accessed("Team Management", AccessibleTracker.Accessible.Screen);
 	}
 
 	/// <summary>
@@ -120,7 +117,6 @@ public class UIStateManager : MonoBehaviour {
 		_seasonStandings.SetActive(true);
 		_helpPages.SetActive(false);
 		(FindObjectOfType(typeof(ScreenSideUI)) as ScreenSideUI).ChangeSelected(1);
-		Tracker.T.accessible.Accessed("Season Standings", AccessibleTracker.Accessible.Screen);
 	}
 
 	/// <summary>
@@ -132,7 +128,6 @@ public class UIStateManager : MonoBehaviour {
 		_seasonStandings.SetActive(false);
 		_helpPages.SetActive(true);
 		(FindObjectOfType(typeof(ScreenSideUI)) as ScreenSideUI).ChangeSelected(2);
-		Tracker.T.accessible.Accessed("Help", AccessibleTracker.Accessible.Screen);
 	}
 
 	/// <summary>

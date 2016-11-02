@@ -48,7 +48,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 
 	private void OnEnable()
 	{
-		Tracker.T.alternative.Selected("Recruitment", "Recruitment", AlternativeTracker.Alternative.Menu);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Recruitment", "Recruitment Pop-Up Opened", AlternativeTracker.Alternative.Menu));
 		_questionAsked = false;
 		ResetDisplay();
 		_popUpBlocker.transform.SetAsLastSibling();
@@ -61,6 +61,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 
 	private void OnDisable()
 	{
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Recruitment", "Recruitment Pop-Up Closed", AlternativeTracker.Alternative.Menu));
 		_popUpBlocker.gameObject.SetActive(false);
 		Localization.LanguageChange -= OnLanguageChange;
 	}
@@ -164,7 +165,6 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	/// </summary>
 	public void AskQuestion(CrewMemberSkill skill, string questionText)
 	{
-		Tracker.T.alternative.Selected("Recruitment", skill + " Question", AlternativeTracker.Alternative.Question);
 		_questionAsked = true;
 		SetDialogueText(questionText);
 		var replies = _recruitMember.AskQuestion(skill);
@@ -180,7 +180,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			}
 		}
 		CostCheck();
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill, new KeyValueMessage(typeof(AlternativeTracker).Name, "Recruitment", skill + " Question", AlternativeTracker.Alternative.Question));
 	}
 
 	/// <summary>
@@ -225,6 +225,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			((RectTransform)_hireWarningReject.transform).anchoredPosition = Vector2.zero;
 			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("NO", true);
 		}
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Recruitment", "Hire Warning", AlternativeTracker.Alternative.Menu));
 	}
 
 	/// <summary>
@@ -245,6 +246,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		{
 			_popUpBlocker.gameObject.SetActive(false);
 		}
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Recruitment", "Hire Warning Closed", AlternativeTracker.Alternative.Menu));
 	}
 
 	/// <summary>
@@ -252,12 +254,11 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	/// </summary>
 	public void Recruit(CrewMember crewMember)
 	{
-		Tracker.T.trackedGameObject.Interacted("Hired Crew Member", GameObjectTracker.TrackedGameObject.Npc);
 		_recruitMember.Recruit(crewMember);
 		_teamSelectionUI.ResetCrew();
 		gameObject.SetActive(false);
 		CloseHireCrewWarning();
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "Hired Crew Member", GameObjectTracker.TrackedGameObject.Npc));
 	}
 
 	private void OnLanguageChange()

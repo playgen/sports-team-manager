@@ -91,8 +91,8 @@ public class HoverPopUpUI : ObservableMonoBehaviour {
 					((RectTransform)transform).anchoredPosition += new Vector2(0, -((RectTransform)transform).rect.height);
 				}
 			}
+			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, gameObject.name, transform.parent.name, _currentText, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Hover over icon", _currentText, AlternativeTracker.Alternative.Menu));
 		}
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, gameObject.name, transform.parent.name, _currentText);
 	}
 
 	/// <summary>

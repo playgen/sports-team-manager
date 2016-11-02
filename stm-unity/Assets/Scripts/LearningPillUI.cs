@@ -72,7 +72,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 				}
 			}
 		}
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Learning Pill", "Learning Pill Closed", AlternativeTracker.Alternative.Dialog));
 	}
 
 	private IEnumerator Animate(bool upward = false, bool keep = false, string tip = "")
@@ -98,6 +98,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 				_helpText.text += t;
 				yield return endReal;
 			}
+			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Learning Pill", "Learning Pill Displayed", AlternativeTracker.Alternative.Dialog));
 			_popUpBlocker.onClick.AddListener(ClosePill);
 		}
 	}

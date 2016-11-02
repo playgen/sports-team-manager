@@ -170,7 +170,6 @@ public class NewGameUI : MonoBehaviour {
 	/// </summary>
 	public void NewGame()
 	{
-		Tracker.T.alternative.Selected("New Game", "Created Game", AlternativeTracker.Alternative.Menu);
 		//convert selected colors to bytes
 		var colorsPri = new []
 			{
@@ -188,7 +187,6 @@ public class NewGameUI : MonoBehaviour {
 		if (success)
 		{
 			_stateManager.GoToGame(gameObject);
-			Tracker.T.completable.Initialized("Created New Game", CompletableTracker.Completable.Game);
 		}
 		else
 		{
