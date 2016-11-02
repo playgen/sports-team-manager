@@ -95,8 +95,8 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	/// </summary>
 	private void Start()
 	{
-        UpdateBoatSize();
-        _recruitCost = _teamSelection.GetConfigValue(ConfigKeys.RecruitmentCost);
+		UpdateBoatSize();
+		_recruitCost = _teamSelection.GetConfigValue(ConfigKeys.RecruitmentCost);
 		ResetScrollbar();
 		CreateNewBoat();
 	}
@@ -148,23 +148,23 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 
 	private void FixedUpdate()
 	{
-        UpdateBoatSize();
+		UpdateBoatSize();
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Update the height of boat objects to scale with screen size
 	/// </summary>
-    private void UpdateBoatSize()
-    {
-        var currentPosition = _boatContainer.transform.localPosition.y - ((RectTransform)_boatContainer.transform).anchoredPosition.y;
-        if (!Mathf.Approximately(_boatMain.GetComponent<LayoutElement>().preferredHeight, Mathf.Abs(currentPosition) * 0.2f))
-        {
-            foreach (Transform boat in _boatContainer.transform)
-            {
-                boat.GetComponent<LayoutElement>().preferredHeight = Mathf.Abs(currentPosition) * 0.2f;
-            }
-        }
-    }
+	private void UpdateBoatSize()
+	{
+		var currentPosition = _boatContainer.transform.localPosition.y - ((RectTransform)_boatContainer.transform).anchoredPosition.y;
+		if (!Mathf.Approximately(_boatMain.GetComponent<LayoutElement>().preferredHeight, Mathf.Abs(currentPosition) * 0.2f))
+		{
+			foreach (Transform boat in _boatContainer.transform)
+			{
+				boat.GetComponent<LayoutElement>().preferredHeight = Mathf.Abs(currentPosition) * 0.2f;
+			}
+		}
+	}
 
 	/// <summary>
 	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last name, first names
@@ -678,6 +678,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 
 	private void OnLanguageChange()
 	{
+		foreach (var position in _boatMain.GetComponentsInChildren<PositionUI>()) {
+			position.transform.Find("Name").GetComponent<Text>().text = Localization.Get(position.Position.ToString());
+		}
 		if (_teamSelection.GetStage() % _teamSelection.GetSessionLength() != 0)
 		{
 			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, _teamSelection.GetStage() % _teamSelection.GetSessionLength(), _teamSelection.GetSessionLength() - 1);

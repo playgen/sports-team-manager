@@ -6,7 +6,6 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 /// </summary>
 public class PositionUI : ObservableMonoBehaviour
 {
-
 	private TeamSelectionUI _teamSelectionUI;
 	private PositionDisplayUI _positionUI;
 	private Position _position;

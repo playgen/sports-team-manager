@@ -5,11 +5,24 @@ using UnityEngine.UI;
 
 public class TutorialSectionUI : ObserverMonoBehaviour
 {
+	[System.Serializable]
+	class LanguageKeyValuePair
+	{
+		public Language Key;
+		[TextArea]
+		public string[] Value;
+
+		public LanguageKeyValuePair(Language k, string[] v)
+		{
+			Key = k;
+			Value = v;
+		}
+	}
 	private TutorialController _tutorial;
 	[Header("UI")]
 	[SerializeField]
-	[TextArea]
-	private string[] _sectionText;
+	private List<LanguageKeyValuePair> _sectionTextHolder;
+	private Dictionary<Language, string[]> _sectionText;
 	[SerializeField]
 	private bool _reversed;
 	private RectTransform _menuHighlighted;
@@ -37,9 +50,13 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		get { return _saveNextSection; }
 	}
 
-	public void Construct(string[] text, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered, int saveSection, List<string> blacklist)
+	public void Construct(Dictionary<Language, string[]> text, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered, int saveSection, List<string> blacklist)
 	{
-		_sectionText = text;
+		_sectionTextHolder = new List<LanguageKeyValuePair>();
+		foreach (var kvp in text)
+		{
+			_sectionTextHolder.Add(new LanguageKeyValuePair(kvp.Key, kvp.Value));
+		}
 		_reversed = reversed;
 		_triggers = triggers;
 		_eventTriggerCountRequired = triggerCount;
@@ -57,6 +74,8 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	protected override void OnEnable()
 	{
 		base.OnEnable();
+		_sectionText = new Dictionary<Language, string[]>();
+		_sectionTextHolder.ForEach(st => _sectionText.Add(st.Key, st.Value));
 		_menuHighlighted = (RectTransform)transform.Find("Menu Highlighted");
 		_tutorialText = GetComponentInChildren<Text>();
 		_tutorialObject = transform.Find("Tutorial Helper").gameObject;
@@ -69,6 +88,13 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 			reverseRaycast.BlacklistRect.AddRange(blacklistButtons);
 		}
 		SetUp();
+		Localization.LanguageChange += OnLanguageChange;
+	}
+
+	protected override void OnDisable()
+	{
+		base.OnDisable();
+		Localization.LanguageChange -= OnLanguageChange;
 	}
 
 	public void Back()
@@ -116,21 +142,21 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		}
 		var back = _buttons.Find("Back").gameObject;
 		var forward = _buttons.Find("Forward").gameObject;
-		if (_sectionText.Length == 0)
+		if (_sectionText[Localization.SelectedLanguage].Length == 0)
 		{
 			_tutorialObject.SetActive(false);
 		}
 		else
 		{
 			_tutorialObject.SetActive(true);
-			_tutorialText.text = _sectionText[_currentText];
+			_tutorialText.text = _sectionText[Localization.SelectedLanguage][_currentText];
 			back.SetActive(true);
 			forward.SetActive(true);
 			if (_currentText == 0)
 			{
 				back.SetActive(false);
 			}
-			if (_currentText == _sectionText.Length - 1)
+			if (_currentText == _sectionText[Localization.SelectedLanguage].Length - 1)
 			{
 				forward.SetActive(false);
 			}
@@ -178,5 +204,11 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 				}
 			}
 		}
+	}
+
+	private void OnLanguageChange()
+	{
+		_currentText = 0;
+		SetUp();
 	}
 }

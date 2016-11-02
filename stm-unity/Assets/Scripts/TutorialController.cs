@@ -1,4 +1,7 @@
-﻿using PlayGen.RAGE.SportsTeamManager.Simulation;
+﻿using System;
+using System.Collections.Generic;
+
+using PlayGen.RAGE.SportsTeamManager.Simulation;
 using SimpleJSON;
 using UnityEngine;
 using System.Linq;
@@ -25,8 +28,18 @@ public class TutorialController : MonoBehaviour
         {
             var tutorialSection = Instantiate(_tutorialSectionPrefab, transform, false) as GameObject;
             var section = tutorialSection.GetComponent<TutorialSectionUI>();
-            var textList = parsedAsset[i]["Section Text"].Value.Split('\n').ToList().Select(te => te.RemoveJSONNodeChars()).ToList();
-            var text = textList.Where(tl => tl.Length > 0).ToArray();
+            var textDict = new Dictionary<Language, string[]>();
+            foreach (Language lang in Enum.GetValues(typeof(Language)))
+            {
+                if (parsedAsset[i]["Section Text " + lang] != null)
+                {
+                    textDict.Add(lang, parsedAsset[i]["Section Text " + lang].Value.Split('\n').ToList().Select(te => te.RemoveJSONNodeChars()).Where(tl => tl.Length > 0).ToArray());
+                }
+                else
+                {
+                    textDict.Add(lang, parsedAsset[i]["Section Text English"].Value.Split('\n').ToList().Select(te => te.RemoveJSONNodeChars()).Where(tl => tl.Length > 0).ToArray());
+                }
+            }
             var objectNames = parsedAsset[i]["Highlighted Object"].RemoveJSONNodeChars().Split('/');
             var anchorObject = (RectTransform)transform.root;
             foreach (var obj in objectNames)
@@ -44,7 +57,7 @@ public class TutorialController : MonoBehaviour
             var uniqueTriggers = bool.Parse(parsedAsset[i]["Unique Triggers"].RemoveJSONNodeChars());
             var wipeTriggers = bool.Parse(parsedAsset[i]["Wipe Triggered Objects"].RemoveJSONNodeChars());
             var saveToSection = int.Parse(parsedAsset[i]["Save Progress"].RemoveJSONNodeChars());
-            section.Construct(text, reversed, triggers, triggerCount, uniqueTriggers, wipeTriggers, saveToSection, blacklistNames);
+            section.Construct(textDict, reversed, triggers, triggerCount, uniqueTriggers, wipeTriggers, saveToSection, blacklistNames);
             tutorialSection.name = _tutorialSectionPrefab.name;
         }
         foreach (Transform child in transform)

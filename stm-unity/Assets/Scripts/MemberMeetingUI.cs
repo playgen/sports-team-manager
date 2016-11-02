@@ -55,7 +55,6 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	private void Awake()
 	{
 		_memberMeeting = GetComponent<MemberMeeting>();
-		Localization.LanguageChange += OnLanguageChange;
 	}
 
 	private void OnEnable()

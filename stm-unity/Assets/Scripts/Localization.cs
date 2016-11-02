@@ -29,19 +29,22 @@ public class Localization : MonoBehaviour {
 		TextAsset jsonTextAsset = Resources.Load(filePath) as TextAsset;
 
 		var N = JSON.Parse(jsonTextAsset.text);
-		for (int l = 1; l <= Enum.GetNames(typeof(Language)).Length; l++)
+		foreach (Language l in Enum.GetValues(typeof(Language)))
 		{
 			Dictionary<string, string> languageStrings = new Dictionary<string, string>();
-			for (int i = 0; N[i] != null; i++)
+			for (int i = 0; i < N.Count; i++)
 			{
 				//go through the list and add the strings to the dictionary
-				string _key = N[i][0].ToString();
+				string _key = N[i]["Key"].ToString();
 				_key = _key.Replace("\"", "");
-				string _value = N[i][l].ToString();
-				_value = _value.Replace("\"", "");
-				languageStrings[_key] = _value;
+				if (N[i][l.ToString()] != null)
+				{
+					string _value = N[i][l.ToString()].ToString();
+					_value = _value.Replace("\"", "");
+					languageStrings[_key] = _value;
+				}
 			}
-			LocalizationDict[(Language)l] = languageStrings;
+			LocalizationDict[l] = languageStrings;
 		}
 		if (PlayerPrefs.HasKey("Language"))
 		{
@@ -66,7 +69,14 @@ public class Localization : MonoBehaviour {
 		key = key.Replace('-', '_');
 
 		LocalizationDict[SelectedLanguage].TryGetValue(key, out txt);
-
+		if (txt == null)
+		{
+			LocalizationDict[Language.English].TryGetValue(key, out txt);
+			if (txt == null)
+			{
+				txt = key;
+			}
+		}
 		//new line character in spreadsheet is *n*
 		txt = txt.Replace("\\n", "\n");
 		if (toUpper)
