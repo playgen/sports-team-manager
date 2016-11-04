@@ -90,7 +90,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 	/// </summary>
 	public void GoToGame(GameObject go)
 	{
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Initialized", "Start Session", CompletableTracker.Completable.Session));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Initialized", "StartSession", CompletableTracker.Completable.Session));
 		go.SetActive(false);
 		_topDetails.SetActive(true);
 		_sideMenu.SetActive(true);

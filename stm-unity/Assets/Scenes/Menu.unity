@@ -1140,8 +1140,10 @@ MonoBehaviour:
   - TypeName: TeamSelectionUI
     MethodName: ConfirmLineUp
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 1
   _uniqueEvents: 0
   _eventTriggerCountRequired: 1
@@ -1657,10 +1659,12 @@ MonoBehaviour:
   - TypeName: PositionDisplayUI
     MethodName: ClosePositionPopUp
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - "Once you\u2019re happy you know what skills will be needed in this position,
       close the pop-up."
-  - Value:
+  - Key: 0
+    Value:
     - x
   _reversed: 1
   _uniqueEvents: 0
@@ -3431,8 +3435,10 @@ MonoBehaviour:
   - TypeName: PositionDisplayUI
     MethodName: ClosePositionPopUp
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 0
   _uniqueEvents: 0
   _eventTriggerCountRequired: 1
@@ -3491,14 +3497,16 @@ MonoBehaviour:
   - TypeName: RecruitMemberUI
     MethodName: AskQuestion
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - Here are your four options you have to recruit from.
     - By clicking the skill statements at the bottom of the screen, all four will
       reply with if they agree or disagree with the statement offered.
     - By saying the right statements, you should get an idea on who to hire.
     - Note that usually each of these questions would have a cost, as would hiring.
       This cost has been removed for the time being.
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
     - x
@@ -6966,7 +6974,8 @@ MonoBehaviour:
   - TypeName: HoverPopUpUI
     MethodName: HoverCheck
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - You'll also be given feedback on which areas your team is lacking in (if any).
     - Ticks are a sign that you are on the right track to select the ideal team you
       can.
@@ -6976,7 +6985,8 @@ MonoBehaviour:
       relationships further.
     - By hovering over each of the blue icons, you can see what areas you need to
       improve in.
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
     - x
@@ -7303,8 +7313,10 @@ MonoBehaviour:
   - TypeName: PositionUI
     MethodName: ShowPopUp
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 0
   _uniqueEvents: 1
   _eventTriggerCountRequired: 1
@@ -8759,7 +8771,8 @@ MonoBehaviour:
   - TypeName: PositionUI
     MethodName: ShowPopUp
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - Welcome to the Team Management screen!
     - "Here is where you\u2019ll be dealing with your crew and assigning them their
       positions for races."
@@ -8769,7 +8782,8 @@ MonoBehaviour:
       race on the open water."
     - "Click on any of them, and you\u2019ll be given some tips on what kind of person
       will fit in better in that role."
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
     - x
@@ -9017,7 +9031,8 @@ MonoBehaviour:
   - TypeName: PositionDisplayUI
     MethodName: ClosePositionPopUp
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - This pop-up provides a list of skills required for the position you just selected,
       which should direct you toward who to pick for the next race once you know all
       the facts.
@@ -9026,7 +9041,8 @@ MonoBehaviour:
       let\u2019s not worry about that quite yet."
     - Now close this pop-up using the X in the top right and view the information
       for the other two positions.
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
     - x
@@ -12562,8 +12578,10 @@ MonoBehaviour:
   - TypeName: LearningPillUI
     MethodName: ClosePill
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 0
   _uniqueEvents: 0
   _eventTriggerCountRequired: 1
@@ -17970,8 +17988,10 @@ MonoBehaviour:
   - TypeName: TeamSelectionUI
     MethodName: ConfirmLineUp
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 1
   _uniqueEvents: 0
   _eventTriggerCountRequired: 1
@@ -18067,12 +18087,14 @@ MonoBehaviour:
   - TypeName: PositionUI
     MethodName: LinkCrew
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - OK, that's the tutorial finished!
     - From here on out, you're mostly on your own, but I'll pop up from time to time
       after events to give additional tips.
     - Good luck!
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
     - x
@@ -19238,13 +19260,15 @@ MonoBehaviour:
   - TypeName: PositionUI
     MethodName: LinkCrew
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - "Now we\u2019ve got someone that we feel fits this new position, it\u2019s time
       to go into the next race session."
     - "As before, you\u2019ve got four practice sessions and the race itself."
     - Feel free to ask all your team members further questions in interviews as well,
       if you wish.
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
     - x
@@ -21395,8 +21419,10 @@ MonoBehaviour:
   - TypeName: CrewMemberUI
     MethodName: ShowPopUp
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 0
   _uniqueEvents: 1
   _eventTriggerCountRequired: 1
@@ -22609,14 +22635,16 @@ MonoBehaviour:
   - TypeName: PositionUI
     MethodName: ShowPopUp
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - "Now you\u2019ve completed your first race and seen where you went right and
       wrong, it\u2019s time to change things up a little."
     - A navigator is no longer needed on your boat. Instead you need a Helmsman, and
       none of your current crew suit this position very well.
     - "As a result, you\u2019ll need to recruit a new member into your team. But first,
       let\u2019s look at the details behind this new position to fill."
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
     - x
@@ -25352,10 +25380,12 @@ MonoBehaviour:
   - TypeName: RecruitMemberUI
     MethodName: Recruit
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - "Once you\u2019re happy that you know who you want to hire, simply click on
       them to hire them into your team."
-  - Value:
+  - Key: 0
+    Value:
     - x
   _reversed: 1
   _uniqueEvents: 0
@@ -28003,8 +28033,10 @@ MonoBehaviour:
   - TypeName: TeamSelectionUI
     MethodName: ConfirmLineUp
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 1
   _uniqueEvents: 0
   _eventTriggerCountRequired: 1
@@ -28068,10 +28100,12 @@ MonoBehaviour:
   - TypeName: PositionUI
     MethodName: LinkCrew
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - That's the first practice completed. You now have three more to experiement
       in before the race itself.
-  - Value:
+  - Key: 0
+    Value:
     - x
   _reversed: 1
   _uniqueEvents: 0
@@ -30108,8 +30142,10 @@ MonoBehaviour:
   - TypeName: MemberMeetingUI
     MethodName: OnDisable
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 0
   _uniqueEvents: 0
   _eventTriggerCountRequired: 1
@@ -31408,7 +31444,8 @@ MonoBehaviour:
   - TypeName: TeamSelectionUI
     MethodName: EnableRacing
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - "Now you\u2019ve questioned your crew, it\u2019s time to place them in their
       positions."
     - "Using the information you\u2019ve gathered from the position descriptions and
@@ -31416,7 +31453,8 @@ MonoBehaviour:
       the position you think they\u2019d best fit."
     - If you want to remove a crew member from a position, just drag and drop them
       out of the position.
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
     - x
@@ -33994,8 +34032,10 @@ MonoBehaviour:
   - TypeName: MemberMeetingUI
     MethodName: AskQuestion
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 0
   _uniqueEvents: 0
   _eventTriggerCountRequired: 5
@@ -36918,7 +36958,8 @@ MonoBehaviour:
   - TypeName: MemberMeetingUI
     MethodName: AskQuestion
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - This pop-up displays all the details you know for this crew member.
     - "As you\u2019ve only just started and haven\u2019t spoken to them yet, you know
       nothing about their skills and, as far as you\u2019re aware, their opinion of
@@ -36931,7 +36972,8 @@ MonoBehaviour:
     - "Usually you\u2019ll be capped on how many questions you can ask per race, but
       for now that limit has been removed, so feel free to ask each question a couple
       of times."
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
     - x
@@ -37339,8 +37381,10 @@ MonoBehaviour:
   - TypeName: HoverPopUpUI
     MethodName: HideHover
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 1
   _uniqueEvents: 0
   _eventTriggerCountRequired: 1
@@ -38218,12 +38262,14 @@ MonoBehaviour:
   - TypeName: CrewMemberUI
     MethodName: ShowPopUp
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - "Now that you know what positions need to be filled, it\u2019s time to take
       a look at the crew you\u2019re starting with."
     - At the bottom of the screen, your six current crew members are listed.
     - Simply click on any of them to go to the meeting screen for that crew member.
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
     - x
@@ -40106,11 +40152,13 @@ MonoBehaviour:
   - TypeName: MemberMeetingUI
     MethodName: OnDisable
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - "OK, looks like you\u2019ve got the hang of talking to a team member.."
     - Now you have some information for this crew member, exit this pop-up and go
       interview a couple other crew members.
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
   _reversed: 0
@@ -42304,8 +42352,10 @@ MonoBehaviour:
   - TypeName: MemberMeetingUI
     MethodName: OnDisable
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 0
   _uniqueEvents: 0
   _eventTriggerCountRequired: 1
@@ -43702,7 +43752,8 @@ MonoBehaviour:
   - TypeName: TeamSelectionUI
     MethodName: ConfirmLineUp
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - "Happy with where you\u2019ve placed everyone? Click the highlighted button
       and your current crew will race and you\u2019ll be given feedback on what needs
       improving."
@@ -43712,7 +43763,8 @@ MonoBehaviour:
     - "A team's performance is based on the crew member\u2019s ratings in the skills
       needed for the position, their opinion of you, their opinion of everyone else
       in a position and their current mood."
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
     - x
@@ -44663,10 +44715,12 @@ MonoBehaviour:
   - TypeName: PostRaceEventUI
     MethodName: Hide
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - "OK, that\u2019s the conversation finished. To exit and find out what effect
       this has had, click the highlighted button."
-  - Value:
+  - Key: 0
+    Value:
     - x
   _reversed: 0
   _uniqueEvents: 0
@@ -45412,8 +45466,10 @@ MonoBehaviour:
   - TypeName: TeamSelectionUI
     MethodName: ConfirmLineUp
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 1
   _uniqueEvents: 0
   _eventTriggerCountRequired: 1
@@ -47345,14 +47401,16 @@ MonoBehaviour:
   - TypeName: PostRaceEventUI
     MethodName: SetBlockerOnClick
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - "Seems that one of your team members is wondering why they weren\u2019t picked
       for that last race."
     - "Every so often, events like this will occur after a race, and it\u2019s up
       to you to handle the situation."
     - Click any of the available options to select and say them back to this crew
       member.
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
     - x
@@ -48309,12 +48367,14 @@ MonoBehaviour:
   - TypeName: HoverPopUpUI
     MethodName: HoverCheck
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - After every race, you'll be given feedback on how your selected crew performed.
     - These colored boxes represent how many have been positioned compared to the
       ideal combination you could have created.
     - Hover over each box to see what they represent.
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
     - x
@@ -48667,12 +48727,14 @@ MonoBehaviour:
   - TypeName: TeamSelectionUI
     MethodName: ConfirmLineUp
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - OK, time for the race!
     - Do you play it safe and pick the best line-up from practice, or try and mix
       it up when it all matters?
     - "It\u2019s up to you as their new manager\u2026"
-  - Value:
+  - Key: 0
+    Value:
     - x
     - x
     - x
@@ -49751,10 +49813,12 @@ MonoBehaviour:
   - TypeName: RecruitMemberUI
     MethodName: ResetDisplay
   _sectionTextHolder:
-  - Value:
+  - Key: 0
+    Value:
     - To go to the recruitment screen, click the black buttons on the right of the
       highlighted area.
-  - Value:
+  - Key: 0
+    Value:
     - x
   _reversed: 1
   _uniqueEvents: 0
@@ -50576,7 +50640,7 @@ MonoBehaviour:
   checkInterval: 3
   storageType: net
   traceFormat: xapi
-  host: http://10.0.0.101:3000/api/proxy/gleaner/collector
+  host: http://10.0.0.101:3000/api/proxy/gleaner/collector/
   trackingCode: 581a1d739382a0006e1dfbf47iactqsn7ncow29
   debug: 1
 --- !u!1 &1589073826
@@ -51936,8 +52000,10 @@ MonoBehaviour:
   - TypeName: PositionDisplayUI
     MethodName: ClosePositionPopUp
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 0
   _uniqueEvents: 0
   _eventTriggerCountRequired: 1
@@ -53717,8 +53783,10 @@ MonoBehaviour:
   - TypeName: TeamSelectionUI
     MethodName: ClosePostRacePopUp
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 1
   _uniqueEvents: 0
   _eventTriggerCountRequired: 1
@@ -57241,8 +57309,10 @@ MonoBehaviour:
   - TypeName: TeamSelectionUI
     MethodName: ClosePostRacePopUp
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 1
   _uniqueEvents: 0
   _eventTriggerCountRequired: 1
@@ -59722,8 +59792,10 @@ MonoBehaviour:
   - TypeName: MemberMeetingUI
     MethodName: AskQuestion
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 0
   _uniqueEvents: 0
   _eventTriggerCountRequired: 5
@@ -61074,8 +61146,10 @@ MonoBehaviour:
   - TypeName: PositionUI
     MethodName: ShowPopUp
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 0
   _uniqueEvents: 1
   _eventTriggerCountRequired: 1
@@ -61171,8 +61245,10 @@ MonoBehaviour:
   - TypeName: CrewMemberUI
     MethodName: ShowPopUp
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 0
   _uniqueEvents: 1
   _eventTriggerCountRequired: 1
@@ -65483,8 +65559,10 @@ MonoBehaviour:
   - TypeName: HoverPopUpUI
     MethodName: HideHover
   _sectionTextHolder:
-  - Value: []
-  - Value: []
+  - Key: 0
+    Value: []
+  - Key: 0
+    Value: []
   _reversed: 1
   _uniqueEvents: 0
   _eventTriggerCountRequired: 1

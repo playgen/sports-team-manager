@@ -236,7 +236,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.GetName()).Image;
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
 		}
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Started", "Race Session Started", CompletableTracker.Completable.Race));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Started", "RaceSessionStarted", CompletableTracker.Completable.Race));
 		ResetCrew();
 		RepeatLineUp();
 	}
@@ -470,7 +470,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
 		_popUpBlocker.onClick.AddListener(CloseConfirmPopUp);
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Crew Confirm", "Crew Confirm Check", AlternativeTracker.Alternative.Menu));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewConfirm", "CrewConfirmCheck", AlternativeTracker.Alternative.Menu));
 	}
 
 	/// <summary>
@@ -480,7 +480,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		_preRacePopUp.SetActive(false);
 		_popUpBlocker.gameObject.SetActive(false);
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Crew Confirm", "Crew Not Confirmed", AlternativeTracker.Alternative.Menu));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewConfirm", "CrewNotConfirmed", AlternativeTracker.Alternative.Menu));
 	}
 
 	/// <summary>
@@ -494,8 +494,8 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		//confirm the line-up with the simulation 
 		var currentBoat = _teamSelection.ConfirmLineUp(offset);
 		ResetScrollbar();
-		GetResult((_teamSelection.GetStage() - 1) % _teamSelection.GetSessionLength() == 0, currentBoat.Score, currentBoat.Positions.Count, offset, _raceButton.GetComponentInChildren<Text>(), currentBoat.PositionCrew);
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Completed", "Crew Confirmed", CompletableTracker.Completable.Race, true, currentBoat.Score));
+		GetResult((_teamSelection.GetStage() - 1) % _teamSelection.GetSessionLength() == 0, currentBoat.Score, currentBoat.Positions.Count, offset, _raceButton.GetComponentInChildren<Text>(), currentBoat.PositionCrew, true);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewConfirm", "CrewConfirmed", AlternativeTracker.Alternative.Menu));
 		//set-up next boat
 		CreateNewBoat();
 	}
@@ -545,7 +545,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		_postRacePopUp.SetActive(false);
 		_popUpBlocker.gameObject.SetActive(false);
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Race Result", "Race Result Closed", AlternativeTracker.Alternative.Menu));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "RaceResult", "RaceResultClosed", AlternativeTracker.Alternative.Menu));
 		foreach (var pre in _postRaceEvents)
 		{
 			if (pre.gameObject.activeSelf && !Mathf.Approximately(pre.GetComponent<CanvasGroup>().alpha, 0))
@@ -651,7 +651,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	/// <summary>
 	/// Get and display the result of the previous race session
 	/// </summary>
-	private float GetResult(bool isRace, int teamScore, int positions, int offset, Text scoreText, Dictionary<Position, CrewMember> currentPositions = null)
+	private float GetResult(bool isRace, int teamScore, int positions, int offset, Text scoreText, Dictionary<Position, CrewMember> currentPositions = null, bool current = false)
 	{
 		var expected = 7.5f * positions;
 		var scoreDiff = teamScore - expected;
@@ -674,6 +674,10 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			{
 				DisplayPostRacePopUp(currentPositions, finishPosition, finishPositionText);
 			}
+		}
+		if (current)
+		{
+			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Completed", "CrewScore" + (_teamSelection.GetStage() - 1), CompletableTracker.Completable.Race, true, teamScore));
 		}
 		return scoreDiff;
 	}

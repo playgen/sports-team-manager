@@ -73,7 +73,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			_canvasGroup.blocksRaycasts = true;
 			//set current NPC dialogue
 			ResetQuestions();
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Post Race Event", "Post-Race Event Open", AlternativeTracker.Alternative.Dialog));
+			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "PostRaceEvent", "PostRaceEventOpen", AlternativeTracker.Alternative.Dialog));
 		}
 		else
 		{
@@ -89,7 +89,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		_postRaceEvent.DisableCheck();
 		if (!autoHide)
 		{
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Post Race Event", "Post-Race Event Closed", AlternativeTracker.Alternative.Dialog));
+			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "PostRaceEvent", "PostRaceEventClosed", AlternativeTracker.Alternative.Dialog));
 		}
 	}
 
@@ -159,6 +159,6 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			}
 			ResetQuestions();
 		}
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, reply.Utterance, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Post Race Event", reply.NextState, AlternativeTracker.Alternative.Dialog));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, reply.Utterance, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "PostRaceEvent", reply.NextState, AlternativeTracker.Alternative.Dialog));
 	}
 }
