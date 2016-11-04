@@ -12,7 +12,7 @@ public class HoverPopUpUI : ObservableMonoBehaviour {
 	private string _currentText;
 	private Vector2 _canvasSize;
 
-	private void Start()
+	private void Awake()
 	{
 		_canvasSize = ((RectTransform)GetComponentInParent<CanvasScaler>().gameObject.transform).rect.size;
 	}

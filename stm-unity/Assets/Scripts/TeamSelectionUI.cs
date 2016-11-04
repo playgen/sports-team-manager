@@ -236,6 +236,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.GetName()).Image;
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
 		}
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Started", "Race Session Started", CompletableTracker.Completable.Race));
 		ResetCrew();
 		RepeatLineUp();
 	}
@@ -494,9 +495,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		var currentBoat = _teamSelection.ConfirmLineUp(offset);
 		ResetScrollbar();
 		GetResult((_teamSelection.GetStage() - 1) % _teamSelection.GetSessionLength() == 0, currentBoat.Score, currentBoat.Positions.Count, offset, _raceButton.GetComponentInChildren<Text>(), currentBoat.PositionCrew);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Completed", "Crew Confirmed", CompletableTracker.Completable.Race, true, currentBoat.Score));
 		//set-up next boat
 		CreateNewBoat();
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Completed", "Crew Confirmed", CompletableTracker.Completable.Stage, true, currentBoat.Score));
 	}
 
 	/// <summary>

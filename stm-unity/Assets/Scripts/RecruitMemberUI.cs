@@ -180,7 +180,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			}
 		}
 		CostCheck();
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill, new KeyValueMessage(typeof(AlternativeTracker).Name, "Recruitment", skill + " Question", AlternativeTracker.Alternative.Question));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Recruitment", skill + " Question", AlternativeTracker.Alternative.Question));
 	}
 
 	/// <summary>

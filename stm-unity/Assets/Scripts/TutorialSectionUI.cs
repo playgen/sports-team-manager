@@ -8,7 +8,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	[System.Serializable]
 	class LanguageKeyValuePair
 	{
-		public readonly Language Key;
+		public Language Key;
 		[TextArea]
 		public string[] Value;
 
