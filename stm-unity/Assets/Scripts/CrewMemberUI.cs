@@ -164,7 +164,7 @@ public class CrewMemberUI : ObservableMonoBehaviour {
 			if (result.gameObject.GetComponent<PositionUI>())
 			{
 				var pos = result.gameObject.GetComponent<PositionUI>().Position;
-				ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name, pos.GetName(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "PositionedCrewMember", GameObjectTracker.TrackedGameObject.Npc));
+				ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name, pos.GetName(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "CrewPositioning", "PositionedCrewMember", GameObjectTracker.TrackedGameObject.Npc));
 				Place(result.gameObject);
 				placed = true;
 				break;
@@ -227,7 +227,7 @@ public class CrewMemberUI : ObservableMonoBehaviour {
 		transform.SetAsLastSibling();
 		if (_currentPositon != (Vector2)transform.position)
 		{
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "UnpositionedCrewMember", GameObjectTracker.TrackedGameObject.Npc));
+			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "CrewPositioning", "UnpositionedCrewMember", GameObjectTracker.TrackedGameObject.Npc));
 		}
 		var positionImage = transform.Find("Position").gameObject;
 		//hide current position button and remove all listeners

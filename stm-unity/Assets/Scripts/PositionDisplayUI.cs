@@ -101,7 +101,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	/// </summary>
 	public void SetUpDisplay(Position position)
 	{
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, position.GetName(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "ViewedPositionInformation", GameObjectTracker.TrackedGameObject.GameObject));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, position.GetName(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "PositionDisplay", "ViewedPositionInformation", GameObjectTracker.TrackedGameObject.GameObject));
 		gameObject.SetActive(true);
 		_popUpBlocker.transform.SetAsLastSibling();
 		gameObject.transform.SetAsLastSibling();
@@ -203,7 +203,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	{
 		if (gameObject.activeSelf)
 		{
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _current.GetName(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "ClosePositionInformation", GameObjectTracker.TrackedGameObject.GameObject));
+			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _current.GetName(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "PositionDisplay", "ClosePositionInformation", GameObjectTracker.TrackedGameObject.GameObject));
 		}
 		gameObject.SetActive(false);
 		if (_meetingUI.gameObject.activeSelf)

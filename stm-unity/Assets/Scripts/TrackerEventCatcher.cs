@@ -7,9 +7,10 @@ public class TrackerEventCatcher : ObserverMonoBehaviour {
 		KeyValueMessage track = null;
 		foreach (var obj in message.Additional)
 		{
-			if (obj is KeyValueMessage)
+		    var valueMessage = obj as KeyValueMessage;
+		    if (valueMessage != null)
 			{
-				var kvm = (KeyValueMessage)obj;
+				var kvm = valueMessage;
 				var trackerType = Type.GetType(kvm.TypeName);
 				if (trackerType != null)
 				{

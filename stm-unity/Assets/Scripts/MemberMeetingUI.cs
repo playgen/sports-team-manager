@@ -97,7 +97,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 				cmui.transform.Find("Opinion").GetComponent<Image>().enabled = false;
 			}
 		}
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, crewMember.Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewMember", "Meeting", AlternativeTracker.Alternative.Menu));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, crewMember.Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewMemberMeeting", "MeetingStarted", AlternativeTracker.Alternative.Menu));
 		Display();
 		//set the order of the pop-ups and pop-up blockers and set-up the click event for the blocker
 		_popUpBlocker.transform.SetAsLastSibling();
@@ -216,7 +216,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	/// </summary>
 	public void FireCrewWarning()
 	{
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewMember", "Fire", AlternativeTracker.Alternative.Menu));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewMemberMeeting", "FireWarning", AlternativeTracker.Alternative.Menu));
 		_fireWarningPopUp.SetActive(true);
 		_popUpBlocker.transform.SetAsLastSibling();
 		_fireWarningPopUp.transform.SetAsLastSibling();
@@ -230,7 +230,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	/// </summary>
 	public void CloseFireCrewWarning()
 	{
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "DidNotFireCrewMember", GameObjectTracker.TrackedGameObject.Npc));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "CrewMemberMeeting", "DidNotFireCrewMember", GameObjectTracker.TrackedGameObject.Npc));
 		_fireWarningPopUp.SetActive(false);
 		if (gameObject.activeSelf)
 		{
@@ -250,7 +250,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	/// </summary>
 	public void FireCrew()
 	{
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "FiredCrewMember", GameObjectTracker.TrackedGameObject.Npc));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "CrewMemberMeeting", "FiredCrewMember", GameObjectTracker.TrackedGameObject.Npc));
 		_memberMeeting.FireCrewMember(_currentMember);
 		_teamSelectionUI.ResetCrew();
 	}

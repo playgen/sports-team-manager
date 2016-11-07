@@ -258,7 +258,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		_teamSelectionUI.ResetCrew();
 		gameObject.SetActive(false);
 		CloseHireCrewWarning();
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "HiredCrewMember", GameObjectTracker.TrackedGameObject.Npc));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "Recruitment", "HiredCrewMember", GameObjectTracker.TrackedGameObject.Npc));
 	}
 
 	private void OnLanguageChange()
