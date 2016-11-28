@@ -5,6 +5,9 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using SimpleJSON;
 using UnityEngine;
 using System.Linq;
+
+using SUGAR.Unity;
+
 using UnityEngine.UI.Extensions;
 
 public class TutorialController : MonoBehaviour
@@ -89,6 +92,7 @@ public class TutorialController : MonoBehaviour
         }
         else
         {
+			SUGARManager.GameData.Send("Tutorial Finished", true);
             gameObject.SetActive(false);
             _tutorialQuitButton.SetActive(false);
         }

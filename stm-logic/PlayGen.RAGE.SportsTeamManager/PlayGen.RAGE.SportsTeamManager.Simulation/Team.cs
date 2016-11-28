@@ -277,6 +277,60 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
+		/// Get the average mood of the crew
+		/// </summary>
+		public float AverageTeamMood()
+		{
+			var mood = 0f;
+			foreach (var crewMember in crewMembers.Values)
+			{
+				mood += crewMember.GetMood();
+			}
+			mood = mood / crewMembers.Count;
+			return mood;
+		}
+
+		/// <summary>
+		/// Get the average manager opinion of the crew
+		/// </summary>
+		public float AverageTeamManagerOpinion()
+		{
+			var opinion = 0f;
+			foreach (var crewMember in crewMembers.Values)
+			{
+				if (crewMember.CrewOpinions.ContainsKey(Manager.Name))
+				{
+					opinion += crewMember.CrewOpinions[Manager.Name];
+				}
+			}
+			opinion = opinion / crewMembers.Count;
+			return opinion;
+		}
+
+		/// <summary>
+		/// Get the average opinion of the crew
+		/// </summary>
+		public float AverageTeamOpinion()
+		{
+			var opinion = 0f;
+			foreach (var crewMember in crewMembers.Values)
+			{
+				var crewOpinion = 0f;
+				foreach (var otherMember in crewMembers.Keys)
+				{
+					if (otherMember != crewMember.Name && crewMember.CrewOpinions.ContainsKey(otherMember))
+					{
+						crewOpinion += crewMember.CrewOpinions[otherMember];
+					}
+				}
+				crewOpinion = crewOpinion / (crewMembers.Count - 1);
+				opinion += crewOpinion;
+			}
+			opinion = opinion / crewMembers.Count;
+			return opinion;
+		}
+
+		/// <summary>
 		/// Set all CrewMembers who raced to not be available for the set amount of races
 		/// </summary>
 		private void PostRaceRest()

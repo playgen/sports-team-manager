@@ -4,6 +4,9 @@ using System.Reflection;
 
 using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
+
+using SUGAR.Unity;
+
 using UnityEngine.UI;
 
 /// <summary>
@@ -181,6 +184,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		}
 		CostCheck();
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Recruitment", skill + "Question", AlternativeTracker.Alternative.Question));
+		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
 	}
 
 	/// <summary>
@@ -259,6 +263,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		gameObject.SetActive(false);
 		CloseHireCrewWarning();
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "Recruitment", "HiredCrewMember", GameObjectTracker.TrackedGameObject.Npc));
+		SUGARManager.GameData.Send("Crew Member Hired", string.Empty);
 	}
 
 	private void OnLanguageChange()

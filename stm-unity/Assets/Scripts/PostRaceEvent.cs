@@ -2,13 +2,16 @@
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using IntegratedAuthoringTool.DTOs;
+
+using SUGAR.Unity;
 
 /// <summary>
 /// Contains all logic to communicate between PostRaceEventUI and GameManager
 /// </summary>
-public class PostRaceEvent : MonoBehaviour
+public class PostRaceEvent : ObservableMonoBehaviour
 {
 	private GameManager _gameManager;
 	private List<KeyValuePair<CrewMember, DialogueStateActionDTO>> _currentEvent;
@@ -101,7 +104,23 @@ public class PostRaceEvent : MonoBehaviour
 		}
 		if (_currentEvent != null && _selectedResponses.Count == _currentEvent.Count)
 		{
-			return SendReply();
+			foreach (var res in _selectedResponses.Values)
+			{
+				ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, res.Utterance, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "PostRaceEvent", res.NextState, AlternativeTracker.Alternative.Dialog));
+				SUGARManager.GameData.Send("Post Race Event Reply", res.NextState);
+			}
+			float beforeValues = GetTeamAverageMood() + GetTeamAverageManagerOpinion() + GetTeamAverageOpinion();
+			var replies = SendReply();
+			float afterValues = GetTeamAverageMood() + GetTeamAverageManagerOpinion() + GetTeamAverageOpinion();
+			if (afterValues > beforeValues)
+			{
+				SUGARManager.GameData.Send("Post Race Event Positive Outcome", true);
+			}
+			else if (afterValues < beforeValues)
+			{
+				SUGARManager.GameData.Send("Post Race Event Positive Outcome", false);
+			}
+			return replies;
 		}
 		return null;
 	}
@@ -114,5 +133,29 @@ public class PostRaceEvent : MonoBehaviour
 		var replies = _gameManager.SendPostRaceEvent(_selectedResponses);
 		_selectedResponses = null;
 		return replies;
+	}
+
+	/// <summary>
+	/// Get the average team mood
+	/// </summary>
+	public float GetTeamAverageMood()
+	{
+		return _gameManager.Team.AverageTeamMood();
+	}
+
+	/// <summary>
+	/// Get the average team manager opinion
+	/// </summary>
+	public float GetTeamAverageManagerOpinion()
+	{
+		return _gameManager.Team.AverageTeamManagerOpinion();
+	}
+
+	/// <summary>
+	/// Get the average team opinion
+	/// </summary>
+	public float GetTeamAverageOpinion()
+	{
+		return _gameManager.Team.AverageTeamOpinion();
 	}
 }

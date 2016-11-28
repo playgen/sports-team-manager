@@ -52,7 +52,7 @@ public class TeamSelection : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Get the history of line-ups
+	/// Get the current team
 	/// </summary>
 	public Team GetTeam()
 	{
@@ -115,6 +115,14 @@ public class TeamSelection : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Get the amount of starting ActionAllowance
+	/// </summary>
+	public int StartingQuestionAllowance()
+	{
+		return _gameManager.GetStartingActionAllowance();
+	}
+
+	/// <summary>
 	/// Get the value stored in the config
 	/// </summary>
 	public float GetConfigValue(ConfigKeys eventKey)
@@ -152,5 +160,53 @@ public class TeamSelection : MonoBehaviour {
 	public List<string> GetAssignmentMistakes(int amount)
 	{
 		return _gameManager.Team.Boat.GetAssignmentMistakes(amount);
+	}
+
+	/// <summary>
+	/// Get the average team mood
+	/// </summary>
+	public float GetTeamAverageMood()
+	{
+		return _gameManager.Team.AverageTeamMood();
+	}
+
+	/// <summary>
+	/// Get the average team manager opinion
+	/// </summary>
+	public float GetTeamAverageManagerOpinion()
+	{
+		return _gameManager.Team.AverageTeamManagerOpinion();
+	}
+
+	/// <summary>
+	/// Get the average team opinion
+	/// </summary>
+	public float GetTeamAverageOpinion()
+	{
+		return _gameManager.Team.AverageTeamOpinion();
+	}
+
+	/// <summary>
+	/// Get the average boat mood
+	/// </summary>
+	public float GetBoatAverageMood()
+	{
+		return _gameManager.Team.Boat.AverageBoatMood();
+	}
+
+	/// <summary>
+	/// Get the average boat manager opinion
+	/// </summary>
+	public float GetBoatAverageManagerOpinion()
+	{
+		return _gameManager.Team.Boat.AverageBoatManagerOpinion(GetTeam().Manager.Name);
+	}
+
+	/// <summary>
+	/// Get the average boat opinion
+	/// </summary>
+	public float GetBoatAverageOpinion()
+	{
+		return _gameManager.Team.Boat.AverageBoatOpinion();
 	}
 }

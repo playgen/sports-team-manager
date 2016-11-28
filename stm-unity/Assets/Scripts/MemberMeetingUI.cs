@@ -3,6 +3,9 @@ using System.Linq;
 using System.Reflection;
 
 using PlayGen.RAGE.SportsTeamManager.Simulation;
+
+using SUGAR.Unity;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -98,6 +101,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 			}
 		}
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, crewMember.Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewMemberMeeting", "MeetingStarted", AlternativeTracker.Alternative.Menu));
+		SUGARManager.GameData.Send("View Crew Member Screen", crewMember.Name);
 		Display();
 		//set the order of the pop-ups and pop-up blockers and set-up the click event for the blocker
 		_popUpBlocker.transform.SetAsLastSibling();
@@ -209,6 +213,8 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		Display(true);
 		_dialogueText.text = reply.Length > 0 ? reply : "";
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, questionType, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewMemberMeeting", questionType, AlternativeTracker.Alternative.Question));
+		SUGARManager.GameData.Send("Meeting Question Directed At", _currentMember.Name);
+		SUGARManager.GameData.Send("Meeting Question Asked", questionType);
 	}
 
 	/// <summary>
@@ -251,6 +257,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	public void FireCrew()
 	{
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "CrewMemberMeeting", "FiredCrewMember", GameObjectTracker.TrackedGameObject.Npc));
+		SUGARManager.GameData.Send("Crew Member Fired", string.Empty);
 		_memberMeeting.FireCrewMember(_currentMember);
 		_teamSelectionUI.ResetCrew();
 	}

@@ -207,6 +207,60 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
+		/// Get the average mood of the selected crew
+		/// </summary>
+		public float AverageBoatMood()
+		{
+			var mood = 0f;
+			foreach (var crewMember in PositionCrew.Values)
+			{
+				mood += crewMember.GetMood();
+			}
+			mood = mood / PositionCrew.Count;
+			return mood;
+		}
+
+		/// <summary>
+		/// Get the average manager opinion of the selected crew
+		/// </summary>
+		public float AverageBoatManagerOpinion(string managerName)
+		{
+			var opinion = 0f;
+			foreach (var crewMember in PositionCrew.Values)
+			{
+				if (crewMember.CrewOpinions.ContainsKey(managerName))
+				{
+					opinion += crewMember.CrewOpinions[managerName];
+				}
+			}
+			opinion = opinion / PositionCrew.Count;
+			return opinion;
+		}
+
+		/// <summary>
+		/// Get the average opinion of the selected crew
+		/// </summary>
+		public float AverageBoatOpinion()
+		{
+			var opinion = 0f;
+			foreach (var crewMember in PositionCrew.Values)
+			{
+				var crewOpinion = 0f;
+				foreach (var otherMember in PositionCrew.Values)
+				{
+					if (otherMember.Name != crewMember.Name && crewMember.CrewOpinions.ContainsKey(otherMember.Name))
+					{
+						crewOpinion += crewMember.CrewOpinions[otherMember.Name];
+					}
+				}
+				crewOpinion = crewOpinion / (PositionCrew.Count - 1);
+				opinion += crewOpinion;
+			}
+			opinion = opinion / PositionCrew.Count;
+			return opinion;
+		}
+
+		/// <summary>
 		/// Get the crew set-up(s) that would be worth the highest Score
 		/// </summary>
 		public void GetIdealCrew(Dictionary<string, CrewMember> crewMembers, string managerName)
