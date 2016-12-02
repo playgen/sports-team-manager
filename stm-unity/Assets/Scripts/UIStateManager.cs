@@ -50,17 +50,20 @@ public class UIStateManager : ObservableMonoBehaviour {
 			PlayerPrefs.SetInt("Sound", 1);
 		}
 		BackToMenu(_mainMenu);
-		SUGARManager.Account.SignIn(success =>
+		if (SUGARManager.CurrentUser == null)
 		{
-			if (success)
+			SUGARManager.Account.SignIn(success =>
 			{
-				_userSignedInText.text = "Signed in as: " + SUGARManager.CurrentUser.Name;
-			}
-			else
-			{
-				_userSignedInText.text = "Not signed in!";
-			}
-		});
+				if (success)
+				{
+					_userSignedInText.text = "Signed in as: " + SUGARManager.CurrentUser.Name;
+				}
+				else
+				{
+					_userSignedInText.text = "Not signed in!";
+				}
+			});
+		}
 	}
 
 	/// <summary>

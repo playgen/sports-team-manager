@@ -230,6 +230,7 @@ GameObject:
   - 224: {fileID: 224000010307194510}
   - 222: {fileID: 222000014172779472}
   - 114: {fileID: 114000010749351250}
+  - 114: {fileID: 114000012797823950}
   m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
@@ -1732,6 +1733,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114000012797823950
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011338099006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88e0378b041f6944a88d60a575d8f3b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: LEADERBOARDS
+  ToUpper: 0
 --- !u!114 &114000012852538868
 MonoBehaviour:
   m_ObjectHideFlags: 1

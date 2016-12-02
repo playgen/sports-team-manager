@@ -108,4 +108,6 @@
 {"Key":"WILLPOWER","English":"Willpower","Italian":"x"},
 {"Key":"WISDOM","English":"Wisdom","Italian":"x"},
 {"Key":"YELLOW_PLACEMENT","English":"Ideal In Another Position","Italian":"x"},
-{"Key":"YES","English":"Yes","Italian":"x"}]
+{"Key":"YES","English":"Yes","Italian":"x"},
+{"Key":"ACHIEVEMENTS","English":"Achievements","Italian":"Achievements"},
+{"Key":"LEADERBOARDS","English":"Leaderboards","Italian":"Leaderboards"}]
