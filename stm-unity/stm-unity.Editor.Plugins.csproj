@@ -5,16 +5,16 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{347D8BEC-1FC5-763F-31A9-CF5B7E22D697}</ProjectGuid>
+    <ProjectGuid>{7222E832-7653-3F87-64BA-74A09AC83162}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
+    <AssemblyName>Assembly-CSharp-Editor-firstpass</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
     <CompilerResponseFile></CompilerResponseFile>
-    <UnityProjectType>GamePlugins:3</UnityProjectType>
+    <UnityProjectType>EditorPlugins:7</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.2f2</UnityVersion>
     <RootNamespace></RootNamespace>
@@ -52,14 +52,68 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Advertisements">
+      <HintPath>Library\UnityAssemblies\UnityEditor.Advertisements.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>Library\UnityAssemblies\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.EditorTestsRunner">
+      <HintPath>Library\UnityAssemblies\UnityEditor.EditorTestsRunner.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>Library\UnityAssemblies\UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor">
-      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
+    <Reference Include="UnityEditor.Networking">
+      <HintPath>Library\UnityAssemblies\UnityEditor.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.TreeEditor">
+      <HintPath>Library\UnityAssemblies\UnityEditor.TreeEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Graphs">
+      <HintPath>Library\UnityAssemblies\UnityEditor.Graphs.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Android.Extensions">
+      <HintPath>Library\UnityAssemblies\UnityEditor.Android.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.AppleTV.Extensions">
+      <HintPath>Library\UnityAssemblies\UnityEditor.AppleTV.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Metro.Extensions">
+      <HintPath>Library\UnityAssemblies\UnityEditor.Metro.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Tizen.Extensions">
+      <HintPath>Library\UnityAssemblies\UnityEditor.Tizen.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.SamsungTV.Extensions">
+      <HintPath>Library\UnityAssemblies\UnityEditor.SamsungTV.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WebGL.Extensions">
+      <HintPath>Library\UnityAssemblies\UnityEditor.WebGL.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.LinuxStandalone.Extensions">
+      <HintPath>Library\UnityAssemblies\UnityEditor.LinuxStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
+      <HintPath>Library\UnityAssemblies\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.OSXStandalone.Extensions">
+      <HintPath>Library\UnityAssemblies\UnityEditor.OSXStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
+      <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
@@ -75,6 +129,12 @@
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Excel">
+      <HintPath>Assets\Editor\ExcelToJsonConverter\ExcelDataReader\Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data">
+      <HintPath>Assets\Editor\ExcelToJsonConverter\Mono\System.Data.dll</HintPath>
     </Reference>
     <Reference Include="ActionLibrary">
       <HintPath>Assets\Plugins\stm-logic\ActionLibrary.dll</HintPath>
@@ -147,23 +207,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\Account\AccountUnityClient.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\Account\ILoginUserInterface.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\Account\LoginEventArgs.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\Account\LoginUserInterface.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\Achievement\AchievementItemInterface.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\Achievement\AchievementListInterface.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\Achievement\AchievementPopupInterface.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\Achievement\AchievementUnityClient.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\GameData\GameDataUnityClient.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\Leaderboard\LeaderboardListUnityClient.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\Leaderboard\LeaderboardListUserInterface.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\Leaderboard\LeaderboardPositionInterface.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\Leaderboard\LeaderboardUnityClient.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\Leaderboard\LeaderboardUserInterface.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\SUGARManager.cs" />
-    <Compile Include="Assets\Plugins\SUGAR\Scripts\SUGARUnityManager.cs" />
-    <Compile Include="Assets\Plugins\SeedAchievements.cs" />
+    <ProjectReference Include="stm-unity.Plugins.csproj">
+      <Project>{347D8BEC-1FC5-763F-31A9-CF5B7E22D697}</Project>
+      <Name>stm-unity.Plugins</Name>
+    </ProjectReference>
+    <ProjectReference Include="stm-unity.csproj">
+      <Project>{7CB73DD1-ED31-84B9-D8F5-66803C4ECDA8}</Project>
+      <Name>stm-unity</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Plugins\Editor\SeedAchievements.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Editor\ExcelToJsonConverter\Json\license.txt" />

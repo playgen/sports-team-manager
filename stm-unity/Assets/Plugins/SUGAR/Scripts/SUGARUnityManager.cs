@@ -12,7 +12,24 @@ namespace SUGAR.Unity
 		[SerializeField]
 		private string _baseAddress;
 		[SerializeField]
+		private string _gameToken;
+		[SerializeField]
 		private int _gameId;
+
+		internal string baseAddress
+		{
+			get { return _baseAddress; }
+		}
+		internal string gameToken
+		{
+			get { return _gameToken; }
+		}
+		internal int gameId
+		{
+			set { _gameId = value; }
+		}
+
+
 		private Canvas _canvas;
 		[SerializeField]
 		private bool _useAchievements = true;

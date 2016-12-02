@@ -89,7 +89,6 @@ namespace SUGAR.Unity
 					result(Enumerable.Empty<LeaderboardStandingsResponse>());
 				});
 			}
-			result(Enumerable.Empty<LeaderboardStandingsResponse>());
 		}
 	}
 }
