@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 
+using SUGAR.Unity;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -26,6 +28,8 @@ public class UIStateManager : ObservableMonoBehaviour {
 	private GameObject _seasonStandings;
 	[SerializeField]
 	private GameObject _helpPages;
+	[SerializeField]
+	private Text _userSignedInText;
 
 	void Start()
 	{
@@ -46,6 +50,17 @@ public class UIStateManager : ObservableMonoBehaviour {
 			PlayerPrefs.SetInt("Sound", 1);
 		}
 		BackToMenu(_mainMenu);
+		SUGARManager.Account.SignIn(success =>
+		{
+			if (success)
+			{
+				_userSignedInText.text = "Signed in as: " + SUGARManager.CurrentUser.Name;
+			}
+			else
+			{
+				_userSignedInText.text = "Not signed in!";
+			}
+		});
 	}
 
 	/// <summary>
@@ -128,6 +143,16 @@ public class UIStateManager : ObservableMonoBehaviour {
 		_seasonStandings.SetActive(false);
 		_helpPages.SetActive(true);
 		(FindObjectOfType(typeof(ScreenSideUI)) as ScreenSideUI).ChangeSelected(2);
+	}
+
+	public void ShowAchievements()
+	{
+		SUGARManager.Achievement.DisplayList();
+	}
+
+	public void ShowLeaderboards()
+	{
+		SUGARManager.GameLeaderboard.DisplayList();
 	}
 
 	/// <summary>
