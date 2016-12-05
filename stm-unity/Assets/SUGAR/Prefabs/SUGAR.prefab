@@ -22,7 +22,6 @@ GameObject:
   - 223: {fileID: 223000012450321626}
   - 114: {fileID: 114000012885612516}
   - 114: {fileID: 114000011156416006}
-  - 222: {fileID: 222000010192352242}
   m_Layer: 5
   m_Name: SUGAR Canvas
   m_TagString: Untagged
@@ -43,7 +42,7 @@ GameObject:
   - 114: {fileID: 114000010768160430}
   - 114: {fileID: 114000012611603444}
   - 114: {fileID: 114000013249777644}
-  - 114: {fileID: 114000013921941710}
+  - 114: {fileID: 114000010015184184}
   m_Layer: 0
   m_Name: SUGAR
   m_TagString: Untagged
@@ -89,7 +88,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013799670484}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -129,6 +128,18 @@ Camera:
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
+--- !u!114 &114000010015184184
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012920798932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1788a1fe38c4302428c9cefe66f33bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _responseMillisecondBudgetPerFrame: 2
 --- !u!114 &114000010768160430
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -144,7 +155,7 @@ MonoBehaviour:
     type: 2}
   _achievementPopup: {fileID: 114000013413874684, guid: 30bf371ff31e0bc429751b3218cfa999,
     type: 2}
-  _notificationCheckRate: 2.5
+  _notificationCheckRate: 0.1
 --- !u!114 &114000011156416006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -172,7 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57bb6379ebe1f894d91f8e286feae45c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseAddress: http://localhost:62312
+  _baseAddress: http://localhost:62312/
   _gameToken: Sports Team Manager
   _gameId: 1
   _useAchievements: 1
@@ -238,25 +249,8 @@ MonoBehaviour:
   _loginUserInterface: {fileID: 114000014259607728, guid: bb12776c4b045cc45ab0ef3d57d1d79d,
     type: 2}
   _allowAutoLogin: 1
+  _allowRegister: 0
   _defaultSourceToken: SUGAR
---- !u!114 &114000013921941710
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012920798932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1788a1fe38c4302428c9cefe66f33bff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _responseMillisecondBudgetPerFrame: 1000
---- !u!222 &222000010192352242
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011383437524}
 --- !u!223 &223000012450321626
 Canvas:
   m_ObjectHideFlags: 1
@@ -266,8 +260,8 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 2
   m_RenderMode: 0
-  m_Camera: {fileID: 20000012022106506}
-  m_PlaneDistance: 1
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0

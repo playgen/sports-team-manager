@@ -26,6 +26,8 @@ namespace SUGAR.Unity
 		[SerializeField]
 		private Button _combinedButton;
 		[SerializeField]
+		private Text _errorText;
+		[SerializeField]
 		private Button _closeButton;
 
 		private void Awake()
@@ -38,21 +40,21 @@ namespace SUGAR.Unity
 			_closeButton.onClick.AddListener(delegate { gameObject.SetActive(false); });
 		}
 
-		internal void Display(ActorType filter)
+		internal void Display(ActorType filter, bool loadingSuccess)
 		{
 			_pageNumber = 0;
 			_actorType = filter;
-			ShowLeaderboards();
+			ShowLeaderboards(loadingSuccess);
 		}
 
-		private void ShowLeaderboards()
+		private void ShowLeaderboards(bool loadingSuccess)
 		{
-			if (SUGARManager.CurrentUser == null)
-			{
-				return;
-			}
 			gameObject.SetActive(true);
 			transform.SetAsLastSibling();
+			_errorText.text = string.Empty;
+			_userButton.interactable = true;
+			_groupButton.interactable = true;
+			_combinedButton.interactable = true;
 			var leaderboardList = SUGARManager.GameLeaderboard.Leaderboards[(int)_actorType].ToList();
 			_nextButton.interactable = leaderboardList.Count > (_pageNumber + 1) * _leaderboardButtons.Length;
 			leaderboardList = leaderboardList.Skip(_pageNumber * _leaderboardButtons.Length).Take(_leaderboardButtons.Length).ToList();
@@ -84,19 +86,37 @@ namespace SUGAR.Unity
 			_leaderboardType.text = _actorType == ActorType.Undefined ? "Combined" : _actorType.ToString();
 			_pageNumberText.text = "Page " + (_pageNumber + 1);
 			_previousButton.interactable = _pageNumber > 0;
+			if (!loadingSuccess)
+			{
+				if (SUGARManager.CurrentUser == null)
+				{
+					_errorText.text = "Error: No user currently signed in.";
+				}
+				else
+				{
+					_errorText.text = "Error: Unable to gather leaderboards for this game.";
+				}
+				_userButton.interactable = false;
+				_groupButton.interactable = false;
+				_combinedButton.interactable = false;
+			}
+			else if (leaderboardList.Count == 0)
+			{
+				_errorText.text = "No leaderboards are currently available for this game for this filter.";
+			}
 		}
 
 		private void UpdatePageNumber(int changeAmount)
 		{
 			_pageNumber += changeAmount;
-			ShowLeaderboards();
+			ShowLeaderboards(true);
 		}
 
 		private void UpdateFilter(int filter)
 		{
 			_pageNumber = 0;
 			_actorType = (ActorType)filter;
-			ShowLeaderboards();
+			ShowLeaderboards(true);
 		}
 	}
 }

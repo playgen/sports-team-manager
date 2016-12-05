@@ -48,8 +48,8 @@ public class NewGameUI : MonoBehaviour {
 	{
 		_managerGender.ClearOptions();
 		_managerGender.AddOptions(new List<string> { Localization.Get("MALE"), Localization.Get("FEMALE") });
-		_tutorialToggle.enabled = _newGame.ExistingSaves();
-		_tutorialToggle.isOn = true;
+		//_tutorialToggle.enabled = _newGame.ExistingSaves();
+		_tutorialToggle.isOn = false;
 	}
 
 	/// <summary>

@@ -142,9 +142,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
       <HintPath>Assets\Plugins\SUGAR\DLLs\System.ComponentModel.DataAnnotations.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets\Plugins\SUGAR\DLLs\Newtonsoft.Json.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="stm-unity.Plugins.csproj">

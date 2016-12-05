@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections;
 using PlayGen.SUGAR.Client;
 using PlayGen.SUGAR.Contracts.Shared;
 
@@ -13,15 +13,17 @@ namespace SUGAR.Unity
 
 		public static ActorResponse CurrentUser { get; internal set; }
 
-		internal static AccountUnityClient account { get; set; }
+	    internal static AccountUnityClient account { get; set; }
 
-		internal static AchievementUnityClient achievement { get; set; }
+	    internal static AchievementUnityClient achievement { get; set; }
 
 		internal static GameDataUnityClient gameData = new GameDataUnityClient();
 
-		internal static LeaderboardListUnityClient gameLeaderboard { get; set; }
+	    internal static LeaderboardListUnityClient gameLeaderboard { get; set; }
 
 		internal static LeaderboardUnityClient leaderboard { get; set; }
+
+        internal static Config config { get; set; }
 
 		public static AccountUnityClient Account
 		{

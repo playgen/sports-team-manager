@@ -107,7 +107,7 @@ public class PostRaceEvent : ObservableMonoBehaviour
 			foreach (var res in _selectedResponses.Values)
 			{
 				ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, res.Utterance, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "PostRaceEvent", res.NextState, AlternativeTracker.Alternative.Dialog));
-				SUGARManager.GameData.Send("Post Race Event Reply", res.NextState);
+				//SUGARManager.GameData.Send("Post Race Event Reply", res.NextState);
 			}
 			float beforeValues = GetTeamAverageMood() + GetTeamAverageManagerOpinion() + GetTeamAverageOpinion();
 			var replies = SendReply();

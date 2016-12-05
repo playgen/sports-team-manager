@@ -105,7 +105,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	public void SetUpDisplay(Position position)
 	{
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, position.GetName(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "PositionDisplay", "ViewedPositionInformation", GameObjectTracker.TrackedGameObject.GameObject));
-		SUGARManager.GameData.Send("View Position Screen", position.GetName());
+		//SUGARManager.GameData.Send("View Position Screen", position.GetName());
 		gameObject.SetActive(true);
 		_popUpBlocker.transform.SetAsLastSibling();
 		gameObject.transform.SetAsLastSibling();

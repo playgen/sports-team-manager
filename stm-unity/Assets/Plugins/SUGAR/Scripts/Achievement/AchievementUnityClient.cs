@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PlayGen.SUGAR.Client.EvaluationEvents;
 using PlayGen.SUGAR.Contracts.Shared;
 using UnityEngine;
@@ -46,30 +47,39 @@ namespace SUGAR.Unity
 				newPopUp.name = _achievementPopup.name;
 				_achievementPopup = newPopUp.GetComponent<AchievementPopupInterface>();
 			}
-			_achievementPopup.gameObject.SetActive(false);
+			_achievementPopup.gameObject.SetActive(true);
 			InvokeRepeating("NotificatonCheck", _notificationCheckRate, _notificationCheckRate);
 		}
 
 		public void DisplayList()
 		{
-			GetAchievements();
-			_achievementListInterface.Display();
+			GetAchievements(success =>
+			{
+				_achievementListInterface.Display(success);
+			});
 		}
 
-		private void GetAchievements()
+		private void GetAchievements(Action<bool> success)
 		{
+			_progress.Clear();
 			if (SUGARManager.CurrentUser != null)
 			{
 				SUGARManager.Client.Achievement.GetGameProgressAsync(SUGARManager.GameId, SUGARManager.CurrentUser.Id,
 				response =>
 				{
 					_progress = response.ToList();
+					success(true);
 				},
 				exception =>
 				{
 					string error = "Failed to get achievements list. " + exception.Message;
 					Debug.LogError(error);
+					success(false);
 				});
+			}
+			else
+			{
+				success(false);
 			}
 		}
 

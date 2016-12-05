@@ -539,6 +539,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		void DeductCost(int cost)
 		{
+			if (ShowTutorial)
+			{
+				return;
+			}
 			ActionAllowance -= cost;
 			Team.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
 			Team.Manager.SaveStatus();

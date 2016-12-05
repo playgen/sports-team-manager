@@ -130,9 +130,6 @@
     <Reference Include="CommandLine">
       <HintPath>Assets\Plugins\SUGAR\DLLs\CommandLine.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets\Plugins\SUGAR\DLLs\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="PlayGen.SUGAR.Client">
       <HintPath>Assets\Plugins\SUGAR\DLLs\PlayGen.SUGAR.Client.dll</HintPath>
     </Reference>
@@ -155,6 +152,7 @@
     <Compile Include="Assets\Plugins\SUGAR\Scripts\Achievement\AchievementListInterface.cs" />
     <Compile Include="Assets\Plugins\SUGAR\Scripts\Achievement\AchievementPopupInterface.cs" />
     <Compile Include="Assets\Plugins\SUGAR\Scripts\Achievement\AchievementUnityClient.cs" />
+    <Compile Include="Assets\Plugins\SUGAR\Scripts\Config.cs" />
     <Compile Include="Assets\Plugins\SUGAR\Scripts\GameData\GameDataUnityClient.cs" />
     <Compile Include="Assets\Plugins\SUGAR\Scripts\Leaderboard\LeaderboardListUnityClient.cs" />
     <Compile Include="Assets\Plugins\SUGAR\Scripts\Leaderboard\LeaderboardListUserInterface.cs" />

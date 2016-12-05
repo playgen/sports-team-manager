@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace SUGAR.Unity
 {
-	public class LoginUserInterface : MonoBehaviour, ILoginUserInterface
+	public class LoginUserInterface : MonoBehaviour
 	{
 		[SerializeField]
 		private InputField _name;
@@ -15,36 +15,52 @@ namespace SUGAR.Unity
 		[SerializeField]
 		private Button _registerButton;
 		[SerializeField]
+		private Button _closeButton;
+		[SerializeField]
 		private Text _statusText;
 
 		public event EventHandler<LoginEventArgs> Login;
 
-		void Awake()
+		public event EventHandler<LoginEventArgs> Register;
+
+		private void Awake()
 		{
 			_loginButton.onClick.AddListener(InvokeLogin);
+			_registerButton.onClick.AddListener(InvokeRegister);
+			_closeButton.onClick.AddListener(Hide);
 		}
 
-		public virtual void Show()
+		internal void Show()
 		{
 			gameObject.SetActive(true);
 			transform.SetAsLastSibling();
 		}
 
-		public virtual void Hide()
+		internal void Hide()
 		{
 			gameObject.SetActive(false);
 		}
 
-		public virtual void SetStatus(string text)
+		internal void RegisterButtonDisplay(bool display)
+		{
+			_registerButton.gameObject.SetActive(display);
+		}
+
+		internal void SetStatus(string text)
 		{
 			_statusText.text = text;
 		}
 
-		protected virtual void InvokeLogin()
+		private void InvokeLogin()
 		{
 			var args = new LoginEventArgs(_name.text, _password.text);
-			var handler = Login;
-			if (handler != null) handler(this, args);
+			Login(this, args);
+		}
+
+		private void InvokeRegister()
+		{
+			var args = new LoginEventArgs(_name.text, _password.text);
+			Register(this, args);
 		}
 	}
 }

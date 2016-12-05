@@ -38,11 +38,13 @@ namespace SUGAR.Unity
 
 		public void DisplayList(ActorType filter = ActorType.User)
 		{
-			GetLeaderboards();
-			_leaderboardListInterface.Display(filter);
+			GetLeaderboards(success =>
+				{
+					_leaderboardListInterface.Display(filter, success);
+				});
 		}
 
-		private void GetLeaderboards()
+		private void GetLeaderboards(Action<bool> success)
 		{
 			_leaderboards.Clear();
 			if (SUGARManager.CurrentUser != null)
@@ -56,19 +58,26 @@ namespace SUGAR.Unity
 						var at = actorType;
 						_leaderboards.Add(leaderboards.Where(lb => lb.ActorType == at).ToList());
 					}
+					success(true);
 				},
 				exception =>
 				{
 					string error = "Failed to get leaderboard list. " + exception.Message;
 					Debug.LogError(error);
+					for (int i = 0; i < Enum.GetValues(typeof(ActorType)).Length; i++)
+					{
+						_leaderboards.Add(new List<LeaderboardResponse>());
+					}
+					success(false);
 				});
 			}
-			if (_leaderboards.Count == 0)
+			else
 			{
 				for (int i = 0; i < Enum.GetValues(typeof(ActorType)).Length; i++)
 				{
 					_leaderboards.Add(new List<LeaderboardResponse>());
 				}
+				success(false);
 			}
 		}
 	}

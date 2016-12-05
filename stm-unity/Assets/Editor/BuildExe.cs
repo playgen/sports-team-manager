@@ -8,6 +8,6 @@ public class BuildExe : MonoBehaviour
 	static void Build()
 	{
 		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.StandaloneWindows);
-		BuildPipeline.BuildPlayer(EditorBuildSettings.scenes, @"Build/Sports Team Manager/Sports Team Manager.exe", BuildTarget.StandaloneWindows, BuildOptions.None);
+		BuildPipeline.BuildPlayer(EditorBuildSettings.scenes, @"Build/Sports Team Manager/SportsTeamManager.exe", BuildTarget.StandaloneWindows, BuildOptions.None);
 	}
 }

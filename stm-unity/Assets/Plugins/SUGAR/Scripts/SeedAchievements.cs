@@ -29,16 +29,36 @@ namespace SUGAR.Unity
 				return;
 			}
 			SUGARManager.Client = new SUGARClient(unityManager.baseAddress);
-			var response = LoginAdmin(username,password);
+			var response = LoginAdmin(username, password);
 			if (response != null)
 			{
-				var gameId = SUGARManager.Client.Game.Get(unityManager.gameToken).FirstOrDefault().Id;
-				if (gameId != 0)
-				{
-					unityManager.gameId = gameId;
-					SUGARManager.GameId = gameId;
-				}
 				Debug.Log("Admin Login SUCCESS");
+				var game = SUGARManager.Client.Game.Get(unityManager.gameToken).FirstOrDefault();
+				if (game != null)
+				{
+					Debug.Log("Game Found");
+					unityManager.gameId = game.Id;
+					SUGARManager.GameId = game.Id;
+				}
+				else
+				{
+					Debug.Log("Creating Game");
+					var gameResponse = SUGARManager.Client.Game.Create(new GameRequest()
+					{
+						Name = unityManager.gameToken
+					});
+					if (gameResponse != null)
+					{
+						unityManager.gameId = gameResponse.Id;
+						SUGARManager.GameId = gameResponse.Id;
+					}
+					else
+					{
+						Debug.LogError("Unable to create game");
+						return;
+					}
+
+				}
 				CreateAchievements();
 				CreateLeaderboards();
 				SUGARManager.Client.Session.Logout();
@@ -236,7 +256,7 @@ namespace SUGAR.Unity
 				LeaderboardType = LeaderboardType.Lowest
 			});
 
-			leaderboardClient.Create(new LeaderboardRequest
+			/*leaderboardClient.Create(new LeaderboardRequest
 			{
 				Token = "Talk_Time_Used",
 				GameId = gameId,
@@ -246,7 +266,7 @@ namespace SUGAR.Unity
 				SaveDataType = SaveDataType.Long,
 				CriteriaScope = CriteriaScope.Actor,
 				LeaderboardType = LeaderboardType.Cumulative
-			});
+			});*/
 		}
 
 		private static AccountResponse LoginAdmin(string username, string password)

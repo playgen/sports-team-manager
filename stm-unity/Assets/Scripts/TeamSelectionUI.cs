@@ -493,7 +493,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		//select random time offset
 		var offset = UnityEngine.Random.Range(0, 10);
 		//confirm the line-up with the simulation 
-		SUGARManager.GameData.Send("Current Crew Size", _teamSelection.GetTeam().CrewMembers.Count);
+		//SUGARManager.GameData.Send("Current Crew Size", _teamSelection.GetTeam().CrewMembers.Count);
 		var currentBoat = _teamSelection.ConfirmLineUp(offset);
 		ResetScrollbar();
 		GetResult((_teamSelection.GetStage() - 1) % _teamSelection.GetSessionLength() == 0, currentBoat, offset, _raceButton.GetComponentInChildren<Text>(), true);
@@ -680,20 +680,20 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		if (current)
 		{
 			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Completed", "CrewScore" + (_teamSelection.GetStage() - 1), CompletableTracker.Completable.Race, true, boat.Score));
-			SUGARManager.GameData.Send("Race Session Score", boat.Score);
-			SUGARManager.GameData.Send("Current Boat Size", boat.Positions.Count);
-			SUGARManager.GameData.Send("Race Session Score Average", (float)boat.Score / boat.Positions.Count);
-			SUGARManager.GameData.Send("Race Session Ideal Score Average", boat.IdealMatchScore / boat.Positions.Count);
+			//SUGARManager.GameData.Send("Race Session Score", boat.Score);
+			//SUGARManager.GameData.Send("Current Boat Size", boat.Positions.Count);
+			//SUGARManager.GameData.Send("Race Session Score Average", (float)boat.Score / boat.Positions.Count);
+			//SUGARManager.GameData.Send("Race Session Ideal Score Average", boat.IdealMatchScore / boat.Positions.Count);
 			SUGARManager.GameData.Send("Race Time", (long)timeTaken.TotalSeconds);
-			SUGARManager.GameData.Send("Post Race Crew Average Mood", _teamSelection.GetTeamAverageMood());
-			SUGARManager.GameData.Send("Post Race Crew Average Manager Opinion", _teamSelection.GetTeamAverageManagerOpinion());
-			SUGARManager.GameData.Send("Post Race Crew Average Opinion", _teamSelection.GetTeamAverageOpinion());
+			///SUGARManager.GameData.Send("Post Race Crew Average Mood", _teamSelection.GetTeamAverageMood());
+			//SUGARManager.GameData.Send("Post Race Crew Average Manager Opinion", _teamSelection.GetTeamAverageManagerOpinion());
+			//SUGARManager.GameData.Send("Post Race Crew Average Opinion", _teamSelection.GetTeamAverageOpinion());
 			SUGARManager.GameData.Send("Post Race Boat Average Mood", _teamSelection.GetBoatAverageMood());
-			SUGARManager.GameData.Send("Post Race Boat Average Manager Opinion", _teamSelection.GetBoatAverageManagerOpinion());
-			SUGARManager.GameData.Send("Post Race Boat Average Opinion", _teamSelection.GetBoatAverageOpinion());
+			//SUGARManager.GameData.Send("Post Race Boat Average Manager Opinion", _teamSelection.GetBoatAverageManagerOpinion());
+			//SUGARManager.GameData.Send("Post Race Boat Average Opinion", _teamSelection.GetBoatAverageOpinion());
 			foreach (var feedback in boat.SelectionMistakes)
 			{
-				SUGARManager.GameData.Send("Race Session Feedback", feedback);
+				//SUGARManager.GameData.Send("Race Session Feedback", feedback);
 			}
 			if (isRace)
 			{

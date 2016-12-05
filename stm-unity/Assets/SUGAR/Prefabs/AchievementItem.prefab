@@ -235,5 +235,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8479704a426fb76458c51c6a9e0e6efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AchieveName: {fileID: 11457888}
-  Tick: {fileID: 11444884}
+  _achieveName: {fileID: 11457888}
+  _tick: {fileID: 11444884}

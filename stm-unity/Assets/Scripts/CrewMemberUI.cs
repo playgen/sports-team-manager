@@ -167,8 +167,8 @@ public class CrewMemberUI : ObservableMonoBehaviour {
 			{
 				var pos = result.gameObject.GetComponent<PositionUI>().Position;
 				ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name, pos.GetName(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "CrewPositioning", "PositionedCrewMember", GameObjectTracker.TrackedGameObject.Npc));
-				SUGARManager.GameData.Send("Place Crew Member", _crewMember.Name);
-				SUGARManager.GameData.Send("Fill Position", pos.GetName());
+				//SUGARManager.GameData.Send("Place Crew Member", _crewMember.Name);
+				//SUGARManager.GameData.Send("Fill Position", pos.GetName());
 				Place(result.gameObject);
 				placed = true;
 				break;

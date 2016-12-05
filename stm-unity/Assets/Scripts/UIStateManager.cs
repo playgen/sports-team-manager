@@ -52,7 +52,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 		BackToMenu(_mainMenu);
 		if (SUGARManager.CurrentUser == null)
 		{
-			SUGARManager.Account.SignIn(success =>
+			SUGARManager.Account.TrySignIn(success =>
 			{
 				if (success)
 				{

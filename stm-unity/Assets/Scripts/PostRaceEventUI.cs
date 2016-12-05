@@ -75,7 +75,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			//set current NPC dialogue
 			ResetQuestions();
 			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "PostRaceEvent", "PostRaceEventOpen", AlternativeTracker.Alternative.Dialog));
-			SUGARManager.GameData.Send("Post Race Event Start", current[0].Value.NextState);
+			//SUGARManager.GameData.Send("Post Race Event Start", current[0].Value.NextState);
 		}
 		else
 		{
@@ -109,9 +109,9 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		if (replies.Values.Sum(dos => dos.Count) == 0)
 		{
 			SetBlockerOnClick();
-			SUGARManager.GameData.Send("Post Event Crew Average Mood", _postRaceEvent.GetTeamAverageMood());
-			SUGARManager.GameData.Send("Post Event Crew Average Manager Opinion", _postRaceEvent.GetTeamAverageManagerOpinion());
-			SUGARManager.GameData.Send("Post Event Crew Average Opinion", _postRaceEvent.GetTeamAverageOpinion());
+			//SUGARManager.GameData.Send("Post Event Crew Average Mood", _postRaceEvent.GetTeamAverageMood());
+			//SUGARManager.GameData.Send("Post Event Crew Average Manager Opinion", _postRaceEvent.GetTeamAverageManagerOpinion());
+			//SUGARManager.GameData.Send("Post Event Crew Average Opinion", _postRaceEvent.GetTeamAverageOpinion());
 		} 
 		else
 		{

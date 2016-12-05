@@ -35,37 +35,50 @@ namespace SUGAR.Unity
 
 		public void Display(string token, LeaderboardFilterType filter = LeaderboardFilterType.Top)
 		{
-			GetLeaderboard(token);
-			GetLeaderboardStandings(filter, 0, result =>
-			{
-				if (result != null)
+			GetLeaderboard(token, success =>
 				{
-					var standings = result.ToList();
-					_leaderboardInterface.Display(filter, standings);
-				}
-			});
+					if (success)
+					{
+						GetLeaderboardStandings(filter, 0, result =>
+						{
+							var standings = result.ToList();
+							_leaderboardInterface.Display(filter, standings);
+						});
+					}
+					else
+					{
+						_leaderboardInterface.Display(filter, Enumerable.Empty<LeaderboardStandingsResponse>(), false);
+					}
+				});
 		}
 
-		private void GetLeaderboard(string token)
+		private void GetLeaderboard(string token, Action<bool> success)
 		{
+			_leaderboard = null;
 			if (SUGARManager.CurrentUser != null)
 			{
 				SUGARManager.Client.Leaderboard.GetAsync(token, SUGARManager.GameId,
 				response =>
 				{
 					_leaderboard = response;
+					success(true);
 				},
 				exception =>
 				{
 					string error = "Failed to get leaderboard. " + exception.Message;
 					Debug.LogError(error);
+					success(false);
 				});
+			}
+			else
+			{
+				success(false);
 			}
 		}
 
 		internal void GetLeaderboardStandings(LeaderboardFilterType filter, int pageNumber, Action<IEnumerable<LeaderboardStandingsResponse>> result)
 		{
-			if (SUGARManager.CurrentUser != null)
+			if (SUGARManager.CurrentUser != null && _leaderboard != null)
 			{
 				var request = new LeaderboardStandingsRequest
 				{
@@ -88,6 +101,10 @@ namespace SUGAR.Unity
 					Debug.LogError(error);
 					result(Enumerable.Empty<LeaderboardStandingsResponse>());
 				});
+			}
+			else
+			{
+				result(Enumerable.Empty<LeaderboardStandingsResponse>());
 			}
 		}
 	}

@@ -21,15 +21,16 @@ namespace SUGAR.Unity
 		internal void Animate(EvaluationNotification notification)
 		{
 			_achievementQueue.Add(notification);
+			gameObject.SetActive(true);
 			if (!_animation.isPlaying)
 			{
-				gameObject.SetActive(true);
 				StartCoroutine(AnimatePopup());
 			}
 		}
 
 		private IEnumerator AnimatePopup()
 		{
+			gameObject.SetActive(true);
 			while (_achievementQueue.Count > 0)
 			{
 				_name.text = _achievementQueue[0].Name;
@@ -42,7 +43,6 @@ namespace SUGAR.Unity
 				_achievementQueue.RemoveAt(0);
 				yield return null;
 			}
-			gameObject.SetActive(false);
 		}
 	}
 }
