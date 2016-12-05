@@ -161,9 +161,10 @@
     <Compile Include="Assets\Plugins\SUGAR\Scripts\Leaderboard\LeaderboardPositionInterface.cs" />
     <Compile Include="Assets\Plugins\SUGAR\Scripts\Leaderboard\LeaderboardUnityClient.cs" />
     <Compile Include="Assets\Plugins\SUGAR\Scripts\Leaderboard\LeaderboardUserInterface.cs" />
+    <Compile Include="Assets\Plugins\SUGAR\Scripts\ResponseHandler.cs" />
     <Compile Include="Assets\Plugins\SUGAR\Scripts\SUGARManager.cs" />
     <Compile Include="Assets\Plugins\SUGAR\Scripts\SUGARUnityManager.cs" />
-    <Compile Include="Assets\Plugins\SeedAchievements.cs" />
+    <Compile Include="Assets\Plugins\SUGAR\Scripts\SeedAchievements.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Editor\ExcelToJsonConverter\Json\license.txt" />

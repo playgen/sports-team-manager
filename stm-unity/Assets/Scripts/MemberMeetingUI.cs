@@ -257,7 +257,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	public void FireCrew()
 	{
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "CrewMemberMeeting", "FiredCrewMember", GameObjectTracker.TrackedGameObject.Npc));
-		SUGARManager.GameData.Send("Crew Member Fired", string.Empty);
+		SUGARManager.GameData.Send("Crew Member Fired", true);
 		_memberMeeting.FireCrewMember(_currentMember);
 		_teamSelectionUI.ResetCrew();
 	}

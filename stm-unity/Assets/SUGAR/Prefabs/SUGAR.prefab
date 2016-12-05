@@ -43,6 +43,7 @@ GameObject:
   - 114: {fileID: 114000010768160430}
   - 114: {fileID: 114000012611603444}
   - 114: {fileID: 114000013249777644}
+  - 114: {fileID: 114000013921941710}
   m_Layer: 0
   m_Name: SUGAR
   m_TagString: Untagged
@@ -171,7 +172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57bb6379ebe1f894d91f8e286feae45c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseAddress: http://localhost:62312/
+  _baseAddress: http://localhost:62312
+  _gameToken: Sports Team Manager
   _gameId: 1
   _useAchievements: 1
   _useLeaderboards: 1
@@ -237,6 +239,18 @@ MonoBehaviour:
     type: 2}
   _allowAutoLogin: 1
   _defaultSourceToken: SUGAR
+--- !u!114 &114000013921941710
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012920798932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1788a1fe38c4302428c9cefe66f33bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _responseMillisecondBudgetPerFrame: 1000
 --- !u!222 &222000010192352242
 CanvasRenderer:
   m_ObjectHideFlags: 1

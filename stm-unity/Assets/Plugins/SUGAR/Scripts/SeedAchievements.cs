@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace SUGAR.Unity
 
 		public static void LogInUser(string username, string password)
 		{
-			var unityManager = GameObject.FindSceneObjectsOfType(typeof(SUGARUnityManager)).FirstOrDefault() as SUGARUnityManager;
+			var unityManager = GameObject.FindObjectsOfType(typeof(SUGARUnityManager)).FirstOrDefault() as SUGARUnityManager;
 			if (unityManager == null)
 			{
 				return;
@@ -288,3 +289,4 @@ namespace SUGAR.Unity
 		}
 	}
 }
+#endif

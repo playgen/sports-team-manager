@@ -7,6 +7,7 @@ namespace SUGAR.Unity
 	[RequireComponent(typeof(AchievementUnityClient))]
 	[RequireComponent(typeof(LeaderboardUnityClient))]
 	[RequireComponent(typeof(LeaderboardListUnityClient))]
+	[RequireComponent(typeof(ResponseHandler))]
 	public class SUGARUnityManager : MonoBehaviour
 	{
 		[SerializeField]
@@ -28,8 +29,6 @@ namespace SUGAR.Unity
 		{
 			set { _gameId = value; }
 		}
-
-
 		private Canvas _canvas;
 		[SerializeField]
 		private bool _useAchievements = true;
