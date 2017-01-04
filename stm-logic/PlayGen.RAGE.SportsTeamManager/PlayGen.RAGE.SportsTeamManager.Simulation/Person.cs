@@ -69,8 +69,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public virtual void UpdateBeliefs(string position = null)
 		{
-			UpdateSingleBelief(NPCBeliefs.Age.GetDescription(), Age.ToString());
-			UpdateSingleBelief(NPCBeliefs.Gender.GetDescription(), Gender);
+			if (Age != 0)
+			{
+				UpdateSingleBelief(NPCBeliefs.Age.GetDescription(), Age.ToString());
+			}
+			if (Gender != null)
+			{
+				UpdateSingleBelief(NPCBeliefs.Gender.GetDescription(), Gender);
+			}
 			UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), position);
 		}
 

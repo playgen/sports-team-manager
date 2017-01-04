@@ -10,6 +10,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using SUGAR.Unity;
 
+using UnityEngine.SceneManagement;
+
 /// <summary>
 /// A class for grouping together a sprite with a name
 /// </summary>
@@ -133,6 +135,21 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				b.interactable = true;
 			}
 		}
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			if (_preRacePopUp.activeInHierarchy)
+			{
+				CloseConfirmPopUp();
+			}
+			else if (_postRacePopUp.activeInHierarchy)
+			{
+				ClosePostRacePopUp();
+			}
+			else if (!_meetingUI.gameObject.activeInHierarchy && !_positionUI.gameObject.activeInHierarchy && _postRaceEvents.All(pre => !pre.gameObject.activeInHierarchy))
+			{
+				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			}
+		}
 	}
 
 	private void EnableRacing()
@@ -206,7 +223,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		var team = _teamSelection.GetTeam();
 		var stageIcon = _boatMain.transform.Find("Stage").GetComponent<Image>();
-		stageIcon.sprite = _teamSelection.GetStage() % _teamSelection.GetSessionLength() == 0 ? _raceIcon : _practiceIcon;
+		var isRace = _teamSelection.GetStage() % _teamSelection.GetSessionLength() == 0;
+		stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
+		_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = isRace ? string.Empty : (_teamSelection.GetStage() % _teamSelection.GetSessionLength()).ToString();
 		_positionsEmpty = team.Boat.Positions.Count;
 		_raceButton.onClick.RemoveAllListeners();
 		//add click handler to raceButton according to session taking place
@@ -304,6 +323,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		var stageIcon = oldBoat.transform.Find("Stage").GetComponent<Image>();
 		var isRace = stageNumber % _teamSelection.GetSessionLength() == 0;
 		stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
+		oldBoat.transform.Find("Stage Number").GetComponent<Text>().text = isRace ? string.Empty : (stageNumber % _teamSelection.GetSessionLength()).ToString();
 		var teamScore = boat.Score;
 		var idealScore = boat.IdealMatchScore;
 		var currentCrew = _teamSelection.GetTeam().CrewMembers;
@@ -410,7 +430,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 
 	public void OnScroll(PointerEventData eventData)
 	{
-		if (!_popUpBlocker.gameObject.activeSelf && !_smallerPopUpBlocker.gameObject.activeSelf)
+		if (!_popUpBlocker.gameObject.activeInHierarchy && !_smallerPopUpBlocker.gameObject.activeInHierarchy)
 		{
 			_boatContainerScroll.value += eventData.scrollDelta.y * _boatContainerScroll.size;
 		}
@@ -418,7 +438,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 
 	public void OnDrag(PointerEventData eventData)
 	{
-		if (!_popUpBlocker.gameObject.activeSelf && !_smallerPopUpBlocker.gameObject.activeSelf)
+		if (!_popUpBlocker.gameObject.activeInHierarchy && !_smallerPopUpBlocker.gameObject.activeInHierarchy)
 		{
 			if (Mathf.Abs(eventData.delta.y) > 0.5f)
 			{
@@ -493,7 +513,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		//select random time offset
 		var offset = UnityEngine.Random.Range(0, 10);
 		//confirm the line-up with the simulation 
-		//SUGARManager.GameData.Send("Current Crew Size", _teamSelection.GetTeam().CrewMembers.Count);
+		SUGARManager.GameData.Send("Current Crew Size", _teamSelection.GetTeam().CrewMembers.Count);
 		var currentBoat = _teamSelection.ConfirmLineUp(offset);
 		ResetScrollbar();
 		GetResult((_teamSelection.GetStage() - 1) % _teamSelection.GetSessionLength() == 0, currentBoat, offset, _raceButton.GetComponentInChildren<Text>(), true);
@@ -550,7 +570,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "RaceResult", "RaceResultClosed", AlternativeTracker.Alternative.Menu));
 		foreach (var pre in _postRaceEvents)
 		{
-			if (pre.gameObject.activeSelf && !Mathf.Approximately(pre.GetComponent<CanvasGroup>().alpha, 0))
+			if (pre.gameObject.activeInHierarchy && !Mathf.Approximately(pre.GetComponent<CanvasGroup>().alpha, 0))
 			{
 				_popUpBlocker.transform.SetAsLastSibling();
 				pre.transform.parent.SetAsLastSibling();
@@ -680,20 +700,20 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		if (current)
 		{
 			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Completed", "CrewScore" + (_teamSelection.GetStage() - 1), CompletableTracker.Completable.Race, true, boat.Score));
-			//SUGARManager.GameData.Send("Race Session Score", boat.Score);
-			//SUGARManager.GameData.Send("Current Boat Size", boat.Positions.Count);
-			//SUGARManager.GameData.Send("Race Session Score Average", (float)boat.Score / boat.Positions.Count);
-			//SUGARManager.GameData.Send("Race Session Ideal Score Average", boat.IdealMatchScore / boat.Positions.Count);
+			SUGARManager.GameData.Send("Race Session Score", boat.Score);
+			SUGARManager.GameData.Send("Current Boat Size", boat.Positions.Count);
+			SUGARManager.GameData.Send("Race Session Score Average", (float)boat.Score / boat.Positions.Count);
+			SUGARManager.GameData.Send("Race Session Ideal Score Average", boat.IdealMatchScore / boat.Positions.Count);
 			SUGARManager.GameData.Send("Race Time", (long)timeTaken.TotalSeconds);
-			///SUGARManager.GameData.Send("Post Race Crew Average Mood", _teamSelection.GetTeamAverageMood());
-			//SUGARManager.GameData.Send("Post Race Crew Average Manager Opinion", _teamSelection.GetTeamAverageManagerOpinion());
-			//SUGARManager.GameData.Send("Post Race Crew Average Opinion", _teamSelection.GetTeamAverageOpinion());
+			SUGARManager.GameData.Send("Post Race Crew Average Mood", _teamSelection.GetTeamAverageMood());
+			SUGARManager.GameData.Send("Post Race Crew Average Manager Opinion", _teamSelection.GetTeamAverageManagerOpinion());
+			SUGARManager.GameData.Send("Post Race Crew Average Opinion", _teamSelection.GetTeamAverageOpinion());
 			SUGARManager.GameData.Send("Post Race Boat Average Mood", _teamSelection.GetBoatAverageMood());
-			//SUGARManager.GameData.Send("Post Race Boat Average Manager Opinion", _teamSelection.GetBoatAverageManagerOpinion());
-			//SUGARManager.GameData.Send("Post Race Boat Average Opinion", _teamSelection.GetBoatAverageOpinion());
+			SUGARManager.GameData.Send("Post Race Boat Average Manager Opinion", _teamSelection.GetBoatAverageManagerOpinion());
+			SUGARManager.GameData.Send("Post Race Boat Average Opinion", _teamSelection.GetBoatAverageOpinion());
 			foreach (var feedback in boat.SelectionMistakes)
 			{
-				//SUGARManager.GameData.Send("Race Session Feedback", feedback);
+				SUGARManager.GameData.Send("Race Session Feedback", feedback);
 			}
 			if (isRace)
 			{
@@ -720,7 +740,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		}
 		ChangeVisibleBoats(true);
 		_preRacePopUp.GetComponentInChildren<Text>().text = _teamSelection.QuestionAllowance() > 0 ? Localization.GetAndFormat("RACE_CONFIRM_ALLOWANCE_REMAINING", false, _teamSelection.QuestionAllowance()) : Localization.Get("RACE_CONFIRM_NO_ALLOWANCE");
-		if (_postRacePopUp.activeSelf)
+		if (_postRacePopUp.activeInHierarchy)
 		{
 			var lastRace = _teamSelection.GetLineUpHistory(0, 1).First();
 			GetResult(true, lastRace.Key, lastRace.Value, _boatPool[0].transform.Find("Score").GetComponent<Text>());

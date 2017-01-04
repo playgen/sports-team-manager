@@ -10,6 +10,13 @@ public class PositionUI : ObservableMonoBehaviour
 	private PositionDisplayUI _positionUI;
 	private Position _position;
 	private CrewMemberUI _crewMemberUI;
+	public CrewMemberUI CrewMemberUI
+	{
+		get
+		{
+			return _crewMemberUI;
+		}
+	}
 	public Position Position
 	{
 		get

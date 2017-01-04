@@ -111,7 +111,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create a new game
 		/// </summary>
-		public void NewGame(string storageLocation, string name, byte[] teamColorsPrimary, byte[] teamColorsSecondary, string managerName, string managerAge, string managerGender, bool showTutorial, string nation, List<CrewMember> crew = null)
+		public void NewGame(string storageLocation, string name, byte[] teamColorsPrimary, byte[] teamColorsSecondary, string managerName, bool showTutorial, string nation, List<CrewMember> crew = null)
 		{
 			UnloadGame();
 			//create folder and iat file for game
@@ -133,9 +133,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//create manager
 			var manager = new Person(null)
 			{
-				Name = managerName,
-				Age = Convert.ToInt32(managerAge),
-				Gender = managerGender
+				Name = managerName
 			};
 			Team.Manager = manager;
 			//create the initial crew members

@@ -17,10 +17,6 @@ public class NewGameUI : MonoBehaviour {
 	[SerializeField]
 	private InputField _managerName;
 	[SerializeField]
-	private InputField _managerAge;
-	[SerializeField]
-	private Dropdown _managerGender;
-	[SerializeField]
 	private GameObject _overwritePopUp;
 	[SerializeField]
 	private Text _errorText;
@@ -42,32 +38,29 @@ public class NewGameUI : MonoBehaviour {
 		_overwritePopUp.SetActive(false);
 		WarningDisable();
 		RandomColor();
+		_boatName.onValidateInput += delegate (string input, int charIndex, char addedChar) { return InvalidFlash(addedChar, _boatName); };
+		_managerName.onValidateInput += delegate (string input, int charIndex, char addedChar) { return InvalidFlash(addedChar, _managerName); };
+	}
+
+	private char InvalidFlash(char newChar, InputField inputField)
+	{
+		if (!char.IsLetterOrDigit(newChar) && newChar != ' ')
+		{
+			newChar = '\0';
+			inputField.transform.Find("Warning").gameObject.SetActive(true);
+			Invoke("WarningDisable", 0.02f);
+		}
+		return newChar;
 	}
 
 	private void OnEnable()
 	{
-		_managerGender.ClearOptions();
-		_managerGender.AddOptions(new List<string> { Localization.Get("MALE"), Localization.Get("FEMALE") });
-		//_tutorialToggle.enabled = _newGame.ExistingSaves();
-		_tutorialToggle.isOn = false;
-	}
-
-	/// <summary>
-	/// Remove any invalid puncuation not already blocked by each inputfield
-	/// </summary>
-	public void ExtraNameValidation(InputField inputField)
-	{
-		inputField.text = inputField.text.Replace("'", "");
+		_tutorialToggle.enabled = _newGame.ExistingSaves();
+		_tutorialToggle.isOn = true;
 	}
 
 	private void Update()
 	{
-		//ensure that age does not go below 0
-		int ageTest;
-		if (int.TryParse(_managerAge.text, out ageTest) && ageTest < 0)
-		{
-			_managerAge.text = (ageTest * -1).ToString();
-		}
 		//code for tabbing between input fields
 		if (Input.GetKeyDown(KeyCode.Tab) && EventSystem.current.currentSelectedGameObject != null)
 		{
@@ -84,6 +77,10 @@ public class NewGameUI : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Return))
 		{
 			ExistingGameCheck();
+		}
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			_stateManager.BackToMenu(gameObject);
 		}
 	}
 
@@ -120,7 +117,8 @@ public class NewGameUI : MonoBehaviour {
 		_errorText.text = "";
 		_boatName.transform.Find("Required Warning").gameObject.SetActive(false);
 		_managerName.transform.Find("Required Warning").gameObject.SetActive(false);
-		_managerAge.transform.Find("Required Warning").gameObject.SetActive(false);
+		_boatName.transform.Find("Warning").gameObject.SetActive(false);
+		_managerName.transform.Find("Warning").gameObject.SetActive(false);
 	}
 
 	/// <summary>
@@ -130,26 +128,15 @@ public class NewGameUI : MonoBehaviour {
 	{
 		WarningDisable();
 		var valid = true;
-		if (string.IsNullOrEmpty(_boatName.text))
+		if (string.IsNullOrEmpty(_boatName.text) || _boatName.text.Trim().Length == 0)
 		{
 			valid = false;
 			_boatName.transform.Find("Required Warning").gameObject.SetActive(true);
 		}
-		if (string.IsNullOrEmpty(_managerName.text))
+		if (string.IsNullOrEmpty(_managerName.text) || _managerName.text.Trim().Length == 0)
 		{
 			valid = false;
 			_managerName.transform.Find("Required Warning").gameObject.SetActive(true);
-		}
-		if (string.IsNullOrEmpty(_managerAge.text))
-		{
-			valid = false;
-			_managerAge.transform.Find("Required Warning").gameObject.SetActive(true);
-		}
-		int ageTest;
-		if (!int.TryParse(_managerAge.text, out ageTest))
-		{
-			valid = false;
-			_managerAge.transform.Find("Required Warning").gameObject.SetActive(true);
 		}
 		if (valid)
 		{
@@ -183,7 +170,7 @@ public class NewGameUI : MonoBehaviour {
 				(byte)(_colorImageSecondary.color.g * 255),
 				(byte)(_colorImageSecondary.color.b * 255)
 		};
-		var success = _newGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _managerAge.text, _managerGender.options[_managerGender.value].text, _tutorialToggle.isOn);
+		var success = _newGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _tutorialToggle.isOn);
 		if (success)
 		{
 			_stateManager.GoToGame(gameObject);

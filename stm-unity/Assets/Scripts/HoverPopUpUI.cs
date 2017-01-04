@@ -49,7 +49,7 @@ public class HoverPopUpUI : ObservableMonoBehaviour {
 	/// </summary>
 	private void HoverCheck()
 	{
-		if (gameObject.activeSelf)
+		if (gameObject.activeInHierarchy)
 		{
 			return;
 		}

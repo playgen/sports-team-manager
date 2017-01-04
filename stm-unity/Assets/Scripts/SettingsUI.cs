@@ -20,6 +20,14 @@ public class SettingsUI : MonoBehaviour {
 		Setup();
 	}
 
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			transform.parent.gameObject.SetActive(false);
+		}
+	}
+
 	private void Setup()
 	{
 		_musicToggle.sprite = UIStateManager.MusicOn ? _onSprite : _offSprite;

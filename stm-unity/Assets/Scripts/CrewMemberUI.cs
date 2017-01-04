@@ -23,6 +23,7 @@ public class CrewMemberUI : ObservableMonoBehaviour {
 	private Vector2 _dragPosition;
 	private Icon[] _roleIcons;
 	private Transform _defaultParent;
+	private PositionUI _currentPlacement;
 	private Vector2 _currentPositon;
 	public CrewMember CrewMember
 	{
@@ -167,8 +168,8 @@ public class CrewMemberUI : ObservableMonoBehaviour {
 			{
 				var pos = result.gameObject.GetComponent<PositionUI>().Position;
 				ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name, pos.GetName(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "CrewPositioning", "PositionedCrewMember", GameObjectTracker.TrackedGameObject.Npc));
-				//SUGARManager.GameData.Send("Place Crew Member", _crewMember.Name);
-				//SUGARManager.GameData.Send("Fill Position", pos.GetName());
+				SUGARManager.GameData.Send("Place Crew Member", _crewMember.Name);
+				SUGARManager.GameData.Send("Fill Position", pos.GetName());
 				Place(result.gameObject);
 				placed = true;
 				break;
@@ -180,7 +181,7 @@ public class CrewMemberUI : ObservableMonoBehaviour {
 			Reset();
 		}
 		//reset the meeting UI if it is currently being displayed
-		if (_meetingUI.gameObject.activeSelf)
+		if (_meetingUI.gameObject.activeInHierarchy)
 		{
 			_meetingUI.Display();
 		}
@@ -197,26 +198,32 @@ public class CrewMemberUI : ObservableMonoBehaviour {
 	/// <summary>
 	/// Place the CrewMember to be in-line with the Position it is now paired with
 	/// </summary>
-	public void Place(GameObject position, bool historical = false)
+	public void Place(GameObject position, bool swap = false)
 	{
+		var currentPosition = position.gameObject.GetComponent<PositionUI>().Position;
+		var currentPositionCrew = position.gameObject.GetComponent<PositionUI>().CrewMemberUI;
 		var positionTransform = (RectTransform)position.gameObject.transform;
 		//set size and position
 		transform.SetParent(positionTransform, false);
 		((RectTransform)transform).sizeDelta = positionTransform.sizeDelta;
 		((RectTransform)transform).anchoredPosition = new Vector2(0, -((RectTransform)transform).sizeDelta.y * 0.5f);
-		//assign if this is not an historical placement
-		if (!historical)
-		{
-			_teamSelection.AssignCrew(_crewMember, position.gameObject.GetComponent<PositionUI>().Position);
-		}
+		_teamSelection.AssignCrew(_crewMember, currentPosition);
 		position.gameObject.GetComponent<PositionUI>().LinkCrew(this);
+		if (!swap)
+		{
+			if (currentPositionCrew != null && _currentPlacement != null)
+			{
+				var currentPos = _currentPlacement.gameObject;
+				currentPositionCrew.Place(currentPos, true);
+			}
+		}
+		_currentPlacement = position.gameObject.GetComponent<PositionUI>();
 		var positionImage = transform.Find("Position").gameObject;
 		//update current position button
 		positionImage.GetComponent<Image>().enabled = true;
-		positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == position.gameObject.GetComponent<PositionUI>().Position.GetName()).Image;
+		positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == currentPosition.GetName()).Image;
 		_positionUI.UpdateDisplay();
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
-		var currentPosition = position.gameObject.GetComponent<PositionUI>().Position;
 		positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentPosition); });
 	}
 
@@ -228,6 +235,7 @@ public class CrewMemberUI : ObservableMonoBehaviour {
 		//set back to default parent and position
 		transform.SetParent(_defaultParent, true);
 		transform.position = _defaultParent.position;
+		_currentPlacement = null;
 		transform.SetAsLastSibling();
 		if (_currentPositon != (Vector2)transform.position)
 		{

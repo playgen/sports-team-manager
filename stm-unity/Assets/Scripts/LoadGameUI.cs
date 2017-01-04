@@ -50,6 +50,10 @@ public class LoadGameUI : MonoBehaviour
 			_loadButton.interactable = true;
 			_selectedIcon.SetActive(true);
 		}
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			_stateManager.BackToMenu(gameObject);
+		}
 	}
 
 	/// <summary>
@@ -115,13 +119,5 @@ public class LoadGameUI : MonoBehaviour
 			_loadGame.SetSelected("");
 		}
 		
-	}
-
-	/// <summary>
-	/// Send message to UIStateManager to reset UI panels back to the Main Menu
-	/// </summary>
-	public void BackToMenu()
-	{
-		_stateManager.BackToMenu(gameObject);
 	}
 }

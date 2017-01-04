@@ -56,6 +56,17 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 		Localization.LanguageChange -= OnLanguageChange;
 	}
 
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
+			{
+				ClosePositionPopUp();
+			}
+		}
+	}
+
 	/// <summary>
 	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last name, first names
 	/// </summary>
@@ -93,7 +104,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	/// </summary>
 	public void UpdateDisplay()
 	{
-		if (gameObject.activeSelf)
+		if (gameObject.activeInHierarchy)
 		{
 			Display(_current);
 		}
@@ -105,7 +116,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	public void SetUpDisplay(Position position)
 	{
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, position.GetName(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "PositionDisplay", "ViewedPositionInformation", GameObjectTracker.TrackedGameObject.GameObject));
-		//SUGARManager.GameData.Send("View Position Screen", position.GetName());
+		SUGARManager.GameData.Send("View Position Screen", position.GetName());
 		gameObject.SetActive(true);
 		_popUpBlocker.transform.SetAsLastSibling();
 		gameObject.transform.SetAsLastSibling();
@@ -205,12 +216,12 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	/// </summary>
 	public void ClosePositionPopUp()
 	{
-		if (gameObject.activeSelf)
+		if (gameObject.activeInHierarchy)
 		{
 			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _current.GetName(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "PositionDisplay", "ClosePositionInformation", GameObjectTracker.TrackedGameObject.GameObject));
 		}
 		gameObject.SetActive(false);
-		if (_meetingUI.gameObject.activeSelf)
+		if (_meetingUI.gameObject.activeInHierarchy)
 		{
 			_popUpBlocker.transform.SetAsLastSibling();
 			_meetingUI.gameObject.transform.SetAsLastSibling();
@@ -228,7 +239,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	/// </summary>
 	public void ChangeBlockerOrder()
 	{
-		if (gameObject.activeSelf)
+		if (gameObject.activeInHierarchy)
 		{
 			_popUpBlocker.transform.SetAsLastSibling();
 			gameObject.transform.SetAsLastSibling();

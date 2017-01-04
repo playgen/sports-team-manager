@@ -19,6 +19,10 @@ public class UIStateManager : ObservableMonoBehaviour {
 	[SerializeField]
 	private GameObject _loadGame;
 	[SerializeField]
+	private GameObject _signIn;
+	[SerializeField]
+	private Text _userSignedInText;
+	[SerializeField]
 	private GameObject _topDetails;
 	[SerializeField]
 	private GameObject _sideMenu;
@@ -28,8 +32,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 	private GameObject _seasonStandings;
 	[SerializeField]
 	private GameObject _helpPages;
-	[SerializeField]
-	private Text _userSignedInText;
+	private static bool _loaded;
 
 	void Start()
 	{
@@ -50,19 +53,21 @@ public class UIStateManager : ObservableMonoBehaviour {
 			PlayerPrefs.SetInt("Sound", 1);
 		}
 		BackToMenu(_mainMenu);
-		if (SUGARManager.CurrentUser == null)
+		if (SUGARManager.CurrentUser == null && !_loaded)
 		{
-			SUGARManager.Account.TrySignIn(success =>
+			_loaded = true;
+			SignIn();
+		}
+	}
+
+	void Update()
+	{
+		if (_mainMenu.activeInHierarchy)
+		{
+			if (Input.GetKeyDown(KeyCode.Escape))
 			{
-				if (success)
-				{
-					_userSignedInText.text = "Signed in as: " + SUGARManager.CurrentUser.Name;
-				}
-				else
-				{
-					_userSignedInText.text = "Not signed in!";
-				}
-			});
+				CloseGame();
+			}
 		}
 	}
 
@@ -156,6 +161,23 @@ public class UIStateManager : ObservableMonoBehaviour {
 	public void ShowLeaderboards()
 	{
 		SUGARManager.GameLeaderboard.DisplayList();
+	}
+
+	public void SignIn()
+	{
+		SUGARManager.Account.TrySignIn(success =>
+		{
+			if (success)
+			{
+				_signIn.SetActive(false);
+				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + SUGARManager.CurrentUser.Name;
+			}
+			else
+			{
+				_signIn.SetActive(true);
+			}
+			//SUGARManager.Account.
+		});
 	}
 
 	/// <summary>

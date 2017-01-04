@@ -83,6 +83,21 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name);
 	}
 
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
+			{
+				gameObject.SetActive(false);
+			}
+			else if (_fireWarningPopUp.activeInHierarchy)
+			{
+				CloseFireCrewWarning();
+			}
+		}
+	}
+
 	/// <summary>
 	/// Set-up the pop-up for displaying the given CrewMember
 	/// </summary>
@@ -101,7 +116,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 			}
 		}
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, crewMember.Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewMemberMeeting", "MeetingStarted", AlternativeTracker.Alternative.Menu));
-		//SUGARManager.GameData.Send("View Crew Member Screen", crewMember.Name);
+		SUGARManager.GameData.Send("View Crew Member Screen", crewMember.Name);
 		Display();
 		//set the order of the pop-ups and pop-up blockers and set-up the click event for the blocker
 		_popUpBlocker.transform.SetAsLastSibling();
@@ -213,7 +228,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		Display(true);
 		_dialogueText.text = reply.Length > 0 ? reply : "";
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, questionType, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewMemberMeeting", questionType, AlternativeTracker.Alternative.Question));
-		//SUGARManager.GameData.Send("Meeting Question Directed At", _currentMember.Name);
+		SUGARManager.GameData.Send("Meeting Question Directed At", _currentMember.Name);
 		SUGARManager.GameData.Send("Meeting Question Asked", questionType);
 	}
 
@@ -238,7 +253,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	{
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "CrewMemberMeeting", "DidNotFireCrewMember", GameObjectTracker.TrackedGameObject.Npc));
 		_fireWarningPopUp.SetActive(false);
-		if (gameObject.activeSelf)
+		if (gameObject.activeInHierarchy)
 		{
 			_popUpBlocker.transform.SetAsLastSibling();
 			transform.SetAsLastSibling();
@@ -257,7 +272,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	public void FireCrew()
 	{
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "CrewMemberMeeting", "FiredCrewMember", GameObjectTracker.TrackedGameObject.Npc));
-		//SUGARManager.GameData.Send("Crew Member Fired", true);
+		SUGARManager.GameData.Send("Crew Member Fired", true);
 		_memberMeeting.FireCrewMember(_currentMember);
 		_teamSelectionUI.ResetCrew();
 	}

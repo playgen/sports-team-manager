@@ -66,7 +66,24 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	{
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Recruitment", "RecruitmentPopUpClosed", AlternativeTracker.Alternative.Menu));
 		_popUpBlocker.gameObject.SetActive(false);
+		_popUpBlocker.transform.SetAsFirstSibling();
+		transform.SetAsFirstSibling();
 		Localization.LanguageChange -= OnLanguageChange;
+	}
+
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
+			{
+				gameObject.SetActive(false);
+			}
+			else if (_hireWarningPopUp.activeInHierarchy)
+			{
+				CloseHireCrewWarning();
+			}
+		}
 	}
 
 	/// <summary>
@@ -184,7 +201,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		}
 		CostCheck();
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Recruitment", skill + "Question", AlternativeTracker.Alternative.Question));
-		//SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
+		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
 	}
 
 	/// <summary>
@@ -239,7 +256,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	{
 		_currentSelected = string.Empty;
 		_hireWarningPopUp.SetActive(false);
-		if (gameObject.activeSelf)
+		if (gameObject.activeInHierarchy)
 		{
 			_popUpBlocker.transform.SetAsLastSibling();
 			transform.SetAsLastSibling();
@@ -263,7 +280,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		gameObject.SetActive(false);
 		CloseHireCrewWarning();
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "Recruitment", "HiredCrewMember", GameObjectTracker.TrackedGameObject.Npc));
-		//SUGARManager.GameData.Send("Crew Member Hired", true);
+		SUGARManager.GameData.Send("Crew Member Hired", true);
 	}
 
 	private void OnLanguageChange()

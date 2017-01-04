@@ -101,6 +101,6 @@ public class PostRacePersonUI : MonoBehaviour
 
 	public bool ActiveQuestions()
 	{
-		return _questions[0].activeSelf;
+		return _questions[0].activeInHierarchy;
 	}
 }
