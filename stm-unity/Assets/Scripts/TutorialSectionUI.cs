@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 
 public class TutorialSectionUI : ObserverMonoBehaviour
 {
@@ -30,6 +31,8 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	private Text _tutorialText;
 	private Transform _buttons;
 	private DynamicPadding _dynamicPadding;
+	[SerializeField]
+	private int _highlightTrigger;
 	private int _currentText;
 
 	[Header("Tutorial Trigger")]
@@ -50,13 +53,14 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		get { return _saveNextSection; }
 	}
 
-	public void Construct(Dictionary<Language, string[]> text, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered, int saveSection, List<string> blacklist)
+	public void Construct(Dictionary<Language, string[]> text, int highlightTrigger, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered, int saveSection, List<string> blacklist)
 	{
 		_sectionTextHolder = new List<LanguageKeyValuePair>();
 		foreach (var kvp in text)
 		{
 			_sectionTextHolder.Add(new LanguageKeyValuePair(kvp.Key, kvp.Value));
 		}
+		_highlightTrigger = highlightTrigger;
 		_reversed = reversed;
 		_triggers = triggers;
 		_eventTriggerCountRequired = triggerCount;
@@ -81,11 +85,15 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		_tutorialObject = transform.Find("Tutorial Helper").gameObject;
 		_buttons = (RectTransform)transform.Find("Tutorial Helper/Buttons");
 		_dynamicPadding = GetComponentInChildren<DynamicPadding>();
+		GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = true;
 		var reverseRaycast = GetComponentInChildren<ReverseRaycastTarget>();
 		if (_blacklistButtons != null)
 		{
 			var blacklistButtons = _blacklistButtons.Select(blb => reverseRaycast.MaskRect[1].FindAll(blb)).SelectMany(x => x).Select(x => (RectTransform)x).ToList();
+			var whiteList = reverseRaycast.MaskRect;
+			whiteList.RemoveAt(0);
 			reverseRaycast.BlacklistRect.AddRange(blacklistButtons);
+			reverseRaycast.BlacklistRect.AddRange(whiteList);
 		}
 		SetUp();
 		Localization.LanguageChange += OnLanguageChange;
@@ -142,9 +150,12 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		}
 		var back = _buttons.Find("Back").gameObject;
 		var forward = _buttons.Find("Forward").gameObject;
+		var pageNumber = _buttons.Find("Page Number").GetComponent<Text>();
 		if (_sectionText[Localization.SelectedLanguage].Length == 0)
 		{
 			_tutorialObject.SetActive(false);
+			GetComponentInChildren<ReverseRaycastTarget>().UnblockWhitelisted();
+			pageNumber.text = string.Empty;
 		}
 		else
 		{
@@ -159,7 +170,30 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 			if (_currentText == _sectionText[Localization.SelectedLanguage].Length - 1)
 			{
 				forward.SetActive(false);
+				GetComponentInChildren<ReverseRaycastTarget>().UnblockWhitelisted();
 			}
+			if (_sectionText[Localization.SelectedLanguage].Length == 1)
+			{
+				pageNumber.text = string.Empty;
+			}
+			else
+			{
+				pageNumber.text = _currentText + 1 + "/" + _sectionText[Localization.SelectedLanguage].Length;
+			}
+		}
+		if (_eventTriggerCountRequired > 1)
+		{
+			_buttons.Find("Progress Count").GetComponent<Text>().text = (_eventTriggerCountRequired - _eventTriggerCount).ToString();
+		}
+		else
+		{
+			_buttons.Find("Progress Count").GetComponent<Text>().text = string.Empty;
+			((RectTransform)pageNumber.transform).anchorMin = new Vector2(0.45f, 0);
+			((RectTransform)pageNumber.transform).anchorMax = new Vector2(0.65f, 1);
+		}
+		if (_currentText >= _highlightTrigger)
+		{
+			GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = false;
 		}
 		_dynamicPadding.Adjust();
 		if (_wipeTriggered)
@@ -204,6 +238,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 				}
 			}
 		}
+		_buttons.Find("Progress Count").GetComponent<Text>().text = (_eventTriggerCountRequired - _eventTriggerCount).ToString();
 	}
 
 	private void OnLanguageChange()

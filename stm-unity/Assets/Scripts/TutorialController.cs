@@ -44,7 +44,8 @@ public class TutorialController : MonoBehaviour
                 }
             }
             var objectNames = parsedAsset[i]["Highlighted Object"].RemoveJSONNodeChars().Split('/');
-            var anchorObject = (RectTransform)transform.root;
+			var objectHightlight = int.Parse(parsedAsset[i]["Highlight Text Trigger"].RemoveJSONNodeChars());
+			var anchorObject = (RectTransform)transform.root;
             foreach (var obj in objectNames)
             {
                 anchorObject = (RectTransform)anchorObject.FindInactive(obj) ?? anchorObject;
@@ -60,7 +61,7 @@ public class TutorialController : MonoBehaviour
             var uniqueTriggers = bool.Parse(parsedAsset[i]["Unique Triggers"].RemoveJSONNodeChars());
             var wipeTriggers = bool.Parse(parsedAsset[i]["Wipe Triggered Objects"].RemoveJSONNodeChars());
             var saveToSection = int.Parse(parsedAsset[i]["Save Progress"].RemoveJSONNodeChars());
-            section.Construct(textDict, reversed, triggers, triggerCount, uniqueTriggers, wipeTriggers, saveToSection, blacklistNames);
+            section.Construct(textDict, objectHightlight, reversed, triggers, triggerCount, uniqueTriggers, wipeTriggers, saveToSection, blacklistNames);
             tutorialSection.name = _tutorialSectionPrefab.name;
         }
         foreach (Transform child in transform)

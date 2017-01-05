@@ -90,4 +90,12 @@ public class MemberMeeting : MonoBehaviour
 	{
 		_gameManager.RetireCrewMember(crewMember);
 	}
+
+	/// <summary>
+	/// Check if the tutorial is currently in progress
+	/// </summary>
+	public bool TutorialInProgress()
+	{
+		return _gameManager.ShowTutorial;
+	}
 }
