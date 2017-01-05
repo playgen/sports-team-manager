@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-using SUGAR.Unity;
+using PlayGen.SUGAR.Unity;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -165,7 +165,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 
 	public void SignIn()
 	{
-		SUGARManager.Account.TrySignIn(success =>
+		SUGARManager.Account.DisplayPanel(success =>
 		{
 			if (success)
 			{

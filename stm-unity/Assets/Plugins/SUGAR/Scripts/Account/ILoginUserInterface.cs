@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SUGAR.Unity
+namespace PlayGen.SUGAR.Unity
 {
     public interface ILoginUserInterface
     {

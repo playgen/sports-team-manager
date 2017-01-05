@@ -5,7 +5,7 @@ using System.Reflection;
 using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 
-using SUGAR.Unity;
+using PlayGen.SUGAR.Unity;
 
 using UnityEngine.UI;
 

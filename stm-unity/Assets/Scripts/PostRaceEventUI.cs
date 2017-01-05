@@ -8,7 +8,7 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 
 using UnityEngine;
 using UnityEngine.UI;
-using SUGAR.Unity;
+using PlayGen.SUGAR.Unity;
 
 /// <summary>
 /// Contains all UI logic related to the Post Race pop-up

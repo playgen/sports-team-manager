@@ -7,7 +7,7 @@ using PlayGen.SUGAR.Contracts.Shared;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SUGAR.Unity
+namespace PlayGen.SUGAR.Unity
 {
 	public class LeaderboardUserInterface : MonoBehaviour
 	{
@@ -35,6 +35,8 @@ namespace SUGAR.Unity
 		private Text _errorText;
 		[SerializeField]
 		private Button _closeButton;
+		[SerializeField]
+		private Button _signinButton;
 
 		private void Awake()
 		{
@@ -43,11 +45,19 @@ namespace SUGAR.Unity
 			_topButton.onClick.AddListener(delegate { UpdateFilter(0); });
 			_nearButton.onClick.AddListener(delegate { UpdateFilter(1); });
 			_friendsButton.onClick.AddListener(delegate { UpdateFilter(2); });
-			_closeButton.onClick.AddListener(delegate { gameObject.SetActive(false); });
+			_closeButton.onClick.AddListener(delegate { SUGARManager.Unity.DisableObject(gameObject); });
+			_signinButton.onClick.AddListener(delegate { AttemptSignIn(); });
+		}
+
+		private void OnEnable()
+		{
+			SUGARManager.Unity.ButtonBestFit(gameObject);
 		}
 
 		internal void Display(LeaderboardFilterType filter, IEnumerable<LeaderboardStandingsResponse> standings, bool loadingSuccess = true)
 		{
+			SUGARManager.Account.Hide();
+			SUGARManager.Achievement.Hide();
 			_pageNumber = 0;
 			_filter = filter;
 			ShowLeaderboard(standings, loadingSuccess);
@@ -55,9 +65,9 @@ namespace SUGAR.Unity
 
 		private void ShowLeaderboard(IEnumerable<LeaderboardStandingsResponse> standings, bool loadingSuccess)
 		{
-			gameObject.SetActive(true);
-			transform.SetAsLastSibling();
+			SUGARManager.Unity.EnableObject(gameObject);
 			_errorText.text = string.Empty;
+			_signinButton.gameObject.SetActive(false);
 			_topButton.interactable = true;
 			_nearButton.interactable = true;
 			_friendsButton.interactable = true;
@@ -101,6 +111,7 @@ namespace SUGAR.Unity
 				if (SUGARManager.CurrentUser == null)
 				{
 					_errorText.text = "Error: No user currently signed in.";
+					_signinButton.gameObject.SetActive(true);
 				}
 				else
 				{
@@ -115,6 +126,17 @@ namespace SUGAR.Unity
 				_errorText.text = "No standings are currently available for this leaderboard for this filter.";
 			}
 
+		}
+
+		private void AttemptSignIn()
+		{
+			SUGARManager.Account.DisplayPanel(success =>
+			{
+				if (success)
+				{
+					UpdatePageNumber(0);
+				}
+			});
 		}
 
 		private void UpdatePageNumber(int changeAmount)

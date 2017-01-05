@@ -9,7 +9,7 @@ using System.Linq;
 
 using UnityEngine.SceneManagement;
 
-namespace SUGAR.Unity
+namespace PlayGen.SUGAR.Unity
 {
 	[DisallowMultipleComponent]
 	public class LeaderboardListUnityClient : MonoBehaviour
@@ -29,7 +29,7 @@ namespace SUGAR.Unity
 			bool inScene = _leaderboardListInterface.gameObject.scene == SceneManager.GetActiveScene();
 			if (!inScene)
 			{
-				var newInterface = Instantiate(_leaderboardListInterface.gameObject, canvas.transform, false) as GameObject;
+				var newInterface = Instantiate(_leaderboardListInterface.gameObject, canvas.transform, false);
 				newInterface.name = _leaderboardListInterface.name;
 				_leaderboardListInterface = newInterface.GetComponent<LeaderboardListUserInterface>();
 			}
@@ -42,6 +42,11 @@ namespace SUGAR.Unity
 				{
 					_leaderboardListInterface.Display(filter, success);
 				});
+		}
+
+		public void Hide()
+		{
+			SUGARManager.Unity.DisableObject(_leaderboardListInterface.gameObject);
 		}
 
 		private void GetLeaderboards(Action<bool> success)

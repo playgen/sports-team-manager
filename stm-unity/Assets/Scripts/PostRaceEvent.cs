@@ -6,7 +6,7 @@ using System.Reflection;
 
 using IntegratedAuthoringTool.DTOs;
 
-using SUGAR.Unity;
+using PlayGen.SUGAR.Unity;
 
 /// <summary>
 /// Contains all logic to communicate between PostRaceEventUI and GameManager

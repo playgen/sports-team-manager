@@ -209,19 +209,19 @@
       <HintPath>Assets\Plugins\stm-logic\WellFormedNames.dll</HintPath>
     </Reference>
     <Reference Include="CommandLine">
-      <HintPath>Assets\Plugins\SUGAR\DLLs\CommandLine.dll</HintPath>
+      <HintPath>Assets\Plugins\SUGAR\Client\CommandLine.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.SUGAR.Client">
-      <HintPath>Assets\Plugins\SUGAR\DLLs\PlayGen.SUGAR.Client.dll</HintPath>
+      <HintPath>Assets\Plugins\SUGAR\Client\PlayGen.SUGAR.Client.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.SUGAR.Client.Unity">
-      <HintPath>Assets\Plugins\SUGAR\DLLs\PlayGen.SUGAR.Client.Unity.dll</HintPath>
+      <HintPath>Assets\Plugins\SUGAR\Client\PlayGen.SUGAR.Client.Unity.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.SUGAR.Unity">
-      <HintPath>Assets\Plugins\SUGAR\DLLs\PlayGen.SUGAR.Unity.dll</HintPath>
+      <HintPath>Assets\Plugins\SUGAR\Client\PlayGen.SUGAR.Unity.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations">
-      <HintPath>Assets\Plugins\SUGAR\DLLs\System.ComponentModel.DataAnnotations.dll</HintPath>
+      <HintPath>Assets\Plugins\SUGAR\Client\System.ComponentModel.DataAnnotations.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -242,8 +242,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Editor\ExcelToJsonConverter\Json\license.txt" />
-    <None Include="Assets\Plugins\SUGAR\DLLs\CommandLine.xml" />
-    <None Include="Assets\Plugins\SUGAR\DLLs\PlayGen.SUGAR.Client.xml" />
+    <None Include="Assets\Plugins\SUGAR\Client\CommandLine.xml" />
     <None Include="Assets\Plugins\stm-logic\Newtonsoft.Json.xml" />
     <None Include="Assets\Plugins\stm-logic\System.Reactive.xml" />
     <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShader.shader" />

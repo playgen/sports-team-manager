@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Linq;
 using PlayGen.SUGAR.Common.Shared;
 
-namespace SUGAR.Unity
+namespace PlayGen.SUGAR.Unity
 {
 	public class LeaderboardListUserInterface : MonoBehaviour
 	{
@@ -29,6 +29,8 @@ namespace SUGAR.Unity
 		private Text _errorText;
 		[SerializeField]
 		private Button _closeButton;
+		[SerializeField]
+		private Button _signinButton;
 
 		private void Awake()
 		{
@@ -37,11 +39,19 @@ namespace SUGAR.Unity
 			_userButton.onClick.AddListener(delegate { UpdateFilter(1); });
 			_groupButton.onClick.AddListener(delegate { UpdateFilter(2); });
 			_combinedButton.onClick.AddListener(delegate { UpdateFilter(0); });
-			_closeButton.onClick.AddListener(delegate { gameObject.SetActive(false); });
+			_closeButton.onClick.AddListener(delegate { SUGARManager.Unity.DisableObject(gameObject); });
+			_signinButton.onClick.AddListener(delegate { AttemptSignIn(); });
+		}
+
+		private void OnEnable()
+		{
+			SUGARManager.Unity.ButtonBestFit(gameObject);
 		}
 
 		internal void Display(ActorType filter, bool loadingSuccess)
 		{
+			SUGARManager.Account.Hide();
+			SUGARManager.Achievement.Hide();
 			_pageNumber = 0;
 			_actorType = filter;
 			ShowLeaderboards(loadingSuccess);
@@ -49,9 +59,9 @@ namespace SUGAR.Unity
 
 		private void ShowLeaderboards(bool loadingSuccess)
 		{
-			gameObject.SetActive(true);
-			transform.SetAsLastSibling();
+			SUGARManager.Unity.EnableObject(gameObject);
 			_errorText.text = string.Empty;
+			_signinButton.gameObject.SetActive(false);
 			_userButton.interactable = true;
 			_groupButton.interactable = true;
 			_combinedButton.interactable = true;
@@ -91,6 +101,7 @@ namespace SUGAR.Unity
 				if (SUGARManager.CurrentUser == null)
 				{
 					_errorText.text = "Error: No user currently signed in.";
+					_signinButton.gameObject.SetActive(true);
 				}
 				else
 				{
@@ -104,6 +115,17 @@ namespace SUGAR.Unity
 			{
 				_errorText.text = "No leaderboards are currently available for this game for this filter.";
 			}
+		}
+
+		private void AttemptSignIn()
+		{
+			SUGARManager.Account.DisplayPanel(success =>
+			{
+				if (success)
+				{
+					UpdatePageNumber(0);
+				}
+			});
 		}
 
 		private void UpdatePageNumber(int changeAmount)

@@ -9,63 +9,63 @@ using PlayGen.SUGAR.Contracts.Shared;
 using UnityEditor;
 using UnityEngine;
 
-namespace SUGAR.Unity
+namespace PlayGen.SUGAR.Unity
 {
 	public static class SeedAchievements
 	{
-		[MenuItem("Tools/Seed Achievements")]
+		[MenuItem("Tools/SUGAR/Seed Game")]
 		public static void SeedAchivements()
 		{
 			AdminLogIn window = ScriptableObject.CreateInstance<AdminLogIn>();
-			window.position = new Rect(Screen.width / 2, Screen.height / 2, 250, 90);
-			window.ShowPopup();
+			window.title = "Seed Game";
+			window.Show();
 		}
 
-		public static void LogInUser(string username, string password)
-		{
-			var unityManager = GameObject.FindObjectsOfType(typeof(SUGARUnityManager)).FirstOrDefault() as SUGARUnityManager;
-			if (unityManager == null)
-			{
-				return;
-			}
-			SUGARManager.Client = new SUGARClient(unityManager.baseAddress);
-			var response = LoginAdmin(username, password);
-			if (response != null)
-			{
-				Debug.Log("Admin Login SUCCESS");
-				var game = SUGARManager.Client.Game.Get(unityManager.gameToken).FirstOrDefault();
-				if (game != null)
-				{
-					Debug.Log("Game Found");
-					unityManager.gameId = game.Id;
-					SUGARManager.GameId = game.Id;
-				}
-				else
-				{
-					Debug.Log("Creating Game");
-					var gameResponse = SUGARManager.Client.Game.Create(new GameRequest()
-					{
-						Name = unityManager.gameToken
-					});
-					if (gameResponse != null)
-					{
-						unityManager.gameId = gameResponse.Id;
-						SUGARManager.GameId = gameResponse.Id;
-					}
-					else
-					{
-						Debug.LogError("Unable to create game");
-						return;
-					}
+        public static void LogInUser(string username, string password)
+        {
+            var unityManager = GameObject.FindObjectsOfType(typeof(SUGARUnityManager)).FirstOrDefault() as SUGARUnityManager;
+            if (unityManager == null)
+            {
+                return;
+            }
+            SUGARManager.Client = new SUGARClient(unityManager.baseAddress);
+            var response = LoginAdmin(username, password);
+            if (response != null)
+            {
+                Debug.Log("Admin Login SUCCESS");
+                var game = SUGARManager.Client.Game.Get(unityManager.gameToken).FirstOrDefault();
+                if (game != null)
+                {
+                    Debug.Log("Game Found");
+                    unityManager.gameId = game.Id;
+                    SUGARManager.GameId = game.Id;
+                }
+                else
+                {
+                    Debug.Log("Creating Game");
+                    var gameResponse = SUGARManager.Client.Game.Create(new GameRequest()
+                    {
+                        Name = unityManager.gameToken
+                    });
+                    if (gameResponse != null)
+                    {
+                        unityManager.gameId = gameResponse.Id;
+                        SUGARManager.GameId = gameResponse.Id;
+                    }
+                    else
+                    {
+                        Debug.LogError("Unable to create game");
+                        return;
+                    }
 
-				}
-				CreateAchievements();
-				CreateLeaderboards();
-				SUGARManager.Client.Session.Logout();
-			}
-		}
+                }
+                CreateAchievements();
+                CreateLeaderboards();
+                SUGARManager.Client.Session.Logout();
+            }
+        }
 
-		private static void CreateAchievements()
+        private static void CreateAchievements()
 		{
 			var achievementClient = SUGARManager.Client.Achievement;
 			var gameId = SUGARManager.GameId;
@@ -81,10 +81,10 @@ namespace SUGAR.Unity
 				{
 				new EvaluationCriteriaCreateRequest
 					{
-						Key = "Tutorial Finished",
+						EvaluationDataKey = "Tutorial Finished",
 						ComparisonType = ComparisonType.Equals,
 						CriteriaQueryType = CriteriaQueryType.Any,
-						DataType = SaveDataType.Boolean,
+						EvaluationDataType = EvaluationDataType.Boolean,
 						Scope = CriteriaScope.Actor,
 						Value = "true"
 					}
@@ -102,10 +102,10 @@ namespace SUGAR.Unity
 				{
 				new EvaluationCriteriaCreateRequest
 					{
-						Key = "Race Position",
+						EvaluationDataKey = "Race Position",
 						ComparisonType = ComparisonType.Equals,
 						CriteriaQueryType = CriteriaQueryType.Any,
-						DataType = SaveDataType.Long,
+						EvaluationDataType = EvaluationDataType.Long,
 						Scope = CriteriaScope.Actor,
 						Value = "1"
 					}
@@ -123,19 +123,19 @@ namespace SUGAR.Unity
 				{
 				new EvaluationCriteriaCreateRequest
 					{
-						Key = "Race Position",
+						EvaluationDataKey = "Race Position",
 						ComparisonType = ComparisonType.Equals,
 						CriteriaQueryType = CriteriaQueryType.Latest,
-						DataType = SaveDataType.Long,
+						EvaluationDataType = EvaluationDataType.Long,
 						Scope = CriteriaScope.Actor,
 						Value = "1"
 					},
 				new EvaluationCriteriaCreateRequest
 					{
-						Key = "Post Race Boat Average Mood",
+						EvaluationDataKey = "Post Race Boat Average Mood",
 						ComparisonType = ComparisonType.Less,
 						CriteriaQueryType = CriteriaQueryType.Latest,
-						DataType = SaveDataType.Float,
+						EvaluationDataType = EvaluationDataType.Float,
 						Scope = CriteriaScope.Actor,
 						Value = "0"
 					},
@@ -153,10 +153,10 @@ namespace SUGAR.Unity
 				{
 				new EvaluationCriteriaCreateRequest
 					{
-						Key = "Race Time",
+						EvaluationDataKey = "Race Time",
 						ComparisonType = ComparisonType.Greater,
 						CriteriaQueryType = CriteriaQueryType.Sum,
-						DataType = SaveDataType.Long,
+						EvaluationDataType = EvaluationDataType.Long,
 						Scope = CriteriaScope.Actor,
 						Value = "18000"
 					}
@@ -174,10 +174,10 @@ namespace SUGAR.Unity
 				{
 				new EvaluationCriteriaCreateRequest
 					{
-						Key = "Race Time",
+						EvaluationDataKey = "Race Time",
 						ComparisonType = ComparisonType.Greater,
 						CriteriaQueryType = CriteriaQueryType.Sum,
-						DataType = SaveDataType.Long,
+						EvaluationDataType = EvaluationDataType.Long,
 						Scope = CriteriaScope.Actor,
 						Value = "86400"
 					}
@@ -195,10 +195,10 @@ namespace SUGAR.Unity
 				{
 				new EvaluationCriteriaCreateRequest
 					{
-						Key = "Post Race Event Positive Outcome",
+						EvaluationDataKey = "Post Race Event Positive Outcome",
 						ComparisonType = ComparisonType.Equals,
 						CriteriaQueryType = CriteriaQueryType.Any,
-						DataType = SaveDataType.Boolean,
+						EvaluationDataType = EvaluationDataType.Boolean,
 						Scope = CriteriaScope.Actor,
 						Value = "true"
 					}
@@ -216,10 +216,10 @@ namespace SUGAR.Unity
 				{
 				new EvaluationCriteriaCreateRequest
 					{
-						Key = "Time Remaining",
+						EvaluationDataKey = "Time Remaining",
 						ComparisonType = ComparisonType.Equals,
 						CriteriaQueryType = CriteriaQueryType.Any,
-						DataType = SaveDataType.Long,
+						EvaluationDataType = EvaluationDataType.Long,
 						Scope = CriteriaScope.Actor,
 						Value = "0"
 					}
@@ -239,7 +239,7 @@ namespace SUGAR.Unity
 				Name = "Questions Asked",
 				Key = "Meeting Question Asked",
 				ActorType = ActorType.User,
-				SaveDataType = SaveDataType.String,
+				EvaluationDataType = EvaluationDataType.String,
 				CriteriaScope = CriteriaScope.Actor,
 				LeaderboardType = LeaderboardType.Count
 			});
@@ -251,7 +251,7 @@ namespace SUGAR.Unity
 				Name = "Fastest Time",
 				Key = "Race Time",
 				ActorType = ActorType.User,
-				SaveDataType = SaveDataType.Long,
+				EvaluationDataType = EvaluationDataType.Long,
 				CriteriaScope = CriteriaScope.Actor,
 				LeaderboardType = LeaderboardType.Lowest
 			});
@@ -263,7 +263,7 @@ namespace SUGAR.Unity
 				Name = "Talk Time Used",
 				Key = "Time Taken",
 				ActorType = ActorType.User,
-				SaveDataType = SaveDataType.Long,
+				EvaluationDataType = EvaluationDataType.Long,
 				CriteriaScope = CriteriaScope.Actor,
 				LeaderboardType = LeaderboardType.Cumulative
 			});*/
@@ -297,14 +297,10 @@ namespace SUGAR.Unity
 		void OnGUI()
 		{
 			username = EditorGUILayout.TextField("Username", username, EditorStyles.textField);
-			password = EditorGUILayout.TextField("Password", password, EditorStyles.textField);
+			password = EditorGUILayout.PasswordField("Password", password);
 			if (GUILayout.Button("Sign-in"))
 			{
 				SeedAchievements.LogInUser(username, password);
-			}
-			if (GUILayout.Button("Close"))
-			{
-				Close();
 			}
 		}
 	}

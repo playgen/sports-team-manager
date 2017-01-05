@@ -8,7 +8,7 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using SUGAR.Unity;
+using PlayGen.SUGAR.Unity;
 
 using UnityEngine.SceneManagement;
 

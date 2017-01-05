@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Diagnostics;
 
-namespace SUGAR.Unity
+namespace PlayGen.SUGAR.Unity
 {
     public class ResponseHandler : MonoBehaviour
     {

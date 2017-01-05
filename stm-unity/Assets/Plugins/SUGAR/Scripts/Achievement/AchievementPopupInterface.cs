@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-namespace SUGAR.Unity
+namespace PlayGen.SUGAR.Unity
 {
 	public class AchievementPopupInterface : MonoBehaviour
 	{
@@ -21,7 +21,6 @@ namespace SUGAR.Unity
 		internal void Animate(EvaluationNotification notification)
 		{
 			_achievementQueue.Add(notification);
-			gameObject.SetActive(true);
 			if (!_animation.isPlaying)
 			{
 				StartCoroutine(AnimatePopup());
@@ -30,7 +29,6 @@ namespace SUGAR.Unity
 
 		private IEnumerator AnimatePopup()
 		{
-			gameObject.SetActive(true);
 			while (_achievementQueue.Count > 0)
 			{
 				_name.text = _achievementQueue[0].Name;

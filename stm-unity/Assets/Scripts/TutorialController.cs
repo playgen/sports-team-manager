@@ -6,7 +6,7 @@ using SimpleJSON;
 using UnityEngine;
 using System.Linq;
 
-using SUGAR.Unity;
+using PlayGen.SUGAR.Unity;
 
 using UnityEngine.UI.Extensions;
 

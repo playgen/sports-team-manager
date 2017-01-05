@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections;
 using PlayGen.SUGAR.Client;
 using PlayGen.SUGAR.Contracts.Shared;
 
-namespace SUGAR.Unity
+namespace PlayGen.SUGAR.Unity
 {
 	public static class SUGARManager
 	{
+		internal static SUGARUnityManager Unity { get; set; }
+
 		internal static SUGARClient Client { get; set; }
 
 		public static int GameId { get; internal set; }
@@ -19,7 +20,7 @@ namespace SUGAR.Unity
 
 		internal static GameDataUnityClient gameData = new GameDataUnityClient();
 
-	    internal static LeaderboardListUnityClient gameLeaderboard { get; set; }
+        internal static LeaderboardListUnityClient gameLeaderboard { get; set; }
 
 		internal static LeaderboardUnityClient leaderboard { get; set; }
 
@@ -85,7 +86,7 @@ namespace SUGAR.Unity
 			}
 		}
 
-		internal static bool Register(SUGARUnityManager unityManager)
+        internal static bool Register(SUGARUnityManager unityManager)
 		{
 			return Client == null;
 		}

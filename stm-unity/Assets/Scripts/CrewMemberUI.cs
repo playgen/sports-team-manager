@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using SUGAR.Unity;
+using PlayGen.SUGAR.Unity;
 
 /// <summary>
 /// Contains all logic related to CrewMember prefabs
