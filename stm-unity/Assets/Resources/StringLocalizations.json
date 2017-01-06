@@ -112,4 +112,5 @@
 {"Key":"YELLOW_PLACEMENT","English":"Ideal In Another Position","Italian":"XXXX"},
 {"Key":"YES","English":"Yes","Italian":"XXXX"},
 {"Key":"SUGAR_SIGN_IN","English":"SUGAR SIGN-IN","Italian":"XXXX"},
-{"Key":"SIGNED_IN_AS","English":"Signed in as:","Italian":"XXXX"}]
+{"Key":"SIGNED_IN_AS","English":"Signed in as:","Italian":"XXXX"},
+{"Key":"MENU_QUIT_CONFIRM","English":"Are you sure you want to quit out to the menu? Unsaved changes will be lost!","Italian":"XXXX"}]

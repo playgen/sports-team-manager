@@ -212,8 +212,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public List<string> GetGameNames(string storageLocation)
 		{
-			var folders = Directory.GetDirectories(storageLocation);
 			var gameNames = new List<string>();
+			var folders = new List<string>();
+			try
+			{
+				folders = Directory.GetDirectories(storageLocation).ToList();
+			}
+			catch
+			{
+				return gameNames;
+			}
+			
 			foreach (var folder in folders)
 			{
 				var file = Path.GetFileName(folder);

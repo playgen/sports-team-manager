@@ -11,6 +11,10 @@ public class ScreenSideUI : MonoBehaviour {
 	private Text _nameText;
 	[SerializeField]
 	private GameObject _selected;
+	[SerializeField]
+	private GameObject _quitWarningPopUp;
+	[SerializeField]
+	private Button _popUpBlocker;
 
 	/// <summary>
 	/// Set the information displayed at the top of the screen
@@ -29,5 +33,21 @@ public class ScreenSideUI : MonoBehaviour {
 		((RectTransform)_selected.transform).anchorMax = new Vector2(0.25f + (0.15f * position), 1);
 		((RectTransform)_selected.transform).anchorMin = new Vector2(0.1f + (0.15f * position), 0);
 		((RectTransform)_selected.transform).anchoredPosition = Vector2.zero;
+	}
+
+	public void DisplayQuitWarning()
+	{
+		_quitWarningPopUp.SetActive(true);
+		_popUpBlocker.onClick.RemoveAllListeners();
+		_popUpBlocker.onClick.AddListener(CloseQuitWarning);
+		_popUpBlocker.transform.SetAsLastSibling();
+		_quitWarningPopUp.transform.SetAsLastSibling();
+		_popUpBlocker.gameObject.SetActive(true);
+	}
+
+	public void CloseQuitWarning()
+	{
+		_quitWarningPopUp.SetActive(false);
+		_popUpBlocker.gameObject.SetActive(false);
 	}
 }

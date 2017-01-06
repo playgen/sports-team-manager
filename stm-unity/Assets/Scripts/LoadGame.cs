@@ -1,5 +1,7 @@
 ﻿using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Collections.Generic;
+using System.IO;
+
 using UnityEngine;
 
 /// <summary>
@@ -25,7 +27,7 @@ public class LoadGame : MonoBehaviour
 		{
 			_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		}
-		return _gameManager.GetGameNames(Application.persistentDataPath);
+		return _gameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves"));
 	}
 
 	/// <summary>
@@ -49,7 +51,7 @@ public class LoadGame : MonoBehaviour
 	/// </summary>
 	public bool ExistingGameCheck()
 	{
-		return _selectedName != null && _gameManager.CheckIfGameExists(Application.persistentDataPath, _selectedName);
+		return _selectedName != null && _gameManager.CheckIfGameExists(Path.Combine(Application.persistentDataPath, "GameSaves"), _selectedName);
 	}
 
 	/// <summary>
@@ -59,7 +61,7 @@ public class LoadGame : MonoBehaviour
 	{
 		if (_selectedName != null)
 		{
-			_gameManager.LoadGame(Application.persistentDataPath, _selectedName);
+			_gameManager.LoadGame(Path.Combine(Application.persistentDataPath, "GameSaves"), _selectedName);
 			if (_gameManager.Team != null && _gameManager.Team.Name.ToLower() == _selectedName.ToLower())
 			{
 				return true;

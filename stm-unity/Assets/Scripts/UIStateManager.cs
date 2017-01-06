@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.IO;
+using System.Reflection;
 
 using PlayGen.SUGAR.Unity;
 
@@ -97,7 +98,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 		go.SetActive(false);
 		_mainMenu.SetActive(true);
 		var gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
-		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = gameManager.GetGameNames(Application.persistentDataPath).Count != 0;
+		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = gameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves")).Count != 0;
 	}
 
 	/// <summary>
@@ -170,7 +171,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 			if (success)
 			{
 				_signIn.SetActive(false);
-				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + SUGARManager.CurrentUser.Name;
+				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
 			}
 			else
 			{

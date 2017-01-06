@@ -1,4 +1,6 @@
-﻿using PlayGen.RAGE.SportsTeamManager.Simulation;
+﻿using System.IO;
+
+using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
 
 /// <summary>
@@ -16,7 +18,7 @@ public class NewGame : MonoBehaviour {
 	/// </summary>
 	public bool ExistingGameCheck(string boatName)
 	{
-		return _gameManager.CheckIfGameExists(Application.persistentDataPath, boatName);
+		return _gameManager.CheckIfGameExists(Path.Combine(Application.persistentDataPath, "GameSaves"), boatName);
 	}
 
 	/// <summary>
@@ -24,12 +26,12 @@ public class NewGame : MonoBehaviour {
 	/// </summary>
 	public bool CreateNewGame(string boatName, byte[] colorsPri, byte[] colorsSec, string managerName, bool showTutorial)
 	{
-		_gameManager.NewGame(Application.persistentDataPath, boatName, colorsPri, colorsSec, managerName, showTutorial, Localization.SelectedLanguage.ToString());
+		_gameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), boatName, colorsPri, colorsSec, managerName, showTutorial, Localization.SelectedLanguage.ToString());
 		return _gameManager.Team != null && _gameManager.Team.Name == boatName;
 	}
 
 	public bool ExistingSaves()
 	{
-		return _gameManager.GetGameNames(Application.persistentDataPath).Count != 0;
+		return _gameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves")).Count != 0;
 	}
 }
