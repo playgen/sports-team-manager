@@ -60,7 +60,7 @@ public class LoadGame : MonoBehaviour
 		if (_selectedName != null)
 		{
 			_gameManager.LoadGame(Application.persistentDataPath, _selectedName);
-			if (_gameManager.Team != null && _gameManager.Team.Name == _selectedName)
+			if (_gameManager.Team != null && _gameManager.Team.Name.ToLower() == _selectedName.ToLower())
 			{
 				return true;
 			}

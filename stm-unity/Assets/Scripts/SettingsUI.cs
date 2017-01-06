@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,10 +34,20 @@ public class SettingsUI : MonoBehaviour {
 		_musicToggle.sprite = UIStateManager.MusicOn ? _onSprite : _offSprite;
 		_soundToggle.sprite = UIStateManager.SoundOn ? _onSprite : _offSprite;
 		_languageDropdown.ClearOptions();
-		var languageNames = Enum.GetNames(typeof(Language)).ToList();
-		var translatedLanguageNames = languageNames.Select(lang => Localization.Get(lang)).ToList();
-		_languageDropdown.AddOptions(translatedLanguageNames);
-		_languageDropdown.value = (int)Localization.SelectedLanguage - 1;
+		var languageNames = Localization.AvailableLanguages();
+		_languageDropdown.AddOptions(languageNames);
+		var selectedIndex = languageNames.IndexOf(Localization.SelectedLanguage.ToString());
+		if (selectedIndex == -1)
+		{
+			var nullList = new List<string> { string.Empty };
+			_languageDropdown.AddOptions(nullList);
+			_languageDropdown.value = languageNames.Count;
+			_languageDropdown.options.RemoveAt(languageNames.Count);
+		}
+		else
+		{
+			_languageDropdown.value = selectedIndex;
+		}
 	}
 
 	public void ToggleMusic()
@@ -55,7 +66,7 @@ public class SettingsUI : MonoBehaviour {
 
 	public void ChangeLanguage()
 	{
-		Localization.UpdateLanguage((Language)(_languageDropdown.value + 1));
+		Localization.UpdateLanguage(_languageDropdown.value);
 		gameObject.SetActive(false);
 		gameObject.SetActive(true);
 	}

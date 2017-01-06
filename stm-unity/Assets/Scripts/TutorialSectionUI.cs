@@ -90,10 +90,16 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		if (_blacklistButtons != null)
 		{
 			var blacklistButtons = _blacklistButtons.Select(blb => reverseRaycast.MaskRect[1].FindAll(blb)).SelectMany(x => x).Select(x => (RectTransform)x).ToList();
-			var whiteList = reverseRaycast.MaskRect;
-			whiteList.RemoveAt(0);
 			reverseRaycast.BlacklistRect.AddRange(blacklistButtons);
-			reverseRaycast.BlacklistRect.AddRange(whiteList);
+			var whiteList = new List<RectTransform>(reverseRaycast.MaskRect);
+			whiteList.RemoveAt(0);
+			foreach (var trans in whiteList)
+			{
+				if (!trans.GetComponent<Canvas>())
+				{
+					reverseRaycast.BlacklistRect.Add(trans);
+				}
+			}
 		}
 		SetUp();
 		Localization.LanguageChange += OnLanguageChange;
@@ -238,7 +244,10 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 				}
 			}
 		}
-		_buttons.Find("Progress Count").GetComponent<Text>().text = (_eventTriggerCountRequired - _eventTriggerCount).ToString();
+		if (_eventTriggerCountRequired > 1)
+		{
+			_buttons.Find("Progress Count").GetComponent<Text>().text = (_eventTriggerCountRequired - _eventTriggerCount).ToString();
+		}
 	}
 
 	private void OnLanguageChange()

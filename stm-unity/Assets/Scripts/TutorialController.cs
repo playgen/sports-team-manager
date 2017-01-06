@@ -19,7 +19,7 @@ public class TutorialController : MonoBehaviour
     private GameObject _tutorialQuitButton;
 
     [ContextMenu("Create Tutorial")]
-    public void Createtutorial()
+    public void CreateTutorial()
     {
         while (transform.childCount > 0)
         {
@@ -32,15 +32,16 @@ public class TutorialController : MonoBehaviour
             var tutorialSection = Instantiate(_tutorialSectionPrefab, transform, false) as GameObject;
             var section = tutorialSection.GetComponent<TutorialSectionUI>();
             var textDict = new Dictionary<Language, string[]>();
-            foreach (Language lang in Enum.GetValues(typeof(Language)))
+            foreach (string langName in Localization.AvailableLanguages())
             {
+				var lang = (Language)Enum.Parse(typeof(Language), langName);
                 if (parsedAsset[i]["Section Text " + lang] != null)
                 {
                     textDict.Add(lang, parsedAsset[i]["Section Text " + lang].Value.Split('\n').ToList().Select(te => te.RemoveJSONNodeChars()).Where(tl => tl.Length > 0).ToArray());
                 }
                 else
                 {
-                    textDict.Add(lang, parsedAsset[i]["Section Text English"].Value.Split('\n').ToList().Select(te => te.RemoveJSONNodeChars()).Where(tl => tl.Length > 0).ToArray());
+                    textDict.Add(lang, parsedAsset[i][0].Value.Split('\n').ToList().Select(te => te.RemoveJSONNodeChars()).Where(tl => tl.Length > 0).ToArray());
                 }
             }
             var objectNames = parsedAsset[i]["Highlighted Object"].RemoveJSONNodeChars().Split('/');

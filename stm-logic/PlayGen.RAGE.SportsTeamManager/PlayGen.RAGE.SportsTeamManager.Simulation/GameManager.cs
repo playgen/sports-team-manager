@@ -236,7 +236,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					try
 					{
 						var game = IntegratedAuthoringToolAsset.LoadFromFile(file);
-						if (game != null && game.ScenarioName == gameName)
+						if (game != null && game.ScenarioName.ToLower() == gameName.ToLower())
 						{
 							gameExists = true;
 							break;
