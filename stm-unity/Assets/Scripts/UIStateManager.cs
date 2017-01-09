@@ -171,7 +171,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 			if (success)
 			{
 				_signIn.SetActive(false);
-				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
+				_userSignedInText.text = Localization.Get("SIGNED_IN_AS", true) + " " + SUGARManager.CurrentUser.Name;
 			}
 			else
 			{

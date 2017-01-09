@@ -123,6 +123,14 @@ public class TeamSelection : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Get the amount of starting CrewEditAllowance
+	/// </summary>
+	public int StartingCrewEditAllowance()
+	{
+		return _gameManager.GetStartingCrewEditAllowance();
+	}
+
+	/// <summary>
 	/// Get the value stored in the config
 	/// </summary>
 	public float GetConfigValue(ConfigKeys eventKey)

@@ -7,6 +7,7 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using PlayGen.SUGAR.Unity;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
@@ -54,6 +55,8 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	[SerializeField]
 	private Text _allowanceText;
 	private bool _postQuestion;
+	[SerializeField]
+	private HoverPopUpUI _hoverPopUp;
 
 	private void Awake()
 	{
@@ -183,6 +186,30 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		_roleQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost);
 		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealPositiveCost);
 		_opinionNegativeQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealNegativeCost);
+		if (!_fireButton.interactable)
+		{
+			if (allowance < _memberMeeting.GetConfigValue(ConfigKeys.FiringCost))
+			{
+				FeedbackHoverOver(_fireButton.transform, "FIRE_BUTTON_HOVER_ALLOWANCE");
+			}
+			else if (_memberMeeting.CrewEditAllowance() == 0)
+			{
+				FeedbackHoverOver(_fireButton.transform, Localization.GetAndFormat("FIRE_BUTTON_HOVER_LIMIT", false, _memberMeeting.StartingCrewEditAllowance()));
+			}
+			else if (_memberMeeting.CanRemoveCheck())
+			{
+				FeedbackHoverOver(_fireButton.transform, "FIRE_BUTTON_HOVER_CREW_LIMIT");
+			}
+			else if (!_memberMeeting.TutorialInProgress())
+			{
+				FeedbackHoverOver(_fireButton.transform, "FIRE_BUTTON_HOVER_TUTORIAL");
+			}
+		}
+		else
+		{
+			_fireButton.GetComponent<HoverObject>().enabled = false;
+		}
+
 		//set closing text
 		_closeText.text = Localization.Get("MEETING_EARLY_EXIT");
 		if (postQuestion)
@@ -290,5 +317,14 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		{
 			_closeText.text = Localization.Get("MEETING_EXIT");
 		}
+	}
+
+	/// <summary>
+	/// Set up pointer enter and exit events for created objects that can be hovered over
+	/// </summary>
+	private void FeedbackHoverOver(Transform feedback, string text)
+	{
+		feedback.GetComponent<HoverObject>().enabled = true;
+		feedback.GetComponent<HoverObject>().SetHoverText(text, _hoverPopUp);
 	}
 }

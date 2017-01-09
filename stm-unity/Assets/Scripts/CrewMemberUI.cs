@@ -12,7 +12,8 @@ using PlayGen.SUGAR.Unity;
 /// <summary>
 /// Contains all logic related to CrewMember prefabs
 /// </summary>
-public class CrewMemberUI : ObservableMonoBehaviour {
+public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPointerClickHandler
+{
 
 	private TeamSelection _teamSelection;
 	private MemberMeetingUI _meetingUI;
@@ -46,43 +47,23 @@ public class CrewMemberUI : ObservableMonoBehaviour {
 		_roleIcons = roleIcons;
 		Usable = usable;
 		Current = current;
-		var trigger = GetComponent<EventTrigger>();
-		if (_crewMember.RestCount <= 0 && Usable)
+		transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? UnityEngine.Color.white : UnityEngine.Color.grey;
+	}
+
+	public void OnPointerDown(PointerEventData eventData)
+	{
+		if (_crewMember.RestCount <= 0 && Usable && Current)
 		{
-			SetEventTriggers(trigger, true);
-		}
-		else
-		{
-			SetEventTriggers(trigger, false);
+			BeginDrag();
 		}
 	}
 
-	/// <summary>
-	/// Set up event triggers depending on if this should be draggable or not
-	/// </summary>
-	private void SetEventTriggers(EventTrigger trigger, bool isActive)
+	public void OnPointerClick(PointerEventData eventData)
 	{
-		trigger.triggers.Clear();
-		if (isActive)
+		if ((_crewMember.RestCount > 0 || !Usable) && Current)
 		{
-			var drag = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
-			drag.callback.AddListener(data => { BeginDrag(); });
-			trigger.triggers.Add(drag);
-			var drop = new EventTrigger.Entry { eventID = EventTriggerType.PointerUp };
-			drop.callback.AddListener(data => { EndDrag(); });
-			trigger.triggers.Add(drop);
-		} else
-		{
-			GetComponentInChildren<Image>().color = UnityEngine.Color.gray;
-			var click = new EventTrigger.Entry { eventID = EventTriggerType.PointerClick };
-			click.callback.AddListener(data => { ShowPopUp(); });
-			trigger.triggers.Add(click);
+			ShowPopUp();
 		}
-	}
-
-	public void RemoveEvents()
-	{
-		GetComponent<EventTrigger>().triggers.Clear();
 	}
 
 	/// <summary>
@@ -96,7 +77,7 @@ public class CrewMemberUI : ObservableMonoBehaviour {
 		//_dragPosition is used to offset according to where the click occurred
 		_dragPosition = Input.mousePosition - transform.position;
 		//set as child of container so this displays above all other CrewMember objects
-		transform.SetParent(_defaultParent.parent.parent.parent, false);
+		transform.SetParent(_defaultParent.parent.parent.parent.parent.parent, false);
 		transform.position = (Vector2)Input.mousePosition - _dragPosition;
 		//set as last sibling so this always appears in front of other UI objects (except pop-ups)
 		transform.SetAsLastSibling();
@@ -110,6 +91,10 @@ public class CrewMemberUI : ObservableMonoBehaviour {
 		if (_beingDragged)
 		{
 			transform.position = (Vector2)Input.mousePosition - _dragPosition;
+			if (Input.GetMouseButtonUp(0))
+			{
+				EndDrag();
+			}
 			var raycastResults = new List<RaycastResult>();
 			//gets all UI objects below the cursor
 			EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);

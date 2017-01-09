@@ -68,6 +68,14 @@ public class MemberMeeting : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Get the amount of starting CrewEditAllowance
+	/// </summary>
+	public int StartingCrewEditAllowance()
+	{
+		return _gameManager.GetStartingCrewEditAllowance();
+	}
+
+	/// <summary>
 	/// Get the amount of hire/fire actions remaining for this race
 	/// </summary>
 	public int CrewEditAllowance()

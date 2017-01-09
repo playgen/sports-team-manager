@@ -52,6 +52,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	private Button _raceButton;
 	[SerializeField]
 	private GameObject _recruitPopUp;
+	private readonly List<GameObject> _currentCrewButtons = new List<GameObject>();
 	private readonly List<Button> _recruitButtons = new List<Button>();
 	[SerializeField]
 	private MemberMeetingUI _meetingUI;
@@ -65,11 +66,15 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	[SerializeField]
 	private GameObject _postRacePopUp;
 	[SerializeField]
+	private GameObject _promotionPopUp;
+	[SerializeField]
 	private GameObject _postRaceCrewPrefab;
 	[SerializeField]
 	private Button _popUpBlocker;
 	[SerializeField]
 	private Button _smallerPopUpBlocker;
+	[SerializeField]
+	private Button _quitBlocker;
 	[SerializeField]
 	private Sprite _practiceIcon;
 	[SerializeField]
@@ -125,6 +130,15 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			foreach (var b in _recruitButtons)
 			{
 				b.interactable = false;
+				b.GetComponent<HoverObject>().enabled = true;
+				if (actionAllowance < _recruitCost)
+				{
+					FeedbackHoverOver(b.transform, "RECRUIT_BUTTON_HOVER_ALLOWANCE");
+				}
+				else if (crewAllowance == 0)
+				{
+					FeedbackHoverOver(b.transform, Localization.GetAndFormat("RECRUIT_BUTTON_HOVER_LIMIT", false, _teamSelection.StartingCrewEditAllowance()));
+				}
 			}
 			
 		}
@@ -133,6 +147,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			foreach (var b in _recruitButtons)
 			{
 				b.interactable = true;
+				b.GetComponent<HoverObject>().enabled  = false;
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.Escape))
@@ -281,6 +296,8 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			//create the draggable copy of the above
 			var crewMemberDraggable = CreateCrewMember(cm, crewMember.transform, true, true);
 			crewMemberDraggable.transform.position = crewMember.transform.position;
+			_currentCrewButtons.Add(crewMember);
+			_currentCrewButtons.Add(crewMemberDraggable);
 		}
 		//create a recruitment UI object for each empty spot in the crew
 		for (var i = 0; i < _teamSelection.CanAddAmount(); i++)
@@ -339,9 +356,10 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			//create CrewMember UI object for the CrewMember that was in this position
 			var crewMember = crewContainer.Find("Crew Member " + crewCount).gameObject;
 			crewMember.SetActive(true);
+			var current = currentCrew.ContainsKey(pair.Value.Name);
 			crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(pair.Value.Name, true);
 			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, scoreDiff * (2f / boat.Positions.Count) + 3, true);
-			crewMember.GetComponent<CrewMemberUI>().SetUp(false, false, _teamSelection, _meetingUI, _positionUI, pair.Value, crewContainer, _roleIcons);
+			crewMember.GetComponent<CrewMemberUI>().SetUp(false, current, _teamSelection, _meetingUI, _positionUI, pair.Value, crewContainer, _roleIcons);
 
 			var positionImage = crewMember.transform.Find("Position").gameObject;
 			//update current position button
@@ -350,15 +368,8 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 			var currentPosition = pair.Key;
 			positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentPosition); });
-			//if CrewMember has since retired, remove CrewMemberUI from  the object
-			if (!currentCrew.ContainsKey(pair.Value.Name))
-			{
-				crewMember.GetComponent<CrewMemberUI>().RemoveEvents();
-				crewMember.transform.Find("Name").GetComponent<Text>().color = UnityEngine.Color.grey;
-			} else
-			{
-				crewMember.transform.Find("Name").GetComponent<Text>().color = UnityEngine.Color.white;
-			}
+			//if CrewMember has since retired, change color of the object
+			crewMember.transform.Find("Name").GetComponent<Text>().color = current ? UnityEngine.Color.white : UnityEngine.Color.grey;
 			crewCount++;
 		}
 		for (int i = crewCount; i < crewContainer.childCount; i++)
@@ -404,20 +415,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	/// </summary>
 	private void FeedbackHoverOver(Transform feedback, string text)
 	{
-		var trans = feedback;
-		var mis = text;
-		trans.GetComponent<EventTrigger>().triggers.Clear();
-		var enter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
-		enter.callback.AddListener(data => { _hoverPopUp.SetHoverObject(trans); });
-		enter.callback.AddListener(data => { _hoverPopUp.DisplayHover(mis); });
-		trans.GetComponent<EventTrigger>().triggers.Add(enter);
-		var click = new EventTrigger.Entry { eventID = EventTriggerType.PointerClick };
-		click.callback.AddListener(data => { _hoverPopUp.SetHoverObject(trans); });
-		click.callback.AddListener(data => { _hoverPopUp.DisplayHoverNoDelay(mis); });
-		trans.GetComponent<EventTrigger>().triggers.Add(click);
-		var exit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
-		exit.callback.AddListener(data => { _hoverPopUp.HideHover(); });
-		trans.GetComponent<EventTrigger>().triggers.Add(exit);
+		feedback.GetComponent<HoverObject>().SetHoverText(text, _hoverPopUp);
 	}
 
 	/// <summary>
@@ -430,7 +428,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 
 	public void OnScroll(PointerEventData eventData)
 	{
-		if (!_popUpBlocker.gameObject.activeInHierarchy && !_smallerPopUpBlocker.gameObject.activeInHierarchy)
+		if (!_popUpBlocker.gameObject.activeInHierarchy && !_smallerPopUpBlocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy)
 		{
 			_boatContainerScroll.value += eventData.scrollDelta.y * _boatContainerScroll.size;
 		}
@@ -438,7 +436,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 
 	public void OnDrag(PointerEventData eventData)
 	{
-		if (!_popUpBlocker.gameObject.activeInHierarchy && !_smallerPopUpBlocker.gameObject.activeInHierarchy)
+		if (!_popUpBlocker.gameObject.activeInHierarchy && !_smallerPopUpBlocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy)
 		{
 			if (Mathf.Abs(eventData.delta.y) > 0.5f)
 			{
@@ -516,6 +514,12 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		SUGARManager.GameData.Send("Current Crew Size", _teamSelection.GetTeam().CrewMembers.Count);
 		var currentBoat = _teamSelection.ConfirmLineUp(offset);
 		ResetScrollbar();
+		var oldLayout = currentBoat.Positions;
+		var newLayout = _teamSelection.GetTeam().Boat.Positions;
+		if (!oldLayout.SequenceEqual(newLayout))
+		{
+			DisplayPromotionPopUp(oldLayout, newLayout);
+		}
 		GetResult((_teamSelection.GetStage() - 1) % _teamSelection.GetSessionLength() == 0, currentBoat, offset, _raceButton.GetComponentInChildren<Text>(), true);
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewConfirm", "CrewConfirmed", AlternativeTracker.Alternative.Menu));
 		//set-up next boat
@@ -568,6 +572,51 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		_postRacePopUp.SetActive(false);
 		_popUpBlocker.gameObject.SetActive(false);
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "RaceResult", "RaceResultClosed", AlternativeTracker.Alternative.Menu));
+		if (_promotionPopUp.activeSelf)
+		{
+			_popUpBlocker.transform.SetAsLastSibling();
+			_promotionPopUp.transform.SetAsLastSibling();
+			_popUpBlocker.gameObject.SetActive(true);
+			_popUpBlocker.onClick.RemoveAllListeners();
+			_popUpBlocker.onClick.AddListener(ClosePromotionPopUp);
+		}
+		else
+		{
+			SetPostRaceEventBlocker();
+		}
+	}
+
+	/// <summary>
+	/// Display pop-up which shows the boat promotion
+	/// </summary>
+	private void DisplayPromotionPopUp(List<Position> oldPos, List<Position> newPos)
+	{
+		var addedText = _promotionPopUp.transform.Find("Added List").GetComponent<Text>();
+		var removedText = _promotionPopUp.transform.Find("Removed List").GetComponent<Text>();
+		var newPositions = newPos.Where(n => !oldPos.Contains(n)).Select(n => Localization.Get(n.ToString())).ToArray();
+		var oldPositions = oldPos.Where(o => !newPos.Contains(o)).Select(o => Localization.Get(o.ToString())).ToArray();
+		var newList = string.Join("\n", newPositions);
+		var oldList = string.Join("\n", oldPositions);
+		addedText.text = newList;
+		removedText.text = oldList;
+		_promotionPopUp.SetActive(true);
+	}
+
+	/// <summary>
+	/// Close the promotion pop-up
+	/// </summary>
+	public void ClosePromotionPopUp()
+	{
+		_promotionPopUp.SetActive(false);
+		_popUpBlocker.gameObject.SetActive(false);
+		SetPostRaceEventBlocker();
+	}
+
+	/// <summary>
+	/// Set the blockers and transform order for any post race events being shown
+	/// </summary>
+	private void SetPostRaceEventBlocker()
+	{
 		foreach (var pre in _postRaceEvents)
 		{
 			if (pre.gameObject.activeInHierarchy && !Mathf.Approximately(pre.GetComponent<CanvasGroup>().alpha, 0))
@@ -636,22 +685,19 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		}
 		//get current list of CrewMembers
 		var currentCrew = _teamSelection.GetTeam().CrewMembers;
+		//destroy recruitment buttons
+		foreach (var b in _currentCrewButtons)
+		{
+			Destroy(b);
+		}
 		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
 		{
-			//destroy all current CrewMemberUI objects
-			if (crewMember.Current)
+			//destroy CrewMemberUI (making them unclickable) from those that are no longer in the currentCrew. Update avatar so they change into their causal outfit
+			if (currentCrew.All(cm => cm.Key != crewMember.CrewMember.Name))
 			{
-				Destroy(crewMember.gameObject);
-			}
-			else
-			{
-				//destroy CrewMemberUI (making them unclickable) from those that are no longer in the currentCrew. Update avatar so they change into their causal outfit
-				if (currentCrew.All(cm => cm.Key != crewMember.CrewMember.Name))
-				{
-					crewMember.GetComponentInChildren<AvatarDisplay>().UpdateAvatar(crewMember.CrewMember.Avatar, true);
-					crewMember.RemoveEvents();
-					crewMember.transform.Find("Name").GetComponent<Text>().color = UnityEngine.Color.grey;
-				}
+				crewMember.GetComponentInChildren<AvatarDisplay>().UpdateAvatar(crewMember.CrewMember.Avatar, true);
+				crewMember.Current = false;
+				crewMember.transform.Find("Name").GetComponent<Text>().color = UnityEngine.Color.grey;
 			}
 		}
 		//destroy recruitment buttons
@@ -659,6 +705,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		{
 			Destroy(b.gameObject);
 		}
+		_currentCrewButtons.Clear();
 		_recruitButtons.Clear();
 		//reset empty positions
 		_positionsEmpty = (FindObjectsOfType(typeof(PositionUI)) as PositionUI[]).Length;

@@ -12,11 +12,6 @@ public class HoverPopUpUI : ObservableMonoBehaviour {
 	private string _currentText;
 	private Vector2 _canvasSize;
 
-	private void Awake()
-	{
-		_canvasSize = ((RectTransform)GetComponentInParent<CanvasScaler>().gameObject.transform).rect.size;
-	}
-
 	/// <summary>
 	/// Triggered by PointerEnter on some UI objects. Stores position relative to pivot for the hovered object
 	/// </summary>
@@ -55,6 +50,7 @@ public class HoverPopUpUI : ObservableMonoBehaviour {
 		}
 		if (_currentHovered != Vector2.zero)
 		{
+			_canvasSize = ((RectTransform)GetComponentInParent<CanvasScaler>().gameObject.transform).rect.size;
 			gameObject.SetActive(true);
 			transform.SetAsLastSibling();
 			GetComponentInChildren<Text>().text = Localization.Get(_currentText);
@@ -88,7 +84,7 @@ public class HoverPopUpUI : ObservableMonoBehaviour {
 				((RectTransform)transform).anchoredPosition -= new Vector2(0, ((RectTransform)transform).rect.height * 0.5f);
 				if (((RectTransform)transform).anchoredPosition.y - ((RectTransform)transform).rect.height * 0.5f < -_canvasSize.y * 0.5f)
 				{
-					((RectTransform)transform).anchoredPosition += new Vector2(0, -((RectTransform)transform).rect.height);
+					((RectTransform)transform).anchoredPosition -= new Vector2(0, -((RectTransform)transform).rect.height);
 				}
 			}
 			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, gameObject.name, transform.parent.name, _currentText, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "HoverOverIcon", _currentText, AlternativeTracker.Alternative.Menu));
