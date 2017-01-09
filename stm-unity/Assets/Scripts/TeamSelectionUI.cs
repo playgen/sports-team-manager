@@ -130,7 +130,6 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			foreach (var b in _recruitButtons)
 			{
 				b.interactable = false;
-				b.GetComponent<HoverObject>().enabled = true;
 				if (actionAllowance < _recruitCost)
 				{
 					FeedbackHoverOver(b.transform, "RECRUIT_BUTTON_HOVER_ALLOWANCE");
@@ -147,7 +146,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			foreach (var b in _recruitButtons)
 			{
 				b.interactable = true;
-				b.GetComponent<HoverObject>().enabled  = false;
+				b.GetComponent<HoverObject>().Enabled = false;
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.Escape))
@@ -246,7 +245,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		//add click handler to raceButton according to session taking place
 		if (_teamSelection.GetStage() % _teamSelection.GetSessionLength() != 0)
 		{
-			_raceButton.onClick.AddListener(ConfirmLineUp);
+			_raceButton.onClick.AddListener(ConfirmLineUpCheck);
 			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, _teamSelection.GetStage() % _teamSelection.GetSessionLength(), _teamSelection.GetSessionLength() - 1);
 			_raceButton.GetComponentInChildren<Text>().fontSize = 16;
 		}
@@ -415,6 +414,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	/// </summary>
 	private void FeedbackHoverOver(Transform feedback, string text)
 	{
+		feedback.GetComponent<HoverObject>().Enabled = true;
 		feedback.GetComponent<HoverObject>().SetHoverText(text, _hoverPopUp);
 	}
 
@@ -430,7 +430,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		if (!_popUpBlocker.gameObject.activeInHierarchy && !_smallerPopUpBlocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy)
 		{
-			_boatContainerScroll.value += eventData.scrollDelta.y * _boatContainerScroll.size;
+			_boatContainerScroll.value += eventData.scrollDelta.y * 0.55f * _boatContainerScroll.size;
 		}
 	}
 
@@ -438,10 +438,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		if (!_popUpBlocker.gameObject.activeInHierarchy && !_smallerPopUpBlocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy)
 		{
-			if (Mathf.Abs(eventData.delta.y) > 0.5f)
-			{
-				_boatContainerScroll.value += Mathf.Clamp(eventData.delta.y, -1, 1) * _boatContainerScroll.size;
-			}
+			_boatContainerScroll.value -= Mathf.Clamp(eventData.delta.y * 0.1f, -1, 1) * _boatContainerScroll.size;
 		}
 	}
 
@@ -484,6 +481,12 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		_preRacePopUp.SetActive(true);
 		_preRacePopUp.GetComponentInChildren<Text>().text = _teamSelection.QuestionAllowance() > 0 ? Localization.GetAndFormat("RACE_CONFIRM_ALLOWANCE_REMAINING", false, _teamSelection.QuestionAllowance()) : Localization.Get("RACE_CONFIRM_NO_ALLOWANCE");
+		var yesButton = _preRacePopUp.transform.Find("Yes").GetComponent<Button>();
+		yesButton.onClick.RemoveAllListeners();
+		yesButton.onClick.AddListener(ConfirmLineUp);
+		var noButton = _preRacePopUp.transform.Find("No").GetComponent<Button>();
+		noButton.onClick.RemoveAllListeners();
+		noButton.onClick.AddListener(CloseConfirmPopUp);
 		_popUpBlocker.transform.SetAsLastSibling();
 		_preRacePopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
@@ -500,6 +503,53 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		_preRacePopUp.SetActive(false);
 		_popUpBlocker.gameObject.SetActive(false);
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewConfirm", "CrewNotConfirmed", AlternativeTracker.Alternative.Menu));
+	}
+
+	/// <summary>
+	/// Confirm the current line-up
+	/// </summary>
+	public void ConfirmLineUpCheck()
+	{
+		var lastRace = _teamSelection.GetLineUpHistory(0, 1).FirstOrDefault();
+		var currentRace = _teamSelection.GetTeam().Boat;
+		if (lastRace.Key != null)
+		{
+			if (currentRace.Positions.SequenceEqual(lastRace.Key.Positions) && currentRace.PositionCrew.OrderBy(pc => pc.Key.GetName()).SequenceEqual(lastRace.Key.PositionCrew.OrderBy(pc => pc.Key.GetName())))
+			{
+				DisplayRepeatWarning();
+				return;
+			}
+		}
+		ConfirmLineUp();
+	}
+
+	/// <summary>
+	/// Display a pop-up before a race if the player is using the line-up as the previous race
+	/// </summary>
+	private void DisplayRepeatWarning()
+	{
+		_preRacePopUp.SetActive(true);
+		_preRacePopUp.GetComponentInChildren<Text>().text = Localization.Get("REPEAT_CONFIRM");
+		var yesButton = _preRacePopUp.transform.Find("Yes").GetComponent<Button>();
+		yesButton.onClick.RemoveAllListeners();
+		yesButton.onClick.AddListener(ConfirmLineUp);
+		var noButton = _preRacePopUp.transform.Find("No").GetComponent<Button>();
+		noButton.onClick.RemoveAllListeners();
+		noButton.onClick.AddListener(CloseRepeatWarning);
+		_popUpBlocker.transform.SetAsLastSibling();
+		_preRacePopUp.transform.SetAsLastSibling();
+		_popUpBlocker.gameObject.SetActive(true);
+		_popUpBlocker.onClick.RemoveAllListeners();
+		_popUpBlocker.onClick.AddListener(CloseRepeatWarning);
+	}
+
+	/// <summary>
+	/// Close the repeat line-up warning
+	/// </summary>
+	public void CloseRepeatWarning()
+	{
+		_preRacePopUp.SetActive(false);
+		_popUpBlocker.gameObject.SetActive(false);
 	}
 
 	/// <summary>

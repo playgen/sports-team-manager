@@ -207,7 +207,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		}
 		else
 		{
-			_fireButton.GetComponent<HoverObject>().enabled = false;
+			_fireButton.GetComponent<HoverObject>().Enabled = false;
 		}
 
 		//set closing text
@@ -324,7 +324,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	/// </summary>
 	private void FeedbackHoverOver(Transform feedback, string text)
 	{
-		feedback.GetComponent<HoverObject>().enabled = true;
+		feedback.GetComponent<HoverObject>().Enabled = true;
 		feedback.GetComponent<HoverObject>().SetHoverText(text, _hoverPopUp);
 	}
 }

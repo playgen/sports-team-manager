@@ -5,6 +5,7 @@ public class HoverObject : MonoBehaviour, IPointerEnterHandler, IPointerClickHan
 {
 	private string _hoverText;
 	private HoverPopUpUI _hoverPopUp;
+	public bool Enabled;
 
 	public void SetHoverText(string text, HoverPopUpUI popUpUI)
 	{
@@ -14,18 +15,27 @@ public class HoverObject : MonoBehaviour, IPointerEnterHandler, IPointerClickHan
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		_hoverPopUp.SetHoverObject(transform);
-		_hoverPopUp.DisplayHoverNoDelay(_hoverText);
+		if (Enabled)
+		{
+			_hoverPopUp.SetHoverObject(transform);
+			_hoverPopUp.DisplayHoverNoDelay(_hoverText);
+		}
 	}
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
-		_hoverPopUp.SetHoverObject(transform);
-		_hoverPopUp.DisplayHover(_hoverText);
+		if (Enabled)
+		{
+			_hoverPopUp.SetHoverObject(transform);
+			_hoverPopUp.DisplayHover(_hoverText);
+		}
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
-		_hoverPopUp.HideHover();
+		if (Enabled)
+		{
+			_hoverPopUp.HideHover();
+		}
 	}
 }
