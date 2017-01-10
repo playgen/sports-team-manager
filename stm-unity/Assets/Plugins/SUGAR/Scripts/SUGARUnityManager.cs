@@ -109,14 +109,17 @@ namespace PlayGen.SUGAR.Unity
 			{
 				GetComponent<AchievementUnityClient>().CreateInterface(_canvas);
 			}
-			bool blockerInScene = _uiBlocker.scene == SceneManager.GetActiveScene();
-			if (!blockerInScene)
+			if (_uiBlocker)
 			{
-				var newBlocker = Instantiate(_uiBlocker, _canvas.transform, false);
-				newBlocker.name = _uiBlocker.name;
-				_uiBlocker = newBlocker;
+				bool blockerInScene = _uiBlocker.scene == SceneManager.GetActiveScene();
+				if (!blockerInScene)
+				{
+					var newBlocker = Instantiate(_uiBlocker, _canvas.transform, false);
+					newBlocker.name = _uiBlocker.name;
+					_uiBlocker = newBlocker;
+				}
+				_uiBlocker.gameObject.SetActive(false);
 			}
-			_uiBlocker.gameObject.SetActive(false);
 		}
 
 		private string ConfigPath
@@ -133,34 +136,46 @@ namespace PlayGen.SUGAR.Unity
 
 		internal void EnableObject(GameObject activeObject)
 		{
-			_uiBlocker.GetComponent<Button>().onClick.RemoveAllListeners();
-			var objectToDisable = activeObject;
-			_uiBlocker.GetComponent<Button>().onClick.AddListener(delegate { DisableObject(objectToDisable); });
-			foreach (Transform child in _uiBlocker.transform)
+			if (_uiBlocker)
 			{
-				child.SetParent(_canvas.transform, false);
-				_blockQueue.Add(child.gameObject);
+				_uiBlocker.GetComponent<Button>().onClick.RemoveAllListeners();
+				var objectToDisable = activeObject;
+				_uiBlocker.GetComponent<Button>().onClick.AddListener(delegate { DisableObject(objectToDisable); });
+				foreach (Transform child in _uiBlocker.transform)
+				{
+					if (activeObject != child.gameObject)
+					{
+						child.SetParent(_canvas.transform, false);
+						_blockQueue.Add(child.gameObject);
+					}
+				}
+				activeObject.transform.SetParent(_uiBlocker.transform, false);
+				_uiBlocker.transform.SetAsLastSibling();
+				_uiBlocker.SetActive(true);
 			}
 			activeObject.SetActive(true);
-			activeObject.transform.SetParent(_uiBlocker.transform, false);
-			_uiBlocker.transform.SetAsLastSibling();
-			_uiBlocker.SetActive(true);
+			activeObject.transform.SetAsLastSibling();
 		}
 
 		internal void DisableObject(GameObject activeObject)
 		{
-			foreach (Transform child in _uiBlocker.transform)
+			if (_uiBlocker)
 			{
-				child.SetParent(_canvas.transform, false);
-			}
-			activeObject.SetActive(false);
-			if (_blockQueue.Count > 0)
-			{
-				EnableObject(_blockQueue[_blockQueue.Count - 1]);
-				_blockQueue.RemoveAt(_blockQueue.Count - 1);
+				foreach (Transform child in _uiBlocker.transform)
+				{
+					child.SetParent(_canvas.transform, false);
+				}
+				activeObject.SetActive(false);
+				if (_blockQueue.Count > 0)
+				{
+					EnableObject(_blockQueue[_blockQueue.Count - 1]);
+					_blockQueue.RemoveAt(_blockQueue.Count - 1);
+					return;
+				}
+				_uiBlocker.SetActive(false);
 				return;
 			}
-			_uiBlocker.SetActive(false);
+			activeObject.SetActive(false);
 		}
 
 		internal void ButtonBestFit(GameObject interfaceObj)

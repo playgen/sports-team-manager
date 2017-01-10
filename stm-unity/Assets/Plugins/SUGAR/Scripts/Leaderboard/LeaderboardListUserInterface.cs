@@ -50,8 +50,7 @@ namespace PlayGen.SUGAR.Unity
 
 		internal void Display(ActorType filter, bool loadingSuccess)
 		{
-			SUGARManager.Account.Hide();
-			SUGARManager.Achievement.Hide();
+			
 			_pageNumber = 0;
 			_actorType = filter;
 			ShowLeaderboards(loadingSuccess);
@@ -59,6 +58,8 @@ namespace PlayGen.SUGAR.Unity
 
 		private void ShowLeaderboards(bool loadingSuccess)
 		{
+			SUGARManager.Account.Hide();
+			SUGARManager.Achievement.Hide();
 			SUGARManager.Unity.EnableObject(gameObject);
 			_errorText.text = string.Empty;
 			_signinButton.gameObject.SetActive(false);
@@ -101,7 +102,10 @@ namespace PlayGen.SUGAR.Unity
 				if (SUGARManager.CurrentUser == null)
 				{
 					_errorText.text = "Error: No user currently signed in.";
-					_signinButton.gameObject.SetActive(true);
+					if (SUGARManager.Account.HasInterface)
+					{
+						_signinButton.gameObject.SetActive(true);
+					}
 				}
 				else
 				{

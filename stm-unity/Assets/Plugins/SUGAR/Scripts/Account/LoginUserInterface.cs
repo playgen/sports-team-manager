@@ -42,6 +42,13 @@ namespace PlayGen.SUGAR.Unity
 			SUGARManager.Unity.ButtonBestFit(gameObject);
 		}
 
+		private void OnDisable()
+		{
+			_name.text = "";
+			_password.text = "";
+			_statusText.text = "";
+		}
+
 		internal void Show()
 		{
 			SUGARManager.Unity.EnableObject(gameObject);
@@ -50,9 +57,6 @@ namespace PlayGen.SUGAR.Unity
 		internal void Hide()
 		{
 			SUGARManager.Unity.DisableObject(gameObject);
-			_name.text = "";
-			_password.text = "";
-			_statusText.text = "";
 		}
 
 		internal void RegisterButtonDisplay(bool display)

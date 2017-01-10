@@ -14,6 +14,11 @@ namespace PlayGen.SUGAR.Unity
 	{
 		[SerializeField] private LoginUserInterface _loginUserInterface;
 
+		internal bool HasInterface
+		{
+			get { return _loginUserInterface; }
+		}
+
 		[SerializeField] private bool _allowAutoLogin;
 
 		public bool AllowAutoLogin
@@ -43,15 +48,18 @@ namespace PlayGen.SUGAR.Unity
 
 		internal void CreateInterface(Canvas canvas)
 		{
-			bool inScene = _loginUserInterface.gameObject.scene == SceneManager.GetActiveScene();
-			if (!inScene)
+			if (_loginUserInterface)
 			{
-				var newInterface = Instantiate(_loginUserInterface.gameObject, canvas.transform, false);
-				newInterface.name = _loginUserInterface.name;
-				_loginUserInterface = newInterface.GetComponent<LoginUserInterface>();
+				bool inScene = _loginUserInterface.gameObject.scene == SceneManager.GetActiveScene();
+				if (!inScene)
+				{
+					var newInterface = Instantiate(_loginUserInterface.gameObject, canvas.transform, false);
+					newInterface.name = _loginUserInterface.name;
+					_loginUserInterface = newInterface.GetComponent<LoginUserInterface>();
+				}
+				_loginUserInterface.RegisterButtonDisplay(_allowRegister);
+				_loginUserInterface.gameObject.SetActive(false);
 			}
-			_loginUserInterface.RegisterButtonDisplay(_allowRegister);
-			_loginUserInterface.gameObject.SetActive(false);
 		}
 
 		public void DisplayPanel(Action<bool> success)
@@ -70,7 +78,7 @@ namespace PlayGen.SUGAR.Unity
 
 		public void Hide()
 		{
-			if (_loginUserInterface != null)
+			if (_loginUserInterface && _loginUserInterface.gameObject.activeSelf)
 			{
 				_loginUserInterface.Hide();
 				_loginUserInterface.Login -= LoginUserInterfaceOnLogin;
@@ -121,7 +129,7 @@ namespace PlayGen.SUGAR.Unity
 			}
 			else
 			{
-				if (_loginUserInterface != null)
+				if (_loginUserInterface)
 				{
 					_loginUserInterface.Login += LoginUserInterfaceOnLogin;
 					_loginUserInterface.Register += LoginUserInterfaceOnRegister;
@@ -138,7 +146,7 @@ namespace PlayGen.SUGAR.Unity
 			response =>
 			{
 				Debug.Log("SUCCESS");
-				if (_loginUserInterface != null)
+				if (_loginUserInterface)
 				{
 					_loginUserInterface.SetStatus("Success! " + response.User.Id + ": " + response.User.Name);
 				}
@@ -149,7 +157,7 @@ namespace PlayGen.SUGAR.Unity
 			exception =>
 			{
 				Debug.LogError(exception);
-				if (_loginUserInterface != null)
+				if (_loginUserInterface)
 				{
 					_loginUserInterface.SetStatus("Login Error: " + exception.Message);
 				}
@@ -164,7 +172,7 @@ namespace PlayGen.SUGAR.Unity
 			response =>
 			{
 				Debug.Log("SUCCESS");
-				if (_loginUserInterface != null)
+				if (_loginUserInterface)
 				{
 					Debug.Log("Successful Register! " + response.User.Id + ": " + response.User.Name);
 					LoginUser(response.User.Name, sourceToken, pass);
@@ -173,7 +181,7 @@ namespace PlayGen.SUGAR.Unity
 			exception =>
 			{
 				Debug.LogError(exception);
-				if (_loginUserInterface != null)
+				if (_loginUserInterface)
 				{
 					_loginUserInterface.SetStatus("Registration Error: " + exception.Message);
 				}
