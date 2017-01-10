@@ -6,6 +6,10 @@ using System.IO;
 using System.Linq;
 using IntegratedAuthoringTool.DTOs;
 
+using RolePlayCharacter;
+
+using WellFormedNames;
+
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	/// <summary>
@@ -129,7 +133,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Team.TeamColorsPrimary = new Color(teamColorsPrimary[0], teamColorsPrimary[1], teamColorsPrimary[2], 255);
 			Team.TeamColorsSecondary = new Color(teamColorsSecondary[0], teamColorsSecondary[1], teamColorsSecondary[2], 255);
 			iat.ScenarioName = name;
-			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
+			iat.SaveConfigurationToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
 			//create manager
 			var manager = new Person(null)
 			{
@@ -201,11 +205,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.UpdateBeliefs("null");
 				member.SaveStatus();
 			}
-			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
+			iat.SaveConfigurationToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
 			Team.CreateRecruits();
-            config.ReloadAssets();
+			config.ReloadAssets();
 
-        }
+		}
 
 		/// <summary>
 		/// Get the name of every folder stored in the directory provided
@@ -273,14 +277,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile(Path.Combine(combinedStorageLocation, boatName + ".iat"));
 			eventController = new EventController(iat, help);
 			ValidateGameConfig();
-			var rpcList = iat.GetAllCharacters();
+			var characterList = iat.GetAllCharacterSources();
 
 			var crewList = new List<CrewMember>();
 			var nameList = new List<string>();
-			foreach (var rpc in rpcList)
+			foreach (var character in characterList)
 			{
-				var tempea = EmotionalAppraisalAsset.LoadFromFile(rpc.EmotionalAppraisalAssetSource);
-				var position = tempea.GetBeliefValue(NPCBeliefs.Position.GetDescription());
+				//var rpc = iat.InstantiateCharacterAsset(character.Name);
+				var rpc = RolePlayCharacterAsset.LoadFromFile(character.Source);
+				var position = rpc.GetBeliefValue(NPCBeliefs.Position.GetDescription());
 				//if this character is the manager, load the game details from this file and set this character as the manager
 				if (position == "Manager")
 				{
@@ -357,8 +362,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private void LoadLineUpHistory()
 		{
 			//get all events that feature 'SelectedLineUp' from their EA file
-			var ea = EmotionalAppraisalAsset.LoadFromFile(Team.Manager.RolePlayCharacter.EmotionalAppraisalAssetSource);
-			var managerEvents = ea.EventRecords;
+			var managerEvents = Team.Manager.RolePlayCharacter.EventRecords;
 			var lineUpEvents = managerEvents.Where(e => e.Event.Contains("SelectedLineUp")).Select(e => e.Event);
 			var crewMembers = Team.CrewMembers.Values.ToList();
 			foreach (var crewMember in Team.RetiredCrew.Values.ToList())
@@ -446,7 +450,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var manager = Team.Manager;
 			boat.UpdateBoatScore(manager.Name);
 			boat.GetIdealCrew(Team.CrewMembers, manager.Name);
-			var spacelessName = manager.RolePlayCharacter.Perspective;
+			var spacelessName = manager.RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			var eventStringUnformatted = "SelectedLineUp({0},{1})";
 			var boatType = boat.Type;
@@ -478,7 +482,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crew += "," + offset;
 			//send event with string of information within
 			var eventString = string.Format(eventStringUnformatted, boatType, crew);
-			var eventRpc = manager.RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
+			var eventRpc = manager.RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
 			if (eventRpc != null)
 			{
 				manager.RolePlayCharacter.ActionFinished(eventRpc);

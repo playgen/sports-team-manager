@@ -5,6 +5,8 @@ using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 using RolePlayCharacter;
 
+using WellFormedNames;
+
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	//Decision Feedback functionality to adjust opinions/mood based on placement currently commented out
@@ -583,7 +585,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			var replies = new List<DialogueStateActionDTO>();
 			List<DialogueStateActionDTO> dialogueOptions;
-			var spacelessName = RolePlayCharacter.Perspective;
+			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			//if this CrewMember is expecting to be picked for the next race and this is after that race
 			if (afterRaceSession && (LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "true")
@@ -597,7 +599,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "false");
 					//send event on record that this happened
 					var eventString = "PostRace(NotPickedAfterSorry)";
-					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
+					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
 					if (eventRpc != null)
 					{
 						RolePlayCharacter.ActionFinished(eventRpc);
@@ -631,7 +633,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					//send event on record this event being triggered
 					var eventString = "PostRace(RetirementTriggered)";
-					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
+					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
 					if (eventRpc != null)
 					{
 						RolePlayCharacter.ActionFinished(eventRpc);
@@ -696,10 +698,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void PostRaceFeedback(string lastEvent, Team team)
 		{
-			var spacelessName = RolePlayCharacter.Perspective;
+			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			var eventString = string.Format("PostRace({0})", lastEvent);
-			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new [] { string.Format(eventBase, eventString, spacelessName) });
+			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new [] { (Name)string.Format(eventBase, eventString, spacelessName) });
 			//trigger different changes based off of what dialogue the player last picked
 			switch (lastEvent)
 			{
@@ -777,9 +779,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void Retire()
 		{
 			UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "Retired");
-			var spacelessName = RolePlayCharacter.Perspective;
+			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,Status(Retired),{0})";
-			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, spacelessName) });
+			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, spacelessName) });
 			if (eventRpc != null)
 			{
 				RolePlayCharacter.ActionFinished(eventRpc);

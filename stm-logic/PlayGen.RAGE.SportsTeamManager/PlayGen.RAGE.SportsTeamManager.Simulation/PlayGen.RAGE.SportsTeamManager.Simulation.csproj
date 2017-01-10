@@ -37,6 +37,9 @@
     <Reference Include="AutobiographicMemory">
       <HintPath>..\..\RAGE Assets\AutobiographicMemory.dll</HintPath>
     </Reference>
+    <Reference Include="CommeillFaut">
+      <HintPath>..\..\RAGE Assets\CommeillFaut.dll</HintPath>
+    </Reference>
     <Reference Include="Conditions">
       <HintPath>..\..\RAGE Assets\Conditions.dll</HintPath>
     </Reference>

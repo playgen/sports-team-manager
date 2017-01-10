@@ -1,7 +1,11 @@
 using System;
 using System.IO;
 using IntegratedAuthoringTool;
+using IntegratedAuthoringTool.DTOs;
+
 using RolePlayCharacter;
+
+using WellFormedNames;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
@@ -24,7 +28,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (rpc != null)
 			{
 				RolePlayCharacter = rpc;
-				Name = rpc.CharacterName;
+				RolePlayCharacter.Initialize();
+				Name = RolePlayCharacter.BodyName;
 				Age = Convert.ToInt32(LoadBelief(NPCBeliefs.Age.GetDescription()));
 				Gender = LoadBelief(NPCBeliefs.Gender.GetDescription());
 			}
@@ -41,27 +46,28 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var edm = ConfigStore.EmotionalDecisionMaking;
 			var si = ConfigStore.SocialImportance;
 			//set values
-			rpc.CharacterName = Name;
-			var noSpaceName = rpc.CharacterName.Replace(" ", "");
+			rpc.BodyName = Name;
+			var noSpaceName = rpc.BodyName.Replace(" ", "");
+			rpc.CharacterName = (Name)noSpaceName;
 			if (string.IsNullOrEmpty(fileName))
 			{
 				fileName = noSpaceName;
 			}
-			ea.SetPerspective(string.Format("NPC{0}", noSpaceName));
 			//save files
-			ea.SaveToFile(Path.Combine(storageLocation, fileName + ".ea"));
-			edm.SaveToFile(Path.Combine(storageLocation, fileName + ".edm"));
-			si.SaveToFile(Path.Combine(storageLocation, fileName + ".si"));
+			ea.SaveConfigurationToFile(Path.Combine(storageLocation, fileName + ".ea"));
+			edm.SaveConfigurationToFile(Path.Combine(storageLocation, fileName + ".edm"));
+			si.SaveConfigurationToFile(Path.Combine(storageLocation, fileName + ".si"));
 			//add character to iat asset
-			rpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
-			iat.AddCharacter(rpc);
+			rpc.SaveConfigurationToFile(Path.Combine(storageLocation, fileName + ".rpc"));
+			iat.AddNewCharacterSource(new CharacterSourceDTO { Name = rpc.BodyName, Source = fileName + ".rpc" });
 			//assign asset files to RPC
 			rpc.EmotionalAppraisalAssetSource = fileName + ".ea";
 			rpc.EmotionalDecisionMakingSource = fileName + ".edm";
 			rpc.SocialImportanceAssetSource = fileName + ".si";
-			rpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
+			rpc.SaveConfigurationToFile(Path.Combine(storageLocation, fileName + ".rpc"));
 			//store RPC locally
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(Path.Combine(storageLocation, fileName + ".rpc"));
+			RolePlayCharacter.Initialize();
 		}
 
 		/// <summary>
@@ -101,7 +107,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void SaveStatus()
 		{
-			RolePlayCharacter.SaveEmotionalAppraisalAsset();
+			RolePlayCharacter.SaveConfigurationToFile();
 		}
 
 		/// <summary>

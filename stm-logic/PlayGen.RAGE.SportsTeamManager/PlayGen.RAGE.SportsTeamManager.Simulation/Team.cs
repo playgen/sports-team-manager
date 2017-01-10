@@ -139,7 +139,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				recruit.Value.UpdateBeliefs("Recruit");
 				recruit.Value.Avatar = new Avatar(recruit.Value, false);
 			}
-			iat.SaveToFile(iat.AssetFilePath);
+			iat.SaveConfigurationToFile(iat.AssetFilePath);
 		}
 
 		/// <summary>
@@ -165,7 +165,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			member.UpdateBeliefs("null");
 			member.SaveStatus();
 			Recruits.Remove(member.Name);
-			iat.SaveToFile(iat.AssetFilePath);
+			iat.SaveConfigurationToFile(iat.AssetFilePath);
 		}
 
 		/// <summary>
@@ -265,7 +265,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					newMember.UpdateBeliefs("null");
 					newMember.SaveStatus();
-					iat.SaveToFile(iat.AssetFilePath);
+					iat.SaveConfigurationToFile(iat.AssetFilePath);
 					//if the boat is under-staffed for the current boat size, this new CrewMember is not counted
 					if (!CanRemoveFromCrew())
 					{
