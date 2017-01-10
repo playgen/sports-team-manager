@@ -153,15 +153,30 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		{
 			if (_preRacePopUp.activeInHierarchy)
 			{
-				CloseConfirmPopUp();
+				if (_preRacePopUp.GetComponentInChildren<Text>().text == Localization.Get("REPEAT_CONFIRM"))
+				{
+					CloseRepeatWarning();
+				}
+				else
+				{
+					CloseConfirmPopUp();
+				}
 			}
 			else if (_postRacePopUp.activeInHierarchy)
 			{
 				ClosePostRacePopUp();
 			}
-			else if (!_meetingUI.gameObject.activeInHierarchy && !_positionUI.gameObject.activeInHierarchy && _postRaceEvents.All(pre => !pre.gameObject.activeInHierarchy))
+			else if (_promotionPopUp.activeInHierarchy)
 			{
-				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+				ClosePromotionPopUp();
+			}
+			else if (_quitBlocker.gameObject.activeInHierarchy)
+			{
+				_quitBlocker.onClick.Invoke();
+			}
+			else if (!_popUpBlocker.gameObject.activeInHierarchy && !_smallerPopUpBlocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy && !SUGARManager.Unity.AnyActiveUI)
+			{
+				FindObjectOfType<ScreenSideUI>().DisplayQuitWarning();
 			}
 		}
 	}
@@ -340,7 +355,6 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		var isRace = stageNumber % _teamSelection.GetSessionLength() == 0;
 		stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
 		oldBoat.transform.Find("Stage Number").GetComponent<Text>().text = isRace ? string.Empty : (stageNumber % _teamSelection.GetSessionLength()).ToString();
-		var teamScore = boat.Score;
 		var idealScore = boat.IdealMatchScore;
 		var currentCrew = _teamSelection.GetTeam().CrewMembers;
 		//get selection mistakes for this line-up and set-up feedback UI

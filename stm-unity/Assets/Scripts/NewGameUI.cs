@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
@@ -38,8 +36,8 @@ public class NewGameUI : MonoBehaviour {
 		_overwritePopUp.SetActive(false);
 		WarningDisable();
 		RandomColor();
-		_boatName.onValidateInput += delegate (string input, int charIndex, char addedChar) { return InvalidFlash(addedChar, _boatName); };
-		_managerName.onValidateInput += delegate (string input, int charIndex, char addedChar) { return InvalidFlash(addedChar, _managerName); };
+		_boatName.onValidateInput += (input, charIndex, addedChar) => InvalidFlash(addedChar, _boatName);
+		_managerName.onValidateInput += (input, charIndex, addedChar) => InvalidFlash(addedChar, _managerName);
 	}
 
 	private char InvalidFlash(char newChar, InputField inputField)

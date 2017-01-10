@@ -97,6 +97,9 @@
     <Reference Include="AutobiographicMemory">
       <HintPath>Assets\Plugins\stm-logic\AutobiographicMemory.dll</HintPath>
     </Reference>
+    <Reference Include="CommeillFaut">
+      <HintPath>Assets\Plugins\stm-logic\CommeillFaut.dll</HintPath>
+    </Reference>
     <Reference Include="Conditions">
       <HintPath>Assets\Plugins\stm-logic\Conditions.dll</HintPath>
     </Reference>

@@ -29,7 +29,7 @@ public class TutorialController : MonoBehaviour
         var parsedAsset = JSON.Parse(textAsset.text);
         for (int i = 0; i < parsedAsset.Count; i++)
         {
-            var tutorialSection = Instantiate(_tutorialSectionPrefab, transform, false) as GameObject;
+            var tutorialSection = Instantiate(_tutorialSectionPrefab, transform, false);
             var section = tutorialSection.GetComponent<TutorialSectionUI>();
             var textDict = new Dictionary<Language, string[]>();
             foreach (string langName in Localization.AvailableLanguages())
