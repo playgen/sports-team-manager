@@ -1,6 +1,4 @@
 ﻿#if UNITY_EDITOR
-using System;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 namespace PlayGen.SUGAR.Unity
@@ -11,7 +9,7 @@ namespace PlayGen.SUGAR.Unity
 		public static void SeedAchivements()
 		{
 			AutoLogIn window = ScriptableObject.CreateInstance<AutoLogIn>();
-			window.title = "Set Auto Log-in Values";
+			window.titleContent.text = "Set Auto Log-in Values";
 			window.Show();
 		}
 	}

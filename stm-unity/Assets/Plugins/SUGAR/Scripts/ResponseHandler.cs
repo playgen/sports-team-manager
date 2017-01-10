@@ -9,9 +9,9 @@ namespace PlayGen.SUGAR.Unity
                  "\nAt least one attempt to execute any pending response will be made per frame." +
                  "\nA value of 0 will execute all responses in available in each frame.")]
         [SerializeField]
-        private int _responseMillisecondBudgetPerFrame = 0;
+        private int _responseMillisecondBudgetPerFrame;
         private bool _tryExecuteNextResponse;
-        private Stopwatch _stopwatch = new Stopwatch();
+        private readonly Stopwatch _stopwatch = new Stopwatch();
 
         private void Update()
         {

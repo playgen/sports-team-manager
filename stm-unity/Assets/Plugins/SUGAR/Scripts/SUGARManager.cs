@@ -6,7 +6,7 @@ namespace PlayGen.SUGAR.Unity
 {
 	public static class SUGARManager
 	{
-		internal static SUGARUnityManager Unity { get; set; }
+		internal static SUGARUnityManager unity { get; set; }
 
 		internal static SUGARClient Client { get; set; }
 
@@ -86,7 +86,19 @@ namespace PlayGen.SUGAR.Unity
 			}
 		}
 
-        internal static bool Register(SUGARUnityManager unityManager)
+		public static SUGARUnityManager Unity
+		{
+			get
+			{
+				if (unity != null)
+				{
+					return unity;
+				}
+				throw new Exception("No SUGARUnityManager found.");
+			}
+		}
+
+		internal static bool Register(SUGARUnityManager unityManager)
 		{
 			return Client == null;
 		}

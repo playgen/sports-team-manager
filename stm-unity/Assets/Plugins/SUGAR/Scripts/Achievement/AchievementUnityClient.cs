@@ -21,6 +21,11 @@ namespace PlayGen.SUGAR.Unity
 		[SerializeField]
 		private AchievementListInterface _achievementListInterface;
 
+		public bool IsActive
+		{
+			get { return _achievementListInterface && _achievementListInterface.gameObject.activeInHierarchy; }
+		}
+
 		[SerializeField]
 		private AchievementPopupInterface _achievementPopup;
 
@@ -71,7 +76,7 @@ namespace PlayGen.SUGAR.Unity
 		{
 			if (_achievementListInterface.gameObject.activeSelf)
 			{
-				SUGARManager.Unity.DisableObject(_achievementListInterface.gameObject);
+				SUGARManager.unity.DisableObject(_achievementListInterface.gameObject);
 			}
 		}
 

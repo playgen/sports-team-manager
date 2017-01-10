@@ -44,7 +44,18 @@ namespace PlayGen.SUGAR.Unity
 		private bool _useLeaderboards = true;
 		[SerializeField]
 		private GameObject _uiBlocker;
-		private List<GameObject> _blockQueue = new List<GameObject>();
+		private readonly List<GameObject> _blockQueue = new List<GameObject>();
+
+		public bool AnyActiveUI
+		{
+			get
+			{
+				return (SUGARManager.account && SUGARManager.account.IsActive) ||
+						(SUGARManager.achievement && SUGARManager.achievement.IsActive) ||
+						(SUGARManager.gameLeaderboard && SUGARManager.gameLeaderboard.IsActive) ||
+						(SUGARManager.leaderboard && SUGARManager.leaderboard.IsActive);
+			}
+		}
 
 		private void Awake()
 		{
@@ -58,7 +69,7 @@ namespace PlayGen.SUGAR.Unity
 				return;
 			}
 
-			SUGARManager.Unity = this;
+			SUGARManager.unity = this;
 			SUGARManager.GameId = _gameId;
 			SUGARManager.account = GetComponent<AccountUnityClient>();
 			SUGARManager.achievement = _useAchievements ? GetComponent<AchievementUnityClient>() : null;
@@ -73,7 +84,7 @@ namespace PlayGen.SUGAR.Unity
 			}
 		}
 
-		public bool LoadConfig()
+		private bool LoadConfig()
 		{
 			var path = ConfigPath;
 			if (File.Exists(ConfigPath))
@@ -97,7 +108,7 @@ namespace PlayGen.SUGAR.Unity
 			SetUpClient();
 		}
 
-		public void SetUpClient()
+		private void SetUpClient()
 		{
 			SUGARManager.Client = new SUGARClient(_baseAddress);
 			if (_useLeaderboards)

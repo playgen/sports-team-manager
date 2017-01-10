@@ -45,13 +45,13 @@ namespace PlayGen.SUGAR.Unity
 			_topButton.onClick.AddListener(delegate { UpdateFilter(0); });
 			_nearButton.onClick.AddListener(delegate { UpdateFilter(1); });
 			_friendsButton.onClick.AddListener(delegate { UpdateFilter(2); });
-			_closeButton.onClick.AddListener(delegate { SUGARManager.Unity.DisableObject(gameObject); });
-			_signinButton.onClick.AddListener(delegate { AttemptSignIn(); });
+			_closeButton.onClick.AddListener(delegate { SUGARManager.unity.DisableObject(gameObject); });
+			_signinButton.onClick.AddListener(AttemptSignIn);
 		}
 
 		private void OnEnable()
 		{
-			SUGARManager.Unity.ButtonBestFit(gameObject);
+			SUGARManager.unity.ButtonBestFit(gameObject);
 		}
 
 		internal void Display(LeaderboardFilterType filter, IEnumerable<LeaderboardStandingsResponse> standings, bool loadingSuccess = true)
@@ -65,7 +65,7 @@ namespace PlayGen.SUGAR.Unity
 		{
 			SUGARManager.Account.Hide();
 			SUGARManager.Achievement.Hide();
-			SUGARManager.Unity.EnableObject(gameObject);
+			SUGARManager.unity.EnableObject(gameObject);
 			_errorText.text = string.Empty;
 			_signinButton.gameObject.SetActive(false);
 			_topButton.interactable = true;

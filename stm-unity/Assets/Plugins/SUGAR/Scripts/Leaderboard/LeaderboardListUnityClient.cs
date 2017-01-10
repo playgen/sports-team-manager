@@ -24,6 +24,11 @@ namespace PlayGen.SUGAR.Unity
 		[SerializeField]
 		private LeaderboardListUserInterface _leaderboardListInterface;
 
+		public bool IsActive
+		{
+			get { return _leaderboardListInterface && _leaderboardListInterface.gameObject.activeInHierarchy; }
+		}
+
 		internal void CreateInterface(Canvas canvas)
 		{
 			if (_leaderboardListInterface)
@@ -54,7 +59,7 @@ namespace PlayGen.SUGAR.Unity
 		{
 			if (_leaderboardListInterface.gameObject.activeSelf)
 			{
-				SUGARManager.Unity.DisableObject(_leaderboardListInterface.gameObject);
+				SUGARManager.unity.DisableObject(_leaderboardListInterface.gameObject);
 			}
 		}
 

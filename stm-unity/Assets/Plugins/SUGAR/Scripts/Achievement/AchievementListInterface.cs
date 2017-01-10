@@ -26,13 +26,13 @@ namespace PlayGen.SUGAR.Unity
 		{
 			_previousButton.onClick.AddListener(delegate { UpdatePageNumber(-1); });
 			_nextButton.onClick.AddListener(delegate { UpdatePageNumber(1); });
-			_closeButton.onClick.AddListener(delegate { SUGARManager.Unity.DisableObject(gameObject); });
-			_signinButton.onClick.AddListener(delegate { AttemptSignIn(); });
+			_closeButton.onClick.AddListener(delegate { SUGARManager.unity.DisableObject(gameObject); });
+			_signinButton.onClick.AddListener(AttemptSignIn);
 		}
 
 		private void OnEnable()
 		{
-			SUGARManager.Unity.ButtonBestFit(gameObject);
+			SUGARManager.unity.ButtonBestFit(gameObject);
 		}
 
 		internal void Display(bool loadingSuccess)
@@ -47,7 +47,7 @@ namespace PlayGen.SUGAR.Unity
 			SUGARManager.Account.Hide();
 			SUGARManager.GameLeaderboard.Hide();
 			SUGARManager.Leaderboard.Hide();
-			SUGARManager.Unity.EnableObject(gameObject);
+			SUGARManager.unity.EnableObject(gameObject);
 			_errorText.text = string.Empty;
 			_signinButton.gameObject.SetActive(false);
 			var achievementList = SUGARManager.Achievement.Progress.Skip(_pageNumber * _achievementItems.Length).Take(_achievementItems.Length).ToList();

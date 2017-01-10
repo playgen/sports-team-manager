@@ -19,6 +19,11 @@ namespace PlayGen.SUGAR.Unity
 			get { return _loginUserInterface; }
 		}
 
+		public bool IsActive
+		{
+			get { return _loginUserInterface && _loginUserInterface.gameObject.activeInHierarchy; }
+		}
+
 		[SerializeField] private bool _allowAutoLogin;
 
 		public bool AllowAutoLogin
