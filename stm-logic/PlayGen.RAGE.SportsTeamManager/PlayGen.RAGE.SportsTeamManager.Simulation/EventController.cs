@@ -62,7 +62,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send player meeting dialogue to a CrewMember, getting their response in return
 		/// </summary>
-		public string SendMeetingEvent(string eventName, CrewMember member, Team team)
+		public List<string> SendMeetingEvent(string eventName, CrewMember member, Team team)
 		{
 			return member.SendMeetingEvent(iat, eventName, team);
 		}
@@ -103,10 +103,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						allCrewRemovals.Add(crewMember);
 					}
-					else if (crewMember.LoadBelief("Event(Retire)") != null)
-					{
-						allCrewRemovals.Add(crewMember);
-					}
 				}
 				foreach (var crewMember in allCrewRemovals)
 				{
@@ -130,9 +126,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var eventSelected = new List<KeyValuePair<CrewMember, DialogueStateActionDTO>>();
 					switch (selected.NextState)
 					{
+						case "PW":
+							//for this event, select a crew member who was not placed incorrectly
+							break;
+						case "OO":
+							//for this event, select a crew member who is placed with someone they do not get on with
+							break;
 						case "NotPicked":
-							//for this event, select a crew member who was not selected in the previous race
-							foreach (var pair in team.LineUpHistory.Last().PositionCrew)
+							//for this event, select a crew member who was not selected
+							/*foreach (var pair in team.LineUpHistory.Last().PositionCrew)
 							{
 								allCrew.Remove(pair.Value.Name);
 							}
@@ -141,21 +143,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 								continue;
 							}
 							allCrew = allCrew.OrderBy(c => Guid.NewGuid()).ToDictionary(d => d.Key, d => d.Value);
-							eventSelected.Add(new KeyValuePair<CrewMember, DialogueStateActionDTO>(allCrew.First().Value, selected));
+							eventSelected.Add(new KeyValuePair<CrewMember, DialogueStateActionDTO>(allCrew.First().Value, selected));*/
 							break;
-						case "Retirement":
-							//for this event, select a crew member who has not been selected in the past five race sessions
-							allCrew = allCrew.Where(cm => cm.Value.RestCount <= -4).ToDictionary(ac => ac.Key, ac => ac.Value);
-							foreach (var pair in team.LineUpHistory.Last().PositionCrew)
-							{
-								allCrew.Remove(pair.Value.Name);
-							}
-							if (allCrew.Count == 0)
-							{
-								continue;
-							}
-							eventSelected.Add(new KeyValuePair<CrewMember, DialogueStateActionDTO>(allCrew.OrderBy(c => Guid.NewGuid()).First().Value, selected));
-							eventSelected.ForEach(es => es.Key.UpdateSingleBelief("Event(Retire)", "1"));
+						case "IPC":
+							//for this event, select a crew member to have a conflict with another crew member
 							break;
 					}
 					eventSelected.ForEach(es => allCrew.Remove(es.Key.Name));

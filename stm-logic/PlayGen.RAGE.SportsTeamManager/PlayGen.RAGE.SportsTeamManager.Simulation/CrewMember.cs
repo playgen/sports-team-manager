@@ -409,9 +409,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send an event to the EA/RPC to get CrewMember information
 		/// </summary>
-		public string SendMeetingEvent(IntegratedAuthoringToolAsset iat, string style, Team team)
+		public List<string> SendMeetingEvent(IntegratedAuthoringToolAsset iat, string style, Team team)
 		{
-			var reply = "";
+			var reply = new List<string>();
 			List<DialogueStateActionDTO> dialogueOptions;
 			switch (style)
 			{
@@ -439,7 +439,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					//select a random reply from those available
 					if (dialogueOptions.Any())
 					{
-						reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, statName.ToLower());
+						reply.Add(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
+						reply.Add(statName.ToLower());
 					}
 					UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
 					break;
@@ -458,7 +459,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
 					if (dialogueOptions.Any())
 					{
-						reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pos.GetName());
+						reply.Add(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
+						reply.Add(pos.GetName());
 					}
 					break;
 				case "OpinionRevealPositive":
@@ -484,15 +486,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
 						if (dialogueOptions.Any())
 						{
-							if (pickedOpinionPositive.Key == team.Manager.Name)
+							reply.Add(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
+							if (pickedOpinionPositive.Key != team.Manager.Name)
 							{
-								reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+								reply.Add(pickedOpinionPositive.Key);
 							}
-							else
-							{
-								reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionPositive.Key);
-							}
-							
 						}
 						AddOrUpdateRevealedOpinion(pickedOpinionPositive.Key, pickedOpinionPositive.Value);
 					}
@@ -502,7 +500,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "None").ToName()).ToList();
 						if (dialogueOptions.Any())
 						{
-							reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+							reply.Add(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
 						}
 					}
 					break;
@@ -524,13 +522,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
 						if (dialogueOptions.Any())
 						{
-							if (pickedOpinionNegative.Key == team.Manager.Name)
+							reply.Add(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
+							if (pickedOpinionNegative.Key != team.Manager.Name)
 							{
-								reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
-							}
-							else
-							{
-								reply = string.Format(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance, pickedOpinionNegative.Key);
+								reply.Add(pickedOpinionNegative.Key);
 							}
 						}
 						AddOrUpdateRevealedOpinion(pickedOpinionNegative.Key, pickedOpinionNegative.Value);
@@ -540,7 +535,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "None").ToName()).ToList();
 						if (dialogueOptions.Any())
 						{
-							reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
+							reply.Add(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
 						}
 					}
 					break;
@@ -622,30 +617,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					replies.Add(selectedNext);
 				}
 				TickUpdate();
-			}
-			//if the CrewMember is planning to retire
-			if (afterRaceSession && !string.IsNullOrEmpty(LoadBelief("Event(Retire)")))
-			{
-				//update retirement countdown belief
-				UpdateSingleBelief("Event(Retire)", (Convert.ToInt32(LoadBelief("Event(Retire)")) - 1).ToString());
-				//if countdown has reached zero
-				if (Convert.ToInt32(LoadBelief("Event(Retire)")) == 0)
-				{
-					//send event on record this event being triggered
-					var eventString = "PostRace(RetirementTriggered)";
-					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
-					if (eventRpc != null)
-					{
-						RolePlayCharacter.ActionFinished(eventRpc);
-					}
-					team.RetireCrew(this);
-					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "RetirementTriggered".ToName()).ToList();
-					if (dialogueOptions.Any())
-					{
-						var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
-						replies.Add(selectedNext);
-					}
-				}
 			}
 			return replies.OrderBy(o => Guid.NewGuid()).ToArray();
 		}

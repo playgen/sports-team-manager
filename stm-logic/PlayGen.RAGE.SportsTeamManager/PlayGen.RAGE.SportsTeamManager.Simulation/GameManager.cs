@@ -637,7 +637,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send player meeting dialogue to a CrewMember, getting their response in return
 		/// </summary>
-		public string SendMeetingEvent(string eventName, CrewMember member)
+		public List<string> SendMeetingEvent(string eventName, CrewMember member)
 		{
 			var cost = (int)GetConfigValue((ConfigKeys)Enum.Parse(typeof(ConfigKeys), eventName + "Cost"));
 			if (cost <= ActionAllowance)
@@ -646,7 +646,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				DeductCost(cost);
 				return reply;
 			}
-			return "";
+			return new List<string>();
 		}
 
 		/// <summary>

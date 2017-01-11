@@ -6,94 +6,87 @@
 			"AgentDialogues": [
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "Retirement",
-					"Meaning": ["Retirement"],
-					"Style": ["Retirement"],
-					"Utterance": ""
-				}, 
+					"NextState": "PWAvoidingAvoiding",
+					"Meaning": ["PWAvoidingAvoiding"],
+					"Style": ["PWAvoidingAvoiding"],
+					"Utterance": "PWAvoidingAvoidingLP"
+				},
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedAfterSorry",
-					"Meaning": ["NotPickedAfterSorry"],
-					"Style": ["NotPickedAfterSorry"],
-					"Utterance": ""
-				}, 
+					"NextState": "PWCompetingCompeting",
+					"Meaning": ["PWCompetingCompeting"],
+					"Style": ["PWCompetingCompeting"],
+					"Utterance": "PWCompetingCompetingLP"
+				},
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedFiredNo",
-					"Meaning": ["NotPickedFiredNo"],
-					"Style": ["NotPickedFiredNo"],
-					"Utterance": ""
-				}, 
+					"NextState": "PWAccomodatingAccomodating",
+					"Meaning": ["PWAccomodatingAccomodating"],
+					"Style": ["PWAccomodatingAccomodating"],
+					"Utterance": "PWAccomodatingAccomodatingLP"
+				},
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedFiredYes",
-					"Meaning": ["NotPickedFiredYes"],
-					"Style": ["NotPickedFiredYes"],
-					"Utterance": ""
-				}, 
+					"NextState": "PWCollaboratingAvoiding",
+					"Meaning": ["PWCollaboratingAvoiding"],
+					"Style": ["PWCollaboratingAvoiding"],
+					"Utterance": "PWCollaboratingAvoidingLP"
+				},
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedSkillIncorrect",
-					"Meaning": ["NotPickedSkillIncorrect"],
-					"Style": ["NotPickedSkillIncorrect"],
-					"Utterance": ""
-				}, 
+					"NextState": "PWAvoidingCollaboratingCollaborating",
+					"Meaning": ["PWAvoidingCollaboratingCollaborating"],
+					"Style": ["PWAvoidingCollaboratingCollaborating"],
+					"Utterance": "PWAvoidingCollaboratingCollaboratingLP"
+				},
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedSkillFriends",
-					"Meaning": ["NotPickedSkillFriends"],
-					"Style": ["NotPickedSkillFriends"],
-					"Utterance": ""
-				}, 
+					"NextState": "PWAvoidingCollaboratingAvoiding",
+					"Meaning": ["PWAvoidingCollaboratingAvoiding"],
+					"Style": ["PWAvoidingCollaboratingAvoiding"],
+					"Utterance": "PWAvoidingCollaboratingAvoidingLP"
+				},
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedSkillTrain",
-					"Meaning": ["NotPickedSkillTrain"],
-					"Style": ["NotPickedSkillTrain"],
-					"Utterance": ""
-				}, 
+					"NextState": "PWCompetingAccomodatingAccomodating",
+					"Meaning": ["PWCompetingAccomodatingAccomodating"],
+					"Style": ["PWCompetingAccomodatingAccomodating"],
+					"Utterance": "PWCompetingAccomodatingAccomodatingLP"
+				},
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedSkillNothing",
-					"Meaning": ["NotPickedSkillNothing"],
-					"Style": ["NotPickedSkillNothing"],
-					"Utterance": ""
-				}, 
+					"NextState": "PWCompetingAccomodatingCompeting",
+					"Meaning": ["PWCompetingAccomodatingCompeting"],
+					"Style": ["PWCompetingAccomodatingCompeting"],
+					"Utterance": "PWCompetingAccomodatingCompetingLP"
+				},
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedSkillLeave",
-					"Meaning": ["NotPickedSkillLeave"],
-					"Style": ["NotPickedSkillLeave"],
-					"Utterance": ""
-				}, 
+					"NextState": "PWAccomodatingCompetingCompeting",
+					"Meaning": ["PWAccomodatingCompetingCompeting"],
+					"Style": ["PWAccomodatingCompetingCompeting"],
+					"Utterance": "PWAccomodatingCompetingCompetingLP"
+				},
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedSorry",
-					"Meaning": ["NotPickedSorry"],
-					"Style": ["NotPickedSorry"],
-					"Utterance": ""
-				}, 
+					"NextState": "PWAccomodatingCompetingAccomodating",
+					"Meaning": ["PWAccomodatingCompetingAccomodating"],
+					"Style": ["PWAccomodatingCompetingAccomodating"],
+					"Utterance": "PWAccomodatingCompetingAccomodatingLP"
+				},
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedSorryAgain",
-					"Meaning": ["NotPickedSorryAgain"],
-					"Style": ["NotPickedSorryAgain"],
-					"Utterance": ""
-				}, 
+					"NextState": "PWCollaboratingCollaboratingCollaborating",
+					"Meaning": ["PWCollaboratingCollaboratingCollaborating"],
+					"Style": ["PWCollaboratingCollaboratingCollaborating"],
+					"Utterance": "PWCollaboratingCollaboratingCollaboratingLP"
+				},
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "PickedAfterSorry",
-					"Meaning": ["PickedAfterSorry"],
-					"Style": ["PickedAfterSorry"],
-					"Utterance": ""
-				}, 
-				{
-					"CurrentState": "LearningPill",
-					"NextState": "RetirementTriggered",
-					"Meaning": ["RetirementTriggered"],
-					"Style": ["RetirementTriggered"],
-					"Utterance": ""
+					"NextState": "PWCollaboratingCollaboratingAvoiding",
+					"Meaning": ["PWCollaboratingCollaboratingAvoiding"],
+					"Style": ["PWCollaboratingCollaboratingAvoiding"],
+					"Utterance": "PWCollaboratingCollaboratingAvoidingLP"
 				}]
 		},
 	"types": [

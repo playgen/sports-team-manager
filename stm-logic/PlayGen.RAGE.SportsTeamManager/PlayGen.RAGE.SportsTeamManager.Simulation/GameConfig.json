@@ -21,21 +21,6 @@
 		}
 	],
 	"EventTriggers": [
-		{
-			"EventName": "NotPicked",
-			"RaceTrigger": 2
-		},
-		{
-			"EventName": "NotPicked",
-			"RaceTrigger": 3,
-			"Random": true,
-			"RepeatEvery": 5
-		},
-		{
-			"EventName": "Retirement",
-			"RaceTrigger": 5,
-			"Random": true,
-			"RepeatEvery": 5
-		}
+		
 	]
 }

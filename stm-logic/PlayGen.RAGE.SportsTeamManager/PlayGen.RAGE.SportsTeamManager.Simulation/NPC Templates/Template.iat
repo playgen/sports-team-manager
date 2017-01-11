@@ -9,133 +9,133 @@
 					"NextState": "-",
 					"Meaning": ["RoleReveal"],
 					"Style": ["RoleReveal"],
-					"Utterance": "What role do you think you can do well in?"
+					"Utterance": "RoleReveal"
 				}, 
 				{
 					"CurrentState": "StatReveal",
 					"NextState": "-",
 					"Meaning": ["StatReveal"],
 					"Style": ["StatReveal"],
-					"Utterance": "Tell me more about your skillset"
+					"Utterance": "StatReveal"
 				}, 
 				{
 					"CurrentState": "OpinionRevealPositive",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealPositive"],
 					"Style": ["OpinionRevealPositive"],
-					"Utterance": "Are you getting on well with any of your teammates?"
+					"Utterance": "OpinionRevealPositiveQuestion"
 				}, 
 				{
 					"CurrentState": "OpinionRevealNegative",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealNegative"],
 					"Style": ["OpinionRevealNegative"],
-					"Utterance": "Is there any conflict between you and someome else on the team?"
+					"Utterance": "OpinionRevealNegativeQuestion"
 				}, 
 				{
 					"CurrentState": "RecruitBody",
 					"NextState": "-",
 					"Meaning": ["RecruitBody"],
 					"Style": ["RecruitBody"],
-					"Utterance": "You excel at exercise"
+					"Utterance": "RecruitBody"
 				}, 
 				{
 					"CurrentState": "RecruitPerception",
 					"NextState": "-",
 					"Meaning": ["RecruitPerception"],
 					"Style": ["RecruitPerception"],
-					"Utterance": "You are aware of your surroundings"
+					"Utterance": "RecruitPerception"
 				}, 
 				{
 					"CurrentState": "RecruitQuickness",
 					"NextState": "-",
 					"Meaning": ["RecruitQuickness"],
 					"Style": ["RecruitQuickness"],
-					"Utterance": "You are the first to react in a situation"
+					"Utterance": "RecruitQuickness"
 				}, 
 				{
 					"CurrentState": "RecruitWillpower",
 					"NextState": "-",
 					"Meaning": ["RecruitWillpower"],
 					"Style": ["RecruitWillpower"],
-					"Utterance": "You keep calm whilst under heavy pressure"
+					"Utterance": "RecruitWillpower"
 				}, 
 				{
 					"CurrentState": "RecruitWisdom",
 					"NextState": "-",
 					"Meaning": ["RecruitWisdom"],
 					"Style": ["RecruitWisdom"],
-					"Utterance": "You are the one people look toward for decisions"
+					"Utterance": "RecruitWisdom"
 				}, 
 				{
 					"CurrentState": "RecruitCharisma",
 					"NextState": "-",
 					"Meaning": ["RecruitCharisma"],
 					"Style": ["RecruitCharisma"],
-					"Utterance": "You talk and others listen to every word"
+					"Utterance": "RecruitCharisma"
 				}, 
 				{
 					"CurrentState": "NotPicked",
 					"NextState": "NotPickedSorry",
 					"Meaning": ["NotPickedSorry"],
 					"Style": ["NotPickedSorry"],
-					"Utterance": "Sorry, you really should've been in that team. I'll try to make sure you're in for the next race."
+					"Utterance": "NotPickedSorry"
 				}, 
 				{
 					"CurrentState": "NotPicked",
 					"NextState": "NotPickedSkill",
 					"Meaning": ["NotPickedSkill"],
 					"Style": ["NotPickedSkill"],
-					"Utterance": "You weren't picked because everyone else out there was better."
+					"Utterance": "NotPickedSkill"
 				}, 
 				{
 					"CurrentState": "NotPicked",
 					"NextState": "NotPickedFired",
 					"Meaning": ["NotPickedFired"],
 					"Style": ["NotPickedFired"],
-					"Utterance": "How dare you question me?! You're fired!"
+					"Utterance": "NotPickedFired"
 				}, 
 				{
 					"CurrentState": "NotPickedFiredQuestion",
 					"NextState": "NotPickedFiredYes",
 					"Meaning": ["NotPickedFiredYes"],
 					"Style": ["NotPickedFiredYes"],
-					"Utterance": "Yes. Now get out of my office."
+					"Utterance": "NotPickedFiredYes"
 				}, 
 				{
 					"CurrentState": "NotPickedFiredQuestion",
 					"NextState": "NotPickedFiredNo",
 					"Meaning": ["NotPickedFiredNo"],
 					"Style": ["NotPickedFiredNo"],
-					"Utterance": "Ha, almost got you there! I'm still not picking you though."
+					"Utterance": "NotPickedFiredNo"
 				}, 
 				{
 					"CurrentState": "NotPickedSkillQuestion",
 					"NextState": "NotPickedSkillTrain",
 					"Meaning": ["NotPickedSkillTrain"],
 					"Style": ["NotPickedSkillTrain"],
-					"Utterance": "Keep training and hopefully you'll be good enough for the crew soon."
+					"Utterance": "NotPickedSkillTrain"
 				}, 
 				{
 					"CurrentState": "NotPickedSkillQuestion",
 					"NextState": "NotPickedSkillFriends",
 					"Meaning": ["NotPickedSkillFriends"],
 					"Style": ["NotPickedSkillFriends"],
-					"Utterance": "Try and become more friendly with the rest of the crew, it could help you get a place."
+					"Utterance": "NotPickedSkillFriends"
 				}, 
 				{
 					"CurrentState": "NotPickedSkillQuestion",
 					"NextState": "NotPickedSkillNothing",
 					"Meaning": ["NotPickedSkillNothing"],
 					"Style": ["NotPickedSkillNothing"],
-					"Utterance": "Nothing really. Guess you're stuck on the bench."
+					"Utterance": "NotPickedSkillNothing"
 				}, 
 				{
 					"CurrentState": "NotPickedSkillQuestion",
 					"NextState": "NotPickedSkillLeave",
 					"Meaning": ["NotPickedSkillLeave"],
 					"Style": ["NotPickedSkillLeave"],
-					"Utterance": "Leave the team. You're not likely to get a place any time soon."
+					"Utterance": "NotPickedSkillLeave"
 				}],
 			"AgentDialogues": [
 				{
@@ -143,91 +143,91 @@
 					"NextState": "-",
 					"Meaning": ["StatRevealBad"],
 					"Style": ["StatRevealBad"],
-					"Utterance": "My {0} is one of my weaknesses."
+					"Utterance": "StatRevealBad"
 				}, 
 				{
 					"CurrentState": "StatRevealMiddle",
 					"NextState": "-",
 					"Meaning": ["StatRevealMiddle"],
 					"Style": ["StatRevealMiddle"],
-					"Utterance": "My {0} is fairly average."
+					"Utterance": "StatRevealMiddle"
 				}, 
 				{
 					"CurrentState": "StatRevealGood",
 					"NextState": "-",
 					"Meaning": ["StatRevealGood"],
 					"Style": ["StatRevealGood"],
-					"Utterance": "My {0} is one of my strongest areas."
+					"Utterance": "StatRevealGood"
 				}, 
 				{
 					"CurrentState": "RoleRevealGood",
 					"NextState": "-",
 					"Meaning": ["RoleRevealGood"],
 					"Style": ["RoleRevealGood"],
-					"Utterance": "{0} is one of my better roles, so feel free to consider me for that place."
+					"Utterance": "RoleRevealGood"
 				}, 
 				{
 					"CurrentState": "InterviewIntro",
 					"NextState": "-",
 					"Meaning": ["InterviewIntro"],
 					"Style": ["InterviewIntro"],
-					"Utterance": "You wanted to see me?"
+					"Utterance": "InterviewIntro"
 				}, 
 				{
 					"CurrentState": "RoleRevealBad",
 					"NextState": "-",
 					"Meaning": ["RoleRevealBad"],
 					"Style": ["RoleRevealBad"],
-					"Utterance": "You don't want to put me in as {0}, I won't do very well."
+					"Utterance": "RoleRevealBad"
 				}, 
 				{
 					"CurrentState": "OpinionRevealPositive",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealPositive"],
 					"Style": ["OpinionRevealPositive"],
-					"Utterance": "I somewhat get along with {0}."
+					"Utterance": "OpinionRevealPositiveAnswer"
 				}, 
 				{
 					"CurrentState": "OpinionRevealNegative",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealNegative"],
 					"Style": ["OpinionRevealNegative"],
-					"Utterance": "Myself and {0} aren't on the best of terms."
+					"Utterance": "OpinionRevealNegativeAnswer"
 				}, 
 				{
 					"CurrentState": "OpinionRevealPositiveHigh",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealPositiveHigh"],
 					"Style": ["OpinionRevealPositiveHigh"],
-					"Utterance": "I'm good friends with {0}."
+					"Utterance": "OpinionRevealPositiveHigh"
 				}, 
 				{
 					"CurrentState": "OpinionRevealNegativeHigh",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealNegativeHigh"],
 					"Style": ["OpinionRevealNegativeHigh"],
-					"Utterance": "I don't get along with {0} at all."
+					"Utterance": "OpinionRevealNegativeHigh"
 				}, 
 				{
 					"CurrentState": "OpinionRevealNegativeNone",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealNegativeNone"],
 					"Style": ["OpinionRevealNegativeNone"],
-					"Utterance": "None come to mind, thankfully."
+					"Utterance": "OpinionRevealNegativeNone"
 				}, 
 				{
 					"CurrentState": "OpinionRevealPositiveNone",
 					"NextState": "-",
 					"Meaning": ["OpinionRevealPositiveNone"],
 					"Style": ["OpinionRevealPositiveNone"],
-					"Utterance": "Nobody comes to mind."
+					"Utterance": "OpinionRevealPositiveNone"
 				}, 
 				{
 					"CurrentState": "StrongAgree",
 					"NextState": "-",
 					"Meaning": ["StrongAgree"],
 					"Style": ["StrongAgree"],
-					"Utterance": "Strongly Agree"
+					"Utterance": "StrongAgree"
 				}, 
 				{
 					"CurrentState": "Agree",
@@ -248,161 +248,14 @@
 					"NextState": "-",
 					"Meaning": ["StrongDisagree"],
 					"Style": ["StrongDisagree"],
-					"Utterance": "Strongly Disagree"
+					"Utterance": "StrongDisagree"
 				}, 
 				{
 					"CurrentState": "Neither",
 					"NextState": "-",
 					"Meaning": ["Neither"],
 					"Style": ["Neither"],
-					"Utterance": "Neither agree or disagree"
-				}, 
-				{
-					"CurrentState": "PostRaceEventStart",
-					"NextState": "NotPicked",
-					"Meaning": ["NotPicked"],
-					"Style": ["Race", "Practice"],
-					"Utterance": "Hey boss, why didn't you pick me in that last line-up?"
-				}, 
-				{
-					"CurrentState": "NotPickedSorry",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "Thanks for saying that, I look forward to being in the next race."
-				}, 
-				{
-					"CurrentState": "NotPickedSkill",
-					"NextState": "NotPickedSkillQuestion",
-					"Meaning": ["NotPickedSkillQuestion"],
-					"Style": ["NotPickedSkillQuestion"],
-					"Utterance": "Yeah, you're right. What should I do about it?"
-				}, 
-				{
-					"CurrentState": "NotPickedFired",
-					"NextState": "NotPickedFiredQuestion",
-					"Meaning": ["NotPickedFiredQuestion"],
-					"Style": ["NotPickedFiredQuestion"],
-					"Utterance": "Fired?! I only asked! I mean, are you sure? The rest of the crew may not be too pleased about this!"
-				}, 
-				{
-					"CurrentState": "NotPickedSkillIncorrect",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "Er, no. There was a position on that crew I would've been better in."
-				}, 
-				{
-					"CurrentState": "NotPickedSorryAgain",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "You said that last time as well, still didn't select me for the next race..."
-				}, 
-				{
-					"CurrentState": "NotPickedSkillTrain",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "Thanks, that gives me hope that I'll be able to work my way into the crew soon."
-				}, 
-				{
-					"CurrentState": "NotPickedSkillFriends",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "Thanks for the advice, I'll try my best to bond better with other crew mates."
-				}, 
-				{
-					"CurrentState": "NotPickedSkillNothing",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "Oh, well... OK. That's pretty discouraging to hear."
-				}, 
-				{
-					"CurrentState": "NotPickedSkillLeave",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "Well, if you think it's for the best. The rest of the crew might not be too pleased about this though."
-				}, 
-				{
-					"CurrentState": "NotPickedFiredYes",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OK then, if you say so. That attitude won't get you very far though..."
-				}, 
-				{
-					"CurrentState": "NotPickedFiredNo",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "Thanks, real funny..."
-				}, 
-				{
-					"CurrentState": "NotPickedAfterSorry",
-					"NextState": "-",
-					"Meaning": ["NotPickedAfterSorry"],
-					"Style": ["After"],
-					"Utterance": "So much for picking me for this race, I guess..."
-				}, 
-				{
-					"CurrentState": "PickedAfterSorry",
-					"NextState": "-",
-					"Meaning": ["PickedAfterSorry"],
-					"Style": ["After"],
-					"Utterance": "Thanks for sticking to your word and picking me for that race."
-				}, 
-				{
-					"CurrentState": "PostRaceEventStart",
-					"NextState": "Retirement",
-					"Meaning": ["Retirement"],
-					"Style": ["Race"],
-					"Utterance": "Well, I've had enough of not being picked. I'm going to retire after the next race, no matter what."
-				}, 
-				{
-					"CurrentState": "RetirementTriggered",
-					"NextState": "-",
-					"Meaning": ["RetirementTriggered"],
-					"Style": ["After"],
-					"Utterance": "Off I go. See you round on the sailing circuit!"
-				}, 
-				{
-					"CurrentState": "RetirementTriggered",
-					"NextState": "-",
-					"Meaning": ["RetirementTriggered"],
-					"Style": ["After"],
-					"Utterance": "Late wake-ups and lazy days, here I come. Retirement doesn't sound so bad after all..."
-				}, 
-				{
-					"CurrentState": "OpinionRevealNegativeManager",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealNegativeManager"],
-					"Style": ["OpinionRevealNegativeManager"],
-					"Utterance": "Myself and you aren't on the best of terms."
-				}, 
-				{
-					"CurrentState": "OpinionRevealNegativeHighManager",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealNegativeHighManager"],
-					"Style": ["OpinionRevealNegativeHighManager"],
-					"Utterance": "I don't get along with you at all."
-				}, 
-				{
-					"CurrentState": "OpinionRevealPositiveHighManager",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealPositiveHighManager"],
-					"Style": ["OpinionRevealPositiveHighManager"],
-					"Utterance": "I'm good friends with you."
-				}, 
-				{
-					"CurrentState": "OpinionRevealPositiveManager",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealPositiveManager"],
-					"Style": ["OpinionRevealPositiveManager"],
-					"Utterance": "I somewhat get along with you."
+					"Utterance": "Neither"
 				}]
 		},
 	"types": [
