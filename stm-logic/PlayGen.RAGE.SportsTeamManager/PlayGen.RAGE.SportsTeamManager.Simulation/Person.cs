@@ -59,12 +59,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			si.SaveConfigurationToFile(Path.Combine(storageLocation, fileName + ".si"));
 			//add character to iat asset
 			rpc.SaveConfigurationToFile(Path.Combine(storageLocation, fileName + ".rpc"));
-			iat.AddNewCharacterSource(new CharacterSourceDTO { Name = rpc.BodyName, Source = fileName + ".rpc" });
 			//assign asset files to RPC
 			rpc.EmotionalAppraisalAssetSource = fileName + ".ea";
 			rpc.EmotionalDecisionMakingSource = fileName + ".edm";
 			rpc.SocialImportanceAssetSource = fileName + ".si";
 			rpc.SaveConfigurationToFile(Path.Combine(storageLocation, fileName + ".rpc"));
+			iat.AddNewCharacterSource(new CharacterSourceDTO { Name = rpc.BodyName, Source = fileName + ".rpc" });
 			//store RPC locally
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(Path.Combine(storageLocation, fileName + ".rpc"));
 			RolePlayCharacter.Initialize();

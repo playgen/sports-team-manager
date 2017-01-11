@@ -261,11 +261,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Dictionary<CrewMember, DialogueStateActionDTO> SendPostRaceEvent(Dictionary<CrewMember, DialogueStateActionDTO> selected, Team team, Boat previous)
 		{
 			var replies = new Dictionary<CrewMember, DialogueStateActionDTO>();
+			var possibleDialogue = GetEventDialogues(team.Manager);
+			SavePossibleMeaningCount(team.Manager, possibleDialogue.Values.SelectMany(pd => pd.Select(d => d.Meaning)).ToList());
+			SavePossibleStyleCount(team.Manager, possibleDialogue.Values.SelectMany(pd => pd.Select(d => d.Style)).ToList());
 			foreach (var response in selected)
 			{
 				var replyCount = PostRaceEvents[0].FindIndex(pre => pre.Key == response.Key);
 				var reply = response.Key.SendPostRaceEvent(iat, response.Value, team, previous);
 				team.Manager.UpdateSingleBelief(string.Format("PRECrew0({0})", replyCount), response.Key.Name.NoSpaces());
+				SaveMeaningSelected(team.Manager, response.Value.Meaning);
+				SaveStyleSelected(team.Manager, response.Value.Meaning);
 				if (reply != null)
 				{
 					replies.Add(response.Key, reply);
@@ -292,6 +297,52 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			manager.SaveStatus();
+		}
+
+		private void SavePossibleMeaningCount(Person manager, List<string[]> possibleMeanings)
+		{
+			foreach (var meanings in possibleMeanings)
+			{
+				foreach (var meaning in meanings)
+				{
+					int currentCount;
+					int.TryParse(manager.LoadBelief(string.Format("PossibleMeaning({0})", meaning)), out currentCount);
+					manager.UpdateSingleBelief(string.Format("PossibleMeaning({0})", meaning), (currentCount + 1).ToString());
+				}
+			}
+		}
+
+		private void SavePossibleStyleCount(Person manager, List<string[]> possibleStyles)
+		{
+			foreach (var styles in possibleStyles)
+			{
+				foreach (var style in styles)
+				{
+					int currentCount;
+					int.TryParse(manager.LoadBelief(string.Format("PossibleStyle({0})", style)), out currentCount);
+					manager.UpdateSingleBelief(string.Format("PossibleStyle({0})", style), (currentCount + 1).ToString());
+				}
+			}
+		}
+
+		private void SaveMeaningSelected(Person manager, string[] meanings)
+		{
+			foreach (var meaning in meanings)
+			{
+				int currentCount;
+				int.TryParse(manager.LoadBelief(string.Format("Meaning({0})", meaning)), out currentCount);
+				manager.UpdateSingleBelief(string.Format("Meaning({0})", meaning), (currentCount + 1).ToString());
+			}
+		}
+
+		private void SaveStyleSelected(Person manager, string[] styles)
+		{
+			foreach (var style in styles)
+			{
+				int currentCount;
+				int.TryParse(manager.LoadBelief(string.Format("Style({0})", style)), out currentCount);
+				manager.UpdateSingleBelief(string.Format("Style({0})", style), (currentCount + 1).ToString());
+			}
 		}
 
 		public void SaveEvents(Person manager)
