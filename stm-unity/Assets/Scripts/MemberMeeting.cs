@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+
+using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 
 /// <summary>
@@ -38,7 +40,7 @@ public class MemberMeeting : MonoBehaviour
 	/// <summary>
 	/// Send question asked by player to CrewMember, get their reply in response
 	/// </summary>
-	public string AskQuestion(string eventKey, CrewMember crewMember)
+	public List<string> AskQuestion(string eventKey, CrewMember crewMember)
 	{
 		return _gameManager.SendMeetingEvent(eventKey, crewMember);
 	}

@@ -35,7 +35,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 			transform.SetAsLastSibling();
 			_popUpBlocker.gameObject.SetActive(true);
 			_popUpBlocker.onClick.RemoveAllListeners();
-			StartCoroutine(Animate(true, further, tip));
+			StartCoroutine(Animate(true, further, Localization.Get(tip)));
 		}
 	}
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -41,7 +42,8 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	[SerializeField]
 	private Icon[] _opinionSprites;
 
-	private bool _questionAsked;
+	private string _lastQuestion;
+	private Dictionary<CrewMember, string> _lastAnswers;
 	private string _currentSelected;
 
 	private void Awake()
@@ -52,7 +54,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	private void OnEnable()
 	{
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Recruitment", "RecruitmentPopUpOpened", AlternativeTracker.Alternative.Menu));
-		_questionAsked = false;
+		_lastQuestion = null;
 		ResetDisplay();
 		_popUpBlocker.transform.SetAsLastSibling();
 		transform.SetAsLastSibling();
@@ -157,7 +159,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			_questionButtons[i].gameObject.SetActive(true);
 			_questionButtons[i].interactable = true;
 			var questionText = _recruitMember.GetQuestionText("Recruit" + selected).OrderBy(s => Guid.NewGuid()).First();
-			_questionButtons[i].transform.Find("Text").GetComponent<Text>().text = questionText;
+			_questionButtons[i].transform.Find("Text").GetComponent<Text>().text = Localization.Get(questionText);
 			_questionButtons[i].transform.Find("Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost).ToString();
 			_questionButtons[i].onClick.RemoveAllListeners();
 			_questionButtons[i].onClick.AddListener(delegate { AskQuestion(selected, questionText); });
@@ -185,15 +187,16 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	/// </summary>
 	public void AskQuestion(CrewMemberSkill skill, string questionText)
 	{
-		_questionAsked = true;
 		SetDialogueText(questionText);
+		_lastQuestion = questionText;
 		var replies = _recruitMember.AskQuestion(skill);
+		_lastAnswers = replies;
 		foreach (var recruit in _recruitUI)
 		{
 			var reply = replies.FirstOrDefault(r => r.Key.Name == recruit.name);
 			if (reply.Key != null)
 			{
-				recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = reply.Value;
+				recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = Localization.Get(reply.Value);
 				recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = true;
 				recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value).Image;
 				recruit.transform.Find("Image").GetComponentInChildren<AvatarDisplay>().UpdateMood(reply.Key.Avatar, reply.Value);
@@ -209,7 +212,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	/// </summary>
 	private void SetDialogueText(string text)
 	{
-		_dialogueText.text = text;
+		_dialogueText.text = Localization.Get(text);
 	}
 
 	/// <summary>
@@ -285,7 +288,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 
 	private void OnLanguageChange()
 	{
-		if (!_questionAsked)
+		if (_lastQuestion == null)
 		{
 			SetDialogueText(Localization.Get("RECRUITMENT_INTRO"));
 		}
@@ -299,5 +302,24 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			_hireWarningText.text = Localization.GetAndFormat("HIRE_WARNING_POSSIBLE", false, _currentSelected);
 			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("NO", true);
 		}
+		var skills = (CrewMemberSkill[])Enum.GetValues(typeof(CrewMemberSkill));
+		for (var i = 0; i < _questionButtons.Length; i++)
+		{
+			var selected = skills[i];
+			var questionText = _recruitMember.GetQuestionText("Recruit" + selected).OrderBy(s => Guid.NewGuid()).First();
+			_questionButtons[i].transform.Find("Text").GetComponent<Text>().text = Localization.Get(questionText);
+		}
+		foreach (var recruit in _recruitUI)
+		{
+			var reply = _lastAnswers.FirstOrDefault(r => r.Key.Name == recruit.name);
+			if (reply.Key != null)
+			{
+				recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = Localization.Get(reply.Value);
+				recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = true;
+				recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value).Image;
+				recruit.transform.Find("Image").GetComponentInChildren<AvatarDisplay>().UpdateMood(reply.Key.Avatar, reply.Value);
+			}
+		}
+		SetDialogueText(_lastQuestion);
 	}
 }

@@ -41,7 +41,7 @@ public class Localization : MonoBehaviour
 
 	private const string EmptyStringText = "XXXX";
 
-	public static string FilePath = "StringLocalizations";
+	public static string FilePath = "Localization";
 	public static Language SelectedLanguage { get; set; }
 	public static Language DefaultLanguage = Language.English;
 	public static event Action LanguageChange = delegate { };
@@ -70,25 +70,28 @@ public class Localization : MonoBehaviour
 
 	private static void GetLocalizationDictionary()
 	{
-		TextAsset jsonTextAsset = Resources.Load(FilePath) as TextAsset;
+		TextAsset[] jsonTextAssets = Resources.LoadAll("Localization", typeof(TextAsset)).Cast<TextAsset>().ToArray();
 
-		var N = JSON.Parse(jsonTextAsset.text);
 		foreach (Language l in Enum.GetValues(typeof(Language)))
 		{
 			var fieldInfo = typeof(Language).GetField(l.ToString());
 			var attributes = (NameAttribute[])fieldInfo.GetCustomAttributes(typeof(NameAttribute), false);
 			var languageHeader = attributes.Any() ? attributes.First().Name : l.ToString();
 			Dictionary<string, string> languageStrings = new Dictionary<string, string>();
-			for (int i = 0; i < N.Count; i++)
+			foreach (var textAsset in jsonTextAssets)
 			{
-				//go through the list and add the strings to the dictionary
-				if (N[i][languageHeader] != null)
+				var N = JSON.Parse(textAsset.text);
+				for (int i = 0; i < N.Count; i++)
 				{
-					string key = N[i][0].ToString();
-					key = key.Replace("\"", "").ToUpper();
-					string value = N[i][languageHeader].ToString();
-					value = value.Replace("\"", "");
-					languageStrings[key] = value;
+					//go through the list and add the strings to the dictionary
+					if (N[i][languageHeader] != null)
+					{
+						string key = N[i][0].ToString();
+						key = key.Replace("\"", "").ToUpper();
+						string value = N[i][languageHeader].ToString();
+						value = value.Replace("\"", "");
+						languageStrings[key] = value;
+					}
 				}
 			}
 			LocalizationDict[l] = languageStrings;

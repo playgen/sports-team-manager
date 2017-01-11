@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -53,7 +54,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	private Image _allowanceBar;
 	[SerializeField]
 	private Text _allowanceText;
-	private bool _postQuestion;
+	private List<string> _lastReply;
 	[SerializeField]
 	private HoverPopUpUI _hoverPopUp;
 
@@ -81,6 +82,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 			}
 		}
 		_positionUI.ChangeBlockerOrder();
+		_lastReply = null;
 		Localization.LanguageChange -= OnLanguageChange;
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name);
 	}
@@ -131,9 +133,8 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	/// <summary>
 	/// Populate the information required in the pop-up
 	/// </summary>
-	public void Display(bool postQuestion = false)
+	public void Display()
 	{
-		_postQuestion = postQuestion;
 		//ActionAllowance display
 		_allowanceBar.fillAmount = _memberMeeting.QuestionAllowance() / (float)_memberMeeting.StartingQuestionAllowance();
 		_allowanceText.text = _memberMeeting.QuestionAllowance().ToString();
@@ -168,10 +169,10 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		//set default starting dialogue
 		_dialogueText.text = Localization.Get("MEETING_INTRO");
 		//set question text for the player
-		_statQuestion.text = _memberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).First();
-		_roleQuestion.text = _memberMeeting.GetEventText("RoleReveal").OrderBy(s => Guid.NewGuid()).First();
-		_opinionPositiveQuestion.text = _memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).First();
-		_opinionNegativeQuestion.text = _memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).First();
+		_statQuestion.text = Localization.Get(_memberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).First());
+		_roleQuestion.text = Localization.Get(_memberMeeting.GetEventText("RoleReveal").OrderBy(s => Guid.NewGuid()).First());
+		_opinionPositiveQuestion.text = Localization.Get(_memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).First());
+		_opinionNegativeQuestion.text = Localization.Get(_memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).First());
 		//set the cost shown for each question and for firing
 		_statQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.StatRevealCost).ToString();
 		_roleQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost).ToString();
@@ -211,7 +212,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 
 		//set closing text
 		_closeText.text = Localization.Get("MEETING_EARLY_EXIT");
-		if (postQuestion)
+		if (_lastReply != null)
 		{
 			_closeText.text = Localization.Get("MEETING_EXIT");
 		}
@@ -251,8 +252,8 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	public void AskQuestion(string questionType)
 	{
 		var reply = _memberMeeting.AskQuestion(questionType, _currentMember);
-		Display(true);
-		_dialogueText.text = reply.Length > 0 ? reply : "";
+		_lastReply = reply;
+		_dialogueText.text = reply.Count > 0 ? Localization.GetAndFormat(reply.First(), false, reply.Where(r => r != reply.First()).ToArray()) : string.Empty;
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, questionType, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewMemberMeeting", questionType, AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Meeting Question Directed At", _currentMember.Name);
 		SUGARManager.GameData.Send("Meeting Question Asked", questionType);
@@ -312,10 +313,15 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 			_roleButton.GetComponentInChildren<Text>().text = Localization.Get(currentRole.ToString(), true);
 		}
 		_closeText.text = Localization.Get("MEETING_EARLY_EXIT");
-		if (_postQuestion)
+		if (_lastReply != null)
 		{
 			_closeText.text = Localization.Get("MEETING_EXIT");
 		}
+		_statQuestion.text = Localization.Get(_memberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).First());
+		_roleQuestion.text = Localization.Get(_memberMeeting.GetEventText("RoleReveal").OrderBy(s => Guid.NewGuid()).First());
+		_opinionPositiveQuestion.text = Localization.Get(_memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).First());
+		_opinionNegativeQuestion.text = Localization.Get(_memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).First());
+		_dialogueText.text = _lastReply != null ? Localization.GetAndFormat(_lastReply.First(), false, _lastReply.Where(r => r != _lastReply.First()).ToArray()) : Localization.Get("MEETING_INTRO");
 	}
 
 	/// <summary>

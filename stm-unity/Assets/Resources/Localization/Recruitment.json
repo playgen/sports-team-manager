@@ -1,0 +1,11 @@
+[{"Key":"RecruitBody","English":"You excel at exercise","Italian":"Tu ti distingui per le tue capacità atletiche"},
+{"Key":"RecruitPerception","English":"You are aware of your surroundings","Italian":"Sei molto attento a tutto quello che accade intorno a te"},
+{"Key":"RecruitQuickness","English":"You are the first to react in a situation","Italian":"Hai buona capacità di reazione"},
+{"Key":"RecruitWillpower","English":"You keep calm whilst under heavy pressure","Italian":"Sai mantenere la calma nelle situazioni di stress"},
+{"Key":"RecruitWisdom","English":"You are the one people look toward for decisions","Italian":"Hai buona capacità decisionale"},
+{"Key":"RecruitCharisma","English":"You talk and others listen to every word","Italian":"Sai farti ascoltare dagli altri"},
+{"Key":"StrongAgree","English":"Strongly Agree","Italian":"Sono molto d'accordo"},
+{"Key":"Agree","English":"Agree","Italian":"Sono d'accordo"},
+{"Key":"Disagree","English":"Disagree","Italian":"Non sono d'accordo"},
+{"Key":"StrongDisagree","English":"Strongly Disagree","Italian":"Non sono assolutamente d'accordo"},
+{"Key":"Neither","English":"Neither agree or disagree","Italian":"Così così"}]
