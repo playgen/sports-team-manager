@@ -253,6 +253,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	{
 		var reply = _memberMeeting.AskQuestion(questionType, _currentMember);
 		_lastReply = reply;
+		Display();
 		_dialogueText.text = reply.Count > 0 ? Localization.GetAndFormat(reply.First(), false, reply.Where(r => r != reply.First()).ToArray()) : string.Empty;
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, questionType, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewMemberMeeting", questionType, AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Meeting Question Directed At", _currentMember.Name);
