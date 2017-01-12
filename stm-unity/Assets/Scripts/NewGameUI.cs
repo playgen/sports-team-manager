@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
@@ -55,6 +57,7 @@ public class NewGameUI : MonoBehaviour {
 	{
 		_tutorialToggle.enabled = _newGame.ExistingSaves();
 		_tutorialToggle.isOn = true;
+		gameObject.BestFit();
 	}
 
 	private void Update()
@@ -142,6 +145,7 @@ public class NewGameUI : MonoBehaviour {
 			if (exists)
 			{
 				_overwritePopUp.SetActive(true);
+				_overwritePopUp.GetComponentsInChildren<Button>().Where(t => t.gameObject != _overwritePopUp).Select(t => t.gameObject).BestFit();
 			}
 			else
 			{

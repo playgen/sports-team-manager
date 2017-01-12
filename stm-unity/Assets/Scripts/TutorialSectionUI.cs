@@ -30,7 +30,6 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	private GameObject _tutorialObject;
 	private Text _tutorialText;
 	private Transform _buttons;
-	private DynamicPadding _dynamicPadding;
 	[SerializeField]
 	private int _highlightTrigger;
 	private int _currentText;
@@ -84,7 +83,6 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		_tutorialText = GetComponentInChildren<Text>();
 		_tutorialObject = transform.Find("Tutorial Helper").gameObject;
 		_buttons = (RectTransform)transform.Find("Tutorial Helper/Buttons");
-		_dynamicPadding = GetComponentInChildren<DynamicPadding>();
 		GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = true;
 		var reverseRaycast = GetComponentInChildren<ReverseRaycastTarget>();
 		if (_blacklistButtons != null)
@@ -201,7 +199,10 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		{
 			GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = false;
 		}
-		_dynamicPadding.Adjust();
+		var speechBubble = transform.Find("Tutorial Helper/Image");
+		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)speechBubble);
+		speechBubble.GetComponent<LayoutGroup>().padding.bottom = (int)(((RectTransform)speechBubble).sizeDelta.y * 0.25f) + 16;
+		((RectTransform)transform.Find("Tutorial Helper/Buttons")).anchoredPosition = new Vector2(0, GetComponent<LayoutGroup>().padding.bottom);
 		if (_wipeTriggered)
 		{
 			_triggeredObjects.Clear();

@@ -40,6 +40,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
 		ResetDisplay();
+		Localization.LanguageChange += OnLanguageChange;
 	}
 
 	private void OnDisable()
@@ -51,6 +52,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			_popUpBlocker.onClick.RemoveAllListeners();
 			_popUpBlocker.gameObject.SetActive(false);
 		}
+		Localization.LanguageChange -= OnLanguageChange;
 	}
 
 	/// <summary>
@@ -68,6 +70,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			{
 				_postRacePeople[i].ResetDisplay(current[i]);
 			}
+			BestFit();
 			//set alpha to 1 (fully visible)
 			GetComponent<CanvasGroup>().alpha = 1;
 			_canvasGroup.interactable = true;
@@ -101,21 +104,25 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	private void ResetQuestions()
 	{
 		var current = _postRaceEvent.CurrentEvent;
-		var replies = _postRaceEvent.GetEventReplies();
-		for (int i = 0; i < _postRacePeople.Length; i++)
+		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length && _postRaceEvent.EnableCounter == 0)
 		{
-			_postRacePeople[i].ResetQuestions(current[i], replies[current[i].Key]);
-		}
-		if (replies.Values.Sum(dos => dos.Count) == 0)
-		{
-			SetBlockerOnClick();
-			SUGARManager.GameData.Send("Post Event Crew Average Mood", _postRaceEvent.GetTeamAverageMood());
-			SUGARManager.GameData.Send("Post Event Crew Average Manager Opinion", _postRaceEvent.GetTeamAverageManagerOpinion());
-			SUGARManager.GameData.Send("Post Event Crew Average Opinion", _postRaceEvent.GetTeamAverageOpinion());
-		} 
-		else
-		{
-			_popUpBlocker.onClick.RemoveAllListeners();
+			var replies = _postRaceEvent.GetEventReplies();
+			for (int i = 0; i < _postRacePeople.Length; i++)
+			{
+				_postRacePeople[i].ResetQuestions(current[i], replies[current[i].Key]);
+			}
+			if (replies.Values.Sum(dos => dos.Count) == 0)
+			{
+				SetBlockerOnClick();
+				SUGARManager.GameData.Send("Post Event Crew Average Mood", _postRaceEvent.GetTeamAverageMood());
+				SUGARManager.GameData.Send("Post Event Crew Average Manager Opinion", _postRaceEvent.GetTeamAverageManagerOpinion());
+				SUGARManager.GameData.Send("Post Event Crew Average Opinion", _postRaceEvent.GetTeamAverageOpinion());
+			}
+			else
+			{
+				_popUpBlocker.onClick.RemoveAllListeners();
+			}
+			BestFit();
 		}
 	}
 
@@ -164,5 +171,25 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			}
 			ResetQuestions();
 		}
+	}
+
+	private void OnLanguageChange()
+	{
+		var current = _postRaceEvent.CurrentEvent;
+		//if there is an event
+		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length && _postRaceEvent.EnableCounter == 0)
+		{
+			for (int i = 0; i < _postRacePeople.Length; i++)
+			{
+				_postRacePeople[i].ResetDisplay(current[i]);
+			}
+		}
+		ResetQuestions();
+		BestFit();
+	}
+
+	private void BestFit()
+	{
+		GetComponentsInChildren<Text>().BestFit();
 	}
 }

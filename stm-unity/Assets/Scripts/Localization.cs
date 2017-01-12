@@ -202,6 +202,10 @@ public class Localization : MonoBehaviour
 
 	public static List<string> AvailableLanguages()
 	{
+		if (LocalizationDict == null || LocalizationDict.Count == 0)
+		{
+			GetLocalizationDictionary();
+		}
 		var languages = (Language[])Enum.GetValues(typeof(Language));
 		var usedLanguages = languages.Where(lang => LocalizationDict[lang].Count > 0).Select(lang => lang.ToString()).ToList();
 		return usedLanguages;

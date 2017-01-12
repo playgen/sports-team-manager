@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.UI;
+using System.Linq;
 
 /// <summary>
 /// Controls the UI displayed at the top of the screen
@@ -23,6 +24,7 @@ public class ScreenSideUI : MonoBehaviour {
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		_nameText.text = _gameManager.Team.Name.ToUpper();
+		gameObject.BestFit();
 	}
 
 	/// <summary>
@@ -43,6 +45,7 @@ public class ScreenSideUI : MonoBehaviour {
 		_popUpBlocker.transform.SetAsLastSibling();
 		_quitWarningPopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
+		_quitWarningPopUp.GetComponentsInChildren<Button>().Select(b => b.gameObject).BestFit();
 	}
 
 	public void CloseQuitWarning()

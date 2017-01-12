@@ -244,6 +244,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		managerOpinionColorValue = managerOpinionColorValue < 0.25f ? 0.25f : managerOpinionColorValue;
 		managerOpinionImage.color = new UnityEngine.Color(managerOpinionColorValue, managerOpinionColorValue, managerOpinionColorValue);
 		managerOpinionImage.sprite = _opinionIcons[(managerOpinion > 0 ? Mathf.CeilToInt(managerOpinion / 3f) : Mathf.FloorToInt(managerOpinion / 3f)) + 2];
+		BestFit();
 	}
 
 	/// <summary>
@@ -272,6 +273,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
 		_popUpBlocker.onClick.AddListener(CloseFireCrewWarning);
+		BestFit();
 	}
 
 	/// <summary>
@@ -323,6 +325,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		_opinionPositiveQuestion.text = Localization.Get(_memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).First());
 		_opinionNegativeQuestion.text = Localization.Get(_memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).First());
 		_dialogueText.text = _lastReply != null ? Localization.GetAndFormat(_lastReply.First(), false, _lastReply.Where(r => r != _lastReply.First()).ToArray()) : Localization.Get("MEETING_INTRO");
+		BestFit();
 	}
 
 	/// <summary>
@@ -332,5 +335,13 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	{
 		feedback.GetComponent<HoverObject>().Enabled = true;
 		feedback.GetComponent<HoverObject>().SetHoverText(text, _hoverPopUp);
+	}
+
+	private void BestFit()
+	{
+		_textList.BestFit();
+		new[] { _statQuestion, _roleQuestion, _opinionPositiveQuestion, _opinionNegativeQuestion, _closeText }.BestFit();
+		_barForegrounds.Select(b => b.transform.parent.gameObject).BestFit();
+		_fireWarningPopUp.GetComponentsInChildren<Button>().Select(b => b.gameObject).BestFit();
 	}
 }

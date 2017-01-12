@@ -76,6 +76,7 @@ public class LoadGameUI : MonoBehaviour
 			gameButton.GetComponent<Button>().onClick.AddListener(() => SelectGame(gameButton.GetComponentInChildren<Text>()));
 			gameButton.name = game;
 		}
+		gameObject.BestFit();
 	}
 
 	/// <summary>

@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -164,7 +166,6 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\AvatarDisplay.cs" />
     <Compile Include="Assets\Scripts\CrewMemberUI.cs" />
-    <Compile Include="Assets\Scripts\DynamicPadding.cs" />
     <Compile Include="Assets\Scripts\GameManagerObject.cs" />
     <Compile Include="Assets\Scripts\HoverObject.cs" />
     <Compile Include="Assets\Scripts\HoverPopUpUI.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="Assets\Scripts\SettingsUI.cs" />
     <Compile Include="Assets\Scripts\TeamSelection.cs" />
     <Compile Include="Assets\Scripts\TeamSelectionUI.cs" />
+    <Compile Include="Assets\Scripts\TextExtensions.cs" />
     <Compile Include="Assets\Scripts\TrackerEventCatcher.cs" />
     <Compile Include="Assets\Scripts\TransformExtensions.cs" />
     <Compile Include="Assets\Scripts\TutorialController.cs" />

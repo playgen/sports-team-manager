@@ -17,7 +17,18 @@ public class LearningPillUI : ObservableMonoBehaviour {
 	private Animation _popUpAnim;
 	[SerializeField]
 	private Button _popUpBlocker;
+	private string _currentHelp;
 	private List<string> _furtherHelp;
+
+	private void OnEnable()
+	{
+		Localization.LanguageChange += OnLanguageChange;
+	}
+
+	private void OnDisable()
+	{
+		Localization.LanguageChange -= OnLanguageChange;
+	}
 
 	public void SetHelp(List<string> keys, bool further = false)
 	{
@@ -25,6 +36,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 		{
 			_learningPill = GetComponent<LearningPill>();
 		}
+		_currentHelp = keys[0];
 		var tip = _learningPill.GetHelpText(keys[0]);
 		keys.RemoveAt(0);
 		_furtherHelp = keys;
@@ -88,6 +100,10 @@ public class LearningPillUI : ObservableMonoBehaviour {
 		{
 			yield return endFrame;
 		}
+		if (limit == 2)
+		{
+			_currentHelp = null;
+		}
 		_popUpAnim["LearningPill"].speed = 0;
 		_popUpAnim["LearningPill"].time = start + limit;
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, upward, keep, tip);
@@ -95,11 +111,21 @@ public class LearningPillUI : ObservableMonoBehaviour {
 		{
 			foreach (char t in tip)
 			{
-				_helpText.text += t;
-				yield return endReal;
+				if (tip == Localization.Get(_learningPill.GetHelpText(_currentHelp))) {
+					_helpText.text += t;
+					yield return endReal;
+				}
 			}
 			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "LearningPill", "LearningPillDisplayed", AlternativeTracker.Alternative.Dialog));
 			_popUpBlocker.onClick.AddListener(ClosePill);
+		}
+	}
+
+	private void OnLanguageChange()
+	{
+		if (_currentHelp != null) {
+			var tip = _learningPill.GetHelpText(_currentHelp);
+			_helpText.text = Localization.Get(tip);
 		}
 	}
 }

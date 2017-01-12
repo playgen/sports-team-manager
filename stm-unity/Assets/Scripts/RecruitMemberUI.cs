@@ -55,6 +55,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	{
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Recruitment", "RecruitmentPopUpOpened", AlternativeTracker.Alternative.Menu));
 		_lastQuestion = null;
+		_lastAnswers = null;
 		ResetDisplay();
 		_popUpBlocker.transform.SetAsLastSibling();
 		transform.SetAsLastSibling();
@@ -97,7 +98,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		_allowanceBar.fillAmount = _recruitMember.QuestionAllowance() / (float)_recruitMember.StartingQuestionAllowance();
 		_allowanceText.text = _recruitMember.QuestionAllowance().ToString();
 		//set initial text displayed in center of pop-up
-		SetDialogueText(Localization.Get("RECRUITMENT_INTRO"));
+		SetDialogueText("RECRUITMENT_INTRO");
 		//get recruits
 		var recruits = _recruitMember.GetRecruits().OrderBy(r => Guid.NewGuid()).ToList();
 		//for each recruitUI element
@@ -164,6 +165,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			_questionButtons[i].onClick.RemoveAllListeners();
 			_questionButtons[i].onClick.AddListener(delegate { AskQuestion(selected, questionText); });
 		}
+		BestFit();
 		CostCheck();
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
@@ -202,6 +204,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 				recruit.transform.Find("Image").GetComponentInChildren<AvatarDisplay>().UpdateMood(reply.Key.Avatar, reply.Value);
 			}
 		}
+		BestFit();
 		CostCheck();
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Recruitment", skill + "Question", AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
@@ -238,7 +241,8 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			((RectTransform)_hireWarningReject.transform).anchorMax = new Vector2(0.625f, 0.35f);
 			((RectTransform)_hireWarningReject.transform).anchoredPosition = Vector2.zero;
 			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("OK", true);
-		} else
+		}
+		else
 		{
 			_hireWarningAccept.onClick.RemoveAllListeners();
 			_hireWarningAccept.onClick.AddListener(delegate { Recruit(recruit); });
@@ -249,6 +253,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			((RectTransform)_hireWarningReject.transform).anchoredPosition = Vector2.zero;
 			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("NO", true);
 		}
+		BestFit();
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Recruitment", "HireWarning", AlternativeTracker.Alternative.Menu));
 	}
 
@@ -288,10 +293,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 
 	private void OnLanguageChange()
 	{
-		if (_lastQuestion == null)
-		{
-			SetDialogueText(Localization.Get("RECRUITMENT_INTRO"));
-		}
+		SetDialogueText(_lastQuestion ?? "RECRUITMENT_INTRO");
 		if (_recruitMember.QuestionAllowance() < _recruitMember.GetConfigValue(ConfigKeys.RecruitmentCost))
 		{
 			_hireWarningText.text = Localization.Get("HIRE_WARNING_NOT_POSSIBLE");
@@ -309,17 +311,30 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			var questionText = _recruitMember.GetQuestionText("Recruit" + selected).OrderBy(s => Guid.NewGuid()).First();
 			_questionButtons[i].transform.Find("Text").GetComponent<Text>().text = Localization.Get(questionText);
 		}
-		foreach (var recruit in _recruitUI)
+		if (_lastAnswers != null)
 		{
-			var reply = _lastAnswers.FirstOrDefault(r => r.Key.Name == recruit.name);
-			if (reply.Key != null)
+			foreach (var recruit in _recruitUI)
 			{
-				recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = Localization.Get(reply.Value);
-				recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = true;
-				recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value).Image;
-				recruit.transform.Find("Image").GetComponentInChildren<AvatarDisplay>().UpdateMood(reply.Key.Avatar, reply.Value);
+				var reply = _lastAnswers.FirstOrDefault(r => r.Key.Name == recruit.name);
+				if (reply.Key != null)
+				{
+					recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = Localization.Get(reply.Value);
+					recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = true;
+					recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value).Image;
+					recruit.transform.Find("Image").GetComponentInChildren<AvatarDisplay>().UpdateMood(reply.Key.Avatar, reply.Value);
+				}
 			}
 		}
-		SetDialogueText(_lastQuestion);
+		BestFit();
+	}
+
+	private void BestFit()
+	{
+		_recruitUI.Select(r => r.transform.Find("Name").gameObject).BestFit();
+		_recruitUI.Select(r => r.transform.Find("Dialogue Box/Dialogue").gameObject).BestFit();
+		var questionList = _questionButtons.Select(q => q.gameObject).ToList();
+		questionList.Add(transform.Find("Close").gameObject);
+		questionList.BestFit();
+		new[] { _hireWarningAccept.gameObject, _hireWarningReject.gameObject }.BestFit();
 	}
 }

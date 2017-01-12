@@ -35,7 +35,7 @@ public class PostRacePersonUI : MonoBehaviour
 			{
 				_lastState = current.Value.CurrentState;
 			}
-			_dialogueText.text = current.Value.Utterance;
+			_dialogueText.text = Localization.Get(current.Value.Utterance);
 		}
 		_avatarDisplay.SetAvatar(current.Key.Avatar, current.Key.GetMood());
 		_currentCrewMember = current.Key;
@@ -55,7 +55,7 @@ public class PostRacePersonUI : MonoBehaviour
 				continue;
 			}
 			_questions[i].SetActive(true);
-			_questions[i].GetComponentInChildren<Text>().text = replies[i].Utterance;
+			_questions[i].GetComponentInChildren<Text>().text = Localization.Get(replies[i].Utterance);
 			var currentMember = current.Key;
 			var currentReply = replies[i];
 			var postRaceEvent = GetComponentInParent<PostRaceEventUI>();
@@ -86,7 +86,7 @@ public class PostRacePersonUI : MonoBehaviour
 	{
 		if (response != null)
 		{
-			_dialogueText.text = response.Utterance;
+			_dialogueText.text = Localization.Get(response.Utterance);
 			_lastState = response.CurrentState;
 		}
 	}

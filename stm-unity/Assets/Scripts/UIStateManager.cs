@@ -97,6 +97,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 	{
 		go.SetActive(false);
 		_mainMenu.SetActive(true);
+		_mainMenu.BestFit();
 		var gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = gameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves")).Count != 0;
 	}
@@ -171,13 +172,13 @@ public class UIStateManager : ObservableMonoBehaviour {
 			if (success)
 			{
 				_signIn.SetActive(false);
-				_userSignedInText.text = Localization.Get("SIGNED_IN_AS", true) + " " + SUGARManager.CurrentUser.Name;
+				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
+				_mainMenu.BestFit();
 			}
 			else
 			{
 				_signIn.SetActive(true);
 			}
-			//SUGARManager.Account.
 		});
 	}
 

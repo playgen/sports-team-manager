@@ -25,7 +25,7 @@ public class TutorialController : MonoBehaviour
         {
             DestroyImmediate(transform.GetChild(0).gameObject);
         }
-        TextAsset textAsset = Resources.Load("Tutorial") as TextAsset;
+        TextAsset textAsset = Resources.Load("Tutorial/Tutorial") as TextAsset;
         var parsedAsset = JSON.Parse(textAsset.text);
         for (int i = 0; i < parsedAsset.Count; i++)
         {
