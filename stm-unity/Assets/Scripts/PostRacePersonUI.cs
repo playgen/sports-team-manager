@@ -26,26 +26,26 @@ public class PostRacePersonUI : MonoBehaviour
 		get { return _currentCrewMember; }
 	}
 
-	public void ResetDisplay(KeyValuePair<CrewMember, DialogueStateActionDTO> current)
+	public void ResetDisplay(PostRaceEventState current)
 	{
-		if (current.Value != null)
+		if (current.Dialogue != null)
 		{
-			_lastState = current.Value.NextState;
-			if (current.Value.NextState == "-")
+			_lastState = current.Dialogue.NextState;
+			if (current.Dialogue.NextState == "-")
 			{
-				_lastState = current.Value.CurrentState;
+				_lastState = current.Dialogue.CurrentState;
 			}
-			_dialogueText.text = Localization.Get(current.Value.Utterance);
+			_dialogueText.text = Localization.Get(current.Dialogue.Utterance);
 		}
-		_avatarDisplay.SetAvatar(current.Key.Avatar, current.Key.GetMood());
-		_currentCrewMember = current.Key;
-		_nameText.text = current.Key.Name;
+		_avatarDisplay.SetAvatar(current.CrewMember.Avatar, current.CrewMember.GetMood());
+		_currentCrewMember = current.CrewMember;
+		_nameText.text = current.CrewMember.Name;
 	}
 
-	public void ResetQuestions(KeyValuePair<CrewMember, DialogueStateActionDTO> current, List<DialogueStateActionDTO> replies)
+	public void ResetQuestions(PostRaceEventState current, List<PostRaceEventState> replies)
 	{
 		UpdateSelected(null);
-		var eventMember = current.Key;
+		var eventMember = current.CrewMember;
 		//set text and onclick handlers for each question UI object
 		for (var i = 0; i < _questions.Length; i++)
 		{
@@ -55,14 +55,14 @@ public class PostRacePersonUI : MonoBehaviour
 				continue;
 			}
 			_questions[i].SetActive(true);
-			_questions[i].GetComponentInChildren<Text>().text = Localization.Get(replies[i].Utterance);
-			var currentMember = current.Key;
+			_questions[i].GetComponentInChildren<Text>().text = Localization.Get(replies[i].Dialogue.Utterance);
+			var currentMember = current.CrewMember;
 			var currentReply = replies[i];
 			var postRaceEvent = GetComponentInParent<PostRaceEventUI>();
 			var question = _questions[i];
 			_questions[i].GetComponent<Button>().onClick.RemoveAllListeners();
 			_questions[i].GetComponent<Button>().onClick.AddListener(delegate { UpdateSelected(question); });
-			_questions[i].GetComponent<Button>().onClick.AddListener(delegate { postRaceEvent.SendReply(currentMember, currentReply); });
+			_questions[i].GetComponent<Button>().onClick.AddListener(delegate { postRaceEvent.SendReply(currentReply); });
 		}
 		//display the button for closing the pop-up and update the displayed character mood if there are no more dialogue options
 		if (replies.Count == 0)

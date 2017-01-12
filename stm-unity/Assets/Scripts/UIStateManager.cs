@@ -6,6 +6,7 @@ using PlayGen.SUGAR.Unity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Linq;
 
 /// <summary>
 /// Controls switching between different game state panels
@@ -59,6 +60,14 @@ public class UIStateManager : ObservableMonoBehaviour {
 			_loaded = true;
 			SignIn();
 		}
+		else
+		{
+			_signIn.SetActive(SUGARManager.CurrentUser == null);
+			if (SUGARManager.CurrentUser != null)
+			{
+				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
+			}
+		}
 	}
 
 	void Update()
@@ -97,7 +106,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 	{
 		go.SetActive(false);
 		_mainMenu.SetActive(true);
-		_mainMenu.BestFit();
+		MenuBestFit();
 		var gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = gameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves")).Count != 0;
 	}
@@ -173,7 +182,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 			{
 				_signIn.SetActive(false);
 				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
-				_mainMenu.BestFit();
+				MenuBestFit();
 			}
 			else
 			{
@@ -188,5 +197,10 @@ public class UIStateManager : ObservableMonoBehaviour {
 	public void CloseGame()
 	{
 		Application.Quit();
+	}
+
+	private void MenuBestFit()
+	{
+		_mainMenu.GetComponentsInChildren<Text>().Where(t => t.transform.parent == _mainMenu.transform || t.transform.parent.parent == _mainMenu.transform).BestFit();
 	}
 }

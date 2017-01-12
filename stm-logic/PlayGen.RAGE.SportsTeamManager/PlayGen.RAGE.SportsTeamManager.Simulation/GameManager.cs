@@ -420,9 +420,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 								?? eventController.GetPossibleAgentDialogue("PostRaceEventStart").FirstOrDefault(e => e.NextState == evName);
 							if (eventSectionsFound == 0)
 							{
-								eventController.PostRaceEvents.Add(new List<KeyValuePair<CrewMember, DialogueStateActionDTO>>());
+								eventController.PostRaceEvents.Add(new List<PostRaceEventState>());
 							}
-							eventController.PostRaceEvents[eventsFound].Add(new KeyValuePair<CrewMember, DialogueStateActionDTO>(crewMember, ev));
+							var subjectString = Team.Manager.LoadBelief(String.Format("PRESubject{0}({1})", eventsFound, eventSectionsFound));
+							var subjects = subjectString != "null" ? subjectString.Split(',').ToList() : new List<string>();
+							eventController.PostRaceEvents[eventsFound].Add(new PostRaceEventState(crewMember, ev, subjects));
 							eventSectionsFound++;
 							continue;
 						}
@@ -540,9 +542,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send player dialogue to characters involved in the event and get their replies
 		/// </summary>
-		public Dictionary<CrewMember, DialogueStateActionDTO> SendPostRaceEvent(Dictionary<CrewMember, DialogueStateActionDTO> selected)
+		public List<PostRaceEventState> SendPostRaceEvent(List<PostRaceEventState> selected)
 		{
-			return eventController.SendPostRaceEvent(selected, Team, Team.LineUpHistory.Last());
+			return eventController.SendPostRaceEvent(selected, Team);
 		}
 
 		/// <summary>

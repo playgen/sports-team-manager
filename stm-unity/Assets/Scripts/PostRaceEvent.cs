@@ -13,12 +13,12 @@ using PlayGen.SUGAR.Unity;
 public class PostRaceEvent : ObservableMonoBehaviour
 {
 	private GameManager _gameManager;
-	private List<KeyValuePair<CrewMember, DialogueStateActionDTO>> _currentEvent;
-	public List<KeyValuePair<CrewMember, DialogueStateActionDTO>> CurrentEvent
+	private List<PostRaceEventState> _currentEvent;
+	public List<PostRaceEventState> CurrentEvent
 	{
 		get { return _currentEvent; }
 	}
-	private Dictionary<CrewMember, DialogueStateActionDTO> _selectedResponses;
+	private Dictionary<CrewMember, PostRaceEventState> _selectedResponses;
 	private int _disableCounter;
 	private int _enableCounter;
 	public int EnableCounter
@@ -61,21 +61,33 @@ public class PostRaceEvent : ObservableMonoBehaviour
 	/// <summary>
 	/// Get player dialogue choices for the current situation
 	/// </summary>
-	public Dictionary<CrewMember, List<DialogueStateActionDTO>> GetEventReplies()
+	public Dictionary<CrewMember, List<PostRaceEventState>> GetEventReplies()
 	{
 		var replies = _gameManager.EventController.GetEventDialogues(_gameManager.Team.Manager);
+		var replyDict = new Dictionary<CrewMember, List<PostRaceEventState>>();
 		//if there are no replies, reset the current event
-		if (replies.Values.Sum(dos => dos.Count) == 0)
+		if (replies.Count == 0)
 		{
 			_currentEvent = null;
 		}
 		else
 		{
+			foreach (var ev in _currentEvent)
+			{
+				if (!replyDict.ContainsKey(ev.CrewMember))
+				{
+					replyDict.Add(ev.CrewMember, new List<PostRaceEventState>());
+				}
+			}
 			foreach (var reply in replies)
 			{
-				if (reply.Value == null || reply.Value.Count == 0)
+				replyDict[reply.CrewMember].Add(reply);
+			}
+			foreach (var reply in replyDict)
+			{
+				if (reply.Value.Count == 0)
 				{
-					AddReply(reply.Key, null);
+					AddReply(new PostRaceEventState(reply.Key, null));
 				}
 			}
 		}
@@ -84,29 +96,29 @@ public class PostRaceEvent : ObservableMonoBehaviour
 		{
 			_currentEvent = _gameManager.EventController.PostRaceEvents.First();
 		}
-		return replies;
+		return replyDict;
 	}
 
-	public Dictionary<CrewMember, DialogueStateActionDTO> AddReply(CrewMember cm, DialogueStateActionDTO response)
+	public Dictionary<CrewMember, PostRaceEventState> AddReply(PostRaceEventState response)
 	{
 		if (_selectedResponses == null)
 		{
-			_selectedResponses = new Dictionary<CrewMember, DialogueStateActionDTO>();
+			_selectedResponses = new Dictionary<CrewMember, PostRaceEventState>();
 		}
-		if (_selectedResponses.ContainsKey(cm))
+		if (_selectedResponses.ContainsKey(response.CrewMember))
 		{
-			_selectedResponses[cm] = response;
+			_selectedResponses[response.CrewMember] = response;
 		}
 		else
 		{
-			_selectedResponses.Add(cm, response);
+			_selectedResponses.Add(response.CrewMember, response);
 		}
 		if (_currentEvent != null && _selectedResponses.Count == _currentEvent.Count)
 		{
 			foreach (var res in _selectedResponses.Values)
 			{
-				ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, res.Utterance, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "PostRaceEvent", res.NextState, AlternativeTracker.Alternative.Dialog));
-				SUGARManager.GameData.Send("Post Race Event Reply", res.NextState);
+				ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, res.Dialogue.Utterance, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "PostRaceEvent", res.Dialogue.NextState, AlternativeTracker.Alternative.Dialog));
+				SUGARManager.GameData.Send("Post Race Event Reply", res.Dialogue.NextState);
 			}
 			float beforeValues = GetTeamAverageMood() + GetTeamAverageManagerOpinion() + GetTeamAverageOpinion();
 			var replies = SendReply();
@@ -119,7 +131,19 @@ public class PostRaceEvent : ObservableMonoBehaviour
 			{
 				SUGARManager.GameData.Send("Post Race Event Positive Outcome", false);
 			}
-			return replies;
+			var replyDict = new Dictionary<CrewMember, PostRaceEventState>();
+			foreach (var ev in _currentEvent)
+			{
+				if (!replyDict.ContainsKey(ev.CrewMember))
+				{
+					replyDict.Add(ev.CrewMember, null);
+				}
+			}
+			foreach (var reply in replies)
+			{
+				replyDict[reply.CrewMember] = reply;
+			}
+			return replyDict;
 		}
 		return null;
 	}
@@ -127,9 +151,9 @@ public class PostRaceEvent : ObservableMonoBehaviour
 	/// <summary>
 	/// Send player dialogue to the NPC involved in the event, get their reply in response
 	/// </summary>
-	private Dictionary<CrewMember, DialogueStateActionDTO> SendReply()
+	private List<PostRaceEventState> SendReply()
 	{
-		var replies = _gameManager.SendPostRaceEvent(_selectedResponses);
+		var replies = _gameManager.SendPostRaceEvent(_selectedResponses.Values.ToList());
 		_selectedResponses = null;
 		return replies;
 	}

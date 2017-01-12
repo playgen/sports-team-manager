@@ -213,16 +213,22 @@ public class Localization : MonoBehaviour
 
 	public static void UpdateLanguage(int language)
 	{
-		UpdateLanguage((Language)Enum.Parse(typeof(Language), AvailableLanguages()[language]));
+		if (AvailableLanguages()[language] != SelectedLanguage.ToString())
+		{
+			UpdateLanguage((Language)Enum.Parse(typeof(Language), AvailableLanguages()[language]));
+		}
 	}
 
 	public static void UpdateLanguage(Language language)
 	{
-		SelectedLanguage = language;
-		PlayerPrefs.SetInt("Last_Saved_Language", (int)SelectedLanguage);
-		((Localization[])FindObjectsOfType(typeof(Localization))).ToList().ForEach(l => l.Set());
-		LanguageChange();
-		Debug.Log(SelectedLanguage);
+		if (language != SelectedLanguage)
+		{
+			SelectedLanguage = language;
+			PlayerPrefs.SetInt("Last_Saved_Language", (int)SelectedLanguage);
+			((Localization[])FindObjectsOfType(typeof(Localization))).ToList().ForEach(l => l.Set());
+			LanguageChange();
+			Debug.Log(SelectedLanguage);
+		}
 	}
 }
 

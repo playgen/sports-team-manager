@@ -1,632 +1,123 @@
-[
-	{
-		"Key": "ACHIEVEMENTS",
-		"English": "Achievements",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "AGE",
-		"English": "Age:",
-		"Italian": "x"
-	},
-	{
-		"Key": "AMPERSAND",
-		"English": " & ",
-		"Italian": " & "
-	},
-	{
-		"Key": "BODY",
-		"English": "Strength",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "BOWMAN",
-		"English": "Bowman",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "BOWMAN_DESCRIPTION",
-		"English": "Awareness, fast reactions and being able to handle fear is required here, as those in this position will need to climb the maist/bow to help chnage the sails.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "CANCEL",
-		"English": "Cancel",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "CHARISMA",
-		"English": "Charisma",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "CORRECT",
-		"English": "Correct",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "CREATE_GAME",
-		"English": "Create Game",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "CREW_OPINION",
-		"English": "Crew Opinion",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "ENGLISH",
-		"English": "English",
-		"Italian": "English"
-	},
-	{
-		"Key": "EXCLAIMATION_MARK",
-		"English": "!",
-		"Italian": "!"
-	},
-	{
-		"Key": "EXIT",
-		"English": "Exit",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "FEEDBACK",
-		"English": "Feedback",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "FEMALE",
-		"English": "Female",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "FIRE",
-		"English": "Dismiss",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "FIRE_BUTTON_HOVER_ALLOWANCE",
-		"English": "Cannot dismiss crew members due to a lack of talk time.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "FIRE_BUTTON_HOVER_CREW_LIMIT",
-		"English": "Cannot dismiss crew members as team is currently at its minimum size.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "FIRE_BUTTON_HOVER_LIMIT",
-		"English": "Cannot dismiss crew members as crew change limit ({0}) has been reached for this race session.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "FIRE_BUTTON_HOVER_TUTORIAL",
-		"English": "Cannot dismiss crew members during the tutorial.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "FIRE_WARNING",
-		"English": "Are you sure you want to remove this person from the team? This action cannot be undone!",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "GREEN_PLACEMENT",
-		"English": "Ideal Placements",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "GRINDER",
-		"English": "Grinder",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "GRINDER_DESCRIPTION",
-		"English": "Tasked with hoisting the sails, only the super strong will do well here.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "HELMSMAN",
-		"English": "Helmsman",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "HELMSMAN_DESCRIPTION",
-		"English": "Steers the ship. The ability to think ahead and react as soon as possible is needed here.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "HELP",
-		"English": "Help",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "HIDDEN",
-		"English": "Hidden",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "HIRE_WARNING_NOT_POSSIBLE",
-		"English": "You don't have enough time left to hire this person.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "HIRE_WARNING_POSSIBLE",
-		"English": "Are you sure you want to hire {0}?",
-		"Italian": "{0}"
-	},
-	{
-		"Key": "ITALIAN",
-		"English": "Italiano",
-		"Italian": "Italiano"
-	},
-	{
-		"Key": "LANGUAGE",
-		"English": "Language",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "LEADERBOARDS",
-		"English": "Leaderboards",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "LOAD_GAME",
-		"English": "Load Game",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "LOAD_GAME",
-		"English": "Load Game",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "LOAD_GAME_MISSING_FILES",
-		"English": "Unable to load game due to missing files. Please try loading a different game.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "LOAD_GAME_NOT_LOADED",
-		"English": "Game was not loaded. Please try again.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MAIN_MENU",
-		"English": "Main Menu",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MALE",
-		"English": "Male",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MANAGER_AGE",
-		"English": "Manager Age:",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MANAGER_GENDER",
-		"English": "Manager Gender:",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MANAGER_NAME",
-		"English": "Manager Name:",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MANAGER_OPINION",
-		"English": "Manager Opinion",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MANAGER_OPINION",
-		"English": "Manager Opinion",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MEETING_EARLY_EXIT",
-		"English": "Nevermind, goodbye.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MEETING_EXIT",
-		"English": "OK, thank you for telling me that.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MEETING_HEADER",
-		"English": "What do you want to ask?",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MEETING_INTRO",
-		"English": "You wanted to see me?",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MENU_QUIT_CONFIRM",
-		"English": "Are you sure you want to quit out to the menu? Unsaved changes will be lost!",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MIDBOWMAN",
-		"English": "Mid-Bowman",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MIDBOWMAN_DESCRIPTION",
-		"English": "Stows sails below deck and helps with sail changes. Crew positioned here will need to be physically fit, agile and able to deal with being in this hot, dark and wet position.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MOOD",
-		"English": "Mood",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MUSIC",
-		"English": "Music",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "MY_CREW",
-		"English": "My Crew",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "NAME",
-		"English": "Name:",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "NAVIGATOR",
-		"English": "Navigator",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "NAVIGATOR_DESCRIPTION",
-		"English": "In charge of manoeuvres. Situational awareness and reactions are key to succeed in this position.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "NEW_GAME",
-		"English": "New Game",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "NEW_GAME_CREATION_ERROR",
-		"English": "Game not created. Please try again.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "NEW_GAME_OVERWRITE",
-		"English": "A game with this team name already exists!\nAre you sure you want to create a new game and overwrite the existing game?",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "NO",
-		"English": "No",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "NO_ROLE",
-		"English": "No Role",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "OK",
-		"English": "OK",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "OVERWRITE",
-		"English": "Overwrite",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "PERCEPTION",
-		"English": "Perception",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "PITMAN",
-		"English": "Pitman",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "PITMAN_DESCRIPTION",
-		"English": "Manages sail changes and can also hoist if needed. Strength, awareness and decent communication skills are required to do well in this role.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "POSITION_1",
-		"English": "1st",
-		"Italian": "1"
-	},
-	{
-		"Key": "POSITION_10",
-		"English": "10th",
-		"Italian": "10"
-	},
-	{
-		"Key": "POSITION_2",
-		"English": "2nd",
-		"Italian": "2"
-	},
-	{
-		"Key": "POSITION_3",
-		"English": "3rd",
-		"Italian": "3"
-	},
-	{
-		"Key": "POSITION_4",
-		"English": "4th",
-		"Italian": "4"
-	},
-	{
-		"Key": "POSITION_5",
-		"English": "5th",
-		"Italian": "5"
-	},
-	{
-		"Key": "POSITION_6",
-		"English": "6th",
-		"Italian": "6"
-	},
-	{
-		"Key": "POSITION_7",
-		"English": "7th",
-		"Italian": "7"
-	},
-	{
-		"Key": "POSITION_8",
-		"English": "8th",
-		"Italian": "8"
-	},
-	{
-		"Key": "POSITION_9",
-		"English": "9th",
-		"Italian": "9"
-	},
-	{
-		"Key": "POSITION_NAME",
-		"English": "Position Name",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "PREVIOUS_MEMBERS",
-		"English": "Previous Members",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "PROMOTION_ADDED",
-		"English": "Added",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "PROMOTION_HEADER",
-		"English": "Your boat type has changed!",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "PROMOTION_REMOVED",
-		"English": "Removed",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "QUICKNESS",
-		"English": "Quickness",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RACE_BUTTON_PRACTICE",
-		"English": "Practice {0}/{1}",
-		"Italian": "{0}{1}"
-	},
-	{
-		"Key": "RACE_BUTTON_RACE",
-		"English": "Race!",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RACE_CONFIRM_ALLOWANCE_REMAINING",
-		"English": "You have {0} Talk Time remaining! If you don't use it before the race, they will be lost.\n\nAre you sure you want to race with this line-up now?",
-		"Italian": "{0}"
-	},
-	{
-		"Key": "RACE_CONFIRM_NO_ALLOWANCE",
-		"English": "Are you sure you want to race with this line-up now?",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RACE_POSITION",
-		"English": "Position:",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RACE_RESULT_POSTION",
-		"English": "{0} finished {1}!",
-		"Italian": "{0}{1}!"
-	},
-	{
-		"Key": "RANDOMISE",
-		"English": "Randomise",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RECRUIT_BUTTON_HOVER_ALLOWANCE",
-		"English": "Recruitment unavilable due to lack of talk time.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RECRUIT_BUTTON_HOVER_LIMIT",
-		"English": "Recruitment unavilable as crew change limit ({0}) has been reached for this race session.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RECRUIT_GREETING_0",
-		"English": "Hello",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RECRUIT_GREETING_1",
-		"English": "Hey",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RECRUIT_GREETING_2",
-		"English": "Hi",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RECRUIT_GREETING_3",
-		"English": "Hey there",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RECRUIT_LEAVE",
-		"English": "Leave without recruiting",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RECRUITMENT_INTRO",
-		"English": "Your recruits are here. What do you want to ask them all or who do you want to hire?",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RED_PLACEMENT",
-		"English": "Unideal Placements",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "REQUIRED",
-		"English": "Required",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RESULT",
-		"English": "Result",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "RESULT_HEADER",
-		"English": "The race is over and the results are in...",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "ROLE",
-		"English": "Role:",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "SEASON_RANKING",
-		"English": "Season Ranking",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "SETTINGS",
-		"English": "Settings",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "SETTINGS",
-		"English": "Settings",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "SHOW_TUTORIAL",
-		"English": "Show Tutorial:",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "SIGNED_IN_AS",
-		"English": "Signed in as:",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "SKILLS_REQUIRED",
-		"English": "Skills Required",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "SKIPPER",
-		"English": "Skipper",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "SKIPPER_DESCRIPTION",
-		"English": "The team captain. They'll have to be able to lead the crew and handle the pressure of doing so, all the while knowing how to react in tough situations.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "SOUND",
-		"English": "Sound FX",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "SUGAR_SIGN_IN",
-		"English": "SUGAR Sign-in",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "TALK_TIME_REMAINING",
-		"English": "Talk Time Remaining",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "TEAM_COLOURS",
-		"English": "Team Colours:",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "TEAM_MANAGEMENT",
-		"English": "Team Line-Up",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "TEAM_NAME",
-		"English": "Team Name:",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "TRIMMER",
-		"English": "Trimmer",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "TRIMMER_DESCRIPTION",
-		"English": "Responsible for controlling the shape of the sails. Attention to detail and durability will bring success to those in this position.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "TUTORIAL_WARNING",
-		"English": "Are you sure you want to quit out of the tutorial?\n\nIf yes, you'll need to start a new game in order to take the tutorial.",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "WILLPOWER",
-		"English": "Willpower",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "WISDOM",
-		"English": "Wisdom",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "YELLOW_PLACEMENT",
-		"English": "Ideal In Another Position",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "YES",
-		"English": "Yes",
-		"Italian": "XXXX"
-	},
-	{
-		"Key": "REPEAT_CONFIRM",
-		"English": "Are you sure you want to use the same crew line-up as the previous race?",
-		"Italian": "XXXX"
-	}
-]
+[{"Key":"ACHIEVEMENTS","English":"Achievements","Italian":"XXXX"},
+{"Key":"AGE","English":"Age:","Italian":"XXXX"},
+{"Key":"AMPERSAND","English":" & ","Italian":" & "},
+{"Key":"BODY","English":"Strength","Italian":"XXXX"},
+{"Key":"BOWMAN","English":"Bowman","Italian":"XXXX"},
+{"Key":"BOWMAN_DESCRIPTION","English":"Awareness, fast reactions and being able to handle fear is required here, as those in this position will need to climb the maist/bow to help chnage the sails.","Italian":"XXXX"},
+{"Key":"CANCEL","English":"Cancel","Italian":"XXXX"},
+{"Key":"CHARISMA","English":"Charisma","Italian":"XXXX"},
+{"Key":"CORRECT","English":"Correct","Italian":"XXXX"},
+{"Key":"CREATE_GAME","English":"Create Game","Italian":"XXXX"},
+{"Key":"CREW_OPINION","English":"Crew Opinion","Italian":"XXXX"},
+{"Key":"ENGLISH","English":"English","Italian":"English"},
+{"Key":"EXCLAIMATION_MARK","English":"!","Italian":"!"},
+{"Key":"EXIT","English":"Exit","Italian":"XXXX"},
+{"Key":"FEEDBACK","English":"Feedback","Italian":"XXXX"},
+{"Key":"FEMALE","English":"Female","Italian":"XXXX"},
+{"Key":"FIRE","English":"Dismiss","Italian":"XXXX"},
+{"Key":"FIRE_BUTTON_HOVER_ALLOWANCE","English":"Cannot dismiss crew members due to a lack of talk time.","Italian":"XXXX"},
+{"Key":"FIRE_BUTTON_HOVER_CREW_LIMIT","English":"Cannot dismiss crew members as team is currently at its minimum size.","Italian":"XXXX"},
+{"Key":"FIRE_BUTTON_HOVER_LIMIT","English":"Cannot dismiss crew members as crew change limit ({0}) has been reached for this race session.","Italian":"XXXX"},
+{"Key":"FIRE_BUTTON_HOVER_TUTORIAL","English":"Cannot dismiss crew members during the tutorial.","Italian":"XXXX"},
+{"Key":"FIRE_WARNING","English":"Are you sure you want to remove this person from the team? This action cannot be undone!","Italian":"XXXX"},
+{"Key":"GREEN_PLACEMENT","English":"Ideal Placements","Italian":"XXXX"},
+{"Key":"GRINDER","English":"Grinder","Italian":"XXXX"},
+{"Key":"GRINDER_DESCRIPTION","English":"Tasked with hoisting the sails, only the super strong will do well here.","Italian":"XXXX"},
+{"Key":"HELMSMAN","English":"Helmsman","Italian":"XXXX"},
+{"Key":"HELMSMAN_DESCRIPTION","English":"Steers the ship. The ability to think ahead and react as soon as possible is needed here.","Italian":"XXXX"},
+{"Key":"HELP","English":"Help","Italian":"XXXX"},
+{"Key":"HIDDEN","English":"Hidden","Italian":"XXXX"},
+{"Key":"HIRE_WARNING_NOT_POSSIBLE","English":"You don't have enough time left to hire this person.","Italian":"XXXX"},
+{"Key":"HIRE_WARNING_POSSIBLE","English":"Are you sure you want to hire {0}?","Italian":"{0}"},
+{"Key":"ITALIAN","English":"Italiano","Italian":"Italiano"},
+{"Key":"LANGUAGE","English":"Language","Italian":"XXXX"},
+{"Key":"LEADERBOARDS","English":"Leaderboards","Italian":"XXXX"},
+{"Key":"LOAD_GAME","English":"Load Game","Italian":"XXXX"},
+{"Key":"LOAD_GAME_MISSING_FILES","English":"Unable to load game due to missing files. Please try loading a different game.","Italian":"XXXX"},
+{"Key":"LOAD_GAME_NOT_LOADED","English":"Game was not loaded. Please try again.","Italian":"XXXX"},
+{"Key":"MAIN_MENU","English":"Main Menu","Italian":"XXXX"},
+{"Key":"MALE","English":"Male","Italian":"XXXX"},
+{"Key":"MANAGER_AGE","English":"Manager Age:","Italian":"XXXX"},
+{"Key":"MANAGER_GENDER","English":"Manager Gender:","Italian":"XXXX"},
+{"Key":"MANAGER_NAME","English":"Manager Name:","Italian":"XXXX"},
+{"Key":"MANAGER_OPINION","English":"Manager Opinion","Italian":"XXXX"},
+{"Key":"MEETING_EARLY_EXIT","English":"Nevermind, goodbye.","Italian":"XXXX"},
+{"Key":"MEETING_EXIT","English":"OK, thank you for telling me that.","Italian":"XXXX"},
+{"Key":"MEETING_HEADER","English":"What do you want to ask?","Italian":"XXXX"},
+{"Key":"MEETING_INTRO","English":"You wanted to see me?","Italian":"XXXX"},
+{"Key":"MENU_QUIT_CONFIRM","English":"Are you sure you want to quit out to the menu? Unsaved changes will be lost!","Italian":"XXXX"},
+{"Key":"MIDBOWMAN","English":"Mid-Bowman","Italian":"XXXX"},
+{"Key":"MIDBOWMAN_DESCRIPTION","English":"Stows sails below deck and helps with sail changes. Crew positioned here will need to be physically fit, agile and able to deal with being in this hot, dark and wet position.","Italian":"XXXX"},
+{"Key":"MOOD","English":"Mood","Italian":"XXXX"},
+{"Key":"MUSIC","English":"Music","Italian":"XXXX"},
+{"Key":"MY_CREW","English":"My Crew","Italian":"XXXX"},
+{"Key":"NAME","English":"Name:","Italian":"XXXX"},
+{"Key":"NAVIGATOR","English":"Navigator","Italian":"XXXX"},
+{"Key":"NAVIGATOR_DESCRIPTION","English":"In charge of manoeuvres. Situational awareness and reactions are key to succeed in this position.","Italian":"XXXX"},
+{"Key":"NEW_GAME","English":"New Game","Italian":"XXXX"},
+{"Key":"NEW_GAME_CREATION_ERROR","English":"Game not created. Please try again.","Italian":"XXXX"},
+{"Key":"NEW_GAME_OVERWRITE","English":"A game with this team name already exists!\nAre you sure you want to create a new game and overwrite the existing game?","Italian":"XXXX"},
+{"Key":"NO","English":"No","Italian":"XXXX"},
+{"Key":"NO_ROLE","English":"No Role","Italian":"XXXX"},
+{"Key":"OK","English":"OK","Italian":"XXXX"},
+{"Key":"OVERWRITE","English":"Overwrite","Italian":"XXXX"},
+{"Key":"PERCEPTION","English":"Perception","Italian":"XXXX"},
+{"Key":"PITMAN","English":"Pitman","Italian":"XXXX"},
+{"Key":"PITMAN_DESCRIPTION","English":"Manages sail changes and can also hoist if needed. Strength, awareness and decent communication skills are required to do well in this role.","Italian":"XXXX"},
+{"Key":"POSITION_1","English":"1st","Italian":"1"},
+{"Key":"POSITION_10","English":"10th","Italian":"10"},
+{"Key":"POSITION_2","English":"2nd","Italian":"2"},
+{"Key":"POSITION_3","English":"3rd","Italian":"3"},
+{"Key":"POSITION_4","English":"4th","Italian":"4"},
+{"Key":"POSITION_5","English":"5th","Italian":"5"},
+{"Key":"POSITION_6","English":"6th","Italian":"6"},
+{"Key":"POSITION_7","English":"7th","Italian":"7"},
+{"Key":"POSITION_8","English":"8th","Italian":"8"},
+{"Key":"POSITION_9","English":"9th","Italian":"9"},
+{"Key":"POSITION_NAME","English":"Position Name","Italian":"XXXX"},
+{"Key":"PREVIOUS_MEMBERS","English":"Previous Members","Italian":"XXXX"},
+{"Key":"PROMOTION_ADDED","English":"Added","Italian":"XXXX"},
+{"Key":"PROMOTION_HEADER","English":"Your boat type has changed!","Italian":"XXXX"},
+{"Key":"PROMOTION_REMOVED","English":"Removed","Italian":"XXXX"},
+{"Key":"QUICKNESS","English":"Quickness","Italian":"XXXX"},
+{"Key":"RACE_BUTTON_PRACTICE","English":"Practice {0}/{1}","Italian":"{0}{1}"},
+{"Key":"RACE_BUTTON_RACE","English":"Race!","Italian":"XXXX"},
+{"Key":"RACE_CONFIRM_ALLOWANCE_REMAINING","English":"You have {0} Talk Time remaining! If you don't use it before the race, they will be lost.\n\nAre you sure you want to race with this line-up now?","Italian":"{0}"},
+{"Key":"RACE_CONFIRM_NO_ALLOWANCE","English":"Are you sure you want to race with this line-up now?","Italian":"XXXX"},
+{"Key":"RACE_POSITION","English":"Position:","Italian":"XXXX"},
+{"Key":"RACE_RESULT_POSTION","English":"{0} finished {1}!","Italian":"{0}{1}!"},
+{"Key":"RANDOMISE","English":"Randomise","Italian":"XXXX"},
+{"Key":"RECRUIT_BUTTON_HOVER_ALLOWANCE","English":"Recruitment unavilable due to lack of talk time.","Italian":"XXXX"},
+{"Key":"RECRUIT_BUTTON_HOVER_LIMIT","English":"Recruitment unavilable as crew change limit ({0}) has been reached for this race session.","Italian":"XXXX"},
+{"Key":"RECRUIT_GREETING_0","English":"Hello","Italian":"XXXX"},
+{"Key":"RECRUIT_GREETING_1","English":"Hey","Italian":"XXXX"},
+{"Key":"RECRUIT_GREETING_2","English":"Hi","Italian":"XXXX"},
+{"Key":"RECRUIT_GREETING_3","English":"Hey there","Italian":"XXXX"},
+{"Key":"RECRUIT_LEAVE","English":"Leave without recruiting","Italian":"XXXX"},
+{"Key":"RECRUITMENT_INTRO","English":"Your recruits are here. What do you want to ask them all or who do you want to hire?","Italian":"XXXX"},
+{"Key":"RED_PLACEMENT","English":"Unideal Placements","Italian":"XXXX"},
+{"Key":"REPEAT_CONFIRM","English":"Are you sure you want to use the same crew line-up as the previous race?","Italian":"XXXX"},
+{"Key":"REQUIRED","English":"Required","Italian":"XXXX"},
+{"Key":"RESULT","English":"Result","Italian":"XXXX"},
+{"Key":"RESULT_HEADER","English":"The race is over and the results are in...","Italian":"XXXX"},
+{"Key":"ROLE","English":"Role:","Italian":"XXXX"},
+{"Key":"SEASON_RANKING","English":"Season Ranking","Italian":"XXXX"},
+{"Key":"SETTINGS","English":"Settings","Italian":"XXXX"},
+{"Key":"SHOW_TUTORIAL","English":"Show Tutorial:","Italian":"XXXX"},
+{"Key":"SIGNED_IN_AS","English":"Signed in as:","Italian":"XXXX"},
+{"Key":"SKILLS_REQUIRED","English":"Skills Required","Italian":"XXXX"},
+{"Key":"SKIPPER","English":"Skipper","Italian":"XXXX"},
+{"Key":"SKIPPER_DESCRIPTION","English":"The team captain. They'll have to be able to lead the crew and handle the pressure of doing so, all the while knowing how to react in tough situations.","Italian":"XXXX"},
+{"Key":"SOUND","English":"Sound FX","Italian":"XXXX"},
+{"Key":"SUGAR_SIGN_IN","English":"SUGAR Sign-in","Italian":"XXXX"},
+{"Key":"TALK_TIME_REMAINING","English":"Talk Time Remaining","Italian":"XXXX"},
+{"Key":"TEAM_COLOURS","English":"Team Colours:","Italian":"XXXX"},
+{"Key":"TEAM_MANAGEMENT","English":"Team Line-Up","Italian":"XXXX"},
+{"Key":"TEAM_NAME","English":"Team Name:","Italian":"XXXX"},
+{"Key":"TRIMMER","English":"Trimmer","Italian":"XXXX"},
+{"Key":"TRIMMER_DESCRIPTION","English":"Responsible for controlling the shape of the sails. Attention to detail and durability will bring success to those in this position.","Italian":"XXXX"},
+{"Key":"TUTORIAL_WARNING","English":"Are you sure you want to quit out of the tutorial?\n\nIf yes, you'll need to start a new game in order to take the tutorial.","Italian":"XXXX"},
+{"Key":"WILLPOWER","English":"Willpower","Italian":"XXXX"},
+{"Key":"WISDOM","English":"Wisdom","Italian":"XXXX"},
+{"Key":"YELLOW_PLACEMENT","English":"Ideal In Another Position","Italian":"XXXX"},
+{"Key":"YES","English":"Yes","Italian":"XXXX"}]

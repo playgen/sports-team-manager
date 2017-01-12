@@ -77,6 +77,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	protected override void OnEnable()
 	{
 		base.OnEnable();
+		Localization.LanguageChange += OnLanguageChange;
 		_sectionText = new Dictionary<Language, string[]>();
 		_sectionTextHolder.ForEach(st => _sectionText.Add(st.Key, st.Value));
 		_menuHighlighted = (RectTransform)transform.Find("Menu Highlighted");
@@ -100,7 +101,6 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 			}
 		}
 		SetUp();
-		Localization.LanguageChange += OnLanguageChange;
 	}
 
 	protected override void OnDisable()
@@ -202,7 +202,8 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		var speechBubble = transform.Find("Tutorial Helper/Image");
 		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)speechBubble);
 		speechBubble.GetComponent<LayoutGroup>().padding.bottom = (int)(((RectTransform)speechBubble).sizeDelta.y * 0.25f) + 16;
-		((RectTransform)transform.Find("Tutorial Helper/Buttons")).anchoredPosition = new Vector2(0, GetComponent<LayoutGroup>().padding.bottom);
+		var buttons = transform.Find("Tutorial Helper/Buttons");
+		((RectTransform)buttons).anchoredPosition = new Vector2(0, speechBubble.GetComponent<LayoutGroup>().padding.bottom);
 		if (_wipeTriggered)
 		{
 			_triggeredObjects.Clear();

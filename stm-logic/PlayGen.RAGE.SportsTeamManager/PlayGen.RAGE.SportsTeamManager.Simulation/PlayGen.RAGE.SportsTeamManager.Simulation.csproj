@@ -101,6 +101,7 @@
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="EventController.cs" />
     <Compile Include="NameConfig.cs" />
+    <Compile Include="PostRaceEventState.cs" />
     <Compile Include="PostSessionEventTrigger.cs" />
     <Compile Include="GameConfig.cs" />
     <Compile Include="GameManager.cs" />

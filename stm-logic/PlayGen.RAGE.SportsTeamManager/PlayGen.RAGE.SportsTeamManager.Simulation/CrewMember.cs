@@ -576,9 +576,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Check to see if any events are about to be triggered
 		/// </summary>
-		public DialogueStateActionDTO[] CurrentEventCheck(Team team, IntegratedAuthoringToolAsset iat, bool afterRaceSession)
+		public PostRaceEventState[] CurrentEventCheck(Team team, IntegratedAuthoringToolAsset iat, bool afterRaceSession)
 		{
-			var replies = new List<DialogueStateActionDTO>();
+			var replies = new List<PostRaceEventState>();
 			List<DialogueStateActionDTO> dialogueOptions;
 			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
@@ -614,7 +614,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (dialogueOptions.Any())
 				{
 					var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
-					replies.Add(selectedNext);
+					replies.Add(new PostRaceEventState(this, selectedNext));
 				}
 				TickUpdate();
 			}
@@ -624,7 +624,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get CrewMember reply to player dialogue during a post-race event
 		/// </summary>
-		public DialogueStateActionDTO SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Team team, Boat previousBoat)
+		public DialogueStateActionDTO SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Team team, List<string> subjects)
 		{
 			if (selected == null)
 			{
@@ -643,13 +643,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						break;
 				//adjust nextstate based on if the player has said they were not the best in any position when they could have been
 				case "NotPickedSkill":
-					foreach (var position in previousBoat.Positions)
+					if (subjects.Contains("WasBetter"))
 					{
-						if (position.GetPositionRating(this) >= previousBoat.PositionScores[position])
-						{
-							nextState = selected.NextState + "Incorrect";
-						}
-						break;
+						nextState = selected.NextState + "Incorrect";
 					}
 					break;
 			}

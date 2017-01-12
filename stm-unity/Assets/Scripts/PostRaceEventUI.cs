@@ -29,6 +29,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 
 	private void OnEnable()
 	{
+		Localization.LanguageChange += OnLanguageChange;
 		if (_postRaceEvent == null)
 		{
 			_postRaceEvent = GetComponentInParent<PostRaceEvent>();
@@ -40,11 +41,11 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
 		ResetDisplay();
-		Localization.LanguageChange += OnLanguageChange;
 	}
 
 	private void OnDisable()
 	{
+		Localization.LanguageChange -= OnLanguageChange;
 		if (_postRaceEvent.transform.GetSiblingIndex() == _postRaceEvent.transform.parent.childCount - 1)
 		{
 			_popUpBlocker.transform.SetAsLastSibling();
@@ -52,7 +53,6 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			_popUpBlocker.onClick.RemoveAllListeners();
 			_popUpBlocker.gameObject.SetActive(false);
 		}
-		Localization.LanguageChange -= OnLanguageChange;
 	}
 
 	/// <summary>
@@ -78,7 +78,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			//set current NPC dialogue
 			ResetQuestions();
 			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "PostRaceEvent", "PostRaceEventOpen", AlternativeTracker.Alternative.Dialog));
-			SUGARManager.GameData.Send("Post Race Event Start", current[0].Value.NextState);
+			SUGARManager.GameData.Send("Post Race Event Start", current[0].Dialogue.NextState);
 		}
 		else
 		{
@@ -109,7 +109,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			var replies = _postRaceEvent.GetEventReplies();
 			for (int i = 0; i < _postRacePeople.Length; i++)
 			{
-				_postRacePeople[i].ResetQuestions(current[i], replies[current[i].Key]);
+				_postRacePeople[i].ResetQuestions(current[i], replies[current[i].CrewMember]);
 			}
 			if (replies.Values.Sum(dos => dos.Count) == 0)
 			{
@@ -154,9 +154,9 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	/// <summary>
 	/// Triggered by button. Send the selected dialogue to the character
 	/// </summary>
-	public void SendReply(CrewMember cm, DialogueStateActionDTO reply)
+	public void SendReply(PostRaceEventState reply)
 	{
-		var responses = _postRaceEvent.AddReply(cm, reply);
+		var responses = _postRaceEvent.AddReply(reply);
 		if (responses != null)
 		{
 			foreach (PostRacePersonUI person in _postRacePeople)
@@ -165,7 +165,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 				{
 					if (res.Key == person.CurrentCrewMember)
 					{
-						person.UpdateDialogue(res.Value);
+						person.UpdateDialogue(res.Value.Dialogue);
 					}
 				}
 			}

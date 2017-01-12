@@ -35,7 +35,7 @@ public class SettingsUI : MonoBehaviour {
 		_soundToggle.sprite = UIStateManager.SoundOn ? _onSprite : _offSprite;
 		_languageDropdown.ClearOptions();
 		var languageNames = Localization.AvailableLanguages();
-		_languageDropdown.AddOptions(languageNames);
+		_languageDropdown.AddOptions(languageNames.Select(ln => Localization.Get(ln)).ToList());
 		var selectedIndex = languageNames.IndexOf(Localization.SelectedLanguage.ToString());
 		if (selectedIndex == -1)
 		{
