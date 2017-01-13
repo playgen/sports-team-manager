@@ -99,7 +99,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//remove those already involved in a running event to not be selected
 				foreach (var crewMember in allCrew.Values)
 				{
-					if ((crewMember.LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "true")
+					var expectsPos = crewMember.LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
+					var expectsPosAfter = crewMember.LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
+					if ((expectsPos != null && expectsPos != "null") || (expectsPosAfter != null && expectsPosAfter != "null"))
 					{
 						allCrewRemovals.Add(crewMember);
 					}
@@ -127,7 +129,44 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					switch (selected.NextState)
 					{
 						case "PW":
-							//for this event, select a crew member who was not placed incorrectly
+							var betterPlace = new List<KeyValuePair<CrewMember, Position>>();
+							foreach (var pair in team.LineUpHistory.Last().PositionCrew)
+							{
+								var betterPosition = new KeyValuePair<Position, int>(Position.Null, 0);
+								foreach (Position boatPosition in team.LineUpHistory.Last().Positions)
+								{
+									if (boatPosition == betterPosition.Key || boatPosition == pair.Key)
+									{
+										continue;
+									}
+									int possiblePositionScore = boatPosition.GetPositionRating(pair.Value);
+									if (possiblePositionScore > team.LineUpHistory.Last().PositionScores[pair.Key] && possiblePositionScore > betterPosition.Value)
+									{
+										betterPosition = new KeyValuePair<Position, int>(boatPosition, possiblePositionScore);
+									}
+								}
+								if (betterPosition.Key != Position.Null)
+								{
+									betterPlace.Add(new KeyValuePair<CrewMember, Position>(pair.Value, betterPosition.Key));
+								}
+								allCrew.Remove(pair.Value.Name);
+							}
+							if (betterPlace.Count == 0)
+							{
+								var selectedCrewMember = allCrew.OrderBy(c => Guid.NewGuid()).First().Value;
+								var betterPosition = new KeyValuePair<Position, int>(Position.Null, 0);
+								foreach (Position boatPosition in team.LineUpHistory.Last().Positions)
+								{
+									int possiblePositionScore = boatPosition.GetPositionRating(selectedCrewMember);
+									if (possiblePositionScore > betterPosition.Value)
+									{
+										betterPosition = new KeyValuePair<Position, int>(boatPosition, possiblePositionScore);
+									}
+								}
+								betterPlace.Add(new KeyValuePair<CrewMember, Position>(selectedCrewMember, betterPosition.Key));
+							}
+							betterPlace = betterPlace.OrderBy(c => Guid.NewGuid()).ToList();
+							eventSelected.Add(new PostRaceEventState(betterPlace.First().Key, selected, new[] { betterPlace.First().Value.GetName() }.ToList()));
 							break;
 						case "OO":
 							//for this event, select a crew member who is placed with someone they do not get on with
@@ -301,6 +340,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				foreach (var meaning in meanings)
 				{
+					if (meaning == "-")
+					{
+						continue;
+					}
 					int currentCount;
 					int.TryParse(manager.LoadBelief(string.Format("PossibleMeaning({0})", meaning)), out currentCount);
 					manager.UpdateSingleBelief(string.Format("PossibleMeaning({0})", meaning), (currentCount + 1).ToString());
@@ -314,6 +357,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				foreach (var style in styles)
 				{
+					if (style == "-")
+					{
+						continue;
+					}
 					int currentCount;
 					int.TryParse(manager.LoadBelief(string.Format("PossibleStyle({0})", style)), out currentCount);
 					manager.UpdateSingleBelief(string.Format("PossibleStyle({0})", style), (currentCount + 1).ToString());
@@ -325,6 +372,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			foreach (var meaning in meanings)
 			{
+				if (meaning == "-")
+				{
+					continue;
+				}
 				int currentCount;
 				int.TryParse(manager.LoadBelief(string.Format("Meaning({0})", meaning)), out currentCount);
 				manager.UpdateSingleBelief(string.Format("Meaning({0})", meaning), (currentCount + 1).ToString());
@@ -335,6 +386,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			foreach (var style in styles)
 			{
+				if (style == "-")
+				{
+					continue;
+				}
 				int currentCount;
 				int.TryParse(manager.LoadBelief(string.Format("Style({0})", style)), out currentCount);
 				manager.UpdateSingleBelief(string.Format("Style({0})", style), (currentCount + 1).ToString());

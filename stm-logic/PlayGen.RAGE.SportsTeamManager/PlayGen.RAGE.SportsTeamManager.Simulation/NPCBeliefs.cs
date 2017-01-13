@@ -34,8 +34,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		CrewEditAllowance,
 		[Description("Action(Allowance)")]
 		ActionAllowance,
-		[Description("Expected(Selection)")]
-		ExpectedSelection,
+		[Description("Expected(Position)")]
+		ExpectedPosition,
+		[Description("ExpectedAfter(Position)")]
+		ExpectedPositionAfter,
 		[Description("ColorPrimary(Red)")]
 		TeamColorRedPrimary,
 		[Description("ColorPrimary(Green)")]

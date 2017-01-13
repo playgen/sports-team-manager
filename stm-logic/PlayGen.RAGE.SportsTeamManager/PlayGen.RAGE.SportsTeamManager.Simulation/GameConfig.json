@@ -21,6 +21,10 @@
 		}
 	],
 	"EventTriggers": [
-		
+		{
+			"EventName": "PW",
+			"RaceTrigger": 2,
+			"RepeatEvery": 10
+		}
 	]
 }

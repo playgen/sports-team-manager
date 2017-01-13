@@ -64,25 +64,7 @@
 							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
 							"Conditions":
 								{
-									"Set": ["NotPickedAfterSorry = [reply]"]
-								},
-							"Desirability": -4,
-							"Praiseworthiness": -4
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
-							"Conditions":
-								{
-									"Set": ["NotPickedSkillFriends = [reply]"]
-								},
-							"Desirability": 2,
-							"Praiseworthiness": 2
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
-							"Conditions":
-								{
-									"Set": ["NotPickedSkillIncorrect = [reply]"]
+									"Set": ["PWAvoidingAvoiding = [reply]"]
 								},
 							"Desirability": -2,
 							"Praiseworthiness": -2
@@ -91,25 +73,16 @@
 							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
 							"Conditions":
 								{
-									"Set": ["NotPickedSkillNothing = [reply]"]
+									"Set": ["PWCompetingCompeting = [reply]"]
 								},
-							"Desirability": -3,
-							"Praiseworthiness": -3
+							"Desirability": -4,
+							"Praiseworthiness": -4
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
 							"Conditions":
 								{
-									"Set": ["NotPickedSkillTrain = [reply]"]
-								},
-							"Desirability": 2,
-							"Praiseworthiness": 2
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
-							"Conditions":
-								{
-									"Set": ["NotPickedSorry = [reply]"]
+									"Set": ["PWAccomodatingAccomodating = [reply]"]
 								},
 							"Desirability": 3,
 							"Praiseworthiness": 3
@@ -118,10 +91,91 @@
 							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
 							"Conditions":
 								{
-									"Set": ["NotPickedFiredNo = [reply]"]
+									"Set": ["PWCollaboratingAvoiding = [reply]"]
 								},
-							"Desirability": -3,
-							"Praiseworthiness": -3
+							"Desirability": -2,
+							"Praiseworthiness": -2
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["PWAccomodatingCompeting = [reply]"]
+								},
+							"Desirability": -2,
+							"Praiseworthiness": -2
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["PWAvoidingCollaboratingCollaborating = [reply]"]
+								},
+							"Desirability": 3,
+							"Praiseworthiness": 3
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["PWAvoidingCollaboratingAvoiding = [reply]"]
+								},
+							"Desirability": -2,
+							"Praiseworthiness": -2
+						},
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["PWCompetingAccomodatingAccomodating = [reply]"]
+								},
+							"Desirability": 3,
+							"Praiseworthiness": 3
+						},  
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["PWCompetingAccomodatingCompeting = [reply]"]
+								},
+							"Desirability": -2,
+							"Praiseworthiness": -2
+						},  
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["PWAccomodatingCompetingCompeting = [reply]"]
+								},
+							"Desirability": -4,
+							"Praiseworthiness": -4
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["PWAccomodatingCompetingAccomodating = [reply]"]
+								},
+							"Desirability": 3,
+							"Praiseworthiness": 3
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["PWCollaboratingCollaboratingCollaborating = [reply]"]
+								},
+							"Desirability": 4,
+							"Praiseworthiness": 4
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["PWCollaboratingCollaboratingAvoiding = [reply]"]
+								},
+							"Desirability": -2,
+							"Praiseworthiness": -2
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, OpinionCheck([member], [x], [y]), Self)",

@@ -70,13 +70,13 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			{
 				_postRacePeople[i].ResetDisplay(current[i]);
 			}
-			BestFit();
 			//set alpha to 1 (fully visible)
 			GetComponent<CanvasGroup>().alpha = 1;
 			_canvasGroup.interactable = true;
 			_canvasGroup.blocksRaycasts = true;
 			//set current NPC dialogue
 			ResetQuestions();
+			BestFit();
 			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "PostRaceEvent", "PostRaceEventOpen", AlternativeTracker.Alternative.Dialog));
 			SUGARManager.GameData.Send("Post Race Event Start", current[0].Dialogue.NextState);
 		}
@@ -104,7 +104,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	private void ResetQuestions()
 	{
 		var current = _postRaceEvent.CurrentEvent;
-		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length && _postRaceEvent.EnableCounter == 0)
+		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length)
 		{
 			var replies = _postRaceEvent.GetEventReplies();
 			for (int i = 0; i < _postRacePeople.Length; i++)
@@ -165,7 +165,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 				{
 					if (res.Key == person.CurrentCrewMember)
 					{
-						person.UpdateDialogue(res.Value.Dialogue);
+						person.UpdateDialogue(res.Value.Dialogue, res.Value.Subjects);
 					}
 				}
 			}

@@ -214,7 +214,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	/// <summary>
 	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last name, first names
 	/// </summary>
-	private string SplitName(string original, bool shortName = true)
+	private string SplitName(string original, bool shortName = false)
 	{
 		var splitName = original.Split(' ');
 		if (shortName)

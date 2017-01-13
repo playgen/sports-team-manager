@@ -90,7 +90,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 	private IEnumerator Animate(bool upward = false, bool keep = false, string tip = "")
 	{
 		WaitForEndOfFrame endFrame = new WaitForEndOfFrame();
-		WaitForSecondsRealtime endReal = new WaitForSecondsRealtime(0.04f);
+		WaitForSecondsRealtime endReal = new WaitForSecondsRealtime(0.2f);
 		int start = upward ? keep ? 1 : 0 : 2;
 		int limit = keep ? 1 : 2;
 		_popUpAnim["LearningPill"].speed = 1;
@@ -99,10 +99,6 @@ public class LearningPillUI : ObservableMonoBehaviour {
 		while (_popUpAnim["LearningPill"].time <= start + limit)
 		{
 			yield return endFrame;
-		}
-		if (limit == 2)
-		{
-			_currentHelp = null;
 		}
 		_popUpAnim["LearningPill"].speed = 0;
 		_popUpAnim["LearningPill"].time = start + limit;

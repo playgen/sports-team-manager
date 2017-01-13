@@ -583,40 +583,53 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			//if this CrewMember is expecting to be picked for the next race and this is after that race
-			if (afterRaceSession && (LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "true")
+			if (afterRaceSession && LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription()) != null)
 			{
-				//if they are currently unpositioned
-				if (GetBoatPosition(team.Boat.PositionCrew) == Position.Null)
+				var expected = LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription());
+				if (expected != "null")
 				{
-					//reduce opinion of the manager
-					AddOrUpdateOpinion(team.Manager.Name, -3);
-					//set their belief to 'false'
-					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "false");
-					//send event on record that this happened
-					var eventString = "PostRace(NotPickedAfterSorry)";
-					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
-					if (eventRpc != null)
+					UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), "null");
+					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), expected);
+				}
+			}
+			if (afterRaceSession && LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription()) != null)
+			{
+				var expected = LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
+				if (expected != "null" && team.Boat.Positions.Any(p => p.GetName() == expected))
+				{
+					//if they are currently unpositioned
+					if (GetBoatPosition(team.Boat.PositionCrew).GetName() != expected)
 					{
-						RolePlayCharacter.ActionFinished(eventRpc);
+						//reduce opinion of the manager
+						AddOrUpdateOpinion(team.Manager.Name, -3);
+						//set their belief to 'null'
+						UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), "null");
+						//send event on record that this happened
+						var eventString = "PostRace(PWNotDone)";
+						var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
+						if (eventRpc != null)
+						{
+							RolePlayCharacter.ActionFinished(eventRpc);
+						}
+						//get dialogue for this happening
+						//dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PWNotDone".ToName()).ToList();
 					}
-					//get dialogue for this happening
-					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "NotPickedAfterSorry".ToName()).ToList();
+					//if they were positioned in the correct role
+					else
+					{
+						//set their belief to 'null'
+						UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), "null");
+						//get dialogue for this happening
+						//dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PWDone".ToName()).ToList();
+					}
+					//if there are any dialogue options, select one at random and add to the list of replies
+					/*if (dialogueOptions.Any())
+					{
+						var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
+						replies.Add(new PostRaceEventState(this, selectedNext));
+					}*/
+					TickUpdate();
 				}
-				//if they were positioned
-				else
-				{
-					//set their belief to 'not'
-					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "not");
-					//get dialogue for this happening
-					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PickedAfterSorry".ToName()).ToList();
-				}
-				//if there are any dialogue options, select one at random and add to the list of replies
-				if (dialogueOptions.Any())
-				{
-					var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
-					replies.Add(new PostRaceEventState(this, selectedNext));
-				}
-				TickUpdate();
 			}
 			return replies.OrderBy(o => Guid.NewGuid()).ToArray();
 		}
@@ -634,20 +647,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var nextState = selected.NextState;
 			switch (nextState)
 			{
-				//adjust nextstate based on if the player has said they would pick them in the past and did not
-				case "NotPickedSorry":
-					if ((LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) ?? "null").ToLower() == "false")
-					{
-						nextState = selected.NextState + "Again";
-					}
-						break;
-				//adjust nextstate based on if the player has said they were not the best in any position when they could have been
-				case "NotPickedSkill":
-					if (subjects.Contains("WasBetter"))
-					{
-						nextState = selected.NextState + "Incorrect";
-					}
-					break;
+				
 			}
 			//get dialogue
 			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, nextState.ToName()).ToList();
@@ -656,14 +656,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//select reply
 				reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
 			}
-			PostRaceFeedback(nextState, team);
+			PostRaceFeedback(nextState, team, subjects);
 			return reply;
 		}
 
 		/// <summary>
 		/// Make changes based off of post-race events
 		/// </summary>
-		private void PostRaceFeedback(string lastEvent, Team team)
+		private void PostRaceFeedback(string lastEvent, Team team, List<string> subjects)
 		{
 			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
@@ -672,64 +672,46 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//trigger different changes based off of what dialogue the player last picked
 			switch (lastEvent)
 			{
-				case "NotPickedSorry":
+				case "PWAccomodatingAccomodating":
+				case "PWCompetingAccomodatingAccomodating":
 					AddOrUpdateOpinion(team.Manager.Name, 1);
-					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "true");
+					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), subjects[0]);
 					break;
-				case "NotPickedSorryAgain":
-					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "true");
+				case "PWAccomodatingCompetingAccomodating":
+					AddOrUpdateOpinion(team.Manager.Name, 1);
+					UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), subjects[0]);
 					break;
-				case "NotPickedSkillIncorrect":
+				case "PWAvoidingAvoiding":
+				case "PWAccomodatingCompeting":
+				case "PWCollaboratingAvoiding":
+				case "PWCollaboratingCollaboratingAvoiding":
 					AddOrUpdateOpinion(team.Manager.Name, -1);
 					break;
-				case "NotPickedFiredYes":
-					AddOrUpdateOpinion(team.Manager.Name, -10);
-					team.RetireCrew(this);
-					foreach (var cm in team.CrewMembers.Values)
-					{
-						cm.AddOrUpdateOpinion(team.Manager.Name, -2);
-						cm.SaveStatus();
-					}
+				case "PWCompetingCompeting":
+				case "PWCompetingAccomodatingCompeting":
+				case "PWAccomodatingCompetingCompeting":
+					AddOrUpdateOpinion(team.Manager.Name, -5);
 					break;
-				case "NotPickedFiredNo":
-					AddOrUpdateOpinion(team.Manager.Name, -10);
-					break;
-				case "NotPickedSkillTrain":
-					AddOrUpdateOpinion(team.Manager.Name, 2);
+				case "PWAvoidingCollaboratingCollaborating":
+					AddOrUpdateOpinion(team.Manager.Name, 1);
 					for (var i = 0; i < 2; i++)
 					{
 						var randomStat = Math.Pow(2, StaticRandom.Int(0, Skills.Count));
-						Skills[(CrewMemberSkill)randomStat]++;
-						if (Skills[(CrewMemberSkill)randomStat] > 10)
-						{
-							Skills[(CrewMemberSkill)randomStat] = 10;
-						}
-						UpdateSingleBelief(string.Format(NPCBeliefs.Skill.GetDescription(), (CrewMemberSkill)randomStat), Skills[(CrewMemberSkill)randomStat].ToString());
+						var statName = ((CrewMemberSkill)randomStat).ToString();
+						var statValue = Skills[(CrewMemberSkill)randomStat];
+						RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
+						UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
 					}
 					break;
-				case "NotPickedSkillFriends":
-					AddOrUpdateOpinion(team.Manager.Name, 1);
-					var allCrew = team.CrewMembers;
-					allCrew.Remove(Name);
-					for (var i = 0; i < 2; i++)
+				case "PWCollaboratingCollaboratingCollaborating":
+					AddOrUpdateOpinion(team.Manager.Name, 3);
+					for (var i = 0; i < 4; i++)
 					{
-						var randomCrew = StaticRandom.Int(0, allCrew.Count);
-						var cm = allCrew.Values.ToList()[randomCrew];
-						AddOrUpdateOpinion(cm.Name, 2);
-						cm.AddOrUpdateOpinion(Name, 2);
-						cm.SaveStatus();
-					}
-					break;
-				case "NotPickedSkillNothing":
-					AddOrUpdateOpinion(team.Manager.Name, -10);
-					break;
-				case "NotPickedSkillLeave":
-					AddOrUpdateOpinion(team.Manager.Name, -10);
-					team.RetireCrew(this);
-					foreach (var cm in team.CrewMembers)
-					{
-						cm.Value.AddOrUpdateOpinion(team.Manager.Name, -1);
-						cm.Value.SaveStatus();
+						var randomStat = Math.Pow(2, StaticRandom.Int(0, Skills.Count));
+						var statName = ((CrewMemberSkill)randomStat).ToString();
+						var statValue = Skills[(CrewMemberSkill)randomStat];
+						RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
+						UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
 					}
 					break;
 			}

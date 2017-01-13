@@ -65,6 +65,13 @@ public class PostRaceEvent : ObservableMonoBehaviour
 	{
 		var replies = _gameManager.EventController.GetEventDialogues(_gameManager.Team.Manager);
 		var replyDict = new Dictionary<CrewMember, List<PostRaceEventState>>();
+		foreach (var ev in _currentEvent)
+		{
+			if (!replyDict.ContainsKey(ev.CrewMember))
+			{
+				replyDict.Add(ev.CrewMember, new List<PostRaceEventState>());
+			}
+		}
 		//if there are no replies, reset the current event
 		if (replies.Count == 0)
 		{
@@ -72,13 +79,6 @@ public class PostRaceEvent : ObservableMonoBehaviour
 		}
 		else
 		{
-			foreach (var ev in _currentEvent)
-			{
-				if (!replyDict.ContainsKey(ev.CrewMember))
-				{
-					replyDict.Add(ev.CrewMember, new List<PostRaceEventState>());
-				}
-			}
 			foreach (var reply in replies)
 			{
 				replyDict[reply.CrewMember].Add(reply);

@@ -129,7 +129,6 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 				}
 			}
 			var formattedName = lastName + firstName;
-			formattedName = formattedName.Remove(formattedName.Length - 1, 1);
 			_recruitUI[i].transform.Find("Name").GetComponent<Text>().text = formattedName;
 			//set-up avatar for this recruit
 			_recruitUI[i].transform.Find("Image").GetComponentInChildren<AvatarDisplay>().SetAvatar(thisRecruit.Avatar, 0);
