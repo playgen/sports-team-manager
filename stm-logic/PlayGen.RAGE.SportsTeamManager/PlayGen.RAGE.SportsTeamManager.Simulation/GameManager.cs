@@ -283,8 +283,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var nameList = new List<string>();
 			foreach (var character in characterList)
 			{
-				//var rpc = iat.InstantiateCharacterAsset(character.Name);
-				var rpc = RolePlayCharacterAsset.LoadFromFile(character.Source);
+				var rpc = iat.InstantiateCharacterAsset(character.Name);
+				//var rpc = RolePlayCharacterAsset.LoadFromFile(character.Source);
 				var position = rpc.GetBeliefValue(NPCBeliefs.Position.GetDescription());
 				//if this character is the manager, load the game details from this file and set this character as the manager
 				if (position == "Manager")

@@ -39,18 +39,12 @@ public class ScreenSideUI : MonoBehaviour {
 
 	public void DisplayQuitWarning()
 	{
-		_quitWarningPopUp.SetActive(true);
-		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(CloseQuitWarning);
-		_popUpBlocker.transform.SetAsLastSibling();
-		_quitWarningPopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_quitWarningPopUp.GetComponentsInChildren<Button>().Select(b => b.gameObject).BestFit();
 	}
 
 	public void CloseQuitWarning()
 	{
-		_quitWarningPopUp.SetActive(false);
 		_popUpBlocker.gameObject.SetActive(false);
 	}
 }

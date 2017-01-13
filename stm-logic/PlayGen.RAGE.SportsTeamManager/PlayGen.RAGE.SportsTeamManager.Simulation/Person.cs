@@ -28,7 +28,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (rpc != null)
 			{
 				RolePlayCharacter = rpc;
-				RolePlayCharacter.Initialize();
 				Name = RolePlayCharacter.BodyName;
 				Age = Convert.ToInt32(LoadBelief(NPCBeliefs.Age.GetDescription()));
 				Gender = LoadBelief(NPCBeliefs.Gender.GetDescription());
@@ -66,8 +65,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			rpc.SaveConfigurationToFile(Path.Combine(storageLocation, fileName + ".rpc"));
 			iat.AddNewCharacterSource(new CharacterSourceDTO { Name = rpc.BodyName, Source = fileName + ".rpc" });
 			//store RPC locally
-			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(Path.Combine(storageLocation, fileName + ".rpc"));
-			RolePlayCharacter.Initialize();
+			RolePlayCharacter = iat.InstantiateCharacterAsset(Name);
 		}
 
 		/// <summary>

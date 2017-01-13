@@ -40,7 +40,6 @@ public class LearningPillUI : ObservableMonoBehaviour {
 		var tip = _learningPill.GetHelpText(keys[0]);
 		keys.RemoveAt(0);
 		_furtherHelp = keys;
-		_helpText.text = "";
 		if (tip != null)
 		{
 			_popUpBlocker.transform.SetAsLastSibling();
@@ -89,6 +88,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 
 	private IEnumerator Animate(bool upward = false, bool keep = false, string tip = "")
 	{
+		_helpText.text = string.Empty;
 		WaitForEndOfFrame endFrame = new WaitForEndOfFrame();
 		WaitForSecondsRealtime endReal = new WaitForSecondsRealtime(0.2f);
 		int start = upward ? keep ? 1 : 0 : 2;

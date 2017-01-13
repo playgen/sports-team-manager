@@ -74,21 +74,6 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		Localization.LanguageChange -= OnLanguageChange;
 	}
 
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
-			{
-				gameObject.SetActive(false);
-			}
-			else if (_hireWarningPopUp.activeInHierarchy)
-			{
-				CloseHireCrewWarning();
-			}
-		}
-	}
-
 	/// <summary>
 	/// Populate the information required in the pop-up
 	/// </summary>
@@ -294,6 +279,18 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		CloseHireCrewWarning();
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "Recruitment", "HiredCrewMember", GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Hired", true);
+	}
+
+	public void OnEscape()
+	{
+		if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
+		{
+			gameObject.SetActive(false);
+		}
+		else if (_hireWarningPopUp.activeInHierarchy)
+		{
+			CloseHireCrewWarning();
+		}
 	}
 
 	private void OnLanguageChange()

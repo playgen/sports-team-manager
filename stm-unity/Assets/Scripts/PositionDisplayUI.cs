@@ -56,17 +56,6 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 		Localization.LanguageChange -= OnLanguageChange;
 	}
 
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
-			{
-				ClosePositionPopUp();
-			}
-		}
-	}
-
 	/// <summary>
 	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last name, first names
 	/// </summary>

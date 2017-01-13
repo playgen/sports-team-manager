@@ -162,6 +162,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\EscapeAction.cs" />
     <Compile Include="Assets\Scripts\AvatarDisplay.cs" />
     <Compile Include="Assets\Scripts\CrewMemberUI.cs" />
     <Compile Include="Assets\Scripts\GameManagerObject.cs" />

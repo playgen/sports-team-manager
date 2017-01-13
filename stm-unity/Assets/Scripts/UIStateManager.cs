@@ -30,10 +30,6 @@ public class UIStateManager : ObservableMonoBehaviour {
 	private GameObject _sideMenu;
 	[SerializeField]
 	private GameObject _teamManagement;
-	[SerializeField]
-	private GameObject _seasonStandings;
-	[SerializeField]
-	private GameObject _helpPages;
 	private static bool _loaded;
 
 	void Start()
@@ -137,31 +133,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 	public void GoToTeamManagement()
 	{
 		_teamManagement.SetActive(true);
-		_seasonStandings.SetActive(false);
-		_helpPages.SetActive(false);
 		(FindObjectOfType(typeof(ScreenSideUI)) as ScreenSideUI).ChangeSelected(0);
-	}
-
-	/// <summary>
-	/// Hide other screens, display season standings screen
-	/// </summary>
-	public void GoToSeasonStandings()
-	{
-		_teamManagement.SetActive(false);
-		_seasonStandings.SetActive(true);
-		_helpPages.SetActive(false);
-		(FindObjectOfType(typeof(ScreenSideUI)) as ScreenSideUI).ChangeSelected(1);
-	}
-
-	/// <summary>
-	/// Hide other screens, display help screen
-	/// </summary>
-	public void GoToHelpPages()
-	{
-		_teamManagement.SetActive(false);
-		_seasonStandings.SetActive(false);
-		_helpPages.SetActive(true);
-		(FindObjectOfType(typeof(ScreenSideUI)) as ScreenSideUI).ChangeSelected(2);
 	}
 
 	public void ShowAchievements()

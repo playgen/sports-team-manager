@@ -87,21 +87,6 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name);
 	}
 
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
-			{
-				gameObject.SetActive(false);
-			}
-			else if (_fireWarningPopUp.activeInHierarchy)
-			{
-				CloseFireCrewWarning();
-			}
-		}
-	}
-
 	/// <summary>
 	/// Set-up the pop-up for displaying the given CrewMember
 	/// </summary>
@@ -306,6 +291,18 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		SUGARManager.GameData.Send("Crew Member Fired", true);
 		_memberMeeting.FireCrewMember(_currentMember);
 		_teamSelectionUI.ResetCrew();
+	}
+
+	public void OnEscape()
+	{
+		if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
+		{
+			gameObject.SetActive(false);
+		}
+		else if (_fireWarningPopUp.activeInHierarchy)
+		{
+			CloseFireCrewWarning();
+		}
 	}
 
 	private void OnLanguageChange()

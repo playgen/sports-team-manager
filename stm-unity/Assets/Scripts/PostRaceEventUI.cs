@@ -190,6 +190,6 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 
 	private void BestFit()
 	{
-		GetComponentsInChildren<Text>().BestFit();
+		GetComponentsInChildren<PostRacePersonUI>().SelectMany(c => c.GetComponentsInChildren<Text>().Where(t => t.transform.parent != c.transform)).BestFit();
 	}
 }

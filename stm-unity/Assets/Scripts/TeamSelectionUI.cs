@@ -147,36 +147,6 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				b.GetComponent<HoverObject>().Enabled = false;
 			}
 		}
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			if (_preRacePopUp.activeInHierarchy)
-			{
-				if (_preRacePopUp.GetComponentInChildren<Text>().text == Localization.Get("REPEAT_CONFIRM"))
-				{
-					CloseRepeatWarning();
-				}
-				else
-				{
-					CloseConfirmPopUp();
-				}
-			}
-			else if (_postRacePopUp.activeInHierarchy)
-			{
-				ClosePostRacePopUp();
-			}
-			else if (_promotionPopUp.activeInHierarchy)
-			{
-				ClosePromotionPopUp();
-			}
-			else if (_quitBlocker.gameObject.activeInHierarchy)
-			{
-				_quitBlocker.onClick.Invoke();
-			}
-			else if (!_popUpBlocker.gameObject.activeInHierarchy && !_smallerPopUpBlocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy && !SUGARManager.Unity.AnyActiveUI)
-			{
-				FindObjectOfType<ScreenSideUI>().DisplayQuitWarning();
-			}
-		}
 	}
 
 	private void EnableRacing()
@@ -844,6 +814,37 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			}
 		}
 		return scoreDiff;
+	}
+
+	public void OnEscape()
+	{
+		if (_preRacePopUp.activeInHierarchy)
+		{
+			if (_preRacePopUp.GetComponentInChildren<Text>().text == Localization.Get("REPEAT_CONFIRM"))
+			{
+				CloseRepeatWarning();
+			}
+			else
+			{
+				CloseConfirmPopUp();
+			}
+		}
+		else if (_postRacePopUp.activeInHierarchy)
+		{
+			ClosePostRacePopUp();
+		}
+		else if (_promotionPopUp.activeInHierarchy)
+		{
+			ClosePromotionPopUp();
+		}
+		else if (_quitBlocker.gameObject.activeInHierarchy)
+		{
+			_quitBlocker.onClick.Invoke();
+		}
+		else if (!SUGARManager.Unity.AnyActiveUI)
+		{
+			FindObjectOfType<ScreenSideUI>().DisplayQuitWarning();
+		}
 	}
 
 	private void OnLanguageChange()
