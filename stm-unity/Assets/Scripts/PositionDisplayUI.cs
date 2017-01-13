@@ -73,30 +73,36 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	private string SplitName(string original, bool shortName = true)
 	{
 		var splitName = original.Split(' ');
-		var lastName = splitName.Last();
-		if (!shortName)
+		if (shortName)
 		{
-			lastName += ", ";
+			var formattedName = splitName.First()[0] + ".";
+			foreach (var split in splitName)
+			{
+				if (split != splitName.First())
+				{
+					formattedName += split;
+					if (split != splitName.Last())
+					{
+						formattedName += " ";
+					}
+				}
+			}
+			return formattedName;
 		}
+		var firstName = ",\n" + splitName.First();
+		var lastName = string.Empty;
 		foreach (var split in splitName)
 		{
-			if (split != splitName.Last())
+			if (split != splitName.First())
 			{
-				if (!shortName)
+				lastName += split;
+				if (split != splitName.Last())
 				{
-					lastName += split + " ";
-				}
-				else
-				{
-					lastName = split[0] + "." + lastName;
+					lastName += " ";
 				}
 			}
 		}
-		if (!shortName)
-		{
-			lastName = lastName.Remove(lastName.Length - 1, 1);
-		}
-		return lastName;
+		return lastName + firstName;
 	}
 
 	/// <summary>

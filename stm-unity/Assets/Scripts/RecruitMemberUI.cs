@@ -115,16 +115,22 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			_recruitUI[i].SetActive(true);
 			//set-up displayed name
 			var splitName = thisRecruit.Name.Split(' ');
-			var lastName = splitName.Last() + ",\n";
+			var firstName =  ",\n" + splitName.First();
+			var lastName = string.Empty;
 			foreach (var split in splitName)
 			{
-				if (split != splitName.Last())
+				if (split != splitName.First())
 				{
-					lastName += split + " ";
+					lastName += split;
+					if (split != splitName.Last())
+					{
+						lastName += " ";
+					}
 				}
 			}
-			lastName = lastName.Remove(lastName.Length - 1, 1);
-			_recruitUI[i].transform.Find("Name").GetComponent<Text>().text = lastName;
+			var formattedName = lastName + firstName;
+			formattedName = formattedName.Remove(formattedName.Length - 1, 1);
+			_recruitUI[i].transform.Find("Name").GetComponent<Text>().text = formattedName;
 			//set-up avatar for this recruit
 			_recruitUI[i].transform.Find("Image").GetComponentInChildren<AvatarDisplay>().SetAvatar(thisRecruit.Avatar, 0);
 			//flip direction they are facing for every other recruit
