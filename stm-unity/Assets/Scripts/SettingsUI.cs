@@ -19,6 +19,12 @@ public class SettingsUI : MonoBehaviour {
 	private void OnEnable()
 	{
 		Setup();
+		BestFit.ResolutionChange += DoBestFit;
+	}
+
+	private void OnDisable()
+	{
+		BestFit.ResolutionChange -= DoBestFit;
 	}
 
 	private void Setup()
@@ -40,9 +46,7 @@ public class SettingsUI : MonoBehaviour {
 		{
 			_languageDropdown.value = selectedIndex;
 		}
-		gameObject.GetComponentsInChildren<Text>().Where(t => t.transform.parent == transform).BestFit();
-		_languageDropdown.GetComponentsInChildren<Text>().BestFit();
-
+		DoBestFit();
 	}
 
 	public void ToggleMusic()
@@ -64,5 +68,11 @@ public class SettingsUI : MonoBehaviour {
 		Localization.UpdateLanguage(_languageDropdown.value);
 		gameObject.SetActive(false);
 		gameObject.SetActive(true);
+	}
+
+	private void DoBestFit()
+	{
+		gameObject.GetComponentsInChildren<Text>().Where(t => t.transform.parent == transform).BestFit();
+		_languageDropdown.GetComponentsInChildren<Text>().BestFit();
 	}
 }

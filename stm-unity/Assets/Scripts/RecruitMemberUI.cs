@@ -63,6 +63,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		_popUpBlocker.onClick.RemoveAllListeners();
 		_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
 		Localization.LanguageChange += OnLanguageChange;
+		BestFit.ResolutionChange += DoBestFit;
 	}
 
 	private void OnDisable()
@@ -72,6 +73,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		_popUpBlocker.transform.SetAsFirstSibling();
 		transform.SetAsFirstSibling();
 		Localization.LanguageChange -= OnLanguageChange;
+		BestFit.ResolutionChange -= DoBestFit;
 	}
 
 	/// <summary>
@@ -155,7 +157,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			_questionButtons[i].onClick.RemoveAllListeners();
 			_questionButtons[i].onClick.AddListener(delegate { AskQuestion(selected, questionText); });
 		}
-		BestFit();
+		DoBestFit();
 		CostCheck();
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
@@ -194,7 +196,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 				recruit.transform.Find("Image").GetComponentInChildren<AvatarDisplay>().UpdateMood(reply.Key.Avatar, reply.Value);
 			}
 		}
-		BestFit();
+		DoBestFit();
 		CostCheck();
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Recruitment", skill + "Question", AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
@@ -243,7 +245,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			((RectTransform)_hireWarningReject.transform).anchoredPosition = Vector2.zero;
 			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("NO", true);
 		}
-		BestFit();
+		DoBestFit();
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "Recruitment", "HireWarning", AlternativeTracker.Alternative.Menu));
 	}
 
@@ -327,10 +329,10 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 				}
 			}
 		}
-		BestFit();
+		DoBestFit();
 	}
 
-	private void BestFit()
+	private void DoBestFit()
 	{
 		_recruitUI.Select(r => r.transform.Find("Name").gameObject).BestFit();
 		_recruitUI.Select(r => r.transform.Find("Dialogue Box/Dialogue").gameObject).BestFit();

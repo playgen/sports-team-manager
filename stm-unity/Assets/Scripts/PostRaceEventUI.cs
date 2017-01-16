@@ -30,6 +30,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	private void OnEnable()
 	{
 		Localization.LanguageChange += OnLanguageChange;
+		BestFit.ResolutionChange += DoBestFit;
 		if (_postRaceEvent == null)
 		{
 			_postRaceEvent = GetComponentInParent<PostRaceEvent>();
@@ -46,6 +47,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	private void OnDisable()
 	{
 		Localization.LanguageChange -= OnLanguageChange;
+		BestFit.ResolutionChange -= DoBestFit;
 		if (_postRaceEvent.transform.GetSiblingIndex() == _postRaceEvent.transform.parent.childCount - 1)
 		{
 			_popUpBlocker.transform.SetAsLastSibling();
@@ -76,7 +78,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			_canvasGroup.blocksRaycasts = true;
 			//set current NPC dialogue
 			ResetQuestions();
-			BestFit();
+			DoBestFit();
 			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "PostRaceEvent", "PostRaceEventOpen", AlternativeTracker.Alternative.Dialog));
 			SUGARManager.GameData.Send("Post Race Event Start", current[0].Dialogue.NextState);
 		}
@@ -122,7 +124,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			{
 				_popUpBlocker.onClick.RemoveAllListeners();
 			}
-			BestFit();
+			DoBestFit();
 		}
 	}
 
@@ -185,10 +187,10 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			}
 		}
 		ResetQuestions();
-		BestFit();
+		DoBestFit();
 	}
 
-	private void BestFit()
+	private void DoBestFit()
 	{
 		GetComponentsInChildren<PostRacePersonUI>().SelectMany(c => c.GetComponentsInChildren<Text>().Where(t => t.transform.parent != c.transform)).BestFit();
 	}

@@ -57,7 +57,13 @@ public class NewGameUI : MonoBehaviour {
 	{
 		_tutorialToggle.enabled = _newGame.ExistingSaves();
 		_tutorialToggle.isOn = true;
-		gameObject.BestFit();
+		BestFit.ResolutionChange += DoBestFit;
+		DoBestFit();
+	}
+
+	private void OnDisable()
+	{
+		BestFit.ResolutionChange -= DoBestFit;
 	}
 
 	private void Update()
@@ -145,7 +151,7 @@ public class NewGameUI : MonoBehaviour {
 			if (exists)
 			{
 				_overwritePopUp.SetActive(true);
-				_overwritePopUp.GetComponentsInChildren<Button>().Where(t => t.gameObject != _overwritePopUp).Select(t => t.gameObject).BestFit();
+				DoBestFit();
 			}
 			else
 			{
@@ -181,5 +187,11 @@ public class NewGameUI : MonoBehaviour {
 		{
 			_errorText.text = Localization.Get("NEW_GAME_CREATION_ERROR");
 		}
+	}
+
+	private void DoBestFit()
+	{
+		gameObject.BestFit();
+		_overwritePopUp.GetComponentsInChildren<Button>().Where(t => t.gameObject != _overwritePopUp).Select(t => t.gameObject).BestFit();
 	}
 }

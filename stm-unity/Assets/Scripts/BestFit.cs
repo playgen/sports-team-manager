@@ -1,11 +1,36 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using UnityEngine;
 using UnityEngine.UI;
 
-public static class TextExtensions {
+public class BestFit : MonoBehaviour
+{
+	public static event Action ResolutionChange = delegate { };
+	private Vector2 _previousResolution;
+
+	private void Awake()
+	{
+		_previousResolution = new Vector2(Screen.width, Screen.height);
+	}
+
+	private void FixedUpdate()
+	{
+		if (_previousResolution.x != Screen.width || _previousResolution.y != Screen.height)
+		{
+			Invoke("CallResolutionChange", 0.05f);
+			_previousResolution = new Vector2(Screen.width, Screen.height);
+		}
+	}
+
+	private void CallResolutionChange()
+	{
+		ResolutionChange();
+	}
+}
+
+public static class BestFitExtensions {
 	public static void BestFit(this GameObject go)
 	{
 		BestFit(go.GetComponentsInChildren<Text>());
@@ -47,7 +72,7 @@ public static class TextExtensions {
 			{
 				text.resizeTextForBestFit = true;
 				text.resizeTextMinSize = 1;
-				text.resizeTextMaxSize = 100;
+				text.resizeTextMaxSize = 25;//100;//text.size;
 				text.cachedTextGenerator.Invalidate();
 				text.cachedTextGenerator.Populate(text.text, text.GetGenerationSettings(text.rectTransform.rect.size));
 				text.resizeTextForBestFit = false;

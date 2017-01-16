@@ -24,7 +24,13 @@ public class ScreenSideUI : MonoBehaviour {
 	{
 		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		_nameText.text = _gameManager.Team.Name.ToUpper();
-		gameObject.BestFit();
+		BestFit.ResolutionChange += DoBestFit;
+		DoBestFit();
+	}
+
+	private void OnDisable()
+	{
+		BestFit.ResolutionChange -= DoBestFit;
 	}
 
 	/// <summary>
@@ -46,5 +52,11 @@ public class ScreenSideUI : MonoBehaviour {
 	public void CloseQuitWarning()
 	{
 		_popUpBlocker.gameObject.SetActive(false);
+	}
+
+	private void DoBestFit()
+	{
+		transform.Find("Side Menu").gameObject.BestFit();
+		_nameText.fontSize = transform.Find("Side Menu/Team Management").GetComponent<Text>().fontSize;
 	}
 }

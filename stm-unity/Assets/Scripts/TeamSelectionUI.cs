@@ -89,11 +89,13 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	private void OnEnable()
 	{
 		Localization.LanguageChange += OnLanguageChange;
+		BestFit.ResolutionChange += DoBestFit;
 	}
 
 	private void OnDisable()
 	{
 		Localization.LanguageChange -= OnLanguageChange;
+		BestFit.ResolutionChange -= DoBestFit;
 	}
 
 	/// <summary>
@@ -101,7 +103,6 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	/// </summary>
 	private void Start()
 	{
-		UpdateBoatSize();
 		_recruitCost = _teamSelection.GetConfigValue(ConfigKeys.RecruitmentCost);
 		ResetScrollbar();
 		CreateNewBoat();
@@ -159,26 +160,6 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		_raceButton.interactable = false;
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
-	}
-
-	private void FixedUpdate()
-	{
-		UpdateBoatSize();
-	}
-
-	/// <summary>
-	/// Update the height of boat objects to scale with screen size
-	/// </summary>
-	private void UpdateBoatSize()
-	{
-		var currentPosition = _boatContainer.transform.localPosition.y - ((RectTransform)_boatContainer.transform).anchoredPosition.y;
-		if (!Mathf.Approximately(_boatMain.GetComponent<LayoutElement>().preferredHeight, Mathf.Abs(currentPosition) * 0.2f))
-		{
-			foreach (Transform boat in _boatContainer.transform)
-			{
-				boat.GetComponent<LayoutElement>().preferredHeight = Mathf.Abs(currentPosition) * 0.2f;
-			}
-		}
 	}
 
 	/// <summary>
@@ -259,7 +240,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.GetName()).Image;
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
 		}
-		BestFit();
+		DoBestFit();
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Started", "RaceSession", "RaceSessionStarted", CompletableTracker.Completable.Race));
 		ResetCrew();
 		RepeatLineUp();
@@ -365,7 +346,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			var crewMember = crewContainer.Find("Crew Member " + i).gameObject;
 			crewMember.SetActive(false);
 		}
-		BestFit();
+		DoBestFit();
 	}
 
 	/// <summary>
@@ -477,7 +458,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		var noButton = _preRacePopUp.transform.Find("No").GetComponent<Button>();
 		noButton.onClick.RemoveAllListeners();
 		noButton.onClick.AddListener(CloseConfirmPopUp);
-		BestFit();
+		DoBestFit();
 		_popUpBlocker.transform.SetAsLastSibling();
 		_preRacePopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
@@ -527,7 +508,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		var noButton = _preRacePopUp.transform.Find("No").GetComponent<Button>();
 		noButton.onClick.RemoveAllListeners();
 		noButton.onClick.AddListener(CloseRepeatWarning);
-		BestFit();
+		DoBestFit();
 		_popUpBlocker.transform.SetAsLastSibling();
 		_preRacePopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
@@ -604,7 +585,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			memberObject.transform.SetAsLastSibling();
 		}
 		_postRacePopUp.transform.Find("Result").GetComponent<Text>().text = Localization.GetAndFormat("RACE_RESULT_POSTION", false, _teamSelection.GetTeam().Name, finishPositionText);
-		BestFit();
+		DoBestFit();
 	}
 
 	/// <summary>
@@ -758,7 +739,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		//close any open pop-ups
 		_meetingUI.gameObject.SetActive(false);
 		_positionUI.ClosePositionPopUp();
-		BestFit();
+		DoBestFit();
 	}
 
 	/// <summary>
@@ -867,15 +848,23 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			var lastRace = _teamSelection.GetLineUpHistory(0, 1).First();
 			GetResult(true, lastRace.Key, lastRace.Value, _boatPool[0].transform.Find("Score").GetComponent<Text>());
 		}
-		BestFit();
+		DoBestFit();
 	}
 
-	private void BestFit()
+	private void DoBestFit()
 	{
 		_boatMain.transform.Find("Position Container").gameObject.BestFit();
 		(FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[]).Select(c => c.gameObject).BestFit();
 		_preRacePopUp.GetComponentsInChildren<Button>().Select(b => b.gameObject).BestFit();
 		_postRacePopUp.GetComponentsInChildren<Text>().Where(t => t.transform.parent == _postRacePopUp.transform).BestFit();
 		_promotionPopUp.GetComponentsInChildren<Button>().Select(b => b.gameObject).BestFit();
+		var currentPosition = _boatContainer.transform.localPosition.y - ((RectTransform)_boatContainer.transform).anchoredPosition.y;
+		if (!Mathf.Approximately(_boatMain.GetComponent<LayoutElement>().preferredHeight, Mathf.Abs(currentPosition) * 0.2f))
+		{
+			foreach (Transform boat in _boatContainer.transform)
+			{
+				boat.GetComponent<LayoutElement>().preferredHeight = Mathf.Abs(currentPosition) * 0.2f;
+			}
+		}
 	}
 }

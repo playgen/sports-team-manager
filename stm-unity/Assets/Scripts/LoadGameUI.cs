@@ -33,6 +33,12 @@ public class LoadGameUI : MonoBehaviour
 	{
 		GetGames();
 		_errorText.text = "";
+		BestFit.ResolutionChange += DoBestFit;
+	}
+
+	private void OnDisable()
+	{
+		BestFit.ResolutionChange -= DoBestFit;
 	}
 
 	/// <summary>
@@ -76,7 +82,7 @@ public class LoadGameUI : MonoBehaviour
 			gameButton.GetComponent<Button>().onClick.AddListener(() => SelectGame(gameButton.GetComponentInChildren<Text>()));
 			gameButton.name = game;
 		}
-		gameObject.BestFit();
+		DoBestFit();
 	}
 
 	/// <summary>
@@ -120,5 +126,10 @@ public class LoadGameUI : MonoBehaviour
 			_loadGame.SetSelected("");
 		}
 		
+	}
+
+	private void DoBestFit()
+	{
+		gameObject.BestFit();
 	}
 }

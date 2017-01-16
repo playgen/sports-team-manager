@@ -66,6 +66,16 @@ public class UIStateManager : ObservableMonoBehaviour {
 		}
 	}
 
+	private void OnEnable()
+	{
+		BestFit.ResolutionChange += DoBestFit;
+	}
+
+	private void OnDisable()
+	{
+		BestFit.ResolutionChange -= DoBestFit;
+	}
+
 	void Update()
 	{
 		if (_mainMenu.activeInHierarchy)
@@ -102,7 +112,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 	{
 		go.SetActive(false);
 		_mainMenu.SetActive(true);
-		MenuBestFit();
+		DoBestFit();
 		var gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
 		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = gameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves")).Count != 0;
 	}
@@ -154,7 +164,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 			{
 				_signIn.SetActive(false);
 				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
-				MenuBestFit();
+				DoBestFit();
 			}
 			else
 			{
@@ -171,7 +181,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 		Application.Quit();
 	}
 
-	private void MenuBestFit()
+	private void DoBestFit()
 	{
 		_mainMenu.GetComponentsInChildren<Text>().Where(t => t.transform.parent == _mainMenu.transform || t.transform.parent.parent == _mainMenu.transform).BestFit();
 	}
