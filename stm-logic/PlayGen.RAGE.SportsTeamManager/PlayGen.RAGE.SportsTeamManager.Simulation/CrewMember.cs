@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 using RolePlayCharacter;
@@ -478,10 +480,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						{
 							style += "High";
 						}
-						if (pickedOpinionPositive.Key == team.Manager.Name)
-						{
-							style += "Manager";
-						}
 						//get available dialogue
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
 						if (dialogueOptions.Any())
@@ -490,6 +488,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							if (pickedOpinionPositive.Key != team.Manager.Name)
 							{
 								reply.Add(pickedOpinionPositive.Key);
+							}
+							else
+							{
+								reply.Add("you");
 							}
 						}
 						AddOrUpdateRevealedOpinion(pickedOpinionPositive.Key, pickedOpinionPositive.Value);
@@ -515,10 +517,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						{
 							style += "High";
 						}
-						if (pickedOpinionNegative.Key == team.Manager.Name)
-						{
-							style += "Manager";
-						}
 						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
 						if (dialogueOptions.Any())
 						{
@@ -526,6 +524,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							if (pickedOpinionNegative.Key != team.Manager.Name)
 							{
 								reply.Add(pickedOpinionNegative.Key);
+							}
+							else
+							{
+								reply.Add("you");
 							}
 						}
 						AddOrUpdateRevealedOpinion(pickedOpinionNegative.Key, pickedOpinionNegative.Value);
@@ -678,8 +680,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), subjects[0]);
 					break;
 				case "PWAccomodatingCompetingAccomodating":
-				case "OOCompetingCollaboratingCollaborating":
-				case "OOCollaboratingCollaboratingCollaborating":
 					AddOrUpdateOpinion(team.Manager.Name, 1);
 					UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), subjects[0]);
 					break;
@@ -720,6 +720,42 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						var statValue = Skills[(CrewMemberSkill)randomStat];
 						RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
 						UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
+					}
+					break;
+				case "OOAccomodatingAccomodating":
+					var subGreatHelp = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
+					foreach (var cm in team.CrewMembers)
+					{
+						if (cm.Key != subGreatHelp)
+						{
+							cm.Value.AddOrUpdateOpinion(subGreatHelp, 2);
+							cm.Value.SaveStatus();
+						}
+					}
+					break;
+				case "OOAvoidingAccomodatingAvoiding":
+				case "OOAccomodatingAvoidingAccomodating":
+					var subHelp = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
+					foreach (var cm in team.CrewMembers)
+					{
+						if (cm.Key != subHelp)
+						{
+							cm.Value.AddOrUpdateOpinion(subHelp, 1);
+							cm.Value.SaveStatus();
+						}
+					}
+					break;
+				case "OOCompetingCollaboratingCollaborating":
+				case "OOCollaboratingCollaboratingCollaborating":
+					var subKnow = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
+					AddOrUpdateOpinion(team.Manager.Name, 1);
+					foreach (var cm in team.CrewMembers)
+					{
+						if (cm.Key != subKnow)
+						{
+							cm.Value.AddOrUpdateRevealedOpinion(subKnow, cm.Value.CrewOpinions[subKnow]);
+							cm.Value.SaveStatus();
+						}
 					}
 					break;
 			}

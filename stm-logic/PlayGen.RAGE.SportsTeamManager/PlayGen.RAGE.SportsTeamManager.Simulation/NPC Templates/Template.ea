@@ -284,6 +284,15 @@
 								},
 							"Desirability": -3,
 							"Praiseworthiness": -3
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["OOAvoidingAccomodatingAccomodating = [reply]"]
+								},
+							"Desirability": 2,
+							"Praiseworthiness": 2
 						}]
 				},
 			"EmotionDispositions": [

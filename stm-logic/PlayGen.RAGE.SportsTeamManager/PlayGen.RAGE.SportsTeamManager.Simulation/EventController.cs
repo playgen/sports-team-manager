@@ -177,6 +177,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							}
 							var selectedFor = allCrew.OrderBy(c => Guid.NewGuid()).First();
 							selectedFor.Value.AddOrUpdateOpinion(selectedAgainst.Key, -10);
+							selectedFor.Value.AddOrUpdateRevealedOpinion(selectedAgainst.Key, selectedFor.Value.CrewOpinions[selectedAgainst.Key]);
+							selectedFor.Value.SaveStatus();
+							foreach (var cm in team.CrewMembers)
+							{
+								if (cm.Key != selectedFor.Key && cm.Key != selectedAgainst.Key)
+								{
+									cm.Value.AddOrUpdateOpinion(team.Manager.Name, StaticRandom.Int(-3, 1));
+									cm.Value.SaveStatus();
+								}
+							}
 							eventSelected.Add(new PostRaceEventState(selectedFor.Value, selected, new[] { selectedAgainst.Key.NoSpaces() }.ToList()));
 							break;
 						case "NotPicked":
