@@ -158,6 +158,13 @@ public class Localization : MonoBehaviour
 		return string.Format(Get(key, toUpper), args);
 	}
 
+	public static bool HasKey(string key)
+	{
+		var newKey = key.ToUpper();
+		newKey = newKey.Replace('-', '_');
+		return LocalizationDict[SelectedLanguage].ContainsKey(newKey);
+	}
+
 	private static void GetSystemLanguage()
 	{
 		switch (Application.systemLanguage)

@@ -203,6 +203,87 @@
 								},
 							"Desirability": -2,
 							"Praiseworthiness": -2
+						},
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["PWNotDone = [reply]"]
+								},
+							"Desirability": -3,
+							"Praiseworthiness": -3
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["OOCompetingCollaboratingCollaborating = [reply]"]
+								},
+							"Desirability": 2,
+							"Praiseworthiness": 2
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["OOCollaboratingCollaboratingCollaborating = [reply]"]
+								},
+							"Desirability": 3,
+							"Praiseworthiness": 3
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["OOAvoidingAvoiding = [reply]"]
+								},
+							"Desirability": -3,
+							"Praiseworthiness": -3
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["OOCollaboratingCompeting = [reply]"]
+								},
+							"Desirability": -2,
+							"Praiseworthiness": -2
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["OOCompetingCollaboratingCompeting = [reply]"]
+								},
+							"Desirability": -2,
+							"Praiseworthiness": -2
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["OOCollaboratingCollaboratingCompeting = [reply]"]
+								},
+							"Desirability": -2,
+							"Praiseworthiness": -2
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["OOCompetingCompeting = [reply]"]
+								},
+							"Desirability": -4,
+							"Praiseworthiness": -4
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, PostRace([reply]), Self)",
+							"Conditions":
+								{
+									"Set": ["OOAccomodatingAvoidingAvoiding = [reply]"]
+								},
+							"Desirability": -3,
+							"Praiseworthiness": -3
 						}]
 				},
 			"EmotionDispositions": [

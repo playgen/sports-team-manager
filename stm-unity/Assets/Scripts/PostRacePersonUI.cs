@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using IntegratedAuthoringTool.DTOs;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.UI;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 public class PostRacePersonUI : MonoBehaviour
 {
@@ -35,7 +37,8 @@ public class PostRacePersonUI : MonoBehaviour
 			{
 				_lastState = current.Dialogue.CurrentState;
 			}
-			_dialogueText.text = Localization.GetAndFormat(current.Dialogue.Utterance, false, current.Subjects.ToArray());
+			var subjects = current.Subjects.Select(s => Localization.HasKey(s) ? Localization.Get(s) : Regex.Replace(s, @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0")).ToArray();
+			_dialogueText.text = Localization.GetAndFormat(current.Dialogue.Utterance, false, subjects);
 		}
 		_avatarDisplay.SetAvatar(current.CrewMember.Avatar, current.CrewMember.GetMood());
 		_currentCrewMember = current.CrewMember;
@@ -55,8 +58,8 @@ public class PostRacePersonUI : MonoBehaviour
 				continue;
 			}
 			_questions[i].SetActive(true);
-			_questions[i].GetComponentInChildren<Text>().text = Localization.GetAndFormat(replies[i].Dialogue.Utterance, false, current.Subjects.ToArray());
-			var currentMember = current.CrewMember;
+			var subjects = current.Subjects.Select(s => Localization.HasKey(s) ? Localization.Get(s) : Regex.Replace(s, @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0")).ToArray();
+			_questions[i].GetComponentInChildren<Text>().text = Localization.GetAndFormat(replies[i].Dialogue.Utterance, false, subjects);
 			var currentReply = replies[i];
 			var postRaceEvent = GetComponentInParent<PostRaceEventUI>();
 			var question = _questions[i];
@@ -86,6 +89,7 @@ public class PostRacePersonUI : MonoBehaviour
 	{
 		if (response != null)
 		{
+			subjects = subjects.Select(s => Localization.HasKey(s) ? Localization.Get(s) : Regex.Replace(s, @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0")).ToList();
 			_dialogueText.text = Localization.GetAndFormat(response.Utterance, false, subjects.ToArray());
 			_lastState = response.CurrentState;
 		}

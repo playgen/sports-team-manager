@@ -166,10 +166,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 								betterPlace.Add(new KeyValuePair<CrewMember, Position>(selectedCrewMember, betterPosition.Key));
 							}
 							betterPlace = betterPlace.OrderBy(c => Guid.NewGuid()).ToList();
-							eventSelected.Add(new PostRaceEventState(betterPlace.First().Key, selected, new[] { betterPlace.First().Value.GetName() }.ToList()));
+							eventSelected.Add(new PostRaceEventState(betterPlace.First().Key, selected, new[] { betterPlace.First().Value.ToString() }.ToList()));
 							break;
 						case "OO":
 							//for this event, select a crew member who is placed with someone they do not get on with
+							var selectedAgainst = team.CrewMembers.OrderBy(c => c.Value.RevealedSkills.Values.Sum()).First();
+							if (allCrew.ContainsKey(selectedAgainst.Key))
+							{
+								allCrew.Remove(selectedAgainst.Key);
+							}
+							var selectedFor = allCrew.OrderBy(c => Guid.NewGuid()).First();
+							selectedFor.Value.AddOrUpdateOpinion(selectedAgainst.Key, -10);
+							eventSelected.Add(new PostRaceEventState(selectedFor.Value, selected, new[] { selectedAgainst.Key.NoSpaces() }.ToList()));
 							break;
 						case "NotPicked":
 							//for this event, select a crew member who was not selected

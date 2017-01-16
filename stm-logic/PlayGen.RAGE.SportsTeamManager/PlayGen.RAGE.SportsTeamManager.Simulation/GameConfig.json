@@ -24,7 +24,12 @@
 		{
 			"EventName": "PW",
 			"RaceTrigger": 2,
-			"RepeatEvery": 10
+			"RepeatEvery": 20
+		},
+		{
+			"EventName": "OO",
+			"RaceTrigger": 4,
+			"RepeatEvery": 20
 		}
 	]
 }

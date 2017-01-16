@@ -678,6 +678,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), subjects[0]);
 					break;
 				case "PWAccomodatingCompetingAccomodating":
+				case "OOCompetingCollaboratingCollaborating":
+				case "OOCollaboratingCollaboratingCollaborating":
 					AddOrUpdateOpinion(team.Manager.Name, 1);
 					UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), subjects[0]);
 					break;
@@ -685,11 +687,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				case "PWAccomodatingCompeting":
 				case "PWCollaboratingAvoiding":
 				case "PWCollaboratingCollaboratingAvoiding":
+				case "OOAvoidingAvoiding":
+				case "OOCollaboratingCompeting":
+				case "OOCompetingCollaboratingCompeting":
+				case "OOCollaboratingCollaboratingCompeting":
 					AddOrUpdateOpinion(team.Manager.Name, -1);
 					break;
 				case "PWCompetingCompeting":
 				case "PWCompetingAccomodatingCompeting":
 				case "PWAccomodatingCompetingCompeting":
+				case "OOCompetingCompeting":
+				case "OOAccomodatingAvoidingAvoiding":
 					AddOrUpdateOpinion(team.Manager.Name, -5);
 					break;
 				case "PWAvoidingCollaboratingCollaborating":
