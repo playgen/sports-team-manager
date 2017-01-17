@@ -56,7 +56,6 @@ public class ScreenSideUI : MonoBehaviour {
 
 	private void DoBestFit()
 	{
-		transform.Find("Side Menu").gameObject.BestFit();
-		_nameText.fontSize = transform.Find("Side Menu/Team Management").GetComponent<Text>().fontSize;
+		gameObject.BestFit();
 	}
 }

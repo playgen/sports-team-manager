@@ -11,35 +11,25 @@ using UnityEditor;
 public enum Language
 {
 	None = 0,
-	[Name("English")]
-	[Culture("en-gb")]
+	[Language("English", "en-gb")]
 	English,
-	[Name("en-us")]
-	[Culture("en-us")]
+	[Language("en-us", "en-us")]
 	AmericanEnglish,
-	[Name("fr")]
-	[Culture("fr-fr")]
+	[Language("fr", "fr-fr")]
 	French,
-	[Name("es")]
-	[Culture("es-es")]
+	[Language("es", "es-es")]
 	Spanish,
-	[Name("Italian")]
-	[Culture("it-it")]
+	[Language("Italian", "it-it")]
 	Italian,
-	[Name("de")]
-	[Culture("de-de")]
+	[Language("de", "de-de")]
 	German,
-	[Name("nl")]
-	[Culture("nl-nl")]
+	[Language("nl", "nl-nl")]
 	Dutch,
-	[Name("el")]
-	[Culture("el-gr")]
+	[Language("el", "el-gr")]
 	Greek,
-	[Name("ja")]
-	[Culture("ja-jp")]
+	[Language("ja", "ja-jp")]
 	Japanese,
-	[Name("zh-cn")]
-	[Culture("zh-cn")]
+	[Language("zh-cn", "zh-cn")]
 	ChineseSimplified
 }
 
@@ -71,23 +61,23 @@ public class Localization : MonoBehaviour
 
 	public void Set()
 	{
-		Text _text = GetComponent<Text>();
-		if (_text == null)
+		Text text = GetComponent<Text>();
+		if (text == null)
 		{
 			Debug.LogError("Localization script could not find Text component attached to this gameObject: " + gameObject.name);
 			return;
 		}
-		_text.text = Get(Key, ToUpper, LanguageOverride);
+		text.text = Get(Key, ToUpper, LanguageOverride);
 	}
 
 	private static void GetLocalizationDictionary()
 	{
-		TextAsset[] jsonTextAssets = Resources.LoadAll("Localization", typeof(TextAsset)).Cast<TextAsset>().ToArray();
+		TextAsset[] jsonTextAssets = Resources.LoadAll(FilePath, typeof(TextAsset)).Cast<TextAsset>().ToArray();
 
 		foreach (Language l in Enum.GetValues(typeof(Language)))
 		{
 			var fieldInfo = typeof(Language).GetField(l.ToString());
-			var attributes = (NameAttribute[])fieldInfo.GetCustomAttributes(typeof(NameAttribute), false);
+			var attributes = (LanguageAttribute[])fieldInfo.GetCustomAttributes(typeof(LanguageAttribute), false);
 			var languageHeader = attributes.Any() ? attributes.First().Name : l.ToString();
 			Dictionary<string, string> languageStrings = new Dictionary<string, string>();
 			foreach (var textAsset in jsonTextAssets)
@@ -273,7 +263,7 @@ public class Localization : MonoBehaviour
 		{
 			SelectedLanguage = language;
 			var fieldInfo = typeof(Language).GetField(language.ToString());
-			var attributes = (CultureAttribute[])fieldInfo.GetCustomAttributes(typeof(CultureAttribute), false);
+			var attributes = (LanguageAttribute[])fieldInfo.GetCustomAttributes(typeof(LanguageAttribute), false);
 			SelectedCulture = attributes.Any() ? new CultureInfo(attributes.First().Culture) : CultureInfo.InvariantCulture;
 			PlayerPrefs.SetInt("Last_Saved_Language", (int)SelectedLanguage);
 			((Localization[])FindObjectsOfType(typeof(Localization))).ToList().ForEach(l => l.Set());
@@ -285,23 +275,14 @@ public class Localization : MonoBehaviour
 }
 
 [AttributeUsage(AttributeTargets.Field)]
-public class NameAttribute : Attribute
+public class LanguageAttribute : Attribute
 {
 	public string Name { get; set; }
-
-	public NameAttribute(string name)
-	{
-		Name = name;
-	}
-}
-
-[AttributeUsage(AttributeTargets.Field)]
-public class CultureAttribute : Attribute
-{
 	public string Culture { get; set; }
 
-	public CultureAttribute(string culture)
+	public LanguageAttribute(string name, string culture)
 	{
+		Name = name;
 		Culture = culture;
 	}
 }
@@ -313,7 +294,7 @@ public class LocalizationEditor : Editor
 {
 	private Language _lastLang;
 	private Localization _myLoc;
-	
+
 	public void Awake()
 	{
 		_myLoc = (Localization)target;
@@ -328,6 +309,7 @@ public class LocalizationEditor : Editor
 			if (_lastLang != _myLoc.LanguageOverride)
 			{
 				_myLoc.Set();
+				_lastLang = _myLoc.LanguageOverride;
 			}
 		}
 	}

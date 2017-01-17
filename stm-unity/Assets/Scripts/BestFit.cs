@@ -5,32 +5,32 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Canvas))]
+[DisallowMultipleComponent]
 public class BestFit : MonoBehaviour
 {
 	public static event Action ResolutionChange = delegate { };
 	private Vector2 _previousResolution;
+	public int MinFontSize = 1;
+	public int MaxFontSize = 25;
 
 	private void Awake()
 	{
 		_previousResolution = new Vector2(Screen.width, Screen.height);
 	}
 
-	private void FixedUpdate()
+	private void LateUpdate()
 	{
 		if (!Mathf.Approximately(_previousResolution.x, Screen.width) || !Mathf.Approximately(_previousResolution.y, Screen.height))
 		{
-			Invoke("CallResolutionChange", 0.05f);
+			ResolutionChange();
 			_previousResolution = new Vector2(Screen.width, Screen.height);
 		}
 	}
-
-	private void CallResolutionChange()
-	{
-		ResolutionChange();
-	}
 }
 
-public static class BestFitExtensions {
+public static class BestFitExtensions
+{
 	public static void BestFit(this GameObject go)
 	{
 		BestFit(go.GetComponentsInChildren<Text>());
@@ -64,15 +64,18 @@ public static class BestFitExtensions {
 	public static void BestFit(this GameObject[] gameObjects)
 	{
 		int smallestFontSize = 0;
-		foreach (var go in gameObjects) {
+		foreach (var go in gameObjects)
+		{
 			LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)go.transform);
-			
+
+			var mono = go.GetComponentInParent<BestFit>();
 			var textObj = go.GetComponentsInChildren<Text>();
 			foreach (var text in textObj)
 			{
 				text.resizeTextForBestFit = true;
-				text.resizeTextMinSize = 1;
-				text.resizeTextMaxSize = 25;//100;//text.size;
+				text.resizeTextMinSize = mono ? mono.MinFontSize : 1;
+				text.resizeTextMaxSize = mono ? mono.MaxFontSize : 25;
+				text.fontSize = text.resizeTextMaxSize;
 				text.cachedTextGenerator.Invalidate();
 				text.cachedTextGenerator.Populate(text.text, text.GetGenerationSettings(text.rectTransform.rect.size));
 				text.resizeTextForBestFit = false;
