@@ -38,6 +38,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		ExpectedPosition,
 		[Description("ExpectedAfter(Position)")]
 		ExpectedPositionAfter,
+		[Description("Expected(Selection)")]
+		ExpectedSelection,
 		[Description("ColorPrimary(Red)")]
 		TeamColorRedPrimary,
 		[Description("ColorPrimary(Green)")]

@@ -565,14 +565,40 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			List<DialogueStateActionDTO> dialogueOptions;
 			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			//if this CrewMember is expecting to be picked for the next race and this is after that race
-			if (afterRaceSession && LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription()) != null)
+			if (afterRaceSession && LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != null)
 			{
-				var expected = LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription());
+				var expected = LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription());
 				if (expected != "null")
 				{
-					UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), "null");
-					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), expected);
+					if (GetBoatPosition(team.Boat.PositionCrew) == 0)
+					{
+						//reduce opinion of the manager
+						AddOrUpdateOpinion(team.Manager.Name, -3);
+						//send event on record that this happened
+						var eventString = "PostRace(NotPickedAfterPromise)";
+						var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
+						if (eventRpc != null)
+						{
+							RolePlayCharacter.ActionFinished(eventRpc);
+						}
+						//get dialogue for this happening
+						//dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PWNotDone".ToName()).ToList();
+					}
+					//if they were positioned in the correct role
+					else
+					{
+						//get dialogue for this happening
+						//dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PWDone".ToName()).ToList();
+					}
+					//if there are any dialogue options, select one at random and add to the list of replies
+					/*if (dialogueOptions.Any())
+					{
+						var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
+						replies.Add(new PostRaceEventState(this, selectedNext));
+					}*/
+					//set their belief to 'null'
+					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "null");
+					TickUpdate();
 				}
 			}
 			if (afterRaceSession && LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription()) != null)
@@ -585,8 +611,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						//reduce opinion of the manager
 						AddOrUpdateOpinion(team.Manager.Name, -3);
-						//set their belief to 'null'
-						UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), "null");
 						//send event on record that this happened
 						var eventString = "PostRace(PWNotDone)";
 						var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
@@ -600,8 +624,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					//if they were positioned in the correct role
 					else
 					{
-						//set their belief to 'null'
-						UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), "null");
 						//get dialogue for this happening
 						//dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PWDone".ToName()).ToList();
 					}
@@ -611,6 +633,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
 						replies.Add(new PostRaceEventState(this, selectedNext));
 					}*/
+					//set their belief to 'null'
+					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), "null");
+					TickUpdate();
+				}
+			}
+			if (afterRaceSession && LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription()) != null)
+			{
+				var expected = LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription());
+				if (expected != "null")
+				{
+					UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), "null");
+					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), expected);
 					TickUpdate();
 				}
 			}
@@ -657,6 +691,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				case "PWAccomodatingAccomodating":
 				case "PWCompetingAccomodatingAccomodating":
+				case "NotPickedAccomodatingAccomodating":
 					AddOrUpdateOpinion(team.Manager.Name, 1);
 					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), subjects[0]);
 					break;
@@ -672,13 +707,25 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				case "OOCollaboratingCompeting":
 				case "OOCompetingCollaboratingCompeting":
 				case "OOCollaboratingCollaboratingCompeting":
+				case "NotPickedAvoidingAvoiding":
+				case "NotPickedAvoidingCompetingAvoiding":
 					AddOrUpdateOpinion(team.Manager.Name, -1);
+					break;
+				case "NotPickedAccomodatingCollaboratingAccomodating":
+					AddOrUpdateOpinion(team.Manager.Name, 1);
+					break;
+				case "NotPickedAccomodatingCollaboratingCollaborating":
+					AddOrUpdateOpinion(team.Manager.Name, 5);
 					break;
 				case "PWCompetingCompeting":
 				case "PWCompetingAccomodatingCompeting":
 				case "PWAccomodatingCompetingCompeting":
 				case "OOCompetingCompeting":
 				case "OOAccomodatingAvoidingAvoiding":
+				case "NotPickedCompetingCompeting":
+				case "NotPickedAvoidingCompetingCompeting":
+				case "NotPickedCompetingAvoidingAvoiding":
+				case "NotPickedCompetingAvoidingCompeting":
 					AddOrUpdateOpinion(team.Manager.Name, -5);
 					break;
 				case "PWAvoidingCollaboratingCollaborating":
@@ -735,6 +782,27 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						if (cm.Key != subKnow)
 						{
 							cm.Value.AddOrUpdateRevealedOpinion(subKnow, cm.Value.CrewOpinions[subKnow]);
+							cm.Value.SaveStatus();
+						}
+					}
+					break;
+				case "NotPickedCollaboratingAccomodating":
+				case "NotPickedCollaboratingCollaboratingAccomodating":
+					AddOrUpdateOpinion(team.Manager.Name, 1);
+					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), subjects[0]);
+					var otherPlayer = Regex.Replace(subjects[1], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
+					team.CrewMembers[otherPlayer].AddOrUpdateOpinion(team.Manager.Name, 1);
+					team.CrewMembers[otherPlayer].UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), subjects[0]);
+					team.CrewMembers[otherPlayer].SaveStatus();
+					break;
+				case "NotPickedCollaboratingCollaboratingCollaborating":
+					AddOrUpdateOpinion(team.Manager.Name, 4);
+					foreach (var cm in team.CrewMembers)
+					{
+						if (!team.LineUpHistory.Last().PositionCrew.Values.Select(v => v.Name).Contains(cm.Key))
+						{
+							cm.Value.AddOrUpdateOpinion(team.Manager.Name, 1);
+							cm.Value.UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "true");
 							cm.Value.SaveStatus();
 						}
 					}

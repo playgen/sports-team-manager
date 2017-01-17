@@ -24,12 +24,17 @@
 		{
 			"EventName": "PW",
 			"RaceTrigger": 2,
-			"RepeatEvery": 20
+			"RepeatEvery": 30
 		},
 		{
 			"EventName": "OO",
 			"RaceTrigger": 4,
-			"RepeatEvery": 20
+			"RepeatEvery": 30
+		},
+		{
+			"EventName": "NotPicked",
+			"RaceTrigger": 6,
+			"RepeatEvery": 30
 		}
 	]
 }

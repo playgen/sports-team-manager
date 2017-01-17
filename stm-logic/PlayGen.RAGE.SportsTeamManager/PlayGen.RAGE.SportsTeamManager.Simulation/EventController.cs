@@ -191,7 +191,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							break;
 						case "NotPicked":
 							//for this event, select a crew member who was not selected
-							/*foreach (var pair in team.LineUpHistory.Last().PositionCrew)
+							foreach (var pair in team.LineUpHistory.Last().PositionCrew)
 							{
 								allCrew.Remove(pair.Value.Name);
 							}
@@ -200,7 +200,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 								continue;
 							}
 							allCrew = allCrew.OrderBy(c => Guid.NewGuid()).ToDictionary(d => d.Key, d => d.Value);
-							eventSelected.Add(new KeyValuePair<CrewMember, DialogueStateActionDTO>(allCrew.First().Value, selected));*/
+							var randomCrewMember = allCrew.First();
+							var randomBestPosition = new KeyValuePair<Position, int>(Position.Null, 0);
+							foreach (Position boatPosition in team.LineUpHistory.Last().Positions)
+							{
+								int possiblePositionScore = boatPosition.GetPositionRating(randomCrewMember.Value);
+								if (possiblePositionScore > randomBestPosition.Value)
+								{
+									randomBestPosition = new KeyValuePair<Position, int>(boatPosition, possiblePositionScore);
+								}
+							}
+							var randomPositionCurrent = team.LineUpHistory.Last().PositionCrew[randomBestPosition.Key].Name;
+							eventSelected.Add(new PostRaceEventState(randomCrewMember.Value, selected,
+												new[] { randomBestPosition.ToString(), randomPositionCurrent.NoSpaces() }.ToList()));
 							break;
 						case "IPC":
 							//for this event, select a crew member to have a conflict with another crew member
