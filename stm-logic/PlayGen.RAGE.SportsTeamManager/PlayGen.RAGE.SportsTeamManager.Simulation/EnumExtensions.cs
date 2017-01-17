@@ -12,7 +12,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 			var attributes = (NameAttribute[])fieldInfo.GetCustomAttributes(typeof(NameAttribute), false);
 
-			return attributes.Any() ? attributes.FirstOrDefault().Name : value.ToString();
+			return attributes.Any() ? attributes.First().Name : value.ToString();
 		}
 
 		public static string GetDescription(this Enum value)
@@ -21,7 +21,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 			var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
-			return attributes.Any() ? attributes.FirstOrDefault().Description : value.ToString();
+			return attributes.Any() ? attributes.First().Description : value.ToString();
 		}
 	}
 

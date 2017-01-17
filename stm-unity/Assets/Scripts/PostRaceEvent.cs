@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using IntegratedAuthoringTool.DTOs;
-
 using PlayGen.SUGAR.Unity;
 
 /// <summary>
@@ -35,7 +33,7 @@ public class PostRaceEvent : ObservableMonoBehaviour
 		_enableCounter = 0;
 		if (_gameManager == null)
 		{
-			_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+			_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
 		}
 		if (_gameManager.EventController.PostRaceEvents.Count > 0)
 		{

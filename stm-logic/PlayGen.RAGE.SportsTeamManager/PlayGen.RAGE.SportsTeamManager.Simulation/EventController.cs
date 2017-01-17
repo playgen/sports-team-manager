@@ -421,13 +421,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				for (int j = 0; j < PostRaceEvents[i].Count; j++)
 				{
 					manager.UpdateSingleBelief(string.Format("PRECrew{0}({1})", i, j), PostRaceEvents[i][j].CrewMember.Name.NoSpaces());
-					if (PostRaceEvents[i][j].Dialogue.NextState != "-")
-					{
-						manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), PostRaceEvents[i][j].Dialogue.NextState);
-					} else
-					{
-						manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), PostRaceEvents[i][j].Dialogue.CurrentState);
-					}
+					manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), PostRaceEvents[i][j].Dialogue.NextState != "-" ?
+												PostRaceEvents[i][j].Dialogue.NextState : PostRaceEvents[i][j].Dialogue.CurrentState);
 					var subjects = PostRaceEvents[i][j].Subjects.Count > 0 ? string.Join(",", PostRaceEvents[i][j].Subjects.ToArray()) : "null";
 					manager.UpdateSingleBelief(string.Format("PRESubject{0}({1})", i, j), subjects);
 				}

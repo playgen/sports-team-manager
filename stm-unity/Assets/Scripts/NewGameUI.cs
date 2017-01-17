@@ -76,8 +76,11 @@ public class NewGameUI : MonoBehaviour {
 			if (next != null)
 			{
 				var inputfield = next.GetComponent<InputField>();
-				if (inputfield != null) inputfield.OnPointerClick(new PointerEventData(EventSystem.current));
-				inputfield.MoveTextEnd(true);
+				if (inputfield != null)
+				{
+					inputfield.OnPointerClick(new PointerEventData(EventSystem.current));
+					inputfield.MoveTextEnd(true);
+				}
 				EventSystem.current.SetSelectedGameObject(next.gameObject, new BaseEventData(EventSystem.current));
 			}
 		}

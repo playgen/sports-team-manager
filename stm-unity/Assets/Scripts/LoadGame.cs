@@ -14,7 +14,7 @@ public class LoadGame : MonoBehaviour
 
 	private void Start()
 	{
-		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
 	}
 
 	/// <summary>
@@ -25,7 +25,7 @@ public class LoadGame : MonoBehaviour
 		_selectedName = null;
 		if (_gameManager == null)
 		{
-			_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+			_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
 		}
 		return _gameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves"));
 	}

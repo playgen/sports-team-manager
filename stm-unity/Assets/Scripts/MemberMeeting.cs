@@ -12,7 +12,7 @@ public class MemberMeeting : MonoBehaviour
 
 	private void Awake()
 	{
-		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
 	}
 
 	/// <summary>

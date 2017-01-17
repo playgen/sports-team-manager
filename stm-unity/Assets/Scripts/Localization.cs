@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SimpleJSON;
 using UnityEngine.UI;
 using System;
+using System.Globalization;
 using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,24 +12,34 @@ public enum Language
 {
 	None = 0,
 	[Name("English")]
+	[Culture("en-gb")]
 	English,
 	[Name("en-us")]
+	[Culture("en-us")]
 	AmericanEnglish,
 	[Name("fr")]
+	[Culture("fr-fr")]
 	French,
 	[Name("es")]
+	[Culture("es-es")]
 	Spanish,
 	[Name("Italian")]
+	[Culture("it-it")]
 	Italian,
 	[Name("de")]
+	[Culture("de-de")]
 	German,
 	[Name("nl")]
+	[Culture("nl-nl")]
 	Dutch,
 	[Name("el")]
+	[Culture("el-gr")]
 	Greek,
 	[Name("ja")]
+	[Culture("ja-jp")]
 	Japanese,
 	[Name("zh-cn")]
+	[Culture("zh-cn")]
 	ChineseSimplified
 }
 
@@ -43,6 +54,7 @@ public class Localization : MonoBehaviour
 
 	public static string FilePath = "Localization";
 	public static Language SelectedLanguage { get; set; }
+	public static CultureInfo SelectedCulture { get; set; }
 	public static Language DefaultLanguage = Language.English;
 	public static event Action LanguageChange = delegate { };
 
@@ -98,7 +110,7 @@ public class Localization : MonoBehaviour
 		}
 		if (PlayerPrefs.HasKey("Last_Saved_Language"))
 		{
-			SelectedLanguage = (Language)PlayerPrefs.GetInt("Last_Saved_Language");
+			UpdateLanguage((Language)PlayerPrefs.GetInt("Last_Saved_Language"));
 		}
 		else
 		{
@@ -158,6 +170,11 @@ public class Localization : MonoBehaviour
 		return string.Format(Get(key, toUpper), args);
 	}
 
+	public static string GetAndFormat(string key, bool toUpper, params string[] args)
+	{
+		return GetAndFormat(key, toUpper, args.ToArray<object>());
+	}
+
 	public static bool HasKey(string key)
 	{
 		var newKey = key.ToUpper();
@@ -170,40 +187,64 @@ public class Localization : MonoBehaviour
 		switch (Application.systemLanguage)
 		{
 			case SystemLanguage.English:
-				SelectedLanguage = LocalizationDict[Language.English].Count > 0 ? Language.English : 0;
+				if (LocalizationDict[Language.English].Count > 0)
+				{
+					UpdateLanguage(Language.English);
+				}
 				break;
 			case SystemLanguage.French:
-				SelectedLanguage = LocalizationDict[Language.French].Count > 0 ? Language.English : 0;
+				if (LocalizationDict[Language.French].Count > 0)
+				{
+					UpdateLanguage(Language.French);
+				}
 				break;
 			case SystemLanguage.Spanish:
-				SelectedLanguage = LocalizationDict[Language.Spanish].Count > 0 ? Language.English : 0;
+				if (LocalizationDict[Language.Spanish].Count > 0)
+				{
+					UpdateLanguage(Language.Spanish);
+				}
 				break;
 			case SystemLanguage.Italian:
-				SelectedLanguage = LocalizationDict[Language.Italian].Count > 0 ? Language.English : 0;
+				if (LocalizationDict[Language.Italian].Count > 0)
+				{
+					UpdateLanguage(Language.Italian);
+				}
 				break;
 			case SystemLanguage.German:
-				SelectedLanguage = LocalizationDict[Language.German].Count > 0 ? Language.English : 0;
+				if (LocalizationDict[Language.German].Count > 0)
+				{
+					UpdateLanguage(Language.German);
+				}
 				break;
 			case SystemLanguage.Dutch:
-				SelectedLanguage = LocalizationDict[Language.Dutch].Count > 0 ? Language.English : 0;
+				if (LocalizationDict[Language.Dutch].Count > 0)
+				{
+					UpdateLanguage(Language.Dutch);
+				}
 				break;
 			case SystemLanguage.Greek:
-				SelectedLanguage = LocalizationDict[Language.Greek].Count > 0 ? Language.English : 0;
+				if (LocalizationDict[Language.Greek].Count > 0)
+				{
+					UpdateLanguage(Language.Greek);
+				}
 				break;
 			case SystemLanguage.Japanese:
-				SelectedLanguage = LocalizationDict[Language.Japanese].Count > 0 ? Language.English : 0;
+				if (LocalizationDict[Language.Japanese].Count > 0)
+				{
+					UpdateLanguage(Language.Japanese);
+				}
 				break;
 			case SystemLanguage.ChineseSimplified:
-				SelectedLanguage = LocalizationDict[Language.ChineseSimplified].Count > 0 ? Language.English : 0;
+				if (LocalizationDict[Language.ChineseSimplified].Count > 0)
+				{
+					UpdateLanguage(Language.ChineseSimplified);
+				}
 				break;
 		}
 		if (SelectedLanguage == 0)
 		{
-			SelectedLanguage = ((Language[])Enum.GetValues(typeof(Language))).FirstOrDefault(lang => LocalizationDict[lang].Count > 0);
-			if (SelectedLanguage == 0)
-			{
-				SelectedLanguage = DefaultLanguage;
-			}
+			var firstLanguage = ((Language[])Enum.GetValues(typeof(Language))).FirstOrDefault(lang => LocalizationDict[lang].Count > 0);
+			UpdateLanguage(firstLanguage != 0 ? firstLanguage : DefaultLanguage);
 		}
 	}
 
@@ -231,10 +272,14 @@ public class Localization : MonoBehaviour
 		if (language != SelectedLanguage)
 		{
 			SelectedLanguage = language;
+			var fieldInfo = typeof(Language).GetField(language.ToString());
+			var attributes = (CultureAttribute[])fieldInfo.GetCustomAttributes(typeof(CultureAttribute), false);
+			SelectedCulture = attributes.Any() ? new CultureInfo(attributes.First().Culture) : CultureInfo.InvariantCulture;
 			PlayerPrefs.SetInt("Last_Saved_Language", (int)SelectedLanguage);
 			((Localization[])FindObjectsOfType(typeof(Localization))).ToList().ForEach(l => l.Set());
 			LanguageChange();
 			Debug.Log(SelectedLanguage);
+			Debug.Log(SelectedCulture);
 		}
 	}
 }
@@ -247,6 +292,17 @@ public class NameAttribute : Attribute
 	public NameAttribute(string name)
 	{
 		Name = name;
+	}
+}
+
+[AttributeUsage(AttributeTargets.Field)]
+public class CultureAttribute : Attribute
+{
+	public string Culture { get; set; }
+
+	public CultureAttribute(string culture)
+	{
+		Culture = culture;
 	}
 }
 

@@ -78,14 +78,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				if (position != Position.Null)
 				{
-					if (position.RequiresSkill(skill))
-					{
-						Skills.Add(skill, StaticRandom.Int((int)config.ConfigValues[ConfigKeys.GoodPositionRating], 11));
-					}
-					else
-					{
-						Skills.Add(skill, StaticRandom.Int(1, (int)config.ConfigValues[ConfigKeys.BadPositionRating] + 1));
-					}
+					Skills.Add(skill, position.RequiresSkill(skill) ? 
+								StaticRandom.Int((int)config.ConfigValues[ConfigKeys.GoodPositionRating], 11) :
+								StaticRandom.Int(1, (int)config.ConfigValues[ConfigKeys.BadPositionRating] + 1));
 				}
 				else
 				{
@@ -485,14 +480,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						if (dialogueOptions.Any())
 						{
 							reply.Add(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
-							if (pickedOpinionPositive.Key != team.Manager.Name)
-							{
-								reply.Add(pickedOpinionPositive.Key);
-							}
-							else
-							{
-								reply.Add("you");
-							}
+							reply.Add(pickedOpinionPositive.Key != team.Manager.Name ? pickedOpinionPositive.Key : "you");
 						}
 						AddOrUpdateRevealedOpinion(pickedOpinionPositive.Key, pickedOpinionPositive.Value);
 					}
@@ -521,14 +509,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						if (dialogueOptions.Any())
 						{
 							reply.Add(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
-							if (pickedOpinionNegative.Key != team.Manager.Name)
-							{
-								reply.Add(pickedOpinionNegative.Key);
-							}
-							else
-							{
-								reply.Add("you");
-							}
+							reply.Add(pickedOpinionNegative.Key != team.Manager.Name ? pickedOpinionNegative.Key : "you");
 						}
 						AddOrUpdateRevealedOpinion(pickedOpinionNegative.Key, pickedOpinionNegative.Value);
 					}

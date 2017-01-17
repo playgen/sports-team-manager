@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Reflection;
 
-using IntegratedAuthoringTool.DTOs;
-
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 
 using UnityEngine;
@@ -136,7 +134,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			_popUpBlocker.onClick.AddListener(GetLearningPill);
 			_popUpBlocker.onClick.AddListener(delegate { Hide(); });
 			_popUpBlocker.onClick.AddListener(_postRaceEvent.GetEvent);
-			var teamSelection = FindObjectOfType(typeof(TeamSelectionUI)) as TeamSelectionUI;
+			var teamSelection = (TeamSelectionUI)FindObjectOfType(typeof(TeamSelectionUI));
 			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
 			_popUpBlocker.onClick.AddListener(SendLearningPill);
 			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);

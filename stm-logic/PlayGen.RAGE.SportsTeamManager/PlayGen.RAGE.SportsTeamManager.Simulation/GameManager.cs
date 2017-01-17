@@ -1,13 +1,8 @@
-﻿using EmotionalAppraisal;
-using IntegratedAuthoringTool;
+﻿using IntegratedAuthoringTool;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using IntegratedAuthoringTool.DTOs;
-
-using RolePlayCharacter;
-
 using WellFormedNames;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
@@ -216,23 +211,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public List<string> GetGameNames(string storageLocation)
 		{
-			var gameNames = new List<string>();
-			var folders = new List<string>();
 			try
 			{
-				folders = Directory.GetDirectories(storageLocation).ToList();
+				var folders = Directory.GetDirectories(storageLocation).ToList();
+				return folders.Select(Path.GetFileName).ToList();
 			}
 			catch
 			{
-				return gameNames;
+				return new List<string>();
 			}
-			
-			foreach (var folder in folders)
-			{
-				var file = Path.GetFileName(folder);
-				gameNames.Add(file);
-			}
-			return gameNames;
 		}
 
 		/// <summary>
@@ -240,7 +227,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public bool CheckIfGameExists(string storageLocation, string gameName)
 		{
-			var gameExists = false;
 			if (Directory.Exists(Path.Combine(storageLocation, gameName)))
 			{
 				var files = Directory.GetFiles(Path.Combine(storageLocation, gameName), "*.iat");
@@ -251,18 +237,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						var game = IntegratedAuthoringToolAsset.LoadFromFile(file);
 						if (game != null && game.ScenarioName.ToLower() == gameName.ToLower())
 						{
-							gameExists = true;
-							break;
+							return true;
 						}
 					}
 					//do not want loading errors to result in exceptions, so catch all
 					catch
 					{
-
+						return false;
 					}
 				}
 			}
-			return gameExists;
+			return false;
 		}
 
 		/// <summary>

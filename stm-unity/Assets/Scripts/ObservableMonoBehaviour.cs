@@ -33,20 +33,20 @@ public class ObservableMonoBehaviour : MonoBehaviour, IObservable<KeyValueMessag
 
     private class Unsubscriber : IDisposable
     {
-        private readonly List<IObserver<KeyValueMessage>> _observers;
-        private readonly IObserver<KeyValueMessage> _observer;
+        private readonly List<IObserver<KeyValueMessage>> observers;
+        private readonly IObserver<KeyValueMessage> observer;
 
-        public Unsubscriber(List<IObserver<KeyValueMessage>> observers, IObserver<KeyValueMessage> observer)
+        public Unsubscriber(List<IObserver<KeyValueMessage>> obs, IObserver<KeyValueMessage> ob)
         {
-            _observers = observers;
-            _observer = observer;
+            observers = obs;
+            observer = ob;
         }
 
         public void Dispose()
         {
-            if (_observer != null && _observers.Contains(_observer))
+            if (observer != null && observers.Contains(observer))
             {
-                _observers.Remove(_observer);
+                observers.Remove(observer);
             }
         }
     }

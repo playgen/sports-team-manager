@@ -136,7 +136,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 				_recruitUI[i].transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text += Localization.Get("EXCLAIMATION_MARK");
 			}
 			_recruitUI[i].transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = false;
-			_recruitUI[i].transform.Find("Cost Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString();
+			_recruitUI[i].transform.Find("Cost Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString(Localization.SelectedCulture);
 			_recruitUI[i].name = recruits[i].Name;
 		}
 		//set-up question text and click handlers
@@ -153,7 +153,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			_questionButtons[i].interactable = true;
 			var questionText = _recruitMember.GetQuestionText("Recruit" + selected).OrderBy(s => Guid.NewGuid()).First();
 			_questionButtons[i].transform.Find("Text").GetComponent<Text>().text = Localization.Get(questionText);
-			_questionButtons[i].transform.Find("Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost).ToString();
+			_questionButtons[i].transform.Find("Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost).ToString(Localization.SelectedCulture);
 			_questionButtons[i].onClick.RemoveAllListeners();
 			_questionButtons[i].onClick.AddListener(delegate { AskQuestion(selected, questionText); });
 		}
@@ -192,7 +192,11 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			{
 				recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = Localization.Get(reply.Value);
 				recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = true;
-				recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value).Image;
+				var opinionSprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value);
+				if (opinionSprite != null)
+				{
+					recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = opinionSprite.Image;
+				}
 				recruit.transform.Find("Image").GetComponentInChildren<AvatarDisplay>().UpdateMood(reply.Key.Avatar, reply.Value);
 			}
 		}
@@ -324,7 +328,11 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 				{
 					recruit.transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text = Localization.Get(reply.Value);
 					recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = true;
-					recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value).Image;
+					var opinionSprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value);
+					if (opinionSprite != null)
+					{
+						recruit.transform.Find("Dialogue Box/Image").GetComponent<Image>().sprite = opinionSprite.Image;
+					}
 					recruit.transform.Find("Image").GetComponentInChildren<AvatarDisplay>().UpdateMood(reply.Key.Avatar, reply.Value);
 				}
 			}

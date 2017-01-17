@@ -10,7 +10,7 @@ public class NewGame : MonoBehaviour {
 	private GameManager _gameManager;
 
 	private void Awake () {
-		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
 	}
 
 	/// <summary>

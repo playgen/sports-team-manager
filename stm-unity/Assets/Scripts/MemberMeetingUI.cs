@@ -75,7 +75,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	private void OnDisable()
 	{
 		_fireWarningPopUp.SetActive(false);
-		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
+		foreach (var crewMember in (CrewMemberUI[])FindObjectsOfType(typeof(CrewMemberUI)))
 		{
 			if (crewMember.Current)
 			{
@@ -99,7 +99,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		gameObject.SetActive(true);
 		_fireWarningPopUp.SetActive(false);
 		//disable opinion images on CrewMember UI objects
-		foreach (var cmui in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
+		foreach (var cmui in (CrewMemberUI[])FindObjectsOfType(typeof(CrewMemberUI)))
 		{
 			if (cmui.Current)
 			{
@@ -161,11 +161,11 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		_opinionPositiveQuestion.text = Localization.Get(_memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).First());
 		_opinionNegativeQuestion.text = Localization.Get(_memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).First());
 		//set the cost shown for each question and for firing
-		_statQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.StatRevealCost).ToString();
-		_roleQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost).ToString();
-		_opinionPositiveQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealPositiveCost).ToString();
-		_opinionNegativeQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealNegativeCost).ToString();
-		_fireButton.transform.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.FiringCost).ToString();
+		_statQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.StatRevealCost).ToString(Localization.SelectedCulture);
+		_roleQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost).ToString(Localization.SelectedCulture);
+		_opinionPositiveQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealPositiveCost).ToString(Localization.SelectedCulture);
+		_opinionNegativeQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealNegativeCost).ToString(Localization.SelectedCulture);
+		_fireButton.transform.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.FiringCost).ToString(Localization.SelectedCulture);
 		var allowance = _memberMeeting.QuestionAllowance();
 		//set if each button is interactable according to if the player has enough allowance
 		_fireButton.interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.FiringCost) && _memberMeeting.CrewEditAllowance() != 0 && _memberMeeting.CanRemoveCheck() && !_memberMeeting.TutorialInProgress();
@@ -204,7 +204,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 			_closeText.text = Localization.Get("MEETING_EXIT");
 		}
 		//display revealed opinions for each other active CrewMember
-		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
+		foreach (var crewMember in (CrewMemberUI[])FindObjectsOfType(typeof(CrewMemberUI)))
 		{
 			if (crewMember.Current)
 			{

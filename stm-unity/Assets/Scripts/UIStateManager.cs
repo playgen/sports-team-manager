@@ -113,7 +113,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 		go.SetActive(false);
 		_mainMenu.SetActive(true);
 		DoBestFit();
-		var gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+		var gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
 		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = gameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves")).Count != 0;
 	}
 
@@ -143,7 +143,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 	public void GoToTeamManagement()
 	{
 		_teamManagement.SetActive(true);
-		(FindObjectOfType(typeof(ScreenSideUI)) as ScreenSideUI).ChangeSelected(0);
+		((ScreenSideUI)FindObjectOfType(typeof(ScreenSideUI))).ChangeSelected(0);
 	}
 
 	public void ShowAchievements()

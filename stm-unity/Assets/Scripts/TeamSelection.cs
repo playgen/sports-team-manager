@@ -15,7 +15,7 @@ public class TeamSelection : MonoBehaviour {
 
 	private void Start()
 	{
-		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
 		_sessionLength = _gameManager.RaceSessionLength;
 		_confirmCount = _gameManager.Team.LineUpHistory.Count;
 		_postRaceEvent.GetEvent();
@@ -46,7 +46,7 @@ public class TeamSelection : MonoBehaviour {
 	{
 		if (_gameManager == null)
 		{
-			_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+			_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
 		}
 		return _gameManager.Team.CrewMembers.Values.ToList();
 	}

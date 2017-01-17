@@ -222,7 +222,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		else
 		{
 			_raceButton.onClick.AddListener(ConfirmPopUp);
-			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_RACE", true);
+			_raceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
 			_raceButton.GetComponentInChildren<Text>().fontSize = 20;
 		}
 		var positionContainer = _boatMain.transform.Find("Position Container");
@@ -703,7 +703,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	public void ResetCrew()
 	{
 		//remove attachment between CrewMemberUI and PositionUI
-		foreach (var position in FindObjectsOfType(typeof(PositionUI)) as PositionUI[])
+		foreach (var position in (PositionUI[])FindObjectsOfType(typeof(PositionUI)))
 		{
 			position.RemoveCrew();
 		}
@@ -714,7 +714,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		{
 			Destroy(b);
 		}
-		foreach (var crewMember in FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[])
+		foreach (var crewMember in (CrewMemberUI[])FindObjectsOfType(typeof(CrewMemberUI)))
 		{
 			//destroy CrewMemberUI (making them unclickable) from those that are no longer in the currentCrew. Update avatar so they change into their causal outfit
 			if (currentCrew.All(cm => cm.Key != crewMember.CrewMember.Name))
@@ -732,7 +732,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		_currentCrewButtons.Clear();
 		_recruitButtons.Clear();
 		//reset empty positions
-		_positionsEmpty = (FindObjectsOfType(typeof(PositionUI)) as PositionUI[]).Length;
+		_positionsEmpty = ((PositionUI[])FindObjectsOfType(typeof(PositionUI))).Length;
 		//recreate crew and repeat previous line-up
 		CreateCrew();
 		RepeatLineUp();
@@ -839,7 +839,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		}
 		else
 		{
-			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_RACE", true);
+			_raceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
 		}
 		ChangeVisibleBoats(true);
 		_preRacePopUp.GetComponentInChildren<Text>().text = _teamSelection.QuestionAllowance() > 0 ? Localization.GetAndFormat("RACE_CONFIRM_ALLOWANCE_REMAINING", false, _teamSelection.QuestionAllowance()) : Localization.Get("RACE_CONFIRM_NO_ALLOWANCE");
@@ -854,7 +854,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	private void DoBestFit()
 	{
 		_boatMain.transform.Find("Position Container").gameObject.BestFit();
-		(FindObjectsOfType(typeof(CrewMemberUI)) as CrewMemberUI[]).Select(c => c.gameObject).BestFit();
+		((CrewMemberUI[])FindObjectsOfType(typeof(CrewMemberUI))).Select(c => c.gameObject).BestFit();
 		_preRacePopUp.GetComponentsInChildren<Button>().Select(b => b.gameObject).BestFit();
 		_postRacePopUp.GetComponentsInChildren<Text>().Where(t => t.transform.parent == _postRacePopUp.transform).BestFit();
 		_promotionPopUp.GetComponentsInChildren<Button>().Select(b => b.gameObject).BestFit();

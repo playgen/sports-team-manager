@@ -17,7 +17,7 @@ public class BestFit : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (_previousResolution.x != Screen.width || _previousResolution.y != Screen.height)
+		if (!Mathf.Approximately(_previousResolution.x, Screen.width) || !Mathf.Approximately(_previousResolution.y, Screen.height))
 		{
 			Invoke("CallResolutionChange", 0.05f);
 			_previousResolution = new Vector2(Screen.width, Screen.height);

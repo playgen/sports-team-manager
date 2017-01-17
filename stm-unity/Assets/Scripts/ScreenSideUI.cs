@@ -22,7 +22,7 @@ public class ScreenSideUI : MonoBehaviour {
 	/// </summary>
 	private void OnEnable()
 	{
-		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
 		_nameText.text = _gameManager.Team.Name.ToUpper();
 		BestFit.ResolutionChange += DoBestFit;
 		DoBestFit();

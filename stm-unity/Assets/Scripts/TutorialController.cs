@@ -25,7 +25,7 @@ public class TutorialController : MonoBehaviour
 		{
 			DestroyImmediate(transform.GetChild(0).gameObject);
 		}
-		TextAsset textAsset = Resources.Load("Tutorial/Tutorial") as TextAsset;
+		var textAsset = (TextAsset)Resources.Load("Tutorial/Tutorial");
 		var parsedAsset = JSON.Parse(textAsset.text);
 		for (int i = 0; i < parsedAsset.Count; i++)
 		{
@@ -73,7 +73,7 @@ public class TutorialController : MonoBehaviour
 
 	public void Start()
 	{
-		_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
 		gameObject.SetActive(_gameManager.ShowTutorial);
 		_tutorialQuitButton.SetActive(_gameManager.ShowTutorial);
 		foreach (Transform child in transform)

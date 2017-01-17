@@ -10,7 +10,7 @@ public class LearningPill : MonoBehaviour {
 	{
 		if (_gameManager == null)
 		{
-			_gameManager = (FindObjectOfType(typeof(GameManagerObject)) as GameManagerObject).GameManager;
+			_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
 		}
 		return _gameManager.EventController.GetHelpText(key);
 	}
