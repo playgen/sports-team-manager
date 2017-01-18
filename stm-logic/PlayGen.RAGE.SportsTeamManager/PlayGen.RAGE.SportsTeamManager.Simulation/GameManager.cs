@@ -408,7 +408,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 								eventController.PostRaceEvents.Add(new List<PostRaceEventState>());
 							}
 							var subjectString = Team.Manager.LoadBelief(String.Format("PRESubject{0}({1})", eventsFound, eventSectionsFound));
-							var subjects = subjectString != "null" ? subjectString.Split(',').ToList() : new List<string>();
+							var subjects = subjectString != "null" ? subjectString.Split('_').ToList() : new List<string>();
 							eventController.PostRaceEvents[eventsFound].Add(new PostRaceEventState(crewMember, ev, subjects));
 							eventSectionsFound++;
 							continue;

@@ -212,7 +212,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							}
 							var randomPositionCurrent = team.LineUpHistory.Last().PositionCrew[randomBestPosition.Key].Name;
 							eventSelected.Add(new PostRaceEventState(randomCrewMember.Value, selected,
-												new[] { randomBestPosition.ToString(), randomPositionCurrent.NoSpaces() }.ToList()));
+												new[] { randomBestPosition.Key.ToString(), randomPositionCurrent.NoSpaces() }.ToList()));
 							break;
 						case "IPC":
 							//for this event, select a crew member to have a conflict with another crew member
@@ -330,7 +330,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				var replyCount = PostRaceEvents[0].FindIndex(pre => pre.CrewMember == response.CrewMember);
 				var reply = response.CrewMember.SendPostRaceEvent(iat, response.Dialogue, team, response.Subjects);
 				manager.UpdateSingleBelief(string.Format("PRECrew0({0})", replyCount), response.CrewMember.Name.NoSpaces());
-				var subjects = response.Subjects.Count > 0 ? string.Join(",", response.Subjects.ToArray()) : "null";
+				var subjects = response.Subjects.Count > 0 ? string.Join("_", response.Subjects.ToArray()) : "null";
 				manager.UpdateSingleBelief(string.Format("PRESubject0({0})", replyCount), subjects);
 				SaveMeaningSelected(manager, response.Dialogue.Meaning);
 				SaveStyleSelected(manager, response.Dialogue.Style);
@@ -435,7 +435,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					manager.UpdateSingleBelief(string.Format("PRECrew{0}({1})", i, j), PostRaceEvents[i][j].CrewMember.Name.NoSpaces());
 					manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), PostRaceEvents[i][j].Dialogue.NextState != "-" ?
 												PostRaceEvents[i][j].Dialogue.NextState : PostRaceEvents[i][j].Dialogue.CurrentState);
-					var subjects = PostRaceEvents[i][j].Subjects.Count > 0 ? string.Join(",", PostRaceEvents[i][j].Subjects.ToArray()) : "null";
+					var subjects = PostRaceEvents[i][j].Subjects.Count > 0 ? string.Join("_", PostRaceEvents[i][j].Subjects.ToArray()) : "null";
 					manager.UpdateSingleBelief(string.Format("PRESubject{0}({1})", i, j), subjects);
 				}
 			}

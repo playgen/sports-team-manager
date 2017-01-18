@@ -177,7 +177,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	{
 		var current = _postRaceEvent.CurrentEvent;
 		//if there is an event
-		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length && _postRaceEvent.EnableCounter == 0)
+		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length)
 		{
 			for (int i = 0; i < _postRacePeople.Length; i++)
 			{
