@@ -217,7 +217,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			foreach (var crewMember in crewMembers.Values)
 			{
-				crewMember.DecisionFeedback(Boat);
 				crewMember.TickRevealedOpinionAge();
 			}
 			Manager.SaveStatus();

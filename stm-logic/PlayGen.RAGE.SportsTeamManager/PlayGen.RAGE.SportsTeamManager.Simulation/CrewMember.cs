@@ -312,76 +312,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Pass events to see what this CrewMember thinks of the current crew line-up and save these and any other changes
-		/// </summary>
-		public void DecisionFeedback(Boat boat)
-		{
-			/*var spacelessName = RolePlayCharacter.Perspective;
-			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			var currentPosition = boat.Positions.Single(bp => bp.CrewMember == this);
-			int positionScore = currentPosition != null ? currentPosition.Position.GetPositionRating(this) : 0;
-			var eventString = string.Format("PositionRating({0})", positionScore);
-			var positionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
-			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
-			if (positionRpc != null)
-			{
-				var positionKey = positionRpc.Parameters.First().GetValue().ToString();
-				switch (positionKey)
-				{
-					case "Good":
-						AddOrUpdateOpinion(boat.Manager, 1);
-						break;
-					case "Bad":
-						AddOrUpdateOpinion(boat.Manager, -1);
-						break;
-					case "VeryBad":
-						AddOrUpdateOpinion(boat.Manager, -1);
-						break;
-				}
-				RolePlayCharacter.ActionFinished(positionRpc);
-			}
-			TickUpdate();
-
-			eventString = string.Format("ManagerOpinionCheck({0})", boat.Manager.Name.NoSpaces());
-			var managerOpinionRpc = RolePlayCharacter.PerceptionActionLoop(new string[] { string.Format(eventBase, eventString, spacelessName) });
-			EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
-			if (managerOpinionRpc != null)
-			{
-				RolePlayCharacter.ActionFinished(managerOpinionRpc);
-			}
-			TickUpdate();
-
-			foreach (BoatPosition boatPosition in boat.Positions.OrderBy(b => b.Position.Name))
-			{
-				if (boatPosition.CrewMember != null && boatPosition.CrewMember != this)
-				{
-					int possiblePositionScore = boatPosition.Position.GetPositionRating(this);
-					eventString = string.Format("OpinionCheck({0},{1},{2})", boatPosition.CrewMember.Name.NoSpaces(), possiblePositionScore, positionScore);
-					if (positionScore == 0)
-					{
-						int theirPositionScore = boatPosition.Position.GetPositionRating(boatPosition.CrewMember);
-						eventString = string.Format("OpinionCheck({0},{1},{2})", boatPosition.CrewMember.Name.NoSpaces(), possiblePositionScore, theirPositionScore);
-					}
-					var opinionRpc = RolePlayCharacter.PerceptionActionLoop(new[] { string.Format(eventBase, eventString, spacelessName) });
-					EmotionalAppraisal.AppraiseEvents(new string[] { string.Format(eventBase, eventString, spacelessName) });
-					if (opinionRpc != null)
-					{
-						var opinionKey = opinionRpc.Parameters.First().GetValue().ToString();
-						switch (opinionKey)
-						{
-							case "DislikedInBetter":
-								AddOrUpdateOpinion(boatPosition.CrewMember, -1);
-								AddOrUpdateOpinion(team.Manager, -1);
-								break;
-						}
-						RolePlayCharacter.ActionFinished(opinionRpc);
-					}
-					TickUpdate();
-				}
-			}*/
-		}
-
-		/// <summary>
 		/// Decrease rest amount and set rest amount if CrewMember has been used
 		/// </summary>
 		public void RaceRest(bool assigned)
@@ -660,21 +590,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				return null;
 			}
-			DialogueStateActionDTO reply = null;
 			var nextState = selected.NextState;
-			switch (nextState)
-			{
-				
-			}
+			PostRaceFeedback(nextState, team, subjects);
 			//get dialogue
 			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, nextState.ToName()).ToList();
 			if (dialogueOptions.Any())
 			{
 				//select reply
-				reply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
+				return dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
 			}
-			PostRaceFeedback(nextState, team, subjects);
-			return reply;
+			return null;
 		}
 
 		/// <summary>
@@ -757,6 +682,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						if (cm.Key != subGreatHelp)
 						{
 							cm.Value.AddOrUpdateOpinion(subGreatHelp, 2);
+							cm.Value.AddOrUpdateRevealedOpinion(subGreatHelp, cm.Value.CrewOpinions[subGreatHelp]);
 							cm.Value.SaveStatus();
 						}
 					}
@@ -769,6 +695,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						if (cm.Key != subHelp)
 						{
 							cm.Value.AddOrUpdateOpinion(subHelp, 1);
+							cm.Value.AddOrUpdateRevealedOpinion(subHelp, cm.Value.CrewOpinions[subHelp]);
 							cm.Value.SaveStatus();
 						}
 					}

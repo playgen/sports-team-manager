@@ -87,28 +87,24 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void SelectPostRaceEvents(ConfigStore config, Team team, int chance, bool raceSession)
 		{
 			//get the state of currrently running events
-			var currentEvents = GetLastingEvents(team, raceSession);
-			var selectedEvents = new List<List<PostRaceEventState>>();
+			var selectedEvents = GetLastingEvents(team, raceSession);
 			//get all possible post-race event starting dialogue
 			var dialogueOptions = GetPossiblePostRaceDialogue(raceSession);
 			var events = GetEvents(dialogueOptions, config.GameConfig.EventTriggers.ToList(), team, (int)config.ConfigValues[ConfigKeys.RaceSessionLength]);
 			if (events.Any())
 			{
-				var allCrew = team.CrewMembers;
-				var allCrewRemovals = new List<CrewMember>();
+				var allCrewInitial = team.CrewMembers;
+				var allCrew = new Dictionary<string, CrewMember>();
 				//remove those already involved in a running event to not be selected
-				foreach (var crewMember in allCrew.Values)
+				foreach (var crewMember in allCrewInitial.Values)
 				{
 					var expectsPos = crewMember.LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
 					var expectsPosAfter = crewMember.LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
-					if ((expectsPos != null && expectsPos != "null") || (expectsPosAfter != null && expectsPosAfter != "null"))
+					var expectsSelection = crewMember.LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription());
+					if (!(expectsPos != null && expectsPos != "null") && !(expectsPosAfter != null && expectsPosAfter != "null") && !(expectsSelection != null && expectsSelection != "null"))
 					{
-						allCrewRemovals.Add(crewMember);
+						allCrew.Add(crewMember.Name, crewMember);
 					}
-				}
-				foreach (var crewMember in allCrewRemovals)
-				{
-					allCrew.Remove(crewMember.Name);
 				}
 				foreach (var ev in events)
 				{
@@ -118,52 +114,29 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						continue;
 					}
 					var selected = dialogueOptions.Where(a => a.NextState == ev.EventName).OrderBy(o => Guid.NewGuid()).First();
-					if (ev.Random)
+					if (ev.Random && StaticRandom.Int(0, (int)Math.Pow(chance, selectedEvents.Count + 1)) != 0)
 					{
-						if (StaticRandom.Int(0, (int)Math.Pow(chance, selectedEvents.Count + 1)) != 0)
-						{
-							continue;
-						}
+						continue;
 					}
 					var eventSelected = new List<PostRaceEventState>();
 					switch (selected.NextState)
 					{
 						case "PW":
+							//for this event, select a crew member who is placed in the wrong position or, if all are placed correctly, a crew member who is not placed
 							var betterPlace = new List<KeyValuePair<CrewMember, Position>>();
 							foreach (var pair in team.LineUpHistory.Last().PositionCrew)
 							{
-								var betterPosition = new KeyValuePair<Position, int>(Position.Null, 0);
-								foreach (Position boatPosition in team.LineUpHistory.Last().Positions)
-								{
-									if (boatPosition == betterPosition.Key || boatPosition == pair.Key)
-									{
-										continue;
-									}
-									int possiblePositionScore = boatPosition.GetPositionRating(pair.Value);
-									if (possiblePositionScore > team.LineUpHistory.Last().PositionScores[pair.Key] && possiblePositionScore > betterPosition.Value)
-									{
-										betterPosition = new KeyValuePair<Position, int>(boatPosition, possiblePositionScore);
-									}
-								}
+								var betterPosition = CrewMemberBestPosition(pair.Value, team);
 								if (betterPosition.Key != Position.Null)
 								{
 									betterPlace.Add(new KeyValuePair<CrewMember, Position>(pair.Value, betterPosition.Key));
 								}
 								allCrew.Remove(pair.Value.Name);
 							}
-							if (betterPlace.Count == 0)
+							if (!betterPlace.Any())
 							{
 								var selectedCrewMember = allCrew.OrderBy(c => Guid.NewGuid()).First().Value;
-								var betterPosition = new KeyValuePair<Position, int>(Position.Null, 0);
-								foreach (Position boatPosition in team.LineUpHistory.Last().Positions)
-								{
-									int possiblePositionScore = boatPosition.GetPositionRating(selectedCrewMember);
-									if (possiblePositionScore > betterPosition.Value)
-									{
-										betterPosition = new KeyValuePair<Position, int>(boatPosition, possiblePositionScore);
-									}
-								}
-								betterPlace.Add(new KeyValuePair<CrewMember, Position>(selectedCrewMember, betterPosition.Key));
+								betterPlace.Add(new KeyValuePair<CrewMember, Position>(selectedCrewMember, CrewMemberBestPosition(selectedCrewMember, team).Key));
 							}
 							betterPlace = betterPlace.OrderBy(c => Guid.NewGuid()).ToList();
 							eventSelected.Add(new PostRaceEventState(betterPlace.First().Key, selected, new[] { betterPlace.First().Value.ToString() }.ToList()));
@@ -174,6 +147,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							if (allCrew.ContainsKey(selectedAgainst.Key))
 							{
 								allCrew.Remove(selectedAgainst.Key);
+								if (allCrew.Count == 0)
+								{
+									continue;
+								}
 							}
 							var selectedFor = allCrew.OrderBy(c => Guid.NewGuid()).First();
 							selectedFor.Value.AddOrUpdateOpinion(selectedAgainst.Key, -10);
@@ -183,7 +160,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							{
 								if (cm.Key != selectedFor.Key && cm.Key != selectedAgainst.Key)
 								{
-									cm.Value.AddOrUpdateOpinion(team.Manager.Name, StaticRandom.Int(-3, 1));
+									cm.Value.AddOrUpdateOpinion(selectedAgainst.Key, StaticRandom.Int(-3, 1));
 									cm.Value.SaveStatus();
 								}
 							}
@@ -201,29 +178,62 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							}
 							allCrew = allCrew.OrderBy(c => Guid.NewGuid()).ToDictionary(d => d.Key, d => d.Value);
 							var randomCrewMember = allCrew.First();
-							var randomBestPosition = new KeyValuePair<Position, int>(Position.Null, 0);
-							foreach (Position boatPosition in team.LineUpHistory.Last().Positions)
-							{
-								int possiblePositionScore = boatPosition.GetPositionRating(randomCrewMember.Value);
-								if (possiblePositionScore > randomBestPosition.Value)
-								{
-									randomBestPosition = new KeyValuePair<Position, int>(boatPosition, possiblePositionScore);
-								}
-							}
+							var randomBestPosition = CrewMemberBestPosition(randomCrewMember.Value, team);
 							var randomPositionCurrent = team.LineUpHistory.Last().PositionCrew[randomBestPosition.Key].Name;
 							eventSelected.Add(new PostRaceEventState(randomCrewMember.Value, selected,
 												new[] { randomBestPosition.Key.ToString(), randomPositionCurrent.NoSpaces() }.ToList()));
 							break;
 						case "IPC":
 							//for this event, select a crew member to have a conflict with another crew member
+							if (!team.LineUpHistory.Last().PositionCrew.ContainsKey(Position.Skipper))
+							{
+								continue;
+							}
+							var skipper = team.LineUpHistory.Last().PositionCrew[Position.Skipper].Name;
+							if (allCrew.ContainsKey(skipper))
+							{
+								allCrew.Remove(skipper);
+							}
+							if (allCrew.Count == 0)
+							{
+								continue;
+							}
+							var randomAdditional = allCrew.OrderBy(c => Guid.NewGuid()).First();
+							allCrew.Remove(randomAdditional.Key);
+							if (allCrew.Count == 0)
+							{
+								continue;
+							}
+							allCrew = allCrew.OrderBy(c => Guid.NewGuid()).ToDictionary(d => d.Key, d => d.Value);
+							eventSelected.Add(new PostRaceEventState(allCrew.First().Value, selected,
+												new[] { skipper.NoSpaces(), randomAdditional.Key.NoSpaces() }.ToList()));
 							break;
 					}
 					eventSelected.ForEach(es => allCrew.Remove(es.CrewMember.Name));
 					selectedEvents.Add(eventSelected);
 				}
 			}
-			PostRaceEvents = currentEvents.Concat(selectedEvents).ToList();
+			PostRaceEvents = selectedEvents;
 			SaveEvents(team.Manager);
+		}
+
+		private KeyValuePair<Position, int> CrewMemberBestPosition(CrewMember cm, Team team)
+		{
+			var betterPosition = new KeyValuePair<Position, int>(Position.Null, 0);
+			var currentPosition = team.LineUpHistory.Last().PositionCrew.SingleOrDefault(pair => pair.Value == cm).Key;
+			foreach (Position boatPosition in team.LineUpHistory.Last().Positions)
+			{
+				if (boatPosition == currentPosition)
+				{
+					continue;
+				}
+				int possiblePositionScore = boatPosition.GetPositionRating(cm);
+				if ((currentPosition != Position.Null && possiblePositionScore > team.LineUpHistory.Last().PositionScores[currentPosition]) || possiblePositionScore > betterPosition.Value)
+				{
+					betterPosition = new KeyValuePair<Position, int>(boatPosition, possiblePositionScore);
+				}
+			}
+			return betterPosition;
 		}
 
 		/// <summary>
