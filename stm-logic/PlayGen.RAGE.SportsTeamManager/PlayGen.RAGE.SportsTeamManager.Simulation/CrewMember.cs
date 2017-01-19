@@ -626,48 +626,47 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
 			//trigger different changes based off of what dialogue the player last picked
+			if (eventRpc != null)
+			{
+				RolePlayCharacter.ActionFinished(eventRpc);
+			}
 			switch (ev)
 			{
-				case "PWAccomodatingAccomodating":
-				case "PWCompetingAccomodatingAccomodating":
-				case "NotPickedAccomodatingAccomodating":
+				case "ExpectedPosition":
 					AddOrUpdateOpinion(team.Manager.Name, 1);
 					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), subjects[0]);
 					break;
-				case "PWAccomodatingCompetingAccomodating":
+				case "ExpectedPositionAfter":
 					AddOrUpdateOpinion(team.Manager.Name, 1);
 					UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), subjects[0]);
 					break;
-				case "PWAvoidingAvoiding":
-				case "PWAccomodatingCompeting":
-				case "PWCollaboratingAvoiding":
-				case "PWCollaboratingCollaboratingAvoiding":
-				case "OOAvoidingAvoiding":
-				case "OOCollaboratingCompeting":
-				case "OOCompetingCollaboratingCompeting":
-				case "OOCollaboratingCollaboratingCompeting":
-				case "NotPickedAvoidingAvoiding":
-				case "NotPickedAvoidingCompetingAvoiding":
+				case "ManagerOpinionWorse":
 					AddOrUpdateOpinion(team.Manager.Name, -1);
 					break;
-				case "NotPickedAccomodatingCollaboratingAccomodating":
+				case "ManagerOpinionAllCrewWorse":
+					foreach (var cm in team.CrewMembers)
+					{
+						cm.Value.AddOrUpdateOpinion(team.Manager.Name, -2);
+						cm.Value.SaveStatus();
+					}
+					break;
+				case "ManagerOpinionBetter":
 					AddOrUpdateOpinion(team.Manager.Name, 1);
 					break;
-				case "NotPickedAccomodatingCollaboratingCollaborating":
+				case "ManagerOpinionAllCrewBetter":
+					foreach (var cm in team.CrewMembers)
+					{
+						cm.Value.AddOrUpdateOpinion(team.Manager.Name, 2);
+						cm.Value.SaveStatus();
+					}
+					break;
+				case "ManagerOpinionMuchBetter":
 					AddOrUpdateOpinion(team.Manager.Name, 5);
 					break;
-				case "PWCompetingCompeting":
-				case "PWCompetingAccomodatingCompeting":
-				case "PWAccomodatingCompetingCompeting":
-				case "OOCompetingCompeting":
-				case "OOAccomodatingAvoidingAvoiding":
-				case "NotPickedCompetingCompeting":
-				case "NotPickedAvoidingCompetingCompeting":
-				case "NotPickedCompetingAvoidingAvoiding":
-				case "NotPickedCompetingAvoidingCompeting":
+				case "ManagerOpinionMuchWorse":
 					AddOrUpdateOpinion(team.Manager.Name, -5);
 					break;
-				case "PWAvoidingCollaboratingCollaborating":
+				case "RevealTwoSkills":
 					AddOrUpdateOpinion(team.Manager.Name, 1);
 					for (var i = 0; i < 2; i++)
 					{
@@ -678,7 +677,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
 					}
 					break;
-				case "PWCollaboratingCollaboratingCollaborating":
+				case "RevealFourSkills":
 					AddOrUpdateOpinion(team.Manager.Name, 3);
 					for (var i = 0; i < 4; i++)
 					{
@@ -689,7 +688,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
 					}
 					break;
-				case "OOAccomodatingAccomodating":
+				case "ImproveConflictOpinionGreatly":
 					var subGreatHelp = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
 					foreach (var cm in team.CrewMembers)
 					{
@@ -701,8 +700,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 					break;
-				case "OOAvoidingAccomodatingAvoiding":
-				case "OOAccomodatingAvoidingAccomodating":
+				case "ImproveConflictTeamOpinion":
 					var subHelp = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
 					foreach (var cm in team.CrewMembers)
 					{
@@ -714,8 +712,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 					break;
-				case "OOCompetingCollaboratingCollaborating":
-				case "OOCollaboratingCollaboratingCollaborating":
+				case "ImproveConflictKnowledge":
 					var subKnow = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
 					AddOrUpdateOpinion(team.Manager.Name, 1);
 					foreach (var cm in team.CrewMembers)
@@ -727,8 +724,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 					break;
-				case "NotPickedCollaboratingAccomodating":
-				case "NotPickedCollaboratingCollaboratingAccomodating":
+				case "CausesSelectionAfter":
 					AddOrUpdateOpinion(team.Manager.Name, 1);
 					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), subjects[0]);
 					var otherPlayer = Regex.Replace(subjects[1], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
@@ -736,7 +732,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					team.CrewMembers[otherPlayer].UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), subjects[0]);
 					team.CrewMembers[otherPlayer].SaveStatus();
 					break;
-				case "NotPickedCollaboratingCollaboratingCollaborating":
+				case "WholeTeamChange":
 					AddOrUpdateOpinion(team.Manager.Name, 4);
 					foreach (var cm in team.CrewMembers)
 					{
@@ -748,10 +744,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 					break;
-			}
-			if (eventRpc != null)
-			{
-				RolePlayCharacter.ActionFinished(eventRpc);
 			}
 			TickUpdate();
 		}
