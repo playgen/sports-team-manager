@@ -18,7 +18,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	public class CrewMember : Person, IComparable<CrewMember>
 	{
 		private readonly ConfigStore config;
-		
+
 		public Dictionary<CrewMemberSkill, int> Skills { get; set; }
 		public Dictionary<CrewMemberSkill, int> RevealedSkills { get; }
 		public Dictionary<string, int> CrewOpinions { get; }
@@ -48,7 +48,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public CrewMember(ConfigStore con) : this(con, null)
 		{
-			
+
 		}
 
 		/// <summary>
@@ -78,7 +78,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				if (position != Position.Null)
 				{
-					Skills.Add(skill, position.RequiresSkill(skill) ? 
+					Skills.Add(skill, position.RequiresSkill(skill) ?
 								StaticRandom.Int((int)config.ConfigValues[ConfigKeys.GoodPositionRating], 11) :
 								StaticRandom.Int(1, (int)config.ConfigValues[ConfigKeys.BadPositionRating] + 1));
 				}
@@ -119,7 +119,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						{
 							var names = config.NameConfig.MaleForename[Nationality];
 							name += names[StaticRandom.Int(0, names.Count)];
-						} else
+						}
+						else
 						{
 							var names = config.NameConfig.MaleForename.Values.ToList().SelectMany(n => n).ToList();
 							name += names[StaticRandom.Int(0, names.Count)];
@@ -257,7 +258,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (Skills.ContainsKey(skill))
 				{
 					Skills[skill] = Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.Skill.GetDescription(), skill)));
-				} else
+				}
+				else
 				{
 					Skills.Add(skill, 0);
 				}
@@ -265,7 +267,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					RevealedSkills[skill] = Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), skill)));
 				}
-				else {
+				else
+				{
 					RevealedSkills.Add(skill, 0);
 				}
 			}
@@ -591,28 +594,39 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return null;
 			}
 			var nextState = selected.NextState;
-			PostRaceFeedback(nextState, team, subjects);
-			//get dialogue
 			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, nextState.ToName()).ToList();
+			//get dialogue
 			if (dialogueOptions.Any())
 			{
 				//select reply
-				return dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
+				var selectedReply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
+				PostRaceFeedback(selected.NextState, team, subjects);
+				if (selectedReply.Style.Any(s => s != "-"))
+				{
+					selectedReply.Style.ToList().ForEach(s => PostRaceFeedback(s, team, subjects));
+				}
+				return selectedReply;
 			}
+			
 			return null;
 		}
 
 		/// <summary>
 		/// Make changes based off of post-race events
 		/// </summary>
-		private void PostRaceFeedback(string lastEvent, Team team, List<string> subjects)
+		private void PostRaceFeedback(string ev, Team team, List<string> subjects)
 		{
 			var spacelessName = RolePlayCharacter.CharacterName;
+
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			var eventString = string.Format("PostRace({0})", lastEvent);
-			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new [] { (Name)string.Format(eventBase, eventString, spacelessName) });
+			var eventString = string.Format("PostRace({0})", ev);
+			if (ev.Contains("("))
+			{
+				eventString = string.Format(ev);
+			}
+			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
 			//trigger different changes based off of what dialogue the player last picked
-			switch (lastEvent)
+			switch (ev)
 			{
 				case "PWAccomodatingAccomodating":
 				case "PWCompetingAccomodatingAccomodating":
@@ -765,4 +779,3 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 	}
 }
- 
