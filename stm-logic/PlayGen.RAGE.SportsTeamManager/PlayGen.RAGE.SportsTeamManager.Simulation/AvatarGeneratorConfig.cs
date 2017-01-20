@@ -5,19 +5,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// <summary>
 	/// Container for shared Avatar values
 	/// </summary>
-	public class AvatarGeneratorConfig
+	internal class AvatarGeneratorConfig
 	{
 		public bool RandomHairColor { get; set; }
 		public int HairTypesCount { get; set; }
 		public int OutfitTypesCount { get; set; }
-		public byte[] LightSkinColorValues { get; set; }
-		public byte[] MediumSkinColorValues { get; set; }
-		public byte[] DarkSkinColorValues { get; set; }
-		public byte[] BlondeHairColorValues { get; set; }
-		public byte[] BrownHairColorValues { get; set; }
-		public byte[] BlackHairColorValues { get; set; }
-		public byte[] GingerHairColorValues { get; set; }
-
+		public byte[] LightSkinColorValues { get; internal set; }
+		public byte[] MediumSkinColorValues { get; internal set; }
+		public byte[] DarkSkinColorValues { get; internal set; }
+		public byte[] BlondeHairColorValues { get; internal set; }
+		public byte[] BrownHairColorValues { get; internal set; }
+		public byte[] BlackHairColorValues { get; internal set; }
+		public byte[] GingerHairColorValues { get; internal set; }
+		
 		public Color LightSkinColor { get; private set; }
 		public Color MediumSkinColor { get; private set; }
 		public Color DarkSkinColor { get; private set; }
@@ -27,10 +27,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Color GingerHairColor { get; private set; }
 
 		//get and return values for avatar configs
-		public AvatarGeneratorConfig GetConfig()
+		internal AvatarGeneratorConfig GetConfig()
 		{
 			var configText = Templates.ResourceManager.GetString("avatar_config");
-			var config = JsonConvert.DeserializeObject<AvatarGeneratorConfig>(configText);
+			var contractResolver = new PrivatePropertyResolver();
+			var settings = new JsonSerializerSettings
+			{
+				ContractResolver = contractResolver
+			};
+			var config = JsonConvert.DeserializeObject<AvatarGeneratorConfig>(configText, settings);
 			config.LightSkinColor = new Color(config.LightSkinColorValues[0], config.LightSkinColorValues[1], config.LightSkinColorValues[2], 255);
 			config.MediumSkinColor = new Color(config.MediumSkinColorValues[0], config.MediumSkinColorValues[1], config.MediumSkinColorValues[2], 255);
 			config.DarkSkinColor = new Color(config.DarkSkinColorValues[0], config.DarkSkinColorValues[1], config.DarkSkinColorValues[2], 255);

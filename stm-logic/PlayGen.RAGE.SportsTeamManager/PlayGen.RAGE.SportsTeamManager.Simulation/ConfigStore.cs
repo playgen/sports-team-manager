@@ -17,16 +17,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class ConfigStore
 	{
-		public Dictionary<ConfigKeys, float> ConfigValues { get; set; }
-		public Dictionary<string, List<Position>> BoatTypes { get; set; }
-		public GameConfig GameConfig { get; set; }
-		public NameConfig NameConfig { get; set; }
-		public static IntegratedAuthoringToolAsset IntegratedAuthoringTool { get; set; }
-		public static IntegratedAuthoringToolAsset HelpIntegratedAuthoringTool { get; set; }
-		public static RolePlayCharacterAsset RolePlayCharacter { get; set; }
-		public static EmotionalAppraisalAsset EmotionalAppraisal { get; set; }
-		public static EmotionalDecisionMakingAsset EmotionalDecisionMaking { get; set; }
-		public static SocialImportanceAsset SocialImportance { get; set; }
+		internal Dictionary<ConfigKeys, float> ConfigValues { get; set; }
+		internal Dictionary<string, List<Position>> BoatTypes { get; set; }
+		internal GameConfig GameConfig { get; set; }
+		internal NameConfig NameConfig { get; set; }
+		internal static IntegratedAuthoringToolAsset IntegratedAuthoringTool { get; set; }
+		internal static IntegratedAuthoringToolAsset HelpIntegratedAuthoringTool { get; set; }
+		internal static RolePlayCharacterAsset RolePlayCharacter { get; set; }
+		internal static EmotionalAppraisalAsset EmotionalAppraisal { get; set; }
+		internal static EmotionalDecisionMakingAsset EmotionalDecisionMaking { get; set; }
+		internal static SocialImportanceAsset SocialImportance { get; set; }
 
 		public ConfigStore()
 		{
@@ -46,10 +46,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			GameConfig = new GameConfig().GetConfig();
 			NameConfig = new NameConfig().GetConfig();
 			Avatar.Config = new AvatarGeneratorConfig().GetConfig();
-			ReloadAssets();
+			LoadAssets();
 		}
 
-		public void ReloadAssets()
+		internal void LoadAssets()
 		{
 			AssetManager.Instance.Bridge = new TemplateBridge();
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile("template_rpc");

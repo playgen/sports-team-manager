@@ -15,7 +15,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private readonly List<DialogueStateActionDTO> learningPills;
 		public List<List<PostRaceEventState>> PostRaceEvents { get; private set; }
 
-		public EventController(IntegratedAuthoringToolAsset i, List<DialogueStateActionDTO> help)
+		internal EventController(IntegratedAuthoringToolAsset i, List<DialogueStateActionDTO> help)
 		{
 			iat = i;
 			learningPills = help;
@@ -62,7 +62,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send player meeting dialogue to a CrewMember, getting their response in return
 		/// </summary>
-		public List<string> SendMeetingEvent(string eventName, CrewMember member, Team team)
+		internal List<string> SendMeetingEvent(string eventName, CrewMember member, Team team)
 		{
 			return member.SendMeetingEvent(iat, eventName, team);
 		}
@@ -70,13 +70,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send recruitment dialogue, getting their responses in return
 		/// </summary>
-		public Dictionary<CrewMember, string> SendRecruitEvent(CrewMemberSkill skill, List<CrewMember> members)
+		internal Dictionary<CrewMember, string> SendRecruitEvent(CrewMemberSkill skill, List<CrewMember> members)
 		{
 			var replies = new Dictionary<CrewMember, string>();
 			foreach (var member in members)
 			{
 				var reply = member.SendRecruitEvent(iat, skill);
-				replies.Add(member, reply ?? "");
+				replies.Add(member, reply ?? string.Empty);
 			}
 			return replies;
 		}
@@ -84,7 +84,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Select a random (if any) event to trigger post race
 		/// </summary>
-		public void SelectPostRaceEvents(ConfigStore config, Team team, int chance, bool raceSession)
+		internal void SelectPostRaceEvents(ConfigStore config, Team team, int chance, bool raceSession)
 		{
 			//get the state of currrently running events
 			CheckLastingEvents(team, raceSession);
@@ -240,7 +240,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get all post-race starting dialogue based on the last type of session
 		/// </summary>
-		public List<DialogueStateActionDTO> GetPossiblePostRaceDialogue(bool raceSession)
+		internal List<DialogueStateActionDTO> GetPossiblePostRaceDialogue(bool raceSession)
 		{
 			var dialogueOptions = GetPossibleAgentDialogue("PostRaceEventStart");
 			dialogueOptions = dialogueOptions.Where(dia => dia.Style.Contains(raceSession ? "Race" : "Practice")).ToList();
@@ -250,7 +250,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get all post-race starting dialogue based on the string provided
 		/// </summary>
-		public List<DialogueStateActionDTO> GetPossibleAgentDialogue(string eventName)
+		internal List<DialogueStateActionDTO> GetPossibleAgentDialogue(string eventName)
 		{
 			return iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventName.ToName()).OrderBy(c => Guid.NewGuid()).ToList();
 		}
@@ -258,7 +258,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// get the currently running events for all CrewMembers
 		/// </summary>
-		public void CheckLastingEvents(Team team, bool raceSession)
+		private void CheckLastingEvents(Team team, bool raceSession)
 		{
 			foreach (var crewMember in team.CrewMembers.Values)
 			{
@@ -266,7 +266,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
-		public List<PostSessionEventTrigger> GetEvents(List<DialogueStateActionDTO> available, List<PostSessionEventTrigger> triggers, Team team, int sessionsPerRace)
+		private List<PostSessionEventTrigger> GetEvents(List<DialogueStateActionDTO> available, List<PostSessionEventTrigger> triggers, Team team, int sessionsPerRace)
 		{
 			var history = team.LineUpHistory;
 			var setEvents = new List<PostSessionEventTrigger>();
@@ -318,7 +318,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send dialogue from the player to (an) NPC(s) and get their replies 
 		/// </summary>
-		public List<PostRaceEventState> SendPostRaceEvent(List<PostRaceEventState> selected, Team team)
+		internal List<PostRaceEventState> SendPostRaceEvent(List<PostRaceEventState> selected, Team team)
 		{
 			var manager = team.Manager;
 			var replies = new List<PostRaceEventState>();
@@ -350,7 +350,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return replies;
 		}
 
-		public void RemoveEvents(Person manager)
+		private void RemoveEvents(Person manager)
 		{
 			for (int i = 0; i < PostRaceEvents.Count; i++)
 			{
@@ -426,7 +426,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
-		public void SaveEvents(Person manager)
+		private void SaveEvents(Person manager)
 		{
 			for (int i = 0; i < PostRaceEvents.Count; i++)
 			{

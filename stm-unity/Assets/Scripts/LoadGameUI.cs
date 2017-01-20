@@ -32,7 +32,7 @@ public class LoadGameUI : MonoBehaviour
 	private void OnEnable()
 	{
 		GetGames();
-		_errorText.text = "";
+		_errorText.text = string.Empty;
 		BestFit.ResolutionChange += DoBestFit;
 	}
 
@@ -90,7 +90,7 @@ public class LoadGameUI : MonoBehaviour
 	/// </summary>
 	public void SelectGame(Text nameText)
 	{
-		_errorText.text = "";
+		_errorText.text = string.Empty;
 		_loadGame.SetSelected(nameText.text);
 		_selectedIcon.transform.SetParent(nameText.transform, false);
 		_selectedIcon.transform.position = nameText.transform.position;
@@ -101,7 +101,7 @@ public class LoadGameUI : MonoBehaviour
 	/// </summary>
 	public void LoadGame()
 	{
-		_errorText.text = "";
+		_errorText.text = string.Empty;
 		//check if the game exists
 		var exists = _loadGame.ExistingGameCheck();
 		if (exists)
@@ -123,7 +123,7 @@ public class LoadGameUI : MonoBehaviour
 			_selectedIcon.transform.SetParent(_gameContainer.transform, true);
 			_selectedIcon.SetActive(false);
 			Destroy(_gameContainer.transform.Find(_loadGame.GetSelected()).gameObject);
-			_loadGame.SetSelected("");
+			_loadGame.SetSelected(string.Empty);
 		}
 		
 	}

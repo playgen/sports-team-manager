@@ -551,7 +551,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				{
 					for (int j = 0; j < gameManager.RaceSessionLength; j++)
 					{
-						gameManager.Team.LineUpHistory.Add(new Boat(config, gameManager.Team.Boat.Type));
+						gameManager.Team.LineUpHistory.Add(gameManager.Team.Boat);
 					}
 					gameManager.Team.PromoteBoat();
 				}

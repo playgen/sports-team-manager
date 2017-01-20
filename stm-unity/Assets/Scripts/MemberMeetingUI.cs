@@ -131,7 +131,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		_textList[0].text = _currentMember.Name;
 		_textList[1].text = _currentMember.Age.ToString();
 		var currentRole = _memberMeeting.GetCrewMemberPosition(_currentMember);
-		_textList[2].text = currentRole == Position.Null ? Localization.Get("NO_ROLE") : "";
+		_textList[2].text = currentRole == Position.Null ? Localization.Get("NO_ROLE") : string.Empty;
 		_roleButton.onClick.RemoveAllListeners();
 		//set up button onclick if CrewMember is positioned
 		if (currentRole != Position.Null)
@@ -310,7 +310,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	private void OnLanguageChange()
 	{
 		var currentRole = _memberMeeting.GetCrewMemberPosition(_currentMember);
-		_textList[2].text = currentRole == Position.Null ? Localization.Get("NO_ROLE") : "";
+		_textList[2].text = currentRole == Position.Null ? Localization.Get("NO_ROLE") : string.Empty;
 		if (currentRole != Position.Null)
 		{
 			_roleButton.GetComponentInChildren<Text>().text = Localization.Get(currentRole.ToString(), true);

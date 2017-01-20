@@ -2,7 +2,7 @@
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	public enum NPCBeliefs
+	internal enum NPCBeliefs
 	{
 		[Description("Value({0})")]
 		Skill,

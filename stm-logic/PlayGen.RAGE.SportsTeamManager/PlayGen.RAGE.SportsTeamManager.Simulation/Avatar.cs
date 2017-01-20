@@ -7,7 +7,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class Avatar
 	{
-		public static AvatarGeneratorConfig Config;
+		internal static AvatarGeneratorConfig Config;
 
 		public string BodyType { get; private set; }
 		public string OutfitBaseType { get; private set; }
@@ -33,7 +33,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Color PrimaryOutfitColor { get; set; }
 		public Color SecondaryOutfitColor { get; set; }
 
-		public Avatar (CrewMember crewMember, bool isActive = true, bool canLoad = false)
+		internal Avatar (CrewMember crewMember, bool isActive = true, bool canLoad = false)
 		{
 			//set outfit type
 			var outfit = !isActive ? "01" : ("0" + ((StaticRandom.Int(0, 100) % 2) + 2));
@@ -243,7 +243,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// save the current attributes of the CrewMember to their EmotionalAppraisal Asset
 		/// </summary>
-		public void UpdateAvatarBeliefs(CrewMember crewMember)
+		internal void UpdateAvatarBeliefs(CrewMember crewMember)
 		{
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBestSkill.GetDescription(), BestSkill.ToString());
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBodyType.GetDescription(), BodyType);

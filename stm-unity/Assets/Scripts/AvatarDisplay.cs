@@ -46,7 +46,7 @@ public class AvatarDisplay : MonoBehaviour
 
 	public static void LoadSprites()
 	{
-		avatarSprites = Resources.LoadAll("", typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name.ToLower(), a => a);
+		avatarSprites = Resources.LoadAll(string.Empty, typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name.ToLower(), a => a);
 	}
 
 	/// <summary>
@@ -122,7 +122,7 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	public void UpdateMood(Avatar avatar, string reaction)
 	{
-		switch (reaction.Replace(" ", ""))
+		switch (reaction.Replace(" ", string.Empty))
 		{
 			case "StronglyAgree":
 				UpdateMood(avatar, 4);

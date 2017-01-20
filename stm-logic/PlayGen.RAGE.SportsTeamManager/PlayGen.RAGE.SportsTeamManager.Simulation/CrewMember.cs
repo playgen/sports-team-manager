@@ -100,7 +100,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Randomly select a new name for this CrewMember
 		/// </summary>
-		public string SelectNewName()
+		internal string SelectNewName()
 		{
 			return SelectRandomName();
 		}
@@ -110,7 +110,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private string SelectRandomName()
 		{
-			var name = "";
+			var name = string.Empty;
 			switch (Gender)
 			{
 				case "Male":
@@ -159,7 +159,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Update the EA file for this CrewMember with updated stats
 		/// </summary>
-		public override void UpdateBeliefs(string position = null)
+		internal override void UpdateBeliefs(string position = null)
 		{
 			base.UpdateBeliefs(position);
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
@@ -171,7 +171,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create opinions for everyone included in the list for this CrewMember
 		/// </summary>
-		public void CreateInitialOpinions(List<string> people)
+		internal void CreateInitialOpinions(List<string> people)
 		{
 			foreach (var person in people)
 			{
@@ -182,7 +182,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create an initial opinion on this person based on the given allowed range from the config
 		/// </summary>
-		public void CreateInitialOpinion(string person)
+		internal void CreateInitialOpinion(string person)
 		{
 			if (person == Name)
 			{
@@ -232,7 +232,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Update the known opinion on this Person
 		/// </summary>
-		public void AddOrUpdateRevealedOpinion(string person, int change, bool load = false)
+		internal void AddOrUpdateRevealedOpinion(string person, int change, bool load = false)
 		{
 			if (!RevealedCrewOpinions.ContainsKey(person))
 			{
@@ -251,7 +251,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the saved stats and opinions for this CrewMember
 		/// </summary>
-		public void LoadBeliefs(List<string> people)
+		internal void LoadBeliefs(List<string> people)
 		{
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
 			{
@@ -284,7 +284,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the saved last position for this CrewMember
 		/// </summary>
-		public void LoadPosition(Boat boat)
+		internal void LoadPosition(Boat boat)
 		{
 			var pos = boat.Positions.FirstOrDefault(position => position.ToString() == LoadBelief(NPCBeliefs.Position.GetDescription()));
 			if (pos != Position.Null)
@@ -317,7 +317,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Decrease rest amount and set rest amount if CrewMember has been used
 		/// </summary>
-		public void RaceRest(bool assigned)
+		internal void RaceRest(bool assigned)
 		{
 			RestCount--;
 			if (assigned)
@@ -327,7 +327,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UpdateSingleBelief(NPCBeliefs.Rest.GetDescription(), RestCount.ToString());
 		}
 
-		public void TickRevealedOpinionAge()
+		internal void TickRevealedOpinionAge()
 		{
 			foreach (var opinion in RevealedCrewOpinionAges.Keys.ToList())
 			{
@@ -339,7 +339,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send an event to the EA/RPC to get CrewMember information
 		/// </summary>
-		public List<string> SendMeetingEvent(IntegratedAuthoringToolAsset iat, string style, Team team)
+		internal List<string> SendMeetingEvent(IntegratedAuthoringToolAsset iat, string style, Team team)
 		{
 			var reply = new List<string>();
 			switch (style)
@@ -422,7 +422,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get recruit reaction to statement based on their rating of that skill
 		/// </summary>
-		public string SendRecruitEvent(IntegratedAuthoringToolAsset iat, CrewMemberSkill skill)
+		internal string SendRecruitEvent(IntegratedAuthoringToolAsset iat, CrewMemberSkill skill)
 		{
 			List<DialogueStateActionDTO> dialogueOptions;
 			if (Skills[skill] >= 9)
@@ -451,7 +451,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Check to see if any events are about to be triggered
 		/// </summary>
-		public void CurrentEventCheck(Team team, IntegratedAuthoringToolAsset iat, bool afterRaceSession)
+		internal void CurrentEventCheck(Team team, IntegratedAuthoringToolAsset iat, bool afterRaceSession)
 		{
 			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
@@ -511,7 +511,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get CrewMember reply to player dialogue during a post-race event
 		/// </summary>
-		public DialogueStateActionDTO SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Team team, List<string> subjects)
+		internal DialogueStateActionDTO SendPostRaceEvent(IntegratedAuthoringToolAsset iat, DialogueStateActionDTO selected, Team team, List<string> subjects)
 		{
 			if (selected == null)
 			{
@@ -675,7 +675,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Retire this CrewMember
 		/// </summary>
-		public void Retire()
+		internal void Retire()
 		{
 			UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "Retired");
 			var spacelessName = RolePlayCharacter.CharacterName;

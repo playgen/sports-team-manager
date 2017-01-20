@@ -16,24 +16,24 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private readonly Dictionary<string, CrewMember> crewMembers;
 
 		public Boat Boat { get; }
-		public List<Boat> LineUpHistory { get; set; }
-		public List<int> HistoricTimeOffset { get; set; }
+		public List<Boat> LineUpHistory { get; internal set; }
+		public List<int> HistoricTimeOffset { get; internal set; }
 		public string Name { get; }
 		public string Nationality { get; }
-		public Color TeamColorsPrimary { get; set; }
-		public Color TeamColorsSecondary { get; set; }
+		public Color TeamColorsPrimary { get; internal set; }
+		public Color TeamColorsSecondary { get; internal set; }
 		public Dictionary<string, CrewMember> CrewMembers
 		{
 			get { return crewMembers.OrderBy(c => c.Key).ToDictionary(c => c.Key, c => c.Value); }
 		}
 		public Dictionary<string, CrewMember> RetiredCrew { get; }
 		public Dictionary<string, CrewMember> Recruits { get; }
-		public Person Manager { get; set; }
+		public Person Manager { get; internal set; }
 
 		/// <summary>
 		/// Team constructor
 		/// </summary>
-		public Team (IntegratedAuthoringToolAsset i, string storage, ConfigStore con, string name, string nation, Boat boat)
+		internal Team (IntegratedAuthoringToolAsset i, string storage, ConfigStore con, string name, string nation, Boat boat)
 		{
 			iat = i;
 			storageLocation = Path.Combine(storage, name);
@@ -51,7 +51,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Add a CrewMember to the list of CrewMembers
 		/// </summary>
-		public void AddCrewMember(CrewMember crewMember)
+		internal void AddCrewMember(CrewMember crewMember)
 		{
 			crewMembers.Add(crewMember.Name, crewMember);
 		}
@@ -59,7 +59,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Set the avatar outfit colors to match the team colors
 		/// </summary>
-		public void SetCrewColors(Avatar avatar)
+		internal void SetCrewColors(Avatar avatar)
 		{
 			avatar.PrimaryOutfitColor = TeamColorsPrimary;
 			avatar.SecondaryOutfitColor = TeamColorsSecondary;
@@ -68,7 +68,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Check that a CrewMember name is unique within this Team
 		/// </summary>
-		public void UniqueNameCheck(CrewMember cm)
+		internal void UniqueNameCheck(CrewMember cm)
 		{
 			var unqiue = false;
 			//if the name is already in use by another character, reset their name
@@ -104,7 +104,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Update the set of recruits
 		/// </summary>
-		public void CreateRecruits()
+		internal void CreateRecruits()
 		{
 			var recuritsToRemove = new List<string>();
 			//remove recruits from iat and randomly select to remove them from pool of available recruits
@@ -145,7 +145,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Add a recruit into crewMembers
 		/// </summary>
-		public void AddRecruit(CrewMember member)
+		internal void AddRecruit(CrewMember member)
 		{
 			//remove recruit from the current list of characters in the game
 			iat.RemoveCharacters(new List<string> { member.Name });
@@ -179,7 +179,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Retire a CrewMember, meaning they can no longer be assigned to a position (mostly used for historical positions)
 		/// </summary>
-		public void RetireCrew(CrewMember crewMember)
+		internal void RetireCrew(CrewMember crewMember)
 		{
 			var current = crewMember.GetBoatPosition(Boat.PositionCrew);
 			if (current != Position.Null)
@@ -198,7 +198,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		//Tick all CrewMembers in crewMembers and Retired
-		public void TickCrewMembers(int amount)
+		internal void TickCrewMembers(int amount)
 		{
 			foreach (var cm in crewMembers.Values)
 			{
@@ -213,7 +213,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Save the current status of each CrewMember for this Team
 		/// </summary>
-		public void ConfirmChanges(int actionAllowance)
+		internal void ConfirmChanges(int actionAllowance)
 		{
 			foreach (var crewMember in crewMembers.Values)
 			{

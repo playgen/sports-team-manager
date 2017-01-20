@@ -124,7 +124,7 @@ public class NewGameUI : MonoBehaviour {
 	/// </summary>
 	private void WarningDisable()
 	{
-		_errorText.text = "";
+		_errorText.text = string.Empty;
 		_boatName.transform.Find("Required Warning").gameObject.SetActive(false);
 		_managerName.transform.Find("Required Warning").gameObject.SetActive(false);
 		_boatName.transform.Find("Warning").gameObject.SetActive(false);

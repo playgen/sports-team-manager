@@ -1,6 +1,6 @@
 ﻿namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	public class PostSessionEventTrigger
+	internal class PostSessionEventTrigger
 	{
 		public string EventName { get; set; }
 		public string StartBoatType { get; set; }

@@ -3,14 +3,14 @@ using Newtonsoft.Json;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	public class NameConfig
+	internal class NameConfig
 	{
-		public Dictionary<string, List<string>> MaleForename;
-		public Dictionary<string, List<string>> FemaleForename;
-		public Dictionary<string, List<string>> Surname;
+		public Dictionary<string, List<string>> MaleForename { get; set; }
+		public Dictionary<string, List<string>> FemaleForename { get; set; }
+		public Dictionary<string, List<string>> Surname { get; set; }
 
 		//get and return values for avatar configs
-		public NameConfig GetConfig()
+		internal NameConfig GetConfig()
 		{
 			var configText = Templates.ResourceManager.GetString("name_config");
 			var config = JsonConvert.DeserializeObject<NameConfig>(configText);

@@ -18,12 +18,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int Age { get; set; }
 		public string Gender { get; set; }
 		public string Nationality { get; set; }
-		public RolePlayCharacterAsset RolePlayCharacter { get; private set; }
+		internal RolePlayCharacterAsset RolePlayCharacter { get; private set; }
 
 		/// <summary>
 		/// Constructor for creating a Person
 		/// </summary>
-		public Person(RolePlayCharacterAsset rpc)
+		internal Person(RolePlayCharacterAsset rpc)
 		{
 			if (rpc != null)
 			{
@@ -37,7 +37,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create the required files for this Person
 		/// </summary>
-		public void CreateFile(IntegratedAuthoringToolAsset iat, string storageLocation, string fileName = "")
+		internal void CreateFile(IntegratedAuthoringToolAsset iat, string storageLocation, string fileName = "")
 		{
 			//Get Storytelling Framework files
 			var rpc = ConfigStore.RolePlayCharacter;
@@ -46,7 +46,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var si = ConfigStore.SocialImportance;
 			//set values
 			rpc.BodyName = Name;
-			var noSpaceName = rpc.BodyName.Replace(" ", "");
+			var noSpaceName = rpc.BodyName.Replace(" ", string.Empty);
 			rpc.CharacterName = (Name)noSpaceName;
 			if (string.IsNullOrEmpty(fileName))
 			{
@@ -71,7 +71,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Update the base information for this Person
 		/// </summary>
-		public virtual void UpdateBeliefs(string position = null)
+		internal virtual void UpdateBeliefs(string position = null)
 		{
 			if (Age != 0)
 			{
@@ -87,7 +87,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Update the stored information to match what is passed here or add if it doesn't already exist
 		/// </summary>
-		public void UpdateSingleBelief(string name, string value)
+		internal void UpdateSingleBelief(string name, string value)
 		{
 			RolePlayCharacter.AddBelief(name, value);
 		}
@@ -95,7 +95,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Loaded stored information if it already exists
 		/// </summary>
-		public string LoadBelief(string belief)
+		internal string LoadBelief(string belief)
 		{
 			return RolePlayCharacter.GetBeliefValue(belief);
 		}
@@ -103,7 +103,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Save the Person's mood, emotions and events to the EmotionalAppraisal file
 		/// </summary>
-		public void SaveStatus()
+		internal void SaveStatus()
 		{
 			RolePlayCharacter.SaveConfigurationToFile();
 		}
@@ -111,7 +111,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Tick RolePlayCharacter asset amount passed through
 		/// </summary>
-		public void TickUpdate(int amount = 1)
+		internal void TickUpdate(int amount = 1)
 		{
 			for (var i = 0; i < amount; i++)
 			{

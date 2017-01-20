@@ -12,17 +12,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private readonly ConfigStore config;
 
 		public string Type { get; private set; }
-		public List<Position> Positions { get; set; }
-		public Dictionary<Position, CrewMember> PositionCrew { get; set; }
-		public Dictionary<Position, int> PositionScores { get; set; }
-		public int Score { get; set; }
-		public float IdealMatchScore { get; set; }
-		public List<string> SelectionMistakes { get; set; }
+		public List<Position> Positions { get; private set; }
+		public Dictionary<Position, CrewMember> PositionCrew { get; internal set; }
+		public Dictionary<Position, int> PositionScores { get; internal set; }
+		public int Score { get; internal set; }
+		public float IdealMatchScore { get; internal set; }
+		public List<string> SelectionMistakes { get; internal set; }
 
 		/// <summary>
 		/// Boat constructor
 		/// </summary>
-		public Boat(ConfigStore con, string type)
+		internal Boat(ConfigStore con, string type)
 		{
 			Positions = new List<Position>();
 			PositionCrew = new Dictionary<Position, CrewMember>();
@@ -36,7 +36,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Change the current type of boat to a different type and get the positions for this new type
 		/// </summary>
-		public bool PromoteBoat(List<Boat> previous)
+		internal bool PromoteBoat(List<Boat> previous)
 		{
 			var possibleTypes = config.GameConfig.PromotionTriggers.Where(pt => pt.StartType == Type);
 			previous = previous.Where(pb => pb.Type == Type).ToList();
@@ -112,7 +112,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Remove a CrewMember from their Position
 		/// </summary>
-		public void UnassignCrewMember(Position position)
+		internal void UnassignCrewMember(Position position)
 		{
 			PositionCrew[position].UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "null");
 			PositionCrew.Remove(position);
@@ -122,7 +122,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the Position on this Boat with the least CrewMembers able to perform well in it
 		/// </summary>
-		public Position GetWeakPosition(List<CrewMember> crewMembers)
+		internal Position GetWeakPosition(List<CrewMember> crewMembers)
 		{
 			//get number of CrewMembers with position rating above set 'good' rating in each position
 			var positionStrength = new Dictionary<Position, int>();
@@ -168,7 +168,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the current score for this Position on this Boat for this CrewMember
 		/// </summary>
-		public void UpdateCrewMemberScore(Position position, CrewMember crewMember, string managerName)
+		internal void UpdateCrewMemberScore(Position position, CrewMember crewMember, string managerName)
 		{
 			//Get the average skill rating for this CrewMember in this Position
 			var crewScore = position.GetPositionRating(crewMember);
@@ -263,7 +263,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the crew set-up(s) that would be worth the highest Score
 		/// </summary>
-		public void GetIdealCrew(Dictionary<string, CrewMember> crewMembers, string managerName)
+		internal void GetIdealCrew(Dictionary<string, CrewMember> crewMembers, string managerName)
 		{
 			//remove CrewMembers that are currently resting
 			var availableCrew = crewMembers.Where(cm => cm.Value.RestCount <= 0).ToDictionary(ac => ac.Key, ac => ac.Value);

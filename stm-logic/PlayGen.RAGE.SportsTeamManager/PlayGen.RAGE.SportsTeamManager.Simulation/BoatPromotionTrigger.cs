@@ -1,6 +1,6 @@
 ﻿namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	public class BoatPromotionTrigger
+	internal class BoatPromotionTrigger
 	{
 		public string StartType { get; set; }
 		public string NewType { get; set; }

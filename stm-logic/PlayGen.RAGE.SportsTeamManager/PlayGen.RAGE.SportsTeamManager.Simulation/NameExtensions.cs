@@ -11,7 +11,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public static string NoSpaces(this string value)
 		{
-			return value.Replace(" ", "");
+			return value.Replace(" ", string.Empty);
 		}
 	}
 }

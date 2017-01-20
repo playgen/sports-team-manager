@@ -33,7 +33,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		private void ValidateGameConfig()
 		{
-			var invalidString = "";
+			var invalidString = string.Empty;
 			var promotionTriggers = config.GameConfig.PromotionTriggers;
 			if (promotionTriggers.All(pt => pt.StartType != "Start"))
 			{
@@ -202,7 +202,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			iat.SaveConfigurationToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
 			Team.CreateRecruits();
-			config.ReloadAssets();
+			config.LoadAssets();
 
 		}
 
@@ -441,7 +441,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			var eventStringUnformatted = "SelectedLineUp({0},{1})";
 			var boatType = boat.Type;
-			var crew = "";
+			var crew = string.Empty;
 			//set up string to save
 			foreach (var position in boat.Positions)
 			{
@@ -535,7 +535,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Deduct the cost of an action from the available allowance
 		/// </summary>
-		void DeductCost(int cost)
+		private void DeductCost(int cost)
 		{
 			if (ShowTutorial)
 			{
@@ -549,7 +549,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Reset the amount of allowance actions
 		/// </summary>
-		void ResetActionAllowance()
+		private void ResetActionAllowance()
 		{
 			ActionAllowance = GetStartingActionAllowance();
 			Team.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
@@ -567,7 +567,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Deduct the cost of a hiring/firing action from the available allowance
 		/// </summary>
-		void DeductCrewEditAllowance()
+		private void DeductCrewEditAllowance()
 		{
 			CrewEditAllowance--;
 			Team.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString());
@@ -577,7 +577,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Reset the amount of hiring/firing actions allowed
 		/// </summary>
-		void ResetCrewEditAllowance()
+		private void ResetCrewEditAllowance()
 		{
 			CrewEditAllowance = GetStartingCrewEditAllowance();
 			Team.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString());
@@ -656,7 +656,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return eventController.SendRecruitEvent(skill, members);
 			}
 			var replies = new Dictionary<CrewMember, string>();
-			members.ForEach(member => replies.Add(member, ""));
+			members.ForEach(member => replies.Add(member, string.Empty));
 			return replies;
 		}
 
