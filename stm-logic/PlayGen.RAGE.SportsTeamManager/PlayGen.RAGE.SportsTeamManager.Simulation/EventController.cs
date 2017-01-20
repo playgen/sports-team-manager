@@ -87,7 +87,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void SelectPostRaceEvents(ConfigStore config, Team team, int chance, bool raceSession)
 		{
 			//get the state of currrently running events
-			var selectedEvents = GetLastingEvents(team, raceSession);
+			CheckLastingEvents(team, raceSession);
+			var selectedEvents = new List<List<PostRaceEventState>>();
 			//get all possible post-race event starting dialogue
 			var dialogueOptions = GetPossiblePostRaceDialogue(raceSession);
 			var events = GetEvents(dialogueOptions, config.GameConfig.EventTriggers.ToList(), team, (int)config.ConfigValues[ConfigKeys.RaceSessionLength]);
@@ -257,23 +258,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// get the currently running events for all CrewMembers
 		/// </summary>
-		public List<List<PostRaceEventState>> GetLastingEvents(Team team, bool raceSession)
+		public void CheckLastingEvents(Team team, bool raceSession)
 		{
-			var reactionEvents = new List<List<PostRaceEventState>>();
 			foreach (var crewMember in team.CrewMembers.Values)
 			{
-				var crewEvents = new List<PostRaceEventState>();
-				var delayedReactions = crewMember.CurrentEventCheck(team, iat, raceSession);
-				foreach (var reply in delayedReactions)
-				{
-					crewEvents.Add(reply);
-				}
-				if (crewEvents.Count > 0)
-				{
-					reactionEvents.Add(crewEvents);
-				}
+				crewMember.CurrentEventCheck(team, iat, raceSession);
 			}
-			return reactionEvents;
 		}
 
 		public List<PostSessionEventTrigger> GetEvents(List<DialogueStateActionDTO> available, List<PostSessionEventTrigger> triggers, Team team, int sessionsPerRace)

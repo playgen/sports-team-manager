@@ -110,8 +110,8 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	/// </summary>
 	public void SetUpDisplay(Position position)
 	{
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, position.GetName(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "PositionDisplay", "ViewedPositionInformation", GameObjectTracker.TrackedGameObject.GameObject));
-		SUGARManager.GameData.Send("View Position Screen", position.GetName());
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, position.ToString(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "PositionDisplay", "ViewedPositionInformation", GameObjectTracker.TrackedGameObject.GameObject));
+		SUGARManager.GameData.Send("View Position Screen", position.ToString());
 		gameObject.SetActive(true);
 		_popUpBlocker.transform.SetAsLastSibling();
 		gameObject.transform.SetAsLastSibling();
@@ -138,7 +138,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 		_textList[0].text = Localization.Get(position.ToString());
 		_textList[1].text = Localization.Get(position + "_DESCRIPTION");
 		//set role image (displayed if no-one is in this position)
-		_roleImage.sprite = _roleSprites.First(mo => mo.Name == position.GetName()).Image;
+		_roleImage.sprite = _roleSprites.First(mo => mo.Name == position.ToString()).Image;
 		_currentButton.onClick.RemoveAllListeners();
 		//display avatar and CrewMember name accordingly
 		_currentAvatar.gameObject.SetActive(currentCrew != null);
@@ -213,7 +213,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	{
 		if (gameObject.activeInHierarchy)
 		{
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _current.GetName(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "PositionDisplay", "ClosePositionInformation", GameObjectTracker.TrackedGameObject.GameObject));
+			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _current.ToString(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "PositionDisplay", "ClosePositionInformation", GameObjectTracker.TrackedGameObject.GameObject));
 		}
 		gameObject.SetActive(false);
 		if (_meetingUI.gameObject.activeInHierarchy)

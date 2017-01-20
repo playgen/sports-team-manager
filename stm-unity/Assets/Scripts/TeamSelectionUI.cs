@@ -237,7 +237,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			positionObject.SetActive(true);
 			var pos = team.Boat.Positions[i];
 			positionObject.transform.Find("Name").GetComponent<Text>().text = Localization.Get(pos.ToString());
-			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.GetName()).Image;
+			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.ToString()).Image;
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
 		}
 		DoBestFit();
@@ -333,7 +333,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			var positionImage = crewMember.transform.Find("Position").gameObject;
 			//update current position button
 			positionImage.GetComponent<Image>().enabled = true;
-			positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == pair.Key.GetName()).Image;
+			positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == pair.Key.ToString()).Image;
 			positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 			var currentPosition = pair.Key;
 			positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentPosition); });
@@ -486,7 +486,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		var currentRace = _teamSelection.GetTeam().Boat;
 		if (lastRace.Key != null)
 		{
-			if (currentRace.Positions.SequenceEqual(lastRace.Key.Positions) && currentRace.PositionCrew.OrderBy(pc => pc.Key.GetName()).SequenceEqual(lastRace.Key.PositionCrew.OrderBy(pc => pc.Key.GetName())))
+			if (currentRace.Positions.SequenceEqual(lastRace.Key.Positions) && currentRace.PositionCrew.OrderBy(pc => pc.Key.ToString()).SequenceEqual(lastRace.Key.PositionCrew.OrderBy(pc => pc.Key.ToString())))
 			{
 				DisplayRepeatWarning();
 				return;
@@ -573,7 +573,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			memberObject.transform.SetParent(_postRacePopUp.transform.Find("Crew"), false);
 			memberObject.name = pair.Value.Name;
 			memberObject.transform.Find("Avatar").GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, -(finishPosition - 3) * 2);
-			memberObject.transform.Find("Position").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pair.Key.GetName()).Image;
+			memberObject.transform.Find("Position").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pair.Key.ToString()).Image;
 			((RectTransform)memberObject.transform.Find("Position").transform).offsetMin = new Vector2(10, 0);
 			if (crewCount % 2 != 0)
 			{

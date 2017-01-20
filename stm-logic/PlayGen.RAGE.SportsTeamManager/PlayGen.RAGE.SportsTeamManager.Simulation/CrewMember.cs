@@ -286,7 +286,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void LoadPosition(Boat boat)
 		{
-			var pos = boat.Positions.FirstOrDefault(position => position.GetName() == LoadBelief(NPCBeliefs.Position.GetDescription()));
+			var pos = boat.Positions.FirstOrDefault(position => position.ToString() == LoadBelief(NPCBeliefs.Position.GetDescription()));
 			if (pos != Position.Null)
 			{
 				boat.AssignCrewMember(pos, this);
@@ -342,7 +342,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public List<string> SendMeetingEvent(IntegratedAuthoringToolAsset iat, string style, Team team)
 		{
 			var reply = new List<string>();
-			List<DialogueStateActionDTO> dialogueOptions;
 			switch (style)
 			{
 				case "StatReveal":
@@ -353,45 +352,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					//add this skill rating to the dictionary to revealed skills
 					RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
 					//get available dialogue based off of the rating in the skill
-					if (statValue <= (int)config.ConfigValues[ConfigKeys.BadSkillRating])
-					{
-						style += "Bad";
-					}
-					else if (statValue >= (int)config.ConfigValues[ConfigKeys.GoodSkillRating])
-					{
-						style += "Good";
-					}
-					else
-					{
-						style += "Middle";
-					}
-					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
-					//select a random reply from those available
-					if (dialogueOptions.Any())
-					{
-						reply.Add(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
-						reply.Add(statName.ToLower());
-					}
+					style += statValue <= (int)config.ConfigValues[ConfigKeys.BadSkillRating] ? "Bad" :
+								statValue >= (int)config.ConfigValues[ConfigKeys.GoodSkillRating] ? "Good" : "Middle";
+					reply.Add(statName.ToLower());
 					UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
 					break;
 				case "RoleReveal":
 					//select a random position
 					var pos = team.Boat.Positions[StaticRandom.Int(0, team.Boat.Positions.Count)];
 					//get dialogue based on if they would be above or below mid-range in this position
-					if (pos.GetPositionRating(this) <= 5)
-					{
-						style += "Bad";
-					}
-					else if (pos.GetPositionRating(this) >= 6)
-					{
-						style += "Good";
-					}
-					dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
-					if (dialogueOptions.Any())
-					{
-						reply.Add(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
-						reply.Add(pos.GetName());
-					}
+					style += pos.GetPositionRating(this) <= 5 ? "Bad" : "Good";
+					reply.Add(pos.ToString());
 					break;
 				case "OpinionRevealPositive":
 					//get all opinions for active crewmembers and the manager
@@ -408,23 +379,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						{
 							style += "High";
 						}
-						//get available dialogue
-						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
-						if (dialogueOptions.Any())
-						{
-							reply.Add(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
-							reply.Add(pickedOpinionPositive.Key != team.Manager.Name ? pickedOpinionPositive.Key : "you");
-						}
+						reply.Add(pickedOpinionPositive.Key != team.Manager.Name ? pickedOpinionPositive.Key : "you");
 						AddOrUpdateRevealedOpinion(pickedOpinionPositive.Key, pickedOpinionPositive.Value);
 					}
 					//if there are no positive opinions, get dialogue based on that
 					else
 					{
-						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "None").ToName()).ToList();
-						if (dialogueOptions.Any())
-						{
-							reply.Add(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
-						}
+						style += "None";
 					}
 					break;
 				case "OpinionRevealNegative":
@@ -438,25 +399,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						{
 							style += "High";
 						}
-						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
-						if (dialogueOptions.Any())
-						{
-							reply.Add(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
-							reply.Add(pickedOpinionNegative.Key != team.Manager.Name ? pickedOpinionNegative.Key : "you");
-						}
+						reply.Add(pickedOpinionNegative.Key != team.Manager.Name ? pickedOpinionNegative.Key : "you");
 						AddOrUpdateRevealedOpinion(pickedOpinionNegative.Key, pickedOpinionNegative.Value);
 					}
 					else
 					{
-						dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, (style + "None").ToName()).ToList();
-						if (dialogueOptions.Any())
-						{
-							reply.Add(dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
-						}
+						style += "None";
 					}
 					break;
 			}
 			SaveStatus();
+			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
+			if (dialogueOptions.Any())
+			{
+				reply.Insert(0, dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
+				return reply;
+			}
+			reply.Clear();
 			return reply;
 		}
 
@@ -492,55 +451,35 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Check to see if any events are about to be triggered
 		/// </summary>
-		public PostRaceEventState[] CurrentEventCheck(Team team, IntegratedAuthoringToolAsset iat, bool afterRaceSession)
+		public void CurrentEventCheck(Team team, IntegratedAuthoringToolAsset iat, bool afterRaceSession)
 		{
-			var replies = new List<PostRaceEventState>();
-			List<DialogueStateActionDTO> dialogueOptions;
 			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			if (afterRaceSession && LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != null)
+			if (afterRaceSession && LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != null && LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != "null")
 			{
-				var expected = LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription());
-				if (expected != "null")
+				if (GetBoatPosition(team.Boat.PositionCrew) == 0)
 				{
-					if (GetBoatPosition(team.Boat.PositionCrew) == 0)
+					//reduce opinion of the manager
+					AddOrUpdateOpinion(team.Manager.Name, -3);
+					//send event on record that this happened
+					var eventString = "PostRace(NotPickedNotDone)";
+					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
+					if (eventRpc != null)
 					{
-						//reduce opinion of the manager
-						AddOrUpdateOpinion(team.Manager.Name, -3);
-						//send event on record that this happened
-						var eventString = "PostRace(NotPickedAfterPromise)";
-						var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
-						if (eventRpc != null)
-						{
-							RolePlayCharacter.ActionFinished(eventRpc);
-						}
-						//get dialogue for this happening
-						//dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PWNotDone".ToName()).ToList();
+						RolePlayCharacter.ActionFinished(eventRpc);
 					}
-					//if they were positioned in the correct role
-					else
-					{
-						//get dialogue for this happening
-						//dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PWDone".ToName()).ToList();
-					}
-					//if there are any dialogue options, select one at random and add to the list of replies
-					/*if (dialogueOptions.Any())
-					{
-						var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
-						replies.Add(new PostRaceEventState(this, selectedNext));
-					}*/
-					//set their belief to 'null'
-					UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "null");
-					TickUpdate();
 				}
+				//set their belief to 'null'
+				UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "null");
+				TickUpdate();
 			}
 			if (afterRaceSession && LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription()) != null)
 			{
 				var expected = LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
-				if (expected != "null" && team.Boat.Positions.Any(p => p.GetName() == expected))
+				if (expected != "null" && team.Boat.Positions.Any(p => p.ToString() == expected))
 				{
 					//if they are currently unpositioned
-					if (GetBoatPosition(team.Boat.PositionCrew).GetName() != expected)
+					if (GetBoatPosition(team.Boat.PositionCrew).ToString() != expected)
 					{
 						//reduce opinion of the manager
 						AddOrUpdateOpinion(team.Manager.Name, -3);
@@ -551,21 +490,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						{
 							RolePlayCharacter.ActionFinished(eventRpc);
 						}
-						//get dialogue for this happening
-						//dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PWNotDone".ToName()).ToList();
 					}
-					//if they were positioned in the correct role
-					else
-					{
-						//get dialogue for this happening
-						//dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "PWDone".ToName()).ToList();
-					}
-					//if there are any dialogue options, select one at random and add to the list of replies
-					/*if (dialogueOptions.Any())
-					{
-						var selectedNext = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
-						replies.Add(new PostRaceEventState(this, selectedNext));
-					}*/
 					//set their belief to 'null'
 					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), "null");
 					TickUpdate();
@@ -581,7 +506,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					TickUpdate();
 				}
 			}
-			return replies.OrderBy(o => Guid.NewGuid()).ToArray();
 		}
 
 		/// <summary>

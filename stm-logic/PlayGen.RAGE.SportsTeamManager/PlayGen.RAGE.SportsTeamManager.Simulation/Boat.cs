@@ -105,7 +105,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//add combination of CrewMember and Position to PositionCrew dictionary
 				PositionCrew.Add(position, crewMember);
 				PositionScores.Add(position, 0);
-				crewMember.UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), position.GetName());
+				crewMember.UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), position.ToString());
 			}
 		}
 
@@ -278,7 +278,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				foreach (var cm in availableCrew)
 				{
-					positionCrewCombos.Add(string.Concat(position.GetName(), cm.Key), position.GetPositionRating(cm.Value) + (int)(cm.Value.GetMood() * config.ConfigValues[ConfigKeys.MoodRatingWeighting]) + (int)(cm.Value.CrewOpinions[managerName] * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]));
+					positionCrewCombos.Add(string.Concat(position.ToString(), cm.Key), position.GetPositionRating(cm.Value) + (int)(cm.Value.GetMood() * config.ConfigValues[ConfigKeys.MoodRatingWeighting]) + (int)(cm.Value.CrewOpinions[managerName] * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]));
 				}
 			}
 			//get every crewmember combination (unordered)
@@ -307,7 +307,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			var opinionMax = crewOpinions.Values.Max();
-			var positionNames = Positions.Select(position => position.GetName()).ToList();
+			var positionNames = Positions.Select(position => position.ToString()).ToList();
 			var bestScore = 0;
 			var bestCrew = new List<List<string>>();
 			var crewPositionScores = new Dictionary<string, int>();

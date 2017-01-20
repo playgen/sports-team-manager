@@ -152,9 +152,9 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 			if (result.gameObject.GetComponent<PositionUI>())
 			{
 				var pos = result.gameObject.GetComponent<PositionUI>().Position;
-				ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name, pos.GetName(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "CrewPositioning", "PositionedCrewMember", GameObjectTracker.TrackedGameObject.Npc));
+				ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name, pos.ToString(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "CrewPositioning", "PositionedCrewMember", GameObjectTracker.TrackedGameObject.Npc));
 				SUGARManager.GameData.Send("Place Crew Member", _crewMember.Name);
-				SUGARManager.GameData.Send("Fill Position", pos.GetName());
+				SUGARManager.GameData.Send("Fill Position", pos.ToString());
 				Place(result.gameObject);
 				placed = true;
 				break;
@@ -206,7 +206,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 		var positionImage = transform.Find("Position").gameObject;
 		//update current position button
 		positionImage.GetComponent<Image>().enabled = true;
-		positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == currentPosition.GetName()).Image;
+		positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == currentPosition.ToString()).Image;
 		_positionUI.UpdateDisplay();
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 		positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentPosition); });

@@ -41,7 +41,7 @@ public class PositionUI : ObservableMonoBehaviour
 	public void ShowPopUp()
 	{
 		_positionUI.SetUpDisplay(_position);
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.GetName());
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString());
 	}
 
 	/// <summary>
@@ -60,7 +60,7 @@ public class PositionUI : ObservableMonoBehaviour
 			_teamSelectionUI.PositionChange(1);
 			crewMember.ReplacedEvent += OnReset;
 		}
-        ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.GetName(), crewMember);
+        ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString(), crewMember);
     }
 
 	/// <summary>
