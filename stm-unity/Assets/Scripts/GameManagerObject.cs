@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.IO;
+
+using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 
 /// <summary>
@@ -19,7 +21,7 @@ public class GameManagerObject : MonoBehaviour
 			return;
 		}
 		AvatarDisplay.LoadSprites();
-		GameManager = new GameManager();
+		GameManager = new GameManager(Application.platform == RuntimePlatform.Android);
 		DontDestroyOnLoad(gameObject);
 	}
 #if UNITY_EDITOR

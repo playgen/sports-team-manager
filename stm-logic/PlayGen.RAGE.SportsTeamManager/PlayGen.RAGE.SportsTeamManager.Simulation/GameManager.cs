@@ -26,9 +26,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// GameManager Constructor
 		/// </summary>
-		public GameManager()
+		public GameManager(bool android = false)
 		{
-			config = new ConfigStore();
+			config = new ConfigStore(android);
 		}
 
 		private void ValidateGameConfig()

@@ -90,7 +90,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 	{
 		_helpText.text = string.Empty;
 		WaitForEndOfFrame endFrame = new WaitForEndOfFrame();
-		WaitForSecondsRealtime endReal = new WaitForSecondsRealtime(0.2f);
+		WaitForSeconds endReal = new WaitForSeconds(0.03f);
 		int start = upward ? keep ? 1 : 0 : 2;
 		int limit = keep ? 1 : 2;
 		_popUpAnim["LearningPill"].speed = 1;

@@ -28,7 +28,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal static EmotionalDecisionMakingAsset EmotionalDecisionMaking { get; set; }
 		internal static SocialImportanceAsset SocialImportance { get; set; }
 
-		public ConfigStore()
+		public ConfigStore(bool android = false)
 		{
 			ConfigValues = new Dictionary<ConfigKeys, float>();
 			var configText = Templates.ResourceManager.GetString("config");
@@ -46,10 +46,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			GameConfig = new GameConfig().GetConfig();
 			NameConfig = new NameConfig().GetConfig();
 			Avatar.Config = new AvatarGeneratorConfig().GetConfig();
-			LoadAssets();
+			LoadAssets(android);
 		}
 
-		internal void LoadAssets()
+		internal void LoadAssets(bool android = false)
 		{
 			AssetManager.Instance.Bridge = new TemplateBridge();
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile("template_rpc");
@@ -58,7 +58,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			SocialImportance = SocialImportanceAsset.LoadFromFile(RolePlayCharacter.SocialImportanceAssetSource);
 			IntegratedAuthoringTool = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
 			HelpIntegratedAuthoringTool = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue");
-			AssetManager.Instance.Bridge = new BaseBridge();
+			AssetManager.Instance.Bridge = android ? new AndroidBaseBridge() : new BaseBridge();
 		}
 	}
 }

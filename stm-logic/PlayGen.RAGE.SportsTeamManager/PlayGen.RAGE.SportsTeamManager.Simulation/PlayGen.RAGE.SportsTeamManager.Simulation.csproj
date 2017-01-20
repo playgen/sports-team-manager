@@ -88,6 +88,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AndroidBaseBridge.cs" />
     <Compile Include="BaseBridge.cs" />
     <Compile Include="Avatar.cs" />
     <Compile Include="AvatarGeneratorConfig.cs" />
