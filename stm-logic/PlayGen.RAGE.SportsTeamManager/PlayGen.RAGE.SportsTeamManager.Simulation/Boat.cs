@@ -70,7 +70,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private void GetPositions()
 		{
 			Positions.Clear();
-			Positions = new List<Position>(config.BoatTypes[Type]);
+			if (Type != "Finish")
+			{
+				Positions = new List<Position>(config.BoatTypes[Type]);
+			}
 			var oldPositions = PositionCrew.Keys.Where(position => !Positions.Contains(position)).ToList();
 			foreach (var oldPosition in oldPositions)
 			{
@@ -124,6 +127,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal Position GetWeakPosition(List<CrewMember> crewMembers)
 		{
+			if (Positions.Count == 0)
+			{
+				return Position.Null;
+			}
 			//get number of CrewMembers with position rating above set 'good' rating in each position
 			var positionStrength = new Dictionary<Position, int>();
 			foreach (var pos in Positions)
@@ -268,7 +275,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//remove CrewMembers that are currently resting
 			var availableCrew = crewMembers.Where(cm => cm.Value.RestCount <= 0).ToDictionary(ac => ac.Key, ac => ac.Value);
 			//if there are not enough active CrewMembers to race,do not perform the rest of the method
-			if (availableCrew.Count < Positions.Count)
+			if (Positions.Count == 0 || availableCrew.Count < Positions.Count)
 			{
 				return;
 			}

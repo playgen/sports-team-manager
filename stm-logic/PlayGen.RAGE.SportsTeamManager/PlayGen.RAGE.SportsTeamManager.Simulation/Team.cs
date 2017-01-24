@@ -29,6 +29,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Dictionary<string, CrewMember> RetiredCrew { get; }
 		public Dictionary<string, CrewMember> Recruits { get; }
 		public Person Manager { get; internal set; }
+		public bool Finished { get; internal set; }
 
 		/// <summary>
 		/// Team constructor
@@ -90,6 +91,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public bool CanAddToCrew()
 		{
+			if (Boat.Positions.Count == 0)
+			{
+				return false;
+			}
 			return crewMembers.Count + 1 <= (Boat.Positions.Count + 1) * 2 && Recruits.Count != 0;
 		}
 
@@ -98,6 +103,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public int CrewLimitLeft()
 		{
+			if (Boat.Positions.Count == 0)
+			{
+				return 0;
+			}
 			return ((Boat.Positions.Count + 1) * 2) - crewMembers.Count;
 		}
 
@@ -173,6 +182,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public bool CanRemoveFromCrew()
 		{
+			if (Boat.Positions.Count == 0)
+			{
+				return false;
+			}
 			return CrewMembers.Count - 1 >= Boat.Positions.Count;
 		}
 
@@ -236,6 +249,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var raceHistory = LineUpHistory.Where((boat, i) => (i + 1) % (int)config.ConfigValues[ConfigKeys.RaceSessionLength] == 0).ToList();
 			if (!Boat.PromoteBoat(raceHistory))
 			{
+				return;
+			}
+			if (Boat.Type == "Finished")
+			{
+				Finished = true;
 				return;
 			}
 			//store that the boat type has been changed

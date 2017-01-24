@@ -54,7 +54,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					invalidString += string.Format("StartType {0} is not an existing BoatType.\n", promotion.StartType);
 				}
-				if (config.BoatTypes.All(bt => bt.Key != promotion.NewType))
+				if (promotion.NewType != "Finish" && config.BoatTypes.All(bt => bt.Key != promotion.NewType))
 				{
 					invalidString += string.Format("NewType {0} is not an existing BoatType.\n", promotion.NewType);
 				}
@@ -281,6 +281,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					ShowTutorial = bool.Parse(person.LoadBelief(NPCBeliefs.ShowTutorial.GetDescription()));
 					TutorialStage = int.Parse(person.LoadBelief(NPCBeliefs.TutorialStage.GetDescription()));
 					Team = new Team(iat, storageLocation, config, iat.ScenarioName, nation, boat);
+					if (boat.Type == "Finish")
+					{
+						Team.Finished = true;
+					}
 					ActionAllowance = Convert.ToInt32(person.LoadBelief(NPCBeliefs.ActionAllowance.GetDescription()));
 					CrewEditAllowance = Convert.ToInt32(person.LoadBelief(NPCBeliefs.CrewEditAllowance.GetDescription()));
 					RaceSessionLength = (int)config.ConfigValues[ConfigKeys.RaceSessionLength];
@@ -561,6 +565,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public int GetStartingActionAllowance()
 		{
+			if (Team.Boat.Positions.Count == 0)
+			{
+				return 0;
+			}
 			return (int)config.ConfigValues[ConfigKeys.DefaultActionAllowance] + ((int)config.ConfigValues[ConfigKeys.ActionAllowancePerPosition] * Team.Boat.Positions.Count);
 		}
 
@@ -589,6 +597,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public int GetStartingCrewEditAllowance()
 		{
+			if (Team.Boat.Positions.Count == 0)
+			{
+				return 0;
+			}
 			return (int)config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition] * Team.Boat.Positions.Count;
 		}
 

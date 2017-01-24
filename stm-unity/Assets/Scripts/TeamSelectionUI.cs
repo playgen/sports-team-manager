@@ -208,8 +208,16 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		var team = _teamSelection.GetTeam();
 		var stageIcon = _boatMain.transform.Find("Stage").GetComponent<Image>();
 		var isRace = _teamSelection.GetStage() % _teamSelection.GetSessionLength() == 0;
-		stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
-		_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = isRace ? string.Empty : (_teamSelection.GetStage() % _teamSelection.GetSessionLength()).ToString();
+		if (team.Boat.Positions.Count > 0)
+		{
+			stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
+			stageIcon.gameObject.SetActive(true);
+		}
+		else
+		{
+			stageIcon.gameObject.SetActive(false);
+		}
+		_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = isRace || team.Boat.Positions.Count == 0 ? string.Empty : (_teamSelection.GetStage() % _teamSelection.GetSessionLength()).ToString();
 		_positionsEmpty = team.Boat.Positions.Count;
 		_raceButton.onClick.RemoveAllListeners();
 		//add click handler to raceButton according to session taking place
@@ -240,6 +248,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.ToString()).Image;
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
 		}
+		_raceButton.gameObject.SetActive(team.Boat.Positions.Count > 0);
 		DoBestFit();
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Started", "RaceSession", "RaceSessionStarted", CompletableTracker.Completable.Race));
 		ResetCrew();
@@ -263,11 +272,14 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			((RectTransform)crewMember.transform).pivot = new Vector2(0, 0.5f);
 			((RectTransform)crewMember.transform).anchoredPosition = Vector2.zero;
 			sortedCrew.Add(crewMember.transform);
-			//create the draggable copy of the above
-			var crewMemberDraggable = CreateCrewMember(cm, crewMember.transform, true, true);
-			crewMemberDraggable.transform.position = crewMember.transform.position;
 			_currentCrewButtons.Add(crewMember);
-			_currentCrewButtons.Add(crewMemberDraggable);
+			//create the draggable copy of the above
+			if (_teamSelection.GetTeam().Boat.Positions.Count > 0)
+			{
+				var crewMemberDraggable = CreateCrewMember(cm, crewMember.transform, true, true);
+				crewMemberDraggable.transform.position = crewMember.transform.position;
+				_currentCrewButtons.Add(crewMemberDraggable);
+			}
 		}
 		//create a recruitment UI object for each empty spot in the crew
 		for (var i = 0; i < _teamSelection.CanAddAmount(); i++)
@@ -539,7 +551,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		ResetScrollbar();
 		var oldLayout = currentBoat.Positions;
 		var newLayout = _teamSelection.GetTeam().Boat.Positions;
-		if (!oldLayout.SequenceEqual(newLayout))
+		if (newLayout.Count > 0 && !oldLayout.SequenceEqual(newLayout))
 		{
 			DisplayPromotionPopUp(oldLayout, newLayout);
 		}
