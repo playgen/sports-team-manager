@@ -55,9 +55,6 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.Advertisements">
       <HintPath>Library\UnityAssemblies\UnityEditor.Advertisements.dll</HintPath>
     </Reference>
@@ -99,9 +96,6 @@
     </Reference>
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Purchasing">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.VR">
       <HintPath>Library\UnityAssemblies\UnityEditor.VR.dll</HintPath>
@@ -217,27 +211,26 @@
     <Reference Include="WellFormedNames">
       <HintPath>Assets\Plugins\stm-logic\WellFormedNames.dll</HintPath>
     </Reference>
+    <Reference Include="PlayGen.SUGAR.Unity">
+      <HintPath>Assets\SUGAR\bin\PlayGen.SUGAR.Unity.dll</HintPath>
+    </Reference>
     <Reference Include="CommandLine">
-      <HintPath>Assets\Plugins\SUGAR\Client\CommandLine.dll</HintPath>
+      <HintPath>Assets\SUGAR\bin\CommandLine.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.SUGAR.Client">
-      <HintPath>Assets\Plugins\SUGAR\Client\PlayGen.SUGAR.Client.dll</HintPath>
+      <HintPath>Assets\SUGAR\bin\PlayGen.SUGAR.Client.dll</HintPath>
     </Reference>
-    <Reference Include="PlayGen.SUGAR.Client.Unity">
-      <HintPath>Assets\Plugins\SUGAR\Client\PlayGen.SUGAR.Client.Unity.dll</HintPath>
+    <Reference Include="PlayGen.SUGAR.Unity.Editor">
+      <HintPath>Assets\SUGAR\bin\PlayGen.SUGAR.Unity.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="PlayGen.SUGAR.Unity">
-      <HintPath>Assets\Plugins\SUGAR\Client\PlayGen.SUGAR.Unity.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\SUGAR\bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations">
-      <HintPath>Assets\Plugins\SUGAR\Client\System.ComponentModel.DataAnnotations.dll</HintPath>
+      <HintPath>Assets\SUGAR\bin\System.ComponentModel.DataAnnotations.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="stm-unity.Plugins.csproj">
-      <Project>{347D8BEC-1FC5-763F-31A9-CF5B7E22D697}</Project>
-      <Name>stm-unity.Plugins</Name>
-    </ProjectReference>
     <ProjectReference Include="stm-unity.csproj">
       <Project>{7CB73DD1-ED31-84B9-D8F5-66803C4ECDA8}</Project>
       <Name>stm-unity</Name>
@@ -251,9 +244,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Editor\ExcelToJsonConverter\Json\license.txt" />
-    <None Include="Assets\Plugins\SUGAR\Client\CommandLine.xml" />
     <None Include="Assets\Plugins\stm-logic\Newtonsoft.Json.xml" />
     <None Include="Assets\Plugins\stm-logic\System.Reactive.xml" />
+    <None Include="Assets\SUGAR\bin\CommandLine.xml" />
     <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShader.shader" />
     <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShaderText.shader" />
   </ItemGroup>
