@@ -1,0 +1,144 @@
+{
+	"Achievements": [
+		{
+			"Name": "Tutorial Complete!",
+			"Description": "Complete the tutorial",
+			"ActorType": "User",
+			"Token": "Tutorial_Complete",
+			"EvaluationCriterias": [
+				{
+					"EvaluationDataKey": "Tutorial Finished",
+					"ComparisonType": "Equals",
+					"CriteriaQueryType": "Any",
+					"EvaluationDataType": "Boolean",
+					"Scope": "Actor",
+					"Value": "true"
+				}
+			]
+		},
+		{
+			"Name": "Race Winner",
+			"Description": "Win a race",
+			"ActorType": "User",
+			"Token": "Race_Winner",
+			"EvaluationCriterias": [
+				{
+					"EvaluationDataKey": "Race Position",
+					"ComparisonType": "Equals",
+					"CriteriaQueryType": "Any",
+					"EvaluationDataType": "Long",
+					"Scope": "Actor",
+					"Value": "1"
+				}
+			]
+		},
+		{
+			"Name": "Unhappy But Victorious",
+			"Description": "Win a race with an unhappy team",
+			"ActorType": "User",
+			"Token": "Unhappy_But_Victorious",
+			"EvaluationCriterias": [
+				{
+					"EvaluationDataKey": "Race Position",
+					"ComparisonType": "Equals",
+					"CriteriaQueryType": "Latest",
+					"EvaluationDataType": "Long",
+					"Scope": "Actor",
+					"Value": "1"
+				},
+				{
+					"EvaluationDataKey": "Post Race Boat Average Mood",
+					"ComparisonType": "Less",
+					"CriteriaQueryType": "Latest",
+					"EvaluationDataType": "Float",
+					"Scope": "Actor",
+					"Value": "0"
+				}
+			]
+		},
+		{
+			"Name": "Five Hours Later...",
+			"Description": "Race for more than five hours total",
+			"ActorType": "User",
+			"Token": "Five_Hours_Later",
+			"EvaluationCriterias": [
+				{
+					"EvaluationDataKey": "Race Time",
+					"ComparisonType": "Greater",
+					"CriteriaQueryType": "Sum",
+					"EvaluationDataType": "Long",
+					"Scope": "Actor",
+					"Value": "18000"
+				}
+			]
+		},
+		{
+			"Name": "Night And Day And So On",
+			"Description": "Race for more than 24 hours total",
+			"ActorType": "User",
+			"Token": "Night_And_Day_And_So_On",
+			"EvaluationCriterias": [
+				{
+					"EvaluationDataKey": "Race Time",
+					"ComparisonType": "Greater",
+					"CriteriaQueryType": "Sum",
+					"EvaluationDataType": "Long",
+					"Scope": "Actor",
+					"Value": "86400"
+				}
+			]
+		},
+		{
+			"Name": "Positive Outlook",
+			"Description": "Resolve a post-race event with a positive outcome",
+			"ActorType": "User",
+			"Token": "Positive_Outlook",
+			"EvaluationCriterias": [
+				{
+					"EvaluationDataKey": "Post Race Event Positive Outcome",
+					"ComparisonType": "Equals",
+					"CriteriaQueryType": "Any",
+					"EvaluationDataType": "Boolean",
+					"Scope": "Actor",
+					"Value": "true"
+				}
+			]
+		},
+		{
+			"Name": "No Wasted Time",
+			"Description": "Have no talk time remaining after a race session",
+			"ActorType": "User",
+			"Token": "No_Wasted_Time",
+			"EvaluationCriterias": [
+				{
+					"EvaluationDataKey": "Time Remaining",
+					"ComparisonType": "Equals",
+					"CriteriaQueryType": "Any",
+					"EvaluationDataType": "Long",
+					"Scope": "Actor",
+					"Value": "0"
+				}
+			]
+		}
+	],
+	"Leaderboards": [
+		{
+			"Token": "Questions_Asked",
+			"Name": "Questions Asked",
+			"Key": "Meeting Question Asked",
+			"ActorType": "User",
+			"EvaluationDataType": "String",
+			"CriteriaScope": "Actor",
+			"LeaderboardType": "Count"
+		},
+					{
+						"Token": "Fastest_Time",
+						"Name": "Fastest_Time",
+						"Key": "Race Time",
+						"ActorType": "User",
+						"EvaluationDataType": "Long",
+						"CriteriaScope": "Actor",
+						"LeaderboardType": "Lowest"
+					}
+	]
+}

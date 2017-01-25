@@ -139,20 +139,20 @@
     <Reference Include="WellFormedNames">
       <HintPath>Assets\Plugins\stm-logic\WellFormedNames.dll</HintPath>
     </Reference>
-    <Reference Include="PlayGen.SUGAR.Unity">
-      <HintPath>Assets\SUGAR\bin\PlayGen.SUGAR.Unity.dll</HintPath>
-    </Reference>
     <Reference Include="CommandLine">
       <HintPath>Assets\SUGAR\bin\CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\SUGAR\bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.SUGAR.Client">
       <HintPath>Assets\SUGAR\bin\PlayGen.SUGAR.Client.dll</HintPath>
     </Reference>
+    <Reference Include="PlayGen.SUGAR.Unity">
+      <HintPath>Assets\SUGAR\bin\PlayGen.SUGAR.Unity.dll</HintPath>
+    </Reference>
     <Reference Include="PlayGen.SUGAR.Unity.Editor">
       <HintPath>Assets\SUGAR\bin\PlayGen.SUGAR.Unity.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets\SUGAR\bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations">
       <HintPath>Assets\SUGAR\bin\System.ComponentModel.DataAnnotations.dll</HintPath>
