@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+	<Product Id="87273cd8-a39b-4656-af8e-24d50e163cef" Name="Sports Team Manager" Language="1033" Version="1.0.0.0" Manufacturer="PlayGen" UpgradeCode="bc8a52f3-1425-4567-9041-1b9efed3f752">
+		<Package Id="*" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <Condition Message="You need to be an administrator to install this product.">
+      Privileged
+    </Condition>
+
+
+
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+	<MediaTemplate EmbedCab="yes" />
+
+		<Property Id="INSTALLDIR">
+      <RegistrySearch Id="PlayGenSplLauncherRegistry" Type="raw" Root="HKLM" Key="SOFTWARE\[Manufacturer]\SPL Launcher" Name="InstallDir"/>
+    </Property>
+
+		<Property Id="GAMEID">Sports Team Manager</Property>
+
+    <Condition Message="Launcher not found. Please install the Launcher before installing games.">
+      Installed OR INSTALLDIR
+    </Condition>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="INSTALLDIR">
+        <Directory Id="stmDIR" Name="SportsTeamManager">
+          <Component Id="MainExecutable" Guid="3dddb50f-c927-4192-a81c-b01344cd93a2">
+            <File Id="stmEXE" Source="$(var.sports-team-manager.ProjectDir)/Build/Sports Team Manager/SportsTeamManager.exe" KeyPath="yes" />
+          </Component>
+          <Component Id="ChangeConfig" Guid="9d1ff60f-57f8-4e9f-be7b-6fafb15e6262" KeyPath="yes">
+            <util:XmlConfig Id="elem1"
+							Action="create"
+							ElementPath="/configuration/LauncherConfiguration/games"
+							File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
+							Node="element"
+							On="install"
+							Name="add"
+							Sequence="1">
+				<util:XmlConfig Id="elem11"
+								ElementId="elem1"
+								Name="id"
+								Value="[GAMEID]"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+				<util:XmlConfig Id="elem12"
+								ElementId="elem1"
+								Name="path"
+								Value="[stmDIR]SportsTeamManager.exe"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+            </util:XmlConfig>
+			<util:XmlConfig Id="param"
+							Action="create"
+							ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]"
+							File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
+							Node="element"
+							On="install"
+							Name="parameters"
+							Sequence="2">
+			</util:XmlConfig>
+
+			<util:XmlConfig Id="param5"
+						Action="create"
+						ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]/parameters"
+						File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
+						Node="element"
+						On="install"
+						Name="add"
+						Sequence="3">
+				<util:XmlConfig Id="param51"
+								ElementId="param5"
+								Name="urlParameter"
+								Value="autologin"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+				<util:XmlConfig Id="param52"
+								ElementId="param5"
+								Name="commandParameter"
+								Value="a"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+				<util:XmlConfig Id="param53"
+								ElementId="param5"
+								Name="requiredParameter"
+								Value="true"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+				<util:XmlConfig Id="param54"
+								ElementId="param5"
+								Name="defaultValue"
+								Value="true"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+			</util:XmlConfig>
+			  
+			<util:XmlConfig Id="param1"
+							Action="create"
+							ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]/parameters"
+							File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
+							Node="element"
+							On="install"
+							Name="add"
+							Sequence="6">
+				<util:XmlConfig Id="param11"
+								ElementId="param1"
+								Name="urlParameter"
+								Value="userName"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+				<util:XmlConfig Id="param12"
+								ElementId="param1"
+								Name="commandParameter"
+								Value="u"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+				<util:XmlConfig Id="param13"
+								ElementId="param1"
+								Name="requiredParameter"
+								Value="true"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+			</util:XmlConfig>
+			<util:XmlConfig Id="param2"
+							Action="create"
+							ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]/parameters"
+							File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
+							Node="element"
+							On="install"
+							Name="add"
+							Sequence="5">
+				<util:XmlConfig Id="param21"
+								ElementId="param2"
+								Name="urlParameter"
+								Value="class"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+				<util:XmlConfig Id="param22"
+								ElementId="param2"
+								Name="commandParameter"
+								Value="g"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+				<util:XmlConfig Id="param23"
+								ElementId="param2"
+								Name="requiredParameter"
+								Value="true"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+			</util:XmlConfig>
+			<util:XmlConfig Id="param3"
+							Action="create"
+							ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]/parameters"
+							File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
+							Node="element"
+							On="install"
+							Name="add"
+							Sequence="4">
+				<util:XmlConfig Id="param31"
+								ElementId="param3"
+								Name="urlParameter"
+								Value="source"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+				<util:XmlConfig Id="param32"
+								ElementId="param3"
+								Name="commandParameter"
+								Value="s"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+				<util:XmlConfig Id="param33"
+								ElementId="param3"
+								Name="requiredParameter"
+								Value="true"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+				<util:XmlConfig Id="param34"
+								ElementId="param3"
+								Name="defaultValue"
+								Value="SPL"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+			</util:XmlConfig>
+			<util:XmlConfig Id="param4"
+							Action="create"
+							ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]/parameters"
+							File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
+							Node="element"
+							On="install"
+							Name="add"
+							Sequence="7">
+				<util:XmlConfig Id="param41"
+								ElementId="param4"
+								Name="urlParameter"
+								Value="sessionid"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+				<util:XmlConfig Id="param42"
+								ElementId="param4"
+								Name="commandParameter"
+								Value="round"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+				<util:XmlConfig Id="param43"
+								ElementId="param4"
+								Name="requiredParameter"
+								Value="false"
+								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+			</util:XmlConfig>
+						
+            <util:XmlConfig   Id="elem1Delete"
+															Action="delete"
+															ElementPath="/configuration/LauncherConfiguration/games"
+															VerifyPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]"
+															File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
+															Node="element"
+															On="uninstall"
+															Sequence="100" />
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id="ProductFeature" Title="sports_team_manager_setup" Level="1">
+      <ComponentRef Id="MainExecutable" />
+      <ComponentRef Id="ChangeConfig"/>
+      <ComponentGroupRef Id="SourceComponentGroup"/>
+    </Feature>
+	</Product>
+
+</Wix>
