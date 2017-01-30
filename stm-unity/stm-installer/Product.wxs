@@ -28,7 +28,7 @@
       <Directory Id="INSTALLDIR">
         <Directory Id="stmDIR" Name="SportsTeamManager">
           <Component Id="MainExecutable" Guid="3dddb50f-c927-4192-a81c-b01344cd93a2">
-            <File Id="stmEXE" Source="$(var.sports-team-manager.ProjectDir)/Build/Sports Team Manager/SportsTeamManager.exe" KeyPath="yes" />
+            <File Id="stmEXE" Source="$(var.stm-unity.ProjectDir)/Build/Sports Team Manager/SportsTeamManager.exe" KeyPath="yes" />
           </Component>
           <Component Id="ChangeConfig" Guid="9d1ff60f-57f8-4e9f-be7b-6fafb15e6262" KeyPath="yes">
             <util:XmlConfig Id="elem1"
