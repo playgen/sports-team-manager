@@ -326,7 +326,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		var idealScore = boat.IdealMatchScore;
 		var currentCrew = _teamSelection.GetTeam().CrewMembers;
 		//get selection mistakes for this line-up and set-up feedback UI
-		var mistakeList = boat.GetAssignmentMistakes(6);
+		var mistakeList = boat.GetAssignmentMistakes(3);
 		SetMistakeIcons(mistakeList, oldBoat, idealScore, boat.Positions.Count);
 		var scoreDiff = GetResult(isRace, boat, offset, oldBoat.transform.Find("Score").GetComponent<Text>());
 		var crewContainer = oldBoat.transform.Find("Crew Container");
@@ -366,15 +366,16 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	/// </summary>
 	private void SetMistakeIcons(List<string> mistakes, GameObject boat, float idealScore, int positionCount)
 	{
-		var mistakeParentTop = boat.transform.Find("Icon Container/Icon Container Top");
-		var mistakeParentBottom = boat.transform.Find("Icon Container/Icon Container Bottom");
-		//create new mistake icon for each mistake
-		mistakeParentTop.gameObject.SetActive(true);
-		mistakeParentBottom.gameObject.SetActive(true);
-		for (int i = 0; i < mistakes.Count; i++)
+		var mistakeParent = boat.transform.Find("Icon Container");
+		for (int i = 0; i < mistakeParent.childCount; i++)
 		{
-			var mistakeObjectParent = mistakes.Count / 2 > i ? mistakeParentTop : mistakeParentBottom;
-			var mistakeObject = mistakeObjectParent.Find("Ideal Icon " + (mistakes.Count / 2 > i ? i : i - 3)).gameObject;
+			var mistakeObject = mistakeParent.Find("Ideal Icon " + i).gameObject;
+			if (mistakes.Count <= i || string.IsNullOrEmpty(mistakes[i]))
+			{
+				mistakeObject.SetActive(false);
+				continue;
+			}
+			mistakeObject.SetActive(true);
 			//set image based on mistake name
 			var mistakeIcon = _mistakeIcons.First(mo => mo.Name == mistakes[i]).Image;
 			mistakeObject.GetComponent<Image>().sprite = mistakeIcon;

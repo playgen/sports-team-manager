@@ -90,7 +90,6 @@ public class LearningPillUI : ObservableMonoBehaviour {
 	{
 		_helpText.text = string.Empty;
 		WaitForEndOfFrame endFrame = new WaitForEndOfFrame();
-		WaitForSeconds endReal = new WaitForSeconds(0.03f);
 		int start = upward ? keep ? 1 : 0 : 2;
 		int limit = keep ? 1 : 2;
 		_popUpAnim["LearningPill"].speed = 1;
@@ -105,13 +104,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, upward, keep, tip);
 		if (upward)
 		{
-			foreach (char t in tip)
-			{
-				if (tip == Localization.Get(_learningPill.GetHelpText(_currentHelp))) {
-					_helpText.text += t;
-					yield return endReal;
-				}
-			}
+			_helpText.text = tip;
 			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "LearningPill", "LearningPillDisplayed", AlternativeTracker.Alternative.Dialog));
 			_popUpBlocker.onClick.AddListener(ClosePill);
 		}

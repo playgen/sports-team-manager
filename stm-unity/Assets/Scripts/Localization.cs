@@ -82,15 +82,15 @@ public class Localization : MonoBehaviour
 			Dictionary<string, string> languageStrings = new Dictionary<string, string>();
 			foreach (var textAsset in jsonTextAssets)
 			{
-				var N = JSON.Parse(textAsset.text);
-				for (int i = 0; i < N.Count; i++)
+				var n = JSON.Parse(textAsset.text);
+				for (int i = 0; i < n.Count; i++)
 				{
 					//go through the list and add the strings to the dictionary
-					if (N[i][languageHeader] != null)
+					if (n[i][languageHeader] != null)
 					{
-						string key = N[i][0].ToString();
+						string key = n[i][0].ToString();
 						key = key.Replace("\"", "").ToUpper();
-						string value = N[i][languageHeader].ToString();
+						string value = n[i][languageHeader].ToString();
 						value = value.Replace("\"", "");
 						languageStrings[key] = value;
 					}
@@ -294,7 +294,7 @@ public class LocalizationEditor : Editor
 {
 	private Language _lastLang;
 	private Localization _myLoc;
-
+	
 	public void Awake()
 	{
 		_myLoc = (Localization)target;
