@@ -58,7 +58,7 @@ public class NewGameUI : MonoBehaviour {
 		_tutorialToggle.enabled = _newGame.ExistingSaves();
 		_tutorialToggle.isOn = true;
 		BestFit.ResolutionChange += DoBestFit;
-		DoBestFit();
+		Invoke("DoBestFit", 0f);
 	}
 
 	private void OnDisable()

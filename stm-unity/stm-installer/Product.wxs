@@ -15,10 +15,10 @@
 	<MediaTemplate EmbedCab="yes" />
 
 		<Property Id="INSTALLDIR">
-      <RegistrySearch Id="PlayGenSplLauncherRegistry" Type="raw" Root="HKLM" Key="SOFTWARE\[Manufacturer]\SPL Launcher" Name="InstallDir"/>
+      <RegistrySearch Id="PlayGenRageLauncherRegistry" Type="raw" Root="HKLM" Key="SOFTWARE\[Manufacturer]\RAGE Launcher" Name="InstallDir"/>
     </Property>
 
-		<Property Id="GAMEID">Sports Team Manager</Property>
+		<Property Id="GAMEID">STM</Property>
 
     <Condition Message="Launcher not found. Please install the Launcher before installing games.">
       Installed OR INSTALLDIR
@@ -34,7 +34,7 @@
             <util:XmlConfig Id="elem1"
 							Action="create"
 							ElementPath="/configuration/LauncherConfiguration/games"
-							File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
+							File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"
 							Node="element"
 							On="install"
 							Name="add"
@@ -43,17 +43,22 @@
 								ElementId="elem1"
 								Name="id"
 								Value="[GAMEID]"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
 				<util:XmlConfig Id="elem12"
 								ElementId="elem1"
 								Name="path"
 								Value="[stmDIR]SportsTeamManager.exe"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+				<util:XmlConfig Id="elem13"
+								ElementId="elem1"
+								Name="key"
+								Value="XWtliQQYvsK91kHGcEBg0FrRyOnj6h8w0DNtf5HrmYPSI8eq1fnryIFfLsai"
+								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
             </util:XmlConfig>
 			<util:XmlConfig Id="param"
 							Action="create"
 							ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]"
-							File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
+							File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"
 							Node="element"
 							On="install"
 							Name="parameters"
@@ -63,7 +68,7 @@
 			<util:XmlConfig Id="param5"
 						Action="create"
 						ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]/parameters"
-						File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
+						File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"
 						Node="element"
 						On="install"
 						Name="add"
@@ -72,28 +77,28 @@
 								ElementId="param5"
 								Name="urlParameter"
 								Value="autologin"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
 				<util:XmlConfig Id="param52"
 								ElementId="param5"
 								Name="commandParameter"
 								Value="a"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
 				<util:XmlConfig Id="param53"
 								ElementId="param5"
 								Name="requiredParameter"
 								Value="true"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
 				<util:XmlConfig Id="param54"
 								ElementId="param5"
 								Name="defaultValue"
 								Value="true"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
 			</util:XmlConfig>
 			  
 			<util:XmlConfig Id="param1"
 							Action="create"
 							ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]/parameters"
-							File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
+							File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"
 							Node="element"
 							On="install"
 							Name="add"
@@ -101,47 +106,23 @@
 				<util:XmlConfig Id="param11"
 								ElementId="param1"
 								Name="urlParameter"
-								Value="userName"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+								Value="username"
+								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
 				<util:XmlConfig Id="param12"
 								ElementId="param1"
 								Name="commandParameter"
 								Value="u"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
 				<util:XmlConfig Id="param13"
 								ElementId="param1"
 								Name="requiredParameter"
 								Value="true"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
-			</util:XmlConfig>
-			<util:XmlConfig Id="param2"
-							Action="create"
-							ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]/parameters"
-							File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
-							Node="element"
-							On="install"
-							Name="add"
-							Sequence="5">
-				<util:XmlConfig Id="param21"
-								ElementId="param2"
-								Name="urlParameter"
-								Value="class"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
-				<util:XmlConfig Id="param22"
-								ElementId="param2"
-								Name="commandParameter"
-								Value="g"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
-				<util:XmlConfig Id="param23"
-								ElementId="param2"
-								Name="requiredParameter"
-								Value="true"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
 			</util:XmlConfig>
 			<util:XmlConfig Id="param3"
 							Action="create"
 							ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]/parameters"
-							File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
+							File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"
 							Node="element"
 							On="install"
 							Name="add"
@@ -150,53 +131,29 @@
 								ElementId="param3"
 								Name="urlParameter"
 								Value="source"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
 				<util:XmlConfig Id="param32"
 								ElementId="param3"
 								Name="commandParameter"
 								Value="s"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
 				<util:XmlConfig Id="param33"
 								ElementId="param3"
 								Name="requiredParameter"
 								Value="true"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
 				<util:XmlConfig Id="param34"
 								ElementId="param3"
 								Name="defaultValue"
-								Value="SPL"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
+								Value="OKKAM"
+								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
 			</util:XmlConfig>
-			<util:XmlConfig Id="param4"
-							Action="create"
-							ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]/parameters"
-							File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
-							Node="element"
-							On="install"
-							Name="add"
-							Sequence="7">
-				<util:XmlConfig Id="param41"
-								ElementId="param4"
-								Name="urlParameter"
-								Value="sessionid"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
-				<util:XmlConfig Id="param42"
-								ElementId="param4"
-								Name="commandParameter"
-								Value="round"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
-				<util:XmlConfig Id="param43"
-								ElementId="param4"
-								Name="requiredParameter"
-								Value="false"
-								File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"/>
-			</util:XmlConfig>
-						
+			
             <util:XmlConfig   Id="elem1Delete"
 															Action="delete"
 															ElementPath="/configuration/LauncherConfiguration/games"
 															VerifyPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]"
-															File="[INSTALLDIR]PlayGen.SPL.Launcher.exe.config"
+															File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"
 															Node="element"
 															On="uninstall"
 															Sequence="100" />

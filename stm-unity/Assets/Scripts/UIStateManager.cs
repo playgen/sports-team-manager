@@ -68,11 +68,13 @@ public class UIStateManager : ObservableMonoBehaviour {
 
 	private void OnEnable()
 	{
+		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
 	}
 
 	private void OnDisable()
 	{
+		Localization.LanguageChange -= OnLanguageChange;
 		BestFit.ResolutionChange -= DoBestFit;
 	}
 
@@ -179,6 +181,14 @@ public class UIStateManager : ObservableMonoBehaviour {
 	public void CloseGame()
 	{
 		Application.Quit();
+	}
+
+	private void OnLanguageChange()
+	{
+		if (SUGARManager.CurrentUser != null)
+		{
+			_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
+		}
 	}
 
 	private void DoBestFit()

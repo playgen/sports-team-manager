@@ -25,7 +25,7 @@ public class ScreenSideUI : MonoBehaviour {
 		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
 		_nameText.text = _gameManager.Team.Name.ToUpper();
 		BestFit.ResolutionChange += DoBestFit;
-		DoBestFit();
+		Invoke("DoBestFit", 0f);
 	}
 
 	private void OnDisable()

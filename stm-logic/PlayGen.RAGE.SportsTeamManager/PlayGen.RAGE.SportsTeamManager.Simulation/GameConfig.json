@@ -18,11 +18,6 @@
 			"StartType": "BiggerDinghy",
 			"NewType": "BiggestDinghy",
 			"ScoreMetSinceLast": 2
-		},
-		{
-			"StartType": "BiggestDinghy",
-			"NewType": "Finish",
-			"ScoreMetSinceLast": 4
 		}
 	],
 	"EventTriggers": [

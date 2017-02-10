@@ -107,12 +107,15 @@ MonoBehaviour:
   m_Script: {fileID: -2015201922, guid: 4f8932c3a6246ed4d80bcab92e6d16f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseAddress: http://localhost:62312/
+  _baseAddress: http://api.sugarengine.org/
   _gameToken: Sports Team Manager
   _gameId: 1
   _useAchievements: 1
   _useLeaderboards: 1
   _uiBlocker: {fileID: 1823420820520756, guid: 32aeda71493f8f843ac0595a41de113d, type: 2}
+  _uiSpinner: {fileID: 1728504751892352, guid: 7441383a7979eec43b990211d514a7a0, type: 2}
+  _spinSpeed: 5
+  _spinClockwise: 1
 --- !u!114 &114000012266143498
 MonoBehaviour:
   m_ObjectHideFlags: 1

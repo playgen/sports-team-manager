@@ -775,7 +775,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				expected -= boat.Positions.Count;
 			}
 			var finishPositionText = Localization.Get("POSITION_" + finishPosition);
-			scoreText.text = string.Format("{0} {1}", Localization.Get("RACE_POSITION", true), finishPositionText);
+			scoreText.text = string.Format("{0} {1}", Localization.Get("RACE_POSITION"), finishPositionText);
 			if (current)
 			{
 				DisplayPostRacePopUp(boat.PositionCrew, finishPosition, finishPositionText);
