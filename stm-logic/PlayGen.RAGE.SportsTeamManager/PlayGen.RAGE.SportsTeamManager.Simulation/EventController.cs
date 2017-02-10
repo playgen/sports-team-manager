@@ -84,14 +84,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Select a random (if any) event to trigger post race
 		/// </summary>
-		internal void SelectPostRaceEvents(ConfigStore config, Team team, int chance, bool raceSession)
+		internal void SelectPostRaceEvents(ConfigStore config, Team team, int chance)
 		{
 			//get the state of currrently running events
-			CheckLastingEvents(team, raceSession);
+			CheckLastingEvents(team);
 			var selectedEvents = new List<List<PostRaceEventState>>();
 			//get all possible post-race event starting dialogue
-			var dialogueOptions = GetPossiblePostRaceDialogue(raceSession);
-			var events = GetEvents(dialogueOptions, config.GameConfig.EventTriggers.ToList(), team, (int)config.ConfigValues[ConfigKeys.RaceSessionLength]);
+			var dialogueOptions = GetPossiblePostRaceDialogue();
+			var events = GetEvents(dialogueOptions, config.GameConfig.EventTriggers.ToList(), team);
 			if (events.Any())
 			{
 				var allCrewInitial = team.CrewMembers;
@@ -240,10 +240,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get all post-race starting dialogue based on the last type of session
 		/// </summary>
-		internal List<DialogueStateActionDTO> GetPossiblePostRaceDialogue(bool raceSession)
+		internal List<DialogueStateActionDTO> GetPossiblePostRaceDialogue()
 		{
 			var dialogueOptions = GetPossibleAgentDialogue("PostRaceEventStart");
-			dialogueOptions = dialogueOptions.Where(dia => dia.Style.Contains(raceSession ? "Race" : "Practice")).ToList();
+			dialogueOptions = dialogueOptions.Where(dia => dia.Style.Contains("Race")).ToList();
 			return dialogueOptions;
 		}
 
@@ -258,17 +258,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// get the currently running events for all CrewMembers
 		/// </summary>
-		private void CheckLastingEvents(Team team, bool raceSession)
+		private void CheckLastingEvents(Team team)
 		{
 			foreach (var crewMember in team.CrewMembers.Values)
 			{
-				crewMember.CurrentEventCheck(team, iat, raceSession);
+				crewMember.CurrentEventCheck(team, iat);
 			}
 		}
 
-		private List<PostSessionEventTrigger> GetEvents(List<DialogueStateActionDTO> available, List<PostSessionEventTrigger> triggers, Team team, int sessionsPerRace)
+		private List<PostSessionEventTrigger> GetEvents(List<DialogueStateActionDTO> available, List<PostSessionEventTrigger> triggers, Team team)
 		{
-			var history = team.LineUpHistory;
+			var raceHistory = team.RaceHistory;
 			var setEvents = new List<PostSessionEventTrigger>();
 			var repeatedEvents = new List<PostSessionEventTrigger>();
 			var randomEvents = new List<PostSessionEventTrigger>();
@@ -276,28 +276,28 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				if (available.Any(a => a.NextState == trigger.EventName))
 				{
-					if (trigger.StartBoatType == null || history.Any(h => h.Type == trigger.StartBoatType) || trigger.StartBoatType == team.Boat.Type)
+					if (trigger.StartBoatType == null || raceHistory.Any(h => h.Type == trigger.StartBoatType) || trigger.StartBoatType == team.Boat.Type)
 					{
-						var sessionCount = history.Count;
-						var sessionsNeeded = (trigger.RaceTrigger * sessionsPerRace) + trigger.SessionTrigger;
+						var raceCount = raceHistory.Count;
+						var racesNeeded = trigger.RaceTrigger;
 						if (trigger.RepeatEvery == 0 && (trigger.StartBoatType == team.Boat.Type || trigger.StartBoatType == null))
 						{
 							if (trigger.StartBoatType != null)
 							{
-								sessionCount = history.Count(h => h.Type == trigger.StartBoatType);
+								raceCount = raceHistory.Count(h => h.Type == trigger.StartBoatType);
 							}
-							if (sessionCount == sessionsNeeded)
+							if (raceCount == racesNeeded)
 							{
 								setEvents.Add(trigger);
 							}
 						}
-						else if (trigger.RepeatEvery > 0 && history.All(h => h.Type != trigger.EndBoatType))
+						else if (trigger.RepeatEvery > 0 && raceHistory.All(h => h.Type != trigger.EndBoatType))
 						{
 							if (trigger.StartBoatType != null)
 							{
-								sessionCount = history.Count - history.FindIndex(h => h.Type == trigger.StartBoatType);
+								raceCount = raceHistory.Count - raceHistory.FindIndex(h => h.Type == trigger.StartBoatType);
 							}
-							if (sessionCount - sessionsNeeded >= 0 && (sessionCount - sessionsNeeded) % trigger.RepeatEvery == 0)
+							if (raceCount - racesNeeded >= 0 && (raceCount - racesNeeded) % trigger.RepeatEvery == 0)
 							{
 								if (trigger.Random)
 								{

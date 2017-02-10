@@ -29,6 +29,7 @@
 	"OpinionRevealPositiveCost": 1,
 	"OpinionRevealNegativeCost": 2,
 	"SendRecruitmentQuestionCost": 1,
+	"TutorialRaceSessionLength": 3,
 	"RaceSessionLength": 5,
 	"TicksPerSession": 5,
 	"EventChance": 2,

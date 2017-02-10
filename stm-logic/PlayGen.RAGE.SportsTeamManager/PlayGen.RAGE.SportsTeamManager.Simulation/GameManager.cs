@@ -19,6 +19,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int ActionAllowance { get; private set; }
 		public int CrewEditAllowance { get; private set; }
 		public int RaceSessionLength { get; private set; }
+		public int CurrentRaceSession { get; private set; }
 		public bool ShowTutorial { get; private set; }
 		public int TutorialStage { get; private set; }
 		public EventController EventController => eventController;
@@ -68,7 +69,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			var eventTriggers = config.GameConfig.EventTriggers;
-			var postRaceEvents = EventController.GetPossiblePostRaceDialogue(true).Concat(EventController.GetPossiblePostRaceDialogue(false));
+			var postRaceEvents = EventController.GetPossiblePostRaceDialogue();
 			var postRaceNames = postRaceEvents.Select(pre => pre.NextState).ToList();
 			foreach (var ev in eventTriggers)
 			{
@@ -84,21 +85,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					invalidString += string.Format("EndBoatType {0} is not an existing BoatType.\n", ev.EndBoatType);
 				}
-				if (ev.SessionTrigger >= config.ConfigValues[ConfigKeys.RaceSessionLength])
-				{
-					invalidString += string.Format("SessionTrigger must be less than {0}, the number of sessions in a race.\n", config.ConfigValues[ConfigKeys.RaceSessionLength]);
-				}
-				if (ev.SessionTrigger < 0)
-				{
-					invalidString += "SessionTrigger must be at least 0.\n";
-				}
 				if (ev.RaceTrigger < 0)
 				{
 					invalidString += "RaceTrigger must be at least 0.\n";
-				}
-				if (ev.RaceTrigger <= 0 && ev.SessionTrigger <= 0)
-				{
-					invalidString += "RaceTrigger and SessionTrigger cannot both be 0.\n";
 				}
 			}
 			if (!string.IsNullOrEmpty(invalidString))
@@ -153,7 +142,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			ActionAllowance = (int)config.ConfigValues[ConfigKeys.DefaultActionAllowance] + ((int)config.ConfigValues[ConfigKeys.ActionAllowancePerPosition] * positionCount);
 			CrewEditAllowance = (int)config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition] * positionCount;
-			RaceSessionLength = (int)config.ConfigValues[ConfigKeys.RaceSessionLength];
+			RaceSessionLength = showTutorial ? (int)config.ConfigValues[ConfigKeys.TutorialRaceSessionLength] : (int)config.ConfigValues[ConfigKeys.RaceSessionLength];
 			ShowTutorial = showTutorial;
 			TutorialStage = 0;
 			//create manager files and store game attribute details
@@ -287,7 +276,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					ActionAllowance = Convert.ToInt32(person.LoadBelief(NPCBeliefs.ActionAllowance.GetDescription()));
 					CrewEditAllowance = Convert.ToInt32(person.LoadBelief(NPCBeliefs.CrewEditAllowance.GetDescription()));
-					RaceSessionLength = (int)config.ConfigValues[ConfigKeys.RaceSessionLength];
+					RaceSessionLength = ShowTutorial ? (int)config.ConfigValues[ConfigKeys.TutorialRaceSessionLength] : (int)config.ConfigValues[ConfigKeys.RaceSessionLength];
 					var primary = new byte[3];
 					primary[0] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorRedPrimary.GetDescription()));
 					primary[1] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorGreenPrimary.GetDescription()));
@@ -379,13 +368,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				boat.IdealMatchScore = float.Parse(subjectSplit[(boat.Positions.Count * 2) + 1]);
 				boat.Score = boat.PositionScores.Values.Sum();
 				boat.SelectionMistakes = new List<string>();
-				for (var i = (boat.Positions.Count + 1) * 2; i < subjectSplit.Length - 1; i++)
+				for (var i = (boat.Positions.Count + 1) * 2; i < subjectSplit.Length - 2; i++)
 				{
 					boat.SelectionMistakes.Add(subjectSplit[i].NoSpaces());
 				}
-				Team.HistoricTimeOffset.Add(Convert.ToInt32(subjectSplit[subjectSplit.Length - 1]));
+				Team.HistoricTimeOffset.Add(Convert.ToInt32(subjectSplit[subjectSplit.Length - 2]));
+				Team.HistoricSessionNumber.Add(Convert.ToInt32(subjectSplit[subjectSplit.Length - 1]));
 				Team.LineUpHistory.Add(boat);
 			}
+			CurrentRaceSession = Team.HistoricSessionNumber.Last();
 		}
 
 		private void LoadCurrentEvents()
@@ -471,6 +462,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			boat.SelectionMistakes.ForEach(sm => crew += "," + sm);
 			//add time offset to the string 
 			crew += "," + offset;
+			CurrentRaceSession++;
+			if (RaceSessionLength == CurrentRaceSession)
+			{
+				CurrentRaceSession = 0;
+			}
+			crew += "," + CurrentRaceSession;
 			//send event with string of information within
 			var eventString = string.Format(eventStringUnformatted, boatType, crew);
 			var eventRpc = manager.RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
@@ -494,14 +491,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			lastBoat.Score = lastBoat.PositionScores.Values.Sum();
 			Team.LineUpHistory.Add(lastBoat);
 			Team.HistoricTimeOffset.Add(offset);
+			Team.HistoricSessionNumber.Add(CurrentRaceSession);
 			Team.TickCrewMembers((int)config.ConfigValues[ConfigKeys.TicksPerSession]);
-			SelectPostRaceEvents();
+			if (CurrentRaceSession == 0)
+			{
+				SelectPostRaceEvents();
+				ConfirmLineUp();
+			}
 		}
 
 		/// <summary>
 		/// Save current line-up and update CrewMember's opinions and mood based on this line-up
 		/// </summary>
-		public void ConfirmLineUp()
+		private void ConfirmLineUp()
 		{
 			Team.ConfirmChanges(ActionAllowance);
 			//reset the limits on actions and hiring/firing
@@ -512,20 +514,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Select a random post-race event
 		/// </summary>
-		public void SelectPostRaceEvents()
+		private void SelectPostRaceEvents()
 		{
-			//work out if it is currently directly after a race session and the chance of an event occurring as a result
-			var afterRace = false;
 			var chance = (int)config.ConfigValues[ConfigKeys.EventChance];
-			if (Team.LineUpHistory.Count % RaceSessionLength == 0)
-			{
-				afterRace = true;
-			}
-			else
-			{
-				chance += (int)config.ConfigValues[ConfigKeys.PracticeEventChanceReduction];
-			}
-			eventController.SelectPostRaceEvents(config, Team, chance, afterRace);
+			eventController.SelectPostRaceEvents(config, Team, chance);
 		}
 
 		/// <summary>
@@ -680,6 +672,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (finished)
 			{
 				ShowTutorial = false;
+				RaceSessionLength = (int)config.ConfigValues[ConfigKeys.RaceSessionLength];
 				Team.Manager.UpdateSingleBelief(NPCBeliefs.ShowTutorial.GetDescription(), ShowTutorial.ToString());
 			}
 			Team.Manager.SaveStatus();

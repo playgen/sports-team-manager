@@ -451,11 +451,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Check to see if any events are about to be triggered
 		/// </summary>
-		internal void CurrentEventCheck(Team team, IntegratedAuthoringToolAsset iat, bool afterRaceSession)
+		internal void CurrentEventCheck(Team team, IntegratedAuthoringToolAsset iat)
 		{
 			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			if (afterRaceSession && LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != null && LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != "null")
+			if (LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != null && LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != "null")
 			{
 				if (GetBoatPosition(team.Boat.PositionCrew) == 0)
 				{
@@ -473,7 +473,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "null");
 				TickUpdate();
 			}
-			if (afterRaceSession && LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription()) != null)
+			if (LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription()) != null)
 			{
 				var expected = LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
 				if (expected != "null" && team.Boat.Positions.Any(p => p.ToString() == expected))
@@ -496,7 +496,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					TickUpdate();
 				}
 			}
-			if (afterRaceSession && LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription()) != null)
+			if (LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription()) != null)
 			{
 				var expected = LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription());
 				if (expected != "null")

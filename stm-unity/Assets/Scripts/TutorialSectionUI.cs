@@ -200,6 +200,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 			GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = false;
 		}
 		var speechBubble = transform.Find("Tutorial Helper/Image");
+		LayoutRebuilder.ForceRebuildLayoutImmediate(_tutorialText.rectTransform);
 		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)speechBubble);
 		speechBubble.GetComponent<LayoutGroup>().padding.bottom = (int)(((RectTransform)speechBubble).sizeDelta.y * 0.25f) + 16;
 		var buttons = transform.Find("Tutorial Helper/Buttons");

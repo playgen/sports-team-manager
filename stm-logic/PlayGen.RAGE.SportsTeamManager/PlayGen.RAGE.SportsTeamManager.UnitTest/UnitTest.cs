@@ -354,7 +354,6 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(30, gameManager.Team.Boat.Score);
 				gameManager.SaveLineUp(0);
-				gameManager.ConfirmLineUp();
 				Assert.AreEqual(30, gameManager.Team.Boat.Score);
 				//Assert.AreEqual(33, gameManager.Team.Boat.Score); opinion changes
 
@@ -402,7 +401,6 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(22, gameManager.Team.Boat.Score);
 				gameManager.SaveLineUp(0);
-				gameManager.ConfirmLineUp();
 				Assert.AreEqual(22, gameManager.Team.Boat.Score);
 				//Assert.AreEqual(24, gameManager.Team.Boat.Score); opinion changes
 
@@ -450,7 +448,6 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(22, gameManager.Team.Boat.Score);
 				gameManager.SaveLineUp(0);
-				gameManager.ConfirmLineUp();
 				Assert.AreEqual(22, gameManager.Team.Boat.Score);
 				//Assert.AreEqual(24, gameManager.Team.Boat.Score); opinion changes
 
@@ -486,7 +483,6 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				Assert.AreEqual(25, gameManager.Team.Boat.Score);
 				//Assert.AreEqual(27, gameManager.Team.Boat.Score); opinion changes
 				gameManager.SaveLineUp(0);
-				gameManager.ConfirmLineUp();
 				Assert.AreEqual(25, gameManager.Team.Boat.Score);
 				//Assert.AreEqual(29, gameManager.Team.Boat.Score); opinion changes
 
@@ -524,7 +520,6 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				gameManager.Team.Boat.UpdateBoatScore(gameManager.Team.Manager.Name);
 				Assert.AreEqual(10, gameManager.Team.Boat.Score);
 				gameManager.SaveLineUp(0);
-				gameManager.ConfirmLineUp();
 				Assert.AreEqual(10, gameManager.Team.Boat.Score);
 				//Assert.AreEqual(4, gameManager.Team.Boat.Score); opinion changes
 
@@ -544,15 +539,12 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		{
 			for (var i = 0; i < _testCount; i++)
 			{
-				var config = new ConfigStore();
 				var gameManager = new GameManager();
 				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Ideal Test", new byte[] { 0, 0, 0 }, new byte[] { 0, 0, 0 }, "Player Manager", false, "English");
 				while (gameManager.Team.Boat.Positions.Count < 6)
 				{
-					for (int j = 0; j < gameManager.RaceSessionLength; j++)
-					{
-						gameManager.Team.LineUpHistory.Add(gameManager.Team.Boat);
-					}
+					gameManager.Team.LineUpHistory.Add(gameManager.Team.Boat);
+					gameManager.Team.HistoricSessionNumber.Add(0);
 					gameManager.Team.PromoteBoat();
 				}
 				for (int j = 0; j < gameManager.Team.CrewLimitLeft(); j++)
@@ -561,6 +553,22 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				}
 				gameManager.SaveLineUp(0);
 			}
+		}
+
+		[TestMethod]
+		public void RandomnessTest()
+		{
+			var config = new ConfigStore();
+			var randomCrew = new List<CrewMember>();
+			for (var i = 0; i < 100; i++)
+			{
+				randomCrew.Add(new CrewMember(Position.Null, "English", config));
+			}
+			var randomCrewNames = randomCrew.Select(c => c.Name).ToList();
+			var randomCrewAge = randomCrew.Select(c => c.Age).ToList();
+			var randomCrewBody = randomCrew.Select(c => c.Skills[CrewMemberSkill.Body]).ToList();
+			var randomCrewPerception = randomCrew.Select(c => c.Skills[CrewMemberSkill.Perception]).ToList();
+			var randomCrewWisdom = randomCrew.Select(c => c.Skills[CrewMemberSkill.Wisdom]).ToList();
 		}
 
 		public List<CrewMember> CreateInitialCrew(ConfigStore config)

@@ -10,30 +10,29 @@ public class TeamSelection : MonoBehaviour {
 	private GameManager _gameManager;
 	[SerializeField]
 	private PostRaceEvent _postRaceEvent;
-	private int _sessionLength;
 	private int _confirmCount;
 
 	private void Start()
 	{
 		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
-		_sessionLength = _gameManager.RaceSessionLength;
-		_confirmCount = _gameManager.Team.LineUpHistory.Count;
 		_postRaceEvent.GetEvent();
+		_confirmCount = _gameManager.Team.LineUpHistory.Count;
 	}
 
 	/// <summary>
 	/// Get the history of line-ups
 	/// </summary>
-	public List<KeyValuePair<Boat, int>> GetLineUpHistory(int skipAmount, int takeAmount)
+	public List<KeyValuePair<Boat, KeyValuePair<int, int>>> GetLineUpHistory(int skipAmount, int takeAmount)
 	{
 		var boats = _gameManager.Team.LineUpHistory.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
 		var offsets = _gameManager.Team.HistoricTimeOffset.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
-		var boatOffsets = new List<KeyValuePair<Boat, int>>();
+		var sessions = _gameManager.Team.HistoricSessionNumber.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
+		var boatOffsets = new List<KeyValuePair<Boat, KeyValuePair<int, int>>>();
 		for (var i = 0; i < boats.Count; i++)
 		{
 			if (i < offsets.Count)
 			{
-				boatOffsets.Add(new KeyValuePair<Boat, int>(boats[i], offsets[i]));
+				boatOffsets.Add(new KeyValuePair<Boat, KeyValuePair<int, int>>(boats[i], new KeyValuePair<int, int>(offsets[i], sessions[i])));
 			}
 		}
 		return boatOffsets;
@@ -78,9 +77,17 @@ public class TeamSelection : MonoBehaviour {
 	/// <summary>
 	/// Get the current session in the race
 	/// </summary>
-	public int GetStage()
+	public int GetTotalStages()
 	{
 		return _confirmCount + 1;
+	}
+
+	/// <summary>
+	/// Get the current session in the race
+	/// </summary>
+	public int GetStage()
+	{
+	return _gameManager.CurrentRaceSession + 1;
 	}
 
 	/// <summary>
@@ -88,7 +95,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public int GetSessionLength()
 	{
-		return _sessionLength;
+	return _gameManager.RaceSessionLength;
 	}
 
 	/// <summary>
@@ -99,10 +106,6 @@ public class TeamSelection : MonoBehaviour {
 		_confirmCount++;
 		_gameManager.SaveLineUp(offset);
 		_postRaceEvent.GetEvent();
-		if (_confirmCount % _sessionLength == 0)
-		{
-			_gameManager.ConfirmLineUp();
-		}
 		return _gameManager.Team.LineUpHistory.Last();
 	}
 

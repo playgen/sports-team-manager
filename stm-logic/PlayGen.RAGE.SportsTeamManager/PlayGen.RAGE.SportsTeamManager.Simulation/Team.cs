@@ -18,6 +18,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Boat Boat { get; }
 		public List<Boat> LineUpHistory { get; internal set; }
 		public List<int> HistoricTimeOffset { get; internal set; }
+		public List<int> HistoricSessionNumber { get; internal set; }
+		public List<Boat> RaceHistory
+		{
+			get
+			{
+				return LineUpHistory.Where((boat, i) => HistoricSessionNumber[i] == 0).ToList();
+			}
+		}
 		public string Name { get; }
 		public string Nationality { get; }
 		public Color TeamColorsPrimary { get; internal set; }
@@ -47,6 +55,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Recruits = new Dictionary<string, CrewMember>();
 			LineUpHistory = new List<Boat>();
 			HistoricTimeOffset = new List<int>();
+			HistoricSessionNumber = new List<int>();
 		}
 
 		/// <summary>
@@ -246,8 +255,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void PromoteBoat()
 		{
 			var extraMembers = Boat.Positions.Count;
-			var raceHistory = LineUpHistory.Where((boat, i) => (i + 1) % (int)config.ConfigValues[ConfigKeys.RaceSessionLength] == 0).ToList();
-			if (!Boat.PromoteBoat(raceHistory))
+			if (!Boat.PromoteBoat(RaceHistory))
 			{
 				return;
 			}

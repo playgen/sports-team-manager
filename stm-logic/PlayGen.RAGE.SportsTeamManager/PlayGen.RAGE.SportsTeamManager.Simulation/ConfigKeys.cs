@@ -32,6 +32,7 @@
 		OpinionRevealPositiveCost,
 		OpinionRevealNegativeCost,
 		SendRecruitmentQuestionCost,
+		TutorialRaceSessionLength,
 		RaceSessionLength,
 		TicksPerSession,
 		EventChance,

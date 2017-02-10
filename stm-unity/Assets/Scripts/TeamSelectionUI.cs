@@ -148,6 +148,19 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				b.GetComponent<HoverObject>().Enabled = false;
 			}
 		}
+		if (_raceButton.gameObject.activeSelf && _teamSelection.GetStage() != _teamSelection.GetSessionLength())
+		{
+			if (_raceButton.GetComponentInChildren<Text>().text.Last().ToString() != _teamSelection.GetSessionLength().ToString())
+			{
+				var stageIcon = _boatMain.transform.Find("Stage").GetComponent<Image>();
+				var isRace = _teamSelection.GetStage() == _teamSelection.GetSessionLength();
+				stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
+				stageIcon.gameObject.SetActive(true);
+				_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = _teamSelection.GetStage().ToString();
+				_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, _teamSelection.GetStage(), _teamSelection.GetSessionLength() - 1);
+				_raceButton.GetComponentInChildren<Text>().fontSize = 16;
+			}
+		}
 	}
 
 	private void EnableRacing()
@@ -207,7 +220,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		var team = _teamSelection.GetTeam();
 		var stageIcon = _boatMain.transform.Find("Stage").GetComponent<Image>();
-		var isRace = _teamSelection.GetStage() % _teamSelection.GetSessionLength() == 0;
+		var isRace = _teamSelection.GetStage() == _teamSelection.GetSessionLength();
 		if (team.Boat.Positions.Count > 0)
 		{
 			stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
@@ -217,14 +230,14 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		{
 			stageIcon.gameObject.SetActive(false);
 		}
-		_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = isRace || team.Boat.Positions.Count == 0 ? string.Empty : (_teamSelection.GetStage() % _teamSelection.GetSessionLength()).ToString();
+		_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = isRace || team.Boat.Positions.Count == 0 ? string.Empty : _teamSelection.GetStage().ToString();
 		_positionsEmpty = team.Boat.Positions.Count;
 		_raceButton.onClick.RemoveAllListeners();
 		//add click handler to raceButton according to session taking place
-		if (_teamSelection.GetStage() % _teamSelection.GetSessionLength() != 0)
+		if (_teamSelection.GetStage() != _teamSelection.GetSessionLength())
 		{
 			_raceButton.onClick.AddListener(ConfirmLineUpCheck);
-			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, _teamSelection.GetStage() % _teamSelection.GetSessionLength(), _teamSelection.GetSessionLength() - 1);
+			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, _teamSelection.GetStage(), _teamSelection.GetSessionLength() - 1);
 			_raceButton.GetComponentInChildren<Text>().fontSize = 16;
 		}
 		else
@@ -320,9 +333,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		oldBoat.SetActive(true);
 		var stageIcon = oldBoat.transform.Find("Stage").GetComponent<Image>();
-		var isRace = stageNumber % _teamSelection.GetSessionLength() == 0;
+		var isRace = stageNumber == 0;
 		stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
-		oldBoat.transform.Find("Stage Number").GetComponent<Text>().text = isRace ? string.Empty : (stageNumber % _teamSelection.GetSessionLength()).ToString();
+		oldBoat.transform.Find("Stage Number").GetComponent<Text>().text = isRace ? string.Empty : stageNumber.ToString();
 		var idealScore = boat.IdealMatchScore;
 		var currentCrew = _teamSelection.GetTeam().CrewMembers;
 		//get selection mistakes for this line-up and set-up feedback UI
@@ -373,6 +386,8 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			if (mistakes.Count <= i || string.IsNullOrEmpty(mistakes[i]))
 			{
 				mistakeObject.SetActive(false);
+				mistakeObject.GetComponent<HoverObject>().SetHoverText(string.Empty, _hoverPopUp);
+				mistakeObject.GetComponent<HoverObject>().OnPointerClick(null);
 				continue;
 			}
 			mistakeObject.SetActive(true);
@@ -428,7 +443,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 
 	public void ResetScrollbar()
 	{
-		_boatContainerScroll.numberOfSteps = _teamSelection.GetStage() - _teamSelection.GetSessionLength() + 1;
+		_boatContainerScroll.numberOfSteps = _teamSelection.GetTotalStages() - 4;
 		_boatContainerScroll.size = 1f / _boatContainerScroll.numberOfSteps;
 		_boatContainerScroll.value = 0;
 		_previousScrollValue = 1;
@@ -448,7 +463,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		{
 			var boatObject = _boatPool[setUpCount];
 			boatObject.SetActive(true);
-			CreateHistoricalBoat(boatObject, boat.Key, boat.Value, _teamSelection.GetStage() - setUpCount - skipAmount - 1);
+			CreateHistoricalBoat(boatObject, boat.Key, boat.Value.Key, boat.Value.Value);
 			setUpCount++;
 		}
 		for (int i = setUpCount; i < _boatPool.Count; i++)
@@ -556,7 +571,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		{
 			DisplayPromotionPopUp(oldLayout, newLayout);
 		}
-		GetResult((_teamSelection.GetStage() - 1) % _teamSelection.GetSessionLength() == 0, currentBoat, offset, _raceButton.GetComponentInChildren<Text>(), true);
+		GetResult(_teamSelection.GetStage() - 1 == 0, currentBoat, offset, _raceButton.GetComponentInChildren<Text>(), true);
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewConfirm", "CrewConfirmed", AlternativeTracker.Alternative.Menu));
 		//set-up next boat
 		CreateNewBoat();
@@ -784,7 +799,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		}
 		if (current)
 		{
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Completed", "CrewScore" + (_teamSelection.GetStage() - 1), CompletableTracker.Completable.Race, true, boat.Score));
+			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Completed", "CrewScore" + (_teamSelection.GetStage()), CompletableTracker.Completable.Race, true, boat.Score));
 			SUGARManager.GameData.Send("Race Session Score", boat.Score);
 			SUGARManager.GameData.Send("Current Boat Size", boat.Positions.Count);
 			SUGARManager.GameData.Send("Race Session Score Average", (float)boat.Score / boat.Positions.Count);
@@ -846,9 +861,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		foreach (var position in _boatMain.GetComponentsInChildren<PositionUI>()) {
 			position.transform.Find("Name").GetComponent<Text>().text = Localization.Get(position.Position.ToString());
 		}
-		if (_teamSelection.GetStage() % _teamSelection.GetSessionLength() != 0)
+		if (_teamSelection.GetStage() != _teamSelection.GetSessionLength())
 		{
-			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, _teamSelection.GetStage() % _teamSelection.GetSessionLength(), _teamSelection.GetSessionLength() - 1);
+			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, _teamSelection.GetStage(), _teamSelection.GetSessionLength() - 1);
 		}
 		else
 		{
@@ -859,7 +874,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		if (_postRacePopUp.activeInHierarchy)
 		{
 			var lastRace = _teamSelection.GetLineUpHistory(0, 1).First();
-			GetResult(true, lastRace.Key, lastRace.Value, _boatPool[0].transform.Find("Score").GetComponent<Text>());
+			GetResult(true, lastRace.Key, lastRace.Value.Key, _boatPool[0].transform.Find("Score").GetComponent<Text>());
 		}
 		DoBestFit();
 	}
