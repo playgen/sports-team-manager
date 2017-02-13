@@ -31,7 +31,7 @@
 	"SendRecruitmentQuestionCost": 1,
 	"TutorialRaceSessionLength": 3,
 	"RaceSessionLength": 5,
-	"TicksPerSession": 5,
+	"TicksPerSession": 25,
 	"EventChance": 2,
 	"PracticeEventChanceReduction": 3,
 	"RecruitCount": 4,

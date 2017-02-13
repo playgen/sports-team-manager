@@ -423,6 +423,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
+		/// Skips all remaining practice sessions (if any)
+		/// </summary>
+		public void SkipToRace()
+		{
+			CurrentRaceSession = RaceSessionLength - 1;
+		}
+
+		/// <summary>
 		/// Save the current boat line-up to the manager's EA file
 		/// </summary>
 		public void SaveLineUp(int offset)
@@ -492,9 +500,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Team.LineUpHistory.Add(lastBoat);
 			Team.HistoricTimeOffset.Add(offset);
 			Team.HistoricSessionNumber.Add(CurrentRaceSession);
-			Team.TickCrewMembers((int)config.ConfigValues[ConfigKeys.TicksPerSession]);
+			Team.TickCrewMembers(0);
 			if (CurrentRaceSession == 0)
 			{
+				Team.TickCrewMembers((int)config.ConfigValues[ConfigKeys.TicksPerSession]);
 				SelectPostRaceEvents();
 				ConfirmLineUp();
 			}

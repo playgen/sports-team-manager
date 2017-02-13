@@ -87,7 +87,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public int GetStage()
 	{
-	return _gameManager.CurrentRaceSession + 1;
+		return _gameManager.CurrentRaceSession + 1;
 	}
 
 	/// <summary>
@@ -95,7 +95,15 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public int GetSessionLength()
 	{
-	return _gameManager.RaceSessionLength;
+		return _gameManager.RaceSessionLength;
+	}
+
+	/// <summary>
+	/// Skips all remaining practice sessions (if any)
+	/// </summary>
+	public void SkipToRace()
+	{
+		_gameManager.SkipToRace();
 	}
 
 	/// <summary>
