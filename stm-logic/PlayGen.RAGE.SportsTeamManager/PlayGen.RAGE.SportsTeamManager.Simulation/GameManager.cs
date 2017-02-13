@@ -376,7 +376,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Team.HistoricSessionNumber.Add(Convert.ToInt32(subjectSplit[subjectSplit.Length - 1]));
 				Team.LineUpHistory.Add(boat);
 			}
-			CurrentRaceSession = Team.HistoricSessionNumber.Last();
+			CurrentRaceSession = Team.HistoricSessionNumber.LastOrDefault();
 		}
 
 		private void LoadCurrentEvents()

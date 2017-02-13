@@ -81,16 +81,33 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal void UniqueNameCheck(CrewMember cm)
 		{
 			var unqiue = false;
+			var partialFailCount = 0;
 			//if the name is already in use by another character, reset their name
 			while (!unqiue)
 			{
-				if (crewMembers.ContainsKey(cm.Name) || RetiredCrew.ContainsKey(cm.Name) || Recruits.ContainsKey(cm.Name) || cm.Name == Manager.Name)
+				if (partialFailCount < 5)
 				{
-					cm.Name = cm.SelectNewName();
+					partialFailCount++;
+					var splitName = cm.Name.Split(new [] { ' ' }, 2);
+					if (splitName.Any(n => crewMembers.Keys.Any(k => k.Contains(n)) || RetiredCrew.Keys.Any(k => k.Contains(n)) || Recruits.Keys.Any(k => k.Contains(n))) || cm.Name == Manager.Name)
+					{
+						cm.Name = cm.SelectNewName();
+					}
+					else
+					{
+						unqiue = true;
+					}
 				}
 				else
 				{
-					unqiue = true;
+					if (crewMembers.ContainsKey(cm.Name) || RetiredCrew.ContainsKey(cm.Name) || Recruits.ContainsKey(cm.Name) || cm.Name == Manager.Name)
+					{
+						cm.Name = cm.SelectNewName();
+					}
+					else
+					{
+						unqiue = true;
+					}
 				}
 			}
 		}
