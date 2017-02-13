@@ -271,7 +271,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		}
 		_raceButton.gameObject.SetActive(team.Boat.Positions.Count > 0);
 		_skipToRaceButton.gameObject.SetActive(false);
-		if (team.Boat.Positions.Count > 0 && !isRace) {
+		if (team.Boat.Positions.Count > 0 && !isRace && !_teamSelection.TutorialInProgress()) {
 			var previousSessions = _teamSelection.GetLineUpHistory(0, _teamSelection.GetSessionLength());
 			foreach (var session in previousSessions)
 			{
@@ -364,6 +364,10 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		var currentCrew = _teamSelection.GetTeam().CrewMembers;
 		//get selection mistakes for this line-up and set-up feedback UI
 		var mistakeList = boat.GetAssignmentMistakes(3);
+		if (_teamSelection.TutorialInProgress() && (_teamSelection.GetTotalStages() - 1) == 1)
+		{
+			mistakeList = _mistakeIcons.Select(m => m.Name).Where(m => m != "Correct" && m != "Hidden").OrderBy(m => Guid.NewGuid()).Take(3).ToList();
+		}
 		SetMistakeIcons(mistakeList, oldBoat, idealScore, boat.Positions.Count);
 		var scoreDiff = GetResult(isRace, boat, offset, oldBoat.transform.Find("Score").GetComponent<Text>());
 		var crewContainer = oldBoat.transform.Find("Crew Container");
@@ -410,7 +414,6 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			if (mistakes.Count <= i || string.IsNullOrEmpty(mistakes[i]))
 			{
 				mistakeObject.SetActive(false);
-				_hoverPopUp.DisplayHoverNoDelay(string.Empty);
 				continue;
 			}
 			mistakeObject.SetActive(true);
@@ -418,7 +421,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			var mistakeIcon = _mistakeIcons.First(mo => mo.Name == mistakes[i]).Image;
 			mistakeObject.GetComponent<Image>().sprite = mistakeIcon;
 			//add spaces between words where needed
-			FeedbackHoverOver(mistakeObject.transform, Regex.Replace(mistakes[i], "([a-z])([A-Z])", "$1_$2"));
+			FeedbackHoverOver(mistakeObject.transform, Regex.Replace(mistakes[i], "([a-z])([A-Z])", "$1_$2") + "_FEEDBACK");
 		}
 		//set numbers for each 'light'
 		var unideal = positionCount - (int)idealScore - ((idealScore % 1) * 10);

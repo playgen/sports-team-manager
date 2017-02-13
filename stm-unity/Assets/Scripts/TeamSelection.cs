@@ -228,4 +228,12 @@ public class TeamSelection : MonoBehaviour {
 	{
 		return _gameManager.Team.Boat.AverageBoatOpinion();
 	}
+
+	/// <summary>
+	/// Check if the tutorial is currently in progress
+	/// </summary>
+	public bool TutorialInProgress()
+	{
+		return _gameManager.ShowTutorial;
+	}
 }
