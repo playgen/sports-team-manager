@@ -14,6 +14,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			var configText = Templates.ResourceManager.GetString("name_config");
 			var config = JsonConvert.DeserializeObject<NameConfig>(configText);
+			foreach (var key in config.MaleForename.Keys)
+			{
+				config.MaleForename[key].Sort();
+			}
+			foreach (var key in config.FemaleForename.Keys)
+			{
+				config.FemaleForename[key].Sort();
+			}
+			foreach (var key in config.Surname.Keys)
+			{
+				config.Surname[key].Sort();
+			}
 			return config;
 		}
 	}

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
-using System.Diagnostics;
 
 namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 {
@@ -558,17 +556,65 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void RandomnessTest()
 		{
-			var config = new ConfigStore();
-			var randomCrew = new List<CrewMember>();
-			for (var i = 0; i < 100; i++)
+			var gameManager = new GameManager();
+			var randomCrewFirst = new Dictionary<string, int>();
+			var randomCrewLast = new Dictionary<string, int>();
+			var randomCrewAge = new Dictionary<int, int>();
+			var randomCrewBody = new Dictionary<int, int>();
+			var randomCrewPerception = new Dictionary<int, int>();
+			var randomCrewWisdom = new Dictionary<int, int>();
+			var randomBodyType = new Dictionary<string, int>();
+			var randomHairType = new Dictionary<string, int>();
+			var randomEyeType = new Dictionary<string, int>();
+			var randomEyeColor = new Dictionary<string, int>();
+			var randomEyebrowType = new Dictionary<string, int>();
+			var randomNoseType = new Dictionary<string, int>();
+			var randomMouthType = new Dictionary<string, int>();
+			var randomIsMale = new Dictionary<bool, int>();
+			var randomMouthColor = new Dictionary<string, int>();
+			for (var i = 0; i < _testCount * 10; i++)
 			{
-				randomCrew.Add(new CrewMember(Position.Null, "English", config));
+				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Random Test", new byte[] { 0, 0, 0 }, new byte[] { 0, 0, 0 }, "Player Manager", false, "null");
+				foreach (var crewMember in gameManager.Team.CrewMembers.Concat(gameManager.Team.Recruits).ToList())
+				{
+					var newCrewMember = crewMember.Value;
+					var sep = new char[] { ' ' };
+					var split = newCrewMember.Name.Split(sep, 2);
+					randomCrewFirst[split[0]] = (randomCrewFirst.ContainsKey(split[0]) ? randomCrewFirst[split[0]] : 0) + 1;
+					randomCrewLast[split[1]] = (randomCrewLast.ContainsKey(split[1]) ? randomCrewLast[split[1]] : 0) + 1;
+					randomCrewAge[newCrewMember.Age] = (randomCrewAge.ContainsKey(newCrewMember.Age) ? randomCrewAge[newCrewMember.Age] : 0) + 1;
+					randomCrewBody[newCrewMember.Skills[CrewMemberSkill.Body]] = (randomCrewBody.ContainsKey(newCrewMember.Skills[CrewMemberSkill.Body]) ? randomCrewBody[newCrewMember.Skills[CrewMemberSkill.Body]] : 0) + 1;
+					randomCrewPerception[newCrewMember.Skills[CrewMemberSkill.Perception]] = (randomCrewPerception.ContainsKey(newCrewMember.Skills[CrewMemberSkill.Perception]) ? randomCrewPerception[newCrewMember.Skills[CrewMemberSkill.Perception]] : 0) + 1;
+					randomCrewWisdom[newCrewMember.Skills[CrewMemberSkill.Wisdom]] = (randomCrewWisdom.ContainsKey(newCrewMember.Skills[CrewMemberSkill.Wisdom]) ? randomCrewWisdom[newCrewMember.Skills[CrewMemberSkill.Wisdom]] : 0) + 1;
+
+					var newCrew = newCrewMember.Avatar;
+
+					randomBodyType[newCrew.BodyType] = (randomBodyType.ContainsKey(newCrew.BodyType) ? randomBodyType[newCrew.BodyType] : 0) + 1;
+					randomHairType[newCrew.HairType] = (randomHairType.ContainsKey(newCrew.HairType) ? randomHairType[newCrew.HairType] : 0) + 1;
+					randomEyeType[newCrew.EyeType] = (randomEyeType.ContainsKey(newCrew.EyeType) ? randomEyeType[newCrew.EyeType] : 0) + 1;
+					randomEyeColor[newCrew.EyeColor] = (randomEyeColor.ContainsKey(newCrew.EyeColor) ? randomEyeColor[newCrew.EyeColor] : 0) + 1;
+					randomEyebrowType[newCrew.EyebrowType] = (randomEyebrowType.ContainsKey(newCrew.EyebrowType) ? randomEyebrowType[newCrew.EyebrowType] : 0) + 1;
+					randomNoseType[newCrew.NoseType] = (randomNoseType.ContainsKey(newCrew.NoseType) ? randomNoseType[newCrew.NoseType] : 0) + 1;
+					randomMouthType[newCrew.MouthType] = (randomMouthType.ContainsKey(newCrew.MouthType) ? randomMouthType[newCrew.MouthType] : 0) + 1;
+					randomIsMale[newCrew.IsMale] = (randomIsMale.ContainsKey(newCrew.IsMale) ? randomIsMale[newCrew.IsMale] : 0) + 1;
+					randomMouthColor[newCrew.MouthColor] = (randomMouthColor.ContainsKey(newCrew.MouthColor) ? randomMouthColor[newCrew.MouthColor] : 0) + 1;
+				}
 			}
-			var randomCrewNames = randomCrew.Select(c => c.Name).ToList();
-			var randomCrewAge = randomCrew.Select(c => c.Age).ToList();
-			var randomCrewBody = randomCrew.Select(c => c.Skills[CrewMemberSkill.Body]).ToList();
-			var randomCrewPerception = randomCrew.Select(c => c.Skills[CrewMemberSkill.Perception]).ToList();
-			var randomCrewWisdom = randomCrew.Select(c => c.Skills[CrewMemberSkill.Wisdom]).ToList();
+			randomCrewFirst = randomCrewFirst.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
+			randomCrewLast = randomCrewLast.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
+			randomCrewAge = randomCrewAge.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
+			randomCrewBody = randomCrewBody.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
+			randomCrewPerception = randomCrewPerception.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
+			randomCrewWisdom = randomCrewWisdom.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
+			randomBodyType = randomBodyType.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
+			randomHairType = randomHairType.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
+			randomEyeType = randomEyeType.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
+			randomEyeColor = randomEyeColor.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
+			randomEyebrowType = randomEyebrowType.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
+			randomNoseType = randomNoseType.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
+			randomMouthType = randomMouthType.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
+			randomIsMale = randomIsMale.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
+			randomMouthColor = randomMouthColor.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
 		}
 
 		public List<CrewMember> CreateInitialCrew(ConfigStore config)
