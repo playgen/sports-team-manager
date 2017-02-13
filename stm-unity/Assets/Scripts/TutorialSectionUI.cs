@@ -100,7 +100,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 				}
 			}
 		}
-		SetUp();
+		Invoke("SetUp", 0f);
 	}
 
 	protected override void OnDisable()
@@ -200,15 +200,28 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 			GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = false;
 		}
 		var speechBubble = transform.Find("Tutorial Helper/Image");
-		LayoutRebuilder.ForceRebuildLayoutImmediate(_tutorialText.rectTransform);
 		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)speechBubble);
-		speechBubble.GetComponent<LayoutGroup>().padding.bottom = (int)(((RectTransform)speechBubble).sizeDelta.y * 0.25f) + 16;
-		var buttons = transform.Find("Tutorial Helper/Buttons");
-		((RectTransform)buttons).anchoredPosition = new Vector2(0, speechBubble.GetComponent<LayoutGroup>().padding.bottom);
+		Invoke("PaddingSetUp", 0f);
 		if (_wipeTriggered)
 		{
 			_triggeredObjects.Clear();
 		}
+	}
+
+	private void PaddingSetUp()
+	{
+		var speechBubble = transform.Find("Tutorial Helper/Image");
+		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)speechBubble);
+		speechBubble.GetComponent<LayoutGroup>().padding.bottom = (int)(((RectTransform)speechBubble).sizeDelta.y * 0.25f) + 16;
+		Invoke("ButtonSetUp", 0f);
+	}
+
+	private void ButtonSetUp()
+	{
+		var speechBubble = transform.Find("Tutorial Helper/Image");
+		var buttons = transform.Find("Tutorial Helper/Buttons");
+		speechBubble.GetComponent<LayoutGroup>().padding.bottom = (int)(((RectTransform)speechBubble).sizeDelta.y * 0.25f) + 16;
+		((RectTransform)buttons).anchoredPosition = new Vector2(0, (int)(((RectTransform)speechBubble).sizeDelta.y * 0.25f) + 16);
 	}
 
 	public override void OnNext(KeyValueMessage message)

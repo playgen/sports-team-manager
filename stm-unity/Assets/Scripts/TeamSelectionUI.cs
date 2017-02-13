@@ -386,8 +386,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			if (mistakes.Count <= i || string.IsNullOrEmpty(mistakes[i]))
 			{
 				mistakeObject.SetActive(false);
-				mistakeObject.GetComponent<HoverObject>().SetHoverText(string.Empty, _hoverPopUp);
-				mistakeObject.GetComponent<HoverObject>().OnPointerClick(null);
+				_hoverPopUp.DisplayHoverNoDelay(string.Empty);
 				continue;
 			}
 			mistakeObject.SetActive(true);
