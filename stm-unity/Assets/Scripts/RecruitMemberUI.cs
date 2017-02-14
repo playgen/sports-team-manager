@@ -343,7 +343,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	private void DoBestFit()
 	{
 		_recruitUI.Select(r => r.transform.Find("Name").gameObject).BestFit();
-		_recruitUI.Select(r => r.transform.Find("Dialogue Box/Dialogue").gameObject).BestFit();
+		_recruitUI.Select(r => r.transform.Find("Dialogue Box/Dialogue").gameObject).BestFit(false);
 		var questionList = _questionButtons.Select(q => q.gameObject).ToList();
 		questionList.Add(transform.Find("Close").gameObject);
 		questionList.BestFit();
