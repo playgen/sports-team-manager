@@ -572,7 +572,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			var randomMouthType = new Dictionary<string, int>();
 			var randomIsMale = new Dictionary<bool, int>();
 			var randomMouthColor = new Dictionary<string, int>();
-			for (var i = 0; i < _testCount; i++)
+			for (var i = 0; i < _testCount * 10; i++)
 			{
 				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Random Test", new byte[] { 0, 0, 0 }, new byte[] { 0, 0, 0 }, "Player Manager", false, "null");
 				foreach (var crewMember in gameManager.Team.CrewMembers.Concat(gameManager.Team.Recruits).ToList())

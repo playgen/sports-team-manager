@@ -612,11 +612,14 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		SUGARManager.GameData.Send("Current Crew Size", _teamSelection.GetTeam().CrewMembers.Count);
 		var currentBoat = _teamSelection.ConfirmLineUp(offset);
 		ResetScrollbar();
-		var oldLayout = currentBoat.Positions;
-		var newLayout = _teamSelection.GetTeam().Boat.Positions;
-		if (newLayout.Count > 0 && !oldLayout.SequenceEqual(newLayout))
+		if (!_teamSelection.TutorialInProgress())
 		{
-			DisplayPromotionPopUp(oldLayout, newLayout);
+			var oldLayout = currentBoat.Positions;
+			var newLayout = _teamSelection.GetTeam().Boat.Positions;
+			if (newLayout.Count > 0 && !oldLayout.SequenceEqual(newLayout))
+			{
+				DisplayPromotionPopUp(oldLayout, newLayout);
+			}
 		}
 		GetResult(_teamSelection.GetStage() - 1 == 0, currentBoat, offset, _raceButton.GetComponentInChildren<Text>(), true);
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewConfirm", "CrewConfirmed", AlternativeTracker.Alternative.Menu));

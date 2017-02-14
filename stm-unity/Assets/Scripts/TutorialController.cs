@@ -62,7 +62,8 @@ public class TutorialController : MonoBehaviour
 			var uniqueTriggers = bool.Parse(parsedAsset[i]["Unique Triggers"].RemoveJSONNodeChars());
 			var wipeTriggers = bool.Parse(parsedAsset[i]["Wipe Triggered Objects"].RemoveJSONNodeChars());
 			var saveToSection = int.Parse(parsedAsset[i]["Save Progress"].RemoveJSONNodeChars());
-			section.Construct(textDict, objectHightlight, reversed, triggers, triggerCount, uniqueTriggers, wipeTriggers, saveToSection, blacklistNames);
+			var customAttributes = parsedAsset[i]["Custom Attributes"].RemoveJSONNodeChars().Split('\n').ToList();
+			section.Construct(textDict, objectHightlight, reversed, triggers, triggerCount, uniqueTriggers, wipeTriggers, saveToSection, blacklistNames, customAttributes);
 			tutorialSection.name = _tutorialSectionPrefab.name;
 		}
 		foreach (Transform child in transform)
@@ -107,6 +108,11 @@ public class TutorialController : MonoBehaviour
 		_gameManager.SaveTutorialProgress(0, true);
 		gameObject.SetActive(false);
 		_tutorialQuitButton.SetActive(false);
+	}
+
+	public void CustomAttributes(Dictionary<string, string> attributes)
+	{
+		_gameManager.SetCustomTutorialAttributes(attributes);
 	}
 }
 

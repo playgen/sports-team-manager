@@ -47,12 +47,14 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	private int _saveNextSection;
 	[SerializeField]
 	private List<string> _blacklistButtons;
+	[SerializeField]
+	private List<string> _customAttributes;
 	public int SaveNextSection
 	{
 		get { return _saveNextSection; }
 	}
 
-	public void Construct(Dictionary<Language, string[]> text, int highlightTrigger, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered, int saveSection, List<string> blacklist)
+	public void Construct(Dictionary<Language, string[]> text, int highlightTrigger, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered, int saveSection, List<string> blacklist, List<string> attributes)
 	{
 		_sectionTextHolder = new List<LanguageKeyValuePair>();
 		foreach (var kvp in text)
@@ -67,17 +69,15 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		_wipeTriggered = wipeTriggered;
 		_saveNextSection = saveSection;
 		_blacklistButtons = blacklist;
-	}
-
-	private void Start()
-	{
-		_tutorial = GetComponentInParent<TutorialController>();
+		_customAttributes = attributes;
 	}
 
 	protected override void OnEnable()
 	{
 		base.OnEnable();
+		_tutorial = GetComponentInParent<TutorialController>();
 		Localization.LanguageChange += OnLanguageChange;
+		BestFit.ResolutionChange += SetUp;
 		_sectionText = new Dictionary<Language, string[]>();
 		_sectionTextHolder.ForEach(st => _sectionText.Add(st.Key, st.Value));
 		_menuHighlighted = (RectTransform)transform.Find("Menu Highlighted");
@@ -100,6 +100,8 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 				}
 			}
 		}
+		var attributeDict = _customAttributes.Select(a => new KeyValuePair<string, string>(a.Split('=')[0], a.Split('=')[1])).ToDictionary(c => c.Key, c => c.Value);
+		_tutorial.CustomAttributes(attributeDict);
 		Invoke("SetUp", 0f);
 	}
 
@@ -107,6 +109,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	{
 		base.OnDisable();
 		Localization.LanguageChange -= OnLanguageChange;
+		BestFit.ResolutionChange -= SetUp;
 	}
 
 	public void Back()
