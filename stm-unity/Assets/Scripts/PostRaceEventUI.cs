@@ -76,12 +76,15 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			_canvasGroup.blocksRaycasts = true;
 			//set current NPC dialogue
 			ResetQuestions();
-			DoBestFit();
 			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "PostRaceEvent", "PostRaceEventOpen", AlternativeTracker.Alternative.Dialog));
 			SUGARManager.GameData.Send("Post Race Event Start", current[0].Dialogue.NextState);
 		}
 		else
 		{
+			for (int i = 0; i < _postRacePeople.Length; i++)
+			{
+				_postRacePeople[i].EnableQuestions();
+			}
 			Hide(true);
 		}
 	}
@@ -185,11 +188,31 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			}
 		}
 		ResetQuestions();
-		DoBestFit();
 	}
 
 	private void DoBestFit()
 	{
-		GetComponentsInChildren<PostRacePersonUI>().SelectMany(c => c.GetComponentsInChildren<Text>().Where(t => t.transform.parent != c.transform)).BestFit();
+		var peopleLayout = _postRacePeople.Select(p => p.GetComponentInChildren<LayoutGroup>()).ToList();
+		peopleLayout.ForEach(p => p.GetComponentsInChildren<Text>().ToList().ForEach(t => t.fontSize = 15));
+		peopleLayout.ForEach(p => LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)p.transform));
+		Invoke("BestFitCheckDelay", 0f);
+	}
+
+	private void BestFitCheckDelay()
+	{
+		var peopleLayout = _postRacePeople.Select(p => p.GetComponentInChildren<LayoutGroup>()).ToList();
+		peopleLayout.ForEach(p => LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)p.transform));
+		Invoke("BestFitCheck", 0f);
+	}
+
+	private void BestFitCheck()
+	{
+		var peopleLayout = _postRacePeople.Select(p => p.GetComponentInChildren<LayoutGroup>()).ToList();
+		if (peopleLayout.Any(p => ((RectTransform)p.transform).sizeDelta.y > 0))
+		{
+			peopleLayout.ForEach(p => p.GetComponentsInChildren<Text>().ToList().ForEach(t => t.fontSize--));
+			peopleLayout.ForEach(p => LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)p.transform));
+			Invoke("BestFitCheckDelay", 0f);
+		}
 	}
 }

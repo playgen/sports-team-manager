@@ -103,6 +103,14 @@ public class PostRacePersonUI : MonoBehaviour
 		}
 	}
 
+	public void EnableQuestions()
+	{
+		for (var i = 0; i < _questions.Length; i++)
+		{
+			_questions[i].SetActive(true);
+		}
+	}
+
 	public bool ActiveQuestions()
 	{
 		return _questions[0].activeInHierarchy;
