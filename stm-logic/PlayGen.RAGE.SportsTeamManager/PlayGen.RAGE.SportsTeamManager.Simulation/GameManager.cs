@@ -143,6 +143,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			ActionAllowance = (int)config.ConfigValues[ConfigKeys.DefaultActionAllowance] + ((int)config.ConfigValues[ConfigKeys.ActionAllowancePerPosition] * positionCount);
 			CrewEditAllowance = (int)config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition] * positionCount;
 			RaceSessionLength = showTutorial ? (int)config.ConfigValues[ConfigKeys.TutorialRaceSessionLength] : (int)config.ConfigValues[ConfigKeys.RaceSessionLength];
+			CurrentRaceSession = 0;
 			ShowTutorial = showTutorial;
 			TutorialStage = 0;
 			//create manager files and store game attribute details

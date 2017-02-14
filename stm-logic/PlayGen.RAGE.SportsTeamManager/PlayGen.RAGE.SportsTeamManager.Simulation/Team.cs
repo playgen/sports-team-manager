@@ -89,7 +89,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					partialFailCount++;
 					var splitName = cm.Name.Split(new [] { ' ' }, 2);
-					if (splitName.Any(n => crewMembers.Keys.Any(k => k.Contains(n)) || RetiredCrew.Keys.Any(k => k.Contains(n)) || Recruits.Keys.Any(k => k.Contains(n))) || cm.Name == Manager.Name)
+					var currentNames = crewMembers.Keys.Concat(RetiredCrew.Keys).Concat(Recruits.Keys).ToList();
+					var firstNames = currentNames.Select(c => c.Split(new[] { ' ' }, 2)[0]).ToList();
+					var lastNames = currentNames.Select(c => c.Split(new[] { ' ' }, 2)[1]).ToList();
+					if (firstNames.Contains(splitName[0]) || lastNames.Contains(splitName[1]) || cm.Name == Manager.Name)
 					{
 						cm.Name = cm.SelectNewName();
 					}
