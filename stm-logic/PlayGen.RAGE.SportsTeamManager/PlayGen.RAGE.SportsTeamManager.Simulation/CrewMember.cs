@@ -301,6 +301,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var mood = 0;
 			if (RolePlayCharacter != null)
 			{
+				RolePlayCharacter.Decide();
 				mood = (int)Math.Round(RolePlayCharacter.Mood);
 			}
 			return mood;
@@ -409,7 +410,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					break;
 			}
 			SaveStatus();
-			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, style.ToName()).ToList();
+			var dialogueOptions = iat.GetDialogueActionsByState(IATConsts.AGENT, style).ToList();
 			if (dialogueOptions.Any())
 			{
 				reply.Insert(0, dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
@@ -427,23 +428,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			List<DialogueStateActionDTO> dialogueOptions;
 			if (Skills[skill] >= 9)
 			{
-				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "StrongAgree".ToName()).ToList();
+				dialogueOptions = iat.GetDialogueActionsByState(IATConsts.AGENT, "StrongAgree").ToList();
 			}
 			else if (Skills[skill] >= 7)
 			{
-				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Agree".ToName()).ToList();
+				dialogueOptions = iat.GetDialogueActionsByState(IATConsts.AGENT, "Agree").ToList();
 			}
 			else if (Skills[skill] >= 5)
 			{
-				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Neither".ToName()).ToList();
+				dialogueOptions = iat.GetDialogueActionsByState(IATConsts.AGENT, "Neither").ToList();
 			}
 			else if (Skills[skill] >= 3)
 			{
-				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "Disagree".ToName()).ToList();
+				dialogueOptions = iat.GetDialogueActionsByState(IATConsts.AGENT, "Disagree").ToList();
 			}
 			else
 			{
-				dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "StrongDisagree".ToName()).ToList();
+				dialogueOptions = iat.GetDialogueActionsByState(IATConsts.AGENT, "StrongDisagree").ToList();
 			}
 			return dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
 		}
@@ -463,11 +464,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					AddOrUpdateOpinion(team.Manager.Name, -3);
 					//send event on record that this happened
 					var eventString = "PostRace(NotPickedNotDone)";
-					var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
-					if (eventRpc != null)
-					{
-						RolePlayCharacter.ActionFinished(eventRpc);
-					}
+					RolePlayCharacter.Perceive(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
 				}
 				//set their belief to 'null'
 				UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "null");
@@ -485,11 +482,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						AddOrUpdateOpinion(team.Manager.Name, -3);
 						//send event on record that this happened
 						var eventString = "PostRace(PWNotDone)";
-						var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
-						if (eventRpc != null)
-						{
-							RolePlayCharacter.ActionFinished(eventRpc);
-						}
+						RolePlayCharacter.Perceive(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
 					}
 					//set their belief to 'null'
 					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), "null");
@@ -518,7 +511,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return null;
 			}
 			var nextState = selected.NextState;
-			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, nextState.ToName()).ToList();
+			var dialogueOptions = iat.GetDialogueActionsByState(IATConsts.AGENT, nextState).ToList();
 			//get dialogue
 			if (dialogueOptions.Any())
 			{
@@ -548,12 +541,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				eventString = string.Format(ev);
 			}
-			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
+			RolePlayCharacter.Perceive(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
 			//trigger different changes based off of what dialogue the player last picked
-			if (eventRpc != null)
-			{
-				RolePlayCharacter.ActionFinished(eventRpc);
-			}
 			switch (ev)
 			{
 				case "ExpectedPosition":
@@ -680,11 +669,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "Retired");
 			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,Status(Retired),{0})";
-			var eventRpc = RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, spacelessName) });
-			if (eventRpc != null)
-			{
-				RolePlayCharacter.ActionFinished(eventRpc);
-			}
+			RolePlayCharacter.Perceive(new[] { (Name)string.Format(eventBase, spacelessName) });
 			Avatar = new Avatar(this, false, true);
 			SaveStatus();
 		}

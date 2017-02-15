@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Linq;
+
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 
@@ -53,19 +55,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				fileName = noSpaceName;
 			}
 			//save files
-			ea.SaveConfigurationToFile(Path.Combine(storageLocation, fileName + ".ea"));
-			edm.SaveConfigurationToFile(Path.Combine(storageLocation, fileName + ".edm"));
-			si.SaveConfigurationToFile(Path.Combine(storageLocation, fileName + ".si"));
+			ea.SaveToFile(Path.Combine(storageLocation, fileName + ".ea"));
+			edm.SaveToFile(Path.Combine(storageLocation, fileName + ".edm"));
+			si.SaveToFile(Path.Combine(storageLocation, fileName + ".si"));
 			//add character to iat asset
-			rpc.SaveConfigurationToFile(Path.Combine(storageLocation, fileName + ".rpc"));
+			rpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
 			//assign asset files to RPC
 			rpc.EmotionalAppraisalAssetSource = fileName + ".ea";
 			rpc.EmotionalDecisionMakingSource = fileName + ".edm";
 			rpc.SocialImportanceAssetSource = fileName + ".si";
-			rpc.SaveConfigurationToFile(Path.Combine(storageLocation, fileName + ".rpc"));
-			iat.AddNewCharacterSource(new CharacterSourceDTO { Name = rpc.BodyName, Source = fileName + ".rpc" });
+			rpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
+			iat.AddNewCharacterSource(new CharacterSourceDTO { Source = rpc.AssetFilePath });
 			//store RPC locally
-			RolePlayCharacter = iat.InstantiateCharacterAsset(Name);
+			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(rpc.AssetFilePath);
+			RolePlayCharacter.LoadAssociatedAssets();
 		}
 
 		/// <summary>
@@ -89,7 +92,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void UpdateSingleBelief(string name, string value)
 		{
-			RolePlayCharacter.AddBelief(name, value);
+			var belief = EventHelper.PropertyChanged(name, value, Name.NoSpaces());
+			RolePlayCharacter.Perceive(new[] { belief });
+			RolePlayCharacter.ForgetEvent(RolePlayCharacter.EventRecords.Last().Id);
 		}
 
 		/// <summary>
@@ -105,7 +110,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void SaveStatus()
 		{
-			RolePlayCharacter.SaveConfigurationToFile();
+			RolePlayCharacter.Save();
 		}
 
 		/// <summary>

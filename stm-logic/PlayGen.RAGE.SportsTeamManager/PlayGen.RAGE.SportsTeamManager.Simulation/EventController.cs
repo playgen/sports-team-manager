@@ -27,7 +27,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			List<PostRaceEventState> dialogueOptions = new List<PostRaceEventState>();
 			foreach (var current in PostRaceEvents.First())
 			{
-				var dialogues = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, current.Dialogue.NextState.ToName()).ToList();
+				var dialogues = iat.GetDialogueActionsByState(IATConsts.PLAYER, current.Dialogue.NextState).ToList();
 				dialogues = dialogues.OrderBy(c => Guid.NewGuid()).ToList();
 				var events = dialogues.Select(d => new PostRaceEventState(current.CrewMember, d, current.Subjects)).ToList();
 				dialogueOptions.AddRange(events);
@@ -46,7 +46,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string[] GetEventStrings(string eventKey)
 		{
-			var dialogueOptions = iat.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, eventKey.ToName());
+			var dialogueOptions = iat.GetDialogueActionsByState(IATConsts.PLAYER, eventKey);
 			return dialogueOptions.Select(dia => dia.Utterance).ToArray();
 		}
 
@@ -252,7 +252,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal List<DialogueStateActionDTO> GetPossibleAgentDialogue(string eventName)
 		{
-			return iat.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, eventName.ToName()).OrderBy(c => Guid.NewGuid()).ToList();
+			return iat.GetDialogueActionsByState(IATConsts.AGENT, eventName).OrderBy(c => Guid.NewGuid()).ToList();
 		}
 
 		/// <summary>

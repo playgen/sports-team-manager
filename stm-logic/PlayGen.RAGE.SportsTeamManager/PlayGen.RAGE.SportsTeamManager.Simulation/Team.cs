@@ -148,7 +148,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//remove recruits from iat and randomly select to remove them from pool of available recruits
 			foreach (var member in Recruits)
 			{
-				iat.RemoveCharacters(new List<string> { member.Key });
+				iat.RemoveCharacters(new List<int> { iat.GetAllCharacterSources().First(c => c.Source == member.Value.RolePlayCharacter.AssetFilePath).Id });
 				if (StaticRandom.Int(0, 100) % (int)config.ConfigValues[ConfigKeys.RecruitChangeChance] != 0)
 				{
 					recuritsToRemove.Add(member.Key);
@@ -177,7 +177,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				recruit.Value.UpdateBeliefs("Recruit");
 				recruit.Value.Avatar = new Avatar(recruit.Value, false);
 			}
-			iat.SaveConfigurationToFile(iat.AssetFilePath);
+			iat.SaveToFile(iat.AssetFilePath);
 		}
 
 		/// <summary>
@@ -186,7 +186,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal void AddRecruit(CrewMember member)
 		{
 			//remove recruit from the current list of characters in the game
-			iat.RemoveCharacters(new List<string> { member.Name });
+			iat.RemoveCharacters(new List<int> { iat.GetAllCharacterSources().First(c => c.Source == member.RolePlayCharacter.AssetFilePath).Id });
 			//set up recruit as a 'proper' character in the game
 			member.CreateFile(iat, storageLocation);
 			member.Avatar.UpdateAvatarBeliefs(member);
@@ -203,7 +203,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			member.UpdateBeliefs("null");
 			member.SaveStatus();
 			Recruits.Remove(member.Name);
-			iat.SaveConfigurationToFile(iat.AssetFilePath);
+			iat.SaveToFile(iat.AssetFilePath);
 		}
 
 		/// <summary>
@@ -310,7 +310,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					newMember.UpdateBeliefs("null");
 					newMember.SaveStatus();
-					iat.SaveConfigurationToFile(iat.AssetFilePath);
+					iat.SaveToFile(iat.AssetFilePath);
 					//if the boat is under-staffed for the current boat size, this new CrewMember is not counted
 					if (!CanRemoveFromCrew())
 					{

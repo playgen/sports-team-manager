@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
+using RolePlayCharacter;
+
 using WellFormedNames;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
@@ -107,7 +110,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var combinedStorageLocation = Path.Combine(storageLocation, name);
 			Directory.CreateDirectory(combinedStorageLocation);
 			var iat = ConfigStore.IntegratedAuthoringTool;
-			var help = ConfigStore.HelpIntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "LearningPill".ToName()).ToList();
+			var help = ConfigStore.HelpIntegratedAuthoringTool.GetDialogueActionsByState(IATConsts.AGENT, "LearningPill").ToList();
 			eventController = new EventController(iat, help);
 			ValidateGameConfig();
 			//set up boat and team
@@ -118,7 +121,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Team.TeamColorsPrimary = new Color(teamColorsPrimary[0], teamColorsPrimary[1], teamColorsPrimary[2], 255);
 			Team.TeamColorsSecondary = new Color(teamColorsSecondary[0], teamColorsSecondary[1], teamColorsSecondary[2], 255);
 			iat.ScenarioName = name;
-			iat.SaveConfigurationToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
+			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
 			//create manager
 			var manager = new Person(null)
 			{
@@ -192,7 +195,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				member.UpdateBeliefs("null");
 				member.SaveStatus();
 			}
-			iat.SaveConfigurationToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
+			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
 			Team.CreateRecruits();
 			config.LoadAssets();
 
@@ -248,7 +251,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void LoadGame(string storageLocation, string boatName)
 		{
 			UnloadGame();
-			var help = ConfigStore.HelpIntegratedAuthoringTool.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, "LearningPill".ToName()).ToList();
+			var help = ConfigStore.HelpIntegratedAuthoringTool.GetDialogueActionsByState(IATConsts.AGENT, "LearningPill").ToList();
 			//get the iat file and all characters for this game
 			var combinedStorageLocation = Path.Combine(storageLocation, boatName);
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile(Path.Combine(combinedStorageLocation, boatName + ".iat"));
@@ -260,8 +263,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var nameList = new List<string>();
 			foreach (var character in characterList)
 			{
-				var rpc = iat.InstantiateCharacterAsset(character.Name);
-				//var rpc = RolePlayCharacterAsset.LoadFromFile(character.Source);
+				var rpc = RolePlayCharacterAsset.LoadFromFile(character.Source);
+				rpc.LoadAssociatedAssets();
 				var position = rpc.GetBeliefValue(NPCBeliefs.Position.GetDescription());
 				//if this character is the manager, load the game details from this file and set this character as the manager
 				if (position == "Manager")
@@ -482,11 +485,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crew += "," + CurrentRaceSession;
 			//send event with string of information within
 			var eventString = string.Format(eventStringUnformatted, boatType, crew);
-			var eventRpc = manager.RolePlayCharacter.PerceptionActionLoop(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
-			if (eventRpc != null)
-			{
-				manager.RolePlayCharacter.ActionFinished(eventRpc);
-			}
+			manager.RolePlayCharacter.Perceive(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
 			manager.SaveStatus();
 			//store saved details in new local boat copy
 			var lastBoat = new Boat(config, boat.Type);
