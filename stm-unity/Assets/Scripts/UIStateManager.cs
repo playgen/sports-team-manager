@@ -27,9 +27,11 @@ public class UIStateManager : ObservableMonoBehaviour {
 	[SerializeField]
 	private GameObject _topDetails;
 	[SerializeField]
-	private GameObject _sideMenu;
-	[SerializeField]
 	private GameObject _teamManagement;
+	[SerializeField]
+	private GameObject _questionnaire;
+	[SerializeField]
+	private GameObject _feedback;
 	private static bool _loaded;
 
 	void Start()
@@ -135,16 +137,26 @@ public class UIStateManager : ObservableMonoBehaviour {
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Initialized", "StartSession", CompletableTracker.Completable.Session));
 		go.SetActive(false);
 		_topDetails.SetActive(true);
-		_sideMenu.SetActive(true);
-		GoToTeamManagement();
+		_teamManagement.SetActive(true);
+		_questionnaire.SetActive(false);
+		_feedback.SetActive(false);
+		((ScreenSideUI)FindObjectOfType(typeof(ScreenSideUI))).ChangeSelected(0);
 	}
 
-	/// <summary>
-	/// Hide other screens, display team management screen
-	/// </summary>
-	public void GoToTeamManagement()
+	public void GoToQuestionnaire()
 	{
-		_teamManagement.SetActive(true);
+		_topDetails.SetActive(false);
+		_teamManagement.SetActive(false);
+		_questionnaire.SetActive(true);
+		_feedback.SetActive(false);
+	}
+
+	public void GoToFeedback()
+	{
+		_topDetails.SetActive(false);
+		_teamManagement.SetActive(false);
+		_questionnaire.SetActive(false);
+		_feedback.SetActive(true);
 		((ScreenSideUI)FindObjectOfType(typeof(ScreenSideUI))).ChangeSelected(0);
 	}
 

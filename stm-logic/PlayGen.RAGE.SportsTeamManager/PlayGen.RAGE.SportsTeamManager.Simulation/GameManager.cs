@@ -705,5 +705,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			Team.Manager.SaveStatus();
 		}
+
+		public Dictionary<string, int> GatherManagementStyles()
+		{
+			var managerBeliefs = Team.Manager.RolePlayCharacter.GetAllBeliefs();
+			managerBeliefs = managerBeliefs.Where(b => b.Name.StartsWith("Meaning")).ToList();
+			var managementStyles = managerBeliefs.Select(b => new KeyValuePair<string, int>(b.Name.Split('(', ')')[1], int.Parse(b.Value))).ToDictionary(b => b.Key, b => b.Value);
+			return managementStyles;
+		}
 	}
 }

@@ -51,6 +51,8 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	[SerializeField]
 	private Button _skipToRaceButton;
 	[SerializeField]
+	private Button _feedbackButton;
+	[SerializeField]
 	private GameObject _recruitPopUp;
 	private readonly List<GameObject> _currentCrewButtons = new List<GameObject>();
 	private readonly List<Button> _recruitButtons = new List<Button>();
@@ -229,10 +231,14 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		{
 			stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
 			stageIcon.gameObject.SetActive(true);
+			_feedbackButton.gameObject.SetActive(false);
 		}
 		else
 		{
 			stageIcon.gameObject.SetActive(false);
+			_feedbackButton.onClick.RemoveAllListeners();
+			_feedbackButton.onClick.AddListener(TriggerFeedback);
+			_feedbackButton.gameObject.SetActive(true);
 		}
 		_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = isRace || team.Boat.Positions.Count == 0 ? string.Empty : _teamSelection.GetStage().ToString();
 		_positionsEmpty = team.Boat.Positions.Count;
@@ -945,5 +951,10 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				boat.GetComponent<LayoutElement>().preferredHeight = Mathf.Abs(currentPosition) * 0.2f;
 			}
 		}
+	}
+
+	private void TriggerFeedback()
+	{
+		((UIStateManager)FindObjectOfType(typeof(UIStateManager))).GoToFeedback();
 	}
 }
