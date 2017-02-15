@@ -115,6 +115,10 @@ public class UIStateManager : ObservableMonoBehaviour {
 	public void BackToMenu(GameObject go)
 	{
 		go.SetActive(false);
+		_topDetails.SetActive(false);
+		_teamManagement.SetActive(false);
+		_questionnaire.SetActive(false);
+		_feedback.SetActive(false);
 		_mainMenu.SetActive(true);
 		DoBestFit();
 		var gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
