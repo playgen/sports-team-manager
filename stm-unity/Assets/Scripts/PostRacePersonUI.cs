@@ -107,6 +107,7 @@ public class PostRacePersonUI : MonoBehaviour
 	{
 		for (var i = 0; i < _questions.Length; i++)
 		{
+			_questions[i].GetComponentInChildren<Text>().text = string.Empty;
 			_questions[i].SetActive(true);
 		}
 	}

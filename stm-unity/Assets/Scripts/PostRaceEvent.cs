@@ -38,8 +38,8 @@ public class PostRaceEvent : ObservableMonoBehaviour
 		if (_gameManager.EventController.PostRaceEvents.Count > 0)
 		{
 			_currentEvent = _gameManager.EventController.PostRaceEvents.First();
-			gameObject.SetActive(true);
 		}
+		gameObject.SetActive(true);
 	}
 
 	public void EnableCheck()

@@ -46,6 +46,11 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	{
 		Localization.LanguageChange -= OnLanguageChange;
 		BestFit.ResolutionChange -= DoBestFit;
+		for (int i = 0; i < _postRacePeople.Length; i++)
+		{
+			_postRacePeople[i].EnableQuestions();
+			DoBestFit();
+		}
 		if (_postRaceEvent.transform.GetSiblingIndex() == _postRaceEvent.transform.parent.childCount - 1)
 		{
 			_popUpBlocker.transform.SetAsLastSibling();
@@ -81,10 +86,6 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		}
 		else
 		{
-			for (int i = 0; i < _postRacePeople.Length; i++)
-			{
-				_postRacePeople[i].EnableQuestions();
-			}
 			Hide(true);
 		}
 	}
@@ -214,5 +215,6 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			peopleLayout.ForEach(p => LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)p.transform));
 			Invoke("BestFitCheckDelay", 0f);
 		}
+		peopleLayout.ForEach(p => LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)p.transform));
 	}
 }
