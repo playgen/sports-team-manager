@@ -18,6 +18,8 @@ public class FeedbackUI : MonoBehaviour {
 	private GameObject _selectionPrefab;
 	[SerializeField]
 	private GameObject _descriptionPopUp;
+	[SerializeField]
+	private Text _finalResultText;
 
 	private void Awake()
 	{
@@ -26,6 +28,7 @@ public class FeedbackUI : MonoBehaviour {
 
 	private void OnEnable()
 	{
+		Localization.LanguageChange += OnLanguageChange;
 		_pageNumber = 0;
 		foreach (var page in _pages)
 		{
@@ -33,6 +36,12 @@ public class FeedbackUI : MonoBehaviour {
 		}
 		ChangePage(0);
 		DrawGraph();
+		SetPrevalentStyleText();
+	}
+
+	private void OnDisable()
+	{
+		Localization.LanguageChange -= OnLanguageChange;
 	}
 
 	public void ChangePage(int amount)
@@ -58,31 +67,57 @@ public class FeedbackUI : MonoBehaviour {
 
 		var styles = _feedback.GatherManagementStyles();
 		var total = styles.Values.ToList().Sum();
+		var orange = new Color(1, 0.5f, 0);
+		var blue = new Color(0, 1, 1);
 		foreach (var style in styles)
 		{
 			var percentage = (float)style.Value / total;
 			var styleObj = Instantiate(_selectionPrefab, _selectionGraph.transform, false);
 			styleObj.transform.Find("Style").GetComponent<Text>().text = Localization.Get(style.Key);
 			styleObj.transform.Find("Style").GetComponent<Localization>().Key = style.Key;
-			styleObj.transform.Find("Amount").GetComponent<Image>().fillAmount = (float)style.Value / total;
-			if (percentage >= 0.8f)
+			styleObj.transform.Find("Amount").GetComponent<Image>().fillAmount = percentage;
+			
+			if (percentage >= 0.6f)
 			{
 				styleObj.transform.Find("Text Backer/Text").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_High");
 				styleObj.transform.Find("Text Backer/Text").GetComponent<Localization>().Key = style.Key + "_Questions_High";
-				styleObj.transform.Find("Text Backer").GetComponent<Image>().color = new Color(1, 0.5f, 0);
+				styleObj.transform.Find("Text Backer").GetComponent<Image>().color = orange;
+				styleObj.transform.Find("Amount").GetComponent<Image>().color = orange;
 				styleObj.transform.Find("Text Backer").gameObject.SetActive(true);
 			}
 			else if (percentage <= 0.2f)
 			{
 				styleObj.transform.Find("Text Backer/Text").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_Low");
 				styleObj.transform.Find("Text Backer/Text").GetComponent<Localization>().Key = style.Key + "_Questions_Low";
-				styleObj.transform.Find("Text Backer").GetComponent<Image>().color = new Color(0, 1, 1);
+				styleObj.transform.Find("Text Backer").GetComponent<Image>().color = blue;
+				styleObj.transform.Find("Amount").GetComponent<Image>().color = blue;
 				styleObj.transform.Find("Text Backer").gameObject.SetActive(true);
 			}
 			else
 			{
 				styleObj.transform.Find("Text Backer").gameObject.SetActive(false);
+				styleObj.transform.Find("Amount").GetComponent<Image>().color = Color.Lerp(blue, orange, (percentage - 0.2f) * (0.4f/1f));
 			}
 		}
+	}
+
+	private void SetPrevalentStyleText()
+	{
+		var style = _feedback.GetPrevalentLeadershipStyle();
+		var styleString = string.Empty;
+		foreach (var s in style)
+		{
+			styleString += Localization.Get(s);
+			if (s != style.Last())
+			{
+				styleString += "\n";
+			}
+		}
+		_finalResultText.text = styleString;
+	}
+
+	private void OnLanguageChange()
+	{
+		SetPrevalentStyleText();
 	}
 }

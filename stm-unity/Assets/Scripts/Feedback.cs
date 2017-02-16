@@ -17,4 +17,13 @@ public class Feedback : MonoBehaviour {
 		}
 		return _gameManager.GatherManagementStyles();
 	}
+
+	public string[] GetPrevalentLeadershipStyle()
+	{
+		if (_gameManager == null)
+		{
+			_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
+		}
+		return _gameManager.GetPrevalentLeadershipStyle();
+	}
 }

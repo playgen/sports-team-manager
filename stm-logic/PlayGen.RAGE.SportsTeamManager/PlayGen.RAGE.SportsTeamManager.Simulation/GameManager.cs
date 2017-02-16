@@ -722,5 +722,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			managementStyles = managementStyles.OrderByDescending(m => m.Value).ToDictionary(b => b.Key, b => b.Value);
 			return managementStyles;
 		}
+
+		public string[] GetPrevalentLeadershipStyle()
+		{
+			var managerBeliefs = Team.Manager.RolePlayCharacter.GetAllBeliefs();
+			managerBeliefs = managerBeliefs.Where(b => b.Name.StartsWith("Style")).ToList();
+			var managementStyles = managerBeliefs.Select(b => new KeyValuePair<string, int>(b.Name.Split('(', ')')[1], int.Parse(b.Value))).ToDictionary(b => b.Key, b => b.Value);
+			managementStyles = managementStyles.OrderByDescending(m => m.Value).ToDictionary(b => b.Key, b => b.Value);
+			managementStyles = managementStyles.Where(m => m.Value == managementStyles.Values.Max()).ToDictionary(b => b.Key, b => b.Value);
+			return managementStyles.Keys.ToArray();
+		}
 	}
 }
