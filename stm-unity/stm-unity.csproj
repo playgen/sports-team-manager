@@ -160,6 +160,8 @@
     <Compile Include="Assets\Scripts\BestFit.cs" />
     <Compile Include="Assets\Scripts\CrewMemberUI.cs" />
     <Compile Include="Assets\Scripts\EscapeAction.cs" />
+    <Compile Include="Assets\Scripts\Feedback.cs" />
+    <Compile Include="Assets\Scripts\FeedbackUI.cs" />
     <Compile Include="Assets\Scripts\GameManagerObject.cs" />
     <Compile Include="Assets\Scripts\HoverObject.cs" />
     <Compile Include="Assets\Scripts\HoverPopUpUI.cs" />

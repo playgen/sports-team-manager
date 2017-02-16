@@ -51,6 +51,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
+		/// Get all player dialogue conflict management styles
+		/// </summary>
+		public string[] GetPlayerEventStyles()
+		{
+			return iat.GetDialogueActionsBySpeaker(IATConsts.PLAYER).Where(s => s.NextState != "-").SelectMany(s => s.Meaning).Distinct().ToArray();
+		}
+
+		/// <summary>
 		/// Get help dialogue from those available
 		/// </summary>
 		public string GetHelpText(string key)

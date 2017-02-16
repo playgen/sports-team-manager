@@ -161,7 +161,6 @@ public class UIStateManager : ObservableMonoBehaviour {
 		_teamManagement.SetActive(false);
 		_questionnaire.SetActive(false);
 		_feedback.SetActive(true);
-		((ScreenSideUI)FindObjectOfType(typeof(ScreenSideUI))).ChangeSelected(0);
 	}
 
 	public void ShowAchievements()

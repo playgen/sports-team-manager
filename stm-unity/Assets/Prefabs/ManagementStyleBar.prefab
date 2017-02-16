@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 224559041821735860}
   - component: {fileID: 222802879459738056}
   - component: {fileID: 114213515890788928}
+  - component: {fileID: 114621694578819286}
   m_Layer: 5
   m_Name: Style
   m_TagString: Untagged
@@ -139,6 +140,7 @@ GameObject:
   - component: {fileID: 224654249950072860}
   - component: {fileID: 222194256372242802}
   - component: {fileID: 114511835869032920}
+  - component: {fileID: 114761189561818280}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -309,6 +311,34 @@ MonoBehaviour:
     che potenzialmente avresti?\r\n\nHai difficolt\xE0 a prendere una posizione ferma
     anche quando ti rendi conto che \xE8 necessaria? Ti capita di vacillare perch\xE9
     ti preoccupi per le emozioni e le preoccupazioni degli altri? \r\n"
+--- !u!114 &114621694578819286
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1480357716267252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88e0378b041f6944a88d60a575d8f3b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: 
+  ToUpper: 0
+  LanguageOverride: 0
+--- !u!114 &114761189561818280
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1986928784270282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88e0378b041f6944a88d60a575d8f3b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: 
+  ToUpper: 0
+  LanguageOverride: 0
 --- !u!114 &114831840706305526
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -329,7 +359,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 3a4c416d080226c4a89132d383c263bd, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0

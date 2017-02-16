@@ -6,28 +6,724 @@
 			"Description": null,
 			"PlayerDialogues": [
 				{
-					"CurrentState": "RecruitWisdom",
-					"NextState": "-",
-					"Meaning": ["RecruitWisdom"],
-					"Style": ["RecruitWisdom"],
-					"Utterance": "RecruitWisdom",
-					"UtteranceId": "9A-91-5E-1B-2F-20-62-09-88-4C-0C-A1-41-04-D6-F5"
+					"CurrentState": "IPC",
+					"NextState": "IPCAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["-"],
+					"Utterance": "IPCAccommodating",
+					"UtteranceId": "D0-86-68-1D-F2-DA-B6-D8-F0-3A-F3-C8-FE-9C-97-4E"
 				}, 
 				{
-					"CurrentState": "RecruitWillpower",
-					"NextState": "-",
-					"Meaning": ["RecruitWillpower"],
-					"Style": ["RecruitWillpower"],
-					"Utterance": "RecruitWillpower",
-					"UtteranceId": "81-29-68-DC-37-82-92-72-0D-9E-41-C8-64-78-27-43"
+					"CurrentState": "IPC",
+					"NextState": "IPCCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "IPCCollaborating",
+					"UtteranceId": "69-69-C9-54-8E-95-BB-38-03-71-B4-46-65-0B-64-2B"
 				}, 
 				{
-					"CurrentState": "OpinionRevealPositive",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealPositive"],
-					"Style": ["OpinionRevealPositive"],
-					"Utterance": "OpinionRevealPositiveQuestion",
-					"UtteranceId": "67-45-F6-31-D3-4A-FF-39-F9-5B-3D-0F-A7-DF-0F-74"
+					"CurrentState": "IPCNP52",
+					"NextState": "IPCAccommodatingAvoidingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "IPCAccommodatingAvoidingAvoiding",
+					"UtteranceId": "E9-06-7B-A9-C4-B7-07-68-90-4D-04-3A-E0-0C-A6-1B"
+				}, 
+				{
+					"CurrentState": "IPCNP52",
+					"NextState": "IPCAccommodatingAvoidingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCAccommodatingAvoidingAccommodating",
+					"UtteranceId": "C4-18-72-52-A7-B5-18-71-60-5F-3C-7B-76-F2-99-FE"
+				}, 
+				{
+					"CurrentState": "IPCNP11",
+					"NextState": "IPCAvoidingAccommodatingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "IPCAvoidingAccommodatingAvoiding",
+					"UtteranceId": "97-7E-13-C6-77-65-20-6C-06-40-02-3E-F5-1B-F1-49"
+				}, 
+				{
+					"CurrentState": "IPCNP1",
+					"NextState": "IPCAvoidingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["-"],
+					"Utterance": "IPCAvoidingAccommodating",
+					"UtteranceId": "08-08-27-74-F8-6F-96-45-92-F4-1D-F3-3D-61-CA-CE"
+				}, 
+				{
+					"CurrentState": "IPCNP1",
+					"NextState": "IPCAvoidingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "IPCAvoidingAvoiding",
+					"UtteranceId": "89-73-4F-AD-EC-AA-62-6A-06-68-8F-11-8A-2D-FE-3C"
+				}, 
+				{
+					"CurrentState": "IPC",
+					"NextState": "IPCAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["-"],
+					"Utterance": "IPCAvoiding",
+					"UtteranceId": "E1-E6-71-F6-E2-DB-DD-FE-5C-AC-20-FB-6C-34-D5-65"
+				}, 
+				{
+					"CurrentState": "IPC",
+					"NextState": "IPCCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["-"],
+					"Utterance": "IPCCompeting",
+					"UtteranceId": "C4-EE-34-DB-11-76-91-9B-18-50-95-1B-71-D6-27-58"
+				}, 
+				{
+					"CurrentState": "IPCNP11",
+					"NextState": "IPCAvoidingAccommodatingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCAvoidingAccommodatingAccommodating",
+					"UtteranceId": "32-26-E5-CC-E7-FA-1D-BB-EB-0E-67-5D-DD-5D-22-3D"
+				}, 
+				{
+					"CurrentState": "NotPickedNP4",
+					"NextState": "NotPickedCollaboratingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "NotPickedCollaboratingAccommodating",
+					"UtteranceId": "D8-51-41-E6-47-64-87-60-88-F1-B8-C3-F8-20-87-08"
+				}, 
+				{
+					"CurrentState": "NotPickedNP41",
+					"NextState": "NotPickedCollaboratingCollaboratingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "NotPickedCollaboratingCollaboratingAccommodating",
+					"UtteranceId": "0A-10-22-3E-93-48-C0-71-CF-68-05-1C-0D-67-2A-D8"
+				}, 
+				{
+					"CurrentState": "IPCNP311",
+					"NextState": "IPCCompetingCollaboratingCollaboratingCompromising",
+					"Meaning": ["Compromising"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCCompetingCollaboratingCollaboratingCompromising",
+					"UtteranceId": "11-EC-0E-C4-7C-86-97-B6-9A-07-CC-93-37-B2-88-E6"
+				}, 
+				{
+					"CurrentState": "NotPickedNP4",
+					"NextState": "NotPickedCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "NotPickedCollaboratingCollaborating",
+					"UtteranceId": "FE-D6-05-58-32-14-7B-77-00-D6-4D-4C-26-50-3E-50"
+				}, 
+				{
+					"CurrentState": "NotPickedNP31",
+					"NextState": "NotPickedAccommodatingCollaboratingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "NotPickedAccommodatingCollaboratingAccommodating",
+					"UtteranceId": "60-37-94-FA-8A-34-E5-E7-25-99-E4-4C-4A-2D-07-74"
+				}, 
+				{
+					"CurrentState": "NotPickedNP11",
+					"NextState": "NotPickedAvoidingCompetingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "NotPickedAvoidingCompetingAvoiding",
+					"UtteranceId": "D5-D1-1C-DE-CF-E2-79-A0-84-AD-F6-52-BA-AA-29-29"
+				}, 
+				{
+					"CurrentState": "NotPickedNP2",
+					"NextState": "NotPickedCompetingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "NotPickedCompetingCompeting",
+					"UtteranceId": "AE-6C-E6-B2-58-B1-59-1B-9A-77-D7-31-04-10-85-0D"
+				}, 
+				{
+					"CurrentState": "NotPickedNP21",
+					"NextState": "NotPickedCompetingAvoidingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "NotPickedCompetingAvoidingAvoiding",
+					"UtteranceId": "70-98-FE-58-25-A3-9F-B1-8A-63-1E-E8-73-12-7B-5D"
+				}, 
+				{
+					"CurrentState": "NotPickedNP3",
+					"NextState": "NotPickedAccommodatingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "NotPickedAccommodatingCollaborating",
+					"UtteranceId": "B6-1B-3E-FA-98-B1-F7-EA-99-CF-49-BB-C2-4E-D8-3D"
+				}, 
+				{
+					"CurrentState": "IPCNP81",
+					"NextState": "IPCCollaboratingCollaborating2Collaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "IPCCollaboratingCollaborating2Collaborating",
+					"UtteranceId": "E5-26-0C-EF-B0-25-00-52-4F-B4-8B-FE-5B-4E-7F-34"
+				}, 
+				{
+					"CurrentState": "IPCNP51",
+					"NextState": "IPCAccommodatingAccommodatingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCAccommodatingAccommodatingAccommodating",
+					"UtteranceId": "02-7C-69-65-96-63-9C-79-17-88-B7-27-82-C8-35-D9"
+				}, 
+				{
+					"CurrentState": "IPCNP5",
+					"NextState": "IPCAccommodatingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCAccommodatingAccommodating",
+					"UtteranceId": "A5-F3-44-FD-4B-FD-84-EA-EE-5D-34-D7-39-6B-4D-83"
+				}, 
+				{
+					"CurrentState": "IPCNP3",
+					"NextState": "IPCCompetingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "IPCCompetingCollaborating",
+					"UtteranceId": "8D-5A-59-16-09-1D-D2-B6-2E-3A-97-C5-4D-92-FA-05"
+				}, 
+				{
+					"CurrentState": "IPCNP5",
+					"NextState": "IPCAccommodatingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["-"],
+					"Utterance": "IPCAccommodatingAvoiding",
+					"UtteranceId": "60-8D-69-8D-9E-42-BA-B7-8E-7A-3B-72-25-CB-00-3F"
+				}, 
+				{
+					"CurrentState": "IPCNP41",
+					"NextState": "IPCCompetingAvoidingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "IPCCompetingAvoidingCompeting",
+					"UtteranceId": "AB-FF-26-6F-E1-6F-8D-4B-D3-FE-18-B8-BD-98-94-FF"
+				}, 
+				{
+					"CurrentState": "IPCNP51",
+					"NextState": "IPCAccommodatingAccommodatingCompromising",
+					"Meaning": ["Compromising"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCAccommodatingAccommodatingCompromising",
+					"UtteranceId": "C2-F6-09-86-62-B6-1A-E6-85-FE-0C-3A-B1-7A-6F-BF"
+				}, 
+				{
+					"CurrentState": "IPCNP311",
+					"NextState": "IPCCompetingCollaboratingCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCCompetingCollaboratingCollaboratingCollaborating",
+					"UtteranceId": "D8-0E-A2-A0-7E-F2-9A-2A-33-AB-0B-00-FD-BE-75-69"
+				}, 
+				{
+					"CurrentState": "IPCNP31",
+					"NextState": "IPCCompetingCollaboratingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "IPCCompetingCollaboratingCompeting",
+					"UtteranceId": "E8-24-94-9D-42-C8-83-0C-42-D0-29-BC-BF-C7-78-3A"
+				}, 
+				{
+					"CurrentState": "IPCNP3",
+					"NextState": "IPCCompetingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "IPCCompetingCompeting",
+					"UtteranceId": "B3-CC-56-45-FA-16-08-BD-84-7C-EA-58-66-9B-45-E1"
+				}, 
+				{
+					"CurrentState": "IPCNP21",
+					"NextState": "IPCAvoidingCompetingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "IPCAvoidingCompetingCompeting",
+					"UtteranceId": "A8-0D-E4-E9-62-3C-67-03-B0-98-99-28-07-0E-5C-B3"
+				}, 
+				{
+					"CurrentState": "IPCNP21",
+					"NextState": "IPCAvoidingCompetingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "IPCAvoidingCompetingAvoiding",
+					"UtteranceId": "22-A3-B3-54-02-20-A3-0A-45-14-5A-E5-92-F9-0E-81"
+				}, 
+				{
+					"CurrentState": "IPCNP4",
+					"NextState": "IPCCompetingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["-"],
+					"Utterance": "IPCCompetingAvoiding",
+					"UtteranceId": "1C-23-3B-A0-11-9C-EC-92-DD-3C-90-14-51-D8-58-B7"
+				}, 
+				{
+					"CurrentState": "IPCNP4",
+					"NextState": "IPCCompetingCompeting2",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "IPCCompetingCompeting2",
+					"UtteranceId": "9F-32-82-2F-D8-C2-99-35-AA-E2-EB-0A-51-02-4C-12"
+				}, 
+				{
+					"CurrentState": "NotPicked",
+					"NextState": "NotPickedAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["-"],
+					"Utterance": "NotPickedAvoiding",
+					"UtteranceId": "3E-19-43-69-06-8A-CC-55-2A-77-8F-6A-16-D9-1A-45"
+				}, 
+				{
+					"CurrentState": "IPCNP22",
+					"NextState": "IPCAvoidingAvoidingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "IPCAvoidingAvoidingAvoiding",
+					"UtteranceId": "AC-EA-07-65-C8-FF-D5-F5-B8-8D-8B-38-0A-B9-58-3B"
+				}, 
+				{
+					"CurrentState": "IPCNP22",
+					"NextState": "IPCAvoidingAvoidingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "IPCAvoidingAvoidingCompeting",
+					"UtteranceId": "2C-E9-6E-0A-FF-D0-8A-65-BD-EA-ED-34-A8-40-9A-0A"
+				}, 
+				{
+					"CurrentState": "IPCNP2",
+					"NextState": "IPCAvoidingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["-"],
+					"Utterance": "IPCAvoidingCompeting",
+					"UtteranceId": "EE-06-C3-DE-D8-E0-91-7E-A0-74-33-1C-C2-F8-09-7C"
+				}, 
+				{
+					"CurrentState": "IPCNP2",
+					"NextState": "IPCAvoidingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["-"],
+					"Utterance": "IPCAvoidingAvoiding",
+					"UtteranceId": "89-73-4F-AD-EC-AA-62-6A-06-68-8F-11-8A-2D-FE-3C"
+				}, 
+				{
+					"CurrentState": "IPCNP41",
+					"NextState": "IPCCompetingAvoidingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "IPCCompetingAvoidingAvoiding",
+					"UtteranceId": "3F-7C-80-98-B4-6B-0E-2F-C9-AD-40-89-C5-72-20-9D"
+				}, 
+				{
+					"CurrentState": "IPCNP31",
+					"NextState": "IPCCompetingCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "IPCCompetingCollaboratingCollaborating",
+					"UtteranceId": "37-FB-B3-9E-0F-78-D8-63-70-05-DA-E8-B5-06-81-3C"
+				}, 
+				{
+					"CurrentState": "NotPickedNP41",
+					"NextState": "NotPickedCollaboratingCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["Transformational"],
+					"Utterance": "NotPickedCollaboratingCollaboratingCollaborating",
+					"UtteranceId": "12-15-11-F1-D7-CF-FF-93-90-74-77-51-DD-DC-1B-FE"
+				}, 
+				{
+					"CurrentState": "IPCNP811",
+					"NextState": "IPCCollaboratingCollaboratingCollaborating2Collaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCCollaboratingCollaboratingCollaborating2Collaborating",
+					"UtteranceId": "6C-29-BB-F1-9F-C4-83-FB-2B-1A-C8-B3-80-AE-18-EF"
+				}, 
+				{
+					"CurrentState": "IPCNP8",
+					"NextState": "IPCCollaboratingCollaborating2",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "IPCCollaboratingCollaborating2",
+					"UtteranceId": "88-9E-42-B4-6E-0C-FA-3A-4F-47-8B-E6-0B-07-0A-A9"
+				}, 
+				{
+					"CurrentState": "IPCNP71",
+					"NextState": "IPCCollaboratingCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCCollaboratingCollaboratingCollaborating",
+					"UtteranceId": "D4-A5-7A-39-12-18-D7-C5-14-27-EF-46-82-7B-8A-0B"
+				}, 
+				{
+					"CurrentState": "IPCNP81",
+					"NextState": "IPCCollaboratingCollaboratingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCCollaboratingCollaboratingAccommodating",
+					"UtteranceId": "FA-1A-63-F0-F5-7F-9A-D7-3A-61-86-E8-EF-B5-5B-32"
+				}, 
+				{
+					"CurrentState": "IPCNP8",
+					"NextState": "IPCCollaboratingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCCollaboratingAccommodating",
+					"UtteranceId": "5C-0A-11-32-EA-73-59-C6-E7-48-A0-3C-3E-61-75-8B"
+				}, 
+				{
+					"CurrentState": "IPCNP612",
+					"NextState": "IPCAccommodatingCollaboratingAccommodatingCompromising",
+					"Meaning": ["Compromising"],
+					"Style": ["Transactional"],
+					"Utterance": "IPCAccommodatingCollaboratingAccommodatingCompromising",
+					"UtteranceId": "5D-04-D8-39-C5-62-D9-1B-6A-7D-AA-2F-F3-10-08-64"
+				}, 
+				{
+					"CurrentState": "IPCNP71",
+					"NextState": "IPCCollaboratingCollaboratingCompromising",
+					"Meaning": ["Compromising"],
+					"Style": ["Transactional"],
+					"Utterance": "IPCCollaboratingCollaboratingCompromising",
+					"UtteranceId": "E9-8C-97-8D-4D-6C-F3-97-AE-29-1D-52-DC-2B-2A-4A"
+				}, 
+				{
+					"CurrentState": "IPCNP61",
+					"NextState": "IPCAccommodatingCollaboratingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["-"],
+					"Utterance": "IPCAccommodatingCollaboratingAccommodating",
+					"UtteranceId": "B7-2D-E7-64-67-9D-50-C8-D1-9A-D5-01-1F-6C-9E-CB"
+				}, 
+				{
+					"CurrentState": "IPCNP612",
+					"NextState": "IPCAccommodatingCollaboratingAccommodatingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCAccommodatingCollaboratingAccommodatingAccommodating",
+					"UtteranceId": "C8-DA-B6-F7-D4-4D-5E-09-B8-60-0B-51-68-79-55-56"
+				}, 
+				{
+					"CurrentState": "IPCNP811",
+					"NextState": "IPCCollaboratingCollaboratingCollaboratingCompromising",
+					"Meaning": ["Compromising"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCCollaboratingCollaboratingCollaboratingCompromising",
+					"UtteranceId": "56-84-7F-E1-49-8D-B2-BC-E5-DC-FB-24-18-4C-12-23"
+				}, 
+				{
+					"CurrentState": "IPCNP72",
+					"NextState": "IPCCollaboratingCompetingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "IPCCollaboratingCompetingCompeting",
+					"UtteranceId": "3D-86-0E-B1-67-8D-AE-A4-0A-41-34-C8-C5-5A-FE-AD"
+				}, 
+				{
+					"CurrentState": "IPCNP61",
+					"NextState": "IPCAccommodatingCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "IPCAccommodatingCollaboratingCollaborating",
+					"UtteranceId": "7A-8C-18-04-E7-92-51-CF-93-85-7F-AC-02-4D-4C-15"
+				}, 
+				{
+					"CurrentState": "IPCNP7",
+					"NextState": "IPCCollaboratingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["-"],
+					"Utterance": "IPCCollaboratingCompeting",
+					"UtteranceId": "9E-E3-9F-95-BA-92-19-3D-C8-21-E7-1E-9F-28-16-55"
+				}, 
+				{
+					"CurrentState": "IPCNP72",
+					"NextState": "IPCCollaboratingCompetingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCCollaboratingCompetingCollaborating",
+					"UtteranceId": "7A-57-60-15-EE-63-0D-54-A8-7A-21-19-BF-CB-2C-DD"
+				}, 
+				{
+					"CurrentState": "IPCNP611",
+					"NextState": "IPCAccommodatingCollaboratingCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["Transformational"],
+					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCollaborating",
+					"UtteranceId": "05-18-39-B8-A7-41-E6-5C-E5-C9-E0-F3-BE-8E-3D-EA"
+				}, 
+				{
+					"CurrentState": "IPCNP7",
+					"NextState": "IPCCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "IPCCollaboratingCollaborating",
+					"UtteranceId": "BF-83-F4-A6-39-F0-5D-63-7F-D5-5C-F4-9F-E3-DD-A6"
+				}, 
+				{
+					"CurrentState": "IPCNP611",
+					"NextState": "IPCAccommodatingCollaboratingCollaboratingCompromising",
+					"Meaning": ["Compromising"],
+					"Style": ["Transactional"],
+					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCompromising",
+					"UtteranceId": "DC-49-12-6D-0F-BD-BE-C6-84-E9-34-20-48-35-54-36"
+				}, 
+				{
+					"CurrentState": "IPCNP6",
+					"NextState": "IPCAccommodatingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "IPCAccommodatingCollaborating",
+					"UtteranceId": "CF-70-A2-49-00-D8-7D-13-B7-C2-5F-5F-C6-BC-ED-DE"
+				}, 
+				{
+					"CurrentState": "IPCNP6",
+					"NextState": "IPCAccommodatingAccommodating2",
+					"Meaning": ["Accommodating"],
+					"Style": ["-"],
+					"Utterance": "IPCAccommodatingAccommodating2",
+					"UtteranceId": "68-82-53-6F-87-FF-F0-F0-2A-56-8A-72-3B-00-FD-8E"
+				}, 
+				{
+					"CurrentState": "NotPickedNP1",
+					"NextState": "NotPickedAvoidingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["-"],
+					"Utterance": "NotPickedAvoidingCompeting",
+					"UtteranceId": "F8-F0-B0-A3-94-84-46-20-0C-6E-4D-60-86-B7-D3-08"
+				}, 
+				{
+					"CurrentState": "NotPickedNP21",
+					"NextState": "NotPickedCompetingAvoidingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "NotPickedCompetingAvoidingCompeting",
+					"UtteranceId": "A2-81-68-01-D8-55-80-6B-B0-E7-B5-59-DE-81-DE-23"
+				}, 
+				{
+					"CurrentState": "NotPicked",
+					"NextState": "NotPickedCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "NotPickedCollaborating",
+					"UtteranceId": "FE-9C-0B-77-6C-AB-DA-ED-78-D9-24-13-F3-7F-BF-DC"
+				}, 
+				{
+					"CurrentState": "NotPickedNP3",
+					"NextState": "NotPickedAccommodatingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "NotPickedAccommodatingAccommodating",
+					"UtteranceId": "29-14-00-3E-89-DD-8E-79-0A-1F-62-E1-5C-49-93-98"
+				}, 
+				{
+					"CurrentState": "NotPickedNP2",
+					"NextState": "NotPickedCompetingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["-"],
+					"Utterance": "NotPickedCompetingAvoiding",
+					"UtteranceId": "55-E0-5E-08-C9-8B-20-72-16-19-6C-7D-50-EF-CD-F9"
+				}, 
+				{
+					"CurrentState": "NotPicked",
+					"NextState": "NotPickedCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["-"],
+					"Utterance": "NotPickedCompeting",
+					"UtteranceId": "38-16-37-A2-2F-2C-9A-B5-64-6D-A0-38-8C-B7-AC-2B"
+				}, 
+				{
+					"CurrentState": "NotPickedNP11",
+					"NextState": "NotPickedAvoidingCompetingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "NotPickedAvoidingCompetingCompeting",
+					"UtteranceId": "24-C5-BF-BF-25-3D-EA-FD-F7-5D-3A-FF-7D-4A-A3-F3"
+				}, 
+				{
+					"CurrentState": "NotPickedNP1",
+					"NextState": "NotPickedAvoidingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "NotPickedAvoidingAvoiding",
+					"UtteranceId": "23-CF-0D-66-A7-4C-B4-D6-30-22-D7-34-85-C8-C7-69"
+				}, 
+				{
+					"CurrentState": "NotPickedNP31",
+					"NextState": "NotPickedAccommodatingCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["Transformational"],
+					"Utterance": "NotPickedAccommodatingCollaboratingCollaborating",
+					"UtteranceId": "2E-FF-94-A7-F2-3A-40-E5-22-83-72-55-50-3B-8B-F7"
+				}, 
+				{
+					"CurrentState": "NotPicked",
+					"NextState": "NotPickedAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["-"],
+					"Utterance": "NotPickedAccommodating",
+					"UtteranceId": "69-77-73-A4-DC-AA-B7-15-C6-EC-0B-72-AC-32-0F-D1"
+				}, 
+				{
+					"CurrentState": "OO",
+					"NextState": "OOAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["-"],
+					"Utterance": "OOAccommodating",
+					"UtteranceId": "75-1B-2D-7B-D0-A5-FE-D9-7F-74-54-69-51-92-DB-B0"
+				}, 
+				{
+					"CurrentState": "OO",
+					"NextState": "OOAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["-"],
+					"Utterance": "OOAvoiding",
+					"UtteranceId": "7A-30-BC-16-D0-02-03-F9-2A-E8-49-4B-36-62-21-04"
+				}, 
+				{
+					"CurrentState": "OO",
+					"NextState": "OOCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "OOCollaborating",
+					"UtteranceId": "A6-25-24-B7-F5-01-A8-66-EE-27-7F-26-EA-0B-0F-6D"
+				}, 
+				{
+					"CurrentState": "OO",
+					"NextState": "OOCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["-"],
+					"Utterance": "OOCompeting",
+					"UtteranceId": "B9-76-21-83-C6-AE-8C-FD-71-DA-01-0D-DD-28-50-60"
+				}, 
+				{
+					"CurrentState": "OONP1",
+					"NextState": "OOAvoidingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["-"],
+					"Utterance": "OOAvoidingAccommodating",
+					"UtteranceId": "C5-DF-51-44-78-CA-6C-FB-1C-C4-59-25-DA-A5-3C-2A"
+				}, 
+				{
+					"CurrentState": "OONP1",
+					"NextState": "OOAvoidingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "OOAvoidingAvoiding",
+					"UtteranceId": "73-BC-3F-AC-8B-12-E6-F1-2F-F0-21-68-69-97-9C-CD"
+				}, 
+				{
+					"CurrentState": "OONP11",
+					"NextState": "OOAvoidingAccommodatingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "OOAvoidingAccommodatingAccommodating",
+					"UtteranceId": "A1-EA-69-0A-EE-26-0D-83-5E-1E-22-73-42-9E-A4-87"
+				}, 
+				{
+					"CurrentState": "OONP11",
+					"NextState": "OOAvoidingAccommodatingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "OOAvoidingAccommodatingAvoiding",
+					"UtteranceId": "96-D2-F8-E2-F8-11-DC-EC-77-79-5C-26-1F-BC-3B-07"
+				}, 
+				{
+					"CurrentState": "OONP2",
+					"NextState": "OOCompetingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "OOCompetingCollaborating",
+					"UtteranceId": "43-53-D1-CB-6E-BF-D6-02-8B-27-14-DB-9E-75-51-EB"
+				}, 
+				{
+					"CurrentState": "OONP2",
+					"NextState": "OOCompetingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["-"],
+					"Utterance": "OOCompetingCompeting",
+					"UtteranceId": "B7-18-EB-DB-AD-E8-BB-B0-52-9F-B9-6A-15-4B-18-BE"
+				}, 
+				{
+					"CurrentState": "OONP21",
+					"NextState": "OOCompetingCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["Transformational"],
+					"Utterance": "OOCompetingCollaboratingCollaborating",
+					"UtteranceId": "F8-BF-2E-84-9B-A6-FD-89-CF-CA-BB-8F-F1-14-83-53"
+				}, 
+				{
+					"CurrentState": "OONP21",
+					"NextState": "OOCompetingCollaboratingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "OOCompetingCollaboratingCompeting",
+					"UtteranceId": "2C-C4-86-FE-F3-6E-6A-4D-7C-73-AF-2F-99-14-F9-7E"
+				}, 
+				{
+					"CurrentState": "OONP3",
+					"NextState": "OOAccommodatingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "OOAccommodatingAccommodating",
+					"UtteranceId": "58-ED-C1-61-7F-54-97-27-B0-94-6D-88-FB-7E-66-F8"
+				}, 
+				{
+					"CurrentState": "OONP3",
+					"NextState": "OOAccommodatingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["-"],
+					"Utterance": "OOAccommodatingAvoiding",
+					"UtteranceId": "91-5D-B5-07-9A-00-56-65-19-42-68-AF-ED-48-48-7E"
+				}, 
+				{
+					"CurrentState": "OONP31",
+					"NextState": "OOAccommodatingAvoidingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "OOAccommodatingAvoidingAccommodating",
+					"UtteranceId": "05-01-31-24-97-B1-30-A3-FC-25-0C-56-5B-72-CF-68"
+				}, 
+				{
+					"CurrentState": "OONP31",
+					"NextState": "OOAccommodatingAvoidingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "OOAccommodatingAvoidingAvoiding",
+					"UtteranceId": "FE-5C-96-9B-F0-0C-A2-54-11-72-83-DA-81-58-AF-08"
+				}, 
+				{
+					"CurrentState": "OONP4",
+					"NextState": "OOCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "OOCollaboratingCollaborating",
+					"UtteranceId": "56-64-22-C5-20-9F-47-F1-14-93-7A-06-E4-9E-02-FF"
+				}, 
+				{
+					"CurrentState": "OONP4",
+					"NextState": "OOCollaboratingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "OOCollaboratingCompeting",
+					"UtteranceId": "37-8B-38-EC-62-F5-81-A6-C0-1A-C6-0D-02-9F-A3-0A"
+				}, 
+				{
+					"CurrentState": "OONP41",
+					"NextState": "OOCollaboratingCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["Transformational"],
+					"Utterance": "OOCollaboratingCollaboratingCollaborating",
+					"UtteranceId": "38-69-A1-3D-DF-AB-38-50-B0-32-3E-F1-D2-97-D6-16"
+				}, 
+				{
+					"CurrentState": "OONP41",
+					"NextState": "OOCollaboratingCollaboratingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "OOCollaboratingCollaboratingCompeting",
+					"UtteranceId": "9C-8B-DF-6F-E1-F8-A6-A1-EC-37-60-68-10-7C-FA-00"
 				}, 
 				{
 					"CurrentState": "OpinionRevealNegative",
@@ -38,12 +734,188 @@
 					"UtteranceId": "AB-9A-7A-82-CF-57-D3-40-65-40-32-09-4D-5E-66-2E"
 				}, 
 				{
+					"CurrentState": "OpinionRevealPositive",
+					"NextState": "-",
+					"Meaning": ["OpinionRevealPositive"],
+					"Style": ["OpinionRevealPositive"],
+					"Utterance": "OpinionRevealPositiveQuestion",
+					"UtteranceId": "67-45-F6-31-D3-4A-FF-39-F9-5B-3D-0F-A7-DF-0F-74"
+				}, 
+				{
+					"CurrentState": "PW",
+					"NextState": "PWAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["-"],
+					"Utterance": "PWAccommodating",
+					"UtteranceId": "87-28-78-E3-3D-F5-09-48-C5-8F-77-E3-CF-A8-F0-C7"
+				}, 
+				{
+					"CurrentState": "PW",
+					"NextState": "PWAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["-"],
+					"Utterance": "PWAvoiding",
+					"UtteranceId": "15-F5-34-2A-1A-10-FB-3E-4E-4D-03-2E-4E-78-37-50"
+				}, 
+				{
+					"CurrentState": "PW",
+					"NextState": "PWCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "PWCollaborating",
+					"UtteranceId": "E2-47-DF-C2-CC-31-C8-4E-2F-97-E3-B6-A8-AD-0A-66"
+				}, 
+				{
+					"CurrentState": "PW",
+					"NextState": "PWCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["-"],
+					"Utterance": "PWCompeting",
+					"UtteranceId": "7F-C6-ED-03-5C-0C-FA-EC-B5-05-45-1C-AB-29-6F-C0"
+				}, 
+				{
+					"CurrentState": "PWNP1",
+					"NextState": "PWAvoidingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "PWAvoidingAvoiding",
+					"UtteranceId": "DE-28-1D-4B-6E-DD-21-BC-84-4D-AD-81-B0-71-B7-62"
+				}, 
+				{
+					"CurrentState": "PWNP1",
+					"NextState": "PWAvoidingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "PWAvoidingCollaborating",
+					"UtteranceId": "99-41-E0-70-EB-23-F4-8A-4D-E2-28-38-FE-6C-28-BC"
+				}, 
+				{
+					"CurrentState": "PWNP11",
+					"NextState": "PWAvoidingCollaboratingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "PWAvoidingCollaboratingAvoiding",
+					"UtteranceId": "56-FE-32-63-62-86-64-9B-AA-4B-B1-DA-63-B6-CE-4A"
+				}, 
+				{
+					"CurrentState": "PWNP11",
+					"NextState": "PWAvoidingCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["Transformational"],
+					"Utterance": "PWAvoidingCollaboratingCollaborating",
+					"UtteranceId": "32-2D-91-4F-9D-AE-CB-F2-B8-FB-A3-67-9F-EF-DC-E4"
+				}, 
+				{
+					"CurrentState": "PWNP2",
+					"NextState": "PWCompetingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["-"],
+					"Utterance": "PWCompetingAccommodating",
+					"UtteranceId": "56-14-6A-8D-AB-36-81-D7-D3-26-A3-96-27-C9-92-4F"
+				}, 
+				{
+					"CurrentState": "PWNP2",
+					"NextState": "PWCompetingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "PWCompetingCompeting",
+					"UtteranceId": "BD-23-43-40-D5-5B-07-4F-D1-56-E7-FB-C6-F3-DE-51"
+				}, 
+				{
+					"CurrentState": "PWNP21",
+					"NextState": "PWCompetingAccommodatingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "PWCompetingAccommodatingAccommodating",
+					"UtteranceId": "6A-C9-93-27-75-E9-B5-DA-EA-B4-A6-91-72-A6-6A-65"
+				}, 
+				{
+					"CurrentState": "PWNP21",
+					"NextState": "PWCompetingAccommodatingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "PWCompetingAccommodatingCompeting",
+					"UtteranceId": "70-A7-3B-EE-08-45-AA-29-2D-56-6C-18-CF-22-3F-64"
+				}, 
+				{
+					"CurrentState": "PWNP3",
+					"NextState": "PWAccommodatingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "PWAccommodatingAccommodating",
+					"UtteranceId": "77-36-8F-06-06-97-70-6F-79-95-F4-1B-EA-DE-C2-98"
+				}, 
+				{
+					"CurrentState": "PWNP3",
+					"NextState": "PWAccommodatingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["-"],
+					"Utterance": "PWAccommodatingCompeting",
+					"UtteranceId": "1A-E9-20-F2-63-B8-6E-DD-0C-78-19-40-F2-D5-20-50"
+				}, 
+				{
+					"CurrentState": "PWNP31",
+					"NextState": "PWAccommodatingCompetingAccommodating",
+					"Meaning": ["Accommodating"],
+					"Style": ["Transformational"],
+					"Utterance": "PWAccommodatingCompetingAccommodating",
+					"UtteranceId": "53-FE-4A-0A-DB-A3-A7-CD-D4-56-4B-F5-8A-EA-F3-7E"
+				}, 
+				{
+					"CurrentState": "PWNP31",
+					"NextState": "PWAccommodatingCompetingCompeting",
+					"Meaning": ["Competing"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "PWAccommodatingCompetingCompeting",
+					"UtteranceId": "DE-27-6E-C6-60-D3-9A-8A-94-AF-7D-5B-28-E7-08-1C"
+				}, 
+				{
+					"CurrentState": "PWNP4",
+					"NextState": "PWCollaboratingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "PWCollaboratingAvoiding",
+					"UtteranceId": "6F-E3-25-FF-9E-61-A5-22-06-3E-10-52-46-FB-C0-30"
+				}, 
+				{
+					"CurrentState": "PWNP4",
+					"NextState": "PWCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["-"],
+					"Utterance": "PWCollaboratingCollaborating",
+					"UtteranceId": "A2-23-C5-23-ED-7E-AF-CF-DA-D3-2E-07-DD-F7-9C-96"
+				}, 
+				{
+					"CurrentState": "PWNP41",
+					"NextState": "PWCollaboratingCollaboratingAvoiding",
+					"Meaning": ["Avoiding"],
+					"Style": ["Laissez-faire"],
+					"Utterance": "PWCollaboratingCollaboratingAvoiding",
+					"UtteranceId": "54-9B-4F-EE-29-A8-E7-C9-18-DD-08-8B-F1-C8-1E-27"
+				}, 
+				{
+					"CurrentState": "PWNP41",
+					"NextState": "PWCollaboratingCollaboratingCollaborating",
+					"Meaning": ["Collaborating"],
+					"Style": ["Transformational"],
+					"Utterance": "PWCollaboratingCollaboratingCollaborating",
+					"UtteranceId": "65-A3-B8-DB-9A-EF-79-92-D3-B0-75-BB-25-4E-AD-53"
+				}, 
+				{
 					"CurrentState": "RecruitBody",
 					"NextState": "-",
 					"Meaning": ["RecruitBody"],
 					"Style": ["RecruitBody"],
 					"Utterance": "RecruitBody",
 					"UtteranceId": "7D-1E-0E-B2-D2-B6-03-4C-37-78-47-B1-07-18-9B-FA"
+				}, 
+				{
+					"CurrentState": "RecruitCharisma",
+					"NextState": "-",
+					"Meaning": ["RecruitCharisma"],
+					"Style": ["RecruitCharisma"],
+					"Utterance": "RecruitCharisma",
+					"UtteranceId": "B5-13-0A-B9-F8-6C-36-D6-77-3D-40-BA-D9-5E-32-E6"
 				}, 
 				{
 					"CurrentState": "RecruitPerception",
@@ -78,1493 +950,53 @@
 					"UtteranceId": "E7-C3-F6-16-4C-81-65-B6-8C-2C-C5-A4-83-C1-6E-03"
 				}, 
 				{
-					"CurrentState": "RecruitCharisma",
+					"CurrentState": "RecruitWisdom",
 					"NextState": "-",
-					"Meaning": ["RecruitCharisma"],
-					"Style": ["RecruitCharisma"],
-					"Utterance": "RecruitCharisma",
-					"UtteranceId": "B5-13-0A-B9-F8-6C-36-D6-77-3D-40-BA-D9-5E-32-E6"
-				}, 
-				{
-					"CurrentState": "NotPicked",
-					"NextState": "NotPickedCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "NotPickedCompeting",
-					"UtteranceId": "38-16-37-A2-2F-2C-9A-B5-64-6D-A0-38-8C-B7-AC-2B"
-				}, 
-				{
-					"CurrentState": "NotPicked",
-					"NextState": "NotPickedAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "NotPickedAvoiding",
-					"UtteranceId": "3E-19-43-69-06-8A-CC-55-2A-77-8F-6A-16-D9-1A-45"
-				}, 
-				{
-					"CurrentState": "PWNP2",
-					"NextState": "PWCompetingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["-"],
-					"Utterance": "PWCompetingAccomodating",
-					"UtteranceId": "51-18-8E-F3-C8-8C-F5-EF-BA-49-DE-84-5F-99-EE-92"
-				}, 
-				{
-					"CurrentState": "NotPicked",
-					"NextState": "NotPickedCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "NotPickedCollaborating",
-					"UtteranceId": "FE-9C-0B-77-6C-AB-DA-ED-78-D9-24-13-F3-7F-BF-DC"
-				}, 
-				{
-					"CurrentState": "NotPickedNP1",
-					"NextState": "NotPickedAvoidingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "NotPickedAvoidingCompeting",
-					"UtteranceId": "F8-F0-B0-A3-94-84-46-20-0C-6E-4D-60-86-B7-D3-08"
-				}, 
-				{
-					"CurrentState": "NotPickedNP3",
-					"NextState": "NotPickedAccomodatingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "NotPickedAccomodatingCollaborating",
-					"UtteranceId": "A6-9B-EA-94-7E-91-34-BE-A0-C9-E0-92-F3-56-F4-BA"
-				}, 
-				{
-					"CurrentState": "NotPickedNP21",
-					"NextState": "NotPickedCompetingAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "NotPickedCompetingAvoidingAvoiding",
-					"UtteranceId": "70-98-FE-58-25-A3-9F-B1-8A-63-1E-E8-73-12-7B-5D"
-				}, 
-				{
-					"CurrentState": "NotPickedNP2",
-					"NextState": "NotPickedCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "NotPickedCompetingCompeting",
-					"UtteranceId": "AE-6C-E6-B2-58-B1-59-1B-9A-77-D7-31-04-10-85-0D"
-				}, 
-				{
-					"CurrentState": "NotPickedNP11",
-					"NextState": "NotPickedAvoidingCompetingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "NotPickedAvoidingCompetingAvoiding",
-					"UtteranceId": "D5-D1-1C-DE-CF-E2-79-A0-84-AD-F6-52-BA-AA-29-29"
-				}, 
-				{
-					"CurrentState": "OO",
-					"NextState": "OOCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "OOCollaborating",
-					"UtteranceId": "A6-25-24-B7-F5-01-A8-66-EE-27-7F-26-EA-0B-0F-6D"
-				}, 
-				{
-					"CurrentState": "PW",
-					"NextState": "PWAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "PWAvoiding",
-					"UtteranceId": "15-F5-34-2A-1A-10-FB-3E-4E-4D-03-2E-4E-78-37-50"
-				}, 
-				{
-					"CurrentState": "PW",
-					"NextState": "PWCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "PWCompeting",
-					"UtteranceId": "7F-C6-ED-03-5C-0C-FA-EC-B5-05-45-1C-AB-29-6F-C0"
-				}, 
-				{
-					"CurrentState": "PWNP3",
-					"NextState": "PWAccomodatingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "PWAccomodatingAccomodating",
-					"UtteranceId": "09-A9-0B-1A-55-ED-17-DA-C4-22-07-58-B1-7D-63-0C"
-				}, 
-				{
-					"CurrentState": "PW",
-					"NextState": "PWCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "PWCollaborating",
-					"UtteranceId": "E2-47-DF-C2-CC-31-C8-4E-2F-97-E3-B6-A8-AD-0A-66"
-				}, 
-				{
-					"CurrentState": "PWNP1",
-					"NextState": "PWAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "PWAvoidingAvoiding",
-					"UtteranceId": "DE-28-1D-4B-6E-DD-21-BC-84-4D-AD-81-B0-71-B7-62"
-				}, 
-				{
-					"CurrentState": "PW",
-					"NextState": "PWAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["-"],
-					"Utterance": "PWAccomodating",
-					"UtteranceId": "0C-0A-6D-9D-94-7E-AA-3D-27-15-EB-2B-54-E6-F6-D7"
-				}, 
-				{
-					"CurrentState": "PWNP2",
-					"NextState": "PWCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "PWCompetingCompeting",
-					"UtteranceId": "BD-23-43-40-D5-5B-07-4F-D1-56-E7-FB-C6-F3-DE-51"
-				}, 
-				{
-					"CurrentState": "PWNP21",
-					"NextState": "PWCompetingAccomodatingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "PWCompetingAccomodatingAccomodating",
-					"UtteranceId": "17-06-A8-4D-B2-FB-11-BA-1C-02-5E-9A-C4-10-54-A3"
-				}, 
-				{
-					"CurrentState": "PWNP3",
-					"NextState": "PWAccomodatingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "PWAccomodatingCompeting",
-					"UtteranceId": "E0-A2-7B-54-99-15-22-42-C2-B8-EC-DA-94-C4-5B-92"
-				}, 
-				{
-					"CurrentState": "PWNP4",
-					"NextState": "PWCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "PWCollaboratingCollaborating",
-					"UtteranceId": "A2-23-C5-23-ED-7E-AF-CF-DA-D3-2E-07-DD-F7-9C-96"
-				}, 
-				{
-					"CurrentState": "PWNP4",
-					"NextState": "PWCollaboratingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "PWCollaboratingAvoiding",
-					"UtteranceId": "6F-E3-25-FF-9E-61-A5-22-06-3E-10-52-46-FB-C0-30"
-				}, 
-				{
-					"CurrentState": "PWNP11",
-					"NextState": "PWAvoidingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "PWAvoidingCollaboratingCollaborating",
-					"UtteranceId": "32-2D-91-4F-9D-AE-CB-F2-B8-FB-A3-67-9F-EF-DC-E4"
-				}, 
-				{
-					"CurrentState": "PWNP11",
-					"NextState": "PWAvoidingCollaboratingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "PWAvoidingCollaboratingAvoiding",
-					"UtteranceId": "56-FE-32-63-62-86-64-9B-AA-4B-B1-DA-63-B6-CE-4A"
-				}, 
-				{
-					"CurrentState": "NotPickedNP41",
-					"NextState": "NotPickedCollaboratingCollaboratingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "NotPickedCollaboratingCollaboratingAccomodating",
-					"UtteranceId": "DF-AE-47-D4-98-81-06-08-A0-2B-23-98-A7-D3-43-B1"
-				}, 
-				{
-					"CurrentState": "PWNP31",
-					"NextState": "PWAccomodatingCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "PWAccomodatingCompetingCompeting",
-					"UtteranceId": "F2-2D-9E-2B-D2-6D-F9-E2-B0-5F-75-2B-01-E9-28-DE"
-				}, 
-				{
-					"CurrentState": "PWNP31",
-					"NextState": "PWAccomodatingCompetingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "PWAccomodatingCompetingAccomodating",
-					"UtteranceId": "D7-78-1F-DA-2D-30-CF-82-30-BB-89-57-78-91-F1-F7"
-				}, 
-				{
-					"CurrentState": "PWNP41",
-					"NextState": "PWCollaboratingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "PWCollaboratingCollaboratingCollaborating",
-					"UtteranceId": "65-A3-B8-DB-9A-EF-79-92-D3-B0-75-BB-25-4E-AD-53"
-				}, 
-				{
-					"CurrentState": "PWNP41",
-					"NextState": "PWCollaboratingCollaboratingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "PWCollaboratingCollaboratingAvoiding",
-					"UtteranceId": "54-9B-4F-EE-29-A8-E7-C9-18-DD-08-8B-F1-C8-1E-27"
-				}, 
-				{
-					"CurrentState": "PWNP1",
-					"NextState": "PWAvoidingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "PWAvoidingCollaborating",
-					"UtteranceId": "99-41-E0-70-EB-23-F4-8A-4D-E2-28-38-FE-6C-28-BC"
-				}, 
-				{
-					"CurrentState": "PWNP21",
-					"NextState": "PWCompetingAccomodatingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "PWCompetingAccomodatingCompeting",
-					"UtteranceId": "25-79-93-49-90-67-AF-05-43-EA-72-C2-A5-6D-D1-14"
-				}, 
-				{
-					"CurrentState": "NotPicked",
-					"NextState": "NotPickedAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["-"],
-					"Utterance": "NotPickedAccomodating",
-					"UtteranceId": "9C-2E-AA-AA-CD-72-9C-BB-86-F9-A9-F5-E2-CC-5A-F0"
-				}, 
-				{
-					"CurrentState": "OO",
-					"NextState": "OOAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "OOAvoiding",
-					"UtteranceId": "7A-30-BC-16-D0-02-03-F9-2A-E8-49-4B-36-62-21-04"
-				}, 
-				{
-					"CurrentState": "OONP1",
-					"NextState": "OOAvoidingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["-"],
-					"Utterance": "OOAvoidingAccomodating",
-					"UtteranceId": "97-75-5F-1B-00-1D-16-8F-88-7F-41-7E-AC-1D-1A-B8"
-				}, 
-				{
-					"CurrentState": "OONP2",
-					"NextState": "OOCompetingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "OOCompetingCollaborating",
-					"UtteranceId": "43-53-D1-CB-6E-BF-D6-02-8B-27-14-DB-9E-75-51-EB"
-				}, 
-				{
-					"CurrentState": "OO",
-					"NextState": "OOCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "OOCompeting",
-					"UtteranceId": "B9-76-21-83-C6-AE-8C-FD-71-DA-01-0D-DD-28-50-60"
-				}, 
-				{
-					"CurrentState": "OONP1",
-					"NextState": "OOAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "OOAvoidingAvoiding",
-					"UtteranceId": "73-BC-3F-AC-8B-12-E6-F1-2F-F0-21-68-69-97-9C-CD"
-				}, 
-				{
-					"CurrentState": "OONP3",
-					"NextState": "OOAccomodatingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "OOAccomodatingAccomodating",
-					"UtteranceId": "8B-36-4A-33-81-7E-DC-C4-3D-45-39-24-88-81-6E-86"
-				}, 
-				{
-					"CurrentState": "OONP2",
-					"NextState": "OOCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "OOCompetingCompeting",
-					"UtteranceId": "B7-18-EB-DB-AD-E8-BB-B0-52-9F-B9-6A-15-4B-18-BE"
-				}, 
-				{
-					"CurrentState": "OONP4",
-					"NextState": "OOCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "OOCollaboratingCollaborating",
-					"UtteranceId": "56-64-22-C5-20-9F-47-F1-14-93-7A-06-E4-9E-02-FF"
-				}, 
-				{
-					"CurrentState": "OONP3",
-					"NextState": "OOAccomodatingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "OOAccomodatingAvoiding",
-					"UtteranceId": "37-38-3B-41-88-2C-BA-C1-99-82-CD-67-68-C1-D7-AA"
-				}, 
-				{
-					"CurrentState": "OO",
-					"NextState": "OOAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["-"],
-					"Utterance": "OOAccomodating",
-					"UtteranceId": "DE-A4-4A-A1-CC-BB-9C-F7-58-75-5E-97-90-CA-D6-B1"
-				}, 
-				{
-					"CurrentState": "OONP11",
-					"NextState": "OOAvoidingAccomodatingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "OOAvoidingAccomodatingAccomodating",
-					"UtteranceId": "C6-F8-87-04-A3-94-DD-21-26-0C-59-CF-05-A6-FA-FA"
-				}, 
-				{
-					"CurrentState": "OONP4",
-					"NextState": "OOCollaboratingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "OOCollaboratingCompeting",
-					"UtteranceId": "37-8B-38-EC-62-F5-81-A6-C0-1A-C6-0D-02-9F-A3-0A"
-				}, 
-				{
-					"CurrentState": "OONP21",
-					"NextState": "OOCompetingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "OOCompetingCollaboratingCollaborating",
-					"UtteranceId": "F8-BF-2E-84-9B-A6-FD-89-CF-CA-BB-8F-F1-14-83-53"
-				}, 
-				{
-					"CurrentState": "OONP11",
-					"NextState": "OOAvoidingAccomodatingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "OOAvoidingAccomodatingAvoiding",
-					"UtteranceId": "18-43-EA-BF-83-6F-A5-FB-E3-5D-A4-85-F1-72-0C-3B"
-				}, 
-				{
-					"CurrentState": "OONP31",
-					"NextState": "OOAccomodatingAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "OOAccomodatingAvoidingAvoiding",
-					"UtteranceId": "21-7F-E4-A1-FA-4D-1F-5F-48-F3-2E-4C-D6-55-CD-56"
-				}, 
-				{
-					"CurrentState": "OONP21",
-					"NextState": "OOCompetingCollaboratingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "OOCompetingCollaboratingCompeting",
-					"UtteranceId": "2C-C4-86-FE-F3-6E-6A-4D-7C-73-AF-2F-99-14-F9-7E"
-				}, 
-				{
-					"CurrentState": "OONP31",
-					"NextState": "OOAccomodatingAvoidingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "OOAccomodatingAvoidingAccomodating",
-					"UtteranceId": "72-06-35-39-81-DF-D6-9F-BB-6C-EE-1B-C5-AB-F2-66"
-				}, 
-				{
-					"CurrentState": "OONP41",
-					"NextState": "OOCollaboratingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "OOCollaboratingCollaboratingCollaborating",
-					"UtteranceId": "38-69-A1-3D-DF-AB-38-50-B0-32-3E-F1-D2-97-D6-16"
-				}, 
-				{
-					"CurrentState": "OONP41",
-					"NextState": "OOCollaboratingCollaboratingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "OOCollaboratingCollaboratingCompeting",
-					"UtteranceId": "9C-8B-DF-6F-E1-F8-A6-A1-EC-37-60-68-10-7C-FA-00"
-				}, 
-				{
-					"CurrentState": "NotPickedNP31",
-					"NextState": "NotPickedAccomodatingCollaboratingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "NotPickedAccomodatingCollaboratingAccomodating",
-					"UtteranceId": "9A-DA-6F-CD-7E-DB-0C-34-7B-85-36-66-63-0C-9E-8E"
-				}, 
-				{
-					"CurrentState": "NotPickedNP2",
-					"NextState": "NotPickedCompetingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "NotPickedCompetingAvoiding",
-					"UtteranceId": "55-E0-5E-08-C9-8B-20-72-16-19-6C-7D-50-EF-CD-F9"
-				}, 
-				{
-					"CurrentState": "NotPickedNP4",
-					"NextState": "NotPickedCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "NotPickedCollaboratingCollaborating",
-					"UtteranceId": "FE-D6-05-58-32-14-7B-77-00-D6-4D-4C-26-50-3E-50"
-				}, 
-				{
-					"CurrentState": "NotPickedNP11",
-					"NextState": "NotPickedAvoidingCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "NotPickedAvoidingCompetingCompeting",
-					"UtteranceId": "24-C5-BF-BF-25-3D-EA-FD-F7-5D-3A-FF-7D-4A-A3-F3"
-				}, 
-				{
-					"CurrentState": "NotPickedNP21",
-					"NextState": "NotPickedCompetingAvoidingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "NotPickedCompetingAvoidingCompeting",
-					"UtteranceId": "A2-81-68-01-D8-55-80-6B-B0-E7-B5-59-DE-81-DE-23"
-				}, 
-				{
-					"CurrentState": "NotPickedNP4",
-					"NextState": "NotPickedCollaboratingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "NotPickedCollaboratingAccomodating",
-					"UtteranceId": "81-4C-37-31-BF-2A-69-48-AC-95-81-71-4A-1F-AF-B1"
-				}, 
-				{
-					"CurrentState": "NotPickedNP3",
-					"NextState": "NotPickedAccomodatingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "NotPickedAccomodatingAccomodating",
-					"UtteranceId": "37-15-42-C1-24-91-13-90-68-F6-EA-F3-87-00-FF-3B"
-				}, 
-				{
-					"CurrentState": "NotPickedNP31",
-					"NextState": "NotPickedAccomodatingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "NotPickedAccomodatingCollaboratingCollaborating",
-					"UtteranceId": "52-D8-8E-91-C2-95-7D-98-C2-FA-1A-21-A1-F6-B1-ED"
-				}, 
-				{
-					"CurrentState": "NotPickedNP1",
-					"NextState": "NotPickedAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "NotPickedAvoidingAvoiding",
-					"UtteranceId": "23-CF-0D-66-A7-4C-B4-D6-30-22-D7-34-85-C8-C7-69"
-				}, 
-				{
-					"CurrentState": "NotPickedNP41",
-					"NextState": "NotPickedCollaboratingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "NotPickedCollaboratingCollaboratingCollaborating",
-					"UtteranceId": "12-15-11-F1-D7-CF-FF-93-90-74-77-51-DD-DC-1B-FE"
-				}, 
-				{
-					"CurrentState": "IPCNP811",
-					"NextState": "IPCCollaboratingCollaboratingCollaboratingCompromising",
-					"Meaning": ["Compromising"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCollaboratingCollaboratingCollaboratingCompromising",
-					"UtteranceId": "56-84-7F-E1-49-8D-B2-BC-E5-DC-FB-24-18-4C-12-23"
-				}, 
-				{
-					"CurrentState": "IPCNP811",
-					"NextState": "IPCCollaboratingCollaboratingCollaborating2Collaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCollaboratingCollaboratingCollaborating2Collaborating",
-					"UtteranceId": "6C-29-BB-F1-9F-C4-83-FB-2B-1A-C8-B3-80-AE-18-EF"
-				}, 
-				{
-					"CurrentState": "IPCNP81",
-					"NextState": "IPCCollaboratingCollaboratingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCollaboratingCollaboratingAccomodating",
-					"UtteranceId": "44-2C-4D-7C-00-D4-D1-A8-05-58-D3-93-16-22-2A-7B"
-				}, 
-				{
-					"CurrentState": "IPCNP81",
-					"NextState": "IPCCollaboratingCollaborating2Collaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCCollaboratingCollaborating2Collaborating",
-					"UtteranceId": "E5-26-0C-EF-B0-25-00-52-4F-B4-8B-FE-5B-4E-7F-34"
-				}, 
-				{
-					"CurrentState": "IPCNP8",
-					"NextState": "IPCCollaboratingCollaborating2",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCCollaboratingCollaborating2",
-					"UtteranceId": "88-9E-42-B4-6E-0C-FA-3A-4F-47-8B-E6-0B-07-0A-A9"
-				}, 
-				{
-					"CurrentState": "IPCNP8",
-					"NextState": "IPCCollaboratingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCollaboratingAccomodating",
-					"UtteranceId": "40-5D-ED-1A-10-87-CC-56-49-FA-4B-7D-12-4D-BA-D1"
-				}, 
-				{
-					"CurrentState": "IPCNP72",
-					"NextState": "IPCCollaboratingCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCCollaboratingCompetingCompeting",
-					"UtteranceId": "3D-86-0E-B1-67-8D-AE-A4-0A-41-34-C8-C5-5A-FE-AD"
-				}, 
-				{
-					"CurrentState": "IPCNP72",
-					"NextState": "IPCCollaboratingCompetingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCollaboratingCompetingCollaborating",
-					"UtteranceId": "7A-57-60-15-EE-63-0D-54-A8-7A-21-19-BF-CB-2C-DD"
-				}, 
-				{
-					"CurrentState": "IPCNP71",
-					"NextState": "IPCCollaboratingCollaboratingCompromising",
-					"Meaning": ["Compromising"],
-					"Style": ["Transactional"],
-					"Utterance": "IPCCollaboratingCollaboratingCompromising",
-					"UtteranceId": "E9-8C-97-8D-4D-6C-F3-97-AE-29-1D-52-DC-2B-2A-4A"
-				}, 
-				{
-					"CurrentState": "IPCNP71",
-					"NextState": "IPCCollaboratingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCollaboratingCollaboratingCollaborating",
-					"UtteranceId": "D4-A5-7A-39-12-18-D7-C5-14-27-EF-46-82-7B-8A-0B"
-				}, 
-				{
-					"CurrentState": "IPCNP7",
-					"NextState": "IPCCollaboratingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "IPCCollaboratingCompeting",
-					"UtteranceId": "9E-E3-9F-95-BA-92-19-3D-C8-21-E7-1E-9F-28-16-55"
-				}, 
-				{
-					"CurrentState": "IPCNP7",
-					"NextState": "IPCCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCCollaboratingCollaborating",
-					"UtteranceId": "BF-83-F4-A6-39-F0-5D-63-7F-D5-5C-F4-9F-E3-DD-A6"
-				}, 
-				{
-					"CurrentState": "IPCNP612",
-					"NextState": "IPCAccomodatingCollaboratingAccomodatingCompromising",
-					"Meaning": ["Compromising"],
-					"Style": ["Transactional"],
-					"Utterance": "IPCAccomodatingCollaboratingAccomodatingCompromising",
-					"UtteranceId": "7E-FC-EC-85-0D-E8-90-EF-49-84-55-82-F3-69-71-E8"
-				}, 
-				{
-					"CurrentState": "IPCNP612",
-					"NextState": "IPCAccomodatingCollaboratingAccomodatingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCAccomodatingCollaboratingAccomodatingAccomodating",
-					"UtteranceId": "03-D5-84-E0-29-CD-18-7A-92-FF-84-18-C9-3B-96-61"
-				}, 
-				{
-					"CurrentState": "IPCNP611",
-					"NextState": "IPCAccomodatingCollaboratingCollaboratingCompromising",
-					"Meaning": ["Compromising"],
-					"Style": ["Transactional"],
-					"Utterance": "IPCAccomodatingCollaboratingCollaboratingCompromising",
-					"UtteranceId": "12-0A-F4-8E-D7-CA-A2-5E-6B-72-4A-54-41-B9-1F-AA"
-				}, 
-				{
-					"CurrentState": "IPCNP611",
-					"NextState": "IPCAccomodatingCollaboratingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCAccomodatingCollaboratingCollaboratingCollaborating",
-					"UtteranceId": "76-AD-8F-3D-10-79-C6-F4-E8-BC-A6-72-E8-C0-CF-49"
-				}, 
-				{
-					"CurrentState": "IPCNP61",
-					"NextState": "IPCAccomodatingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCAccomodatingCollaboratingCollaborating",
-					"UtteranceId": "9C-DC-A2-A5-66-C3-76-D4-36-37-1A-8D-42-64-E3-BF"
-				}, 
-				{
-					"CurrentState": "IPCNP61",
-					"NextState": "IPCAccomodatingCollaboratingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["-"],
-					"Utterance": "IPCAccomodatingCollaboratingAccomodating",
-					"UtteranceId": "12-7F-B1-0B-D6-BD-A2-2B-05-77-CF-22-52-DD-F3-24"
-				}, 
-				{
-					"CurrentState": "IPCNP6",
-					"NextState": "IPCAccomodatingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCAccomodatingCollaborating",
-					"UtteranceId": "C2-3F-66-76-35-DC-98-6B-54-F3-3A-7A-DA-1A-58-34"
-				}, 
-				{
-					"CurrentState": "IPCNP6",
-					"NextState": "IPCAccomodatingAccomodating2",
-					"Meaning": ["Accomodating"],
-					"Style": ["-"],
-					"Utterance": "IPCAccomodatingAccomodating2",
-					"UtteranceId": "5E-0B-9F-5F-61-2C-B4-40-3B-8C-9A-35-A7-78-00-AB"
-				}, 
-				{
-					"CurrentState": "IPCNP52",
-					"NextState": "IPCAccomodatingAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCAccomodatingAvoidingAvoiding",
-					"UtteranceId": "FD-B3-FB-4F-DF-4D-22-D3-AA-F7-E8-82-AF-49-BC-3B"
-				}, 
-				{
-					"CurrentState": "IPCNP52",
-					"NextState": "IPCAccomodatingAvoidingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCAccomodatingAvoidingAccomodating",
-					"UtteranceId": "C5-BE-65-03-30-9E-07-73-C2-3D-A1-5A-7A-88-E1-04"
-				}, 
-				{
-					"CurrentState": "IPCNP51",
-					"NextState": "IPCAccomodatingAccomodatingCompromising",
-					"Meaning": ["Compromising"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCAccomodatingAccomodatingCompromising",
-					"UtteranceId": "EC-B4-28-F8-58-3F-46-38-74-95-D5-4C-01-12-AB-F4"
-				}, 
-				{
-					"CurrentState": "IPCNP51",
-					"NextState": "IPCAccomodatingAccomodatingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCAccomodatingAccomodatingAccomodating",
-					"UtteranceId": "C4-97-9E-48-26-5F-BA-11-5A-D5-5B-4B-9E-92-2C-B2"
-				}, 
-				{
-					"CurrentState": "IPCNP5",
-					"NextState": "IPCAccomodatingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "IPCAccomodatingAvoiding",
-					"UtteranceId": "44-A6-D5-55-B5-65-39-CF-5A-AC-08-D5-A6-06-5E-9E"
-				}, 
-				{
-					"CurrentState": "IPCNP5",
-					"NextState": "IPCAccomodatingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCAccomodatingAccomodating",
-					"UtteranceId": "4B-B1-6C-5D-AE-B3-9E-5A-C1-A0-22-80-39-3C-4E-35"
-				}, 
-				{
-					"CurrentState": "IPCNP41",
-					"NextState": "IPCCompetingAvoidingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCCompetingAvoidingCompeting",
-					"UtteranceId": "AB-FF-26-6F-E1-6F-8D-4B-D3-FE-18-B8-BD-98-94-FF"
-				}, 
-				{
-					"CurrentState": "IPCNP41",
-					"NextState": "IPCCompetingAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCCompetingAvoidingAvoiding",
-					"UtteranceId": "3F-7C-80-98-B4-6B-0E-2F-C9-AD-40-89-C5-72-20-9D"
-				}, 
-				{
-					"CurrentState": "IPCNP4",
-					"NextState": "IPCCompetingCompeting2",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCCompetingCompeting2",
-					"UtteranceId": "9F-32-82-2F-D8-C2-99-35-AA-E2-EB-0A-51-02-4C-12"
-				}, 
-				{
-					"CurrentState": "IPCNP4",
-					"NextState": "IPCCompetingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "IPCCompetingAvoiding",
-					"UtteranceId": "1C-23-3B-A0-11-9C-EC-92-DD-3C-90-14-51-D8-58-B7"
-				}, 
-				{
-					"CurrentState": "IPCNP311",
-					"NextState": "IPCCompetingCollaboratingCollaboratingCompromising",
-					"Meaning": ["Compromising"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCompetingCollaboratingCollaboratingCompromising",
-					"UtteranceId": "11-EC-0E-C4-7C-86-97-B6-9A-07-CC-93-37-B2-88-E6"
-				}, 
-				{
-					"CurrentState": "IPCNP311",
-					"NextState": "IPCCompetingCollaboratingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCompetingCollaboratingCollaboratingCollaborating",
-					"UtteranceId": "D8-0E-A2-A0-7E-F2-9A-2A-33-AB-0B-00-FD-BE-75-69"
-				}, 
-				{
-					"CurrentState": "IPCNP31",
-					"NextState": "IPCCompetingCollaboratingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCCompetingCollaboratingCompeting",
-					"UtteranceId": "E8-24-94-9D-42-C8-83-0C-42-D0-29-BC-BF-C7-78-3A"
-				}, 
-				{
-					"CurrentState": "IPCNP31",
-					"NextState": "IPCCompetingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCCompetingCollaboratingCollaborating",
-					"UtteranceId": "37-FB-B3-9E-0F-78-D8-63-70-05-DA-E8-B5-06-81-3C"
-				}, 
-				{
-					"CurrentState": "IPCNP3",
-					"NextState": "IPCCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCCompetingCompeting",
-					"UtteranceId": "B3-CC-56-45-FA-16-08-BD-84-7C-EA-58-66-9B-45-E1"
-				}, 
-				{
-					"CurrentState": "IPCNP3",
-					"NextState": "IPCCompetingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCCompetingCollaborating",
-					"UtteranceId": "8D-5A-59-16-09-1D-D2-B6-2E-3A-97-C5-4D-92-FA-05"
-				}, 
-				{
-					"CurrentState": "IPCNP22",
-					"NextState": "IPCAvoidingAvoidingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCAvoidingAvoidingCompeting",
-					"UtteranceId": "2C-E9-6E-0A-FF-D0-8A-65-BD-EA-ED-34-A8-40-9A-0A"
-				}, 
-				{
-					"CurrentState": "IPCNP22",
-					"NextState": "IPCAvoidingAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCAvoidingAvoidingAvoiding",
-					"UtteranceId": "AC-EA-07-65-C8-FF-D5-F5-B8-8D-8B-38-0A-B9-58-3B"
-				}, 
-				{
-					"CurrentState": "IPCNP21",
-					"NextState": "IPCAvoidingCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCAvoidingCompetingCompeting",
-					"UtteranceId": "A8-0D-E4-E9-62-3C-67-03-B0-98-99-28-07-0E-5C-B3"
-				}, 
-				{
-					"CurrentState": "IPCNP21",
-					"NextState": "IPCAvoidingCompetingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCAvoidingCompetingAvoiding",
-					"UtteranceId": "22-A3-B3-54-02-20-A3-0A-45-14-5A-E5-92-F9-0E-81"
-				}, 
-				{
-					"CurrentState": "IPCNP2",
-					"NextState": "IPCAvoidingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "IPCAvoidingCompeting",
-					"UtteranceId": "EE-06-C3-DE-D8-E0-91-7E-A0-74-33-1C-C2-F8-09-7C"
-				}, 
-				{
-					"CurrentState": "IPCNP2",
-					"NextState": "IPCAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "IPCAvoidingAvoiding",
-					"UtteranceId": "89-73-4F-AD-EC-AA-62-6A-06-68-8F-11-8A-2D-FE-3C"
-				}, 
-				{
-					"CurrentState": "IPCNP11",
-					"NextState": "IPCAvoidingAccomodatingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCAvoidingAccomodatingAvoiding",
-					"UtteranceId": "65-C6-B4-88-6C-04-15-4A-8A-E7-96-2A-32-3F-1C-2E"
-				}, 
-				{
-					"CurrentState": "IPCNP11",
-					"NextState": "IPCAvoidingAccomodatingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCAvoidingAccomodatingAccomodating",
-					"UtteranceId": "FA-DD-A9-51-FF-CA-EC-95-11-F1-09-23-2B-64-71-96"
-				}, 
-				{
-					"CurrentState": "IPCNP1",
-					"NextState": "IPCAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCAvoidingAvoiding",
-					"UtteranceId": "89-73-4F-AD-EC-AA-62-6A-06-68-8F-11-8A-2D-FE-3C"
-				}, 
-				{
-					"CurrentState": "IPCNP1",
-					"NextState": "IPCAvoidingAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["-"],
-					"Utterance": "IPCAvoidingAccomodating",
-					"UtteranceId": "67-BC-EE-07-2E-83-8F-5A-11-CD-A0-55-7A-EB-35-ED"
-				}, 
-				{
-					"CurrentState": "IPC",
-					"NextState": "IPCAccomodating",
-					"Meaning": ["Accomodating"],
-					"Style": ["-"],
-					"Utterance": "IPCAccomodating",
-					"UtteranceId": "75-94-FC-F4-5D-C1-4B-E0-AD-2D-BA-49-5F-84-C0-2A"
-				}, 
-				{
-					"CurrentState": "IPC",
-					"NextState": "IPCAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "IPCAvoiding",
-					"UtteranceId": "E1-E6-71-F6-E2-DB-DD-FE-5C-AC-20-FB-6C-34-D5-65"
-				}, 
-				{
-					"CurrentState": "IPC",
-					"NextState": "IPCCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCCollaborating",
-					"UtteranceId": "69-69-C9-54-8E-95-BB-38-03-71-B4-46-65-0B-64-2B"
-				}, 
-				{
-					"CurrentState": "IPC",
-					"NextState": "IPCCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "IPCCompeting",
-					"UtteranceId": "C4-EE-34-DB-11-76-91-9B-18-50-95-1B-71-D6-27-58"
+					"Meaning": ["RecruitWisdom"],
+					"Style": ["RecruitWisdom"],
+					"Utterance": "RecruitWisdom",
+					"UtteranceId": "9A-91-5E-1B-2F-20-62-09-88-4C-0C-A1-41-04-D6-F5"
+				}, 
+				{
+					"CurrentState": "RecruitWillpower",
+					"NextState": "-",
+					"Meaning": ["RecruitWillpower"],
+					"Style": ["RecruitWillpower"],
+					"Utterance": "RecruitWillpower",
+					"UtteranceId": "81-29-68-DC-37-82-92-72-0D-9E-41-C8-64-78-27-43"
 				}],
 			"AgentDialogues": [
 				{
-					"CurrentState": "StatRevealBad",
-					"NextState": "-",
-					"Meaning": ["StatRevealBad"],
-					"Style": ["StatRevealBad"],
-					"Utterance": "StatRevealBad",
-					"UtteranceId": "CA-11-C3-73-08-04-20-65-CC-06-28-50-4A-CF-3B-D7"
-				}, 
-				{
-					"CurrentState": "StatRevealMiddle",
-					"NextState": "-",
-					"Meaning": ["StatRevealMiddle"],
-					"Style": ["StatRevealMiddle"],
-					"Utterance": "StatRevealMiddle",
-					"UtteranceId": "85-6E-87-C5-05-98-85-30-F7-DD-EA-CB-46-F5-EA-0D"
-				}, 
-				{
-					"CurrentState": "StatRevealGood",
-					"NextState": "-",
-					"Meaning": ["StatRevealGood"],
-					"Style": ["StatRevealGood"],
-					"Utterance": "StatRevealGood",
-					"UtteranceId": "28-13-7C-07-C4-82-B7-17-BA-26-B0-97-57-55-53-3F"
-				}, 
-				{
-					"CurrentState": "RoleRevealGood",
-					"NextState": "-",
-					"Meaning": ["RoleRevealGood"],
-					"Style": ["RoleRevealGood"],
-					"Utterance": "RoleRevealGood",
-					"UtteranceId": "72-0E-BF-6F-D4-1E-94-8E-55-C9-34-27-83-17-73-60"
-				}, 
-				{
-					"CurrentState": "Neither",
-					"NextState": "-",
-					"Meaning": ["Neither"],
-					"Style": ["Neither"],
-					"Utterance": "Neither",
-					"UtteranceId": "ED-AB-64-96-46-A4-C3-EB-D9-77-0B-DF-C2-95-34-B5"
-				}, 
-				{
-					"CurrentState": "RoleRevealBad",
-					"NextState": "-",
-					"Meaning": ["RoleRevealBad"],
-					"Style": ["RoleRevealBad"],
-					"Utterance": "RoleRevealBad",
-					"UtteranceId": "9F-DC-D9-69-FB-66-4A-82-7E-2D-95-C4-B2-1E-44-6E"
-				}, 
-				{
-					"CurrentState": "OpinionRevealPositiveHigh",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealPositiveHigh"],
-					"Style": ["OpinionRevealPositiveHigh"],
-					"Utterance": "OpinionRevealPositiveHigh",
-					"UtteranceId": "F9-A4-A8-3C-01-54-E8-E3-0C-34-D3-FE-C4-D2-9B-90"
-				}, 
-				{
-					"CurrentState": "OpinionRevealNegativeHigh",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealNegativeHigh"],
-					"Style": ["OpinionRevealNegativeHigh"],
-					"Utterance": "OpinionRevealNegativeHigh",
-					"UtteranceId": "AF-36-E8-CF-F5-C6-39-B3-F0-DE-8A-0B-BD-F8-A0-41"
-				}, 
-				{
-					"CurrentState": "OpinionRevealPositiveNone",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealPositiveNone"],
-					"Style": ["OpinionRevealPositiveNone"],
-					"Utterance": "OpinionRevealPositiveNone",
-					"UtteranceId": "25-9F-E3-AF-02-5F-D3-47-B6-F0-61-54-09-9A-A4-54"
-				}, 
-				{
-					"CurrentState": "OpinionRevealNegativeNone",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealNegativeNone"],
-					"Style": ["OpinionRevealNegativeNone"],
-					"Utterance": "OpinionRevealNegativeNone",
-					"UtteranceId": "AE-79-E8-75-FF-FB-01-4C-43-4C-09-5A-47-24-11-39"
-				}, 
-				{
-					"CurrentState": "OpinionRevealPositive",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealPositive"],
-					"Style": ["OpinionRevealPositive"],
-					"Utterance": "OpinionRevealPositiveAnswer",
-					"UtteranceId": "F8-67-3F-16-B1-2C-AD-F2-E9-26-84-95-C6-C4-01-1E"
-				}, 
-				{
-					"CurrentState": "PostRaceEventStart",
-					"NextState": "OO",
-					"Meaning": ["OO"],
-					"Style": ["Race", "Practice"],
-					"Utterance": "OO",
-					"UtteranceId": "E4-7C-A7-A0-9C-F6-78-1E-29-63-45-02-34-59-30-A7"
-				}, 
-				{
-					"CurrentState": "StrongAgree",
-					"NextState": "-",
-					"Meaning": ["StrongAgree"],
-					"Style": ["StrongAgree"],
-					"Utterance": "StrongAgree",
-					"UtteranceId": "D5-E2-13-04-25-6B-86-37-80-63-BC-A9-D4-58-F7-E7"
-				}, 
-				{
-					"CurrentState": "IPCCompetingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
-					"Utterance": "IPCCompetingCompetingResponse",
-					"UtteranceId": "B7-D7-F8-DC-AC-1E-0D-35-9C-B5-E6-64-3B-48-2E-CF"
-				}, 
-				{
-					"CurrentState": "IPCCompetingCompeting2",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)"],
-					"Utterance": "IPCCompetingCompeting2Response",
-					"UtteranceId": "A0-03-97-D4-B8-61-3E-89-BF-F9-02-CA-71-CA-A8-EB"
-				}, 
-				{
-					"CurrentState": "StrongDisagree",
-					"NextState": "-",
-					"Meaning": ["StrongDisagree"],
-					"Style": ["StrongDisagree"],
-					"Utterance": "StrongDisagree",
-					"UtteranceId": "D3-9E-20-FA-85-E7-7F-C2-15-CF-0C-B0-46-0D-4F-CD"
-				}, 
-				{
-					"CurrentState": "NotPickedAccomodating",
-					"NextState": "NotPickedNP3",
+					"CurrentState": "IPCAccommodating",
+					"NextState": "IPCNP6",
 					"Meaning": ["-"],
 					"Style": ["-"],
-					"Utterance": "NotPickedNP3",
-					"UtteranceId": "57-C4-D1-2E-83-EC-B7-9C-BC-EF-03-F0-3D-C9-D6-51"
+					"Utterance": "IPCNP6",
+					"UtteranceId": "40-FE-30-A8-47-25-0D-76-A4-C1-D8-18-39-28-B2-7E"
 				}, 
 				{
-					"CurrentState": "PostRaceEventStart",
-					"NextState": "IPC",
-					"Meaning": ["IPC"],
-					"Style": ["Race", "Practice"],
-					"Utterance": "IPC",
-					"UtteranceId": "5A-C8-BF-6F-C7-65-27-45-57-3F-0E-F2-4A-8A-B5-13"
-				}, 
-				{
-					"CurrentState": "PWAccomodatingCompetingAccomodating",
+					"CurrentState": "InterviewIntro",
 					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(1)", "ExpectedPositionAfter"],
-					"Utterance": "PWAccomodatingCompetingAccomodatingResponse",
-					"UtteranceId": "58-99-EE-87-9E-3A-CE-EC-1C-7B-6E-AD-48-7D-AA-AA"
+					"Meaning": ["InterviewIntro"],
+					"Style": ["InterviewIntro"],
+					"Utterance": "InterviewIntro",
+					"UtteranceId": "C0-59-78-C5-1C-7D-74-2B-9C-06-3E-20-8A-66-6D-5E"
 				}, 
 				{
-					"CurrentState": "PWCompetingAccomodating",
-					"NextState": "PWNP21",
+					"CurrentState": "IPCAccommodating",
+					"NextState": "IPCNP5",
 					"Meaning": ["-"],
 					"Style": ["-"],
-					"Utterance": "PWNP21",
-					"UtteranceId": "2F-CF-5F-96-C9-C8-5E-78-36-F5-09-88-A2-D5-5D-6B"
+					"Utterance": "IPCNP5",
+					"UtteranceId": "A6-CB-79-60-5F-B1-D5-17-ED-44-D3-B1-25-21-A7-2C"
 				}, 
 				{
-					"CurrentState": "PWAccomodatingCompeting",
-					"NextState": "PWNP31",
-					"Meaning": ["-"],
-					"Style": ["ManagerOpinionWorse"],
-					"Utterance": "PWNP31",
-					"UtteranceId": "74-85-DC-6A-06-91-61-76-EC-A0-59-F3-3D-04-C5-42"
-				}, 
-				{
-					"CurrentState": "PWAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-2)", "ManagerOpinionWorse"],
-					"Utterance": "PWAvoidingAvoidingResponse",
-					"UtteranceId": "76-0F-D6-A1-65-9D-94-8B-9D-2D-F6-42-77-69-4E-83"
-				}, 
-				{
-					"CurrentState": "PWCollaboratingCollaborating",
-					"NextState": "PWNP41",
+					"CurrentState": "IPCAccommodatingAccommodating",
+					"NextState": "IPCNP51",
 					"Meaning": ["-"],
 					"Style": ["-"],
-					"Utterance": "PWNP41",
-					"UtteranceId": "C1-7D-4D-45-BA-3A-A8-D9-D5-29-87-42-08-D4-2A-B0"
-				}, 
-				{
-					"CurrentState": "PWAvoidingCollaborating",
-					"NextState": "PWNP11",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "PWNP11",
-					"UtteranceId": "A3-29-9B-36-3B-74-2C-71-69-D6-83-3A-32-7F-3E-75"
-				}, 
-				{
-					"CurrentState": "PWCompetingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
-					"Utterance": "PWCompetingCompetingResponse",
-					"UtteranceId": "E7-4B-32-F4-C0-02-E4-5C-A7-D8-EF-D0-BA-7C-09-65"
-				}, 
-				{
-					"CurrentState": "PWCompeting",
-					"NextState": "PWNP2",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "PWNP2",
-					"UtteranceId": "36-BA-08-D4-68-2D-BF-BA-0C-5B-98-30-2F-2B-DC-C7"
-				}, 
-				{
-					"CurrentState": "PWAccomodatingAccomodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(2)", "ExpectedPosition"],
-					"Utterance": "PWAccomodatingAccomodatingResponse",
-					"UtteranceId": "1E-B2-AE-CB-16-7D-9A-DF-11-D9-FE-E8-B9-BF-11-13"
-				}, 
-				{
-					"CurrentState": "PWCollaborating",
-					"NextState": "PWNP4",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "PWNP4",
-					"UtteranceId": "80-56-FD-CD-73-B3-EB-44-6A-44-FA-E7-D2-2F-3A-A9"
-				}, 
-				{
-					"CurrentState": "PWAccomodating",
-					"NextState": "PWNP3",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "PWNP3",
-					"UtteranceId": "37-E9-A8-AA-18-6D-E9-D3-96-5C-C4-2A-F0-B6-48-2A"
-				}, 
-				{
-					"CurrentState": "PWCollaboratingCollaboratingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
-					"Utterance": "PWCollaboratingCollaboratingAvoidingResponse",
-					"UtteranceId": "4E-F3-FD-A4-74-89-40-E5-94-4E-00-9A-3C-7B-B9-6D"
-				}, 
-				{
-					"CurrentState": "PWCollaboratingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
-					"Utterance": "PWCollaboratingAvoidingResponse",
-					"UtteranceId": "C0-3E-84-A7-16-94-6A-9B-0D-9D-15-8B-76-CD-BB-CF"
-				}, 
-				{
-					"CurrentState": "PWAvoidingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(3)", "RevealTwoSkills"],
-					"Utterance": "PWAvoidingCollaboratingCollaboratingResponse",
-					"UtteranceId": "C2-9C-ED-B3-B1-02-47-C6-32-05-36-F3-E5-B1-AE-27"
-				}, 
-				{
-					"CurrentState": "PWCompetingAccomodatingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-3)", "ManagerOpinionMuchWorse"],
-					"Utterance": "PWCompetingAccomodatingCompetingResponse",
-					"UtteranceId": "A2-04-FF-70-26-40-EA-FB-DF-0C-7F-2B-C2-C2-BC-63"
-				}, 
-				{
-					"CurrentState": "PWAvoiding",
-					"NextState": "PWNP1",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "PWNP1",
-					"UtteranceId": "2E-61-43-9B-F4-04-B2-52-53-11-1E-CA-0C-19-2D-4D"
-				}, 
-				{
-					"CurrentState": "PWAvoidingCollaboratingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)"],
-					"Utterance": "PWAvoidingCollaboratingAvoidingResponse",
-					"UtteranceId": "C5-25-24-2F-3F-7A-14-DD-62-97-65-52-56-39-8D-C0"
-				}, 
-				{
-					"CurrentState": "PWAccomodatingCompetingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-3)", "ManagerOpinionMuchWorse"],
-					"Utterance": "PWAccomodatingCompetingCompetingResponse",
-					"UtteranceId": "85-67-6C-96-F9-6A-0D-EB-C3-FC-E4-A5-A0-D1-51-73"
-				}, 
-				{
-					"CurrentState": "PWCompetingAccomodatingAccomodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(1)", "ExpectedPosition"],
-					"Utterance": "PWCompetingAccomodatingAccomodatingResponse",
-					"UtteranceId": "67-BB-57-2B-82-F9-78-B5-D3-BD-A4-37-C2-82-4B-54"
-				}, 
-				{
-					"CurrentState": "PWCollaboratingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(6)", "RevealFourSkills"],
-					"Utterance": "PWCollaboratingCollaboratingCollaboratingResponse",
-					"UtteranceId": "31-A4-3B-23-E5-8C-FE-BF-FD-2E-A0-AE-79-0A-B8-02"
-				}, 
-				{
-					"CurrentState": "OOAccomodatingAccomodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(2)", "ImproveConflictOpinionGreatly"],
-					"Utterance": "OOAccomodatingAccomodatingResponse",
-					"UtteranceId": "D9-DC-1A-40-50-6B-97-7A-4E-36-E7-68-11-B6-94-BD"
-				}, 
-				{
-					"CurrentState": "OOAvoidingAccomodatingAccomodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(1)"],
-					"Utterance": "OOAvoidingAccomodatingAccomodatingResponse",
-					"UtteranceId": "0F-BB-5E-22-33-EE-F4-83-3E-92-C7-63-E3-6D-82-19"
-				}, 
-				{
-					"CurrentState": "OOAccomodatingAvoidingAccomodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(1)", "ImproveConflictTeamOpinion"],
-					"Utterance": "OOAccomodatingAvoidingAccomodatingResponse",
-					"UtteranceId": "2B-49-46-57-49-91-8C-D3-EB-54-94-08-08-53-C8-FB"
-				}, 
-				{
-					"CurrentState": "OOCompetingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(2)", "ImproveConflictKnowledge"],
-					"Utterance": "OOCompetingCollaboratingCollaboratingResponse",
-					"UtteranceId": "8B-3E-B7-45-23-61-12-88-91-C0-DD-97-97-07-25-89"
-				}, 
-				{
-					"CurrentState": "OOCollaborating",
-					"NextState": "OONP4",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP4",
-					"UtteranceId": "26-6D-B8-AD-E4-12-C0-B1-67-5A-FF-43-37-65-C0-0B"
-				}, 
-				{
-					"CurrentState": "OOCollaboratingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(6)", "ImproveConflictKnowledge"],
-					"Utterance": "OOCollaboratingCollaboratingCollaboratingResponse",
-					"UtteranceId": "A5-74-9E-38-A4-E4-EC-35-B2-1F-F0-96-85-46-7F-19"
-				}, 
-				{
-					"CurrentState": "OOCollaboratingCollaborating",
-					"NextState": "OONP41",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP41",
-					"UtteranceId": "BA-ED-A0-20-27-10-32-E7-B7-B7-B0-9B-82-41-26-0C"
-				}, 
-				{
-					"CurrentState": "OOAvoidingAccomodating",
-					"NextState": "OONP11",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP11",
-					"UtteranceId": "D8-B4-43-62-6C-E0-1A-3D-8A-BB-18-52-12-39-69-62"
-				}, 
-				{
-					"CurrentState": "OOAccomodatingAvoiding",
-					"NextState": "OONP31",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP31",
-					"UtteranceId": "6B-E2-FE-03-1E-47-54-F8-6B-DA-D0-46-10-00-71-29"
-				}, 
-				{
-					"CurrentState": "OOCompetingCollaborating",
-					"NextState": "OONP21",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP21",
-					"UtteranceId": "17-CE-7E-92-9F-29-F1-C5-71-CF-4E-24-BC-59-DB-7D"
-				}, 
-				{
-					"CurrentState": "OpinionRevealNegative",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealNegative"],
-					"Style": ["OpinionRevealNegative"],
-					"Utterance": "OpinionRevealNegativeAnswer",
-					"UtteranceId": "61-77-34-2F-D2-FE-B7-44-91-4C-77-91-E7-DD-4C-41"
-				}, 
-				{
-					"CurrentState": "OOCompeting",
-					"NextState": "OONP2",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP2",
-					"UtteranceId": "D2-05-78-57-57-8F-66-65-06-D3-00-C2-6C-CE-F6-DB"
-				}, 
-				{
-					"CurrentState": "OOAvoidingAccomodatingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ImproveConflictTeamOpinion"],
-					"Utterance": "OOAvoidingAccomodatingAvoidingResponse",
-					"UtteranceId": "8D-91-17-69-19-1E-39-E1-16-03-DC-3F-AB-EF-16-6E"
-				}, 
-				{
-					"CurrentState": "OOAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-2)", "ManagerOpinionWorse"],
-					"Utterance": "OOAvoidingAvoidingResponse",
-					"UtteranceId": "69-96-20-C4-CA-93-E0-63-0A-84-58-C6-F6-4F-EB-33"
-				}, 
-				{
-					"CurrentState": "OOCompetingCollaboratingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-2)", "ManagerOpinionWorse"],
-					"Utterance": "OOCompetingCollaboratingCompetingResponse",
-					"UtteranceId": "46-39-40-CD-98-42-44-9B-1A-E5-A5-7E-93-6C-54-DA"
-				}, 
-				{
-					"CurrentState": "OOCompetingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
-					"Utterance": "OOCompetingCompetingResponse",
-					"UtteranceId": "05-47-49-08-9E-88-CC-ED-C4-85-97-63-4B-F0-D0-52"
-				}, 
-				{
-					"CurrentState": "OOAvoiding",
-					"NextState": "OONP1",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP1",
-					"UtteranceId": "B7-47-30-80-46-8E-31-B2-9E-B5-0E-23-E2-A1-31-5D"
-				}, 
-				{
-					"CurrentState": "OOAccomodatingAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ManagerOpinionMuchWorse"],
-					"Utterance": "OOAccomodatingAvoidingAvoidingResponse",
-					"UtteranceId": "58-DF-BF-71-26-13-4E-5D-2B-E6-F0-76-E9-DD-CD-E6"
-				}, 
-				{
-					"CurrentState": "OOCollaboratingCollaboratingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
-					"Utterance": "OOCollaboratingCollaboratingCompetingResponse",
-					"UtteranceId": "50-3A-7F-FB-6D-57-82-A0-BF-E0-4E-AF-BE-40-37-D5"
-				}, 
-				{
-					"CurrentState": "OOCollaboratingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
-					"Utterance": "OOCollaboratingCompetingResponse",
-					"UtteranceId": "52-C6-BE-37-2B-A7-0C-A5-96-2D-0A-D8-D7-41-CD-B6"
-				}, 
-				{
-					"CurrentState": "NotPickedAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-2)", "ManagerOpinionWorse"],
-					"Utterance": "NotPickedAvoidingAvoidingResponse",
-					"UtteranceId": "2B-C6-04-44-80-EE-A4-04-C1-1F-3D-40-CF-68-77-C0"
-				}, 
-				{
-					"CurrentState": "PostRaceEventStart",
-					"NextState": "NotPicked",
-					"Meaning": ["NotPicked"],
-					"Style": ["Race", "Practice"],
-					"Utterance": "NotPicked",
-					"UtteranceId": "0E-37-62-36-F8-BB-6C-65-CB-A6-B5-C0-3E-5B-E3-2E"
-				}, 
-				{
-					"CurrentState": "PostRaceEventStart",
-					"NextState": "PW",
-					"Meaning": ["PW"],
-					"Style": ["Race", "Practice"],
-					"Utterance": "PW",
-					"UtteranceId": "8F-E4-C1-14-51-28-1C-09-4A-65-78-E6-DD-BF-5E-ED"
-				}, 
-				{
-					"CurrentState": "NotPickedCompetingAvoiding",
-					"NextState": "NotPickedNP21",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "NotPickedNP21",
-					"UtteranceId": "BA-89-81-89-80-A0-A6-E3-8D-42-E5-8C-14-89-15-DF"
-				}, 
-				{
-					"CurrentState": "NotPickedAccomodatingAccomodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(2)", "ExpectedPosition"],
-					"Utterance": "NotPickedAccomodatingAccomodatingResponse",
-					"UtteranceId": "D4-CB-6C-17-06-F5-9C-3D-39-3E-01-D2-25-F0-1F-AD"
-				}, 
-				{
-					"CurrentState": "NotPickedCollaboratingAccomodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(3)", "CausesSelectionAfter"],
-					"Utterance": "NotPickedCollaboratingAccomodatingResponse",
-					"UtteranceId": "87-D6-52-E6-DF-C2-5F-92-32-86-BD-AF-5D-7E-E0-97"
-				}, 
-				{
-					"CurrentState": "NotPickedAvoidingCompeting",
-					"NextState": "NotPickedNP11",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "NotPickedNP11",
-					"UtteranceId": "38-41-D1-7A-7E-72-EE-52-44-25-04-B9-DB-6C-21-7A"
-				}, 
-				{
-					"CurrentState": "NotPickedAvoidingCompetingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)", "ManagerOpinionWorse"],
-					"Utterance": "NotPickedAvoidingCompetingAvoidingResponse",
-					"UtteranceId": "71-97-7A-B4-D6-07-6B-75-26-9C-D9-A4-4C-89-6E-E3"
-				}, 
-				{
-					"CurrentState": "OOAccomodating",
-					"NextState": "OONP3",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP3",
-					"UtteranceId": "BE-28-F1-02-09-BF-7B-1B-A9-08-7D-47-72-97-A7-83"
-				}, 
-				{
-					"CurrentState": "NotPickedCompetingAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
-					"Utterance": "NotPickedCompetingAvoidingAvoidingResponse",
-					"UtteranceId": "4D-EB-80-1D-70-86-C5-70-93-17-4A-31-51-43-65-06"
-				}, 
-				{
-					"CurrentState": "NotPickedAccomodatingCollaborating",
-					"NextState": "NotPickedNP31",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "NotPickedNP31",
-					"UtteranceId": "7C-20-FE-75-84-99-23-90-C3-CB-E8-10-C8-44-AB-3D"
-				}, 
-				{
-					"CurrentState": "NotPickedAccomodatingCollaboratingAccomodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(4)", "ManagerOpinionBetter"],
-					"Utterance": "NotPickedAccomodatingCollaboratingAccomodatingResponse",
-					"UtteranceId": "E5-DD-E1-9E-73-BA-66-48-ED-42-6E-EE-AF-E3-C7-E9"
-				}, 
-				{
-					"CurrentState": "NotPickedCollaboratingCollaboratingAccomodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(5)", "CausesSelectionAfter"],
-					"Utterance": "NotPickedCollaboratingCollaboratingAccomodatingResponse",
-					"UtteranceId": "9B-22-EF-F8-6F-53-FA-78-FF-80-50-9C-38-3F-32-AF"
-				}, 
-				{
-					"CurrentState": "NotPickedCollaboratingCollaborating",
-					"NextState": "NotPickedNP41",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "NotPickedNP41",
-					"UtteranceId": "11-7D-D4-CB-AC-25-7D-FD-8F-AB-68-D2-E6-17-6E-43"
-				}, 
-				{
-					"CurrentState": "NotPickedCollaborating",
-					"NextState": "NotPickedNP4",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "NotPickedNP4",
-					"UtteranceId": "67-C6-6A-E2-97-F9-CD-A3-AB-23-16-87-94-6F-D9-84"
-				}, 
-				{
-					"CurrentState": "NotPickedAvoidingCompetingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-5)", "ManagerOpinionMuchWorse"],
-					"Utterance": "NotPickedAvoidingCompetingCompetingResponse",
-					"UtteranceId": "0D-47-BC-DD-E5-90-7C-65-02-EC-97-84-D4-4A-04-A6"
-				}, 
-				{
-					"CurrentState": "NotPickedCompetingAvoidingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-5)", "ManagerOpinionMuchWorse"],
-					"Utterance": "NotPickedCompetingAvoidingCompetingResponse",
-					"UtteranceId": "78-A4-20-1F-23-0B-47-5F-13-E4-D6-6D-81-F5-62-49"
+					"Utterance": "IPCNP51",
+					"UtteranceId": "CC-72-1E-29-23-CE-6B-FC-19-97-11-D8-15-EB-F8-24"
 				}, 
 				{
 					"CurrentState": "NotPickedCompetingCompeting",
@@ -1575,44 +1007,284 @@
 					"UtteranceId": "43-FD-95-6A-A4-AC-09-9A-8B-62-71-69-80-C2-7E-74"
 				}, 
 				{
-					"CurrentState": "NotPickedAvoiding",
-					"NextState": "NotPickedNP1",
+					"CurrentState": "IPCAccommodatingAccommodating2",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(2)"],
+					"Utterance": "IPCAccommodatingAccommodating2Response",
+					"UtteranceId": "9A-74-CC-2D-5C-57-AF-35-41-07-29-B2-1E-AE-20-F6"
+				}, 
+				{
+					"CurrentState": "IPCCollaborating",
+					"NextState": "IPCNP8",
 					"Meaning": ["-"],
 					"Style": ["-"],
-					"Utterance": "NotPickedNP1",
-					"UtteranceId": "BB-A9-75-6D-31-FE-D1-F1-A3-30-6B-93-E9-F9-D8-F6"
+					"Utterance": "IPCNP8",
+					"UtteranceId": "90-DF-7C-95-D9-AC-4F-64-58-29-FD-5E-1D-76-8E-15"
 				}, 
 				{
-					"CurrentState": "NotPickedAccomodatingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(5)", "ManagerOpinionMuchBetter"],
-					"Utterance": "NotPickedAccomodatingCollaboratingCollaboratingResponse",
-					"UtteranceId": "1F-48-DD-F3-43-B8-B6-3B-52-EE-D4-84-20-98-11-60"
-				}, 
-				{
-					"CurrentState": "NotPickedCompeting",
-					"NextState": "NotPickedNP2",
+					"CurrentState": "IPCCollaboratingCollaborating2",
+					"NextState": "IPCNP81",
 					"Meaning": ["-"],
 					"Style": ["-"],
-					"Utterance": "NotPickedNP2",
-					"UtteranceId": "CD-D2-DC-DA-7C-6C-A1-81-A9-3B-D4-A6-69-1F-A4-C2"
+					"Utterance": "IPCNP81",
+					"UtteranceId": "47-A1-CD-2E-C3-77-84-AA-C2-3F-EF-A0-5F-A7-97-8E"
 				}, 
 				{
-					"CurrentState": "NotPickedCollaboratingCollaboratingCollaborating",
-					"NextState": "-",
+					"CurrentState": "IPCCollaborating",
+					"NextState": "IPCNP7",
 					"Meaning": ["-"],
-					"Style": ["MoodChange(6)", "WholeTeamChange"],
-					"Utterance": "NotPickedCollaboratingCollaboratingCollaboratingResponse",
-					"UtteranceId": "0E-3E-8C-AF-36-0C-9D-76-46-C4-E0-3E-6C-39-F4-B9"
+					"Style": ["-"],
+					"Utterance": "IPCNP7",
+					"UtteranceId": "5E-7A-98-E1-55-46-86-40-06-90-57-22-E5-27-54-23"
 				}, 
 				{
-					"CurrentState": "IPCCompetingCollaboratingCompeting",
+					"CurrentState": "IPCCollaboratingCollaborating",
+					"NextState": "IPCNP71",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "IPCNP71",
+					"UtteranceId": "02-74-83-2B-D0-0F-31-AD-86-1F-2D-D3-14-04-B1-66"
+				}, 
+				{
+					"CurrentState": "IPCCollaboratingAccommodating",
 					"NextState": "-",
 					"Meaning": ["-"],
-					"Style": ["MoodChange(-2)"],
-					"Utterance": "IPCCompetingCollaboratingCompetingResponse",
-					"UtteranceId": "4B-7B-8C-19-D0-6F-4E-62-1F-FA-25-8F-3B-CC-8B-6B"
+					"Style": ["MoodChange(3)"],
+					"Utterance": "IPCCollaboratingAccommodatingResponse",
+					"UtteranceId": "5F-62-F2-4D-EC-7F-9A-B8-5F-5A-05-40-8B-B7-C3-BF"
+				}, 
+				{
+					"CurrentState": "IPCAvoidingCompeting",
+					"NextState": "IPCNP21",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "IPCNP21",
+					"UtteranceId": "2D-27-4F-62-EB-2F-12-64-66-33-AA-FC-C3-C1-B8-EB"
+				}, 
+				{
+					"CurrentState": "Disagree",
+					"NextState": "-",
+					"Meaning": ["Disagree"],
+					"Style": ["Disagree"],
+					"Utterance": "Disagree",
+					"UtteranceId": "2B-52-AC-64-A5-52-E4-E5-4D-44-0F-49-FC-B5-A5-8C"
+				}, 
+				{
+					"CurrentState": "OOAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(2)", "ImproveConflictOpinionGreatly"],
+					"Utterance": "OOAccommodatingAccommodatingResponse",
+					"UtteranceId": "0A-C5-0E-14-38-A4-42-8D-D9-C3-66-90-55-71-C9-30"
+				}, 
+				{
+					"CurrentState": "OOAccommodating",
+					"NextState": "OONP3",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "OONP3",
+					"UtteranceId": "BE-28-F1-02-09-BF-7B-1B-A9-08-7D-47-72-97-A7-83"
+				}, 
+				{
+					"CurrentState": "Agree",
+					"NextState": "-",
+					"Meaning": ["Agree"],
+					"Style": ["Agree"],
+					"Utterance": "Agree",
+					"UtteranceId": "6A-63-34-B4-78-28-9B-4F-B3-06-0C-4F-80-3E-AF-D3"
+				}, 
+				{
+					"CurrentState": "NotPickedCompetingAvoidingCompeting",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-5)", "ManagerOpinionMuchWorse"],
+					"Utterance": "NotPickedCompetingAvoidingCompetingResponse",
+					"UtteranceId": "78-A4-20-1F-23-0B-47-5F-13-E4-D6-6D-81-F5-62-49"
+				}, 
+				{
+					"CurrentState": "IPCAvoidingCompetingCompeting",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-5)", "ManagerOpinionAllCrewWorse"],
+					"Utterance": "IPCAvoidingCompetingCompetingResponse",
+					"UtteranceId": "79-95-4E-62-9A-A7-82-BF-3D-11-03-07-81-33-2C-8C"
+				}, 
+				{
+					"CurrentState": "IPCAvoidingAccommodatingAvoiding",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-1)", "ManagerOpinionMuchWorse"],
+					"Utterance": "IPCAvoidingAccommodatingAvoidingResponse",
+					"UtteranceId": "6E-42-F4-65-BE-8B-4B-C6-2A-1E-6D-E2-88-D0-77-0A"
+				}, 
+				{
+					"CurrentState": "IPCAccommodatingAvoidingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(1)"],
+					"Utterance": "IPCAccommodatingAvoidingAccommodatingResponse",
+					"UtteranceId": "35-66-B1-B0-C8-3B-0E-78-EB-81-38-58-00-89-0D-E3"
+				}, 
+				{
+					"CurrentState": "IPCAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-2)", "ManagerOpinionMuchWorse"],
+					"Utterance": "IPCAvoidingAvoidingResponse",
+					"UtteranceId": "38-43-63-95-0B-74-5C-A7-64-81-54-51-AE-72-48-8F"
+				}, 
+				{
+					"CurrentState": "IPCAvoiding",
+					"NextState": "IPCNP2",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "IPCNP2",
+					"UtteranceId": "BF-32-99-61-B6-97-CF-3C-63-05-82-E5-64-33-F8-53"
+				}, 
+				{
+					"CurrentState": "IPCAccommodatingCollaboratingAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(5)", "ManagerOpinionAllCrewBetter"],
+					"Utterance": "IPCAccommodatingCollaboratingAccommodatingAccommodatingResponse",
+					"UtteranceId": "3C-4D-7B-32-E0-7D-5A-85-98-E0-E5-FF-BA-D3-5C-E6"
+				}, 
+				{
+					"CurrentState": "IPCAvoiding",
+					"NextState": "IPCNP1",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "IPCNP1",
+					"UtteranceId": "C6-84-B9-51-10-21-46-E7-13-FD-51-52-D8-A9-BF-41"
+				}, 
+				{
+					"CurrentState": "IPCAccommodatingAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(3)", "ManagerOpinionBetter"],
+					"Utterance": "IPCAccommodatingAccommodatingAccommodatingResponse",
+					"UtteranceId": "0D-49-29-93-0D-53-67-83-94-20-4D-53-7A-5C-82-AB"
+				}, 
+				{
+					"CurrentState": "IPCAccommodatingAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
+					"Utterance": "IPCAccommodatingAvoidingAvoidingResponse",
+					"UtteranceId": "3B-7D-0A-C5-22-1C-C6-0E-0C-77-BE-08-C2-F7-7D-BA"
+				}, 
+				{
+					"CurrentState": "IPCAvoidingAvoiding",
+					"NextState": "IPCNP22",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "IPCNP22",
+					"UtteranceId": "B7-3A-F0-80-B2-B1-9B-E3-FA-74-E2-23-6C-B1-7D-7A"
+				}, 
+				{
+					"CurrentState": "IPCAccommodatingCollaboratingCollaborating",
+					"NextState": "IPCNP611",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "IPCNP611",
+					"UtteranceId": "7E-36-1A-DB-18-EE-8C-05-3B-85-86-57-1B-9A-0F-47"
+				}, 
+				{
+					"CurrentState": "IPCAvoidingAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-3)", "ManagerOpinionWorse"],
+					"Utterance": "IPCAvoidingAvoidingAvoidingResponse",
+					"UtteranceId": "12-8D-6F-83-AF-80-2B-18-A3-34-F7-10-AB-C1-89-85"
+				}, 
+				{
+					"CurrentState": "IPCAccommodatingCollaboratingAccommodating",
+					"NextState": "IPCNP612",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "IPCNP612",
+					"UtteranceId": "B4-76-DF-15-73-0F-2F-B9-4E-0C-00-F1-16-DC-25-51"
+				}, 
+				{
+					"CurrentState": "IPCAccommodatingCollaboratingAccommodatingCompromising",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(6)", "ManagerOpinionAllCrewBetter"],
+					"Utterance": "IPCAccommodatingCollaboratingAccommodatingCompromisingResponse",
+					"UtteranceId": "54-34-63-67-C8-F6-59-C9-6B-80-BE-45-D8-64-6B-61"
+				}, 
+				{
+					"CurrentState": "IPCAccommodatingCollaboratingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(7)", "ManagerOpinionAllCrewBetter"],
+					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCollaboratingResponse",
+					"UtteranceId": "5D-63-60-8F-6E-BD-13-E0-1D-8A-4B-AC-4C-19-C3-57"
+				}, 
+				{
+					"CurrentState": "IPCAccommodatingAccommodatingCompromising",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(4)", "ManagerOpinionBetter"],
+					"Utterance": "IPCAccommodatingAccommodatingCompromisingResponse",
+					"UtteranceId": "BF-46-A6-23-D0-33-09-99-EE-65-21-AB-02-9C-F7-F3"
+				}, 
+				{
+					"CurrentState": "IPCAvoidingAccommodating",
+					"NextState": "IPCNP11",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "IPCNP11",
+					"UtteranceId": "05-14-1A-C5-F8-CC-9B-3F-42-56-F9-AE-46-54-D7-FF"
+				}, 
+				{
+					"CurrentState": "IPCAccommodatingCollaboratingCollaboratingCompromising",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(7)", "ManagerOpinionAllCrewBetter"],
+					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCompromisingResponse",
+					"UtteranceId": "FC-9E-3D-B1-0B-17-E3-BD-D0-97-DC-2E-83-7E-F6-07"
+				}, 
+				{
+					"CurrentState": "IPCAvoidingAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(1)", "ManagerOpinionBetter"],
+					"Utterance": "IPCAvoidingAccommodatingAccommodatingResponse",
+					"UtteranceId": "C3-9E-8A-14-65-86-F6-B7-F2-93-4A-79-30-AF-B5-E5"
+				}, 
+				{
+					"CurrentState": "IPCAccommodatingAvoiding",
+					"NextState": "IPCNP52",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "IPCNP52",
+					"UtteranceId": "34-8C-E6-A8-B3-99-97-62-9B-42-12-BF-A3-3B-54-49"
+				}, 
+				{
+					"CurrentState": "IPCAccommodatingCollaborating",
+					"NextState": "IPCNP61",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "IPCNP61",
+					"UtteranceId": "BC-2E-89-6C-BD-BE-48-D4-2D-EF-A7-9F-D7-9B-DE-29"
+				}, 
+				{
+					"CurrentState": "IPCCompetingCompeting",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
+					"Utterance": "IPCCompetingCompetingResponse",
+					"UtteranceId": "B7-D7-F8-DC-AC-1E-0D-35-9C-B5-E6-64-3B-48-2E-CF"
+				}, 
+				{
+					"CurrentState": "IPCCompetingAvoidingCompeting",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-5)"],
+					"Utterance": "IPCCompetingAvoidingCompetingResponse",
+					"UtteranceId": "52-6C-10-15-83-20-6E-19-7E-73-F3-71-7E-03-F2-D1"
 				}, 
 				{
 					"CurrentState": "IPCCompetingCollaboratingCollaboratingCompromising",
@@ -1623,20 +1295,36 @@
 					"UtteranceId": "12-6A-38-35-E5-97-D0-4A-3D-78-51-2A-B4-86-47-98"
 				}, 
 				{
-					"CurrentState": "IPCCompetingCollaboratingCollaboratingCollaborating",
+					"CurrentState": "IPCCollaboratingCollaboratingCollaborating2Collaborating",
 					"NextState": "-",
 					"Meaning": ["-"],
-					"Style": ["MoodChange(4)"],
-					"Utterance": "IPCCompetingCollaboratingCollaboratingCollaboratingResponse",
-					"UtteranceId": "44-86-97-17-AA-F2-13-5F-14-70-95-FE-FF-2D-C2-FB"
+					"Style": ["MoodChange(7)", "ManagerOpinionAllCrewBetter"],
+					"Utterance": "IPCCollaboratingCollaboratingCollaborating2CollaboratingResponse",
+					"UtteranceId": "71-8D-38-28-1C-95-42-6A-AB-A9-AD-16-4E-83-2E-5B"
 				}, 
 				{
-					"CurrentState": "IPCCompetingCollaboratingCollaborating",
-					"NextState": "IPCNP311",
+					"CurrentState": "IPCCompeting",
+					"NextState": "IPCNP4",
 					"Meaning": ["-"],
 					"Style": ["-"],
-					"Utterance": "IPCNP311",
-					"UtteranceId": "90-93-D7-C1-54-24-7A-A7-92-05-11-3B-67-25-17-46"
+					"Utterance": "IPCNP4",
+					"UtteranceId": "DA-D9-B7-75-D6-99-8D-3A-8D-E0-8C-70-43-0B-AE-48"
+				}, 
+				{
+					"CurrentState": "IPCCollaboratingCompetingCompeting",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-2)", "ManagerOpinionMuchWorse"],
+					"Utterance": "IPCCollaboratingCompetingCompetingResponse",
+					"UtteranceId": "DD-A1-30-99-0D-A3-2B-4E-56-CC-08-A5-2B-15-3C-E8"
+				}, 
+				{
+					"CurrentState": "IPCCompeting",
+					"NextState": "IPCNP3",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "IPCNP3",
+					"UtteranceId": "8A-EA-ED-BD-04-7B-B5-DE-73-B7-09-6B-EC-51-59-B9"
 				}, 
 				{
 					"CurrentState": "IPCCompetingCollaborating",
@@ -1647,12 +1335,36 @@
 					"UtteranceId": "F0-BC-F5-30-41-00-ED-F2-02-4D-BB-CC-88-FE-36-9B"
 				}, 
 				{
-					"CurrentState": "IPCCompetingAvoidingCompeting",
+					"CurrentState": "IPCCompetingCollaboratingCompeting",
 					"NextState": "-",
 					"Meaning": ["-"],
-					"Style": ["MoodChange(-5)"],
-					"Utterance": "IPCCompetingAvoidingCompetingResponse",
-					"UtteranceId": "52-6C-10-15-83-20-6E-19-7E-73-F3-71-7E-03-F2-D1"
+					"Style": ["MoodChange(-2)"],
+					"Utterance": "IPCCompetingCollaboratingCompetingResponse",
+					"UtteranceId": "4B-7B-8C-19-D0-6F-4E-62-1F-FA-25-8F-3B-CC-8B-6B"
+				}, 
+				{
+					"CurrentState": "IPCCollaboratingCollaboratingCollaboratingCompromising",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(7)", "ManagerOpinionBetter"],
+					"Utterance": "IPCCollaboratingCollaboratingCollaboratingCompromisingResponse",
+					"UtteranceId": "64-94-22-E2-9F-1D-79-A6-06-88-9C-F2-63-BB-00-B0"
+				}, 
+				{
+					"CurrentState": "IPCCollaboratingCollaborating2Collaborating",
+					"NextState": "IPCNP811",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "IPCNP811",
+					"UtteranceId": "F8-89-D8-C7-21-3A-13-81-BC-F7-27-8F-DD-47-86-5D"
+				}, 
+				{
+					"CurrentState": "IPCCollaboratingCollaboratingCompromising",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(6)"],
+					"Utterance": "IPCCollaboratingCollaboratingCompromisingResponse",
+					"UtteranceId": "26-97-F7-AC-F4-70-05-3D-FF-00-7A-FF-B3-FA-09-7F"
 				}, 
 				{
 					"CurrentState": "IPCCompetingAvoidingAvoiding",
@@ -1671,28 +1383,36 @@
 					"UtteranceId": "51-07-6D-B8-E6-4A-70-35-C7-C2-CA-AC-48-62-FE-C5"
 				}, 
 				{
-					"CurrentState": "IPCCompeting",
-					"NextState": "IPCNP4",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP4",
-					"UtteranceId": "DA-D9-B7-75-D6-99-8D-3A-8D-E0-8C-70-43-0B-AE-48"
-				}, 
-				{
-					"CurrentState": "IPCCompeting",
-					"NextState": "IPCNP3",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP3",
-					"UtteranceId": "8A-EA-ED-BD-04-7B-B5-DE-73-B7-09-6B-EC-51-59-B9"
-				}, 
-				{
-					"CurrentState": "IPCCollaboratingCompetingCompeting",
+					"CurrentState": "IPCCollaboratingCollaboratingCollaborating",
 					"NextState": "-",
 					"Meaning": ["-"],
-					"Style": ["MoodChange(-2)", "ManagerOpinionMuchWorse"],
-					"Utterance": "IPCCollaboratingCompetingCompetingResponse",
-					"UtteranceId": "DD-A1-30-99-0D-A3-2B-4E-56-CC-08-A5-2B-15-3C-E8"
+					"Style": ["MoodChange(6)", "ManagerOpinionMuchBetter"],
+					"Utterance": "IPCCollaboratingCollaboratingCollaboratingResponse",
+					"UtteranceId": "35-5A-73-78-08-FC-73-77-8A-E3-85-35-D9-6F-6C-36"
+				}, 
+				{
+					"CurrentState": "IPCCollaboratingCollaboratingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(5)", "ManagerOpinionAlCrewBetter"],
+					"Utterance": "IPCCollaboratingCollaboratingAccommodatingResponse",
+					"UtteranceId": "8C-B0-D9-DB-BC-C8-0B-0D-5C-6B-A8-F9-EE-44-1C-A8"
+				}, 
+				{
+					"CurrentState": "IPCCompetingCollaboratingCollaborating",
+					"NextState": "IPCNP311",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "IPCNP311",
+					"UtteranceId": "90-93-D7-C1-54-24-7A-A7-92-05-11-3B-67-25-17-46"
+				}, 
+				{
+					"CurrentState": "IPCCompetingCollaboratingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(4)"],
+					"Utterance": "IPCCompetingCollaboratingCollaboratingCollaboratingResponse",
+					"UtteranceId": "44-86-97-17-AA-F2-13-5F-14-70-95-FE-FF-2D-C2-FB"
 				}, 
 				{
 					"CurrentState": "IPCCollaboratingCompetingCollaborating",
@@ -1711,100 +1431,20 @@
 					"UtteranceId": "9F-8D-20-7A-13-83-40-E8-2B-D0-CD-71-B9-32-B8-2E"
 				}, 
 				{
-					"CurrentState": "IPCCollaboratingCollaboratingCompromising",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(6)"],
-					"Utterance": "IPCCollaboratingCollaboratingCompromisingResponse",
-					"UtteranceId": "26-97-F7-AC-F4-70-05-3D-FF-00-7A-FF-B3-FA-09-7F"
-				}, 
-				{
-					"CurrentState": "IPCCollaboratingCollaboratingCollaboratingCompromising",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(7)", "ManagerOpinionBetter"],
-					"Utterance": "IPCCollaboratingCollaboratingCollaboratingCompromisingResponse",
-					"UtteranceId": "64-94-22-E2-9F-1D-79-A6-06-88-9C-F2-63-BB-00-B0"
-				}, 
-				{
-					"CurrentState": "IPCCollaboratingCollaboratingCollaborating2Collaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(7)", "ManagerOpinionAllCrewBetter"],
-					"Utterance": "IPCCollaboratingCollaboratingCollaborating2CollaboratingResponse",
-					"UtteranceId": "71-8D-38-28-1C-95-42-6A-AB-A9-AD-16-4E-83-2E-5B"
-				}, 
-				{
-					"CurrentState": "IPCCollaboratingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(6)", "ManagerOpinionMuchBetter"],
-					"Utterance": "IPCCollaboratingCollaboratingCollaboratingResponse",
-					"UtteranceId": "35-5A-73-78-08-FC-73-77-8A-E3-85-35-D9-6F-6C-36"
-				}, 
-				{
-					"CurrentState": "IPCCollaboratingCollaboratingAccomodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(5)", "ManagerOpinionAlCrewBetter"],
-					"Utterance": "IPCCollaboratingCollaboratingAccomodatingResponse",
-					"UtteranceId": "8B-79-7C-C3-98-00-16-20-DF-72-43-ED-F1-FC-F0-44"
-				}, 
-				{
-					"CurrentState": "IPCCollaboratingCollaborating2Collaborating",
-					"NextState": "IPCNP811",
+					"CurrentState": "NotPickedCollaboratingCollaborating",
+					"NextState": "NotPickedNP41",
 					"Meaning": ["-"],
 					"Style": ["-"],
-					"Utterance": "IPCNP811",
-					"UtteranceId": "F8-89-D8-C7-21-3A-13-81-BC-F7-27-8F-DD-47-86-5D"
+					"Utterance": "NotPickedNP41",
+					"UtteranceId": "11-7D-D4-CB-AC-25-7D-FD-8F-AB-68-D2-E6-17-6E-43"
 				}, 
 				{
-					"CurrentState": "IPCCollaboratingCollaborating2",
-					"NextState": "IPCNP81",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP81",
-					"UtteranceId": "47-A1-CD-2E-C3-77-84-AA-C2-3F-EF-A0-5F-A7-97-8E"
-				}, 
-				{
-					"CurrentState": "IPCCollaboratingCollaborating",
-					"NextState": "IPCNP71",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP71",
-					"UtteranceId": "02-74-83-2B-D0-0F-31-AD-86-1F-2D-D3-14-04-B1-66"
-				}, 
-				{
-					"CurrentState": "IPCCollaboratingAccomodating",
+					"CurrentState": "IPCAvoidingCompetingAvoiding",
 					"NextState": "-",
 					"Meaning": ["-"],
-					"Style": ["MoodChange(3)"],
-					"Utterance": "IPCCollaboratingAccomodatingResponse",
-					"UtteranceId": "86-25-D8-88-79-9E-08-AF-C1-D7-7E-0C-50-65-0E-E6"
-				}, 
-				{
-					"CurrentState": "IPCCollaborating",
-					"NextState": "IPCNP8",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP8",
-					"UtteranceId": "90-DF-7C-95-D9-AC-4F-64-58-29-FD-5E-1D-76-8E-15"
-				}, 
-				{
-					"CurrentState": "IPCCollaborating",
-					"NextState": "IPCNP7",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP7",
-					"UtteranceId": "5E-7A-98-E1-55-46-86-40-06-90-57-22-E5-27-54-23"
-				}, 
-				{
-					"CurrentState": "IPCAvoidingCompeting",
-					"NextState": "IPCNP21",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP21",
-					"UtteranceId": "2D-27-4F-62-EB-2F-12-64-66-33-AA-FC-C3-C1-B8-EB"
+					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
+					"Utterance": "IPCAvoidingCompetingAvoidingResponse",
+					"UtteranceId": "A7-04-C0-FF-57-D9-1A-94-F4-41-69-D6-11-EA-BB-7C"
 				}, 
 				{
 					"CurrentState": "IPCAvoidingAvoidingCompeting",
@@ -1815,236 +1455,596 @@
 					"UtteranceId": "CF-A9-C4-91-15-09-5F-95-96-64-EA-29-D5-C0-2B-5D"
 				}, 
 				{
-					"CurrentState": "IPCAvoidingCompetingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-5)", "ManagerOpinionAllCrewWorse"],
-					"Utterance": "IPCAvoidingCompetingCompetingResponse",
-					"UtteranceId": "79-95-4E-62-9A-A7-82-BF-3D-11-03-07-81-33-2C-8C"
-				}, 
-				{
-					"CurrentState": "IPCAvoidingAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-3)", "ManagerOpinionWorse"],
-					"Utterance": "IPCAvoidingAvoidingAvoidingResponse",
-					"UtteranceId": "12-8D-6F-83-AF-80-2B-18-A3-34-F7-10-AB-C1-89-85"
-				}, 
-				{
-					"CurrentState": "IPCAvoidingAvoiding",
-					"NextState": "IPCNP22",
+					"CurrentState": "NotPickedAccommodatingCollaborating",
+					"NextState": "NotPickedNP31",
 					"Meaning": ["-"],
 					"Style": ["-"],
-					"Utterance": "IPCNP22",
-					"UtteranceId": "B7-3A-F0-80-B2-B1-9B-E3-FA-74-E2-23-6C-B1-7D-7A"
+					"Utterance": "NotPickedNP31",
+					"UtteranceId": "7C-20-FE-75-84-99-23-90-C3-CB-E8-10-C8-44-AB-3D"
 				}, 
 				{
-					"CurrentState": "IPCAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-2)", "ManagerOpinionMuchWorse"],
-					"Utterance": "IPCAvoidingAvoidingResponse",
-					"UtteranceId": "38-43-63-95-0B-74-5C-A7-64-81-54-51-AE-72-48-8F"
-				}, 
-				{
-					"CurrentState": "IPCAvoidingAccomodatingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ManagerOpinionMuchWorse"],
-					"Utterance": "IPCAvoidingAccomodatingAvoidingResponse",
-					"UtteranceId": "2C-9A-C8-C6-E8-E3-71-B1-B9-C1-F8-E4-12-B4-9E-80"
-				}, 
-				{
-					"CurrentState": "IPCAvoidingAccomodatingAccomodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(1)", "ManagerOpinionBetter"],
-					"Utterance": "IPCAvoidingAccomodatingAccomodatingResponse",
-					"UtteranceId": "80-18-FF-B8-C0-8E-3F-D3-11-05-66-DF-DA-96-C7-EB"
-				}, 
-				{
-					"CurrentState": "IPCAvoidingAccomodating",
-					"NextState": "IPCNP11",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP11",
-					"UtteranceId": "05-14-1A-C5-F8-CC-9B-3F-42-56-F9-AE-46-54-D7-FF"
-				}, 
-				{
-					"CurrentState": "IPCAvoiding",
-					"NextState": "IPCNP2",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP2",
-					"UtteranceId": "BF-32-99-61-B6-97-CF-3C-63-05-82-E5-64-33-F8-53"
-				}, 
-				{
-					"CurrentState": "IPCAvoiding",
-					"NextState": "IPCNP1",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP1",
-					"UtteranceId": "C6-84-B9-51-10-21-46-E7-13-FD-51-52-D8-A9-BF-41"
-				}, 
-				{
-					"CurrentState": "IPCAccomodatingCollaboratingCollaboratingCompromising",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(7)", "ManagerOpinionAllCrewBetter"],
-					"Utterance": "IPCAccomodatingCollaboratingCollaboratingCompromisingResponse",
-					"UtteranceId": "7D-F7-9B-8D-6D-0E-AC-87-A4-15-E8-29-95-E7-54-8B"
-				}, 
-				{
-					"CurrentState": "IPCAccomodatingCollaboratingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(7)", "ManagerOpinionAllCrewBetter"],
-					"Utterance": "IPCAccomodatingCollaboratingCollaboratingCollaboratingResponse",
-					"UtteranceId": "2E-73-74-BB-8C-57-7F-E6-6E-4D-E9-D4-38-40-1B-98"
-				}, 
-				{
-					"CurrentState": "IPCAccomodatingCollaboratingCollaborating",
-					"NextState": "IPCNP611",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP611",
-					"UtteranceId": "7E-36-1A-DB-18-EE-8C-05-3B-85-86-57-1B-9A-0F-47"
-				}, 
-				{
-					"CurrentState": "IPCAccomodatingCollaboratingAccomodatingCompromising",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(6)", "ManagerOpinionAllCrewBetter"],
-					"Utterance": "IPCAccomodatingCollaboratingAccomodatingCompromisingResponse",
-					"UtteranceId": "0C-A8-AA-86-54-3E-FF-EC-E0-B3-18-5A-1B-25-8C-19"
-				}, 
-				{
-					"CurrentState": "IPCAccomodatingCollaboratingAccomodatingAccomodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(5)", "ManagerOpinionAllCrewBetter"],
-					"Utterance": "IPCAccomodatingCollaboratingAccomodatingAccomodatingResponse",
-					"UtteranceId": "18-ED-27-8D-AF-D7-A5-EE-DB-DA-98-19-CE-5B-8D-3E"
-				}, 
-				{
-					"CurrentState": "IPCAccomodatingCollaboratingAccomodating",
-					"NextState": "IPCNP612",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP612",
-					"UtteranceId": "B4-76-DF-15-73-0F-2F-B9-4E-0C-00-F1-16-DC-25-51"
-				}, 
-				{
-					"CurrentState": "IPCAccomodatingCollaborating",
-					"NextState": "IPCNP61",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP61",
-					"UtteranceId": "BC-2E-89-6C-BD-BE-48-D4-2D-EF-A7-9F-D7-9B-DE-29"
-				}, 
-				{
-					"CurrentState": "IPCAccomodatingAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
-					"Utterance": "IPCAccomodatingAvoidingAvoidingResponse",
-					"UtteranceId": "D6-F8-DB-1F-4A-97-52-E8-A2-45-92-AC-B9-B8-E4-54"
-				}, 
-				{
-					"CurrentState": "IPCAccomodatingAvoidingAccomodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(1)"],
-					"Utterance": "IPCAccomodatingAvoidingAccomodatingResponse",
-					"UtteranceId": "9B-12-6F-6A-83-59-13-69-28-45-CA-9E-F1-7E-3B-5E"
-				}, 
-				{
-					"CurrentState": "IPCAccomodatingAvoiding",
-					"NextState": "IPCNP52",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP52",
-					"UtteranceId": "34-8C-E6-A8-B3-99-97-62-9B-42-12-BF-A3-3B-54-49"
-				}, 
-				{
-					"CurrentState": "IPCAccomodatingAccomodatingCompromising",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(4)", "ManagerOpinionBetter"],
-					"Utterance": "IPCAccomodatingAccomodatingCompromisingResponse",
-					"UtteranceId": "D4-60-73-B7-CD-A3-4C-C1-22-34-4B-C0-27-1A-F3-19"
-				}, 
-				{
-					"CurrentState": "IPCAccomodatingAccomodatingAccomodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(3)", "ManagerOpinionBetter"],
-					"Utterance": "IPCAccomodatingAccomodatingAccomodatingResponse",
-					"UtteranceId": "72-66-08-E2-79-CA-F3-7E-87-9A-19-E4-FC-3B-58-3E"
-				}, 
-				{
-					"CurrentState": "IPCAccomodatingAccomodating2",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(2)"],
-					"Utterance": "IPCAccomodatingAccomodating2Response",
-					"UtteranceId": "6A-BE-12-9A-0F-1B-77-52-0C-E8-58-83-8B-37-5E-83"
-				}, 
-				{
-					"CurrentState": "IPCAccomodatingAccomodating",
-					"NextState": "IPCNP51",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP51",
-					"UtteranceId": "CC-72-1E-29-23-CE-6B-FC-19-97-11-D8-15-EB-F8-24"
-				}, 
-				{
-					"CurrentState": "IPCAccomodating",
-					"NextState": "IPCNP6",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP6",
-					"UtteranceId": "40-FE-30-A8-47-25-0D-76-A4-C1-D8-18-39-28-B2-7E"
-				}, 
-				{
-					"CurrentState": "IPCAccomodating",
-					"NextState": "IPCNP5",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP5",
-					"UtteranceId": "A6-CB-79-60-5F-B1-D5-17-ED-44-D3-B1-25-21-A7-2C"
-				}, 
-				{
-					"CurrentState": "InterviewIntro",
-					"NextState": "-",
-					"Meaning": ["InterviewIntro"],
-					"Style": ["InterviewIntro"],
-					"Utterance": "InterviewIntro",
-					"UtteranceId": "C0-59-78-C5-1C-7D-74-2B-9C-06-3E-20-8A-66-6D-5E"
-				}, 
-				{
-					"CurrentState": "Disagree",
-					"NextState": "-",
-					"Meaning": ["Disagree"],
-					"Style": ["Disagree"],
-					"Utterance": "Disagree",
-					"UtteranceId": "2B-52-AC-64-A5-52-E4-E5-4D-44-0F-49-FC-B5-A5-8C"
-				}, 
-				{
-					"CurrentState": "Agree",
-					"NextState": "-",
-					"Meaning": ["Agree"],
-					"Style": ["Agree"],
-					"Utterance": "Agree",
-					"UtteranceId": "6A-63-34-B4-78-28-9B-4F-B3-06-0C-4F-80-3E-AF-D3"
-				}, 
-				{
-					"CurrentState": "IPCAvoidingCompetingAvoiding",
+					"CurrentState": "NotPickedCompetingAvoidingAvoiding",
 					"NextState": "-",
 					"Meaning": ["-"],
 					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
-					"Utterance": "IPCAvoidingCompetingAvoidingResponse",
-					"UtteranceId": "A7-04-C0-FF-57-D9-1A-94-F4-41-69-D6-11-EA-BB-7C"
+					"Utterance": "NotPickedCompetingAvoidingAvoidingResponse",
+					"UtteranceId": "4D-EB-80-1D-70-86-C5-70-93-17-4A-31-51-43-65-06"
+				}, 
+				{
+					"CurrentState": "NotPickedAvoidingCompeting",
+					"NextState": "NotPickedNP11",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "NotPickedNP11",
+					"UtteranceId": "38-41-D1-7A-7E-72-EE-52-44-25-04-B9-DB-6C-21-7A"
+				}, 
+				{
+					"CurrentState": "NotPickedCollaboratingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(3)", "CausesSelectionAfter"],
+					"Utterance": "NotPickedCollaboratingAccommodatingResponse",
+					"UtteranceId": "F4-D9-5A-07-00-AD-30-87-BE-59-EB-29-A9-70-91-68"
+				}, 
+				{
+					"CurrentState": "NotPickedCollaborating",
+					"NextState": "NotPickedNP4",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "NotPickedNP4",
+					"UtteranceId": "67-C6-6A-E2-97-F9-CD-A3-AB-23-16-87-94-6F-D9-84"
+				}, 
+				{
+					"CurrentState": "IPCCompetingCompeting2",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-4)"],
+					"Utterance": "IPCCompetingCompeting2Response",
+					"UtteranceId": "A0-03-97-D4-B8-61-3E-89-BF-F9-02-CA-71-CA-A8-EB"
+				}, 
+				{
+					"CurrentState": "NotPickedAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(2)", "ExpectedPosition"],
+					"Utterance": "NotPickedAccommodatingAccommodatingResponse",
+					"UtteranceId": "99-26-55-C3-70-4B-C1-4E-B9-1D-88-AF-7C-7F-9D-D8"
+				}, 
+				{
+					"CurrentState": "NotPickedCompetingAvoiding",
+					"NextState": "NotPickedNP21",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "NotPickedNP21",
+					"UtteranceId": "BA-89-81-89-80-A0-A6-E3-8D-42-E5-8C-14-89-15-DF"
+				}, 
+				{
+					"CurrentState": "NotPickedCompeting",
+					"NextState": "NotPickedNP2",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "NotPickedNP2",
+					"UtteranceId": "CD-D2-DC-DA-7C-6C-A1-81-A9-3B-D4-A6-69-1F-A4-C2"
+				}, 
+				{
+					"CurrentState": "NotPickedAvoiding",
+					"NextState": "NotPickedNP1",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "NotPickedNP1",
+					"UtteranceId": "BB-A9-75-6D-31-FE-D1-F1-A3-30-6B-93-E9-F9-D8-F6"
+				}, 
+				{
+					"CurrentState": "NotPickedAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-2)", "ManagerOpinionWorse"],
+					"Utterance": "NotPickedAvoidingAvoidingResponse",
+					"UtteranceId": "2B-C6-04-44-80-EE-A4-04-C1-1F-3D-40-CF-68-77-C0"
+				}, 
+				{
+					"CurrentState": "NotPickedAvoidingCompetingAvoiding",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-4)", "ManagerOpinionWorse"],
+					"Utterance": "NotPickedAvoidingCompetingAvoidingResponse",
+					"UtteranceId": "71-97-7A-B4-D6-07-6B-75-26-9C-D9-A4-4C-89-6E-E3"
+				}, 
+				{
+					"CurrentState": "NotPickedAvoidingCompetingCompeting",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-5)", "ManagerOpinionMuchWorse"],
+					"Utterance": "NotPickedAvoidingCompetingCompetingResponse",
+					"UtteranceId": "0D-47-BC-DD-E5-90-7C-65-02-EC-97-84-D4-4A-04-A6"
+				}, 
+				{
+					"CurrentState": "NotPickedAccommodating",
+					"NextState": "NotPickedNP3",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "NotPickedNP3",
+					"UtteranceId": "57-C4-D1-2E-83-EC-B7-9C-BC-EF-03-F0-3D-C9-D6-51"
+				}, 
+				{
+					"CurrentState": "Neither",
+					"NextState": "-",
+					"Meaning": ["Neither"],
+					"Style": ["Neither"],
+					"Utterance": "Neither",
+					"UtteranceId": "ED-AB-64-96-46-A4-C3-EB-D9-77-0B-DF-C2-95-34-B5"
+				}, 
+				{
+					"CurrentState": "NotPickedCollaboratingCollaboratingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(5)", "CausesSelectionAfter"],
+					"Utterance": "NotPickedCollaboratingCollaboratingAccommodatingResponse",
+					"UtteranceId": "2C-02-43-47-78-C9-05-D8-C8-5D-0E-8D-4D-B5-76-CF"
+				}, 
+				{
+					"CurrentState": "NotPickedCollaboratingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(6)", "WholeTeamChange"],
+					"Utterance": "NotPickedCollaboratingCollaboratingCollaboratingResponse",
+					"UtteranceId": "0E-3E-8C-AF-36-0C-9D-76-46-C4-E0-3E-6C-39-F4-B9"
+				}, 
+				{
+					"CurrentState": "NotPickedAccommodatingCollaboratingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(4)", "ManagerOpinionBetter"],
+					"Utterance": "NotPickedAccommodatingCollaboratingAccommodatingResponse",
+					"UtteranceId": "DD-51-B8-57-3D-C7-12-1F-36-64-32-6C-A0-BF-FE-4A"
+				}, 
+				{
+					"CurrentState": "NotPickedAccommodatingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(5)", "ManagerOpinionMuchBetter"],
+					"Utterance": "NotPickedAccommodatingCollaboratingCollaboratingResponse",
+					"UtteranceId": "AB-7A-AB-22-82-F4-85-BC-3D-90-42-5A-ED-CF-3A-48"
+				}, 
+				{
+					"CurrentState": "OOAccommodatingAvoiding",
+					"NextState": "OONP31",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "OONP31",
+					"UtteranceId": "6B-E2-FE-03-1E-47-54-F8-6B-DA-D0-46-10-00-71-29"
+				}, 
+				{
+					"CurrentState": "OOAccommodatingAvoidingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(1)", "ImproveConflictTeamOpinion"],
+					"Utterance": "OOAccommodatingAvoidingAccommodatingResponse",
+					"UtteranceId": "5A-7E-AB-32-97-44-22-64-E5-53-0B-12-B6-D1-D8-E2"
+				}, 
+				{
+					"CurrentState": "OOAccommodatingAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-1)", "ManagerOpinionMuchWorse"],
+					"Utterance": "OOAccommodatingAvoidingAvoidingResponse",
+					"UtteranceId": "0B-37-DD-71-EC-E6-36-77-41-DA-C2-48-85-57-2F-97"
+				}, 
+				{
+					"CurrentState": "OOAvoiding",
+					"NextState": "OONP1",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "OONP1",
+					"UtteranceId": "B7-47-30-80-46-8E-31-B2-9E-B5-0E-23-E2-A1-31-5D"
+				}, 
+				{
+					"CurrentState": "OOAvoidingAccommodating",
+					"NextState": "OONP11",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "OONP11",
+					"UtteranceId": "D8-B4-43-62-6C-E0-1A-3D-8A-BB-18-52-12-39-69-62"
+				}, 
+				{
+					"CurrentState": "OOAvoidingAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(1)"],
+					"Utterance": "OOAvoidingAccommodatingAccommodatingResponse",
+					"UtteranceId": "70-67-64-D2-80-7E-BB-AB-2C-06-B6-CE-64-A5-42-99"
+				}, 
+				{
+					"CurrentState": "OOAvoidingAccommodatingAvoiding",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-1)", "ImproveConflictTeamOpinion"],
+					"Utterance": "OOAvoidingAccommodatingAvoidingResponse",
+					"UtteranceId": "B2-AA-79-2D-0B-00-50-71-00-AD-A8-E8-2F-57-9A-9E"
+				}, 
+				{
+					"CurrentState": "OOAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-2)", "ManagerOpinionWorse"],
+					"Utterance": "OOAvoidingAvoidingResponse",
+					"UtteranceId": "69-96-20-C4-CA-93-E0-63-0A-84-58-C6-F6-4F-EB-33"
+				}, 
+				{
+					"CurrentState": "OOCollaborating",
+					"NextState": "OONP4",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "OONP4",
+					"UtteranceId": "26-6D-B8-AD-E4-12-C0-B1-67-5A-FF-43-37-65-C0-0B"
+				}, 
+				{
+					"CurrentState": "OOCollaboratingCollaborating",
+					"NextState": "OONP41",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "OONP41",
+					"UtteranceId": "BA-ED-A0-20-27-10-32-E7-B7-B7-B0-9B-82-41-26-0C"
+				}, 
+				{
+					"CurrentState": "OOCollaboratingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(6)", "ImproveConflictKnowledge"],
+					"Utterance": "OOCollaboratingCollaboratingCollaboratingResponse",
+					"UtteranceId": "A5-74-9E-38-A4-E4-EC-35-B2-1F-F0-96-85-46-7F-19"
+				}, 
+				{
+					"CurrentState": "OOCollaboratingCollaboratingCompeting",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
+					"Utterance": "OOCollaboratingCollaboratingCompetingResponse",
+					"UtteranceId": "50-3A-7F-FB-6D-57-82-A0-BF-E0-4E-AF-BE-40-37-D5"
+				}, 
+				{
+					"CurrentState": "OOCollaboratingCompeting",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
+					"Utterance": "OOCollaboratingCompetingResponse",
+					"UtteranceId": "52-C6-BE-37-2B-A7-0C-A5-96-2D-0A-D8-D7-41-CD-B6"
+				}, 
+				{
+					"CurrentState": "OOCompeting",
+					"NextState": "OONP2",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "OONP2",
+					"UtteranceId": "D2-05-78-57-57-8F-66-65-06-D3-00-C2-6C-CE-F6-DB"
+				}, 
+				{
+					"CurrentState": "OOCompetingCollaborating",
+					"NextState": "OONP21",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "OONP21",
+					"UtteranceId": "17-CE-7E-92-9F-29-F1-C5-71-CF-4E-24-BC-59-DB-7D"
+				}, 
+				{
+					"CurrentState": "OOCompetingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(2)", "ImproveConflictKnowledge"],
+					"Utterance": "OOCompetingCollaboratingCollaboratingResponse",
+					"UtteranceId": "8B-3E-B7-45-23-61-12-88-91-C0-DD-97-97-07-25-89"
+				}, 
+				{
+					"CurrentState": "OOCompetingCollaboratingCompeting",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-2)", "ManagerOpinionWorse"],
+					"Utterance": "OOCompetingCollaboratingCompetingResponse",
+					"UtteranceId": "46-39-40-CD-98-42-44-9B-1A-E5-A5-7E-93-6C-54-DA"
+				}, 
+				{
+					"CurrentState": "OOCompetingCompeting",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
+					"Utterance": "OOCompetingCompetingResponse",
+					"UtteranceId": "05-47-49-08-9E-88-CC-ED-C4-85-97-63-4B-F0-D0-52"
+				}, 
+				{
+					"CurrentState": "OpinionRevealNegative",
+					"NextState": "-",
+					"Meaning": ["OpinionRevealNegative"],
+					"Style": ["OpinionRevealNegative"],
+					"Utterance": "OpinionRevealNegativeAnswer",
+					"UtteranceId": "61-77-34-2F-D2-FE-B7-44-91-4C-77-91-E7-DD-4C-41"
+				}, 
+				{
+					"CurrentState": "OpinionRevealNegativeHigh",
+					"NextState": "-",
+					"Meaning": ["OpinionRevealNegativeHigh"],
+					"Style": ["OpinionRevealNegativeHigh"],
+					"Utterance": "OpinionRevealNegativeHigh",
+					"UtteranceId": "AF-36-E8-CF-F5-C6-39-B3-F0-DE-8A-0B-BD-F8-A0-41"
+				}, 
+				{
+					"CurrentState": "OpinionRevealNegativeNone",
+					"NextState": "-",
+					"Meaning": ["OpinionRevealNegativeNone"],
+					"Style": ["OpinionRevealNegativeNone"],
+					"Utterance": "OpinionRevealNegativeNone",
+					"UtteranceId": "AE-79-E8-75-FF-FB-01-4C-43-4C-09-5A-47-24-11-39"
+				}, 
+				{
+					"CurrentState": "OpinionRevealPositive",
+					"NextState": "-",
+					"Meaning": ["OpinionRevealPositive"],
+					"Style": ["OpinionRevealPositive"],
+					"Utterance": "OpinionRevealPositiveAnswer",
+					"UtteranceId": "F8-67-3F-16-B1-2C-AD-F2-E9-26-84-95-C6-C4-01-1E"
+				}, 
+				{
+					"CurrentState": "OpinionRevealPositiveHigh",
+					"NextState": "-",
+					"Meaning": ["OpinionRevealPositiveHigh"],
+					"Style": ["OpinionRevealPositiveHigh"],
+					"Utterance": "OpinionRevealPositiveHigh",
+					"UtteranceId": "F9-A4-A8-3C-01-54-E8-E3-0C-34-D3-FE-C4-D2-9B-90"
+				}, 
+				{
+					"CurrentState": "OpinionRevealPositiveNone",
+					"NextState": "-",
+					"Meaning": ["OpinionRevealPositiveNone"],
+					"Style": ["OpinionRevealPositiveNone"],
+					"Utterance": "OpinionRevealPositiveNone",
+					"UtteranceId": "25-9F-E3-AF-02-5F-D3-47-B6-F0-61-54-09-9A-A4-54"
+				}, 
+				{
+					"CurrentState": "PostRaceEventStart",
+					"NextState": "PW",
+					"Meaning": ["PW"],
+					"Style": ["Race", "Practice"],
+					"Utterance": "PW",
+					"UtteranceId": "8F-E4-C1-14-51-28-1C-09-4A-65-78-E6-DD-BF-5E-ED"
+				}, 
+				{
+					"CurrentState": "PostRaceEventStart",
+					"NextState": "IPC",
+					"Meaning": ["IPC"],
+					"Style": ["Race", "Practice"],
+					"Utterance": "IPC",
+					"UtteranceId": "5A-C8-BF-6F-C7-65-27-45-57-3F-0E-F2-4A-8A-B5-13"
+				}, 
+				{
+					"CurrentState": "PostRaceEventStart",
+					"NextState": "NotPicked",
+					"Meaning": ["NotPicked"],
+					"Style": ["Race", "Practice"],
+					"Utterance": "NotPicked",
+					"UtteranceId": "0E-37-62-36-F8-BB-6C-65-CB-A6-B5-C0-3E-5B-E3-2E"
+				}, 
+				{
+					"CurrentState": "PWAccommodating",
+					"NextState": "PWNP3",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "PWNP3",
+					"UtteranceId": "37-E9-A8-AA-18-6D-E9-D3-96-5C-C4-2A-F0-B6-48-2A"
+				}, 
+				{
+					"CurrentState": "PWAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(2)", "ExpectedPosition"],
+					"Utterance": "PWAccommodatingAccommodatingResponse",
+					"UtteranceId": "11-0C-41-89-64-07-11-B9-F2-60-1D-6C-49-12-81-1D"
+				}, 
+				{
+					"CurrentState": "PWAccommodatingCompeting",
+					"NextState": "PWNP31",
+					"Meaning": ["-"],
+					"Style": ["ManagerOpinionWorse"],
+					"Utterance": "PWNP31",
+					"UtteranceId": "74-85-DC-6A-06-91-61-76-EC-A0-59-F3-3D-04-C5-42"
+				}, 
+				{
+					"CurrentState": "PWAccommodatingCompetingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(1)", "ExpectedPositionAfter"],
+					"Utterance": "PWAccommodatingCompetingAccommodatingResponse",
+					"UtteranceId": "A8-E3-C0-9A-F0-1A-6C-90-EB-9D-A1-D7-58-82-80-5A"
+				}, 
+				{
+					"CurrentState": "PWAccommodatingCompetingCompeting",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-3)", "ManagerOpinionMuchWorse"],
+					"Utterance": "PWAccommodatingCompetingCompetingResponse",
+					"UtteranceId": "16-0A-A9-11-61-0E-41-E3-F5-52-DC-67-95-E5-44-8F"
+				}, 
+				{
+					"CurrentState": "PWAvoiding",
+					"NextState": "PWNP1",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "PWNP1",
+					"UtteranceId": "2E-61-43-9B-F4-04-B2-52-53-11-1E-CA-0C-19-2D-4D"
+				}, 
+				{
+					"CurrentState": "PWAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-2)", "ManagerOpinionWorse"],
+					"Utterance": "PWAvoidingAvoidingResponse",
+					"UtteranceId": "76-0F-D6-A1-65-9D-94-8B-9D-2D-F6-42-77-69-4E-83"
+				}, 
+				{
+					"CurrentState": "PWAvoidingCollaborating",
+					"NextState": "PWNP11",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "PWNP11",
+					"UtteranceId": "A3-29-9B-36-3B-74-2C-71-69-D6-83-3A-32-7F-3E-75"
+				}, 
+				{
+					"CurrentState": "PWAvoidingCollaboratingAvoiding",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-1)"],
+					"Utterance": "PWAvoidingCollaboratingAvoidingResponse",
+					"UtteranceId": "C5-25-24-2F-3F-7A-14-DD-62-97-65-52-56-39-8D-C0"
+				}, 
+				{
+					"CurrentState": "PWAvoidingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(3)", "RevealTwoSkills"],
+					"Utterance": "PWAvoidingCollaboratingCollaboratingResponse",
+					"UtteranceId": "C2-9C-ED-B3-B1-02-47-C6-32-05-36-F3-E5-B1-AE-27"
+				}, 
+				{
+					"CurrentState": "PWCollaborating",
+					"NextState": "PWNP4",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "PWNP4",
+					"UtteranceId": "80-56-FD-CD-73-B3-EB-44-6A-44-FA-E7-D2-2F-3A-A9"
+				}, 
+				{
+					"CurrentState": "PWCollaboratingAvoiding",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
+					"Utterance": "PWCollaboratingAvoidingResponse",
+					"UtteranceId": "C0-3E-84-A7-16-94-6A-9B-0D-9D-15-8B-76-CD-BB-CF"
+				}, 
+				{
+					"CurrentState": "PWCollaboratingCollaborating",
+					"NextState": "PWNP41",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "PWNP41",
+					"UtteranceId": "C1-7D-4D-45-BA-3A-A8-D9-D5-29-87-42-08-D4-2A-B0"
+				}, 
+				{
+					"CurrentState": "PWCollaboratingCollaboratingAvoiding",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
+					"Utterance": "PWCollaboratingCollaboratingAvoidingResponse",
+					"UtteranceId": "4E-F3-FD-A4-74-89-40-E5-94-4E-00-9A-3C-7B-B9-6D"
+				}, 
+				{
+					"CurrentState": "PWCollaboratingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(6)", "RevealFourSkills"],
+					"Utterance": "PWCollaboratingCollaboratingCollaboratingResponse",
+					"UtteranceId": "31-A4-3B-23-E5-8C-FE-BF-FD-2E-A0-AE-79-0A-B8-02"
+				}, 
+				{
+					"CurrentState": "PWCompeting",
+					"NextState": "PWNP2",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "PWNP2",
+					"UtteranceId": "36-BA-08-D4-68-2D-BF-BA-0C-5B-98-30-2F-2B-DC-C7"
+				}, 
+				{
+					"CurrentState": "PWCompetingAccommodating",
+					"NextState": "PWNP21",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "PWNP21",
+					"UtteranceId": "2F-CF-5F-96-C9-C8-5E-78-36-F5-09-88-A2-D5-5D-6B"
+				}, 
+				{
+					"CurrentState": "PWCompetingAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(1)", "ExpectedPosition"],
+					"Utterance": "PWCompetingAccommodatingAccommodatingResponse",
+					"UtteranceId": "DE-C7-0C-C4-5B-BD-2F-90-73-4A-50-DB-C8-F3-19-41"
+				}, 
+				{
+					"CurrentState": "PWCompetingAccommodatingCompeting",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-3)", "ManagerOpinionMuchWorse"],
+					"Utterance": "PWCompetingAccommodatingCompetingResponse",
+					"UtteranceId": "62-AE-7B-D6-07-F3-07-74-BA-6C-70-88-B9-F3-1C-8B"
+				}, 
+				{
+					"CurrentState": "PWCompetingCompeting",
+					"NextState": "-",
+					"Meaning": ["-"],
+					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
+					"Utterance": "PWCompetingCompetingResponse",
+					"UtteranceId": "E7-4B-32-F4-C0-02-E4-5C-A7-D8-EF-D0-BA-7C-09-65"
+				}, 
+				{
+					"CurrentState": "RoleRevealBad",
+					"NextState": "-",
+					"Meaning": ["RoleRevealBad"],
+					"Style": ["RoleRevealBad"],
+					"Utterance": "RoleRevealBad",
+					"UtteranceId": "9F-DC-D9-69-FB-66-4A-82-7E-2D-95-C4-B2-1E-44-6E"
+				}, 
+				{
+					"CurrentState": "RoleRevealGood",
+					"NextState": "-",
+					"Meaning": ["RoleRevealGood"],
+					"Style": ["RoleRevealGood"],
+					"Utterance": "RoleRevealGood",
+					"UtteranceId": "72-0E-BF-6F-D4-1E-94-8E-55-C9-34-27-83-17-73-60"
+				}, 
+				{
+					"CurrentState": "StatRevealBad",
+					"NextState": "-",
+					"Meaning": ["StatRevealBad"],
+					"Style": ["StatRevealBad"],
+					"Utterance": "StatRevealBad",
+					"UtteranceId": "CA-11-C3-73-08-04-20-65-CC-06-28-50-4A-CF-3B-D7"
+				}, 
+				{
+					"CurrentState": "StatRevealGood",
+					"NextState": "-",
+					"Meaning": ["StatRevealGood"],
+					"Style": ["StatRevealGood"],
+					"Utterance": "StatRevealGood",
+					"UtteranceId": "28-13-7C-07-C4-82-B7-17-BA-26-B0-97-57-55-53-3F"
+				}, 
+				{
+					"CurrentState": "StatRevealMiddle",
+					"NextState": "-",
+					"Meaning": ["StatRevealMiddle"],
+					"Style": ["StatRevealMiddle"],
+					"Utterance": "StatRevealMiddle",
+					"UtteranceId": "85-6E-87-C5-05-98-85-30-F7-DD-EA-CB-46-F5-EA-0D"
+				}, 
+				{
+					"CurrentState": "StrongAgree",
+					"NextState": "-",
+					"Meaning": ["StrongAgree"],
+					"Style": ["StrongAgree"],
+					"Utterance": "StrongAgree",
+					"UtteranceId": "D5-E2-13-04-25-6B-86-37-80-63-BC-A9-D4-58-F7-E7"
+				}, 
+				{
+					"CurrentState": "StrongDisagree",
+					"NextState": "-",
+					"Meaning": ["StrongDisagree"],
+					"Style": ["StrongDisagree"],
+					"Utterance": "StrongDisagree",
+					"UtteranceId": "D3-9E-20-FA-85-E7-7F-C2-15-CF-0C-B0-46-0D-4F-CD"
+				}, 
+				{
+					"CurrentState": "PostRaceEventStart",
+					"NextState": "OO",
+					"Meaning": ["OO"],
+					"Style": ["Race", "Practice"],
+					"Utterance": "OO",
+					"UtteranceId": "E4-7C-A7-A0-9C-F6-78-1E-29-63-45-02-34-59-30-A7"
 				}]
 		},
 	"types": [
