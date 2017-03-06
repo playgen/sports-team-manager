@@ -8,6 +8,7 @@ using PlayGen.SUGAR.Unity;
 
 using UnityEngine;
 using UnityEngine.UI;
+using PlayGen.Unity.Utilities.Localization;
 
 /// <summary>
 /// Contains all UI logic related to the Position pop-up

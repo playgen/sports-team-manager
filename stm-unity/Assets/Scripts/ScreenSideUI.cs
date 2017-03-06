@@ -2,6 +2,7 @@
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.UI;
 using System.Linq;
+using PlayGen.Unity.Utilities.BestFit;
 
 /// <summary>
 /// Controls the UI displayed at the top of the screen

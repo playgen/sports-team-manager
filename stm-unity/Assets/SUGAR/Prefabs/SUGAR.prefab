@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 223000012450321626}
   - component: {fileID: 114000012885612516}
   - component: {fileID: 114000011156416006}
+  - component: {fileID: 114191728624768906}
   m_Layer: 5
   m_Name: SUGAR Canvas
   m_TagString: Untagged
@@ -40,8 +41,12 @@ GameObject:
   - component: {fileID: 114000011669735270}
   - component: {fileID: 114000013496830746}
   - component: {fileID: 114000010768160430}
+  - component: {fileID: 114440475536186032}
   - component: {fileID: 114000012611603444}
   - component: {fileID: 114000013249777644}
+  - component: {fileID: 114159021697377510}
+  - component: {fileID: 114303118736669086}
+  - component: {fileID: 114927387397169514}
   - component: {fileID: 114000012266143498}
   m_Layer: 0
   m_Name: SUGAR
@@ -75,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 106238491, guid: 4f8932c3a6246ed4d80bcab92e6d16f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _achievementListInterface: {fileID: 114000011335328718, guid: da1b3e420bd0de7438fc02f71340f4d4,
+  _interface: {fileID: 114000011335328718, guid: da1b3e420bd0de7438fc02f71340f4d4,
     type: 2}
   _achievementPopup: {fileID: 114000013413874684, guid: 30bf371ff31e0bc429751b3218cfa999,
     type: 2}
@@ -111,13 +116,16 @@ MonoBehaviour:
   _gameToken: Sports Team Manager
   _gameId: 3
   _useAchievements: 1
+  _useFriends: 0
+  _useGroups: 0
   _useLeaderboards: 1
-  _uiBlocker: {fileID: 1823420820520756, guid: 32aeda71493f8f843ac0595a41de113d, type: 2}
+  _useResources: 0
+  _uiBlocker: {fileID: 1823420820520756, guid: 839a110da4390f442864e949fe380455, type: 2}
   _useBlocker: 1
   _blockerClickClose: 1
-  _uiSpinner: {fileID: 1728504751892352, guid: 7441383a7979eec43b990211d514a7a0, type: 2}
-  _spinSpeed: 600
-  _spinClockwise: 0
+  _uiSpinner: {fileID: 114066451447811422, guid: 1ed9d523ccbf11b40b18809bc5f018d5,
+    type: 2}
+  _customInterfaceList: []
 --- !u!114 &114000012266143498
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -141,8 +149,10 @@ MonoBehaviour:
   m_Script: {fileID: 1493326051, guid: 4f8932c3a6246ed4d80bcab92e6d16f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _leaderboardInterface: {fileID: 114000013210295108, guid: e29d7a7dd4a690245a2e6d8cf00df004,
+  _interface: {fileID: 114000013210295108, guid: e29d7a7dd4a690245a2e6d8cf00df004,
     type: 2}
+  _positionCount: 10
+  _currentFilter: 0
 --- !u!114 &114000012885612516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -175,8 +185,9 @@ MonoBehaviour:
   m_Script: {fileID: -1070070240, guid: 4f8932c3a6246ed4d80bcab92e6d16f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _leaderboardListInterface: {fileID: 114000012229610962, guid: be736ad3ec565d9488b29626d58f6d30,
+  _interface: {fileID: 114000012229610962, guid: be736ad3ec565d9488b29626d58f6d30,
     type: 2}
+  _currentActorType: 1
 --- !u!114 &114000013496830746
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -188,11 +199,74 @@ MonoBehaviour:
   m_Script: {fileID: -89677467, guid: 4f8932c3a6246ed4d80bcab92e6d16f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _loginUserInterface: {fileID: 114000014259607728, guid: bb12776c4b045cc45ab0ef3d57d1d79d,
+  _accountInterface: {fileID: 114715228128441458, guid: fef48ae035b1bef47b42d0b9a3f6968b,
     type: 2}
   _allowAutoLogin: 1
   _allowRegister: 0
   _defaultSourceToken: SUGAR
+--- !u!114 &114159021697377510
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012920798932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1028884941, guid: 4f8932c3a6246ed4d80bcab92e6d16f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _resourceCheckRate: 2.5
+  _checkGlobalGameResources: 0
+  _checkGlobalUserResources: 0
+--- !u!114 &114191728624768906
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011383437524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1169801823, guid: 972f28a244dec36429ae1e412a6fb34a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinFontSize: 1
+  MaxFontSize: 100
+--- !u!114 &114303118736669086
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012920798932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1907648989, guid: 4f8932c3a6246ed4d80bcab92e6d16f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interface: {fileID: 0}
+--- !u!114 &114440475536186032
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012920798932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1776674429, guid: 4f8932c3a6246ed4d80bcab92e6d16f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interface: {fileID: 0}
+--- !u!114 &114927387397169514
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012920798932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1429074576, guid: 4f8932c3a6246ed4d80bcab92e6d16f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interface: {fileID: 0}
 --- !u!223 &223000012450321626
 Canvas:
   m_ObjectHideFlags: 1

@@ -9,6 +9,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using PlayGen.SUGAR.Unity;
+using PlayGen.Unity.Utilities.Localization;
+using PlayGen.Unity.Utilities.BestFit;
 
 /// <summary>
 /// A class for grouping together a sprite with a name

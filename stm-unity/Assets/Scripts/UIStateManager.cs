@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Linq;
+using PlayGen.Unity.Utilities.Localization;
+using PlayGen.Unity.Utilities.BestFit;
 
 /// <summary>
 /// Controls switching between different game state panels

@@ -4,6 +4,7 @@ using System.Reflection;
 
 using UnityEngine;
 using UnityEngine.UI;
+using PlayGen.Unity.Utilities.Localization;
 
 [RequireComponent(typeof(LearningPill))]
 public class LearningPillUI : ObservableMonoBehaviour {

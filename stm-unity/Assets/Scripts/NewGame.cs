@@ -2,6 +2,7 @@
 
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
+using PlayGen.Unity.Utilities.Localization;
 
 /// <summary>
 /// Contains all logic to communicate between NewGameUI and GameManager

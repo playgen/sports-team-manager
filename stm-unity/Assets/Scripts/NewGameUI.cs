@@ -2,7 +2,8 @@
 
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
+using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Localization;
 
 /// <summary>
 /// Contains all UI logic related to creating new games
@@ -64,34 +65,6 @@ public class NewGameUI : MonoBehaviour {
 	private void OnDisable()
 	{
 		BestFit.ResolutionChange -= DoBestFit;
-	}
-
-	private void Update()
-	{
-		//code for tabbing between input fields
-		if (Input.GetKeyDown(KeyCode.Tab) && EventSystem.current.currentSelectedGameObject != null)
-		{
-			var next = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().navigation.selectOnDown;
-
-			if (next != null)
-			{
-				var inputfield = next.GetComponent<InputField>();
-				if (inputfield != null)
-				{
-					inputfield.OnPointerClick(new PointerEventData(EventSystem.current));
-					inputfield.MoveTextEnd(true);
-				}
-				EventSystem.current.SetSelectedGameObject(next.gameObject, new BaseEventData(EventSystem.current));
-			}
-		}
-		if (Input.GetKeyDown(KeyCode.Return))
-		{
-			ExistingGameCheck();
-		}
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			_stateManager.BackToMenu(gameObject);
-		}
 	}
 
 	/// <summary>

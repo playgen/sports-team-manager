@@ -9,6 +9,7 @@ using System.Linq;
 using PlayGen.SUGAR.Unity;
 
 using UnityEngine.UI.Extensions;
+using PlayGen.Unity.Utilities.Localization;
 
 public class TutorialController : MonoBehaviour
 {

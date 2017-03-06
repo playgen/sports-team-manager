@@ -6,6 +6,7 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.UI;
 using System.Linq;
 using System.Text.RegularExpressions;
+using PlayGen.Unity.Utilities.Localization;
 
 public class PostRacePersonUI : MonoBehaviour
 {

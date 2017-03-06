@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Localization;
+
 /// <summary>
 /// Contains all UI logic related to loading saved games
 /// </summary>

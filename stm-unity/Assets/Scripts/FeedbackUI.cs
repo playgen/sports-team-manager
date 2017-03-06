@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using PlayGen.Unity.Utilities.Localization;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 

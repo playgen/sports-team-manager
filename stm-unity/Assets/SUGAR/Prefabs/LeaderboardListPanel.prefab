@@ -1827,9 +1827,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011677326522}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1380705284, guid: 4f8932c3a6246ed4d80bcab92e6d16f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c94374e4b0c5814cb36959f39ca3f5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _errorText: {fileID: 114000013848652632}
+  _closeButton: {fileID: 114000010190557610}
+  _signinButton: {fileID: 114406537284389734}
+  _leaderboardType: {fileID: 114000012244034512}
+  _userButton: {fileID: 114000012379300082}
+  _groupButton: {fileID: 114000011063311012}
+  _combinedButton: {fileID: 114000014245877994}
   _leaderboardButtons:
   - {fileID: 114000010363656816}
   - {fileID: 114000011631983860}
@@ -1841,16 +1848,9 @@ MonoBehaviour:
   - {fileID: 114000014136393316}
   - {fileID: 114000012260772962}
   - {fileID: 114000014151257686}
-  _leaderboardType: {fileID: 114000012244034512}
   _previousButton: {fileID: 114000011298906396}
   _nextButton: {fileID: 114000010134271410}
   _pageNumberText: {fileID: 114000010864099014}
-  _userButton: {fileID: 114000012379300082}
-  _groupButton: {fileID: 114000011063311012}
-  _combinedButton: {fileID: 114000014245877994}
-  _errorText: {fileID: 114000013848652632}
-  _closeButton: {fileID: 114000010190557610}
-  _signinButton: {fileID: 114406537284389734}
 --- !u!114 &114000012239915126
 MonoBehaviour:
   m_ObjectHideFlags: 1

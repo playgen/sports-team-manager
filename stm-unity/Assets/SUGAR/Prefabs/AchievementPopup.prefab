@@ -197,10 +197,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 197258}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 2090218939, guid: 4f8932c3a6246ed4d80bcab92e6d16f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d5fada1238a2d548ab6905e5d9d9d9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _name: {fileID: 11457888}
+  _image: {fileID: 114000014015519848}
   _animation: {fileID: 111000010099566568}
 --- !u!114 &114000014015519848
 MonoBehaviour:

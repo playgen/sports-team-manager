@@ -9,6 +9,8 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using PlayGen.SUGAR.Unity;
 
 using UnityEngine.UI;
+using PlayGen.Unity.Utilities.Localization;
+using PlayGen.Unity.Utilities.BestFit;
 
 /// <summary>
 /// Contains all UI logic related to the Recruitment pop-up

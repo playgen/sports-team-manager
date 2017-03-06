@@ -9,6 +9,8 @@ using PlayGen.SUGAR.Unity;
 
 using UnityEngine;
 using UnityEngine.UI;
+using PlayGen.Unity.Utilities.Localization;
+using PlayGen.Unity.Utilities.BestFit;
 
 /// <summary>
 /// Contains all logic related to the CrewMember Meeting pop-up
