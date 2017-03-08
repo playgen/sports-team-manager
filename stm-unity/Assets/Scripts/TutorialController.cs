@@ -10,6 +10,7 @@ using PlayGen.SUGAR.Unity;
 
 using UnityEngine.UI.Extensions;
 using PlayGen.Unity.Utilities.Localization;
+using System.Globalization;
 
 public class TutorialController : MonoBehaviour
 {
@@ -32,17 +33,17 @@ public class TutorialController : MonoBehaviour
 		{
 			var tutorialSection = Instantiate(_tutorialSectionPrefab, transform, false);
 			var section = tutorialSection.GetComponent<TutorialSectionUI>();
-			var textDict = new Dictionary<Language, string[]>();
-			foreach (string langName in Localization.AvailableLanguages())
+			var textDict = new Dictionary<string, string[]>();
+			foreach (CultureInfo langName in Localization.Languages)
 			{
-				var lang = (Language)Enum.Parse(typeof(Language), langName);
+				var lang = langName.EnglishName;
 				if (parsedAsset[i]["Section Text " + lang] != null)
 				{
-					textDict.Add(lang, parsedAsset[i]["Section Text " + lang].Value.Split('\n').ToList().Select(te => te.RemoveJSONNodeChars()).Where(tl => tl.Length > 0).ToArray());
+					textDict.Add(langName.Name, parsedAsset[i]["Section Text " + lang].Value.Split('\n').ToList().Select(te => te.RemoveJSONNodeChars()).Where(tl => tl.Length > 0).ToArray());
 				}
 				else
 				{
-					textDict.Add(lang, parsedAsset[i][0].Value.Split('\n').ToList().Select(te => te.RemoveJSONNodeChars()).Where(tl => tl.Length > 0).ToArray());
+					textDict.Add(langName.Name, parsedAsset[i][0].Value.Split('\n').ToList().Select(te => te.RemoveJSONNodeChars()).Where(tl => tl.Length > 0).ToArray());
 				}
 			}
 			var objectNames = parsedAsset[i]["Highlighted Object"].RemoveJSONNodeChars().Split('/');

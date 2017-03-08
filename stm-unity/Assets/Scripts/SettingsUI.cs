@@ -34,21 +34,21 @@ public class SettingsUI : MonoBehaviour {
 		_musicToggle.sprite = UIStateManager.MusicOn ? _onSprite : _offSprite;
 		_soundToggle.sprite = UIStateManager.SoundOn ? _onSprite : _offSprite;
 		_languageDropdown.ClearOptions();
-		var languageNames = Localization.AvailableLanguages();
-		_languageDropdown.AddOptions(languageNames.Select(ln => Localization.Get(ln)).ToList());
-		var selectedIndex = languageNames.IndexOf(Localization.SelectedLanguage.ToString());
-		if (selectedIndex == -1)
-		{
-			var nullList = new List<string> { string.Empty };
-			_languageDropdown.AddOptions(nullList);
-			_languageDropdown.value = languageNames.Count;
-			_languageDropdown.options.RemoveAt(languageNames.Count);
-		}
-		else
-		{
-			_languageDropdown.value = selectedIndex;
-		}
-		DoBestFit();
+        var languages = Localization.Languages.Select(l => string.IsNullOrEmpty(l.Parent.Name) ? l.EnglishName : l.Parent.EnglishName).ToList();
+        _languageDropdown.GetComponent<DropdownLocalization>().SetOptions(languages);
+        var selectedIndex = Localization.Languages.IndexOf(Localization.SelectedLanguage);
+        if (selectedIndex == -1)
+        {
+            var nullList = new List<string> { string.Empty };
+            _languageDropdown.AddOptions(nullList);
+            _languageDropdown.value = languages.Count;
+            _languageDropdown.options.RemoveAt(languages.Count);
+        }
+        else
+        {
+            _languageDropdown.value = selectedIndex;
+        }
+        DoBestFit();
 	}
 
 	public void ToggleMusic()
@@ -67,7 +67,7 @@ public class SettingsUI : MonoBehaviour {
 
 	public void ChangeLanguage()
 	{
-		Localization.UpdateLanguage(_languageDropdown.value);
+		Localization.UpdateLanguage(Localization.Languages[_languageDropdown.value]);
 		gameObject.SetActive(false);
 		gameObject.SetActive(true);
 	}

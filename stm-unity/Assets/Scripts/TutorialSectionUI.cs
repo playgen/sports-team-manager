@@ -1,6 +1,7 @@
 ﻿using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,11 +12,11 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	[System.Serializable]
 	class LanguageKeyValuePair
 	{
-		public Language Key;
+		public string Key;
 		[TextArea]
 		public string[] Value;
 
-		public LanguageKeyValuePair(Language k, string[] v)
+		public LanguageKeyValuePair(string k, string[] v)
 		{
 			Key = k;
 			Value = v;
@@ -25,7 +26,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	[Header("UI")]
 	[SerializeField]
 	private List<LanguageKeyValuePair> _sectionTextHolder;
-	private Dictionary<Language, string[]> _sectionText;
+	private Dictionary<string, string[]> _sectionText;
 	[SerializeField]
 	private bool _reversed;
 	private RectTransform _menuHighlighted;
@@ -56,7 +57,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		get { return _saveNextSection; }
 	}
 
-	public void Construct(Dictionary<Language, string[]> text, int highlightTrigger, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered, int saveSection, List<string> blacklist, List<string> attributes)
+	public void Construct(Dictionary<string, string[]> text, int highlightTrigger, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered, int saveSection, List<string> blacklist, List<string> attributes)
 	{
 		_sectionTextHolder = new List<LanguageKeyValuePair>();
 		foreach (var kvp in text)
@@ -80,7 +81,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		_tutorial = GetComponentInParent<TutorialController>();
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += SetUp;
-		_sectionText = new Dictionary<Language, string[]>();
+		_sectionText = new Dictionary<string, string[]>();
 		_sectionTextHolder.ForEach(st => _sectionText.Add(st.Key, st.Value));
 		_menuHighlighted = (RectTransform)transform.Find("Menu Highlighted");
 		_tutorialText = GetComponentInChildren<Text>();
@@ -160,7 +161,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		var back = _buttons.Find("Back").gameObject;
 		var forward = _buttons.Find("Forward").gameObject;
 		var pageNumber = _buttons.Find("Page Number").GetComponent<Text>();
-		if (_sectionText[Localization.SelectedLanguage].Length == 0)
+		if (_sectionText[Localization.SelectedLanguage.Name].Length == 0)
 		{
 			_tutorialObject.SetActive(false);
 			GetComponentInChildren<ReverseRaycastTarget>().UnblockWhitelisted();
@@ -169,25 +170,25 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		else
 		{
 			_tutorialObject.SetActive(true);
-			_tutorialText.text = _sectionText[Localization.SelectedLanguage][_currentText];
+			_tutorialText.text = _sectionText[Localization.SelectedLanguage.Name][_currentText];
 			back.SetActive(true);
 			forward.SetActive(true);
 			if (_currentText == 0)
 			{
 				back.SetActive(false);
 			}
-			if (_currentText == _sectionText[Localization.SelectedLanguage].Length - 1)
+			if (_currentText == _sectionText[Localization.SelectedLanguage.Name].Length - 1)
 			{
 				forward.SetActive(false);
 				GetComponentInChildren<ReverseRaycastTarget>().UnblockWhitelisted();
 			}
-			if (_sectionText[Localization.SelectedLanguage].Length == 1)
+			if (_sectionText[Localization.SelectedLanguage.Name].Length == 1)
 			{
 				pageNumber.text = string.Empty;
 			}
 			else
 			{
-				pageNumber.text = _currentText + 1 + "/" + _sectionText[Localization.SelectedLanguage].Length;
+				pageNumber.text = _currentText + 1 + "/" + _sectionText[Localization.SelectedLanguage.Name].Length;
 			}
 		}
 		if (_eventTriggerCountRequired > 1)
