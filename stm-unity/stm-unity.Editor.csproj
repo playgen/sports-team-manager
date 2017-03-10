@@ -214,6 +214,9 @@
     <Reference Include="CommandLine">
       <HintPath>Assets\SUGAR\bin\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>Assets\SUGAR\bin\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="PlayGen.SUGAR.Client">
       <HintPath>Assets\SUGAR\bin\PlayGen.SUGAR.Client.dll</HintPath>
     </Reference>
@@ -223,8 +226,17 @@
     <Reference Include="PlayGen.SUGAR.Unity.Editor">
       <HintPath>Assets\SUGAR\bin\PlayGen.SUGAR.Unity.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="System.ComponentModel.DataAnnotations">
-      <HintPath>Assets\SUGAR\bin\System.ComponentModel.DataAnnotations.dll</HintPath>
+    <Reference Include="PlayGen.Unity.Utilities.BestFit">
+      <HintPath>Assets\SUGAR\bin\PlayGen.Unity.Utilities.BestFit.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Unity.Utilities.Editor.FontReplace">
+      <HintPath>Assets\SUGAR\bin\PlayGen.Unity.Utilities.Editor.FontReplace.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Unity.Utilities.Editor.Localization">
+      <HintPath>Assets\SUGAR\bin\PlayGen.Unity.Utilities.Editor.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Unity.Utilities.Editor.Shortcuts">
+      <HintPath>Assets\SUGAR\bin\PlayGen.Unity.Utilities.Editor.Shortcuts.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.Unity.Utilities.FormKeyboardControls">
       <HintPath>Assets\SUGAR\bin\PlayGen.Unity.Utilities.FormKeyboardControls.dll</HintPath>
@@ -232,23 +244,11 @@
     <Reference Include="PlayGen.Unity.Utilities.Loading">
       <HintPath>Assets\SUGAR\bin\PlayGen.Unity.Utilities.Loading.dll</HintPath>
     </Reference>
-    <Reference Include="PlayGen.Unity.Utilities.Editor.Shortcuts">
-      <HintPath>Assets\SUGAR\bin\PlayGen.Unity.Utilities.Editor.Shortcuts.dll</HintPath>
-    </Reference>
-    <Reference Include="PlayGen.Unity.Utilities.Editor.Localization">
-      <HintPath>Assets\SUGAR\bin\PlayGen.Unity.Utilities.Editor.Localization.dll</HintPath>
-    </Reference>
     <Reference Include="PlayGen.Unity.Utilities.Localization">
       <HintPath>Assets\SUGAR\bin\PlayGen.Unity.Utilities.Localization.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>Assets\SUGAR\bin\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="PlayGen.Unity.Utilities.BestFit">
-      <HintPath>Assets\SUGAR\bin\PlayGen.Unity.Utilities.BestFit.dll</HintPath>
-    </Reference>
-    <Reference Include="PlayGen.Unity.Utilities.Editor.FontReplace">
-      <HintPath>Assets\SUGAR\bin\PlayGen.Unity.Utilities.Editor.FontReplace.dll</HintPath>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <HintPath>Assets\SUGAR\bin\System.ComponentModel.DataAnnotations.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

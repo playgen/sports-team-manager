@@ -27,7 +27,7 @@ public class NewGame : MonoBehaviour {
 	/// </summary>
 	public bool CreateNewGame(string boatName, byte[] colorsPri, byte[] colorsSec, string managerName, bool showTutorial)
 	{
-		_gameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), boatName.TrimEnd(), colorsPri, colorsSec, managerName.TrimEnd(), showTutorial, Localization.SelectedLanguage.ToString());
+		_gameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), boatName.TrimEnd(), colorsPri, colorsSec, managerName.TrimEnd(), showTutorial, string.IsNullOrEmpty(Localization.SelectedLanguage.Parent.Name) ? Localization.SelectedLanguage.EnglishName : Localization.SelectedLanguage.Parent.EnglishName);
 		return _gameManager.Team != null && _gameManager.Team.Name == boatName.TrimEnd();
 	}
 
