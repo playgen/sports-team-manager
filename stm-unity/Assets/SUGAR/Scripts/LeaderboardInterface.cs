@@ -91,7 +91,7 @@ public class LeaderboardInterface : BaseLeaderboardInterface
 			UpdatePageNumber(-1);
 			return;
 		}
-		if (_pageNumber < 0)
+		if ((!SUGARManager.Leaderboard.CurrentStandings.Any() && _pageNumber < 0))
 		{
 			UpdatePageNumber(1);
 			return;
@@ -110,11 +110,15 @@ public class LeaderboardInterface : BaseLeaderboardInterface
 		_leaderboardName.text = SUGARManager.Leaderboard.CurrentLeaderboard != null ? SUGARManager.Leaderboard.CurrentLeaderboard.Name : string.Empty;
 		_leaderboardType.text = Localization.Get(SUGARManager.Leaderboard.CurrentFilter.ToString());
 		_pageNumberText.text = Localization.GetAndFormat("PAGE", false, _pageNumber + 1);
-		_previousButton.interactable = _pageNumber > 0;
+		_previousButton.interactable = false;
 		_nextButton.interactable = false;
-		SUGARManager.Leaderboard.GetLeaderboardStandings(_pageNumber + 1, success => {}, result =>
+		SUGARManager.Leaderboard.GetLeaderboardStandings(_pageNumber - 1, success => { }, resultDown =>
 		{
-			_nextButton.interactable = result.ToList().Count > 0;
+			_previousButton.interactable = resultDown.ToList().Count > 0 && resultDown.First().ActorName != SUGARManager.Leaderboard.CurrentStandings.First().ActorName;
+			SUGARManager.Leaderboard.GetLeaderboardStandings(_pageNumber + 1, success => { }, resultUp =>
+			{
+				_nextButton.interactable = resultUp.ToList().Count > 0;
+			});
 		});
 		if (SUGARManager.Leaderboard.CurrentLeaderboard != null)
 		{
@@ -138,7 +142,7 @@ public class LeaderboardInterface : BaseLeaderboardInterface
 	private void UpdatePageNumber(int changeAmount)
 	{
 		_pageNumber += changeAmount;
-		SUGARManager.Leaderboard.Display(SUGARManager.Leaderboard.CurrentLeaderboard.Token, SUGARManager.Leaderboard.CurrentFilter, _pageNumber);
+		SUGARManager.Leaderboard.GetLeaderboardStandings(_pageNumber, Show);
 	}
 
 	/// <summary>
