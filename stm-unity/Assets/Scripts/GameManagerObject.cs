@@ -28,7 +28,7 @@ public class GameManagerObject : MonoBehaviour
 	private void Update()
 	{
 		//takes a screenshot whenever P is pressed
-		if (Input.GetKeyDown(KeyCode.P))
+		if (Input.GetKeyDown(KeyCode.DownArrow))
 		{
 			Application.CaptureScreenshot(System.DateTime.UtcNow.ToFileTimeUtc() + ".png");
 		}

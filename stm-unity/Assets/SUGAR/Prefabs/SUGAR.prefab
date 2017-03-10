@@ -113,13 +113,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _baseAddress: http://api.sugarengine.org/
-  _gameToken: Sports Team Manager
+  _gameToken: STM
   _gameId: 3
-  _useAchievements: 1
-  _useFriends: 0
-  _useGroups: 0
-  _useLeaderboards: 1
-  _useResources: 0
   _uiBlocker: {fileID: 1823420820520756, guid: 839a110da4390f442864e949fe380455, type: 2}
   _useBlocker: 1
   _blockerClickClose: 1
