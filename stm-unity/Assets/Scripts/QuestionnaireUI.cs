@@ -93,7 +93,7 @@ public class QuestionnaireUI : MonoBehaviour
 	{
 		for (int i = 0; i < _questionObjs.Count; i++)
 		{
-			_questionObjs[i].transform.Find("Question").GetComponent<Text>().text = Localization.Get("QUESTION") + " " + (_questionObjs.Count + 1);
+			_questionObjs[i].transform.Find("Question").GetComponent<Text>().text = Localization.Get("QUESTION") + " " + (i + 1);
 			_questionObjs[i].transform.Find("Answer A").GetComponentInChildren<Text>().text = _questionnaire.Questions[i].AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
 			_questionObjs[i].transform.Find("Answer B").GetComponentInChildren<Text>().text = _questionnaire.Questions[i].AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
 		}

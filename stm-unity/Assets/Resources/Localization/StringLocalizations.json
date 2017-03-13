@@ -185,4 +185,5 @@
 {"Key":"YES","en-gb":"Yes","it":"Sì"},
 {"Key":"YOU","en-gb":"you","it":"tu"},
 {"Key":"SUBMIT","en-gb":"Submit","it":"XXXX"},
-{"Key":"CONFLICT_QUESTIONNAIRE","en-gb":"Conflict Questionnaire","it":"Questionario Conflitto"}]
+{"Key":"CONFLICT_QUESTIONNAIRE","en-gb":"Conflict Questionnaire","it":"Questionario Conflitto"},
+{"Key":"QUESTIONNAIRE_INTRO","en-gb":"Picture yourself in a situation where your wishes differ from that of another person.\n\nFor each of the following 30 statements, choose either A or B (with a circle) as the one which best describes how you would respond. Sometimes neither the A or B statement is typical of your response but try to choose the one that would seem most likely to be your instinctive response in that situation. Only you will see the finished exercise.","it":"Ti verranno proposte 30 coppie di affermazioni, che descrivono possibili risposte comportamentali in situazioni di conflitto. Di volta in volta, scegli l’alternativa più vera per te tra A o B.\n\nA volte né A né B potrebbero corrispondere al tuo comportamento, scegli comunque l’alternativa che più si avvicina al tuo modo di fare."}]
