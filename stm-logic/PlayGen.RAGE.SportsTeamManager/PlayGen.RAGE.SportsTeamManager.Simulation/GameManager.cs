@@ -26,6 +26,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int CurrentRaceSession { get; private set; }
 		public bool ShowTutorial { get; private set; }
 		public int TutorialStage { get; private set; }
+		public bool QuestionnaireCompleted { get; private set; }
 		public EventController EventController => eventController;
 
 		/// <summary>
@@ -151,11 +152,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			ShowTutorial = showTutorial;
 			TutorialStage = 0;
 			_customTutorialAttributes = new Dictionary<string, string>();
+			QuestionnaireCompleted = false;
 			//create manager files and store game attribute details
 			manager.CreateFile(iat, combinedStorageLocation);
 			manager.UpdateBeliefs("Manager");
 			manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), boat.Type);
 			manager.UpdateSingleBelief(NPCBeliefs.ShowTutorial.GetDescription(), ShowTutorial.ToString());
+			manager.UpdateSingleBelief(NPCBeliefs.QuestionnaireCompleted.GetDescription(), QuestionnaireCompleted.ToString());
 			manager.UpdateSingleBelief(NPCBeliefs.TutorialStage.GetDescription(), TutorialStage.ToString());
 			manager.UpdateSingleBelief(NPCBeliefs.Nationality.GetDescription(), nation);
 			manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
@@ -276,6 +279,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					ShowTutorial = bool.Parse(person.LoadBelief(NPCBeliefs.ShowTutorial.GetDescription()));
 					TutorialStage = int.Parse(person.LoadBelief(NPCBeliefs.TutorialStage.GetDescription()));
 					_customTutorialAttributes = new Dictionary<string, string>();
+					QuestionnaireCompleted = bool.Parse(person.LoadBelief(NPCBeliefs.QuestionnaireCompleted.GetDescription()) ?? "false");
 					Team = new Team(iat, storageLocation, config, iat.ScenarioName, nation, boat);
 					if (boat.Type == "Finish")
 					{
@@ -706,12 +710,24 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Team.Manager.SaveStatus();
 		}
 
-		public Dictionary<string, int> GatherManagementStyles()
+		public void SaveQuestionnaireResults(Dictionary<string, int> results)
 		{
-			var managerBeliefs = Team.Manager.RolePlayCharacter.GetAllBeliefs();
+			foreach (var result in results)
+			{
+				Team.Manager.UpdateSingleBelief(string.Format("QuestionnaireMeaning({0})", result.Key), result.Value.ToString());
+			}
+			QuestionnaireCompleted = true;
+			Team.Manager.UpdateSingleBelief(NPCBeliefs.QuestionnaireCompleted.GetDescription(), QuestionnaireCompleted.ToString());
+			Team.Manager.SaveStatus();
+		}
+
+		public Dictionary<string, float> GatherManagementStyles()
+		{
+			var managerBeliefs = Team.Manager.RolePlayCharacter.GetAllBeliefs().ToList();
 			var possibleBeliefs = eventController.GetPlayerEventStyles();
-			managerBeliefs = managerBeliefs.Where(b => b.Name.StartsWith("PossibleMeaning")).ToList();
-			var managementStyles = managerBeliefs.Select(b => new KeyValuePair<string, int>(b.Name.Split('(', ')')[1], int.Parse(b.Value))).ToDictionary(b => b.Key, b => b.Value);
+			var gameMeanings = managerBeliefs.Where(b => b.Name.StartsWith("PossibleMeaning")).ToList();
+			var managementStyles = gameMeanings.Select(b => new KeyValuePair<string, int>(b.Name.Split('(', ')')[1], int.Parse(b.Value))).ToDictionary(b => b.Key, b => b.Value);
+			var managementTotal = managementStyles.Values.ToList().Sum();
 			foreach (var bel in possibleBeliefs)
 			{
 				if (!managementStyles.ContainsKey(bel))
@@ -719,8 +735,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					managementStyles.Add(bel, 0);
 				}
 			}
-			managementStyles = managementStyles.OrderByDescending(m => m.Value).ToDictionary(b => b.Key, b => b.Value);
-			return managementStyles;
+
+			var managementPercentage = managementStyles.Select(m => new KeyValuePair<string, float>(m.Key, m.Value / (managementTotal * 2f))).ToDictionary(m => m.Key, m => m.Value);
+
+			var questionnaireMeanings = managerBeliefs.Where(b => b.Name.StartsWith("QuestionnaireMeaning")).ToList();
+			managementStyles = questionnaireMeanings.Select(b => new KeyValuePair<string, int>(b.Name.Split('(', ')')[1], int.Parse(b.Value))).ToDictionary(b => b.Key, b => b.Value);
+			managementTotal = managementStyles.Values.ToList().Sum();
+			foreach (var style in managementStyles)
+			{
+				managementPercentage[style.Key] += style.Value / (managementTotal * 2f);
+			}
+			managementPercentage = managementPercentage.OrderByDescending(m => m.Value).ToDictionary(b => b.Key, b => b.Value);
+
+			return managementPercentage;
 		}
 
 		public string[] GetPrevalentLeadershipStyle()

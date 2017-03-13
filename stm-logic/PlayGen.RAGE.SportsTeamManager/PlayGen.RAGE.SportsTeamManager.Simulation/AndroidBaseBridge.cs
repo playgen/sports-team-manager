@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using AssetPackage;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {

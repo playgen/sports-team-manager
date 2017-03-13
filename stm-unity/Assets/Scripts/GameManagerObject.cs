@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-using UnityEngine;
+﻿using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 
 /// <summary>

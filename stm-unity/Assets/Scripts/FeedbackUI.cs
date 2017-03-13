@@ -1,6 +1,4 @@
 ﻿using PlayGen.Unity.Utilities.Localization;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 
 using UnityEngine;
@@ -67,18 +65,16 @@ public class FeedbackUI : MonoBehaviour {
 		}
 
 		var styles = _feedback.GatherManagementStyles();
-		var total = styles.Values.ToList().Sum();
 		var orange = new Color(1, 0.5f, 0);
 		var blue = new Color(0, 1, 1);
 		foreach (var style in styles)
 		{
-			var percentage = (float)style.Value / total;
 			var styleObj = Instantiate(_selectionPrefab, _selectionGraph.transform, false);
 			styleObj.transform.Find("Style").GetComponent<Text>().text = Localization.Get(style.Key);
 			styleObj.transform.Find("Style").GetComponent<Localization>().Key = style.Key;
-			styleObj.transform.Find("Amount").GetComponent<Image>().fillAmount = percentage;
+			styleObj.transform.Find("Amount").GetComponent<Image>().fillAmount = style.Value;
 			
-			if (percentage >= 0.6f)
+			if (style.Value >= 0.6f)
 			{
 				styleObj.transform.Find("Text Backer/Text").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_High");
 				styleObj.transform.Find("Text Backer/Text").GetComponent<Localization>().Key = style.Key + "_Questions_High";
@@ -86,7 +82,7 @@ public class FeedbackUI : MonoBehaviour {
 				styleObj.transform.Find("Amount").GetComponent<Image>().color = orange;
 				styleObj.transform.Find("Text Backer").gameObject.SetActive(true);
 			}
-			else if (percentage <= 0.2f)
+			else if (style.Value <= 0.2f)
 			{
 				styleObj.transform.Find("Text Backer/Text").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_Low");
 				styleObj.transform.Find("Text Backer/Text").GetComponent<Localization>().Key = style.Key + "_Questions_Low";
@@ -97,7 +93,7 @@ public class FeedbackUI : MonoBehaviour {
 			else
 			{
 				styleObj.transform.Find("Text Backer").gameObject.SetActive(false);
-				styleObj.transform.Find("Amount").GetComponent<Image>().color = Color.Lerp(blue, orange, (percentage - 0.2f) * (0.4f/1f));
+				styleObj.transform.Find("Amount").GetComponent<Image>().color = Color.Lerp(blue, orange, (style.Value - 0.2f) * (0.4f/1f));
 			}
 		}
 	}

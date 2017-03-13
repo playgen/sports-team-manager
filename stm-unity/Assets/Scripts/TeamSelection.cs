@@ -55,6 +55,10 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public Team GetTeam()
 	{
+		if (_gameManager == null)
+		{
+			_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
+		}
 		return _gameManager.Team;
 	}
 
@@ -235,5 +239,13 @@ public class TeamSelection : MonoBehaviour {
 	public bool TutorialInProgress()
 	{
 		return _gameManager.ShowTutorial;
+	}
+
+	/// <summary>
+	/// Check if the questionnaire has been completed for this game
+	/// </summary>
+	public bool QuestionnaireCompleted()
+	{
+		return _gameManager.QuestionnaireCompleted;
 	}
 }

@@ -319,12 +319,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1480357716267252}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88e0378b041f6944a88d60a575d8f3b7, type: 3}
+  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Key: 
   ToUpper: 0
-  LanguageOverride: 0
+  LanguageOverride: 
 --- !u!114 &114761189561818280
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -333,12 +333,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1986928784270282}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88e0378b041f6944a88d60a575d8f3b7, type: 3}
+  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Key: 
   ToUpper: 0
-  LanguageOverride: 0
+  LanguageOverride: 
 --- !u!114 &114831840706305526
 MonoBehaviour:
   m_ObjectHideFlags: 1

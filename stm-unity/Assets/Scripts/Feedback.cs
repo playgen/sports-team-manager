@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 
@@ -9,7 +8,7 @@ public class Feedback : MonoBehaviour {
 
 	private GameManager _gameManager;
 
-	public Dictionary<string, int> GatherManagementStyles()
+	public Dictionary<string, float> GatherManagementStyles()
 	{
 		if (_gameManager == null)
 		{

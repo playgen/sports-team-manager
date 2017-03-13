@@ -48,9 +48,9 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	{
 		Localization.LanguageChange -= OnLanguageChange;
 		BestFit.ResolutionChange -= DoBestFit;
-		for (int i = 0; i < _postRacePeople.Length; i++)
+		foreach (PostRacePersonUI person in _postRacePeople)
 		{
-			_postRacePeople[i].EnableQuestions();
+			person.EnableQuestions();
 			DoBestFit();
 		}
 		if (_postRaceEvent.transform.GetSiblingIndex() == _postRaceEvent.transform.parent.childCount - 1)

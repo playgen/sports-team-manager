@@ -26,6 +26,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		BoatType,
 		[Description("Value(ShowTutorial)")]
 		ShowTutorial,
+		[Description("Value(QuestionnaireCompleted)")]
+		QuestionnaireCompleted,
 		[Description("Value(TutorialStage)")]
 		TutorialStage,
 		[Description("Value(Nationality)")]

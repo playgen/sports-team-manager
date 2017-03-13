@@ -106,10 +106,10 @@ public class PostRacePersonUI : MonoBehaviour
 
 	public void EnableQuestions()
 	{
-		for (var i = 0; i < _questions.Length; i++)
+		foreach (GameObject question in _questions)
 		{
-			_questions[i].GetComponentInChildren<Text>().text = string.Empty;
-			_questions[i].SetActive(true);
+			question.GetComponentInChildren<Text>().text = string.Empty;
+			question.SetActive(true);
 		}
 	}
 

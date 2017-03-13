@@ -96,6 +96,21 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
+		if (_teamSelection && _teamSelection.GetTeam().Boat.Positions.Count == 0)
+		{
+			_feedbackButton.onClick.RemoveAllListeners();
+			if (_teamSelection.QuestionnaireCompleted())
+			{
+				_feedbackButton.onClick.AddListener(TriggerFeedback);
+				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
+			}
+			else
+			{
+				_feedbackButton.onClick.AddListener(TriggerQuestionnaire);
+				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("CONFLICT_QUESTIONNAIRE");
+			}
+			_feedbackButton.gameObject.SetActive(true);
+		}
 	}
 
 	private void OnDisable()
@@ -239,7 +254,16 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		{
 			stageIcon.gameObject.SetActive(false);
 			_feedbackButton.onClick.RemoveAllListeners();
-			_feedbackButton.onClick.AddListener(TriggerFeedback);
+			if (_teamSelection.QuestionnaireCompleted())
+			{
+				_feedbackButton.onClick.AddListener(TriggerFeedback);
+				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
+			}
+			else
+			{
+				_feedbackButton.onClick.AddListener(TriggerQuestionnaire);
+				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("CONFLICT_QUESTIONNAIRE");
+			}
 			_feedbackButton.gameObject.SetActive(true);
 		}
 		_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = isRace || team.Boat.Positions.Count == 0 ? string.Empty : _teamSelection.GetStage().ToString();
@@ -935,6 +959,17 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			var lastRace = _teamSelection.GetLineUpHistory(0, 1).First();
 			GetResult(true, lastRace.Key, lastRace.Value.Key, _boatPool[0].transform.Find("Score").GetComponent<Text>());
 		}
+		if (_feedbackButton.gameObject.activeSelf)
+		{
+			if (_teamSelection.QuestionnaireCompleted())
+			{
+				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
+			}
+			else
+			{
+				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("CONFLICT_QUESTIONNAIRE");
+			}
+		}
 		DoBestFit();
 	}
 
@@ -953,6 +988,11 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				boat.GetComponent<LayoutElement>().preferredHeight = Mathf.Abs(currentPosition) * 0.2f;
 			}
 		}
+	}
+
+	private void TriggerQuestionnaire()
+	{
+		((UIStateManager)FindObjectOfType(typeof(UIStateManager))).GoToQuestionnaire();
 	}
 
 	private void TriggerFeedback()
