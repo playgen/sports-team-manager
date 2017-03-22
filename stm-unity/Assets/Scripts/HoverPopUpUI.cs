@@ -3,6 +3,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
+using RAGE.Analytics.Formats;
 
 /// <summary>
 /// Used on hover text object to set text and reposition when needed

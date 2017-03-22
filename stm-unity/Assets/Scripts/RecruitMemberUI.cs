@@ -12,6 +12,8 @@ using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
 
+using RAGE.Analytics.Formats;
+
 /// <summary>
 /// Contains all UI logic related to the Recruitment pop-up
 /// </summary>

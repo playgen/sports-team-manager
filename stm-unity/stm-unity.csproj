@@ -227,6 +227,16 @@
     <Compile Include="Assets\Scripts\TutorialController.cs" />
     <Compile Include="Assets\Scripts\TutorialSectionUI.cs" />
     <Compile Include="Assets\Scripts\UIStateManager.cs" />
+    <Compile Include="Assets\unity-tracker-master\Tracker\Exception\ExtensionException.cs" />
+    <Compile Include="Assets\unity-tracker-master\Tracker\Exception\ExtensionException\KeyExtensionException.cs" />
+    <Compile Include="Assets\unity-tracker-master\Tracker\Exception\ExtensionException\ValueExtensionException.cs" />
+    <Compile Include="Assets\unity-tracker-master\Tracker\Exception\TraceException.cs" />
+    <Compile Include="Assets\unity-tracker-master\Tracker\Exception\TrackerException.cs" />
+    <Compile Include="Assets\unity-tracker-master\Tracker\Exception\XApiException.cs" />
+    <Compile Include="Assets\unity-tracker-master\Tracker\Exception\XApiException\ActorXApiException.cs" />
+    <Compile Include="Assets\unity-tracker-master\Tracker\Exception\XApiException\ExtensionXApiException.cs" />
+    <Compile Include="Assets\unity-tracker-master\Tracker\Exception\XApiException\TargetXApiException.cs" />
+    <Compile Include="Assets\unity-tracker-master\Tracker\Exception\XApiException\VerbXApiException.cs" />
     <Compile Include="Assets\unity-tracker-master\Tracker\Format\AccessibleTracker.cs" />
     <Compile Include="Assets\unity-tracker-master\Tracker\Format\AlternativeTracker.cs" />
     <Compile Include="Assets\unity-tracker-master\Tracker\Format\CompletableTracker.cs" />
@@ -234,11 +244,13 @@
     <Compile Include="Assets\unity-tracker-master\Tracker\Format\GameObjectTracker.cs" />
     <Compile Include="Assets\unity-tracker-master\Tracker\Format\SimpleJsonFormat.cs" />
     <Compile Include="Assets\unity-tracker-master\Tracker\Format\XApiFormat.cs" />
+    <Compile Include="Assets\unity-tracker-master\Tracker\SimpleJSON.cs" />
     <Compile Include="Assets\unity-tracker-master\Tracker\Storage\LocalStorage.cs" />
     <Compile Include="Assets\unity-tracker-master\Tracker\Storage\Net.cs" />
     <Compile Include="Assets\unity-tracker-master\Tracker\Storage\NetStorage.cs" />
     <Compile Include="Assets\unity-tracker-master\Tracker\Storage\Storage.cs" />
     <Compile Include="Assets\unity-tracker-master\Tracker\Tracker.cs" />
+    <Compile Include="Assets\unity-tracker-master\Tracker\Utils\Utils.cs" />
     <Compile Include="Assets\unity-ui-extensions\Scripts\Effects\SoftMaskScript.cs" />
   </ItemGroup>
   <ItemGroup>

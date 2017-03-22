@@ -7,8 +7,9 @@ This code belongs to [RAGE project](http://rageproject.eu/) and sends analytics 
 After a game is developed, a common need is to know how the players play, what interactions they follow within the game and how much time they spend in a game session; collectively, these are known as game analytics. Analytics are used to locate gameplay bottlenecks and assess  game effectiveness and learning outcomes, among other tasks.
 
 ## Installation
-1. Clone the repository in your **Assets** folder
-1. Add the [Tracker MonoBehaviour](https://github.com/e-ucm/unity-tracker/blob/master/Assets/Tracker.cs) to an empty in your first scene (the component will be kept across scenes)
+1. Clone the repository in your **Assets** folder inside your Unity project
+1. Add the [Tracker MonoBehaviour](https://github.com/e-ucm/unity-tracker/blob/master/Tracker/Tracker.cs) into an empty object in your first scene (the component will be kept across scenes)
+	![unitytracker add tracker](https://cloud.githubusercontent.com/assets/5657407/21893124/07974d46-d8da-11e6-9168-e1cb0e7547f1.png)
 1. Configure the component parameters
   1. **Flush interval**: time between each flush of the tracker to the server. If this is set to `-1`, it will be necessary to call `T().RequestFlush()` to send traces to the server.
   1. **Storage type**: can be `net`, to send traces to a server, o `local`, to store them locally.
@@ -18,7 +19,17 @@ After a game is developed, a common need is to know how the players play, what i
   1. **Debug**: Enable to see tracker messages in the Unity console.
 1. Send traces
 
-The traces file are saved in `C:\Users\UserName\AppData\LocalLow\DefaultCompany\GameName`
+The configuration process is very simple. If a game is exported, a track.txt file has to be created in the root project directory, into an Asset folder.
+
+The [track.txt](https://github.com/e-ucm/QuizDemo/blob/master/Assets/Assets/track.txt) file must be edited changing the `host` and `trackingCode` 
+with the correct values. Normaly the `host` looks like this `http://localhost:3000/api/proxy/gleaner/collector/` and the `trackingCode` normally looks like [this](https://github.com/e-ucm/rage-analytics/wiki/Tracking-code).
+
+<b>Note</b>: The traces file are saved in `C:/Users/[username]/AppData/LocalLow/[Company Name]/[Product Name]` under the name `traces.csv`
+
+If you are not sure or you don’t know your company and product name, you can check and change it the path using the Unity menu:
+`Edit > Project Settings > Player`
+![inspector unity](https://cloud.githubusercontent.com/assets/5657407/21893123/07972abe-d8da-11e6-8f79-94903f62dced.png)
+
 
 ## MonoBehaviour Example
 
@@ -54,7 +65,7 @@ public class TraceGeneratorsScript : MonoBehaviour {
 
 The tracker requires (if `net` mode is on) the [RAGE Analytics](https://github.com/e-ucm/rage-analytics) infrastructure up and running. Check out the [Quickstart guide](https://github.com/e-ucm/rage-analytics/wiki/Quickstart) and follow the `developer` and `teacher` steps in order to create a game and [setup a class](https://github.com/e-ucm/rage-analytics/wiki/Set-up-a-class). It also requires a:
 
-* **Host**: where the server is at. This value usually looks like <rage_server_hostmane>/api/proxy/gleaner/collector. The [collector](https://github.com/e-ucm/rage-analytics-backend/wiki/Collector) is an endpoint designed to retrieve traces and send them to the analysis pipeline.
+* **Host**: where the server is at. This value usually looks like `<rage_server_hostmane>/api/proxy/gleaner/collector/`. The [collector](https://github.com/e-ucm/rage-analytics/wiki/Back-end-collector) is an endpoint designed to retrieve traces and send them to the analysis pipeline.
 * **Tracking code**: an unique tracking code identifying the game. [This code is created in the frontend](https://github.com/e-ucm/rage-analytics/wiki/Tracking-code), when creating a new game.
 
 
@@ -68,10 +79,10 @@ A **gameplay** is the flow of interactions that a player performs over these gam
 
 The main typed of game objects supported are:
 
-* [Completable](https://github.com/e-ucm/unity-tracker/blob/master/Assets/Format/CompletableTracker.cs) - for Game, Session, Level, Quest, Stage, Combat, StoryNode, Race or any other generic Completable. Methods: `Initialized`, `Progressed` and `Completed`.
-* [Accessible](https://github.com/e-ucm/unity-tracker/blob/master/Assets/Format/AccessibleTracker.cs) - for Screen, Area, Zone, Cutscene or any other generic Accessible. Methods: `Initialized`, `Progressed` and `Completed`.  Methods: `Accessed` and `Skipped`.
-* [Alternative](https://github.com/e-ucm/unity-tracker/blob/master/Assets/Format/AlternativeTracker.cs) - for Question, Menu, Dialog, Path, Arena or any other generic Alternative. Methods: `Selected` and `Unlocked`.
-* [TrackedGameObject](https://github.com/e-ucm/unity-tracker/blob/master/Assets/Format/GameObjectTracker.cs) for Enemy, Npc, Item or any other generic GameObject. Methods: `Interacted` and `Used`.
+* [Completable](https://github.com/e-ucm/unity-tracker/blob/master/Tracker/Format/CompletableTracker.cs) - for Game, Session, Level, Quest, Stage, Combat, StoryNode, Race or any other generic Completable. Methods: `Initialized`, `Progressed` and `Completed`.
+* [Accessible](https://github.com/e-ucm/unity-tracker/blob/master/Tracker/Format/AccessibleTracker.cs) - for Screen, Area, Zone, Cutscene or any other generic Accessible. Methods: `Accessed` and `Skipped`.
+* [Alternative](https://github.com/e-ucm/unity-tracker/blob/master/Tracker/Format/AlternativeTracker.cs) - for Question, Menu, Dialog, Path, Arena or any other generic Alternative. Methods: `Selected` and `Unlocked`.
+* [TrackedGameObject](https://github.com/e-ucm/unity-tracker/blob/master/Tracker/Format/GameObjectTracker.cs) for Enemy, Npc, Item or any other generic GameObject. Methods: `Interacted` and `Used`.
 
 ##### Completable
 
@@ -121,12 +132,12 @@ Usage example for the tracking the player's choices during a conversation:
 	
 	// Alternative
 	// The player selected the 'Dan' answer for the question 'What's his name?'
-	Tracker.T.alternative.Accessed("What's his name?", "Dan", Alternative.Question);
+	Tracker.T.alternative.Selected("What's his name?", "Dan", Alternative.Question);
 	
 	//...
 	
 	// The player selected 'OK' for the question 'Do you want it?'
-	Tracker.T.alternative.Accessed("Do you want it?", "OK", Alternative.Question);
+	Tracker.T.alternative.Selected("Do you want to start right now?", "OK", Alternative.Question);
 
 	//...
 	
@@ -155,7 +166,7 @@ Usage example for the tracking the player's with a NPC villager and using a heal
 Note that in order to track other type of user interactions it is required to perform a previous analysis to identify the most suitable game objects ([Completable](https://github.com/e-ucm/unity-tracker/blob/master/Assets/Format/CompletableTracker.cs), [Accessible](https://github.com/e-ucm/unity-tracker/blob/master/Assets/Format/AccessibleTracker.cs), [Alternative](https://github.com/e-ucm/unity-tracker/blob/master/Assets/Format/AlternativeTracker.cs), [TrackedGameObject](https://github.com/e-ucm/unity-tracker/blob/master/Assets/Format/GameObjectTracker.cs)) for the given case. For instance, in order to track conversations [Alternative](https://github.com/e-ucm/unity-tracker/blob/master/Assets/Format/AlternativeTracker.cs) is the best choice
 
 ### Tracker and Collector Flow
-If the storage type is `net`, the tracker will try to connect to a `Collector` [endpoint](https://github.com/e-ucm/rage-analytics-backend/wiki/Collector), exposed by the [rage-analytics Backend](https://github.com/e-ucm/rage-analytics-backend). 
+If the storage type is `net`, the tracker will try to connect to a `Collector` [endpoint](https://github.com/e-ucm/rage-analytics/wiki/Back-end-collector), exposed by the [rage-analytics Backend](https://github.com/e-ucm/rage-analytics-backend). 
 
 More information about the tracker can be found in the [official documentation of rage-analytics] (https://github.com/e-ucm/rage-analytics/wiki/Tracker).
 

@@ -5,6 +5,8 @@ using System.Reflection;
 
 using PlayGen.SUGAR.Unity;
 
+using RAGE.Analytics.Formats;
+
 /// <summary>
 /// Contains all logic to communicate between PostRaceEventUI and GameManager
 /// </summary>

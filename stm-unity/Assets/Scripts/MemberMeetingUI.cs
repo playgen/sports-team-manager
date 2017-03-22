@@ -13,6 +13,8 @@ using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
 
+using RAGE.Analytics.Formats;
+
 /// <summary>
 /// Contains all logic related to the CrewMember Meeting pop-up
 /// </summary>

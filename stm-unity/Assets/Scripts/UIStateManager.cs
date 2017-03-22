@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using System.Linq;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
+using RAGE.Analytics.Formats;
 
 /// <summary>
 /// Controls switching between different game state panels

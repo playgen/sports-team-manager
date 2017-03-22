@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 
+using RAGE.Analytics;
+
 public class TrackerEventCatcher : ObserverMonoBehaviour {
 	public override void OnNext(KeyValueMessage message)
 	{

@@ -5,6 +5,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
+using RAGE.Analytics.Formats;
 
 [RequireComponent(typeof(LearningPill))]
 public class LearningPillUI : ObservableMonoBehaviour {
