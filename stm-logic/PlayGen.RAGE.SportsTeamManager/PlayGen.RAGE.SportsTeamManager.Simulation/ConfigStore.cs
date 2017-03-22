@@ -27,9 +27,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal static EmotionalAppraisalAsset EmotionalAppraisal { get; set; }
 		internal static EmotionalDecisionMakingAsset EmotionalDecisionMaking { get; set; }
 		internal static SocialImportanceAsset SocialImportance { get; set; }
+		internal static bool Android { get; set; }
 
 		public ConfigStore(bool android = false)
 		{
+			Android = android;
 			ConfigValues = new Dictionary<ConfigKeys, float>();
 			var configText = Templates.ResourceManager.GetString("config");
 			ConfigValues = JsonConvert.DeserializeObject<Dictionary<ConfigKeys, float>>(configText);
@@ -46,10 +48,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			GameConfig = new GameConfig().GetConfig();
 			NameConfig = new NameConfig().GetConfig();
 			Avatar.Config = new AvatarGeneratorConfig().GetConfig();
-			LoadAssets(android);
+			LoadAssets();
 		}
 
-		internal void LoadAssets(bool android = false)
+		internal void LoadAssets()
 		{
 			AssetManager.Instance.Bridge = new TemplateBridge();
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile("template_rpc");
@@ -58,7 +60,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			SocialImportance = SocialImportanceAsset.LoadFromFile(RolePlayCharacter.SocialImportanceAssetSource);
 			IntegratedAuthoringTool = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
 			HelpIntegratedAuthoringTool = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue");
-			AssetManager.Instance.Bridge = android ? new AndroidBaseBridge() : new BaseBridge();
+			AssetManager.Instance.Bridge = Android ? new AndroidBaseBridge() : new BaseBridge();
 		}
 	}
 }

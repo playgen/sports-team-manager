@@ -138,7 +138,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 				_recruitUI[i].transform.Find("Dialogue Box/Dialogue").GetComponent<Text>().text += Localization.Get("EXCLAIMATION_MARK");
 			}
 			_recruitUI[i].transform.Find("Dialogue Box/Image").GetComponent<Image>().enabled = false;
-			_recruitUI[i].transform.Find("Cost Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString(Localization.SelectedLanguage);
+			_recruitUI[i].transform.Find("Cost Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString(Localization.SelectedLanguage.GetSpecificCulture());
 			_recruitUI[i].name = recruits[i].Name;
 		}
 		//set-up question text and click handlers
@@ -155,7 +155,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			_questionButtons[i].interactable = true;
 			var questionText = _recruitMember.GetQuestionText("Recruit" + selected).OrderBy(s => Guid.NewGuid()).First();
 			_questionButtons[i].transform.Find("Text").GetComponent<Text>().text = Localization.Get(questionText);
-			_questionButtons[i].transform.Find("Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost).ToString(Localization.SelectedLanguage);
+			_questionButtons[i].transform.Find("Image/Text").GetComponent<Text>().text = _recruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost).ToString(Localization.SelectedLanguage.GetSpecificCulture());
 			_questionButtons[i].onClick.RemoveAllListeners();
 			_questionButtons[i].onClick.AddListener(delegate { AskQuestion(selected, questionText); });
 		}

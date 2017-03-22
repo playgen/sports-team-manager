@@ -92,7 +92,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void UpdateSingleBelief(string name, string value)
 		{
-			var belief = EventHelper.PropertyChanged(name, value, Name.NoSpaces());
+			var belief = EventHelper.PropertyChange(name, value, Name.NoSpaces());
 			RolePlayCharacter.Perceive(new[] { belief });
 			RolePlayCharacter.ForgetEvent(RolePlayCharacter.EventRecords.Last().Id);
 		}

@@ -7,10 +7,10 @@
 			"AgentDialogues": [
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "PWAccomodatingCompetingCompeting",
-					"Meaning": ["PWAccomodatingCompetingCompeting"],
-					"Style": ["PWAccomodatingCompetingCompeting"],
-					"Utterance": "PWAccomodatingCompetingCompetingLP",
+					"NextState": "PWAccommodatingCompetingCompeting",
+					"Meaning": ["PWAccommodatingCompetingCompeting"],
+					"Style": ["PWAccommodatingCompetingCompeting"],
+					"Utterance": "PWAccommodatingCompetingCompetingLP",
 					"UtteranceId": "D5-1F-D5-B6-5A-A5-E6-DF-A4-5F-40-10-21-58-1F-14"
 				}, 
 				{
@@ -55,26 +55,26 @@
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "PWCompetingAccomodatingAccomodating",
-					"Meaning": ["PWCompetingAccomodatingAccomodating"],
-					"Style": ["PWCompetingAccomodatingAccomodating"],
-					"Utterance": "PWCompetingAccomodatingAccomodatingLP",
+					"NextState": "PWCompetingAccommodatingAccommodating",
+					"Meaning": ["PWCompetingAccommodatingAccommodating"],
+					"Style": ["PWCompetingAccommodatingAccommodating"],
+					"Utterance": "PWCompetingAccommodatingAccommodatingLP",
 					"UtteranceId": "80-A2-50-0C-86-94-87-F0-AF-69-8D-45-54-99-AB-1C"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "PWAccomodatingCompetingAccomodating",
-					"Meaning": ["PWAccomodatingCompetingAccomodating"],
-					"Style": ["PWAccomodatingCompetingAccomodating"],
-					"Utterance": "PWAccomodatingCompetingAccomodatingLP",
+					"NextState": "PWAccommodatingCompetingAccommodating",
+					"Meaning": ["PWAccommodatingCompetingAccommodating"],
+					"Style": ["PWAccommodatingCompetingAccommodating"],
+					"Utterance": "PWAccommodatingCompetingAccommodatingLP",
 					"UtteranceId": "89-A8-B2-9D-58-8B-DE-90-FE-38-7E-04-77-42-5A-C9"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "PWAccomodatingAccomodating",
-					"Meaning": ["PWAccomodatingAccomodating"],
-					"Style": ["PWAccomodatingAccomodating"],
-					"Utterance": "PWAccomodatingAccomodatingLP",
+					"NextState": "PWAccommodatingAccommodating",
+					"Meaning": ["PWAccommodatingAccommodating"],
+					"Style": ["PWAccommodatingAccommodating"],
+					"Utterance": "PWAccommodatingAccommodatingLP",
 					"UtteranceId": "16-A5-CD-6A-B0-5A-08-1D-BB-A7-4A-90-28-42-4D-61"
 				}, 
 				{
@@ -95,18 +95,18 @@
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "PWCompetingAccomodatingCompeting",
-					"Meaning": ["PWCompetingAccomodatingCompeting"],
-					"Style": ["PWCompetingAccomodatingCompeting"],
-					"Utterance": "PWCompetingAccomodatingCompetingLP",
+					"NextState": "PWCompetingAccommodatingCompeting",
+					"Meaning": ["PWCompetingAccommodatingCompeting"],
+					"Style": ["PWCompetingAccommodatingCompeting"],
+					"Utterance": "PWCompetingAccommodatingCompetingLP",
 					"UtteranceId": "75-80-60-9A-51-C9-09-49-AD-FC-F3-42-FB-4C-96-A5"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "OOAccomodatingAccomodating",
-					"Meaning": ["OOAccomodatingAccomodating"],
-					"Style": ["OOAccomodatingAccomodating"],
-					"Utterance": "OOAccomodatingAccomodatingLP",
+					"NextState": "OOAccommodatingAccommodating",
+					"Meaning": ["OOAccommodatingAccommodating"],
+					"Style": ["OOAccommodatingAccommodating"],
+					"Utterance": "OOAccommodatingAccommodatingLP",
 					"UtteranceId": "CB-36-08-2E-F5-87-7F-49-7E-4C-8A-73-C6-5E-0C-59"
 				}, 
 				{
@@ -127,18 +127,18 @@
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "OOAvoidingAccomodatingAccomodating",
-					"Meaning": ["OOAvoidingAccomodatingAccomodating"],
-					"Style": ["OOAvoidingAccomodatingAccomodating"],
-					"Utterance": "OOAvoidingAccomodatingAccomodatingLP",
+					"NextState": "OOAvoidingAccommodatingAccommodating",
+					"Meaning": ["OOAvoidingAccommodatingAccommodating"],
+					"Style": ["OOAvoidingAccommodatingAccommodating"],
+					"Utterance": "OOAvoidingAccommodatingAccommodatingLP",
 					"UtteranceId": "1B-6D-22-70-E1-D9-AC-2E-15-B3-41-3D-1E-90-8B-B9"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "OOAvoidingAccomodatingAvoiding",
-					"Meaning": ["OOAvoidingAccomodatingAvoiding"],
-					"Style": ["OOAvoidingAccomodatingAvoiding"],
-					"Utterance": "OOAvoidingAccomodatingAvoidingLP",
+					"NextState": "OOAvoidingAccommodatingAvoiding",
+					"Meaning": ["OOAvoidingAccommodatingAvoiding"],
+					"Style": ["OOAvoidingAccommodatingAvoiding"],
+					"Utterance": "OOAvoidingAccommodatingAvoidingLP",
 					"UtteranceId": "F0-C5-9A-C6-29-C5-21-5A-87-21-40-A4-D2-32-72-D3"
 				}, 
 				{
@@ -159,18 +159,18 @@
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "OOAccomodatingAvoidingAvoiding",
-					"Meaning": ["OOAccomodatingAvoidingAvoiding"],
-					"Style": ["OOAccomodatingAvoidingAvoiding"],
-					"Utterance": "OOAccomodatingAvoidingAvoidingLP",
+					"NextState": "OOAccommodatingAvoidingAvoiding",
+					"Meaning": ["OOAccommodatingAvoidingAvoiding"],
+					"Style": ["OOAccommodatingAvoidingAvoiding"],
+					"Utterance": "OOAccommodatingAvoidingAvoidingLP",
 					"UtteranceId": "13-57-B1-A2-30-E1-38-1D-1F-4B-00-0A-7B-12-EA-FE"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "OOAccomodatingAvoidingAccomodating",
-					"Meaning": ["OOAccomodatingAvoidingAccomodating"],
-					"Style": ["OOAccomodatingAvoidingAccomodating"],
-					"Utterance": "OOAccomodatingAvoidingAccomodatingLP",
+					"NextState": "OOAccommodatingAvoidingAccommodating",
+					"Meaning": ["OOAccommodatingAvoidingAccommodating"],
+					"Style": ["OOAccommodatingAvoidingAccommodating"],
+					"Utterance": "OOAccommodatingAvoidingAccommodatingLP",
 					"UtteranceId": "0B-E1-72-D1-D9-C6-35-F2-0E-8B-2F-43-98-61-DF-41"
 				}, 
 				{
@@ -215,18 +215,18 @@
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedAccomodatingAccomodating",
-					"Meaning": ["NotPickedAccomodatingAccomodating"],
-					"Style": ["NotPickedAccomodatingAccomodating"],
-					"Utterance": "NotPickedAccomodatingAccomodatingLP",
+					"NextState": "NotPickedAccommodatingAccommodating",
+					"Meaning": ["NotPickedAccommodatingAccommodating"],
+					"Style": ["NotPickedAccommodatingAccommodating"],
+					"Utterance": "NotPickedAccommodatingAccommodatingLP",
 					"UtteranceId": "1F-3B-F1-11-B4-BB-C6-70-73-82-25-24-74-DB-0C-73"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedCollaboratingAccomodating",
-					"Meaning": ["NotPickedCollaboratingAccomodating"],
-					"Style": ["NotPickedCollaboratingAccomodating"],
-					"Utterance": "NotPickedCollaboratingAccomodatingLP",
+					"NextState": "NotPickedCollaboratingAccommodating",
+					"Meaning": ["NotPickedCollaboratingAccommodating"],
+					"Style": ["NotPickedCollaboratingAccommodating"],
+					"Utterance": "NotPickedCollaboratingAccommodatingLP",
 					"UtteranceId": "E4-9C-D1-53-02-D7-77-25-08-03-2F-F3-B9-96-A3-12"
 				}, 
 				{
@@ -263,18 +263,18 @@
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedAccomodatingCollaboratingCollaborating",
-					"Meaning": ["NotPickedAccomodatingCollaboratingCollaborating"],
-					"Style": ["NotPickedAccomodatingCollaboratingCollaborating"],
-					"Utterance": "NotPickedAccomodatingCollaboratingCollaboratingLP",
+					"NextState": "NotPickedAccommodatingCollaboratingCollaborating",
+					"Meaning": ["NotPickedAccommodatingCollaboratingCollaborating"],
+					"Style": ["NotPickedAccommodatingCollaboratingCollaborating"],
+					"Utterance": "NotPickedAccommodatingCollaboratingCollaboratingLP",
 					"UtteranceId": "3B-68-47-E9-D0-83-7B-B4-BE-B5-46-48-A4-21-D0-CA"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedAccomodatingCollaboratingAccomodating",
-					"Meaning": ["NotPickedAccomodatingCollaboratingAccomodating"],
-					"Style": ["NotPickedAccomodatingCollaboratingAccomodating"],
-					"Utterance": "NotPickedAccomodatingCollaboratingAccomodatingLP",
+					"NextState": "NotPickedAccommodatingCollaboratingAccommodating",
+					"Meaning": ["NotPickedAccommodatingCollaboratingAccommodating"],
+					"Style": ["NotPickedAccommodatingCollaboratingAccommodating"],
+					"Utterance": "NotPickedAccommodatingCollaboratingAccommodatingLP",
 					"UtteranceId": "A6-FF-CE-DF-35-59-0C-1D-1C-36-A7-ED-BE-57-69-92"
 				}, 
 				{
@@ -287,10 +287,10 @@
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "NotPickedCollaboratingCollaboratingAccomodating",
-					"Meaning": ["NotPickedCollaboratingCollaboratingAccomodating"],
-					"Style": ["NotPickedCollaboratingCollaboratingAccomodating"],
-					"Utterance": "NotPickedCollaboratingCollaboratingAccomodatingLP",
+					"NextState": "NotPickedCollaboratingCollaboratingAccommodating",
+					"Meaning": ["NotPickedCollaboratingCollaboratingAccommodating"],
+					"Style": ["NotPickedCollaboratingCollaboratingAccommodating"],
+					"Utterance": "NotPickedCollaboratingCollaboratingAccommodatingLP",
 					"UtteranceId": "7A-30-1B-FA-D8-2E-A6-4D-9B-CC-FF-36-D0-98-39-1C"
 				}, 
 				{
@@ -303,10 +303,10 @@
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCAccomodatingAccomodating2",
-					"Meaning": ["IPCAccomodatingAccomodating2"],
-					"Style": ["IPCAccomodatingAccomodating2"],
-					"Utterance": "IPCAccomodatingAccomodating2LP",
+					"NextState": "IPCAccommodatingAccommodating2",
+					"Meaning": ["IPCAccommodatingAccommodating2"],
+					"Style": ["IPCAccommodatingAccommodating2"],
+					"Utterance": "IPCAccommodatingAccommodating2LP",
 					"UtteranceId": "DC-4D-0B-BF-4F-7C-85-C8-26-12-17-3D-9D-8F-B2-DF"
 				}, 
 				{
@@ -327,26 +327,26 @@
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCCollaboratingAccomodating",
-					"Meaning": ["IPCCollaboratingAccomodating"],
-					"Style": ["IPCCollaboratingAccomodating"],
-					"Utterance": "IPCCollaboratingAccomodatingLP",
+					"NextState": "IPCCollaboratingAccommodating",
+					"Meaning": ["IPCCollaboratingAccommodating"],
+					"Style": ["IPCCollaboratingAccommodating"],
+					"Utterance": "IPCCollaboratingAccommodatingLP",
 					"UtteranceId": "E5-93-56-72-F9-7A-83-86-B1-01-4B-61-D3-36-FE-6B"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCAvoidingAccomodatingAccomodating",
-					"Meaning": ["IPCAvoidingAccomodatingAccomodating"],
-					"Style": ["IPCAvoidingAccomodatingAccomodating"],
-					"Utterance": "IPCAvoidingAccomodatingAccomodatingLP",
+					"NextState": "IPCAvoidingAccommodatingAccommodating",
+					"Meaning": ["IPCAvoidingAccommodatingAccommodating"],
+					"Style": ["IPCAvoidingAccommodatingAccommodating"],
+					"Utterance": "IPCAvoidingAccommodatingAccommodatingLP",
 					"UtteranceId": "B1-B4-9D-77-3D-13-17-24-8F-BF-96-7C-5F-D3-AE-AC"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCAvoidingAccomodatingAvoiding",
-					"Meaning": ["IPCAvoidingAccomodatingAvoiding"],
-					"Style": ["IPCAvoidingAccomodatingAvoiding"],
-					"Utterance": "IPCAvoidingAccomodatingAvoidingLP",
+					"NextState": "IPCAvoidingAccommodatingAvoiding",
+					"Meaning": ["IPCAvoidingAccommodatingAvoiding"],
+					"Style": ["IPCAvoidingAccommodatingAvoiding"],
+					"Utterance": "IPCAvoidingAccommodatingAvoidingLP",
 					"UtteranceId": "2C-24-F4-13-E8-83-08-46-0A-24-70-B8-9C-A3-48-55"
 				}, 
 				{
@@ -407,34 +407,34 @@
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCAccomodatingAccomodatingAccomodating",
-					"Meaning": ["IPCAccomodatingAccomodatingAccomodating"],
-					"Style": ["IPCAccomodatingAccomodatingAccomodating"],
-					"Utterance": "IPCAccomodatingAccomodatingAccomodatingLP",
+					"NextState": "IPCAccommodatingAccommodatingAccommodating",
+					"Meaning": ["IPCAccommodatingAccommodatingAccommodating"],
+					"Style": ["IPCAccommodatingAccommodatingAccommodating"],
+					"Utterance": "IPCAccommodatingAccommodatingAccommodatingLP",
 					"UtteranceId": "42-02-D8-09-16-07-50-C0-1E-07-09-A0-B2-67-DD-D4"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCAccomodatingAccomodatingCompromising",
-					"Meaning": ["IPCAccomodatingAccomodatingCompromising"],
-					"Style": ["IPCAccomodatingAccomodatingCompromising"],
-					"Utterance": "IPCAccomodatingAccomodatingCompromisingLP",
+					"NextState": "IPCAccommodatingAccommodatingCompromising",
+					"Meaning": ["IPCAccommodatingAccommodatingCompromising"],
+					"Style": ["IPCAccommodatingAccommodatingCompromising"],
+					"Utterance": "IPCAccommodatingAccommodatingCompromisingLP",
 					"UtteranceId": "D5-5E-E3-08-38-53-5D-B9-C8-F5-D2-95-6E-CD-F9-D3"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCAccomodatingAvoidingAvoiding",
-					"Meaning": ["IPCAccomodatingAvoidingAvoiding"],
-					"Style": ["IPCAccomodatingAvoidingAvoiding"],
-					"Utterance": "IPCAccomodatingAvoidingAvoidingLP",
+					"NextState": "IPCAccommodatingAvoidingAvoiding",
+					"Meaning": ["IPCAccommodatingAvoidingAvoiding"],
+					"Style": ["IPCAccommodatingAvoidingAvoiding"],
+					"Utterance": "IPCAccommodatingAvoidingAvoidingLP",
 					"UtteranceId": "C4-B0-3F-72-9F-4E-85-3C-E3-CF-08-26-B4-91-88-8B"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCAccomodatingAvoidingAccomodating",
-					"Meaning": ["IPCAccomodatingAvoidingAccomodating"],
-					"Style": ["IPCAccomodatingAvoidingAccomodating"],
-					"Utterance": "IPCAccomodatingAvoidingAccomodatingLP",
+					"NextState": "IPCAccommodatingAvoidingAccommodating",
+					"Meaning": ["IPCAccommodatingAvoidingAccommodating"],
+					"Style": ["IPCAccommodatingAvoidingAccommodating"],
+					"Utterance": "IPCAccommodatingAvoidingAccommodatingLP",
 					"UtteranceId": "BD-0D-43-EA-F4-2B-53-C9-83-78-3F-F0-07-E0-24-41"
 				}, 
 				{
@@ -471,10 +471,10 @@
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCCollaboratingCollaboratingAccomodating",
-					"Meaning": ["IPCCollaboratingCollaboratingAccomodating"],
-					"Style": ["IPCCollaboratingCollaboratingAccomodating"],
-					"Utterance": "IPCCollaboratingCollaboratingAccomodatingLP",
+					"NextState": "IPCCollaboratingCollaboratingAccommodating",
+					"Meaning": ["IPCCollaboratingCollaboratingAccommodating"],
+					"Style": ["IPCCollaboratingCollaboratingAccommodating"],
+					"Utterance": "IPCCollaboratingCollaboratingAccommodatingLP",
 					"UtteranceId": "3D-BE-DC-32-46-9F-9D-1B-26-A3-F2-95-0E-1A-B1-39"
 				}, 
 				{
@@ -495,34 +495,34 @@
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCAccomodatingCollaboratingCollaboratingCollaborating",
-					"Meaning": ["IPCAccomodatingCollaboratingCollaboratingCollaborating"],
-					"Style": ["IPCAccomodatingCollaboratingCollaboratingCollaborating"],
-					"Utterance": "IPCAccomodatingCollaboratingCollaboratingCollaboratingLP",
+					"NextState": "IPCAccommodatingCollaboratingCollaboratingCollaborating",
+					"Meaning": ["IPCAccommodatingCollaboratingCollaboratingCollaborating"],
+					"Style": ["IPCAccommodatingCollaboratingCollaboratingCollaborating"],
+					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCollaboratingLP",
 					"UtteranceId": "57-A3-8F-DC-E9-70-DA-93-DE-97-4F-8D-09-1D-E0-F2"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCAccomodatingCollaboratingCollaboratingCompromising",
-					"Meaning": ["IPCAccomodatingCollaboratingCollaboratingCompromising"],
-					"Style": ["IPCAccomodatingCollaboratingCollaboratingCompromising"],
-					"Utterance": "IPCAccomodatingCollaboratingCollaboratingCompromisingLP",
+					"NextState": "IPCAccommodatingCollaboratingCollaboratingCompromising",
+					"Meaning": ["IPCAccommodatingCollaboratingCollaboratingCompromising"],
+					"Style": ["IPCAccommodatingCollaboratingCollaboratingCompromising"],
+					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCompromisingLP",
 					"UtteranceId": "33-13-94-68-0F-D1-AD-8C-69-86-8E-0C-B0-72-45-AA"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCAccomodatingCollaboratingAccomodatingAccomodating",
-					"Meaning": ["IPCAccomodatingCollaboratingAccomodatingAccomodating"],
-					"Style": ["IPCAccomodatingCollaboratingAccomodatingAccomodating"],
-					"Utterance": "IPCAccomodatingCollaboratingAccomodatingAccomodatingLP",
+					"NextState": "IPCAccommodatingCollaboratingAccommodatingAccommodating",
+					"Meaning": ["IPCAccommodatingCollaboratingAccommodatingAccommodating"],
+					"Style": ["IPCAccommodatingCollaboratingAccommodatingAccommodating"],
+					"Utterance": "IPCAccommodatingCollaboratingAccommodatingAccommodatingLP",
 					"UtteranceId": "2B-91-21-86-D6-77-90-B5-3E-7A-97-83-91-80-51-51"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCAccomodatingCollaboratingAccomodatingCompromising",
-					"Meaning": ["IPCAccomodatingCollaboratingAccomodatingCompromising"],
-					"Style": ["IPCAccomodatingCollaboratingAccomodatingCompromising"],
-					"Utterance": "IPCAccomodatingCollaboratingAccomodatingCompromisingLP",
+					"NextState": "IPCAccommodatingCollaboratingAccommodatingCompromising",
+					"Meaning": ["IPCAccommodatingCollaboratingAccommodatingCompromising"],
+					"Style": ["IPCAccommodatingCollaboratingAccommodatingCompromising"],
+					"Utterance": "IPCAccommodatingCollaboratingAccommodatingCompromisingLP",
 					"UtteranceId": "1B-5E-92-90-45-EA-78-A1-61-9A-12-AF-5A-70-9F-7D"
 				}, 
 				{
