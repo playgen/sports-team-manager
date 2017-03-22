@@ -452,6 +452,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			//set image based on mistake name
 			var mistakeIcon = _mistakeIcons.First(mo => mo.Name == mistakes[i]).Image;
 			mistakeObject.GetComponent<Image>().sprite = mistakeIcon;
+			mistakeObject.GetComponent<Image>().color = mistakes[i] != "Hidden" ? new UnityEngine.Color((i + 1) * 0.33f, (i + 1) * 0.33f, 0.875f + (i * 0.125f)) : UnityEngine.Color.white;
 			//add spaces between words where needed
 			FeedbackHoverOver(mistakeObject.transform, Regex.Replace(mistakes[i], "([a-z])([A-Z])", "$1_$2") + "_FEEDBACK");
 		}
@@ -717,6 +718,10 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		else
 		{
 			SetPostRaceEventBlocker();
+		}
+		if (_teamSelection && _teamSelection.GetTeam().Boat.Positions.Count == 0)
+		{
+			TriggerQuestionnaire();
 		}
 	}
 

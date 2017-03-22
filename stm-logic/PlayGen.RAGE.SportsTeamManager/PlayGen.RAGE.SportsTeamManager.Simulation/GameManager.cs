@@ -724,9 +724,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Dictionary<string, float> GatherManagementStyles()
 		{
 			var managerBeliefs = Team.Manager.RolePlayCharacter.GetAllBeliefs().ToList();
-			var possibleBeliefs = eventController.GetPlayerEventStyles();
-			var gameMeanings = managerBeliefs.Where(b => b.Name.StartsWith("PossibleMeaning")).ToList();
-			var managementStyles = gameMeanings.Select(b => new KeyValuePair<string, int>(b.Name.Split('(', ')')[1], int.Parse(b.Value))).ToDictionary(b => b.Key, b => b.Value);
+			var possibleBeliefs = eventController.GetPlayerEventStyles().Select(s => s.ToLower()).ToArray();
+			var gameMeanings = managerBeliefs.Where(b => b.Name.StartsWith("Meaning")).ToList();
+			var managementStyles = gameMeanings.Select(b => new KeyValuePair<string, int>(b.Name.Split('(', ')')[1].ToLower(), int.Parse(b.Value))).ToDictionary(b => b.Key, b => b.Value);
 			var managementTotal = managementStyles.Values.ToList().Sum();
 			foreach (var bel in possibleBeliefs)
 			{
@@ -739,13 +739,25 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var managementPercentage = managementStyles.Select(m => new KeyValuePair<string, float>(m.Key, m.Value / (managementTotal * 2f))).ToDictionary(m => m.Key, m => m.Value);
 
 			var questionnaireMeanings = managerBeliefs.Where(b => b.Name.StartsWith("QuestionnaireMeaning")).ToList();
-			managementStyles = questionnaireMeanings.Select(b => new KeyValuePair<string, int>(b.Name.Split('(', ')')[1], int.Parse(b.Value))).ToDictionary(b => b.Key, b => b.Value);
+			managementStyles = questionnaireMeanings.Select(b => new KeyValuePair<string, int>(b.Name.Split('(', ')')[1].ToLower(), int.Parse(b.Value))).ToDictionary(b => b.Key, b => b.Value);
 			managementTotal = managementStyles.Values.ToList().Sum();
 			foreach (var style in managementStyles)
 			{
 				managementPercentage[style.Key] += style.Value / (managementTotal * 2f);
 			}
 			managementPercentage = managementPercentage.OrderByDescending(m => m.Value).ToDictionary(b => b.Key, b => b.Value);
+
+			return managementPercentage;
+		}
+
+		public Dictionary<string, float> GatherLeadershipStyles()
+		{
+			var managerBeliefs = Team.Manager.RolePlayCharacter.GetAllBeliefs().ToList();
+			var gameStyles = managerBeliefs.Where(b => b.Name.StartsWith("Style")).ToList();
+			var managementStyles = gameStyles.Select(b => new KeyValuePair<string, int>(b.Name.Split('(', ')')[1].ToLower(), int.Parse(b.Value))).ToDictionary(b => b.Key, b => b.Value);
+			var managementTotal = managementStyles.Values.ToList().Sum();
+
+			var managementPercentage = managementStyles.Select(m => new KeyValuePair<string, float>(m.Key, (float)m.Value / managementTotal)).ToDictionary(m => m.Key, m => m.Value);
 
 			return managementPercentage;
 		}
