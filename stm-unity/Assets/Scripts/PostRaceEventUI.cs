@@ -84,24 +84,30 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			_canvasGroup.blocksRaycasts = true;
 			//set current NPC dialogue
 			ResetQuestions();
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "PostRaceEvent", "PostRaceEventOpen", AlternativeTracker.Alternative.Dialog));
+			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpOpened", new Dictionary<string, string>
+			{
+				{ TrackerContextKeys.EventID.ToString(), current[0].Dialogue.NextState },
+			}));
 			SUGARManager.GameData.Send("Post Race Event Start", current[0].Dialogue.NextState);
 		}
 		else
 		{
-			Hide(true);
+			Hide(string.Empty);
 		}
 	}
 
-	public void Hide(bool autoHide = false)
+	public void Hide(string source)
 	{
 		_canvasGroup.alpha = 0;
 		_canvasGroup.interactable = false;
 		_canvasGroup.blocksRaycasts = false;
 		_postRaceEvent.DisableCheck();
-		if (!autoHide)
+		if (!string.IsNullOrEmpty(source))
 		{
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "PostRaceEvent", "PostRaceEventClosed", AlternativeTracker.Alternative.Dialog));
+			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpClosed", new Dictionary<string, string>
+			{
+				{ TrackerContextKeys.TriggerUI.ToString(), source },
+			}));
 		}
 	}
 
@@ -139,7 +145,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		{
 			_closeButton.SetActive(true);
 			_popUpBlocker.onClick.AddListener(GetLearningPill);
-			_popUpBlocker.onClick.AddListener(delegate { Hide(); });
+			_popUpBlocker.onClick.AddListener(delegate { Hide(TrackerTriggerSources.PopUpBlocker.ToString()); });
 			_popUpBlocker.onClick.AddListener(_postRaceEvent.GetEvent);
 			var teamSelection = (TeamSelectionUI)FindObjectOfType(typeof(TeamSelectionUI));
 			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);

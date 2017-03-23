@@ -108,4 +108,14 @@ public class MemberMeeting : MonoBehaviour
 	{
 		return _gameManager.ShowTutorial;
 	}
+
+	public string SessionInRace()
+	{
+		return (_gameManager.CurrentRaceSession + 1) + "/" + _gameManager.RaceSessionLength;
+	}
+
+	public int TeamSize()
+	{
+		return _gameManager.Team.CrewMembers.Count;
+	}
 }

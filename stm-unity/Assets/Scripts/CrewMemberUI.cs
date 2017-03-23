@@ -8,7 +8,6 @@ using System.Linq;
 using System.Reflection;
 
 using PlayGen.SUGAR.Unity;
-using RAGE.Analytics.Formats;
 
 /// <summary>
 /// Contains all logic related to CrewMember prefabs
@@ -134,7 +133,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 	/// </summary>
 	private void ShowPopUp()
 	{
-		_meetingUI.SetUpDisplay(_crewMember);
+		_meetingUI.SetUpDisplay(_crewMember, TrackerTriggerSources.TeamManagementScreen.ToString());
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
 	}
 
@@ -153,7 +152,13 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 			if (result.gameObject.GetComponent<PositionUI>())
 			{
 				var pos = result.gameObject.GetComponent<PositionUI>().Position;
-				ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name, pos.ToString(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "CrewPositioning", "PositionedCrewMember", GameObjectTracker.TrackedGameObject.Npc));
+				TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPositioned", new Dictionary<string, string>
+				{
+					{ TrackerContextKeys.CrewMemberName.ToString(), _crewMember.Name },
+					{ TrackerContextKeys.PositionName.ToString(), pos.ToString()},
+					{ TrackerContextKeys.PreviousCrewMemberInPosition.ToString(), result.gameObject.GetComponent<PositionUI>().CrewMemberUI.name},
+					{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement.Position.ToString()},
+				}));
 				SUGARManager.GameData.Send("Place Crew Member", _crewMember.Name);
 				SUGARManager.GameData.Send("Fill Position", pos.ToString());
 				Place(result.gameObject);
@@ -210,7 +215,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 		positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == currentPosition.ToString()).Image;
 		_positionUI.UpdateDisplay();
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
-		positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentPosition); });
+		positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentPosition, TrackerTriggerSources.CrewMemberPopUp.ToString()); });
 	}
 
 	/// <summary>
@@ -225,7 +230,11 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 		transform.SetAsLastSibling();
 		if (_currentPositon != (Vector2)transform.position)
 		{
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name, new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "CrewPositioning", "UnpositionedCrewMember", GameObjectTracker.TrackedGameObject.Npc));
+			TrackerEventSender.SendEvent(new TraceEvent("CrewMemberUnpositioned", new Dictionary<string, string>
+			{
+				{ TrackerContextKeys.CrewMemberName.ToString(), _crewMember.Name },
+				{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement.Position.ToString()},
+			}));
 		}
 		var positionImage = transform.Find("Position").gameObject;
 		//hide current position button and remove all listeners

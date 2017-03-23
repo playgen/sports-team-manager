@@ -57,7 +57,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 		SetHelp(_furtherHelp, true);
 	}
 
-	public void ClosePill()
+	public void ClosePill(string source)
 	{
 		_popUpBlocker.onClick.RemoveAllListeners();
 		if (_furtherHelp.Count == 0)
@@ -85,7 +85,11 @@ public class LearningPillUI : ObservableMonoBehaviour {
 				}
 			}
 		}
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "LearningPill", "LearningPillClosed", AlternativeTracker.Alternative.Dialog));
+		TrackerEventSender.SendEvent(new TraceEvent("LearningPillClosed", new Dictionary<string, string>
+		{
+			{ TrackerContextKeys.LearningPillID.ToString(), _currentHelp },
+			{ TrackerContextKeys.TriggerUI.ToString(), source }
+		}));
 	}
 
 	private IEnumerator Animate(bool upward = false, bool keep = false, string tip = "")
@@ -107,8 +111,11 @@ public class LearningPillUI : ObservableMonoBehaviour {
 		if (upward)
 		{
 			_helpText.text = tip;
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "LearningPill", "LearningPillDisplayed", AlternativeTracker.Alternative.Dialog));
-			_popUpBlocker.onClick.AddListener(ClosePill);
+			TrackerEventSender.SendEvent(new TraceEvent("LearningPillDisplayed", new Dictionary<string, string>
+			{
+				{ TrackerContextKeys.LearningPillID.ToString(), _currentHelp },
+			}));
+			_popUpBlocker.onClick.AddListener(delegate { ClosePill(TrackerTriggerSources.PopUpBlocker.ToString()); });
 		}
 	}
 

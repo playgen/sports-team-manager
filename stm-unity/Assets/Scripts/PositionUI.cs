@@ -40,7 +40,7 @@ public class PositionUI : ObservableMonoBehaviour
 	/// </summary>
 	public void ShowPopUp()
 	{
-		_positionUI.SetUpDisplay(_position);
+		_positionUI.SetUpDisplay(_position, TrackerTriggerSources.TeamManagementScreen.ToString());
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString());
 	}
 

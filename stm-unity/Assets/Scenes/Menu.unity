@@ -8541,15 +8541,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1950819048}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1950819050}
+        m_MethodName: CloseCrewMemberPopUp
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: PopUpCloseDialogue
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -17021,7 +17021,6 @@ GameObject:
   - component: {fileID: 389740744}
   - component: {fileID: 389740743}
   - component: {fileID: 389740747}
-  - component: {fileID: 389740748}
   - component: {fileID: 389740749}
   m_Layer: 5
   m_Name: Canvas
@@ -17133,20 +17132,6 @@ MonoBehaviour:
   _teamManagement: {fileID: 1334125063}
   _questionnaire: {fileID: 2125010401}
   _feedback: {fileID: 1457819024}
---- !u!114 &389740748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 389740742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7b3b14f3f9bf684e9ef8b852d4c8fcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _triggers:
-  - TypeName: CrewMemberUI
-    MethodName: ShowPopUp
 --- !u!114 &389740749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22922,13 +22907,13 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 396689105}
         m_MethodName: Hide
-        m_Mode: 6
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: PopUpCloseDialogue
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 33218447}
@@ -32736,15 +32721,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1197854536}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1197854538}
+        m_MethodName: CloseRecruitmentPopUp
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: PopUpCloseButton
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -34009,13 +33994,13 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1334125065}
         m_MethodName: ClosePostRacePopUp
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: OKButtonSelected
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -45990,7 +45975,7 @@ MonoBehaviour:
   _hireWarningText: {fileID: 1585059396}
   _hireWarningPopUp: {fileID: 1642863306}
   _hireWarningAccept: {fileID: 1190108763}
-  _hireWarningReject: {fileID: 1813669481}
+  _hireWarningReject: {fileID: 1813669483}
   _allowanceBar: {fileID: 2138683502}
   _allowanceText: {fileID: 744466604}
   _opinionSprites:
@@ -51414,15 +51399,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1197854536}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1197854538}
+        m_MethodName: CloseRecruitmentPopUp
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: PopUpCloseDialogue
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -52353,15 +52338,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1950819048}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1950819050}
+        m_MethodName: CloseCrewMemberPopUp
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: PopUpCloseButton
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -56375,13 +56360,13 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1334125065}
         m_MethodName: ClosePromotionPopUp
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: OKButtonSelected
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -60252,28 +60237,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1950819050}
-        m_MethodName: CloseFireCrewWarning
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1950819048}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1587348041
@@ -60453,7 +60416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rawCopy: 0
-  flushInterval: 5
+  flushInterval: 2
   checkInterval: 3
   storageType: local
   traceFormat: csv
@@ -61983,13 +61946,13 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 38095101}
         m_MethodName: ClosePositionPopUp
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: PopUpCloseButton
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -68810,18 +68773,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 572999005}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1197854538}
-        m_MethodName: CloseHireCrewWarning
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1813669484
@@ -69472,13 +69424,13 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1950819050}
         m_MethodName: CloseFireCrewWarning
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: NoButtonSelected
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -72458,13 +72410,13 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2028613896}
         m_MethodName: Hide
-        m_Mode: 6
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: PopUpCloseDialogue
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 33218447}

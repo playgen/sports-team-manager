@@ -71,4 +71,14 @@ public class RecruitMember : MonoBehaviour {
 	{
 		return _gameManager.GetStartingActionAllowance();
 	}
+
+	public string SessionInRace()
+	{
+		return (_gameManager.CurrentRaceSession + 1) + "/" + _gameManager.RaceSessionLength;
+	}
+
+	public int TeamSize()
+	{
+		return _gameManager.Team.CrewMembers.Count;
+	}
 }

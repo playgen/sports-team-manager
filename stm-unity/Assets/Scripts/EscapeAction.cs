@@ -33,7 +33,7 @@ public class EscapeAction : MonoBehaviour {
 			{
 				if (FindObjectOfType<PositionDisplayUI>().transform.GetSiblingIndex() == FindObjectOfType<PositionDisplayUI>().transform.parent.childCount - 1)
 				{
-					FindObjectOfType<PositionDisplayUI>().ClosePositionPopUp();
+					FindObjectOfType<PositionDisplayUI>().ClosePositionPopUp(TrackerTriggerSources.EscapeKey.ToString());
 					return;
 				}
 			}

@@ -19,6 +19,10 @@ public class PositionDisplay : MonoBehaviour
 	/// </summary>
 	public Team GetTeam()
 	{
+		if (_gameManager == null)
+		{
+			_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
+		}
 		return _gameManager.Team;
 	}
 

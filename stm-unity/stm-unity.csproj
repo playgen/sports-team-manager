@@ -222,7 +222,9 @@
     <Compile Include="Assets\Scripts\SettingsUI.cs" />
     <Compile Include="Assets\Scripts\TeamSelection.cs" />
     <Compile Include="Assets\Scripts\TeamSelectionUI.cs" />
-    <Compile Include="Assets\Scripts\TrackerEventCatcher.cs" />
+    <Compile Include="Assets\Scripts\TrackerContextKeys.cs" />
+    <Compile Include="Assets\Scripts\TrackerEventSender.cs" />
+    <Compile Include="Assets\Scripts\TrackerTriggerSources.cs" />
     <Compile Include="Assets\Scripts\TransformExtensions.cs" />
     <Compile Include="Assets\Scripts\TutorialController.cs" />
     <Compile Include="Assets\Scripts\TutorialSectionUI.cs" />

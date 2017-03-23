@@ -111,16 +111,26 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	/// <summary>
 	/// Activate the pop-up and the blocker
 	/// </summary>
-	public void SetUpDisplay(Position position)
+	public void SetUpDisplay(Position position, string source)
 	{
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, position.ToString(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "PositionDisplay", "ViewedPositionInformation", GameObjectTracker.TrackedGameObject.GameObject));
+		if (!_positionDisplay)
+		{
+			_positionDisplay = GetComponent<PositionDisplay>();
+		}
+		var currentCrew = _positionDisplay.GetTeam().Boat.PositionCrew.ContainsKey(position) ? _positionDisplay.GetTeam().Boat.PositionCrew[position] : null;
+		TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpOpened", new Dictionary<string, string>
+		{
+			{ TrackerContextKeys.PositionName.ToString(), position.ToString() },
+			{ TrackerContextKeys.PositionCrewMember.ToString(), currentCrew != null ? currentCrew.Name : "None" },
+			{ TrackerContextKeys.TriggerUI.ToString(), source }
+		}));
 		SUGARManager.GameData.Send("View Position Screen", position.ToString());
 		gameObject.SetActive(true);
 		_popUpBlocker.transform.SetAsLastSibling();
 		gameObject.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(ClosePositionPopUp);
+		_popUpBlocker.onClick.AddListener(delegate { ClosePositionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()); });
 		Display(position);
 	}
 
@@ -151,7 +161,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 		{
 			_currentAvatar.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), true);
 			_currentName.text = currentCrew.Name;
-			_currentButton.onClick.AddListener(delegate { _meetingUI.SetUpDisplay(currentCrew); });
+			_currentButton.onClick.AddListener(delegate { _meetingUI.SetUpDisplay(currentCrew, TrackerTriggerSources.PositionPopUp.ToString()); });
 		}
 		//wipe previous position history objects
 		foreach (Transform child in _historyContainer.transform)
@@ -198,7 +208,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 			if (team.CrewMembers.ContainsKey(member.Key.Name))
 			{
 				var current = member.Key;
-				positionHistory.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { _meetingUI.SetUpDisplay(current); });
+				positionHistory.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { _meetingUI.SetUpDisplay(current, TrackerTriggerSources.PositionPopUp.ToString()); });
 			}
 			else
 			{
@@ -212,11 +222,15 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	/// <summary>
 	/// Hide the pop-up for Position details
 	/// </summary>
-	public void ClosePositionPopUp()
+	public void ClosePositionPopUp(string source)
 	{
 		if (gameObject.activeInHierarchy)
 		{
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _current.ToString(), new KeyValueMessage(typeof(GameObjectTracker).Name, "Interacted", "PositionDisplay", "ClosePositionInformation", GameObjectTracker.TrackedGameObject.GameObject));
+			TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpClosed", new Dictionary<string, string>
+			{
+				{ TrackerContextKeys.PositionName.ToString(), _current.ToString() },
+				{ TrackerContextKeys.TriggerUI.ToString(), source }
+			}));
 		}
 		gameObject.SetActive(false);
 		if (_meetingUI.gameObject.activeInHierarchy)
@@ -224,7 +238,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 			_popUpBlocker.transform.SetAsLastSibling();
 			_meetingUI.gameObject.transform.SetAsLastSibling();
 			_popUpBlocker.onClick.RemoveAllListeners();
-			_popUpBlocker.onClick.AddListener(delegate { _meetingUI.gameObject.SetActive(false); });
+			_popUpBlocker.onClick.AddListener(delegate { _meetingUI.CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString());});
 		}
 		else
 		{
@@ -242,7 +256,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 			_popUpBlocker.transform.SetAsLastSibling();
 			gameObject.transform.SetAsLastSibling();
 			_popUpBlocker.onClick.RemoveAllListeners();
-			_popUpBlocker.onClick.AddListener(ClosePositionPopUp);
+			_popUpBlocker.onClick.AddListener(delegate { ClosePositionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()); });
 
 		}
 		else
