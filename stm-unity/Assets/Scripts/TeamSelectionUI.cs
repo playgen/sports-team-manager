@@ -705,6 +705,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		GetResult(_teamSelection.GetStage() - 1 == 0, currentBoat, offset, _raceButton.GetComponentInChildren<Text>(), true);
 		//set-up next boat
 		CreateNewBoat();
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -779,6 +780,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		{
 			TriggerQuestionnaire();
 		}
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -1033,14 +1035,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		}
 		if (_feedbackButton.gameObject.activeSelf)
 		{
-			if (_teamSelection.QuestionnaireCompleted())
-			{
-				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
-			}
-			else
-			{
-				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("CONFLICT_QUESTIONNAIRE");
-			}
+			_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get(_teamSelection.QuestionnaireCompleted() ? "FEEDBACK_BUTTON" : "CONFLICT_QUESTIONNAIRE");
 		}
 		DoBestFit();
 	}

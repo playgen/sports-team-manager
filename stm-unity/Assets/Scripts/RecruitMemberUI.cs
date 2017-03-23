@@ -12,8 +12,6 @@ using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
 
-using RAGE.Analytics.Formats;
-
 /// <summary>
 /// Contains all UI logic related to the Recruitment pop-up
 /// </summary>
@@ -219,6 +217,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			{ TrackerContextKeys.RaceStartTalkTime.ToString(), _recruitMember.StartingQuestionAllowance().ToString() },
 		}));
 		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -321,6 +320,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
 		}));
 		SUGARManager.GameData.Send("Crew Member Hired", true);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	public void CloseRecruitmentPopUp(string source)

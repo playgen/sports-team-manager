@@ -5,7 +5,6 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
-using RAGE.Analytics.Formats;
 
 [RequireComponent(typeof(LearningPill))]
 public class LearningPillUI : ObservableMonoBehaviour {
@@ -90,6 +89,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 			{ TrackerContextKeys.LearningPillID.ToString(), _currentHelp },
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
 		}));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	private IEnumerator Animate(bool upward = false, bool keep = false, string tip = "")

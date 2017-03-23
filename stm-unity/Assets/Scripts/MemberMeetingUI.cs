@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -291,7 +290,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 			_popUpBlocker.transform.SetAsLastSibling();
 			transform.SetAsLastSibling();
 			_popUpBlocker.onClick.RemoveAllListeners();
-			_popUpBlocker.onClick.AddListener(delegate { gameObject.SetActive(false); });
+			_popUpBlocker.onClick.AddListener(delegate { CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()); });
 		}
 		else
 		{

@@ -152,12 +152,13 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 			if (result.gameObject.GetComponent<PositionUI>())
 			{
 				var pos = result.gameObject.GetComponent<PositionUI>().Position;
+				var crewMember = result.gameObject.GetComponent<PositionUI>().CrewMemberUI;
 				TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPositioned", new Dictionary<string, string>
 				{
 					{ TrackerContextKeys.CrewMemberName.ToString(), _crewMember.Name },
 					{ TrackerContextKeys.PositionName.ToString(), pos.ToString()},
-					{ TrackerContextKeys.PreviousCrewMemberInPosition.ToString(), result.gameObject.GetComponent<PositionUI>().CrewMemberUI.name},
-					{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement.Position.ToString()},
+					{ TrackerContextKeys.PreviousCrewMemberInPosition.ToString(), crewMember != null ? crewMember.name : "Null"},
+					{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()},
 				}));
 				SUGARManager.GameData.Send("Place Crew Member", _crewMember.Name);
 				SUGARManager.GameData.Send("Fill Position", pos.ToString());
@@ -233,7 +234,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 			TrackerEventSender.SendEvent(new TraceEvent("CrewMemberUnpositioned", new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.CrewMemberName.ToString(), _crewMember.Name },
-				{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement.Position.ToString()},
+				{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()},
 			}));
 		}
 		var positionImage = transform.Find("Position").gameObject;

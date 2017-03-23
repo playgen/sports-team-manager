@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
@@ -18,7 +17,7 @@ public class QuestionnaireUI : MonoBehaviour
 	private GameObject _questionPrefab;
 	[SerializeField]
 	private GameObject _submitButton;
-	private List<GameObject> _questionObjs = new List<GameObject>();
+	private readonly List<GameObject> _questionObjs = new List<GameObject>();
 
 	private void Awake()
 	{

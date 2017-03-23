@@ -61,10 +61,9 @@ public class TutorialController : MonoBehaviour
 			var triggers = triggerSplit.Select(ts => ts.NoSpaces().Split(',')).Select(ts => new KeyValueMessage(ts[0], ts[1])).ToArray();
 			var triggerCount = int.Parse(parsedAsset[i]["Trigger Count Required"].RemoveJSONNodeChars());
 			var uniqueTriggers = bool.Parse(parsedAsset[i]["Unique Triggers"].RemoveJSONNodeChars());
-			var wipeTriggers = bool.Parse(parsedAsset[i]["Wipe Triggered Objects"].RemoveJSONNodeChars());
 			var saveToSection = int.Parse(parsedAsset[i]["Save Progress"].RemoveJSONNodeChars());
 			var customAttributes = parsedAsset[i]["Custom Attributes"].RemoveJSONNodeChars().Split('\n').ToList();
-			section.Construct(textDict, objectHightlight, reversed, triggers, triggerCount, uniqueTriggers, wipeTriggers, saveToSection, blacklistNames, customAttributes);
+			section.Construct(textDict, objectHightlight, reversed, triggers, triggerCount, uniqueTriggers, saveToSection, blacklistNames, customAttributes);
 			tutorialSection.name = _tutorialSectionPrefab.name;
 		}
 		foreach (Transform child in transform)

@@ -44,8 +44,6 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	private int _eventTriggerCountRequired;
 	private int _eventTriggerCount;
 	[SerializeField]
-	private bool _wipeTriggered;
-	[SerializeField]
 	private int _saveNextSection;
 	[SerializeField]
 	private List<string> _blacklistButtons;
@@ -56,7 +54,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		get { return _saveNextSection; }
 	}
 
-	public void Construct(Dictionary<string, string[]> text, int highlightTrigger, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, bool wipeTriggered, int saveSection, List<string> blacklist, List<string> attributes)
+	public void Construct(Dictionary<string, string[]> text, int highlightTrigger, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, int saveSection, List<string> blacklist, List<string> attributes)
 	{
 		_sectionTextHolder = new List<LanguageKeyValuePair>();
 		foreach (var kvp in text)
@@ -68,7 +66,6 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		_triggers = triggers;
 		_eventTriggerCountRequired = triggerCount;
 		_uniqueEvents = uniqueTriggers;
-		_wipeTriggered = wipeTriggered;
 		_saveNextSection = saveSection;
 		_blacklistButtons = blacklist;
 		_customAttributes = attributes;
@@ -207,10 +204,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		var speechBubble = transform.Find("Tutorial Helper/Image");
 		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)speechBubble);
 		Invoke("PaddingSetUp", 0f);
-		if (_wipeTriggered)
-		{
-			_triggeredObjects.Clear();
-		}
+		_triggeredObjects.Clear();
 	}
 
 	private void PaddingSetUp()

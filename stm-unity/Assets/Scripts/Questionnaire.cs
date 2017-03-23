@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -67,9 +66,11 @@ public class Questionnaire : MonoBehaviour
 		var styleDict = new Dictionary<string, Dictionary<string, string>>();
 		for (int i = 0; i < parsedStyleAsset.Count; i++)
 		{
-			var questionStyleDict = new Dictionary<string, string>();
-			questionStyleDict.Add("A", parsedStyleAsset[i]["A"].Value.Replace("\"", ""));
-			questionStyleDict.Add("B", parsedStyleAsset[i]["B"].Value.Replace("\"", ""));
+			var questionStyleDict = new Dictionary<string, string>
+			{
+				{ "A", parsedStyleAsset[i]["A"].Value.Replace("\"", "") },
+				{ "B", parsedStyleAsset[i]["B"].Value.Replace("\"", "") }
+			};
 			styleDict.Add(parsedStyleAsset[i][0], questionStyleDict);
 		}
 
