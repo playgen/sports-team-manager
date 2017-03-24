@@ -813,7 +813,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		_popUpBlocker.gameObject.SetActive(false);
 		SetPostRaceEventBlocker();
 		var newString = string.Join(",", _teamSelection.GetTeam().Boat.Positions.Select(pos => pos.ToString()).ToArray());
-		TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpDisplayed", new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpClosed", new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.BoatLayout.ToString(), newString },
 			{ TrackerContextKeys.TriggerUI.ToString(), source },
@@ -955,7 +955,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		}
 		if (current)
 		{
-			var newString = string.Join(",", _teamSelection.GetTeam().Boat.Positions.Select(pos => pos.ToString()).ToArray());
+			var newString = string.Join(",", boat.Positions.Select(pos => pos.ToString()).ToArray());
 			TrackerEventSender.SendEvent(new TraceEvent("RaceResult", new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.RaceNumber.ToString(), (_teamSelection.GetTeam().RaceHistory.Count + 1).ToString() },
@@ -963,10 +963,12 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				{ TrackerContextKeys.SessionType.ToString(), isRace ? "Race" : "Practice" },
 				{ TrackerContextKeys.BoatLayout.ToString(), newString },
 				{ TrackerContextKeys.Score.ToString(), boat.Score.ToString() },
-				{ TrackerContextKeys.IdealScore.ToString(), boat.IdealMatchScore.ToString() },
 				{ TrackerContextKeys.ScoreAverage.ToString(), ((float)boat.Score / boat.Positions.Count).ToString() },
-				{ TrackerContextKeys.IdealScoreAverage.ToString(), (boat.IdealMatchScore / boat.Positions.Count).ToString() },
+				{ TrackerContextKeys.IdealCorrectPlacement.ToString(), ((int)boat.IdealMatchScore).ToString() },
+				{ TrackerContextKeys.IdealCorrectMemberWrongPosition.ToString(), Mathf.RoundToInt(((boat.IdealMatchScore % 1) * 10)).ToString() },
+				{ TrackerContextKeys.IdealIncorrectPlacement.ToString(), Mathf.RoundToInt(boat.Positions.Count - (int)boat.IdealMatchScore - ((boat.IdealMatchScore % 1) * 10)).ToString() },
 			}));
+
 			SUGARManager.GameData.Send("Race Session Score", boat.Score);
 			SUGARManager.GameData.Send("Current Boat Size", boat.Positions.Count);
 			SUGARManager.GameData.Send("Race Session Score Average", (float)boat.Score / boat.Positions.Count);

@@ -136,7 +136,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 				var mhMax = _menuHighlighted.anchorMax.x;
 				_menuHighlighted.anchorMin = new Vector2(1 - mhMax, _menuHighlighted.anchorMin.y);
 				_menuHighlighted.anchorMax = new Vector2(1 - mhMin, _menuHighlighted.anchorMax.y);
-				GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.MiddleRight;
+				GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.UpperRight;
 			}
 		}
 		else
@@ -150,9 +150,9 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 				var mhMax = _menuHighlighted.anchorMax.x;
 				_menuHighlighted.anchorMin = new Vector2(1 - mhMax, _menuHighlighted.anchorMin.y);
 				_menuHighlighted.anchorMax = new Vector2(1 - mhMin, _menuHighlighted.anchorMax.y);
-				GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.MiddleRight;
+				GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.UpperRight;
 			}
-			GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
+			GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.UpperLeft;
 		}
 		var back = _buttons.Find("Back").gameObject;
 		var forward = _buttons.Find("Forward").gameObject;

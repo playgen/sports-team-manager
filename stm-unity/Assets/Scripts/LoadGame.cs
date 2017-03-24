@@ -69,7 +69,7 @@ public class LoadGame : MonoBehaviour
 				TrackerEventSender.SendEvent(new TraceEvent("GameStarted", new Dictionary<string, string>
 				{
 					{ TrackerContextKeys.GameName.ToString(), _gameManager.Team.Name },
-					{ TrackerContextKeys.BoatLayout.ToString(), newString },
+					{ TrackerContextKeys.BoatLayout.ToString(), string.IsNullOrEmpty(newString) ? "NullAsGameFinished" : newString },
 				}));
 				return true;
 			}
