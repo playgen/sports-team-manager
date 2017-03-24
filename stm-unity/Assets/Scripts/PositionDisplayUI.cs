@@ -116,10 +116,12 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 			_positionDisplay = GetComponent<PositionDisplay>();
 		}
 		var currentCrew = _positionDisplay.GetTeam().Boat.PositionCrew.ContainsKey(position) ? _positionDisplay.GetTeam().Boat.PositionCrew[position] : null;
+		var boatPos = string.Join(",", _positionDisplay.GetTeam().Boat.Positions.Select(pos => pos.ToString()).ToArray());
 		TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpOpened", new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.PositionName.ToString(), position.ToString() },
 			{ TrackerContextKeys.PositionCrewMember.ToString(), currentCrew != null ? currentCrew.Name : "None" },
+			{ TrackerContextKeys.BoatLayout.ToString(), boatPos },
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
 		}));
 		SUGARManager.GameData.Send("View Position Screen", position.ToString());

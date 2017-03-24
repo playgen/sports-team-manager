@@ -1,6 +1,7 @@
 ﻿using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using UnityEngine;
 
@@ -64,6 +65,12 @@ public class LoadGame : MonoBehaviour
 			_gameManager.LoadGame(Path.Combine(Application.persistentDataPath, "GameSaves"), _selectedName);
 			if (_gameManager.Team != null && _gameManager.Team.Name.ToLower() == _selectedName.ToLower())
 			{
+				var newString = string.Join(",", _gameManager.Team.Boat.Positions.Select(pos => pos.ToString()).ToArray());
+				TrackerEventSender.SendEvent(new TraceEvent("GameStarted", new Dictionary<string, string>
+				{
+					{ TrackerContextKeys.GameName.ToString(), _gameManager.Team.Name },
+					{ TrackerContextKeys.BoatLayout.ToString(), newString },
+				}));
 				return true;
 			}
 		}

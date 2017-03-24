@@ -1,9 +1,9 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
-using RAGE.Analytics.Formats;
 
 /// <summary>
 /// Used on hover text object to set text and reposition when needed
@@ -89,7 +89,11 @@ public class HoverPopUpUI : ObservableMonoBehaviour {
 					((RectTransform)transform).anchoredPosition -= new Vector2(0, -((RectTransform)transform).rect.height);
 				}
 			}
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, gameObject.name, transform.parent.name, _currentText, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "HoverOverIcon", _currentText, AlternativeTracker.Alternative.Menu));
+			TrackerEventSender.SendEvent(new TraceEvent("HoveredOver", new Dictionary<string, string>
+			{
+				{ TrackerContextKeys.HoverKey.ToString(), _currentText }
+			}));
+			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentText);
 		}
 	}
 

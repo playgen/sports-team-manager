@@ -242,12 +242,21 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	/// </summary>
 	public void AskQuestion(string questionType)
 	{
+		var allowanceBefore = _memberMeeting.QuestionAllowance();
 		var reply = _memberMeeting.AskQuestion(questionType, _currentMember);
 		_lastReply = reply;
 		Display();
 		var replyExtras = reply.Count > 0 ? reply.Where(r => r != reply.First()).Select(r => Localization.Get(r)).ToArray() : new string[0];
 		_dialogueText.text = reply.Count > 0 ? Localization.GetAndFormat(reply.First(), false, replyExtras) : string.Empty;
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name, questionType, new KeyValueMessage(typeof(AlternativeTracker).Name, "Selected", "CrewMemberMeeting", questionType, AlternativeTracker.Alternative.Question));
+		TrackerEventSender.SendEvent(new TraceEvent("MeetingQuestionAsked", new Dictionary<string, string>
+		{
+			{ TrackerContextKeys.QuestionAsked.ToString(), questionType },
+			{ TrackerContextKeys.QuestionCost.ToString(), (allowanceBefore - _memberMeeting.QuestionAllowance()).ToString() },
+			{ TrackerContextKeys.CrewMemberName.ToString(), _currentMember.Name },
+			{ TrackerContextKeys.CurrentTalkTime.ToString(), allowanceBefore.ToString() },
+			{ TrackerContextKeys.SizeOfTeam.ToString(), _memberMeeting.TeamSize().ToString() }
+		}));
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		SUGARManager.GameData.Send("Meeting Question Directed At", _currentMember.Name);
 		SUGARManager.GameData.Send("Meeting Question Asked", questionType);
 	}

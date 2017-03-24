@@ -955,7 +955,18 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		}
 		if (current)
 		{
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, new KeyValueMessage(typeof(CompletableTracker).Name, "Completed", "CrewScore" + (_teamSelection.GetStage()), CompletableTracker.Completable.Race, true, boat.Score));
+			var newString = string.Join(",", _teamSelection.GetTeam().Boat.Positions.Select(pos => pos.ToString()).ToArray());
+			TrackerEventSender.SendEvent(new TraceEvent("RaceResult", new Dictionary<string, string>
+			{
+				{ TrackerContextKeys.RaceNumber.ToString(), _teamSelection.GetTeam().RaceHistory.Count.ToString() },
+				{ TrackerContextKeys.CurrentSession.ToString(), _teamSelection.GetStage() + "/" + _teamSelection.GetSessionLength() },
+				{ TrackerContextKeys.SessionType.ToString(), isRace ? "Race" : "Practice" },
+				{ TrackerContextKeys.BoatLayout.ToString(), newString },
+				{ TrackerContextKeys.Score.ToString(), boat.Score.ToString() },
+				{ TrackerContextKeys.IdealScore.ToString(), boat.IdealMatchScore.ToString() },
+				{ TrackerContextKeys.ScoreAverage.ToString(), ((float)boat.Score / boat.Positions.Count).ToString() },
+				{ TrackerContextKeys.IdealScoreAverage.ToString(), (boat.IdealMatchScore / boat.Positions.Count).ToString() },
+			}));
 			SUGARManager.GameData.Send("Race Session Score", boat.Score);
 			SUGARManager.GameData.Send("Current Boat Size", boat.Positions.Count);
 			SUGARManager.GameData.Send("Race Session Score Average", (float)boat.Score / boat.Positions.Count);

@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
@@ -28,6 +30,15 @@ public class NewGame : MonoBehaviour {
 	public bool CreateNewGame(string boatName, byte[] colorsPri, byte[] colorsSec, string managerName, bool showTutorial)
 	{
 		_gameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), boatName.TrimEnd(), colorsPri, colorsSec, managerName.TrimEnd(), showTutorial, string.IsNullOrEmpty(Localization.SelectedLanguage.Parent.Name) ? Localization.SelectedLanguage.EnglishName : Localization.SelectedLanguage.Parent.EnglishName);
+		if (_gameManager.Team != null && _gameManager.Team.Name == boatName.TrimEnd())
+		{
+			var newString = string.Join(",", _gameManager.Team.Boat.Positions.Select(pos => pos.ToString()).ToArray());
+			TrackerEventSender.SendEvent(new TraceEvent("GameStarted", new Dictionary<string, string>
+			{
+				{ TrackerContextKeys.GameName.ToString(), _gameManager.Team.Name },
+				{ TrackerContextKeys.BoatLayout.ToString(), newString },
+			}));
+		}
 		return _gameManager.Team != null && _gameManager.Team.Name == boatName.TrimEnd();
 	}
 
