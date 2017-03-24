@@ -60,6 +60,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), _recruitMember.QuestionAllowance().ToString() },
 			{ TrackerContextKeys.CurrentSession.ToString(), _recruitMember.SessionInRace() },
 			{ TrackerContextKeys.SizeOfTeam.ToString(), _recruitMember.TeamSize().ToString() },
+			{ TrackerContextKeys.SessionsSinceBoatLayoutChange.ToString(), _recruitMember.SessionsSinceLastChange().ToString() },
 		}));
 		_lastQuestion = null;
 		_lastAnswers = null;
@@ -217,7 +218,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			{ TrackerContextKeys.RaceStartTalkTime.ToString(), _recruitMember.StartingQuestionAllowance().ToString() },
 		}));
 		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill.ToString());
 	}
 
 	/// <summary>

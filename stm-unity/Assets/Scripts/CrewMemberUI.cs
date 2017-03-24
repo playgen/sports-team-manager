@@ -157,7 +157,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 				{
 					{ TrackerContextKeys.CrewMemberName.ToString(), _crewMember.Name },
 					{ TrackerContextKeys.PositionName.ToString(), pos.ToString()},
-					{ TrackerContextKeys.PreviousCrewMemberInPosition.ToString(), crewMember != null ? crewMember.name : "Null"},
+					{ TrackerContextKeys.PreviousCrewMemberInPosition.ToString(), crewMember != null ? crewMember.CrewMember.Name : "Null"},
 					{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()},
 				}));
 				SUGARManager.GameData.Send("Place Crew Member", _crewMember.Name);
@@ -227,7 +227,6 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 		//set back to default parent and position
 		transform.SetParent(_defaultParent, true);
 		transform.position = _defaultParent.position;
-		_currentPlacement = null;
 		transform.SetAsLastSibling();
 		if (_currentPositon != (Vector2)transform.position)
 		{
@@ -237,6 +236,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 				{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()},
 			}));
 		}
+		_currentPlacement = null;
 		var positionImage = transform.Find("Position").gameObject;
 		//hide current position button and remove all listeners
 		positionImage.GetComponent<Image>().enabled = false;

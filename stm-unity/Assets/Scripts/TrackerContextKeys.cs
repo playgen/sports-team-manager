@@ -3,7 +3,7 @@
 	BoatLayout,
 	CrewMemberName,
 	CrewMemberPosition,
-	CrewMemberSessionsInCrew,
+	CrewMemberSessionsInTeam,
 	CrewMemberSkills,
 	CurrentSession,
 	CurrentTalkTime,

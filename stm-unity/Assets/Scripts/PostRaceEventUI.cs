@@ -106,6 +106,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpClosed", new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.TriggerUI.ToString(), source },
+				{ TrackerContextKeys.EventID.ToString(), _postRaceEvent.GetEventKey(_lastStates[0]) },
 			}));
 		}
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);

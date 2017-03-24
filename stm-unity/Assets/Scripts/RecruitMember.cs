@@ -81,4 +81,11 @@ public class RecruitMember : MonoBehaviour {
 	{
 		return _gameManager.Team.CrewMembers.Count;
 	}
+
+	public int SessionsSinceLastChange()
+	{
+		var history = _gameManager.Team.LineUpHistory.AsEnumerable().Reverse().ToList();
+		var firstMismatch = history.FirstOrDefault(b => b.Type != _gameManager.Team.Boat.Type);
+		return firstMismatch != null ? history.IndexOf(firstMismatch) : 0;
+	}
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
@@ -117,5 +118,10 @@ public class MemberMeeting : MonoBehaviour
 	public int TeamSize()
 	{
 		return _gameManager.Team.CrewMembers.Count;
+	}
+
+	public int GetTimeInTeam(CrewMember crewMember)
+	{
+		return _gameManager.Team.LineUpHistory.Count(boat => boat.PositionCrew.Values.ToList().Any(c => c.Name == crewMember.Name));
 	}
 }

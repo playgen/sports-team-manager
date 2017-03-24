@@ -528,6 +528,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
+		/// Get the keys for the available Post Race Events
+		/// </summary>
+		public List<string> GetPostRaceEventKeys()
+		{
+			return eventController.GetEventKeys();
+		}
+
+		/// <summary>
 		/// Select a random post-race event
 		/// </summary>
 		private void SelectPostRaceEvents()

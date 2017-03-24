@@ -958,8 +958,8 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			var newString = string.Join(",", _teamSelection.GetTeam().Boat.Positions.Select(pos => pos.ToString()).ToArray());
 			TrackerEventSender.SendEvent(new TraceEvent("RaceResult", new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.RaceNumber.ToString(), _teamSelection.GetTeam().RaceHistory.Count.ToString() },
-				{ TrackerContextKeys.CurrentSession.ToString(), _teamSelection.GetStage() + "/" + _teamSelection.GetSessionLength() },
+				{ TrackerContextKeys.RaceNumber.ToString(), (_teamSelection.GetTeam().RaceHistory.Count + 1).ToString() },
+				{ TrackerContextKeys.CurrentSession.ToString(), (_teamSelection.GetStage() - 1) + "/" + _teamSelection.GetSessionLength() },
 				{ TrackerContextKeys.SessionType.ToString(), isRace ? "Race" : "Practice" },
 				{ TrackerContextKeys.BoatLayout.ToString(), newString },
 				{ TrackerContextKeys.Score.ToString(), boat.Score.ToString() },

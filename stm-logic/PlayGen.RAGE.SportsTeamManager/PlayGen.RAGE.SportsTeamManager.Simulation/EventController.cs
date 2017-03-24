@@ -22,6 +22,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			PostRaceEvents = new List<List<PostRaceEventState>>();
 		}
 
+		public List<string> GetEventKeys()
+		{
+			return iat.GetDialogueActionsByState(IATConsts.AGENT, "PostRaceEventStart").Select(d => d.NextState).ToList();
+		}
+
 		public List<PostRaceEventState> GetEventDialogues(Person manager)
 		{
 			List<PostRaceEventState> dialogueOptions = new List<PostRaceEventState>();

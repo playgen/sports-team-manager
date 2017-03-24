@@ -119,7 +119,8 @@ public class PostRaceEvent : ObservableMonoBehaviour
 			{
 				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventDialogueSelected", new Dictionary<string, string>
 				{
-					{ TrackerContextKeys.DialogueID.ToString(), res.Dialogue.NextState }
+					{ TrackerContextKeys.DialogueID.ToString(), res.Dialogue.NextState },
+					{ TrackerContextKeys.EventID.ToString(), GetEventKey(res.Dialogue.NextState) },
 				}));
 				SUGARManager.GameData.Send("Post Race Event Reply", res.Dialogue.NextState);
 			}
@@ -183,5 +184,10 @@ public class PostRaceEvent : ObservableMonoBehaviour
 	public float GetTeamAverageOpinion()
 	{
 		return _gameManager.Team.AverageTeamOpinion();
+	}
+
+	public string GetEventKey (string state)
+	{
+		return _gameManager.GetPostRaceEventKeys().First(state.StartsWith);
 	}
 }

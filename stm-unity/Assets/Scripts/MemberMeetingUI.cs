@@ -108,7 +108,8 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 			{ TrackerContextKeys.CurrentSession.ToString(), _memberMeeting.SessionInRace() },
 			{ TrackerContextKeys.CrewMemberPosition.ToString(), _memberMeeting.GetCrewMemberPosition(crewMember).ToString() },
 			{ TrackerContextKeys.SizeOfTeam.ToString(), _memberMeeting.TeamSize().ToString() },
-			{ TrackerContextKeys.TriggerUI.ToString(), source }
+			{ TrackerContextKeys.TriggerUI.ToString(), source },
+			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), _memberMeeting.GetTimeInTeam(crewMember).ToString() },
 		}));
 		SUGARManager.GameData.Send("View Crew Member Screen", crewMember.Name);
 		Display();
@@ -272,7 +273,8 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), _memberMeeting.QuestionAllowance().ToString() },
 			{ TrackerContextKeys.CurrentSession.ToString(), _memberMeeting.SessionInRace() },
 			{ TrackerContextKeys.CrewMemberPosition.ToString(), _memberMeeting.GetCrewMemberPosition(_currentMember).ToString() },
-			{ TrackerContextKeys.SizeOfTeam.ToString(), _memberMeeting.TeamSize().ToString() }
+			{ TrackerContextKeys.SizeOfTeam.ToString(), _memberMeeting.TeamSize().ToString() },
+			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), _memberMeeting.GetTimeInTeam(_currentMember).ToString() },
 		}));
 		_fireWarningPopUp.SetActive(true);
 		_popUpBlocker.transform.SetAsLastSibling();
@@ -319,7 +321,8 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 			{ TrackerContextKeys.CurrentSession.ToString(), _memberMeeting.SessionInRace() },
 			{ TrackerContextKeys.CrewMemberPosition.ToString(), _memberMeeting.GetCrewMemberPosition(_currentMember).ToString() },
 			{ TrackerContextKeys.SizeOfTeam.ToString(), _memberMeeting.TeamSize().ToString() },
-			{ TrackerContextKeys.FiringCost.ToString(), _memberMeeting.GetConfigValue(ConfigKeys.FiringCost).ToString() }
+			{ TrackerContextKeys.FiringCost.ToString(), _memberMeeting.GetConfigValue(ConfigKeys.FiringCost).ToString() },
+			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), _memberMeeting.GetTimeInTeam(_currentMember).ToString() },
 		}));
 		SUGARManager.GameData.Send("Crew Member Fired", true);
 		_memberMeeting.FireCrewMember(_currentMember);
