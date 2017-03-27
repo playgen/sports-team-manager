@@ -139,7 +139,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	/// </summary>
 	private void Update()
 	{
-		if (_positionsEmpty > 0 && _raceButton.interactable)
+		if ((_positionsEmpty > 0 && _raceButton.interactable) || IsInvoking("QuickClickDisable"))
 		{
 			DisableRacing();
 		}
@@ -288,6 +288,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			_raceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
 			_raceButton.GetComponentInChildren<Text>().fontSize = 20;
 		}
+		_raceButton.onClick.AddListener(delegate { Invoke("QuickClickDisable", 0.5f); });
 		_skipToRaceButton.onClick.AddListener(ConfirmPopUp);
 		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
 		_skipToRaceButton.GetComponentInChildren<Text>().fontSize = 20;
