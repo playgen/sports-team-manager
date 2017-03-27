@@ -54,6 +54,8 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		get { return _saveNextSection; }
 	}
 
+	private bool _unblocked;
+
 	public void Construct(Dictionary<string, string[]> text, int highlightTrigger, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, int saveSection, List<string> blacklist, List<string> attributes)
 	{
 		_sectionTextHolder = new List<LanguageKeyValuePair>();
@@ -177,6 +179,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 			{
 				forward.SetActive(false);
 				GetComponentInChildren<ReverseRaycastTarget>().UnblockWhitelisted();
+				_unblocked = true;
 			}
 			if (_sectionText[Localization.SelectedLanguage.Name].Length == 1)
 			{
@@ -187,7 +190,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 				pageNumber.text = _currentText + 1 + "/" + _sectionText[Localization.SelectedLanguage.Name].Length;
 			}
 		}
-		if (_eventTriggerCountRequired > 1)
+		if (_eventTriggerCountRequired > 1 && _unblocked)
 		{
 			_buttons.Find("Progress Count").GetComponent<Text>().text = (_eventTriggerCountRequired - _eventTriggerCount).ToString();
 		}

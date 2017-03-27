@@ -9,7 +9,7 @@ public class ReverseRaycastTarget : MonoBehaviour, ICanvasRaycastFilter
 
 	public bool IsRaycastLocationValid(Vector2 sp, Camera eventCamera)
 	{
-		return !(MaskRect.Any(mr => RectTransformUtility.RectangleContainsScreenPoint(mr, sp, eventCamera)) && !BlacklistRect.Any(br => RectTransformUtility.RectangleContainsScreenPoint(br, sp, eventCamera)));
+		return !(MaskRect.Count(mr => RectTransformUtility.RectangleContainsScreenPoint(mr, sp, eventCamera)) > BlacklistRect.Count(br => RectTransformUtility.RectangleContainsScreenPoint(br, sp, eventCamera)));
 	}
 
 	public void UnblockWhitelisted()

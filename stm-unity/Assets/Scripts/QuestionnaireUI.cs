@@ -39,8 +39,8 @@ public class QuestionnaireUI : MonoBehaviour
 			var questionObj = Instantiate(_questionPrefab, _questionnairePanel.transform, false);
 			questionObj.name = _questionPrefab.name;
 			questionObj.transform.Find("Question").GetComponent<Text>().text = Localization.Get("QUESTION") + " " + (_questionObjs.Count + 1);
-			questionObj.transform.Find("Answer A").GetComponentInChildren<Text>().text = question.AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
-			questionObj.transform.Find("Answer B").GetComponentInChildren<Text>().text = question.AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
+			questionObj.transform.Find("Answer A").GetComponentInChildren<Text>().text = "A. " + question.AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
+			questionObj.transform.Find("Answer B").GetComponentInChildren<Text>().text = "B. " + question.AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
 			questionObj.transform.Find("Answer A").GetComponentInChildren<Toggle>().onValueChanged.AddListener(delegate { CheckAllToggled(); });
 			questionObj.transform.Find("Answer B").GetComponentInChildren<Toggle>().onValueChanged.AddListener(delegate { CheckAllToggled(); });
 			_questionObjs.Add(questionObj);
@@ -93,8 +93,8 @@ public class QuestionnaireUI : MonoBehaviour
 		for (int i = 0; i < _questionObjs.Count; i++)
 		{
 			_questionObjs[i].transform.Find("Question").GetComponent<Text>().text = Localization.Get("QUESTION") + " " + (i + 1);
-			_questionObjs[i].transform.Find("Answer A").GetComponentInChildren<Text>().text = _questionnaire.Questions[i].AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
-			_questionObjs[i].transform.Find("Answer B").GetComponentInChildren<Text>().text = _questionnaire.Questions[i].AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
+			_questionObjs[i].transform.Find("Answer A").GetComponentInChildren<Text>().text = "A. " + _questionnaire.Questions[i].AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
+			_questionObjs[i].transform.Find("Answer B").GetComponentInChildren<Text>().text = "B. " + _questionnaire.Questions[i].AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
 		}
 		DoBestFit();
 	}

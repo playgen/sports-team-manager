@@ -28,8 +28,6 @@ public class UIStateManager : ObservableMonoBehaviour {
 	[SerializeField]
 	private Text _userSignedInText;
 	[SerializeField]
-	private GameObject _topDetails;
-	[SerializeField]
 	private GameObject _teamManagement;
 	[SerializeField]
 	private GameObject _questionnaire;
@@ -118,7 +116,6 @@ public class UIStateManager : ObservableMonoBehaviour {
 	public void BackToMenu(GameObject go)
 	{
 		go.SetActive(false);
-		_topDetails.SetActive(false);
 		_teamManagement.SetActive(false);
 		_questionnaire.SetActive(false);
 		_feedback.SetActive(false);
@@ -142,7 +139,6 @@ public class UIStateManager : ObservableMonoBehaviour {
 	public void GoToGame(GameObject go)
 	{
 		go.SetActive(false);
-		_topDetails.SetActive(true);
 		_teamManagement.SetActive(true);
 		_questionnaire.SetActive(false);
 		_feedback.SetActive(false);
@@ -151,7 +147,6 @@ public class UIStateManager : ObservableMonoBehaviour {
 
 	public void GoToQuestionnaire()
 	{
-		_topDetails.SetActive(false);
 		_teamManagement.SetActive(false);
 		_questionnaire.SetActive(true);
 		_feedback.SetActive(false);
@@ -159,7 +154,6 @@ public class UIStateManager : ObservableMonoBehaviour {
 
 	public void GoToFeedback()
 	{
-		_topDetails.SetActive(false);
 		_teamManagement.SetActive(false);
 		_questionnaire.SetActive(false);
 		_feedback.SetActive(true);

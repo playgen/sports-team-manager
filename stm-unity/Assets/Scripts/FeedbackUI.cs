@@ -57,6 +57,10 @@ public class FeedbackUI : MonoBehaviour {
 		_pages[_pageNumber].SetActive(false);
 		_pageNumber += amount;
 		_pages[_pageNumber].SetActive(true);
+		if (_pageNumber == 0)
+		{
+			DoBestFit();
+		}
 	}
 
 	public void ShowDescription(string descriptionType)
@@ -74,8 +78,6 @@ public class FeedbackUI : MonoBehaviour {
 		}
 
 		var styles = _feedback.GatherManagementStyles();
-		var orange = new Color(1, 0.5f, 0);
-		var blue = new Color(0, 1, 1);
 		foreach (var style in styles)
 		{
 			var styleObj = Instantiate(_selectionPrefab, _selectionGraph.transform, false);
@@ -83,29 +85,20 @@ public class FeedbackUI : MonoBehaviour {
 			styleObj.transform.Find("Style").GetComponent<Localization>().Key = style.Key;
 			styleObj.transform.Find("Amount").GetComponent<Image>().fillAmount = style.Value;
 			styleObj.transform.Find("Percentage").GetComponent<Text>().text = (Mathf.Round(style.Value * 1000) * 0.1f).ToString(Localization.SelectedLanguage.GetSpecificCulture()) + "%";
-
 			if (style.Value >= 0.6f)
 			{
-				styleObj.transform.Find("Text Backer/Text").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_High");
-				styleObj.transform.Find("Text Backer/Text").GetComponent<Localization>().Key = style.Key + "_Questions_High";
-				styleObj.transform.Find("Text Backer").GetComponent<Image>().color = orange;
-				styleObj.transform.Find("Amount").GetComponent<Image>().color = orange;
-				styleObj.transform.Find("Text Backer").gameObject.SetActive(true);
+				styleObj.transform.Find("Questions").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_High");
+				styleObj.transform.Find("Questions").GetComponent<Localization>().Key = style.Key + "_Questions_High";
 			}
 			else if (style.Value <= 0.2f)
 			{
-				styleObj.transform.Find("Text Backer/Text").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_Low");
-				styleObj.transform.Find("Text Backer/Text").GetComponent<Localization>().Key = style.Key + "_Questions_Low";
-				styleObj.transform.Find("Text Backer").GetComponent<Image>().color = blue;
-				styleObj.transform.Find("Amount").GetComponent<Image>().color = blue;
-				styleObj.transform.Find("Text Backer").gameObject.SetActive(true);
+				styleObj.transform.Find("Questions").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_Low");
+				styleObj.transform.Find("Questions").GetComponent<Localization>().Key = style.Key + "_Questions_Low";
 			}
 			else
 			{
-				styleObj.transform.Find("Text Backer/Text").GetComponent<Text>().text = string.Empty;
-				styleObj.transform.Find("Text Backer/Text").GetComponent<Localization>().Key = string.Empty;
-				styleObj.transform.Find("Text Backer").gameObject.SetActive(false);
-				styleObj.transform.Find("Amount").GetComponent<Image>().color = Color.Lerp(blue, orange, (style.Value - 0.2f) * (0.4f/1f));
+				styleObj.transform.Find("Questions").GetComponent<Text>().text = string.Empty;
+				styleObj.transform.Find("Questions").GetComponent<Localization>().Key = string.Empty;
 			}
 		}
 		Invoke("DoBestFit", 0);
@@ -162,7 +155,11 @@ public class FeedbackUI : MonoBehaviour {
 
 	private void DoBestFit()
 	{
-		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_selectionGraph.transform);
-		_selectionGraph.BestFit();
+		if (_selectionGraph.activeSelf) {
+			LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_selectionGraph.transform);
+			var text = _selectionGraph.GetComponentsInChildren<Text>().ToList();
+			text.Where(t => t.name == "Style" || t.name == "Percentage").ToList().BestFit();
+			text.Where(t => t.name == "Questions").ToList().BestFit();
+		}
 	}
 }
