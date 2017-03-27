@@ -204,6 +204,10 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		{
 			GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = false;
 		}
+		if (transform.parent.childCount - 1 == transform.GetSiblingIndex())
+		{
+			_buttons.Find("End Text").gameObject.SetActive(true);
+		}
 		var speechBubble = transform.Find("Tutorial Helper/Image");
 		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)speechBubble);
 		Invoke("PaddingSetUp", 0f);
@@ -213,8 +217,8 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	private void PaddingSetUp()
 	{
 		var speechBubble = transform.Find("Tutorial Helper/Image");
-		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)speechBubble);
 		speechBubble.GetComponent<LayoutGroup>().padding.bottom = (int)(((RectTransform)speechBubble).sizeDelta.y * 0.25f) + 16;
+		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)speechBubble);
 		Invoke("ButtonSetUp", 0f);
 	}
 

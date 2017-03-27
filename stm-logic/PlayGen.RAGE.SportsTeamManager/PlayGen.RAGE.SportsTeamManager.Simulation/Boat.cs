@@ -200,7 +200,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 			if (opinionCount > 0)
 			{
-				opinion = opinion / opinionCount;
+				opinion = (int)Math.Round((float)opinion / opinionCount);
 			}
 
 			//add average opinion, manager opinion and current mood to score
@@ -309,7 +309,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 					// ReSharper disable once PossibleLossOfFraction
-					opinion = (int)((opinion / opinionCount) * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
+					opinion = (int)(Math.Round((float)opinion / opinionCount) * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
 					crewOpinions[crewComboKey] += opinion;
 				}
 			}

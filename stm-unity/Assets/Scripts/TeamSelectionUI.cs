@@ -931,9 +931,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	/// </summary>
 	private float GetResult(bool isRace, Boat boat, int offset, Text scoreText, bool current = false)
 	{
-		var timeTaken = TimeSpan.FromSeconds(1800 - ((boat.Score - 20) * 10) + offset);
+		var timeTaken = TimeSpan.FromSeconds(1800 - ((boat.Score - 22) * 10) + offset);
 		var finishPosition = 1;
-		var expected = 7.5f * boat.Positions.Count;
+		var expected = (8f * boat.Positions.Count) + 1;
 		var scoreDiff = boat.Score - expected;
 		if (!isRace)
 		{

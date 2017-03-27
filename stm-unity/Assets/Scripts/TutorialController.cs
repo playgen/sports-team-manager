@@ -18,6 +18,8 @@ public class TutorialController : MonoBehaviour
 	private GameObject _tutorialSectionPrefab;
 	[SerializeField]
 	private GameObject _tutorialQuitButton;
+	[SerializeField]
+	private GameObject _tutorialExitBlocker;
 
 	[ContextMenu("Create Tutorial")]
 	public void CreateTutorial()
@@ -81,6 +83,7 @@ public class TutorialController : MonoBehaviour
 		{
 			child.gameObject.SetActive(child.GetSiblingIndex() == _gameManager.TutorialStage);
 		}
+		_tutorialExitBlocker.SetActive(transform.childCount == _gameManager.TutorialStage + 1);
 	}
 
 	public void AdvanceStage()
@@ -89,6 +92,7 @@ public class TutorialController : MonoBehaviour
 		transform.GetChild(stage).gameObject.SetActive(false);
 		var saveAmount = transform.GetChild(stage).GetComponent<TutorialSectionUI>().SaveNextSection;
 		_gameManager.SaveTutorialProgress(saveAmount, transform.childCount <= stage + 1);
+		_tutorialExitBlocker.SetActive(transform.childCount == stage + 2);
 		if (_gameManager.ShowTutorial)
 		{
 			transform.GetChild(stage + 1).gameObject.SetActive(true);
@@ -108,6 +112,7 @@ public class TutorialController : MonoBehaviour
 		_gameManager.SaveTutorialProgress(0, true);
 		gameObject.SetActive(false);
 		_tutorialQuitButton.SetActive(false);
+		_tutorialExitBlocker.SetActive(false);
 	}
 
 	public void CustomAttributes(Dictionary<string, string> attributes)

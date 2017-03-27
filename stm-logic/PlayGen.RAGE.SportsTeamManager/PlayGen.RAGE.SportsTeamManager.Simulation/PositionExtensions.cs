@@ -58,7 +58,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				positionCount++;
 			}
 
-			crewScore = crewScore / positionCount;
+			crewScore = (int)Math.Round((float)crewScore / positionCount);
 
 			return crewScore;
 		}
