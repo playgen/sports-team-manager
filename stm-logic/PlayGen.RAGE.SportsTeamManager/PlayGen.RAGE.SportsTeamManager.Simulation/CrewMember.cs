@@ -347,11 +347,21 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				case "StatReveal":
 					//select a random skill
-					var randomStat = Math.Pow(2, StaticRandom.Int(0, Skills.Count));
-					var statName = ((CrewMemberSkill)randomStat).ToString();
-					var statValue = Skills[(CrewMemberSkill)randomStat];
+					var availableStats = RevealedSkills.Where(s => s.Value == 0).Select(s => s.Key).ToList();
+					if (availableStats.Count == 0)
+					{
+						availableStats = RevealedSkills.Where(s => s.Value != Skills[s.Key]).Select(s => s.Key).ToList();
+					}
+					if (availableStats.Count == 0)
+					{
+						availableStats = RevealedSkills.Select(s => s.Key).ToList();
+					}
+					var randomStat = StaticRandom.Int(0, availableStats.Count);
+					var statName = availableStats[randomStat].ToString();
+					var selectedStat = (CrewMemberSkill)Enum.Parse(typeof(CrewMemberSkill), statName);
+					var statValue = Skills[selectedStat];
 					//add this skill rating to the dictionary to revealed skills
-					RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
+					RevealedSkills[selectedStat] = statValue;
 					//get available dialogue based off of the rating in the skill
 					style += statValue <= (int)config.ConfigValues[ConfigKeys.BadSkillRating] ? "Bad" :
 								statValue >= (int)config.ConfigValues[ConfigKeys.GoodSkillRating] ? "Good" : "Middle";

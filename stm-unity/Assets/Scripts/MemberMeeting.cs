@@ -57,9 +57,9 @@ public class MemberMeeting : MonoBehaviour
 	/// <summary>
 	/// Get the value stored in the config
 	/// </summary>
-	public float GetConfigValue(ConfigKeys eventKey)
+	public float GetConfigValue(ConfigKeys eventKey, CrewMember member = null)
 	{
-		return _gameManager.GetConfigValue(eventKey);
+		return _gameManager.GetConfigValue(eventKey, member);
 	}
 
 	/// <summary>

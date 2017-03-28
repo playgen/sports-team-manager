@@ -654,7 +654,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public List<string> SendMeetingEvent(string eventName, CrewMember member)
 		{
-			var cost = (int)GetConfigValue((ConfigKeys)Enum.Parse(typeof(ConfigKeys), eventName + "Cost"));
+			var cost = (int)GetConfigValue((ConfigKeys)Enum.Parse(typeof(ConfigKeys), eventName + "Cost"), member);
 			if (cost <= ActionAllowance)
 			{
 				var reply = eventController.SendMeetingEvent(eventName, member, Team);
@@ -667,8 +667,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the value from the config
 		/// </summary>
-		public float GetConfigValue(ConfigKeys eventKey)
+		public float GetConfigValue(ConfigKeys eventKey, CrewMember member = null)
 		{
+			if (eventKey == ConfigKeys.StatRevealCost && member != null)
+			{
+				return ((int)(member.RevealedSkills.Count(s => s.Value != 0) * GetConfigValue(ConfigKeys.StatRevealCost))) + (member.RevealedSkills.All(s => s.Value != 0) ? 0 : 1);
+			}
 			return config.ConfigValues[eventKey];
 		}
 

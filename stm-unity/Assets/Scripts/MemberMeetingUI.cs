@@ -59,6 +59,8 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	private List<string> _lastReply;
 	[SerializeField]
 	private HoverPopUpUI _hoverPopUp;
+	[SerializeField]
+	private ScrollRect _crewContainer;
 
 	private void Awake()
 	{
@@ -88,6 +90,17 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	public void SetUpDisplay(CrewMember crewMember, string source)
 	{
 		_currentMember = crewMember;
+
+		var memberTransform = _crewContainer.GetComponentsInChildren<CrewMemberUI>().First(c => c.CrewMember == crewMember && !c.Usable).GetComponent<RectTransform>();
+		if (!memberTransform.IsRectTransformVisible((RectTransform)memberTransform.parent.parent))
+		{
+			_crewContainer.horizontalNormalizedPosition = 0;
+			if (!memberTransform.IsRectTransformVisible((RectTransform)memberTransform.parent.parent))
+			{
+				_crewContainer.horizontalNormalizedPosition = 1;
+			}
+		}
+
 		//make pop-up visible and firing warning not visible
 		gameObject.SetActive(true);
 		_fireWarningPopUp.SetActive(false);
@@ -163,7 +176,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		_opinionPositiveQuestion.text = Localization.Get(_memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).First());
 		_opinionNegativeQuestion.text = Localization.Get(_memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).First());
 		//set the cost shown for each question and for firing
-		_statQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.StatRevealCost).ToString(Localization.SelectedLanguage.GetSpecificCulture());
+		_statQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.StatRevealCost, _currentMember).ToString(Localization.SelectedLanguage.GetSpecificCulture());
 		_roleQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost).ToString(Localization.SelectedLanguage.GetSpecificCulture());
 		_opinionPositiveQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealPositiveCost).ToString(Localization.SelectedLanguage.GetSpecificCulture());
 		_opinionNegativeQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealNegativeCost).ToString(Localization.SelectedLanguage.GetSpecificCulture());
@@ -171,7 +184,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		var allowance = _memberMeeting.QuestionAllowance();
 		//set if each button is interactable according to if the player has enough allowance
 		_fireButton.interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.FiringCost) && _memberMeeting.CrewEditAllowance() != 0 && _memberMeeting.CanRemoveCheck() && !_memberMeeting.TutorialInProgress();
-		_statQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.StatRevealCost);
+		_statQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.StatRevealCost, _currentMember);
 		_roleQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost);
 		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealPositiveCost);
 		_opinionNegativeQuestion.GetComponentInParent<Button>().interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealNegativeCost);

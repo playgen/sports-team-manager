@@ -77792,6 +77792,7 @@ MonoBehaviour:
   _allowanceBar: {fileID: 1972574781}
   _allowanceText: {fileID: 835265187}
   _hoverPopUp: {fileID: 1617721040}
+  _crewContainer: {fileID: 1197197874}
 --- !u!114 &1950819051
 MonoBehaviour:
   m_ObjectHideFlags: 0
