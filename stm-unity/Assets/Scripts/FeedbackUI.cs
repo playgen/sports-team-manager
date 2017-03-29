@@ -1,6 +1,11 @@
-﻿using PlayGen.Unity.Utilities.Localization;
-using System.Linq;
+﻿using System;
 
+using PlayGen.Unity.Utilities.Localization;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+
+using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.BestFit;
 
 using UnityEngine;
@@ -145,6 +150,30 @@ public class FeedbackUI : MonoBehaviour {
 			{
 				button.transform.Find("Percentage").GetComponent<Text>().text = "0%";
 			}
+		}
+	}
+
+	public void TriggerExternal()
+	{
+		if (SUGARManager.CurrentUser != null)
+		{
+			string url = "username=" + SUGARManager.CurrentUser.Name; 
+			var styles = _feedback.GatherManagementStyles();
+			url += "&par1=" + Mathf.Round(styles["competing"] * 100000f);
+			url += "&par2=" + Mathf.Round(styles["avoiding"] * 100000f);
+			url += "&par3=" + Mathf.Round(styles["accommodating"] * 100000f);
+			url += "&par4=" + Mathf.Round(styles["collaborating"] * 100000f);
+			url += "&par5=" + Mathf.Round(styles["compromising"] * 100000f);
+			url += "&tstamp=" + DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+			byte[] intputBytes = Encoding.UTF8.GetBytes(url + "&hash=XWtliQQYvsK91kHGcEBg0FrRyOnj6h8w0DNtf5HrmYPSI8eq1fnryIFfLsai");
+			var hashProvider = new SHA1Managed();
+			byte[] hashed = hashProvider.ComputeHash(intputBytes);
+			string hashValue = BitConverter.ToString(hashed).Replace("-", string.Empty);
+			url += "&hash=" + hashValue;
+			url = "http://comunitaonline.unitn.it/Modules/Games/Rage.aspx?" + url;
+			Application.OpenURL(url);
+			Application.Quit();
+			Debug.Log(url);
 		}
 	}
 
