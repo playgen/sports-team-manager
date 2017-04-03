@@ -36,13 +36,13 @@ public static class TransformExtensions
 		Vector3[] objCorners = new Vector3[4];
 		obj.GetWorldCorners(objCorners);
 		bool isVisible = true;
-		for (var i = 0; i < objCorners.Length; i++)
+		foreach (var corner in objCorners)
 		{
-			if (!RectTransformUtility.RectangleContainsScreenPoint(visibleRect, objCorners[i], null))
-			{
-				isVisible = false;
-				break;
-			}
+		    if (!RectTransformUtility.RectangleContainsScreenPoint(visibleRect, corner, null))
+		    {
+		        isVisible = false;
+		        break;
+		    }
 		}
 		return isVisible;
 	}

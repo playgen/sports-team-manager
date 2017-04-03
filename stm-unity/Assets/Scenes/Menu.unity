@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 7
+  serializedVersion: 8
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -25,6 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
+  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -41,7 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 7
+  serializedVersion: 9
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -53,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 4
+    serializedVersion: 8
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -66,13 +67,27 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_DirectLightInLightProbes: 1
     m_FinalGather: 0
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 1024
     m_ReflectionCompression: 2
+    m_MixedBakeMode: 1
+    m_BakeBackend: 0
+    m_PVRSampling: 1
+    m_PVRDirectSampleCount: 32
+    m_PVRSampleCount: 500
+    m_PVRBounces: 2
+    m_PVRFiltering: 0
+    m_PVRFilteringMode: 1
+    m_PVRCulling: 1
+    m_PVRFilteringGaussRadiusDirect: 1
+    m_PVRFilteringGaussRadiusIndirect: 5
+    m_PVRFilteringGaussRadiusAO: 2
+    m_PVRFilteringAtrousColorSigma: 1
+    m_PVRFilteringAtrousNormalSigma: 1
+    m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
-  m_RuntimeCPUUsage: 25
+  m_ShadowMaskMode: 2
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -89,6 +104,8 @@ NavMeshSettings:
     minRegionArea: 2
     manualCellSize: 0
     cellSize: 0.16666667
+    manualTileSize: 0
+    tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1 &972233
@@ -12007,6 +12024,8 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
+  m_AllowMSAA: 1
+  m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
@@ -18771,7 +18790,7 @@ Canvas:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 389740742}
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 215745441}
   m_PlaneDistance: 5
@@ -18780,6 +18799,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -43136,67 +43156,37 @@ Material:
   m_Shader: {fileID: 4800000, guid: 947afae4d36f1274ea2e4098262ceef6, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
+  disabledShaderPasses: []
   m_SavedProperties:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TexEnvs:
-    - first:
-        name: _AlphaMask
-      second:
+    - _AlphaMask:
         m_Texture: {fileID: 2800000, guid: 3a4c416d080226c4a89132d383c263bd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _MainTex
-      second:
+    - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - first:
-        name: _ColorMask
-      second: 15
-    - first:
-        name: _CutOff
-      second: 1
-    - first:
-        name: _FlipAlphaMask
-      second: 0
-    - first:
-        name: _HardBlend
-      second: 0
-    - first:
-        name: _NoOuterClip
-      second: 1
-    - first:
-        name: _Stencil
-      second: 0
-    - first:
-        name: _StencilComp
-      second: 8
-    - first:
-        name: _StencilOp
-      second: 0
-    - first:
-        name: _StencilReadMask
-      second: 255
-    - first:
-        name: _StencilWriteMask
-      second: 255
+    - _ColorMask: 15
+    - _CutOff: 1
+    - _FlipAlphaMask: 0
+    - _HardBlend: 0
+    - _NoOuterClip: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     m_Colors:
-    - first:
-        name: _AlphaUV
-      second: {r: 0.06, g: 0.14, b: 0, a: 0}
-    - first:
-        name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _Max
-      second: {r: 0.20000002, g: 0.99999994, b: 0, a: 0}
-    - first:
-        name: _Min
-      second: {r: 0.14000005, g: 0.85999995, b: 0, a: 0}
+    - _AlphaUV: {r: 0.06, g: 0.14, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Max: {r: 0.20000002, g: 0.99999994, b: 0, a: 0}
+    - _Min: {r: 0.14000005, g: 0.85999995, b: 0, a: 0}
 --- !u!1 &1071072808
 GameObject:
   m_ObjectHideFlags: 0
@@ -46291,7 +46281,7 @@ MonoBehaviour:
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 0
-    m_HorizontalOverflow: 0
+    m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
@@ -48025,67 +48015,37 @@ Material:
   m_Shader: {fileID: 4800000, guid: 947afae4d36f1274ea2e4098262ceef6, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
+  disabledShaderPasses: []
   m_SavedProperties:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TexEnvs:
-    - first:
-        name: _AlphaMask
-      second:
+    - _AlphaMask:
         m_Texture: {fileID: 2800000, guid: 3a4c416d080226c4a89132d383c263bd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _MainTex
-      second:
+    - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - first:
-        name: _ColorMask
-      second: 15
-    - first:
-        name: _CutOff
-      second: 1
-    - first:
-        name: _FlipAlphaMask
-      second: 0
-    - first:
-        name: _HardBlend
-      second: 0
-    - first:
-        name: _NoOuterClip
-      second: 1
-    - first:
-        name: _Stencil
-      second: 0
-    - first:
-        name: _StencilComp
-      second: 8
-    - first:
-        name: _StencilOp
-      second: 0
-    - first:
-        name: _StencilReadMask
-      second: 255
-    - first:
-        name: _StencilWriteMask
-      second: 255
+    - _ColorMask: 15
+    - _CutOff: 1
+    - _FlipAlphaMask: 0
+    - _HardBlend: 0
+    - _NoOuterClip: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     m_Colors:
-    - first:
-        name: _AlphaUV
-      second: {r: 0.07500001, g: 0.144, b: 0, a: 0}
-    - first:
-        name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _Max
-      second: {r: 0.20000005, g: 1, b: 0, a: 0}
-    - first:
-        name: _Min
-      second: {r: 0.12500003, g: 0.856, b: 0, a: 0}
+    - _AlphaUV: {r: 0.07500001, g: 0.144, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Max: {r: 0.20000005, g: 1, b: 0, a: 0}
+    - _Min: {r: 0.12500003, g: 0.856, b: 0, a: 0}
 --- !u!1 &1215315852
 GameObject:
   m_ObjectHideFlags: 0
@@ -64007,7 +63967,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1589013683}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ef26519a418a446f834e3f77d246219, type: 3}
   m_Name: 
@@ -64015,10 +63975,10 @@ MonoBehaviour:
   rawCopy: 0
   flushInterval: 2
   checkInterval: 3
-  storageType: local
-  traceFormat: csv
-  host: 
-  trackingCode: 
+  storageType: net
+  traceFormat: xapi
+  host: http://tracker.playgen.com/api/proxy/gleaner/collector/
+  trackingCode: 58e241aeed0ba5006e03ab1afy7d7mv0vfrjxlxr
   debug: 1
 --- !u!1 &1589073826
 GameObject:
@@ -80376,67 +80336,37 @@ Material:
   m_Shader: {fileID: 4800000, guid: 947afae4d36f1274ea2e4098262ceef6, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
+  disabledShaderPasses: []
   m_SavedProperties:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TexEnvs:
-    - first:
-        name: _AlphaMask
-      second:
+    - _AlphaMask:
         m_Texture: {fileID: 2800000, guid: 3a4c416d080226c4a89132d383c263bd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _MainTex
-      second:
+    - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - first:
-        name: _ColorMask
-      second: 15
-    - first:
-        name: _CutOff
-      second: 1
-    - first:
-        name: _FlipAlphaMask
-      second: 0
-    - first:
-        name: _HardBlend
-      second: 0
-    - first:
-        name: _NoOuterClip
-      second: 1
-    - first:
-        name: _Stencil
-      second: 0
-    - first:
-        name: _StencilComp
-      second: 8
-    - first:
-        name: _StencilOp
-      second: 0
-    - first:
-        name: _StencilReadMask
-      second: 255
-    - first:
-        name: _StencilWriteMask
-      second: 255
+    - _ColorMask: 15
+    - _CutOff: 1
+    - _FlipAlphaMask: 0
+    - _HardBlend: 0
+    - _NoOuterClip: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     m_Colors:
-    - first:
-        name: _AlphaUV
-      second: {r: 0.08499998, g: 0.057500042, b: 0, a: 0}
-    - first:
-        name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _Max
-      second: {r: 0.18499997, g: 0.80750006, b: 0, a: 0}
-    - first:
-        name: _Min
-      second: {r: 0.100000024, g: 0.75, b: 0, a: 0}
+    - _AlphaUV: {r: 0.08499998, g: 0.057500042, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Max: {r: 0.18499997, g: 0.80750006, b: 0, a: 0}
+    - _Min: {r: 0.100000024, g: 0.75, b: 0, a: 0}
 --- !u!1 &2022601870
 GameObject:
   m_ObjectHideFlags: 0
@@ -83084,67 +83014,37 @@ Material:
   m_Shader: {fileID: 4800000, guid: 947afae4d36f1274ea2e4098262ceef6, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
+  disabledShaderPasses: []
   m_SavedProperties:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TexEnvs:
-    - first:
-        name: _AlphaMask
-      second:
+    - _AlphaMask:
         m_Texture: {fileID: 2800000, guid: 3a4c416d080226c4a89132d383c263bd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _MainTex
-      second:
+    - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - first:
-        name: _ColorMask
-      second: 15
-    - first:
-        name: _CutOff
-      second: 1
-    - first:
-        name: _FlipAlphaMask
-      second: 0
-    - first:
-        name: _HardBlend
-      second: 0
-    - first:
-        name: _NoOuterClip
-      second: 1
-    - first:
-        name: _Stencil
-      second: 0
-    - first:
-        name: _StencilComp
-      second: 8
-    - first:
-        name: _StencilOp
-      second: 0
-    - first:
-        name: _StencilReadMask
-      second: 255
-    - first:
-        name: _StencilWriteMask
-      second: 255
+    - _ColorMask: 15
+    - _CutOff: 1
+    - _FlipAlphaMask: 0
+    - _HardBlend: 0
+    - _NoOuterClip: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     m_Colors:
-    - first:
-        name: _AlphaUV
-      second: {r: 0.08499998, g: 0.08000007, b: 0, a: 0}
-    - first:
-        name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _Max
-      second: {r: 0.18499997, g: 0.7199999, b: 0, a: 0}
-    - first:
-        name: _Min
-      second: {r: 0.100000024, g: 0.63999987, b: 0, a: 0}
+    - _AlphaUV: {r: 0.08499998, g: 0.08000007, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Max: {r: 0.18499997, g: 0.7199999, b: 0, a: 0}
+    - _Min: {r: 0.100000024, g: 0.63999987, b: 0, a: 0}
 --- !u!1 &2089295434
 GameObject:
   m_ObjectHideFlags: 0
@@ -84477,7 +84377,7 @@ MonoBehaviour:
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 0
-    m_HorizontalOverflow: 0
+    m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 

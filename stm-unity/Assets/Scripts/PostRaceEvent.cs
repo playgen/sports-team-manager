@@ -1,11 +1,7 @@
 ﻿using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-
 using PlayGen.SUGAR.Unity;
-
-using RAGE.Analytics.Formats;
 
 /// <summary>
 /// Contains all logic to communicate between PostRaceEventUI and GameManager
