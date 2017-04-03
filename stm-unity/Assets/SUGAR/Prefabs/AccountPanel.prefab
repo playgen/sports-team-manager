@@ -36,6 +36,7 @@ GameObject:
   - component: {fileID: 224200283828476716}
   - component: {fileID: 222042309292720342}
   - component: {fileID: 114139603722541600}
+  - component: {fileID: 114037320531990440}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -88,6 +89,7 @@ GameObject:
   - component: {fileID: 224479983946402764}
   - component: {fileID: 222334026952945878}
   - component: {fileID: 114514708963624540}
+  - component: {fileID: 114986607476278998}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -105,6 +107,7 @@ GameObject:
   - component: {fileID: 224842176988332350}
   - component: {fileID: 222541076142417326}
   - component: {fileID: 114143754207631720}
+  - component: {fileID: 114879914644682430}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -209,6 +212,7 @@ GameObject:
   - component: {fileID: 224254382223485066}
   - component: {fileID: 222952556634875422}
   - component: {fileID: 114463533880564104}
+  - component: {fileID: 114347776497217012}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -355,6 +359,20 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114037320531990440
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1047778457289616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: REGISTER
+  ToUpper: 0
+  LanguageOverride: 
 --- !u!114 &114076794055559072
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -631,6 +649,20 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
+--- !u!114 &114347776497217012
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1648647941169334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: PASSWORD
+  ToUpper: 0
+  LanguageOverride: 
 --- !u!114 &114401463262526056
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -981,6 +1013,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114879914644682430
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1330305987610196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: SIGN_IN
+  ToUpper: 0
+  LanguageOverride: 
 --- !u!114 &114898172356691394
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1062,6 +1108,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114986607476278998
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1266417553619780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: USERNAME
+  ToUpper: 0
+  LanguageOverride: 
 --- !u!222 &222042309292720342
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -1440,7 +1500,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 284.67014, y: 0}
+  m_AnchoredPosition: {x: 284.61426, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224988766472472380
@@ -1459,6 +1519,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 84.890045, y: 0}
+  m_AnchoredPosition: {x: 84.871414, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

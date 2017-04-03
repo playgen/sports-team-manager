@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 224000011357014598}
   - component: {fileID: 222000010192124214}
   - component: {fileID: 114000013807797254}
+  - component: {fileID: 114209656518747290}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -316,6 +317,7 @@ GameObject:
   - component: {fileID: 224000012955925866}
   - component: {fileID: 222000011927571594}
   - component: {fileID: 114000013008114804}
+  - component: {fileID: 114583821638106822}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -333,6 +335,7 @@ GameObject:
   - component: {fileID: 224000011045580690}
   - component: {fileID: 222000013962251228}
   - component: {fileID: 114000013367002958}
+  - component: {fileID: 114356108697949568}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -662,6 +665,7 @@ GameObject:
   - component: {fileID: 224000011498426736}
   - component: {fileID: 222000011192604858}
   - component: {fileID: 114000010548151372}
+  - component: {fileID: 114976865258966848}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -856,6 +860,7 @@ GameObject:
   - component: {fileID: 224021327637222154}
   - component: {fileID: 222779136965558988}
   - component: {fileID: 114400897429780386}
+  - component: {fileID: 114248770559023008}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -2590,6 +2595,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _achieveName: {fileID: 114000013785387276}
   _achieveImage: {fileID: 114000013714580116}
+--- !u!114 &114209656518747290
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011111438878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: CLOSE
+  ToUpper: 0
+  LanguageOverride: 
+--- !u!114 &114248770559023008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1462720241227484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: SIGN_IN
+  ToUpper: 0
+  LanguageOverride: 
 --- !u!114 &114339581648919614
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2617,6 +2650,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114356108697949568
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011349129812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: PREVIOUS
+  ToUpper: 0
+  LanguageOverride: 
 --- !u!114 &114400897429780386
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2650,6 +2697,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 0.96
   m_Text: Sign-in
+--- !u!114 &114583821638106822
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011332589560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: ACHIEVEMENTS
+  ToUpper: 0
+  LanguageOverride: 
 --- !u!114 &114749759618620804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2691,6 +2752,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114976865258966848
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013369000256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: NEXT
+  ToUpper: 0
+  LanguageOverride: 
 --- !u!222 &222000010023899760
 CanvasRenderer:
   m_ObjectHideFlags: 1
