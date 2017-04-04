@@ -684,6 +684,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			SaveStatus();
 		}
 
+        public string GetSocialImportanceRating()
+        {
+            return SocialImportance.DecideConferral("SELF").Key.ToString();
+        }
+
 		public int CompareTo(CrewMember other)
 		{
 			return String.Compare(Name, other.Name, StringComparison.Ordinal);

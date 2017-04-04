@@ -7,6 +7,9 @@ using IntegratedAuthoringTool.DTOs;
 
 using RolePlayCharacter;
 
+using SocialImportance;
+using SocialImportance.DTOs;
+
 using WellFormedNames;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
@@ -21,16 +24,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string Gender { get; set; }
 		public string Nationality { get; set; }
 		internal RolePlayCharacterAsset RolePlayCharacter { get; private set; }
+	    protected SocialImportanceAsset SocialImportance { get; private set; }
 
-		/// <summary>
-		/// Constructor for creating a Person
-		/// </summary>
-		internal Person(RolePlayCharacterAsset rpc)
+        /// <summary>
+        /// Constructor for creating a Person
+        /// </summary>
+        internal Person(RolePlayCharacterAsset rpc)
 		{
 			if (rpc != null)
 			{
 				RolePlayCharacter = rpc;
-				Name = RolePlayCharacter.BodyName;
+			    SocialImportance = SocialImportanceAsset.LoadFromFile(RolePlayCharacter.SocialImportanceAssetSource);
+                SocialImportance.RegisterKnowledgeBase(RolePlayCharacter.m_kb);
+                Name = RolePlayCharacter.BodyName;
 				Age = Convert.ToInt32(LoadBelief(NPCBeliefs.Age.GetDescription()));
 				Gender = LoadBelief(NPCBeliefs.Gender.GetDescription());
 			}
@@ -39,7 +45,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create the required files for this Person
 		/// </summary>
-		internal void CreateFile(IntegratedAuthoringToolAsset iat, string storageLocation, string fileName = "")
+		internal void CreateFile(IntegratedAuthoringToolAsset iat, string storageLocation, string managerName = "", string fileName = "")
 		{
 			//Get Storytelling Framework files
 			var rpc = ConfigStore.RolePlayCharacter;
@@ -54,12 +60,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				fileName = noSpaceName;
 			}
-			//save files
-			ea.SaveToFile(Path.Combine(storageLocation, fileName + ".ea"));
+            //save files
+            ea.SaveToFile(Path.Combine(storageLocation, fileName + ".ea"));
 			edm.SaveToFile(Path.Combine(storageLocation, fileName + ".edm"));
 			si.SaveToFile(Path.Combine(storageLocation, fileName + ".si"));
-			//add character to iat asset
-			rpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
+            //add character to iat asset
+            rpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
 			//assign asset files to RPC
 			rpc.EmotionalAppraisalAssetSource = fileName + ".ea";
 			rpc.EmotionalDecisionMakingSource = fileName + ".edm";
@@ -69,7 +75,33 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//store RPC locally
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(rpc.AssetFilePath);
 			RolePlayCharacter.LoadAssociatedAssets();
-		}
+            SocialImportance = SocialImportanceAsset.LoadFromFile(RolePlayCharacter.SocialImportanceAssetSource);
+		    if (!string.IsNullOrEmpty(managerName))
+		    {
+		        SocialImportance.AddConferral(new ConferralDTO
+		                            {
+		                                ConferralSI = 1,
+		                                Action = "Negative",
+		                                Target = managerName,
+		                                Conditions = new Conditions.DTOs.ConditionSetDTO()
+		                            });
+		        SocialImportance.AddConferral(new ConferralDTO
+		                            {
+		                                ConferralSI = 5,
+		                                Action = "Mid",
+		                                Target = managerName,
+		                                Conditions = new Conditions.DTOs.ConditionSetDTO()
+		                            });
+		        SocialImportance.AddConferral(new ConferralDTO
+		                            {
+		                                ConferralSI = 10,
+		                                Action = "Positive",
+		                                Target = managerName,
+		                                Conditions = new Conditions.DTOs.ConditionSetDTO()
+		                            });
+		        SocialImportance.Save();
+            }
+        }
 
 		/// <summary>
 		/// Update the base information for this Person
@@ -110,7 +142,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void SaveStatus()
 		{
-			RolePlayCharacter.Save();
+		    SocialImportance.RegisterKnowledgeBase(RolePlayCharacter.m_kb);
+            RolePlayCharacter.Save();
 		}
 
 		/// <summary>

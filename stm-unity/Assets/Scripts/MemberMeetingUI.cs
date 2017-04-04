@@ -169,7 +169,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 			_barForegrounds[i].transform.parent.FindChild("Skill Image").GetComponent<Image>().enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] != 0;
 		}
 		//set default starting dialogue
-		_dialogueText.text = Localization.Get("MEETING_INTRO");
+		_dialogueText.text = Localization.Get("MEETING_INTRO_" + _currentMember.GetSocialImportanceRating());
 		//set question text for the player
 		_statQuestion.text = Localization.Get(_memberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).First());
 		_roleQuestion.text = Localization.Get(_memberMeeting.GetEventText("RoleReveal").OrderBy(s => Guid.NewGuid()).First());

@@ -2,7 +2,25 @@
 	"root":
 		{
 			"classId": 0,
-			"AttributionRules": [],
+			"AttributionRules": [
+				{
+					"RuleName": "Manager Opinion OK",
+					"Target": "[x]",
+					"Value": 5,
+					"Conditions":
+						{
+							"Set": ["Opinion([x]) = 0"]
+						}
+				}, 
+				{
+					"RuleName": "Manager Opinion Good",
+					"Target": "[x]",
+					"Value": 10,
+					"Conditions":
+						{
+							"Set": ["Opinion([x]) >= 1"]
+						}
+				}],
 			"Claims": [],
 			"Conferrals": []
 		},

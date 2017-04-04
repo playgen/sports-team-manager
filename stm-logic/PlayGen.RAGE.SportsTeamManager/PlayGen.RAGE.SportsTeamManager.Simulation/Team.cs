@@ -172,7 +172,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//set up the files for each recruit and their avatar
 			foreach (var recruit in Recruits)
 			{
-				recruit.Value.CreateFile(iat, storageLocation, "Recruit" + storeNum);
+				recruit.Value.CreateFile(iat, storageLocation, Manager.Name.NoSpaces(), "Recruit" + storeNum);
 				storeNum++;
 				recruit.Value.UpdateBeliefs("Recruit");
 				recruit.Value.Avatar = new Avatar(recruit.Value, false);
@@ -188,7 +188,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//remove recruit from the current list of characters in the game
 			iat.RemoveCharacters(new List<int> { iat.GetAllCharacterSources().First(c => c.Source == member.RolePlayCharacter.AssetFilePath).Id });
 			//set up recruit as a 'proper' character in the game
-			member.CreateFile(iat, storageLocation);
+			member.CreateFile(iat, storageLocation, Manager.Name.NoSpaces());
 			member.Avatar.UpdateAvatarBeliefs(member);
 			member.Avatar = new Avatar(member, true, true);
 			SetCrewColors(member.Avatar);
@@ -300,7 +300,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var position = Boat.GetWeakPosition(CrewMembers.Values.Concat(Recruits.Values).ToList());
 					var newMember = new CrewMember(position, Nationality, config);
 					UniqueNameCheck(newMember);
-					newMember.CreateFile(iat, storageLocation);
+					newMember.CreateFile(iat, storageLocation, Manager.Name.NoSpaces());
 					newMember.Avatar = new Avatar(newMember);
 					SetCrewColors(newMember.Avatar);
 					newMember.CreateInitialOpinions(currentNames);

@@ -177,7 +177,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//set up files and details for each CrewMember
 			foreach (var member in Team.CrewMembers.Values)
 			{
-				member.CreateFile(iat, combinedStorageLocation);
+				member.CreateFile(iat, combinedStorageLocation, manager.Name.NoSpaces());
 				member.Avatar = new Avatar(member);
 				Team.SetCrewColors(member.Avatar);
 				if (!initialCrew)
