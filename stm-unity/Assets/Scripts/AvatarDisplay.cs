@@ -124,7 +124,7 @@ public class AvatarDisplay : MonoBehaviour
 	{
 		switch (reaction.Replace(" ", string.Empty))
 		{
-			case "StronglyAgree":
+			case "StrongAgree":
 				UpdateMood(avatar, 4);
 				return;
 			case "Agree":
@@ -133,7 +133,7 @@ public class AvatarDisplay : MonoBehaviour
 			case "Disagree":
 				UpdateMood(avatar, -2);
 				return;
-			case "StronglyDisagree":
+			case "StrongDisagree":
 				UpdateMood(avatar, -4);
 				return;
 			default:

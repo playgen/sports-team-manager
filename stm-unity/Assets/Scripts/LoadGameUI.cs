@@ -133,6 +133,6 @@ public class LoadGameUI : MonoBehaviour
 
 	private void DoBestFit()
 	{
-		gameObject.BestFit();
+	    _gameContainer.BestFit();
 	}
 }

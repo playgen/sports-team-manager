@@ -478,7 +478,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				//set their belief to 'null'
 				UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "null");
-				TickUpdate();
+				TickUpdate(0);
 			}
 			if (LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription()) != null)
 			{
@@ -496,7 +496,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					//set their belief to 'null'
 					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), "null");
-					TickUpdate();
+					TickUpdate(0);
 				}
 			}
 			if (LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription()) != null)
@@ -506,7 +506,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), "null");
 					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), expected);
-					TickUpdate();
+					TickUpdate(0);
 				}
 			}
 		}
@@ -668,7 +668,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					break;
 			}
-			TickUpdate();
+			TickUpdate(0);
 		}
 
 		/// <summary>
