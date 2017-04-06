@@ -9,6 +9,7 @@
 	CurrentTalkTime,
 	DialogueID,
 	DialogueNextState,
+	DialogueStyle,
 	EventID,
 	FinishingPosition,
 	FiringCost,

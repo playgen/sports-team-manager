@@ -118,6 +118,7 @@ public class PostRaceEvent : ObservableMonoBehaviour
 				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventDialogueSelected", TrackerVerbs.Selected, new Dictionary<string, string>
 				{
 					{ TrackerContextKeys.DialogueID.ToString(), res.Dialogue.NextState },
+					{ TrackerContextKeys.DialogueStyle.ToString(), res.Dialogue.Meaning[0] },
 					{ TrackerContextKeys.EventID.ToString(), GetEventKey(res.Dialogue.NextState) },
 				}, res.Dialogue.NextState, AlternativeTracker.Alternative.Dialog));
 				SUGARManager.GameData.Send("Post Race Event Reply", res.Dialogue.NextState);
