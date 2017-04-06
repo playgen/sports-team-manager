@@ -261,7 +261,8 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		Display();
 		var replyExtras = reply.Count > 0 ? reply.Where(r => r != reply.First()).Select(r => Localization.Get(r)).ToArray() : new string[0];
 		_dialogueText.text = reply.Count > 0 ? Localization.GetAndFormat(reply.First(), false, replyExtras) : string.Empty;
-		TrackerEventSender.SendEvent(new TraceEvent("MeetingQuestionAsked", TrackerVerbs.Selected, new Dictionary<string, string>
+	    ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+        TrackerEventSender.SendEvent(new TraceEvent("MeetingQuestionAsked", TrackerVerbs.Selected, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.QuestionAsked.ToString(), questionType },
 			{ TrackerContextKeys.QuestionCost.ToString(), (allowanceBefore - _memberMeeting.QuestionAllowance()).ToString() },
