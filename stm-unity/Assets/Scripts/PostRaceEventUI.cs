@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
+using RAGE.Analytics.Formats;
 
 /// <summary>
 /// Contains all UI logic related to the Post Race pop-up
@@ -83,10 +84,10 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			_canvasGroup.blocksRaycasts = true;
 			//set current NPC dialogue
 			ResetQuestions();
-			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpOpened", new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.EventID.ToString(), current[0].Dialogue.NextState },
-			}));
+			}, AccessibleTracker.Accessible.Screen));
 			SUGARManager.GameData.Send("Post Race Event Start", current[0].Dialogue.NextState);
 		}
 		else
@@ -103,11 +104,11 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		_postRaceEvent.DisableCheck();
 		if (!string.IsNullOrEmpty(source))
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpClosed", new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.TriggerUI.ToString(), source },
 				{ TrackerContextKeys.EventID.ToString(), _postRaceEvent.GetEventKey(_lastStates[0]) },
-			}));
+			}, AccessibleTracker.Accessible.Screen));
 		}
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}

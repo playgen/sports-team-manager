@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using PlayGen.SUGAR.Unity;
 
+using RAGE.Analytics.Formats;
+
 /// <summary>
 /// Contains all logic to communicate between PostRaceEventUI and GameManager
 /// </summary>
@@ -113,11 +115,11 @@ public class PostRaceEvent : ObservableMonoBehaviour
 		{
 			foreach (var res in _selectedResponses.Values)
 			{
-				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventDialogueSelected", new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventDialogueSelected", TrackerVerbs.Selected, new Dictionary<string, string>
 				{
 					{ TrackerContextKeys.DialogueID.ToString(), res.Dialogue.NextState },
 					{ TrackerContextKeys.EventID.ToString(), GetEventKey(res.Dialogue.NextState) },
-				}));
+				}, res.Dialogue.NextState, AlternativeTracker.Alternative.Dialog));
 				SUGARManager.GameData.Send("Post Race Event Reply", res.Dialogue.NextState);
 			}
 			float beforeValues = GetTeamAverageMood() + GetTeamAverageManagerOpinion() + GetTeamAverageOpinion();

@@ -9,6 +9,8 @@ using System.Reflection;
 
 using PlayGen.SUGAR.Unity;
 
+using RAGE.Analytics.Formats;
+
 /// <summary>
 /// Contains all logic related to CrewMember prefabs
 /// </summary>
@@ -153,13 +155,13 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 			{
 				var pos = result.gameObject.GetComponent<PositionUI>().Position;
 				var crewMember = result.gameObject.GetComponent<PositionUI>().CrewMemberUI;
-				TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPositioned", new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPositioned", TrackerVerbs.Interacted, new Dictionary<string, string>
 				{
 					{ TrackerContextKeys.CrewMemberName.ToString(), _crewMember.Name },
 					{ TrackerContextKeys.PositionName.ToString(), pos.ToString()},
 					{ TrackerContextKeys.PreviousCrewMemberInPosition.ToString(), crewMember != null ? crewMember.CrewMember.Name : "Null"},
 					{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()},
-				}));
+				}, GameObjectTracker.TrackedGameObject.Npc));
 				SUGARManager.GameData.Send("Place Crew Member", _crewMember.Name);
 				SUGARManager.GameData.Send("Fill Position", pos.ToString());
 				Place(result.gameObject);
@@ -231,11 +233,11 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 		transform.SetAsLastSibling();
 		if (_currentPositon != (Vector2)transform.position)
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("CrewMemberUnpositioned", new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("CrewMemberUnpositioned", TrackerVerbs.Interacted, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.CrewMemberName.ToString(), _crewMember.Name },
 				{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()},
-			}));
+			}, GameObjectTracker.TrackedGameObject.Npc));
 		}
 		_currentPlacement = null;
 		var positionImage = transform.Find("Position").gameObject;

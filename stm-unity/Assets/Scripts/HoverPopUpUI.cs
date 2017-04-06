@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
 
+using RAGE.Analytics.Formats;
+
 /// <summary>
 /// Used on hover text object to set text and reposition when needed
 /// </summary>
@@ -89,10 +91,10 @@ public class HoverPopUpUI : ObservableMonoBehaviour {
 					((RectTransform)transform).anchoredPosition -= new Vector2(0, -((RectTransform)transform).rect.height);
 				}
 			}
-			TrackerEventSender.SendEvent(new TraceEvent("HoveredOver", new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("HoveredOver", TrackerVerbs.Accessed, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.HoverKey.ToString(), _currentText }
-			}));
+			}, AccessibleTracker.Accessible.Accessible));
 			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentText);
 		}
 	}

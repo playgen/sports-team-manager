@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using RAGE.Analytics.Formats;
+
 using UnityEngine;
 
 /// <summary>
@@ -66,11 +68,11 @@ public class LoadGame : MonoBehaviour
 			if (_gameManager.Team != null && _gameManager.Team.Name.ToLower() == _selectedName.ToLower())
 			{
 				var newString = string.Join(",", _gameManager.Team.Boat.Positions.Select(pos => pos.ToString()).ToArray());
-				TrackerEventSender.SendEvent(new TraceEvent("GameStarted", new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
 				{
 					{ TrackerContextKeys.GameName.ToString(), _gameManager.Team.Name },
 					{ TrackerContextKeys.BoatLayout.ToString(), string.IsNullOrEmpty(newString) ? "NullAsGameFinished" : newString },
-				}));
+				}, CompletableTracker.Completable.Game));
 				return true;
 			}
 		}

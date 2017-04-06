@@ -8,6 +8,8 @@ using System.Linq;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
 
+using RAGE.Analytics;
+
 /// <summary>
 /// Controls switching between different game state panels
 /// </summary>
@@ -174,6 +176,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 			{
 				_signIn.SetActive(false);
 				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
+				Tracker.T.username = SUGARManager.CurrentUser.Name;
 				DoBestFit();
 			}
 			else

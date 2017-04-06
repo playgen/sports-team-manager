@@ -12,6 +12,8 @@ using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
 
+using RAGE.Analytics.Formats;
+
 /// <summary>
 /// A class for grouping together a sprite with a name
 /// </summary>
@@ -546,34 +548,34 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		if (_teamSelection.GetStage() != _teamSelection.GetSessionLength())
 		{
 			_preRacePopUp.GetComponentInChildren<Text>().text = _teamSelection.QuestionAllowance() > 0 ? Localization.GetAndFormat("RACE_SKIP_CONFIRM_ALLOWANCE_REMAINING", false, _teamSelection.QuestionAllowance()) : Localization.Get("RACE_SKIP_CONFIRM_NO_ALLOWANCE");
-			TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceConfirmPopUpOpened", new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceConfirmPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.CurrentTalkTime.ToString(), _teamSelection.QuestionAllowance().ToString() },
 				{ TrackerContextKeys.RemainingSessions.ToString(), (_teamSelection.GetSessionLength() - _teamSelection.GetStage()).ToString() },
-			}));
+			}, AccessibleTracker.Accessible.Screen));
 			yesButton.onClick.AddListener(delegate
 			{
-				TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceApproved", new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceApproved", TrackerVerbs.Selected, new Dictionary<string, string>
 				{
 					{ TrackerContextKeys.CurrentTalkTime.ToString(), _teamSelection.QuestionAllowance().ToString() },
 					{ TrackerContextKeys.RemainingSessions.ToString(), (_teamSelection.GetSessionLength() - _teamSelection.GetStage()).ToString() },
-				}));
+				}, "SkipToRace", AlternativeTracker.Alternative.Menu));
 			});
 			yesButton.onClick.AddListener(delegate { SUGARManager.GameData.Send("Practice Sessions Skipped", _teamSelection.GetSessionLength() - _teamSelection.GetStage()); });
 		}
 		else
 		{
 			_preRacePopUp.GetComponentInChildren<Text>().text = _teamSelection.QuestionAllowance() > 0 ? Localization.GetAndFormat("RACE_CONFIRM_ALLOWANCE_REMAINING", false, _teamSelection.QuestionAllowance()) : Localization.Get("RACE_CONFIRM_NO_ALLOWANCE");
-			TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmPopUpOpened", new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.CurrentTalkTime.ToString(), _teamSelection.QuestionAllowance().ToString() },
-			}));
+			}, AccessibleTracker.Accessible.Screen));
 			yesButton.onClick.AddListener(delegate
 			{
-				TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmApproved", new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmApproved", TrackerVerbs.Selected, new Dictionary<string, string>
 				{
 					{ TrackerContextKeys.CurrentTalkTime.ToString(), _teamSelection.QuestionAllowance().ToString() },
-				}));
+				}, "RaceConfirm", AlternativeTracker.Alternative.Menu));
 			});
 		}
 		yesButton.onClick.AddListener(SkipToRace);
@@ -600,20 +602,20 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		{
 			if (_teamSelection.GetStage() != _teamSelection.GetSessionLength())
 			{
-				TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceDeclined", new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceDeclined", TrackerVerbs.Skipped, new Dictionary<string, string>
 				{
 					{ TrackerContextKeys.CurrentTalkTime.ToString(), _teamSelection.QuestionAllowance().ToString() },
 					{ TrackerContextKeys.RemainingSessions.ToString(), (_teamSelection.GetSessionLength() - _teamSelection.GetStage()).ToString() },
 					{ TrackerContextKeys.TriggerUI.ToString(), source }
-				}));
+				}, AccessibleTracker.Accessible.Screen));
 			}
 			else
 			{
-				TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmDeclined", new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmDeclined", TrackerVerbs.Skipped, new Dictionary<string, string>
 				{
 					{ TrackerContextKeys.CurrentTalkTime.ToString(), _teamSelection.QuestionAllowance().ToString() },
 					{ TrackerContextKeys.TriggerUI.ToString(), source }
-				}));
+				}, AccessibleTracker.Accessible.Screen));
 			}
 		}
 	}
@@ -643,11 +645,12 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		_preRacePopUp.SetActive(true);
 		_preRacePopUp.GetComponentInChildren<Text>().text = Localization.Get("REPEAT_CONFIRM");
-		TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpConfirmPopUpOpened", new Dictionary<string, string>()));
+		TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpConfirmPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>(), AccessibleTracker.Accessible.Screen));
 		var yesButton = _preRacePopUp.transform.Find("Yes").GetComponent<Button>();
 		yesButton.onClick.RemoveAllListeners();
 		yesButton.onClick.AddListener(ConfirmLineUp);
-		yesButton.onClick.AddListener(delegate { TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpApproved", new Dictionary<string, string>())); });
+		yesButton.onClick.AddListener(delegate { TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpApproved", TrackerVerbs.Selected, new Dictionary<string, string>(), "RepeatLineUp", AlternativeTracker.Alternative.Menu)); });
+
 		var noButton = _preRacePopUp.transform.Find("No").GetComponent<Button>();
 		noButton.onClick.RemoveAllListeners();
 		noButton.onClick.AddListener(delegate { CloseRepeatWarning(TrackerTriggerSources.NoButtonSelected.ToString()); });
@@ -666,10 +669,10 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		_preRacePopUp.SetActive(false);
 		_popUpBlocker.gameObject.SetActive(false);
-		TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpDeclined", new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpDeclined", TrackerVerbs.Skipped, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
-		}));
+		}, AccessibleTracker.Accessible.Screen));
 	}
 
 	/// <summary>
@@ -745,10 +748,10 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		}
 		_postRacePopUp.transform.Find("Result").GetComponent<Text>().text = Localization.GetAndFormat("RACE_RESULT_POSTION", false, _teamSelection.GetTeam().Name, finishPositionText);
 		DoBestFit();
-		TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpDisplayed", new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.FinishingPosition.ToString(), finishPosition.ToString() },
-		}));
+		}, AccessibleTracker.Accessible.Screen));
 	}
 
 	/// <summary>
@@ -758,11 +761,11 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		_postRacePopUp.SetActive(false);
 		_popUpBlocker.gameObject.SetActive(false);
-		TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpClosed", new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.FinishingPosition.ToString(), _lastRacePosition.ToString() },
 			{ TrackerContextKeys.TriggerUI.ToString(), source },
-		}));
+		}, AccessibleTracker.Accessible.Screen));
 		if (_promotionPopUp.activeSelf)
 		{
 			_popUpBlocker.transform.SetAsLastSibling();
@@ -797,10 +800,10 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		removedText.text = oldList;
 		_promotionPopUp.SetActive(true);
 		var newString = string.Join(",", newPos.Select(pos => pos.ToString()).ToArray());
-		TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpDisplayed", new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.BoatLayout.ToString(), newString },
-		}));
+		}, AccessibleTracker.Accessible.Screen));
 	}
 
 	/// <summary>
@@ -812,11 +815,11 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		_popUpBlocker.gameObject.SetActive(false);
 		SetPostRaceEventBlocker();
 		var newString = string.Join(",", _teamSelection.GetTeam().Boat.Positions.Select(pos => pos.ToString()).ToArray());
-		TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpClosed", new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.BoatLayout.ToString(), newString },
 			{ TrackerContextKeys.TriggerUI.ToString(), source },
-		}));
+		}, AccessibleTracker.Accessible.Screen));
 	}
 
 	/// <summary>
@@ -955,7 +958,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		if (current)
 		{
 			var newString = string.Join(",", boat.Positions.Select(pos => pos.ToString()).ToArray());
-			TrackerEventSender.SendEvent(new TraceEvent("RaceResult", new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("RaceResult", TrackerVerbs.Completed, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.RaceNumber.ToString(), (_teamSelection.GetTeam().RaceHistory.Count + 1).ToString() },
 				{ TrackerContextKeys.CurrentSession.ToString(), (_teamSelection.GetStage() - 1) + "/" + _teamSelection.GetSessionLength() },
@@ -966,7 +969,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				{ TrackerContextKeys.IdealCorrectPlacement.ToString(), ((int)boat.IdealMatchScore).ToString() },
 				{ TrackerContextKeys.IdealCorrectMemberWrongPosition.ToString(), Mathf.RoundToInt(((boat.IdealMatchScore % 1) * 10)).ToString() },
 				{ TrackerContextKeys.IdealIncorrectPlacement.ToString(), Mathf.RoundToInt(boat.Positions.Count - (int)boat.IdealMatchScore - ((boat.IdealMatchScore % 1) * 10)).ToString() },
-			}));
+			}, CompletableTracker.Completable.Race));
 
 			SUGARManager.GameData.Send("Race Session Score", boat.Score);
 			SUGARManager.GameData.Send("Current Boat Size", boat.Positions.Count);

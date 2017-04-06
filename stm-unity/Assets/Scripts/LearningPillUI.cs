@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
 
+using RAGE.Analytics.Formats;
+
 [RequireComponent(typeof(LearningPill))]
 public class LearningPillUI : ObservableMonoBehaviour {
 
@@ -84,11 +86,11 @@ public class LearningPillUI : ObservableMonoBehaviour {
 				}
 			}
 		}
-		TrackerEventSender.SendEvent(new TraceEvent("LearningPillClosed", new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("LearningPillClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.LearningPillID.ToString(), _currentHelp },
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
-		}));
+		}, AccessibleTracker.Accessible.Accessible));
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
@@ -111,10 +113,10 @@ public class LearningPillUI : ObservableMonoBehaviour {
 		if (upward)
 		{
 			_helpText.text = tip;
-			TrackerEventSender.SendEvent(new TraceEvent("LearningPillDisplayed", new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("LearningPillDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.LearningPillID.ToString(), _currentHelp },
-			}));
+			}, AccessibleTracker.Accessible.Accessible));
 			_popUpBlocker.onClick.AddListener(delegate { ClosePill(TrackerTriggerSources.PopUpBlocker.ToString()); });
 		}
 	}

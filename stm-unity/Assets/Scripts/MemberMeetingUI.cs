@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
+using RAGE.Analytics.Formats;
 
 /// <summary>
 /// Contains all logic related to the CrewMember Meeting pop-up
@@ -112,7 +113,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 				cmui.transform.Find("Opinion").GetComponent<Image>().enabled = false;
 			}
 		}
-		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPopUpOpened", new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.CrewMemberName.ToString(), crewMember.Name },
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), _memberMeeting.QuestionAllowance().ToString() },
@@ -121,7 +122,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 			{ TrackerContextKeys.SizeOfTeam.ToString(), _memberMeeting.TeamSize().ToString() },
 			{ TrackerContextKeys.TriggerUI.ToString(), source },
 			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), _memberMeeting.GetTimeInTeam(crewMember).ToString() },
-		}));
+		}, AccessibleTracker.Accessible.Screen));
 		SUGARManager.GameData.Send("View Crew Member Screen", crewMember.Name);
 		Display();
 		//set the order of the pop-ups and pop-up blockers and set-up the click event for the blocker
@@ -260,15 +261,14 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		Display();
 		var replyExtras = reply.Count > 0 ? reply.Where(r => r != reply.First()).Select(r => Localization.Get(r)).ToArray() : new string[0];
 		_dialogueText.text = reply.Count > 0 ? Localization.GetAndFormat(reply.First(), false, replyExtras) : string.Empty;
-		TrackerEventSender.SendEvent(new TraceEvent("MeetingQuestionAsked", new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("MeetingQuestionAsked", TrackerVerbs.Selected, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.QuestionAsked.ToString(), questionType },
 			{ TrackerContextKeys.QuestionCost.ToString(), (allowanceBefore - _memberMeeting.QuestionAllowance()).ToString() },
 			{ TrackerContextKeys.CrewMemberName.ToString(), _currentMember.Name },
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), allowanceBefore.ToString() },
 			{ TrackerContextKeys.SizeOfTeam.ToString(), _memberMeeting.TeamSize().ToString() }
-		}));
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		}, questionType, AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Meeting Question Directed At", _currentMember.Name);
 		SUGARManager.GameData.Send("Meeting Question Asked", questionType);
 	}
@@ -278,7 +278,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	/// </summary>
 	public void FireCrewWarning()
 	{
-		TrackerEventSender.SendEvent(new TraceEvent("FirePopUpOpened", new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("FirePopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.CrewMemberName.ToString(), _currentMember.Name },
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), _memberMeeting.QuestionAllowance().ToString() },
@@ -286,7 +286,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 			{ TrackerContextKeys.CrewMemberPosition.ToString(), _memberMeeting.GetCrewMemberPosition(_currentMember).ToString() },
 			{ TrackerContextKeys.SizeOfTeam.ToString(), _memberMeeting.TeamSize().ToString() },
 			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), _memberMeeting.GetTimeInTeam(_currentMember).ToString() },
-		}));
+		}, AccessibleTracker.Accessible.Screen));
 		_fireWarningPopUp.SetActive(true);
 		_popUpBlocker.transform.SetAsLastSibling();
 		_fireWarningPopUp.transform.SetAsLastSibling();
@@ -301,11 +301,11 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	/// </summary>
 	public void CloseFireCrewWarning(string source)
 	{
-		TrackerEventSender.SendEvent(new TraceEvent("FirePopUpClosed", new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("FirePopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.PositionName.ToString(), _currentMember.Name },
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
-		}));
+		}, AccessibleTracker.Accessible.Screen));
 		_fireWarningPopUp.SetActive(false);
 		if (gameObject.activeInHierarchy)
 		{
@@ -325,7 +325,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	/// </summary>
 	public void FireCrew()
 	{
-		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberFired", new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberFired", TrackerVerbs.Interacted, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.CrewMemberName.ToString(), _currentMember.Name },
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), _memberMeeting.QuestionAllowance().ToString() },
@@ -334,7 +334,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 			{ TrackerContextKeys.SizeOfTeam.ToString(), _memberMeeting.TeamSize().ToString() },
 			{ TrackerContextKeys.FiringCost.ToString(), _memberMeeting.GetConfigValue(ConfigKeys.FiringCost).ToString() },
 			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), _memberMeeting.GetTimeInTeam(_currentMember).ToString() },
-		}));
+		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Fired", true);
 		_memberMeeting.FireCrewMember(_currentMember);
 		_teamSelectionUI.ResetCrew();
@@ -349,11 +349,11 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	{
 		if (gameObject.activeInHierarchy)
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPopUpClosed", new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.PositionName.ToString(), _currentMember.Name },
 				{ TrackerContextKeys.TriggerUI.ToString(), source }
-			}));
+			}, AccessibleTracker.Accessible.Screen));
 		}
 		gameObject.SetActive(false);
 		foreach (var crewMember in (CrewMemberUI[])FindObjectsOfType(typeof(CrewMemberUI)))

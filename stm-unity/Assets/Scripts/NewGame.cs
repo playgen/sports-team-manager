@@ -5,6 +5,7 @@ using System.Linq;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
 using PlayGen.Unity.Utilities.Localization;
+using RAGE.Analytics.Formats;
 
 /// <summary>
 /// Contains all logic to communicate between NewGameUI and GameManager
@@ -33,11 +34,11 @@ public class NewGame : MonoBehaviour {
 		if (_gameManager.Team != null && _gameManager.Team.Name == boatName.TrimEnd())
 		{
 			var newString = string.Join(",", _gameManager.Team.Boat.Positions.Select(pos => pos.ToString()).ToArray());
-			TrackerEventSender.SendEvent(new TraceEvent("GameStarted", new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.GameName.ToString(), _gameManager.Team.Name },
 				{ TrackerContextKeys.BoatLayout.ToString(), newString },
-			}));
+			}, CompletableTracker.Completable.Game));
 		}
 		return _gameManager.Team != null && _gameManager.Team.Name == boatName.TrimEnd();
 	}

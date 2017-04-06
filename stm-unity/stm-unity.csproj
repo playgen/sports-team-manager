@@ -231,6 +231,7 @@
     <Compile Include="Assets\Scripts\TrackerContextKeys.cs" />
     <Compile Include="Assets\Scripts\TrackerEventSender.cs" />
     <Compile Include="Assets\Scripts\TrackerTriggerSources.cs" />
+    <Compile Include="Assets\Scripts\TrackerVerbs.cs" />
     <Compile Include="Assets\Scripts\TransformExtensions.cs" />
     <Compile Include="Assets\Scripts\TutorialController.cs" />
     <Compile Include="Assets\Scripts\TutorialSectionUI.cs" />
