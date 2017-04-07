@@ -209,6 +209,7 @@
     <Compile Include="Assets\Scripts\LoadGameUI.cs" />
     <Compile Include="Assets\Scripts\MemberMeeting.cs" />
     <Compile Include="Assets\Scripts\MemberMeetingUI.cs" />
+    <Compile Include="Assets\Scripts\MusicControl.cs" />
     <Compile Include="Assets\Scripts\NewGame.cs" />
     <Compile Include="Assets\Scripts\NewGameUI.cs" />
     <Compile Include="Assets\Scripts\ObservableMonoBehaviour.cs" />
