@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using PlayGen.SUGAR.Unity;
+
 using RAGE.Analytics;
 using RAGE.Analytics.Formats;
 
@@ -42,6 +44,10 @@ public class TrackerEventSender {
 			}
 			Tracker.T.setVar(v.Key, v.Value);
 		}
+        if (SUGARManager.CurrentUser != null)
+        {
+            Tracker.T.setVar("CurrentUser", SUGARManager.CurrentUser.Name);
+        }
         switch (trace.ActionType)
 	    {
             case TrackerVerbs.Accessed:
