@@ -11,7 +11,7 @@ public class MusicControl : MonoBehaviour {
 		_audio = GetComponent<AudioSource>();
 		_audio.clip = _music[_currentTrack];
 		_audio.Play();
-	}
+    }
 	
 	void Update () {
 		if (UIStateManager.MusicOn == _audio.mute)

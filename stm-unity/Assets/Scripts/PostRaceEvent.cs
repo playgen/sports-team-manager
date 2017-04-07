@@ -5,12 +5,16 @@ using PlayGen.SUGAR.Unity;
 
 using RAGE.Analytics.Formats;
 
+using UnityEngine;
+
 /// <summary>
 /// Contains all logic to communicate between PostRaceEventUI and GameManager
 /// </summary>
 public class PostRaceEvent : ObservableMonoBehaviour
 {
 	private GameManager _gameManager;
+	[SerializeField]
+	private ReactionSoundControl _reactionSound;
 	private List<PostRaceEventState> _currentEvent;
 	public List<PostRaceEventState> CurrentEvent
 	{
@@ -124,6 +128,10 @@ public class PostRaceEvent : ObservableMonoBehaviour
 				SUGARManager.GameData.Send("Post Race Event Reply", res.Dialogue.NextState);
 			}
 			float beforeValues = GetTeamAverageMood() + GetTeamAverageManagerOpinion() + GetTeamAverageOpinion();
+			foreach (var res in _selectedResponses)
+			{
+				_reactionSound.PlaySound(res.Value.Dialogue.Meaning[0], res.Key.Gender == "Male", res.Key.Avatar.Height, res.Key.Avatar.Weight);
+			}
 			var replies = SendReply();
 			float afterValues = GetTeamAverageMood() + GetTeamAverageManagerOpinion() + GetTeamAverageOpinion();
 			if (afterValues > beforeValues)

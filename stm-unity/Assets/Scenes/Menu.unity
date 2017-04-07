@@ -1781,6 +1781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 927ea82210a3f334d9bd7ed2a5b9753e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _reactionSound: {fileID: 1141734145}
 --- !u!1 &33551266
 GameObject:
   m_ObjectHideFlags: 0
@@ -45392,8 +45393,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1141734144}
   - component: {fileID: 1141734143}
+  - component: {fileID: 1141734145}
   m_Layer: 0
-  m_Name: Sound
+  m_Name: Reaction Sound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45409,7 +45411,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.75
   m_Pitch: 1
   Loop: 0
@@ -45492,6 +45494,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1141734145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1141734142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5abb4bcf7048e64ca7e04eb1c6602f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _reactions:
+  - Name: Accommodating
+    Clips: []
+  - Name: Avoiding
+    Clips: []
+  - Name: Collaborating
+    Clips: []
+  - Name: Competing
+    Clips: []
+  - Name: Compromising
+    Clips: []
 --- !u!1 &1142664739
 GameObject:
   m_ObjectHideFlags: 0
