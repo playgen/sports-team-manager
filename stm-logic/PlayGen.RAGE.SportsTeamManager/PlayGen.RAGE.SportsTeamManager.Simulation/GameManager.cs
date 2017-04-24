@@ -764,24 +764,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public Dictionary<string, float> GatherLeadershipStyles()
 		{
-			var managerBeliefs = Team.Manager.RolePlayCharacter.GetAllBeliefs().ToList();
-			var gameStyles = managerBeliefs.Where(b => b.Name.StartsWith("Style")).ToList();
-			var managementStyles = gameStyles.Select(b => new KeyValuePair<string, int>(b.Name.Split('(', ')')[1].ToLower(), int.Parse(b.Value))).ToDictionary(b => b.Key, b => b.Value);
-			var managementTotal = managementStyles.Values.ToList().Sum();
-
-			var managementPercentage = managementStyles.Select(m => new KeyValuePair<string, float>(m.Key, (float)m.Value / managementTotal)).ToDictionary(m => m.Key, m => m.Value);
-
+			var managementStyles = GatherManagementStyles();
+			var managementPercentage = new Dictionary<String, float>
+											{
+												{ "laissez-faire", managementStyles["avoiding"] + managementStyles["competing"] },
+												{ "transformational", managementStyles["collaborating"] + managementStyles["accommodating"] },
+												{ "transactional", managementStyles["compromising"] }
+											};
 			return managementPercentage;
 		}
 
 		public string[] GetPrevalentLeadershipStyle()
 		{
-			var managerBeliefs = Team.Manager.RolePlayCharacter.GetAllBeliefs();
-			managerBeliefs = managerBeliefs.Where(b => b.Name.StartsWith("Style")).ToList();
-			var managementStyles = managerBeliefs.Select(b => new KeyValuePair<string, int>(b.Name.Split('(', ')')[1], int.Parse(b.Value))).ToDictionary(b => b.Key, b => b.Value);
-			managementStyles = managementStyles.OrderByDescending(m => m.Value).ToDictionary(b => b.Key, b => b.Value);
-			managementStyles = managementStyles.Where(m => m.Value == managementStyles.Values.Max()).ToDictionary(b => b.Key, b => b.Value);
-			return managementStyles.Keys.ToArray();
+			var managementStyles = GatherLeadershipStyles();
+			return managementStyles.Where(m => m.Value == managementStyles.Values.Max()).ToDictionary(b => b.Key, b => b.Value).Keys.ToArray();
 		}
 	}
 }
