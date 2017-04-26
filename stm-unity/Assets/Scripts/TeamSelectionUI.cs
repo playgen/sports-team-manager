@@ -403,7 +403,8 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		var mistakeList = boat.GetAssignmentMistakes(3);
 		if (_teamSelection.TutorialInProgress() && (_teamSelection.GetTotalStages() - 1) == 1)
 		{
-			mistakeList = _mistakeIcons.Select(m => m.Name).Where(m => m != "Correct" && m != "Hidden").OrderBy(m => Guid.NewGuid()).Take(3).ToList();
+			mistakeList = _mistakeIcons.Select(m => m.Name).Where(m => m != "Correct" && m != "Hidden").OrderBy(m => Guid.NewGuid()).Take(2).ToList();
+			mistakeList.Add("Hidden");
 		}
 		SetMistakeIcons(mistakeList, oldBoat, idealScore, boat.Positions.Count);
 		var scoreDiff = GetResult(isRace, boat, offset, oldBoat.transform.Find("Score").GetComponent<Text>());

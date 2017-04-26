@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
-     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+		 xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
 	<Product Id="87273cd8-a39b-4656-af8e-24d50e163cef" Name="Sports Team Manager" Language="1033" Version="1.0.0.0" Manufacturer="PlayGen" UpgradeCode="bc8a52f3-1425-4567-9041-1b9efed3f752">
 		<Package Id="*" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
-    <Condition Message="You need to be an administrator to install this product.">
-      Privileged
-    </Condition>
+		<Condition Message="You need to be an administrator to install this product.">
+			Privileged
+		</Condition>
 
 
 
 
-    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 	<MediaTemplate EmbedCab="yes" />
 
 		<Property Id="INSTALLDIR">
-      <RegistrySearch Id="PlayGenRageLauncherRegistry" Type="raw" Root="HKLM" Key="SOFTWARE\[Manufacturer]\RAGE Launcher" Name="InstallDir"/>
-    </Property>
+			<RegistrySearch Id="PlayGenRageLauncherRegistry" Type="raw" Root="HKLM" Key="SOFTWARE\[Manufacturer]\RAGE Launcher" Name="InstallDir"/>
+		</Property>
 
 		<Property Id="GAMEID">STM</Property>
 
-    <Condition Message="Launcher not found. Please install the Launcher before installing games.">
-      Installed OR INSTALLDIR
-    </Condition>
+		<Condition Message="Launcher not found. Please install the Launcher before installing games.">
+			Installed OR INSTALLDIR
+		</Condition>
 
-    <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="INSTALLDIR">
-        <Directory Id="stmDIR" Name="SportsTeamManager">
-          <Component Id="MainExecutable" Guid="3dddb50f-c927-4192-a81c-b01344cd93a2">
-            <File Id="stmEXE" Source="$(var.stm-unity.ProjectDir)/Build/Sports Team Manager/SportsTeamManager.exe" KeyPath="yes" />
-          </Component>
-          <Component Id="ChangeConfig" Guid="9d1ff60f-57f8-4e9f-be7b-6fafb15e6262" KeyPath="yes">
-            <util:XmlConfig Id="elem1"
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="INSTALLDIR">
+				<Directory Id="stmDIR" Name="SportsTeamManager">
+					<Component Id="MainExecutable" Guid="3dddb50f-c927-4192-a81c-b01344cd93a2">
+						<File Id="stmEXE" Source="$(var.stm-unity.ProjectDir)/Build/Sports Team Manager/SportsTeamManager.exe" KeyPath="yes" />
+					</Component>
+					<Component Id="ChangeConfig" Guid="9d1ff60f-57f8-4e9f-be7b-6fafb15e6262" KeyPath="yes">
+						<util:XmlConfig Id="elem1"
 							Action="create"
 							ElementPath="/configuration/LauncherConfiguration/games"
 							File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"
@@ -54,7 +54,7 @@
 								Name="key"
 								Value="XWtliQQYvsK91kHGcEBg0FrRyOnj6h8w0DNtf5HrmYPSI8eq1fnryIFfLsai"
 								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
-            </util:XmlConfig>
+						</util:XmlConfig>
 			<util:XmlConfig Id="param"
 							Action="create"
 							ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]"
@@ -94,7 +94,7 @@
 								Value="true"
 								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
 			</util:XmlConfig>
-			  
+				
 			<util:XmlConfig Id="param1"
 							Action="create"
 							ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]/parameters"
@@ -149,7 +149,7 @@
 								File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
 			</util:XmlConfig>
 			
-            <util:XmlConfig   Id="elem1Delete"
+						<util:XmlConfig   Id="elem1Delete"
 															Action="delete"
 															ElementPath="/configuration/LauncherConfiguration/games"
 															VerifyPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]"
@@ -157,16 +157,16 @@
 															Node="element"
 															On="uninstall"
 															Sequence="100" />
-          </Component>
-        </Directory>
-      </Directory>
-    </Directory>
+					</Component>
+				</Directory>
+			</Directory>
+		</Directory>
 
-    <Feature Id="ProductFeature" Title="sports_team_manager_setup" Level="1">
-      <ComponentRef Id="MainExecutable" />
-      <ComponentRef Id="ChangeConfig"/>
-      <ComponentGroupRef Id="SourceComponentGroup"/>
-    </Feature>
+		<Feature Id="ProductFeature" Title="sports_team_manager_setup" Level="1">
+			<ComponentRef Id="MainExecutable" />
+			<ComponentRef Id="ChangeConfig"/>
+			<ComponentGroupRef Id="SourceComponentGroup"/>
+		</Feature>
 	</Product>
 
 </Wix>

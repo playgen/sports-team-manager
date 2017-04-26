@@ -90,12 +90,12 @@ public class FeedbackUI : MonoBehaviour {
 			styleObj.transform.Find("Style").GetComponent<Localization>().Key = style.Key;
 			styleObj.transform.Find("Amount").GetComponent<Image>().fillAmount = style.Value;
 			styleObj.transform.Find("Percentage").GetComponent<Text>().text = (Mathf.Round(style.Value * 1000) * 0.1f).ToString(Localization.SelectedLanguage.GetSpecificCulture()) + "%";
-			if (style.Value >= 0.6f)
+			if (Mathf.Approximately(style.Value, styles.Values.Max()))
 			{
 				styleObj.transform.Find("Questions").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_High");
 				styleObj.transform.Find("Questions").GetComponent<Localization>().Key = style.Key + "_Questions_High";
 			}
-			else if (style.Value <= 0.2f)
+			else if (Mathf.Approximately(style.Value, styles.Values.Min()))
 			{
 				styleObj.transform.Find("Questions").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_Low");
 				styleObj.transform.Find("Questions").GetComponent<Localization>().Key = style.Key + "_Questions_Low";

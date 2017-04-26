@@ -22,12 +22,7 @@ namespace RAGE.Analytics.Storages
 	public interface Storage
 	{
 		void SetTracker (Tracker tracker);
-
-		/// <summary>
-		/// The tracker wants to set user data
-		///</summary>
-		void Login (string username, string password, Net.IRequestListener loginListener);
-
+		
 		/// <summary>
 		/// The tracker wants to start sending traces
 		///</summary>
