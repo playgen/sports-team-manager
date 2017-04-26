@@ -38,6 +38,11 @@ public class TeamSelection : MonoBehaviour {
 		return boatOffsets;
 	}
 
+	public List<KeyValuePair<int, int>> GetRaceResults()
+	{
+		return _gameManager.Team.RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList();
+	}
+
 	/// <summary>
 	/// Get the currently available crew
 	/// </summary>

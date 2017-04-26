@@ -55,7 +55,15 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	[SerializeField]
 	private Button _skipToRaceButton;
 	[SerializeField]
+	private GameObject _endRace;
+	[SerializeField]
 	private Button _feedbackButton;
+	[SerializeField]
+	private GameObject _resultContainer;
+	[SerializeField]
+	private GameObject _resultPrefab;
+	[SerializeField]
+	private Text _finalPlacementText;
 	[SerializeField]
 	private GameObject _recruitPopUp;
 	private readonly List<GameObject> _currentCrewButtons = new List<GameObject>();
@@ -113,7 +121,8 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				_feedbackButton.onClick.AddListener(TriggerQuestionnaire);
 				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("CONFLICT_QUESTIONNAIRE");
 			}
-			_feedbackButton.gameObject.SetActive(true);
+			_endRace.gameObject.SetActive(true);
+			_boatMain.gameObject.SetActive(false);
 		}
 		_lastRacePosition = 0;
 	}
@@ -253,7 +262,8 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		{
 			stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
 			stageIcon.gameObject.SetActive(true);
-			_feedbackButton.gameObject.SetActive(false);
+			_endRace.gameObject.SetActive(false);
+			_boatMain.gameObject.SetActive(true);
 		}
 		else
 		{
@@ -269,7 +279,47 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				_feedbackButton.onClick.AddListener(TriggerQuestionnaire);
 				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("CONFLICT_QUESTIONNAIRE");
 			}
-			_feedbackButton.gameObject.SetActive(true);
+
+			foreach (Transform child in _resultContainer.transform)
+			{
+				Destroy(child.gameObject);
+			}
+			var totalScore = 0;
+			var raceResults = _teamSelection.GetRaceResults();
+			var racePositions = new List<int>();
+			var finalPosition = 1;
+			var finalPositionLocked = false;
+			foreach (var result in raceResults)
+			{
+				var position = GetRacePosition(result.Key, result.Value);
+				totalScore += position;
+				racePositions.Add(position);
+				var resultObj = Instantiate(_resultPrefab, _resultContainer.transform, false);
+				resultObj.GetComponent<Text>().text = position.ToString();
+			}
+
+			while (!finalPositionLocked && finalPosition < 10)
+			{
+				var otherTeamTotal = 0;
+				for (int i = 0; i < racePositions.Count; i++)
+				{
+					otherTeamTotal += (finalPosition < racePositions[i] ? finalPosition : finalPosition + 1);
+				}
+				if (otherTeamTotal < totalScore)
+				{
+					finalPosition++;
+				}
+				else
+				{
+					finalPositionLocked = true;
+				}
+			}
+
+			_finalPlacementText.GetComponent<Localization>().Key = "POSITION_" + finalPosition;
+			_finalPlacementText.GetComponent<Localization>().Set();
+
+			_endRace.gameObject.SetActive(true);
+			_boatMain.gameObject.SetActive(false);
 		}
 		_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = isRace || team.Boat.Positions.Count == 0 ? string.Empty : _teamSelection.GetStage().ToString();
 		_positionsEmpty = team.Boat.Positions.Count;
@@ -936,19 +986,14 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	{
 		var timeTaken = TimeSpan.FromSeconds(1800 - ((boat.Score - 22) * 10) + offset);
 		var finishPosition = 1;
-		var expected = (8f * boat.Positions.Count) + 1;
-		var scoreDiff = boat.Score - expected;
+		var scoreDiff = boat.Score - GetExpectedScore(boat.Positions.Count);
 		if (!isRace)
 		{
 			scoreText.text = string.Format("{0:D2}:{1:D2}", timeTaken.Minutes, timeTaken.Seconds);
 		}
 		else
 		{
-			while (boat.Score < expected)
-			{
-				finishPosition++;
-				expected -= boat.Positions.Count;
-			}
+			finishPosition = GetRacePosition(boat.Score, boat.Positions.Count);
 			var finishPositionText = Localization.Get("POSITION_" + finishPosition);
 			scoreText.text = string.Format("{0} {1}", Localization.Get("RACE_POSITION"), finishPositionText);
 			if (current)
@@ -995,6 +1040,23 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			}
 		}
 		return scoreDiff;
+	}
+
+	private int GetRacePosition(int score, int positionCount)
+	{
+		var finishPosition = 1;
+		var expected = GetExpectedScore(positionCount);
+		while (score < expected && finishPosition < 10)
+		{
+			finishPosition++;
+			expected -= positionCount;
+		}
+		return finishPosition;
+	}
+
+	private float GetExpectedScore(int positionCount)
+	{
+		return (8f * positionCount) + 1;
 	}
 
 	public void OnEscape()
@@ -1049,7 +1111,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			var lastRace = _teamSelection.GetLineUpHistory(0, 1).First();
 			GetResult(true, lastRace.Key, lastRace.Value.Key, _boatPool[0].transform.Find("Score").GetComponent<Text>());
 		}
-		if (_feedbackButton.gameObject.activeSelf)
+		if (_endRace.gameObject.activeSelf)
 		{
 			_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get(_teamSelection.QuestionnaireCompleted() ? "FEEDBACK_BUTTON" : "CONFLICT_QUESTIONNAIRE");
 		}
