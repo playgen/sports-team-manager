@@ -80,6 +80,8 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	[SerializeField]
 	private GameObject _postRacePopUp;
 	[SerializeField]
+	private GameObject _postCupPopUp;
+	[SerializeField]
 	private GameObject _promotionPopUp;
 	[SerializeField]
 	private GameObject _postRaceCrewPrefab;
@@ -284,37 +286,14 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			{
 				Destroy(child.gameObject);
 			}
-			var totalScore = 0;
-			var raceResults = _teamSelection.GetRaceResults();
-			var racePositions = new List<int>();
-			var finalPosition = 1;
-			var finalPositionLocked = false;
-			foreach (var result in raceResults)
+			foreach (var result in _teamSelection.GetRaceResults())
 			{
 				var position = GetRacePosition(result.Key, result.Value);
-				totalScore += position;
-				racePositions.Add(position);
 				var resultObj = Instantiate(_resultPrefab, _resultContainer.transform, false);
 				resultObj.GetComponent<Text>().text = position.ToString();
 			}
 
-			while (!finalPositionLocked && finalPosition < 10)
-			{
-				var otherTeamTotal = 0;
-				for (int i = 0; i < racePositions.Count; i++)
-				{
-					otherTeamTotal += (finalPosition < racePositions[i] ? finalPosition : finalPosition + 1);
-				}
-				if (otherTeamTotal < totalScore)
-				{
-					finalPosition++;
-				}
-				else
-				{
-					finalPositionLocked = true;
-				}
-			}
-
+			var finalPosition = GetCupPosition();
 			_finalPlacementText.GetComponent<Localization>().Key = "POSITION_" + finalPosition;
 			_finalPlacementText.GetComponent<Localization>().Set();
 
@@ -797,7 +776,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			crewCount++;
 			memberObject.transform.SetAsLastSibling();
 		}
-		_postRacePopUp.transform.Find("Result").GetComponent<Text>().text = Localization.GetAndFormat("RACE_RESULT_POSTION", false, _teamSelection.GetTeam().Name, finishPositionText);
+		_postRacePopUp.transform.Find("Result").GetComponent<Text>().text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, _teamSelection.GetTeam().Name, finishPositionText);
 		DoBestFit();
 		TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
@@ -831,9 +810,50 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		}
 		if (_teamSelection && _teamSelection.GetTeam().Boat.Positions.Count == 0)
 		{
-			TriggerQuestionnaire();
+			DisplayPostCupPopUp();
 		}
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+	}
+
+	/// <summary>
+	/// Display pop-up which shows the cup result
+	/// </summary>
+	private void DisplayPostCupPopUp()
+	{
+		_postCupPopUp.SetActive(true);
+		_popUpBlocker.transform.SetAsLastSibling();
+		_postCupPopUp.transform.SetAsLastSibling();
+		_popUpBlocker.gameObject.SetActive(true);
+		_popUpBlocker.onClick.RemoveAllListeners();
+
+		foreach (Transform child in _postCupPopUp.transform.Find("Crew"))
+		{
+			Destroy(child.gameObject);
+		}
+		var finalPosition = GetCupPosition();
+		var finalPositionText = Localization.Get("POSITION_" + finalPosition);
+		var crewCount = 0;
+		foreach (var crewMember in _teamSelection.LoadCrew())
+		{
+			var memberObject = Instantiate(_postRaceCrewPrefab);
+			memberObject.transform.SetParent(_postCupPopUp.transform.Find("Crew"), false);
+			memberObject.name = crewMember.Name;
+			memberObject.transform.Find("Avatar").GetComponentInChildren<AvatarDisplay>().SetAvatar(crewMember.Avatar, -(finalPosition - 3) * 2);
+			memberObject.transform.Find("Position").GetComponent<Image>().enabled = false;
+			if (crewCount % 2 != 0)
+			{
+				var currentScale = memberObject.transform.Find("Avatar").localScale;
+				memberObject.transform.Find("Avatar").localScale = new Vector3(-currentScale.x, currentScale.y, currentScale.z);
+			}
+			crewCount++;
+			memberObject.transform.SetAsLastSibling();
+		}
+		_postCupPopUp.transform.Find("Result").GetComponent<Text>().text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, _teamSelection.GetTeam().Name, finalPositionText);
+		DoBestFit();
+		TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
+																										{
+																											{ TrackerContextKeys.CupFinishingPosition.ToString(), finalPosition.ToString() },
+																										}, AccessibleTracker.Accessible.Screen));
 	}
 
 	/// <summary>
@@ -998,7 +1018,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			scoreText.text = string.Format("{0} {1}", Localization.Get("RACE_POSITION"), finishPositionText);
 			if (current)
 			{
-				DisplayPostRacePopUp(boat.PositionCrew, finishPosition, finishPositionText);
+				DisplayPostRacePopUp(boat.PositionCrew, finishPosition, finishPositionText.ToLower());
 			}
 		}
 		if (current)
@@ -1057,6 +1077,39 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	private float GetExpectedScore(int positionCount)
 	{
 		return (8f * positionCount) + 1;
+	}
+
+	private int GetCupPosition()
+	{
+		var totalScore = 0;
+		var raceResults = _teamSelection.GetRaceResults();
+		var racePositions = new List<int>();
+		var finalPosition = 1;
+		var finalPositionLocked = false;
+		foreach (var result in raceResults)
+		{
+			var position = GetRacePosition(result.Key, result.Value);
+			totalScore += position;
+			racePositions.Add(position);
+		}
+
+		while (!finalPositionLocked && finalPosition < 10)
+		{
+			var otherTeamTotal = 0;
+			foreach (int r in racePositions)
+			{
+				otherTeamTotal += (finalPosition < r ? finalPosition : finalPosition + 1);
+			}
+			if (otherTeamTotal < totalScore)
+			{
+				finalPosition++;
+			}
+			else
+			{
+				finalPositionLocked = true;
+			}
+		}
+		return finalPosition;
 	}
 
 	public void OnEscape()

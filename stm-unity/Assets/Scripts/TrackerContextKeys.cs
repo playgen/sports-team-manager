@@ -5,6 +5,7 @@
 	CrewMemberPosition,
 	CrewMemberSessionsInTeam,
 	CrewMemberSkills,
+	CupFinishingPosition,
 	CurrentSession,
 	CurrentTalkTime,
 	DialogueID,
