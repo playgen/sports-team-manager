@@ -107,7 +107,7 @@ public class LeaderboardInterface : BaseLeaderboardInterface
 				_leaderboardPositions[i].SetText(SUGARManager.Leaderboard.CurrentStandings[i]);
 			}
 		}
-		_leaderboardName.text = SUGARManager.Leaderboard.CurrentLeaderboard != null ? SUGARManager.Leaderboard.CurrentLeaderboard.Name : string.Empty;
+		_leaderboardName.text = SUGARManager.Leaderboard.CurrentLeaderboard != null ? Localization.Get(SUGARManager.Leaderboard.CurrentLeaderboard.Token) : string.Empty;
 		_leaderboardType.text = Localization.Get(SUGARManager.Leaderboard.CurrentFilter.ToString());
 		_pageNumberText.text = Localization.GetAndFormat("PAGE", false, _pageNumber + 1);
 		_previousButton.interactable = false;

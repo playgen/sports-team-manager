@@ -104,7 +104,7 @@ public class AchievementListInterface : BaseAchievementListInterface
 			}
 			else
 			{
-				_achievementItems[i].SetText(achievementList[i].Name, Mathf.Approximately(achievementList[i].Progress, 1.0f));
+				_achievementItems[i].SetText(Localization.Get(achievementList[i].Name.Replace(' ', '_').Replace("!", string.Empty).Replace(".", string.Empty)), Mathf.Approximately(achievementList[i].Progress, 1.0f));
 			}
 		}
 		_pageNumberText.text = Localization.GetAndFormat("PAGE", false, _pageNumber + 1);

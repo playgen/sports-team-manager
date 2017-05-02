@@ -105,7 +105,7 @@ public class LeaderboardListInterface : BaseLeaderboardListInterface
 			else
 			{
 				_leaderboardButtons[i].onClick.RemoveAllListeners();
-				_leaderboardButtons[i].GetComponentInChildren<Text>().text = leaderboardList[i].Name;
+				_leaderboardButtons[i].GetComponentInChildren<Text>().text = Localization.Get(leaderboardList[i].Token);
 				var token = leaderboardList[i].Token;
 				_leaderboardButtons[i].onClick.AddListener(delegate { SUGARManager.Leaderboard.Display(token, SUGARManager.Leaderboard.CurrentFilter); });
 				_leaderboardButtons[i].gameObject.SetActive(true);
