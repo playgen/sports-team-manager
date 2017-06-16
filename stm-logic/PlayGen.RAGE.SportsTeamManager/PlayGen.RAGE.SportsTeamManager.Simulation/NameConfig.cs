@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	/// <summary>
+	/// NameConfig json is converted into class of this type. Stores all possible names for each available language.
+	/// </summary>
 	internal class NameConfig
 	{
 		public Dictionary<string, List<string>> MaleForename { get; set; }

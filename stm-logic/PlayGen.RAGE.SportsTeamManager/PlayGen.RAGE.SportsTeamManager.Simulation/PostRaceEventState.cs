@@ -4,6 +4,9 @@ using IntegratedAuthoringTool.DTOs;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	/// <summary>
+	/// The CrewMember, Dialogue option and subjects (if any) involved in a post-race event
+	/// </summary>
 	public class PostRaceEventState
 	{
 		public CrewMember CrewMember { get; set; }

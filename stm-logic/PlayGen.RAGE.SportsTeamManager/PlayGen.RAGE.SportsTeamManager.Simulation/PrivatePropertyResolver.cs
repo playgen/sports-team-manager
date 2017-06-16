@@ -5,6 +5,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	/// <summary>
+	/// Allows private properties to be gathered when converting from JSON
+	/// </summary>
 	class PrivatePropertyResolver : DefaultContractResolver
 	{
 		protected override JsonProperty CreateProperty(

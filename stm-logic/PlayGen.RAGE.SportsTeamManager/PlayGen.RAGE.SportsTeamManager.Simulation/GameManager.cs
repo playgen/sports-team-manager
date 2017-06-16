@@ -37,10 +37,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			config = new ConfigStore(android);
 		}
 
+		/// <summary>
+		/// Validate that the provided game config should result in no errors and can be processed correctly
+		/// </summary>
 		private void ValidateGameConfig()
 		{
 			var invalidString = string.Empty;
 			var promotionTriggers = config.GameConfig.PromotionTriggers;
+			//is there a promotion trigger that has a StartType of 'Start'?
 			if (promotionTriggers.All(pt => pt.StartType != "Start"))
 			{
 				invalidString += "Game Config requires one PromotionTrigger with StartTpe \"Start\".\n";
@@ -48,26 +52,32 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			
 			foreach (var promotion in promotionTriggers)
 			{
+				//is there a promotion trigger that has a StartType of 'Start' and has a values less than 0 for ScoreMetSinceLast?
 				if (promotion.StartType != "Start" && promotion.ScoreMetSinceLast <= 0)
 				{
 					invalidString += string.Format("ScoreMetSinceLast for StartType {0} and NewType {1} should be greater than 0.\n", promotion.StartType, promotion.NewType);
 				}
+				//is there a promotion trigger that has a StartType that is the same as it's NewType?
 				if (promotion.StartType == promotion.NewType)
 				{
 					invalidString += string.Format("Invalid PromotionTrigger in Game Config for {0}, will result in changing to same boat type.\n", promotion.StartType);
 				}
+				//is there a promotion trigger that does not have a StartType of 'Start' and has a StartType that isn't provided in BoatConfig.json?
 				if (promotion.StartType != "Start" && config.BoatTypes.All(bt => bt.Key != promotion.StartType))
 				{
 					invalidString += string.Format("StartType {0} is not an existing BoatType.\n", promotion.StartType);
 				}
+				//is there a promotion trigger that does not have a NewType of 'Finish' and has a NewType that isn't provided in BoatConfig.json?
 				if (promotion.NewType != "Finish" && config.BoatTypes.All(bt => bt.Key != promotion.NewType))
 				{
 					invalidString += string.Format("NewType {0} is not an existing BoatType.\n", promotion.NewType);
 				}
+				//is there a promotion trigger that is impossible to trigger?
 				if (promotionTriggers.Any(pt => pt != promotion && pt.StartType == promotion.StartType && pt.ScoreMetSinceLast <= promotion.ScoreMetSinceLast && pt.ScoreRequired <= promotion.ScoreRequired))
 				{
 					invalidString += string.Format("PromotionTrigger with StartType {0}, NewType {1} will never be triggered.\n", promotion.StartType, promotion.NewType);
 				}
+				//is there a promotion trigger that is impossible to trigger?
 				if (promotion.StartType != "Start" && promotionTriggers.All(pt => pt.NewType != promotion.StartType))
 				{
 					invalidString += string.Format("PromotionTrigger with StartType {0}, NewType {1} will never be triggered.\n", promotion.StartType, promotion.NewType);
@@ -78,18 +88,22 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var postRaceNames = postRaceEvents.Select(pre => pre.NextState).ToList();
 			foreach (var ev in eventTriggers)
 			{
+				//is there a post race event trigger that is not a valid name for an event?
 				if (postRaceNames.All(prn => prn != ev.EventName))
 				{
 					invalidString += string.Format("{0} is not an existing event name.\n", ev.EventName);
 				}
+				//is there a post race event trigger that contains an invalid boat type?
 				if (ev.StartBoatType != null && config.BoatTypes.All(bt => bt.Key != ev.StartBoatType))
 				{
 					invalidString += string.Format("StartBoatType {0} is not an existing BoatType.\n", ev.StartBoatType);
 				}
+				//is there a post race event trigger that contains an invalid boat type?
 				if (ev.EndBoatType != null && config.BoatTypes.All(bt => bt.Key != ev.EndBoatType))
 				{
 					invalidString += string.Format("EndBoatType {0} is not an existing BoatType.\n", ev.EndBoatType);
 				}
+				//is there a post race event trigger that has a RaceTrigger value less than 0?
 				if (ev.RaceTrigger < 0)
 				{
 					invalidString += "RaceTrigger must be at least 0.\n";
@@ -145,6 +159,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				crew.ForEach(cm => Team.AddCrewMember(cm));
 			}
+			//set up initial values
 			ActionAllowance = (int)config.ConfigValues[ConfigKeys.DefaultActionAllowance] + ((int)config.ConfigValues[ConfigKeys.ActionAllowancePerPosition] * positionCount);
 			CrewEditAllowance = (int)config.ConfigValues[ConfigKeys.CrewEditAllowancePerPosition] * positionCount;
 			RaceSessionLength = showTutorial ? (int)config.ConfigValues[ConfigKeys.TutorialRaceSessionLength] : (int)config.ConfigValues[ConfigKeys.RaceSessionLength];
@@ -346,11 +361,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Load the history of line-ups from the manager's EA file
+		/// Load the history of line-ups from the manager's RPC file
 		/// </summary>
 		private void LoadLineUpHistory()
 		{
-			//get all events that feature 'SelectedLineUp' from their EA file
+			//get all events that feature 'SelectedLineUp' from their RPC file
 			var managerEvents = Team.Manager.RolePlayCharacter.EventRecords;
 			var lineUpEvents = managerEvents.Where(e => e.Event.Contains("SelectedLineUp")).Select(e => e.Event);
 			var crewMembers = Team.CrewMembers.Values.ToList();
@@ -390,6 +405,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			CurrentRaceSession = Team.HistoricSessionNumber.LastOrDefault();
 		}
 
+		/// <summary>
+		/// Load the currently running post-race events (if any)
+		/// </summary>
 		private void LoadCurrentEvents()
 		{
 			bool noEventFound = false;
@@ -442,7 +460,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Save the current boat line-up to the manager's EA file
+		/// Save the current boat line-up to the manager's RPC file
 		/// </summary>
 		public void SaveLineUp(int offset)
 		{
@@ -536,7 +554,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Select a random post-race event
+		/// Select post-race events
 		/// </summary>
 		private void SelectPostRaceEvents()
 		{
@@ -692,6 +710,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return replies;
 		}
 
+		/// <summary>
+		/// Set custom attributes for the tutorial
+		/// </summary>
 		public void SetCustomTutorialAttributes(Dictionary<string, string> attributes)
 		{
 			foreach (var att in attributes)
@@ -707,6 +728,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Save the player's current progress through the tutorial for this game
+		/// </summary>
 		public void SaveTutorialProgress(int saveAmount, bool finished = false)
 		{
 			var stageToSave = TutorialStage + saveAmount;
@@ -722,6 +746,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Team.Manager.SaveStatus();
 		}
 
+		/// <summary>
+		/// Save the results of the questionnaire
+		/// </summary>
 		public void SaveQuestionnaireResults(Dictionary<string, int> results)
 		{
 			foreach (var result in results)
@@ -733,6 +760,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Team.Manager.SaveStatus();
 		}
 
+		/// <summary>
+		/// Get the percentage that the player selected each management style during the game events and post game questionnaire
+		/// </summary>
 		public Dictionary<string, float> GatherManagementStyles()
 		{
 			var managerBeliefs = Team.Manager.RolePlayCharacter.GetAllBeliefs().ToList();
@@ -762,6 +792,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return managementPercentage;
 		}
 
+		/// <summary>
+		/// Get the percentage that the player selected each leadership style based on their selected management styles
+		/// </summary>
 		public Dictionary<string, float> GatherLeadershipStyles()
 		{
 			var managementStyles = GatherManagementStyles();
@@ -774,6 +807,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return managementPercentage;
 		}
 
+		/// <summary>
+		/// Get the most commonly selected leadership style(s)
+		/// </summary>
 		public string[] GetPrevalentLeadershipStyle()
 		{
 			var managementStyles = GatherLeadershipStyles();

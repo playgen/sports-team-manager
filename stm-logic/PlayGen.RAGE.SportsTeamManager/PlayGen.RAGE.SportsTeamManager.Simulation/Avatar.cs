@@ -45,6 +45,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				LoadAvatar(crewMember);
 			}
+			//otherwise, create new avatar
 			else
 			{
 				CreateAvatar(crewMember, gender);

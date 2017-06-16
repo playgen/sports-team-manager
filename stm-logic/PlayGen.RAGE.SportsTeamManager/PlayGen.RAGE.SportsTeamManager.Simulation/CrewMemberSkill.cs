@@ -2,6 +2,9 @@
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	/// <summary>
+	/// Enum of Crew Member Skills
+	/// </summary>
 	[Flags]
 	public enum CrewMemberSkill
 	{
@@ -15,6 +18,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 	public static class CrewMemberSkillsExtensions
 	{
+		/// <summary>
+		/// Extension method that gets the skills required for a position
+		/// </summary>
 		public static bool RequiresSkills(this CrewMemberSkill stateLevel, CrewMemberSkill flag)
 		{
 			return (stateLevel & flag) == flag;

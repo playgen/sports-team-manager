@@ -2,6 +2,9 @@
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	/// <summary>
+	/// Enum of possible boat positions.
+	/// </summary>
 	[Flags]
 	public enum Position
 	{

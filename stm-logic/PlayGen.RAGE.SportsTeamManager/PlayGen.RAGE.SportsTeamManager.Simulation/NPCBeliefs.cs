@@ -2,6 +2,9 @@
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	/// <summary>
+	/// Enum of Beliefs stored for NPCs
+	/// </summary>
 	internal enum NPCBeliefs
 	{
 		[Description("Value({0})")]

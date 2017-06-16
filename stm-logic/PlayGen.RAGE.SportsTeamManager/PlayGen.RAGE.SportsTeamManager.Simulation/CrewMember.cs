@@ -328,6 +328,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UpdateSingleBelief(NPCBeliefs.Rest.GetDescription(), RestCount.ToString());
 		}
 
+		/// <summary>
+		/// Decrease the value of time since each opinion has been revealed
+		/// </summary>
 		internal void TickRevealedOpinionAge()
 		{
 			foreach (var opinion in RevealedCrewOpinionAges.Keys.ToList())
@@ -346,7 +349,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			switch (style)
 			{
 				case "StatReveal":
-					//select a random skill
+					//select a random skill that has not been displayed before or any random skill if all have been displayed
 					var availableStats = RevealedSkills.Where(s => s.Value == 0).Select(s => s.Key).ToList();
 					if (availableStats.Count == 0)
 					{
@@ -366,6 +369,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					style += statValue <= (int)config.ConfigValues[ConfigKeys.BadSkillRating] ? "Bad" :
 								statValue >= (int)config.ConfigValues[ConfigKeys.GoodSkillRating] ? "Good" : "Middle";
 					reply.Add(statName.ToLower());
+					//save that this skill has been revealed
 					UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
 					break;
 				case "RoleReveal":
@@ -466,9 +470,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
+			//if the crew member is expecting to be selected
 			if (LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != null && LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != "null")
 			{
-				if (GetBoatPosition(team.Boat.PositionCrew) == 0)
+				//if the crew member is not in a position
+				if (GetBoatPosition(team.Boat.PositionCrew) == Position.Null)
 				{
 					//reduce opinion of the manager
 					AddOrUpdateOpinion(team.Manager.Name, -3);
@@ -480,12 +486,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "null");
 				TickUpdate(0);
 			}
+			//if the crew member is expecting to be selecting in a particular position
 			if (LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription()) != null)
 			{
 				var expected = LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
 				if (expected != "null" && team.Boat.Positions.Any(p => p.ToString() == expected))
 				{
-					//if they are currently unpositioned
+					//if they are currently not in the position they expected to be in
 					if (GetBoatPosition(team.Boat.PositionCrew).ToString() != expected)
 					{
 						//reduce opinion of the manager
@@ -499,6 +506,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					TickUpdate(0);
 				}
 			}
+			//if the crew member expects to be selected in a position after this current race, set them to instead be expecting to be selected for the current race
 			if (LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription()) != null)
 			{
 				var expected = LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription());
@@ -684,11 +692,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			SaveStatus();
 		}
 
-        public string GetSocialImportanceRating()
-        {
-            return SocialImportance.DecideConferral("SELF").Key.ToString();
-        }
+		/// <summary>
+		/// Get the current social importance rating fir this crew member
+		/// </summary>
+		public string GetSocialImportanceRating()
+		{
+			return SocialImportance.DecideConferral("SELF").Key.ToString();
+		}
 
+		/// <summary>
+		/// Compare this crew member to anothe by checking their names
+		/// </summary>
 		public int CompareTo(CrewMember other)
 		{
 			return String.Compare(Name, other.Name, StringComparison.Ordinal);

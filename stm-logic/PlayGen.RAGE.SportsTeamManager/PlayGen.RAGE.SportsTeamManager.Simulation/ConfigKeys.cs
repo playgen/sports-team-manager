@@ -1,5 +1,8 @@
 ﻿namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	/// <summary>
+	/// Enum of keys used in config
+	/// </summary>
 	public enum ConfigKeys
 	{
 		GoodPositionRating,

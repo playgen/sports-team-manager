@@ -1,5 +1,8 @@
 ﻿namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	/// <summary>
+	/// Used by the GameConfig to determine when a post-race event should be triggered.
+	/// </summary>
 	internal class PostSessionEventTrigger
 	{
 		public string EventName { get; set; }

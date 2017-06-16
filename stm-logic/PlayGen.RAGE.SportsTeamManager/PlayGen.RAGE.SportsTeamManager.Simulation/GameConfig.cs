@@ -7,7 +7,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public BoatPromotionTrigger[] PromotionTriggers { get; set; }
 		public PostSessionEventTrigger[] EventTriggers { get; set; }
 
-		//get and return values for avatar configs
+		//get and return values for the game config, including when to change boat types and trigger post-race events.
 		internal GameConfig GetConfig()
 		{
 			var configText = Templates.ResourceManager.GetString("game_config");

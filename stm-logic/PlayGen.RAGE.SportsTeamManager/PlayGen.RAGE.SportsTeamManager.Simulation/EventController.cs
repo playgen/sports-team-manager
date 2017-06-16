@@ -22,11 +22,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			PostRaceEvents = new List<List<PostRaceEventState>>();
 		}
 
+		/// <summary>
+		/// Get the names of possible post race events
+		/// </summary>
 		public List<string> GetEventKeys()
 		{
 			return iat.GetDialogueActionsByState(IATConsts.AGENT, "PostRaceEventStart").Select(d => d.NextState).ToList();
 		}
 
+		/// <summary>
+		/// Get the dialogue options for the current event for the player
+		/// </summary>
 		public List<PostRaceEventState> GetEventDialogues(Person manager)
 		{
 			List<PostRaceEventState> dialogueOptions = new List<PostRaceEventState>();
@@ -47,7 +53,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Get all player dialogues strings with the eventKey provided set as CurrentState
+		/// Get all player dialogues strings with the eventKey provided
 		/// </summary>
 		public string[] GetEventStrings(string eventKey)
 		{
@@ -95,15 +101,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Select a random (if any) event to trigger post race
+		/// Select event(s) to trigger post race
 		/// </summary>
 		internal void SelectPostRaceEvents(ConfigStore config, Team team, int chance)
 		{
-			//get the state of currrently running events
+			//get the state of currently running events
 			CheckLastingEvents(team);
 			var selectedEvents = new List<List<PostRaceEventState>>();
 			//get all possible post-race event starting dialogue
 			var dialogueOptions = GetPossiblePostRaceDialogue();
+			//get events that can be fired according to the game config
 			var events = GetEvents(dialogueOptions, config.GameConfig.EventTriggers.ToList(), team);
 			if (events.Any())
 			{
@@ -147,6 +154,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 								}
 								allCrew.Remove(pair.Value.Name);
 							}
+							//if nobody currently placed can be pout into a better position, select a placed crew member and position at random
 							if (!betterPlace.Any())
 							{
 								var selectedCrewMember = allCrew.OrderBy(c => Guid.NewGuid()).First().Value;
@@ -231,6 +239,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			SaveEvents(team.Manager);
 		}
 
+		/// <summary>
+		/// Get the best possible position for a crew member
+		/// </summary>
 		private KeyValuePair<Position, int> CrewMemberBestPosition(CrewMember cm, Team team)
 		{
 			var betterPosition = new KeyValuePair<Position, int>(Position.Null, 0);
@@ -269,7 +280,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// get the currently running events for all CrewMembers
+		/// Check the currently running events for all CrewMembers
 		/// </summary>
 		private void CheckLastingEvents(Team team)
 		{
@@ -279,6 +290,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Get a list of events that should be triggered
+		/// </summary>
 		private List<PostSessionEventTrigger> GetEvents(List<DialogueStateActionDTO> available, List<PostSessionEventTrigger> triggers, Team team)
 		{
 			var raceHistory = team.RaceHistory;
@@ -363,6 +377,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return replies;
 		}
 
+		/// <summary>
+		/// Set to null event records from the manager's RPC file beliefs
+		/// </summary>
 		private void RemoveEvents(Person manager)
 		{
 			for (int i = 0; i < PostRaceEvents.Count; i++)
@@ -377,6 +394,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			manager.SaveStatus();
 		}
 
+		/// <summary>
+		/// Update the count of possible replies of each meaning based on the possible reopies that could have been given
+		/// </summary>
 		private void SavePossibleMeaningCount(Person manager, List<string[]> possibleMeanings)
 		{
 			foreach (var meanings in possibleMeanings)
@@ -394,6 +414,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Update the count of possible replies of each style based on the possible reopies that could have been given
+		/// </summary>
 		private void SavePossibleStyleCount(Person manager, List<string[]> possibleStyles)
 		{
 			foreach (var styles in possibleStyles)
@@ -411,6 +434,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Update the count of replies of each meaning based on the last reply given
+		/// </summary>
 		private void SaveMeaningSelected(Person manager, string[] meanings)
 		{
 			foreach (var meaning in meanings)
@@ -425,6 +451,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Update the count of replies of each style based on the last reply given
+		/// </summary>
 		private void SaveStyleSelected(Person manager, string[] styles)
 		{
 			foreach (var style in styles)
@@ -439,6 +468,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Save the current state of events to the manager's RPC beliefs
+		/// </summary>
 		private void SaveEvents(Person manager)
 		{
 			for (int i = 0; i < PostRaceEvents.Count; i++)

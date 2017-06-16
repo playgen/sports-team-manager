@@ -6,6 +6,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	public static class EnumExtensions
 	{
+		/// <summary>
+		/// Get the description attribute of an enum.
+		/// </summary>
 		public static string GetDescription(this Enum value)
 		{
 			var fieldInfo = value.GetType().GetField(value.ToString());

@@ -203,7 +203,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				opinion = (int)Math.Round((float)opinion / opinionCount);
 			}
 
-			//add average opinion, manager opinion and current mood to score
+			//add weighted average opinion, manager opinion and current mood to get score for crew member
 			crewScore += (int)(opinion * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
 
 			crewScore += (int)(managerOpinion * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]);
@@ -336,7 +336,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						continue;
 					}
-					//if the highest score in for each crewmember plus the highest possible opinion is lower than the best score so far, stop this loop
+					//if the highest score for each crewmember plus the highest possible opinion is lower than the best score so far, stop this loop
 					if (possibleCrew.Select(pc => crewPositionScores.First(cps => cps.Key.Contains(pc)).Value).Sum() + opinionScore < bestScore)
 					{
 						continue;
@@ -530,7 +530,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Get the amount of mistakes requested, adding 'Correct' if not enough exist
+		/// Get the amount of mistakes requested
 		/// </summary>
 		public List<string> GetAssignmentMistakes(int returnAmount)
 		{

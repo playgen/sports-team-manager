@@ -2,6 +2,9 @@
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	/// <summary>
+	/// Struct used to store team colours
+	/// </summary>
 	public struct Color : IEquatable<Color>
 	{
 		public byte R, G, B, A;

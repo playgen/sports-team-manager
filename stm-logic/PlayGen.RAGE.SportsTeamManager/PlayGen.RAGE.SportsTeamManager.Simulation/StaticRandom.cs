@@ -18,7 +18,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		//static a random double which then takes into account set min and max values and is converted to a float
+		/// Select a random double which then takes into account set min and max values and is converted to a float
 		/// </summary>
 		public static float Float(float min, float max)
 		{
@@ -26,7 +26,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		//select a random array of bytes, which is converted into a Color object
+		/// Select a random array of bytes, which is converted into a Color object
 		/// </summary>
 		public static Color Color()
 		{
