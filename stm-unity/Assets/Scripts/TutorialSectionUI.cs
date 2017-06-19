@@ -6,6 +6,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 
+/// <summary>
+/// A piece of the in-game tutorial UI
+/// </summary>
 public class TutorialSectionUI : ObserverMonoBehaviour
 {
 	[System.Serializable]
@@ -56,6 +59,9 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 
 	private bool _unblocked;
 
+	/// <summary>
+	/// Set-up the values required for creating this piece of the tutorial
+	/// </summary>
 	public void Construct(Dictionary<string, string[]> text, int highlightTrigger, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, int saveSection, List<string> blacklist, List<string> attributes)
 	{
 		_sectionTextHolder = new List<LanguageKeyValuePair>();
@@ -73,6 +79,9 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		_customAttributes = attributes;
 	}
 
+	/// <summary>
+	/// Set-up connections to UI elements for this piece of the tutorial
+	/// </summary>
 	protected override void OnEnable()
 	{
 		base.OnEnable();
@@ -125,8 +134,12 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		SetUp();
 	}
 
+	/// <summary>
+	/// Draw this piece of the UI
+	/// </summary>
 	private void SetUp()
 	{
+		//draw UI differently according to if the side displaying the helper is reversed
 		if (_reversed)
 		{
 			transform.localScale = new Vector2(-1, 1);
@@ -159,6 +172,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		var back = _buttons.Find("Back").gameObject;
 		var forward = _buttons.Find("Forward").gameObject;
 		var pageNumber = _buttons.Find("Page Number").GetComponent<Text>();
+		//if text is provided, display the tutorial helper
 		if (_sectionText[Localization.SelectedLanguage.Name].Length == 0)
 		{
 			_tutorialObject.SetActive(false);
@@ -167,6 +181,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		}
 		else
 		{
+			//display different buttons and sections according to what oart should be displayed
 			_tutorialObject.SetActive(true);
 			_tutorialText.text = _sectionText[Localization.SelectedLanguage.Name][_currentText];
 			back.SetActive(true);
@@ -214,6 +229,9 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		_triggeredObjects.Clear();
 	}
 
+	/// <summary>
+	/// Set up padding for text
+	/// </summary>
 	private void PaddingSetUp()
 	{
 		var speechBubble = transform.Find("Tutorial Helper/Image");
@@ -222,6 +240,9 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		Invoke("ButtonSetUp", 0f);
 	}
 
+	/// <summary>
+	/// Set up button positioning
+	/// </summary>
 	private void ButtonSetUp()
 	{
 		var speechBubble = transform.Find("Tutorial Helper/Image");
@@ -230,6 +251,9 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		((RectTransform)buttons).anchoredPosition = new Vector2(0, (int)(((RectTransform)speechBubble).sizeDelta.y * 0.25f) + 16);
 	}
 
+	/// <summary>
+	/// Upon an event related to this part of the tutorial being triggered, add to count of events and advance to next section if required
+	/// </summary>
 	public override void OnNext(KeyValueMessage message)
 	{
 		foreach (var trigger in _triggers)

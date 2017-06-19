@@ -20,7 +20,7 @@ public class TeamSelection : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Get the history of line-ups
+	/// Get the history of results, taking and skipping the amount given
 	/// </summary>
 	public List<KeyValuePair<Boat, KeyValuePair<int, int>>> GetLineUpHistory(int skipAmount, int takeAmount)
 	{
@@ -38,6 +38,9 @@ public class TeamSelection : MonoBehaviour {
 		return boatOffsets;
 	}
 
+	/// <summary>
+	/// Get the history of race results
+	/// </summary>
 	public List<KeyValuePair<int, int>> GetRaceResults()
 	{
 		return _gameManager.Team.RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList();
@@ -84,7 +87,7 @@ public class TeamSelection : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Get the current session in the race
+	/// Get the amount of sessions raced
 	/// </summary>
 	public int GetTotalStages()
 	{
@@ -116,7 +119,7 @@ public class TeamSelection : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Confirm the line-up and get its score
+	/// Confirm the line-up and get the details for the boat line-up used
 	/// </summary>
 	public Boat ConfirmLineUp(int offset = 0)
 	{

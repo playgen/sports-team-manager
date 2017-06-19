@@ -29,7 +29,7 @@ public class PostRaceEvent : ObservableMonoBehaviour
 	}
 
 	/// <summary>
-	/// Trigger chance for an event, display pop-up is one is returned
+	/// Display pop-up if there is an event to show
 	/// </summary>
 	public void GetEvent()
 	{
@@ -46,11 +46,17 @@ public class PostRaceEvent : ObservableMonoBehaviour
 		gameObject.SetActive(true);
 	}
 
+	/// <summary>
+	/// Increment _enableCounter by one
+	/// </summary>
 	public void EnableCheck()
 	{
 		_enableCounter++;
 	}
 
+	/// <summary>
+	/// Increment _disableCounter by one. If new total matches childCount, disable gameObject
+	/// </summary>
 	public void DisableCheck()
 	{
 		_disableCounter++;
@@ -101,12 +107,16 @@ public class PostRaceEvent : ObservableMonoBehaviour
 		return replyDict;
 	}
 
+	/// <summary>
+	/// Add a reply to the dictionary of selected responses. If the number of responses matches the number expected, get replies from crew members.
+	/// </summary>
 	public Dictionary<CrewMember, PostRaceEventState> AddReply(PostRaceEventState response)
 	{
 		if (_selectedResponses == null)
 		{
 			_selectedResponses = new Dictionary<CrewMember, PostRaceEventState>();
 		}
+		//overwrite response if one had already been given for this crew member.
 		if (_selectedResponses.ContainsKey(response.CrewMember))
 		{
 			_selectedResponses[response.CrewMember] = response;
@@ -193,6 +203,9 @@ public class PostRaceEvent : ObservableMonoBehaviour
 		return _gameManager.Team.AverageTeamOpinion();
 	}
 
+	/// <summary>
+	/// Get the event key for the current event
+	/// </summary>
 	public string GetEventKey (string state)
 	{
 		return _gameManager.GetPostRaceEventKeys().First(state.StartsWith);

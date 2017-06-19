@@ -17,7 +17,7 @@ public class HoverPopUpUI : ObservableMonoBehaviour {
 	private Vector2 _canvasSize;
 
 	/// <summary>
-	/// Triggered by PointerEnter on some UI objects. Stores position relative to pivot for the hovered object
+	/// Triggered by PointerEnter/PointerClick on some UI objects. Stores position relative to pivot for the hovered object
 	/// </summary>
 	public void SetHoverObject(Transform trans)
 	{
@@ -59,6 +59,7 @@ public class HoverPopUpUI : ObservableMonoBehaviour {
 			transform.SetAsLastSibling();
 			GetComponentInChildren<Text>().text = Localization.Get(_currentText);
 			transform.position = Input.mousePosition;
+			//reposition accordingly if pop-up would display partially off screen
 			if (_currentHovered.x < transform.position.x)
 			{
 				((RectTransform)transform).anchoredPosition += new Vector2(((RectTransform)transform).rect.width * 0.5f, 0);

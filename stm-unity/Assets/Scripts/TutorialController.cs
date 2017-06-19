@@ -11,6 +11,9 @@ using UnityEngine.UI.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 using System.Globalization;
 
+/// <summary>
+/// Connecting class between GameManager in logic and the Tutorial Section UIs
+/// </summary>
 public class TutorialController : MonoBehaviour
 {
 	private GameManager _gameManager;
@@ -21,6 +24,9 @@ public class TutorialController : MonoBehaviour
 	[SerializeField]
 	private GameObject _tutorialExitBlocker;
 
+	/// <summary>
+	/// Load and parse tutorial JSON, creating a new game object for each 
+	/// </summary>
 	[ContextMenu("Create Tutorial")]
 	public void CreateTutorial()
 	{
@@ -86,6 +92,9 @@ public class TutorialController : MonoBehaviour
 		_tutorialExitBlocker.SetActive(transform.childCount == _gameManager.TutorialStage + 1);
 	}
 
+	/// <summary>
+	/// Advance the tutorial one stage forward, finishing it if the last tutorial stage has been completed
+	/// </summary>
 	public void AdvanceStage()
 	{
 		var stage = _gameManager.TutorialStage;
@@ -105,6 +114,9 @@ public class TutorialController : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Finish the tutorial early
+	/// </summary>
 	public void QuitTutorial()
 	{
 		var stage = _gameManager.TutorialStage;
@@ -115,6 +127,9 @@ public class TutorialController : MonoBehaviour
 		_tutorialExitBlocker.SetActive(false);
 	}
 
+	/// <summary>
+	/// Send custom tutorial attributes to the logic side of the code
+	/// </summary>
 	public void CustomAttributes(Dictionary<string, string> attributes)
 	{
 		_gameManager.SetCustomTutorialAttributes(attributes);

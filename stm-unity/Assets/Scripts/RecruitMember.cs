@@ -72,16 +72,25 @@ public class RecruitMember : MonoBehaviour {
 		return _gameManager.GetStartingActionAllowance();
 	}
 
+	/// <summary>
+	/// Get the current session for the current race
+	/// </summary>
 	public string SessionInRace()
 	{
 		return (_gameManager.CurrentRaceSession + 1) + "/" + _gameManager.RaceSessionLength;
 	}
 
+	/// <summary>
+	/// Get the number of Crew Members within the team
+	/// </summary>
 	public int TeamSize()
 	{
 		return _gameManager.Team.CrewMembers.Count;
 	}
 
+	/// <summary>
+	/// Get the amount of sessions since the boat type had changed
+	/// </summary>
 	public int SessionsSinceLastChange()
 	{
 		var history = _gameManager.Team.LineUpHistory.AsEnumerable().Reverse().ToList();

@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using PlayGen.Unity.Utilities.Localization;
 
+/// <summary>
+/// Contains UI logic related to crew members involved in a post-race event
+/// </summary>
 public class PostRacePersonUI : MonoBehaviour
 {
 	[SerializeField]
@@ -29,6 +32,9 @@ public class PostRacePersonUI : MonoBehaviour
 		get { return _currentCrewMember; }
 	}
 
+	/// <summary>
+	/// Reset and populate the pop-up for a new event
+	/// </summary>
 	public void ResetDisplay(PostRaceEventState current)
 	{
 		if (current.Dialogue != null)
@@ -46,6 +52,9 @@ public class PostRacePersonUI : MonoBehaviour
 		_nameText.text = current.CrewMember.Name;
 	}
 
+	/// <summary>
+	/// Reset the available dialogue options for the player
+	/// </summary>
 	public void ResetQuestions(PostRaceEventState current, List<PostRaceEventState> replies)
 	{
 		UpdateSelected(null);
@@ -86,6 +95,9 @@ public class PostRacePersonUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Update the responsse text for the crew member
+	/// </summary>
 	public void UpdateDialogue(DialogueStateActionDTO response, List<string> subjects)
 	{
 		if (response != null)
@@ -96,6 +108,9 @@ public class PostRacePersonUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Update the selected response (used with more than one crew member involved in an event)
+	/// </summary>
 	public void UpdateSelected(GameObject question)
 	{
 		foreach (var q in _questions)
@@ -104,6 +119,9 @@ public class PostRacePersonUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Turn qall question buttons on
+	/// </summary>
 	public void EnableQuestions()
 	{
 		foreach (GameObject question in _questions)
@@ -113,6 +131,9 @@ public class PostRacePersonUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Get if the first question button is active, and as such if the event has finished or not for this crew member
+	/// </summary>
 	public bool ActiveQuestions()
 	{
 		return _questions[0].activeInHierarchy;

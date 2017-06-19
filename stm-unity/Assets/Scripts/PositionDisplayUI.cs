@@ -60,7 +60,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	}
 
 	/// <summary>
-	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last name, first names
+	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last names, first names
 	/// </summary>
 	private string SplitName(string original, bool shortName = true)
 	{

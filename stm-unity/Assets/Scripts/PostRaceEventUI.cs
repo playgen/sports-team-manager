@@ -12,7 +12,7 @@ using PlayGen.Unity.Utilities.BestFit;
 using RAGE.Analytics.Formats;
 
 /// <summary>
-/// Contains all UI logic related to the Post Race pop-up
+/// Contains UI logic related to the Post Race pop-up
 /// </summary>
 public class PostRaceEventUI : ObservableMonoBehaviour
 {
@@ -96,6 +96,9 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Hide this UI
+	/// </summary>
 	public void Hide(string source)
 	{
 		_canvasGroup.alpha = 0;
@@ -141,6 +144,9 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Set-up the background blocker to allow for closing of the pop-up if the event has finished
+	/// </summary>
 	public void SetBlockerOnClick()
 	{
 		if (_postRacePeople.All(prp => prp.ActiveQuestions() == false))
@@ -156,11 +162,17 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Get the learning pill that will be displayed due to this event
+	/// </summary>
 	public void GetLearningPill()
 	{
 		_lastStates = _postRacePeople.Select(t => t.LastState).ToList();
 	}
 
+	/// <summary>
+	/// Set-up the learning pill for this event
+	/// </summary>
 	public void SendLearningPill()
 	{
 		_learningPill.SetHelp(_lastStates);

@@ -43,6 +43,9 @@ public class NewGame : MonoBehaviour {
 		return _gameManager.Team != null && _gameManager.Team.Name == boatName.TrimEnd();
 	}
 
+	/// <summary>
+	/// CHeck if the provided game name already exists
+	/// </summary>
 	public bool ExistingSaves()
 	{
 		return _gameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves")).Count != 0;

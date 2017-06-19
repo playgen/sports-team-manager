@@ -4,6 +4,9 @@ using UnityEngine;
 
 public static class TransformExtensions
 {
+	/// <summary>
+	/// Find child with name provided, including inactive objects
+	/// </summary>
 	public static Transform FindInactive(this Transform parent, string name)
 	{
 		var trs = parent.GetComponentsInChildren<Transform>(true);
@@ -17,6 +20,9 @@ public static class TransformExtensions
 		return null;
 	}
 
+	/// <summary>
+	/// Find all children with name provided, including inactive objects
+	/// </summary>
 	public static List<Transform> FindAll(this Transform parent, string name)
 	{
 		var found = new List<Transform>();
@@ -31,6 +37,9 @@ public static class TransformExtensions
 		return found;
 	}
 
+	/// <summary>
+	/// Find if provided recttransform is currently visible within the provided rect
+	/// </summary>
 	public static bool IsRectTransformVisible(this RectTransform obj, RectTransform visibleRect)
 	{
 		Vector3[] objCorners = new Vector3[4];

@@ -11,6 +11,9 @@ using PlayGen.Unity.Utilities.BestFit;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Contains all logic relating to displaying post-game feedback
+/// </summary>
 [RequireComponent(typeof(Feedback))]
 public class FeedbackUI : MonoBehaviour {
 
@@ -40,6 +43,7 @@ public class FeedbackUI : MonoBehaviour {
 	{
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
+		//reset displayed UI
 		_pageNumber = 0;
 		foreach (var page in _pages)
 		{
@@ -47,7 +51,7 @@ public class FeedbackUI : MonoBehaviour {
 		}
 		ChangePage(0);
 		DrawGraph();
-		SetGraphPercentages();
+		GetPrevalentLeadershipStyle();
 		SetPrevalentStyleText();
 	}
 
@@ -57,6 +61,9 @@ public class FeedbackUI : MonoBehaviour {
 		BestFit.ResolutionChange -= DoBestFit;
 	}
 
+	/// <summary>
+	/// Change currently displayed feedback page
+	/// </summary>
 	public void ChangePage(int amount)
 	{
 		_pages[_pageNumber].SetActive(false);
@@ -68,6 +75,9 @@ public class FeedbackUI : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Display a pop-up that describes a management or leadership style. Triggered by Unity event
+	/// </summary>
 	public void ShowDescription(string descriptionType)
 	{
 		_descriptionPopUp.transform.Find("Description Pop-Up/Header").GetComponent<Localization>().Key = descriptionType;
@@ -75,8 +85,12 @@ public class FeedbackUI : MonoBehaviour {
 		_descriptionPopUp.SetActive(true);
 	}
 
+	/// <summary>
+	/// Draw the bar graph displayed on the first page.
+	/// </summary>
 	private void DrawGraph()
 	{
+		//destroy elements already on graph
 		foreach (Transform child in _selectionGraph.transform)
 		{
 			Destroy(child.gameObject);
@@ -109,7 +123,10 @@ public class FeedbackUI : MonoBehaviour {
 		Invoke("DoBestFit", 0);
 	}
 
-	private void SetGraphPercentages()
+	/// <summary>
+	/// Set the text for the prevalent leadership style selected on the final feedback page
+	/// </summary>
+	private void GetPrevalentLeadershipStyle()
 	{
 		var style = _feedback.GetPrevalentLeadershipStyle();
 		var styleString = string.Empty;
@@ -124,6 +141,9 @@ public class FeedbackUI : MonoBehaviour {
 		_finalResultText.text = styleString;
 	}
 
+	/// <summary>
+	/// Set the percentages displayed on the graphs on pages 2 and 3
+	/// </summary>
 	private void SetPrevalentStyleText()
 	{
 		var styles = _feedback.GatherManagementStyles();
@@ -153,6 +173,9 @@ public class FeedbackUI : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Create the URL for OKKAM and open this webpage
+	/// </summary>
 	public void TriggerExternal()
 	{
 		if (SUGARManager.CurrentUser != null)

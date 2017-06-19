@@ -16,7 +16,6 @@ using RAGE.Analytics.Formats;
 /// </summary>
 public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPointerClickHandler
 {
-
 	private TeamSelection _teamSelection;
 	private MemberMeetingUI _meetingUI;
 	private PositionDisplayUI _positionUI;
@@ -52,6 +51,9 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 		transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? UnityEngine.Color.white : UnityEngine.Color.grey;
 	}
 
+	/// <summary>
+	/// When this object is clicked or tapped
+	/// </summary>
 	public void OnPointerDown(PointerEventData eventData)
 	{
 		if (_crewMember.RestCount <= 0 && Usable && Current)
@@ -60,6 +62,9 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 		}
 	}
 
+	/// <summary>
+	/// When this object is clicked or tapped
+	/// </summary>
 	public void OnPointerClick(PointerEventData eventData)
 	{
 		if ((_crewMember.RestCount > 0 || !Usable) && Current)
@@ -69,7 +74,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 	}
 
 	/// <summary>
-	/// MouseDown start the current drag
+	/// Start the current drag
 	/// </summary>
 	private void BeginDrag()
 	{
@@ -78,7 +83,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 		_beingClicked = true;
 		//_dragPosition is used to offset according to where the click occurred
 		_dragPosition = Input.mousePosition - transform.position;
-		//set as child of container so this displays above all other CrewMember objects
+		//set as child of parent many levels up so this displays above all other CrewMember objects
 		transform.SetParent(_defaultParent.parent.parent.parent.parent.parent, false);
 		transform.position = (Vector2)Input.mousePosition - _dragPosition;
 		//set as last sibling so this always appears in front of other UI objects (except pop-ups)
@@ -100,6 +105,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 			var raycastResults = new List<RaycastResult>();
 			//gets all UI objects below the cursor
 			EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
+			//end drag if currently under a blocker
 			foreach (var result in raycastResults)
 			{
 				if (result.gameObject.layer == 8)
@@ -131,7 +137,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 	}
 
 	/// <summary>
-	/// Display the CrewMember pop-up and reset the UI position
+	/// Display the CrewMember pop-up
 	/// </summary>
 	private void ShowPopUp()
 	{
@@ -169,6 +175,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 				break;
 			}
 		}
+		//remove this CrewMember from their position if they were in one
 		if (!placed)
 		{
 			_teamSelection.RemoveCrew(_crewMember);

@@ -44,6 +44,9 @@ public class AvatarDisplay : MonoBehaviour
 	Dictionary<string, Sprite> Sprites = new Dictionary<string, Sprite>();
 #endif
 
+	/// <summary>
+	/// Load all avatar sprites from resources.
+	/// </summary>
 	public static void LoadSprites()
 	{
 		avatarSprites = Resources.LoadAll(string.Empty, typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name.ToLower(), a => a);

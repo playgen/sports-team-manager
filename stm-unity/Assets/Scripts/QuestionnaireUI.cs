@@ -7,6 +7,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
+/// <summary>
+/// Contains all logic relating to displaying post-game questionnaire
+/// </summary>
 [RequireComponent(typeof(Questionnaire))]
 public class QuestionnaireUI : MonoBehaviour
 {
@@ -24,6 +27,9 @@ public class QuestionnaireUI : MonoBehaviour
 		_questionnaire = GetComponent<Questionnaire>();
 	}
 
+	/// <summary>
+	/// On Enable, clear questionnaire and recreate
+	/// </summary>
 	private void OnEnable()
 	{
 		Localization.LanguageChange += OnLanguageChange;
@@ -56,11 +62,17 @@ public class QuestionnaireUI : MonoBehaviour
 		BestFit.ResolutionChange -= DoBestFit;
 	}
 
+	/// <summary>
+	/// Check that all questions have been answered and enable the submit button if so
+	/// </summary>
 	private void CheckAllToggled()
 	{
 		_submitButton.GetComponent<Button>().interactable = (_questionObjs.All(q => q.GetComponent<ToggleGroup>().AnyTogglesOn()));
 	}
 
+	/// <summary>
+	/// Collect the amount of each style answered and sne dthis information on to be saved
+	/// </summary>
 	public void SubmitAnswers()
 	{
 		var results = new Dictionary<string, int>();

@@ -1,4 +1,9 @@
-﻿[System.Serializable]
+﻿using System;
+
+/// <summary>
+/// Class used for managing information involved in post-race events
+/// </summary>
+[Serializable]
 public class KeyValueMessage
 {
     public string TypeName;

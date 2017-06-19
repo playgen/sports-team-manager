@@ -8,8 +8,6 @@ using System.Linq;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
 
-using RAGE.Analytics;
-
 /// <summary>
 /// Controls switching between different game state panels
 /// </summary>
@@ -34,6 +32,9 @@ public class UIStateManager : ObservableMonoBehaviour {
 	private GameObject _feedback;
 	private static bool _loaded;
 
+	/// <summary>
+	/// Load Music and Sound settings, trigger SUGAR sign-in on first load
+	/// </summary>
 	void Start()
 	{
 		if (PlayerPrefs.HasKey("Music"))
@@ -80,6 +81,9 @@ public class UIStateManager : ObservableMonoBehaviour {
 		BestFit.ResolutionChange -= DoBestFit;
 	}
 
+	/// <summary>
+	/// Close game when escape is pressed on the main menu
+	/// </summary>
 	void Update()
 	{
 		if (_mainMenu.activeInHierarchy)
@@ -144,6 +148,9 @@ public class UIStateManager : ObservableMonoBehaviour {
 		((ScreenSideUI)FindObjectOfType(typeof(ScreenSideUI))).ChangeSelected(0);
 	}
 
+	/// <summary>
+	/// Hide other UI states, show questionnaire
+	/// </summary>
 	public void GoToQuestionnaire()
 	{
 		_teamManagement.SetActive(false);
@@ -151,6 +158,9 @@ public class UIStateManager : ObservableMonoBehaviour {
 		_feedback.SetActive(false);
 	}
 
+	/// <summary>
+	/// Hide other UI states, show feedback
+	/// </summary>
 	public void GoToFeedback()
 	{
 		_teamManagement.SetActive(false);
@@ -158,16 +168,25 @@ public class UIStateManager : ObservableMonoBehaviour {
 		_feedback.SetActive(true);
 	}
 
+	/// <summary>
+	/// Trigger showing SUGAR achievements
+	/// </summary>
 	public void ShowAchievements()
 	{
 		SUGARManager.Achievement.DisplayList();
 	}
 
+	/// <summary>
+	/// Trigger showing SUGAR leaderboards
+	/// </summary>
 	public void ShowLeaderboards()
 	{
 		SUGARManager.GameLeaderboard.DisplayList();
 	}
 
+	/// <summary>
+	/// Trigger showing SUGAR sign-in screen or run auto sign-in if setting is active
+	/// </summary>
 	public void SignIn()
 	{
 		SUGARManager.Account.DisplayPanel(success =>

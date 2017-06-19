@@ -1,4 +1,7 @@
-﻿public enum TrackerVerbs
+﻿/// <summary>
+/// Enum of types of tracker events
+/// </summary>
+public enum TrackerVerbs
 {
     Accessed,
     Skipped,

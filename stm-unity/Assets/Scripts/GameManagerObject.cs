@@ -25,7 +25,7 @@ public class GameManagerObject : MonoBehaviour
 #if UNITY_EDITOR
 	private void Update()
 	{
-		//takes a screenshot whenever P is pressed
+		//takes a screenshot whenever down arrow is pressed
 		if (Input.GetKeyDown(KeyCode.DownArrow))
 		{
 			Application.CaptureScreenshot(System.DateTime.UtcNow.ToFileTimeUtc() + ".png");

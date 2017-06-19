@@ -326,6 +326,9 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
+	/// <summary>
+	/// Close this pop-up
+	/// </summary>
 	public void CloseRecruitmentPopUp(string source)
 	{
 		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
@@ -336,6 +339,9 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		gameObject.SetActive(false);
 	}
 
+	/// <summary>
+	/// Upon the escape key being pressed, close this pop-up or the hire warning pop-up if it's open
+	/// </summary>
 	public void OnEscape()
 	{
 		if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
@@ -348,6 +354,9 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Upon language change redraw UI
+	/// </summary>
 	private void OnLanguageChange()
 	{
 		SetDialogueText(_lastQuestion ?? "RECRUITMENT_INTRO");

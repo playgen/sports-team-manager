@@ -25,6 +25,9 @@ public class MemberMeeting : MonoBehaviour
 		return position;
 	}
 
+	/// <summary>
+	/// Get the name of the team manager
+	/// </summary>
 	public string GetManagerName()
 	{
 		return _gameManager.Team.Manager.Name;
@@ -110,16 +113,25 @@ public class MemberMeeting : MonoBehaviour
 		return _gameManager.ShowTutorial;
 	}
 
+	/// <summary>
+	/// Get the current session in this race
+	/// </summary>
 	public string SessionInRace()
 	{
 		return (_gameManager.CurrentRaceSession + 1) + "/" + _gameManager.RaceSessionLength;
 	}
 
+	/// <summary>
+	/// Get the current amount of CrewMembers in the team
+	/// </summary>
 	public int TeamSize()
 	{
 		return _gameManager.Team.CrewMembers.Count;
 	}
 
+	/// <summary>
+	/// Get the amount of races this CrewMember has been involved in
+	/// </summary>
 	public int GetTimeInTeam(CrewMember crewMember)
 	{
 		return _gameManager.Team.LineUpHistory.Count(boat => boat.PositionCrew.Values.ToList().Any(c => c.Name == crewMember.Name));

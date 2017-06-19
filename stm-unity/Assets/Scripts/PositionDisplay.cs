@@ -15,7 +15,7 @@ public class PositionDisplay : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Get the current boat being used throughout the game
+	/// Get the current team
 	/// </summary>
 	public Team GetTeam()
 	{

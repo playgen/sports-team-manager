@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Music management
+/// </summary>
 public class MusicControl : MonoBehaviour {
 
 	[SerializeField]
@@ -11,8 +14,11 @@ public class MusicControl : MonoBehaviour {
 		_audio = GetComponent<AudioSource>();
 		_audio.clip = _music[_currentTrack];
 		_audio.Play();
-    }
-	
+	}
+
+	/// <summary>
+	/// If the current clip has finishing playing, change the clip to next in array and start playing again
+	/// </summary>
 	void Update () {
 		if (UIStateManager.MusicOn == _audio.mute)
 		{

@@ -44,12 +44,18 @@ public class ScreenSideUI : MonoBehaviour {
 		((RectTransform)_selected.transform).anchoredPosition = Vector2.zero;
 	}
 
+	/// <summary>
+	/// Change the position of the selected object to match the current UI screen
+	/// </summary>
 	public void DisplayQuitWarning()
 	{
 		_popUpBlocker.gameObject.SetActive(true);
 		_quitWarningPopUp.GetComponentsInChildren<Button>().Select(b => b.gameObject).BestFit();
 	}
 
+	/// <summary>
+	/// Close the pop-up displayed before quitting back to the main menu
+	/// </summary>
 	public void CloseQuitWarning()
 	{
 		_popUpBlocker.gameObject.SetActive(false);

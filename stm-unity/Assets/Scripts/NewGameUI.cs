@@ -43,6 +43,9 @@ public class NewGameUI : MonoBehaviour {
 		_managerName.onValidateInput += (input, charIndex, addedChar) => InvalidFlash(addedChar, _managerName);
 	}
 
+	/// <summary>
+	/// Display a flash on the text field if an invalid character is typed
+	/// </summary>
 	private char InvalidFlash(char newChar, InputField inputField)
 	{
 		if (!char.IsLetterOrDigit(newChar) && newChar != ' ')

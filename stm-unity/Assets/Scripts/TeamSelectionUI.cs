@@ -106,6 +106,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		_teamSelection = GetComponent<TeamSelection>();
 	}
 
+	/// <summary>
+	/// On enabling this object, ensure correct UI sections are displayed depending on progress
+	/// </summary>
 	private void OnEnable()
 	{
 		Localization.LanguageChange += OnLanguageChange;
@@ -136,7 +139,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	}
 
 	/// <summary>
-	/// Create UI for all of the previous line-ups and one for the next line-up
+	/// Create UI for the previous four line-ups and one for the next line-up
 	/// </summary>
 	private void Start()
 	{
@@ -150,6 +153,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	/// </summary>
 	private void Update()
 	{
+		//enable race button if all positions are filled and QuickClickDisable isn't being invoked
 		if ((_positionsEmpty > 0 && _raceButton.interactable) || IsInvoking("QuickClickDisable"))
 		{
 			DisableRacing();
@@ -215,7 +219,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	}
 
 	/// <summary>
-	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last name, first names
+	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last names, first names
 	/// </summary>
 	private string SplitName(string original, bool shortName = false)
 	{
@@ -267,6 +271,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			_endRace.gameObject.SetActive(false);
 			_boatMain.gameObject.SetActive(true);
 		}
+		//set up buttons and race result UI if player has completed all races
 		else
 		{
 			stageIcon.gameObject.SetActive(false);
@@ -322,6 +327,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
 		_skipToRaceButton.GetComponentInChildren<Text>().fontSize = 20;
 		var positionContainer = _boatMain.transform.Find("Position Container");
+		//set up position containers
 		for (int i = 0; i < positionContainer.childCount; i++)
 		{
 			var positionObject = positionContainer.Find("Position " + i).gameObject;
@@ -519,6 +525,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		_positionsEmpty -= change;
 	}
 
+	/// <summary>
+	/// Use Unity Event System OnScroll to change displayed results
+	/// </summary>
 	public void OnScroll(PointerEventData eventData)
 	{
 		if (!_popUpBlocker.gameObject.activeInHierarchy && !_smallerPopUpBlocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy)
@@ -527,6 +536,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		}
 	}
 
+	/// <summary>
+	/// Use Unity Event System OnDrag to change displayed results
+	/// </summary>
 	public void OnDrag(PointerEventData eventData)
 	{
 		if (!_popUpBlocker.gameObject.activeInHierarchy && !_smallerPopUpBlocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy)
@@ -535,6 +547,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		}
 	}
 
+	/// <summary>
+	/// Reset the scrollbar position
+	/// </summary>
 	public void ResetScrollbar()
 	{
 		_boatContainerScroll.numberOfSteps = _teamSelection.GetTotalStages() - 4;
@@ -545,6 +560,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		ChangeVisibleBoats();
 	}
 
+	/// <summary>
+	/// Redraw the displayed historical results
+	/// </summary>
 	public void ChangeVisibleBoats(bool forceOverwrite = false)
 	{
 		if (!forceOverwrite && _previousScrollValue == Mathf.RoundToInt(_boatContainerScroll.value * (_boatContainerScroll.numberOfSteps - 1)))
@@ -1062,6 +1080,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		return scoreDiff;
 	}
 
+	/// <summary>
+	/// Get the position finished in a race with the provided score and position count
+	/// </summary>
 	private int GetRacePosition(int score, int positionCount)
 	{
 		var finishPosition = 1;
@@ -1074,11 +1095,17 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		return finishPosition;
 	}
 
+	/// <summary>
+	/// Get the score expected to be able to finish first in a position
+	/// </summary>
 	private float GetExpectedScore(int positionCount)
 	{
 		return (8f * positionCount) + 1;
 	}
 
+	/// <summary>
+	/// Get the position the team finished after taking in their results over all the races
+	/// </summary>
 	private int GetCupPosition()
 	{
 		var totalScore = 0;
@@ -1112,6 +1139,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		return finalPosition;
 	}
 
+	/// <summary>
+	/// On escape, trigger logic which depends on the pop-up being displayed
+	/// </summary>
 	public void OnEscape()
 	{
 		if (_preRacePopUp.activeInHierarchy)
@@ -1143,6 +1173,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		}
 	}
 
+	/// <summary>
+	/// Redraw UI upon language change
+	/// </summary>
 	private void OnLanguageChange()
 	{
 		foreach (var position in _boatMain.GetComponentsInChildren<PositionUI>()) {
@@ -1188,11 +1221,17 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		}
 	}
 
+	/// <summary>
+	/// Go to questionnaire state
+	/// </summary>
 	private void TriggerQuestionnaire()
 	{
 		((UIStateManager)FindObjectOfType(typeof(UIStateManager))).GoToQuestionnaire();
 	}
 
+	/// <summary>
+	/// Go to feedback state
+	/// </summary>
 	private void TriggerFeedback()
 	{
 		((UIStateManager)FindObjectOfType(typeof(UIStateManager))).GoToFeedback();

@@ -75,7 +75,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	}
 
 	/// <summary>
-	/// On the GameObject being disabled, hide the fire warning pop-up, all displayed opinions and adjust the order of the pop-ups
+	/// On the GameObject being disabled, hide the fire warning pop-up and remove event listeners
 	/// </summary>
 	private void OnDisable()
 	{
@@ -92,6 +92,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 	{
 		_currentMember = crewMember;
 
+		//adjust the crew member scroll rect position to ensure this crew member is shown
 		var memberTransform = _crewContainer.GetComponentsInChildren<CrewMemberUI>().First(c => c.CrewMember == crewMember && !c.Usable).GetComponent<RectTransform>();
 		if (!memberTransform.IsRectTransformVisible((RectTransform)memberTransform.parent.parent))
 		{
@@ -166,8 +167,8 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		for (var i = 0; i < _barForegrounds.Length; i++)
 		{
 			_barForegrounds[i].fillAmount = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] * 0.1f;
-			_barForegrounds[i].transform.parent.FindChild("Hidden Image").GetComponent<Image>().enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] == 0;
-			_barForegrounds[i].transform.parent.FindChild("Skill Image").GetComponent<Image>().enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] != 0;
+			_barForegrounds[i].transform.parent.Find("Hidden Image").GetComponent<Image>().enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] == 0;
+			_barForegrounds[i].transform.parent.Find("Skill Image").GetComponent<Image>().enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] != 0;
 		}
 		//set default starting dialogue
 		_dialogueText.text = Localization.Get("MEETING_INTRO_" + _currentMember.GetSocialImportanceRating());
@@ -177,11 +178,11 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		_opinionPositiveQuestion.text = Localization.Get(_memberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).First());
 		_opinionNegativeQuestion.text = Localization.Get(_memberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).First());
 		//set the cost shown for each question and for firing
-		_statQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.StatRevealCost, _currentMember).ToString(Localization.SelectedLanguage.GetSpecificCulture());
-		_roleQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost).ToString(Localization.SelectedLanguage.GetSpecificCulture());
-		_opinionPositiveQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealPositiveCost).ToString(Localization.SelectedLanguage.GetSpecificCulture());
-		_opinionNegativeQuestion.transform.parent.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealNegativeCost).ToString(Localization.SelectedLanguage.GetSpecificCulture());
-		_fireButton.transform.FindChild("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.FiringCost).ToString(Localization.SelectedLanguage.GetSpecificCulture());
+		_statQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.StatRevealCost, _currentMember).ToString(Localization.SelectedLanguage.GetSpecificCulture());
+		_roleQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost).ToString(Localization.SelectedLanguage.GetSpecificCulture());
+		_opinionPositiveQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealPositiveCost).ToString(Localization.SelectedLanguage.GetSpecificCulture());
+		_opinionNegativeQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.OpinionRevealNegativeCost).ToString(Localization.SelectedLanguage.GetSpecificCulture());
+		_fireButton.transform.Find("Image/Text").GetComponent<Text>().text = _memberMeeting.GetConfigValue(ConfigKeys.FiringCost).ToString(Localization.SelectedLanguage.GetSpecificCulture());
 		var allowance = _memberMeeting.QuestionAllowance();
 		//set if each button is interactable according to if the player has enough allowance
 		_fireButton.interactable = allowance >= _memberMeeting.GetConfigValue(ConfigKeys.FiringCost) && _memberMeeting.CrewEditAllowance() != 0 && _memberMeeting.CanRemoveCheck() && !_memberMeeting.TutorialInProgress();
@@ -261,8 +262,8 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		Display();
 		var replyExtras = reply.Count > 0 ? reply.Where(r => r != reply.First()).Select(r => Localization.Get(r)).ToArray() : new string[0];
 		_dialogueText.text = reply.Count > 0 ? Localization.GetAndFormat(reply.First(), false, replyExtras) : string.Empty;
-	    ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
-        TrackerEventSender.SendEvent(new TraceEvent("MeetingQuestionAsked", TrackerVerbs.Selected, new Dictionary<string, string>
+		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		TrackerEventSender.SendEvent(new TraceEvent("MeetingQuestionAsked", TrackerVerbs.Selected, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.QuestionAsked.ToString(), questionType },
 			{ TrackerContextKeys.QuestionCost.ToString(), (allowanceBefore - _memberMeeting.QuestionAllowance()).ToString() },
@@ -368,6 +369,9 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		_lastReply = null;
 	}
 
+	/// <summary>
+	/// On the escape key being pressed, close pop-up or fire warning pop-up if open
+	/// </summary>
 	public void OnEscape()
 	{
 		if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
@@ -380,6 +384,9 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// When langauge is changed, redraw UI elements set in code
+	/// </summary>
 	private void OnLanguageChange()
 	{
 		var currentRole = _memberMeeting.GetCrewMemberPosition(_currentMember);

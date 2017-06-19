@@ -8,6 +8,9 @@ using PlayGen.Unity.Utilities.Localization;
 
 using RAGE.Analytics.Formats;
 
+/// <summary>
+/// Contains all logic relating to displaying post-race event 'learning pills'
+/// </summary>
 [RequireComponent(typeof(LearningPill))]
 public class LearningPillUI : ObservableMonoBehaviour {
 
@@ -33,6 +36,10 @@ public class LearningPillUI : ObservableMonoBehaviour {
 		Localization.LanguageChange -= OnLanguageChange;
 	}
 
+	/// <summary>
+	/// Set up displaying learning pills using the keys provided
+	/// Further is used if the pill being displayed is following on directly from another
+	/// </summary>
 	public void SetHelp(List<string> keys, bool further = false)
 	{
 		if (_learningPill == null)
@@ -53,11 +60,17 @@ public class LearningPillUI : ObservableMonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Display help after one is already being displayed
+	/// </summary>
 	public void SetFurtherHelp()
 	{
 		SetHelp(_furtherHelp, true);
 	}
 
+	/// <summary>
+	/// Hide the learning pill. Logic varies slightly if there is further help to display.
+	/// </summary>
 	public void ClosePill(string source)
 	{
 		_popUpBlocker.onClick.RemoveAllListeners();
@@ -94,6 +107,9 @@ public class LearningPillUI : ObservableMonoBehaviour {
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
+	/// <summary>
+	/// Animate displaying or hiding the learning pill
+	/// </summary>
 	private IEnumerator Animate(bool upward = false, bool keep = false, string tip = "")
 	{
 		_helpText.text = string.Empty;

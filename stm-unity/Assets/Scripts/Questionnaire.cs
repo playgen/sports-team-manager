@@ -20,6 +20,9 @@ public class Question
 	public Answer AnswerB;
 }
 
+/// <summary>
+/// Connecting class between GameManager in logic and the Questionnaire UI
+/// </summary>
 public class Questionnaire : MonoBehaviour
 {
 	private GameManager _gameManager;
@@ -38,6 +41,9 @@ public class Questionnaire : MonoBehaviour
 		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
 	}
 
+	/// <summary>
+	/// Get questions for questionnaire for currently selected language
+	/// </summary>
 	public void GetQuestionniare()
 	{
 		var questions = new List<Question>();
@@ -117,6 +123,9 @@ public class Questionnaire : MonoBehaviour
 		_questions = questions;
 	}
 
+	/// <summary>
+	/// Send amount of answers given for each type
+	/// </summary>
 	public void SubmitAnswers(Dictionary<string, int> answers)
 	{
 		_gameManager.SaveQuestionnaireResults(answers);
