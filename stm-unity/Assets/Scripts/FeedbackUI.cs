@@ -80,8 +80,8 @@ public class FeedbackUI : MonoBehaviour {
 	/// </summary>
 	public void ShowDescription(string descriptionType)
 	{
-		_descriptionPopUp.transform.Find("Description Pop-Up/Header").GetComponent<Localization>().Key = descriptionType;
-		_descriptionPopUp.transform.Find("Description Pop-Up/Text").GetComponent<Localization>().Key = descriptionType + "_Description";
+		_descriptionPopUp.transform.Find("Description Pop-Up/Header").GetComponent<TextLocalization>().Key = descriptionType;
+		_descriptionPopUp.transform.Find("Description Pop-Up/Text").GetComponent<TextLocalization>().Key = descriptionType + "_Description";
 		_descriptionPopUp.SetActive(true);
 	}
 
@@ -101,23 +101,23 @@ public class FeedbackUI : MonoBehaviour {
 		{
 			var styleObj = Instantiate(_selectionPrefab, _selectionGraph.transform, false);
 			styleObj.transform.Find("Style").GetComponent<Text>().text = Localization.Get(style.Key);
-			styleObj.transform.Find("Style").GetComponent<Localization>().Key = style.Key;
+			styleObj.transform.Find("Style").GetComponent<TextLocalization>().Key = style.Key;
 			styleObj.transform.Find("Amount").GetComponent<Image>().fillAmount = style.Value;
 			styleObj.transform.Find("Percentage").GetComponent<Text>().text = (Mathf.Round(style.Value * 1000) * 0.1f).ToString(Localization.SelectedLanguage.GetSpecificCulture()) + "%";
 			if (Mathf.Approximately(style.Value, styles.Values.Max()))
 			{
 				styleObj.transform.Find("Questions").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_High");
-				styleObj.transform.Find("Questions").GetComponent<Localization>().Key = style.Key + "_Questions_High";
+				styleObj.transform.Find("Questions").GetComponent<TextLocalization>().Key = style.Key + "_Questions_High";
 			}
 			else if (Mathf.Approximately(style.Value, styles.Values.Min()))
 			{
 				styleObj.transform.Find("Questions").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_Low");
-				styleObj.transform.Find("Questions").GetComponent<Localization>().Key = style.Key + "_Questions_Low";
+				styleObj.transform.Find("Questions").GetComponent<TextLocalization>().Key = style.Key + "_Questions_Low";
 			}
 			else
 			{
 				styleObj.transform.Find("Questions").GetComponent<Text>().text = string.Empty;
-				styleObj.transform.Find("Questions").GetComponent<Localization>().Key = string.Empty;
+				styleObj.transform.Find("Questions").GetComponent<TextLocalization>().Key = string.Empty;
 			}
 		}
 		Invoke("DoBestFit", 0);

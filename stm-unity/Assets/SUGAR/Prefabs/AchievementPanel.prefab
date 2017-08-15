@@ -2603,12 +2603,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011111438878}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Script: {fileID: 1807221761, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: CLOSE
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114248770559023008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2617,12 +2617,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1462720241227484}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Script: {fileID: 1807221761, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: SIGN_IN
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114339581648919614
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2658,12 +2658,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011349129812}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Script: {fileID: 1807221761, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: PREVIOUS
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114400897429780386
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2705,12 +2705,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011332589560}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Script: {fileID: 1807221761, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: ACHIEVEMENTS
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114749759618620804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2760,12 +2760,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000013369000256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Script: {fileID: 1807221761, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: NEXT
   ToUpper: 0
-  LanguageOverride: 
 --- !u!222 &222000010023899760
 CanvasRenderer:
   m_ObjectHideFlags: 1

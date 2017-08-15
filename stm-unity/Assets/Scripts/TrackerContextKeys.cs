@@ -7,12 +7,10 @@ public enum TrackerContextKeys
 	CrewMemberName,
 	CrewMemberPosition,
 	CrewMemberSessionsInTeam,
-	CrewMemberSkills,
 	CupFinishingPosition,
 	CurrentSession,
 	CurrentTalkTime,
 	DialogueID,
-	DialogueNextState,
 	DialogueStyle,
 	EventID,
 	FinishingPosition,
@@ -39,6 +37,5 @@ public enum TrackerContextKeys
 	SessionsIncludedCount,
 	SessionsSinceBoatLayoutChange,
 	SizeOfTeam,
-	SkillName,
 	TriggerUI
 }

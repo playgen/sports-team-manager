@@ -367,12 +367,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1047778457289616}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Script: {fileID: 1807221761, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: REGISTER
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114076794055559072
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -657,12 +657,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1648647941169334}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Script: {fileID: 1807221761, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: PASSWORD
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114401463262526056
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1021,12 +1021,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1330305987610196}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Script: {fileID: 1807221761, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: SIGN_IN
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114898172356691394
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1116,12 +1116,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1266417553619780}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Script: {fileID: 1807221761, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: USERNAME
   ToUpper: 0
-  LanguageOverride: 
 --- !u!222 &222042309292720342
 CanvasRenderer:
   m_ObjectHideFlags: 1

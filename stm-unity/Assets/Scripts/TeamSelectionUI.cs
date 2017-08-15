@@ -299,8 +299,8 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			}
 
 			var finalPosition = GetCupPosition();
-			_finalPlacementText.GetComponent<Localization>().Key = "POSITION_" + finalPosition;
-			_finalPlacementText.GetComponent<Localization>().Set();
+			_finalPlacementText.GetComponent<TextLocalization>().Key = "POSITION_" + finalPosition;
+			_finalPlacementText.GetComponent<TextLocalization>().Set();
 
 			_endRace.gameObject.SetActive(true);
 			_boatMain.gameObject.SetActive(false);
