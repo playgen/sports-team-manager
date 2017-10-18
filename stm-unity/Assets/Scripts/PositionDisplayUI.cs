@@ -217,7 +217,8 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 			{
 				positionHistory.transform.Find("Button").GetComponent<Button>().interactable = false;
 			}
-			positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, member.Key.GetMood(), true);
+            positionHistory.transform.Find("AvatarIcon").GetComponent<Image>().color = UnityEngine.Color.grey;
+            positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, member.Key.GetMood(), true);
 			positionHistory.transform.Find("Session Back/Sessions").GetComponent<Text>().text = member.Value.ToString();
 		}
 	}
