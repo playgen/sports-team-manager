@@ -1,27 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
-using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 
 /// <summary>
 /// Contains all logic to communicate between MemberMeetingUI and GameManager
 /// </summary>
-public class MemberMeeting : MonoBehaviour
+public class MemberMeeting
 {
-	private GameManager _gameManager;
-
-	private void Awake()
-	{
-		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
-	}
-
 	/// <summary>
 	/// Get the current position (if any) of a CrewMember
 	/// </summary>
 	public Position GetCrewMemberPosition(CrewMember crewMember)
 	{
-		var position = crewMember.GetBoatPosition(_gameManager.Team.Boat.PositionCrew);
+		var position = crewMember.GetBoatPosition(GameManagement.GameManager.Team.Boat.PositionCrew);
 		return position;
 	}
 
@@ -30,7 +21,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public string GetManagerName()
 	{
-		return _gameManager.Team.Manager.Name;
+		return GameManagement.GameManager.Team.Manager.Name;
 	}
 
 	/// <summary>
@@ -38,7 +29,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public string[] GetEventText(string eventKey)
 	{
-		return _gameManager.EventController.GetEventStrings(eventKey);
+		return GameManagement.GameManager.EventController.GetEventStrings(eventKey);
 	}
 
 	/// <summary>
@@ -46,7 +37,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public List<string> AskQuestion(string eventKey, CrewMember crewMember)
 	{
-		return _gameManager.SendMeetingEvent(eventKey, crewMember);
+		return GameManagement.GameManager.SendMeetingEvent(eventKey, crewMember);
 	}
 
 	/// <summary>
@@ -54,7 +45,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public int QuestionAllowance()
 	{
-		return _gameManager.ActionAllowance;
+		return GameManagement.GameManager.ActionAllowance;
 	}
 
 	/// <summary>
@@ -62,7 +53,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public float GetConfigValue(ConfigKeys eventKey, CrewMember member = null)
 	{
-		return _gameManager.GetConfigValue(eventKey, member);
+		return GameManagement.GameManager.GetConfigValue(eventKey, member);
 	}
 
 	/// <summary>
@@ -70,7 +61,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public int StartingQuestionAllowance()
 	{
-		return _gameManager.GetStartingActionAllowance();
+		return GameManagement.GameManager.GetStartingActionAllowance();
 	}
 
 	/// <summary>
@@ -78,7 +69,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public int StartingCrewEditAllowance()
 	{
-		return _gameManager.GetStartingCrewEditAllowance();
+		return GameManagement.GameManager.GetStartingCrewEditAllowance();
 	}
 
 	/// <summary>
@@ -86,7 +77,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public int CrewEditAllowance()
 	{
-		return _gameManager.CrewEditAllowance;
+		return GameManagement.GameManager.CrewEditAllowance;
 	}
 
 	/// <summary>
@@ -94,7 +85,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public bool CanRemoveCheck()
 	{
-		return _gameManager.Team.CanRemoveFromCrew();
+		return GameManagement.GameManager.Team.CanRemoveFromCrew();
 	}
 
 	/// <summary>
@@ -102,7 +93,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public void FireCrewMember(CrewMember crewMember)
 	{
-		_gameManager.RetireCrewMember(crewMember);
+        GameManagement.GameManager.RetireCrewMember(crewMember);
 	}
 
 	/// <summary>
@@ -110,7 +101,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public bool TutorialInProgress()
 	{
-		return _gameManager.ShowTutorial;
+		return GameManagement.GameManager.ShowTutorial;
 	}
 
 	/// <summary>
@@ -118,7 +109,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public string SessionInRace()
 	{
-		return (_gameManager.CurrentRaceSession + 1) + "/" + _gameManager.RaceSessionLength;
+		return (GameManagement.GameManager.CurrentRaceSession + 1) + "/" + GameManagement.GameManager.RaceSessionLength;
 	}
 
 	/// <summary>
@@ -126,7 +117,7 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public int TeamSize()
 	{
-		return _gameManager.Team.CrewMembers.Count;
+		return GameManagement.GameManager.Team.CrewMembers.Count;
 	}
 
 	/// <summary>
@@ -134,6 +125,6 @@ public class MemberMeeting : MonoBehaviour
 	/// </summary>
 	public int GetTimeInTeam(CrewMember crewMember)
 	{
-		return _gameManager.Team.LineUpHistory.Count(boat => boat.PositionCrew.Values.ToList().Any(c => c.Name == crewMember.Name));
+		return GameManagement.GameManager.Team.LineUpHistory.Count(boat => boat.PositionCrew.Values.ToList().Any(c => c.Name == crewMember.Name));
 	}
 }

@@ -7,21 +7,13 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 /// <summary>
 /// Contains all logic to communicate between RecruitMemberUI and GameManager
 /// </summary>
-public class RecruitMember : MonoBehaviour {
-
-	private GameManager _gameManager;
-
-	private void Awake()
-	{
-		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
-	}
-
+public class RecruitMember {
 	/// <summary>
 	/// Gets all current recruits for the boat
 	/// </summary>
 	public List<CrewMember> GetRecruits()
 	{
-		return _gameManager.Team.Recruits.Values.ToList();
+		return GameManagement.GameManager.Team.Recruits.Values.ToList();
 	}
 
 	/// <summary>
@@ -29,7 +21,7 @@ public class RecruitMember : MonoBehaviour {
 	/// </summary>
 	public string[] GetQuestionText(string eventKey)
 	{
-		return _gameManager.EventController.GetEventStrings(eventKey);
+		return GameManagement.GameManager.EventController.GetEventStrings(eventKey);
 	}
 
 	/// <summary>
@@ -37,7 +29,7 @@ public class RecruitMember : MonoBehaviour {
 	/// </summary>
 	public Dictionary<CrewMember, string> AskQuestion(CrewMemberSkill skill)
 	{
-		return _gameManager.SendRecruitMembersEvent(skill, GetRecruits());
+		return GameManagement.GameManager.SendRecruitMembersEvent(skill, GetRecruits());
 	}
 
 	/// <summary>
@@ -45,7 +37,7 @@ public class RecruitMember : MonoBehaviour {
 	/// </summary>
 	public void Recruit(CrewMember crewMember)
 	{
-		_gameManager.AddRecruit(crewMember);
+        GameManagement.GameManager.AddRecruit(crewMember);
 	}
 
 	/// <summary>
@@ -53,7 +45,7 @@ public class RecruitMember : MonoBehaviour {
 	/// </summary>
 	public int QuestionAllowance()
 	{
-		return _gameManager.ActionAllowance;
+		return GameManagement.GameManager.ActionAllowance;
 	}
 
 	/// <summary>
@@ -61,7 +53,7 @@ public class RecruitMember : MonoBehaviour {
 	/// </summary>
 	public float GetConfigValue(ConfigKeys eventKey)
 	{
-		return _gameManager.GetConfigValue(eventKey);
+		return GameManagement.GameManager.GetConfigValue(eventKey);
 	}
 
 	/// <summary>
@@ -69,7 +61,7 @@ public class RecruitMember : MonoBehaviour {
 	/// </summary>
 	public int StartingQuestionAllowance()
 	{
-		return _gameManager.GetStartingActionAllowance();
+		return GameManagement.GameManager.GetStartingActionAllowance();
 	}
 
 	/// <summary>
@@ -77,7 +69,7 @@ public class RecruitMember : MonoBehaviour {
 	/// </summary>
 	public string SessionInRace()
 	{
-		return (_gameManager.CurrentRaceSession + 1) + "/" + _gameManager.RaceSessionLength;
+		return (GameManagement.GameManager.CurrentRaceSession + 1) + "/" + GameManagement.GameManager.RaceSessionLength;
 	}
 
 	/// <summary>
@@ -85,7 +77,7 @@ public class RecruitMember : MonoBehaviour {
 	/// </summary>
 	public int TeamSize()
 	{
-		return _gameManager.Team.CrewMembers.Count;
+		return GameManagement.GameManager.Team.CrewMembers.Count;
 	}
 
 	/// <summary>
@@ -93,8 +85,8 @@ public class RecruitMember : MonoBehaviour {
 	/// </summary>
 	public int SessionsSinceLastChange()
 	{
-		var history = _gameManager.Team.LineUpHistory.AsEnumerable().Reverse().ToList();
-		var firstMismatch = history.FirstOrDefault(b => b.Type != _gameManager.Team.Boat.Type);
+		var history = GameManagement.GameManager.Team.LineUpHistory.AsEnumerable().Reverse().ToList();
+		var firstMismatch = history.FirstOrDefault(b => b.Type != GameManagement.GameManager.Team.Boat.Type);
 		return firstMismatch != null ? history.IndexOf(firstMismatch) : 0;
 	}
 }

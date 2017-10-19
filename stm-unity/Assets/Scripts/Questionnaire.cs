@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-
-using PlayGen.RAGE.SportsTeamManager.Simulation;
 using PlayGen.Unity.Utilities.Localization;
-
 using SimpleJSON;
 using UnityEngine;
 
@@ -23,32 +20,22 @@ public class Question
 /// <summary>
 /// Connecting class between GameManager in logic and the Questionnaire UI
 /// </summary>
-public class Questionnaire : MonoBehaviour
+public class Questionnaire
 {
-	private GameManager _gameManager;
-	[SerializeField]
-	private TextAsset _questionAsset;
-	[SerializeField]
-	private TextAsset _answerStyleAsset;
 	private List<Question> _questions;
 	public List<Question> Questions
 	{
 		get { return _questions; }
 	}
 
-	private void Start()
-	{
-		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
-	}
-
 	/// <summary>
 	/// Get questions for questionnaire for currently selected language
 	/// </summary>
-	public void GetQuestionniare()
+	public void GetQuestionniare(TextAsset question, TextAsset answer)
 	{
 		var questions = new List<Question>();
 
-		var parsedQuestionAsset = JSON.Parse(_questionAsset.text);
+		var parsedQuestionAsset = JSON.Parse(question.text);
 		var questionDict = new Dictionary<string, Dictionary<string, string>>();
 		for (int i = 0; i < parsedQuestionAsset.Count; i++)
 		{
@@ -68,7 +55,7 @@ public class Questionnaire : MonoBehaviour
 			questionDict.Add(parsedQuestionAsset[i][0], questionLangDict);
 		}
 
-		var parsedStyleAsset = JSON.Parse(_answerStyleAsset.text);
+		var parsedStyleAsset = JSON.Parse(answer.text);
 		var styleDict = new Dictionary<string, Dictionary<string, string>>();
 		for (int i = 0; i < parsedStyleAsset.Count; i++)
 		{
@@ -86,7 +73,7 @@ public class Questionnaire : MonoBehaviour
 			var currentQuestion = string.Format("QUESTION_{0}", questions.Count + 1);
 			if (questionDict.ContainsKey(currentQuestion + "_A") && questionDict.ContainsKey(currentQuestion + "_B") && styleDict.ContainsKey(currentQuestion))
 			{
-				var question = new Question
+				var q = new Question
 				{
 					AnswerA = new Answer(),
 					AnswerB = new Answer()
@@ -96,24 +83,24 @@ public class Questionnaire : MonoBehaviour
 					var langName = lang.Name.ToLower();
 					if (questionDict[currentQuestion + "_A"][langName] != null)
 					{
-						question.AnswerA.Text.Add(langName, questionDict[currentQuestion + "_A"][langName].RemoveJSONNodeChars());
+                        q.AnswerA.Text.Add(langName, questionDict[currentQuestion + "_A"][langName].RemoveJSONNodeChars());
 					}
 					else
 					{
-						question.AnswerA.Text.Add(langName, questionDict[currentQuestion + "_A"][questionDict[currentQuestion + "_A"].Keys.ToList()[0]].RemoveJSONNodeChars());
+                        q.AnswerA.Text.Add(langName, questionDict[currentQuestion + "_A"][questionDict[currentQuestion + "_A"].Keys.ToList()[0]].RemoveJSONNodeChars());
 					}
 					if (questionDict[currentQuestion + "_B"][langName] != null)
 					{
-						question.AnswerB.Text.Add(langName, questionDict[currentQuestion + "_B"][langName].RemoveJSONNodeChars());
+                        q.AnswerB.Text.Add(langName, questionDict[currentQuestion + "_B"][langName].RemoveJSONNodeChars());
 					}
 					else
 					{
-						question.AnswerB.Text.Add(lang.Name, questionDict[currentQuestion + "_B"][questionDict[currentQuestion + "_B"].Keys.ToList()[0]].RemoveJSONNodeChars());
+                        q.AnswerB.Text.Add(lang.Name, questionDict[currentQuestion + "_B"][questionDict[currentQuestion + "_B"].Keys.ToList()[0]].RemoveJSONNodeChars());
 					}
 				}
-				question.AnswerA.Style = styleDict[currentQuestion]["A"].RemoveJSONNodeChars();
-				question.AnswerB.Style = styleDict[currentQuestion]["B"].RemoveJSONNodeChars();
-				questions.Add(question);
+                q.AnswerA.Style = styleDict[currentQuestion]["A"].RemoveJSONNodeChars();
+                q.AnswerB.Style = styleDict[currentQuestion]["B"].RemoveJSONNodeChars();
+				questions.Add(q);
 			}
 			else
 			{
@@ -128,6 +115,6 @@ public class Questionnaire : MonoBehaviour
 	/// </summary>
 	public void SubmitAnswers(Dictionary<string, int> answers)
 	{
-		_gameManager.SaveQuestionnaireResults(answers);
+		GameManagement.GameManager.SaveQuestionnaireResults(answers);
 	}
 }

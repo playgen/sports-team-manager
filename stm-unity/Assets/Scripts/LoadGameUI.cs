@@ -7,11 +7,8 @@ using PlayGen.Unity.Utilities.Localization;
 /// <summary>
 /// Contains all UI logic related to loading saved games
 /// </summary>
-[RequireComponent(typeof(LoadGame))]
 public class LoadGameUI : MonoBehaviour
 {
-	private LoadGame _loadGame;
-	private UIStateManager _stateManager;
 	[SerializeField]
 	private Button _loadButton;
 	[SerializeField]
@@ -22,12 +19,6 @@ public class LoadGameUI : MonoBehaviour
 	private GameObject _gameContainer;
 	[SerializeField]
 	private Text _errorText;
-
-	private void Awake()
-	{
-		_stateManager = FindObjectOfType(typeof(UIStateManager)) as UIStateManager;
-		_loadGame = GetComponent<LoadGame>();
-	}
 
 	/// <summary>
 	/// Get available games and wipe error text
@@ -49,19 +40,19 @@ public class LoadGameUI : MonoBehaviour
 	/// </summary>
 	private void Update()
 	{
-		if (string.IsNullOrEmpty(_loadGame.GetSelected()) && _loadButton.interactable)
+		if (string.IsNullOrEmpty(GameManagement.LoadGame.GetSelected()) && _loadButton.interactable)
 		{
 			_loadButton.interactable = false;
 			_selectedIcon.SetActive(false);
 		}
-		else if(!string.IsNullOrEmpty(_loadGame.GetSelected()) && !_loadButton.interactable)
+		else if(!string.IsNullOrEmpty(GameManagement.LoadGame.GetSelected()) && !_loadButton.interactable)
 		{
 			_loadButton.interactable = true;
 			_selectedIcon.SetActive(true);
 		}
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			_stateManager.BackToMenu(gameObject);
+            UIStateManager.StaticBackToMenu(gameObject);
 		}
 	}
 
@@ -76,7 +67,7 @@ public class LoadGameUI : MonoBehaviour
 		{
 			Destroy(child.gameObject);
 		}
-		var gameNames = _loadGame.GetGames();
+		var gameNames = GameManagement.LoadGame.GetGames();
 		foreach (var game in gameNames)
 		{
 			var gameButton = Instantiate(_gameButtonPrefab);
@@ -94,7 +85,7 @@ public class LoadGameUI : MonoBehaviour
 	public void SelectGame(Text nameText)
 	{
 		_errorText.text = string.Empty;
-		_loadGame.SetSelected(nameText.text);
+		GameManagement.LoadGame.SetSelected(nameText.text);
 		_selectedIcon.transform.SetParent(nameText.transform, false);
 		_selectedIcon.transform.position = nameText.transform.position;
 	}
@@ -106,13 +97,13 @@ public class LoadGameUI : MonoBehaviour
 	{
 		_errorText.text = string.Empty;
 		//check if the game exists
-		var exists = _loadGame.ExistingGameCheck();
+		var exists = GameManagement.LoadGame.ExistingGameCheck();
 		if (exists)
 		{
-			var success = _loadGame.LoadSelectedGame();
+			var success = GameManagement.LoadGame.LoadSelectedGame();
 			if (success)
 			{
-				_stateManager.GoToGame(gameObject);
+                UIStateManager.StaticGoToGame(gameObject);
 			}
 			else
 			{
@@ -125,8 +116,8 @@ public class LoadGameUI : MonoBehaviour
 			_errorText.text = Localization.Get("LOAD_GAME_MISSING_FILES");
 			_selectedIcon.transform.SetParent(_gameContainer.transform, true);
 			_selectedIcon.SetActive(false);
-			Destroy(_gameContainer.transform.Find(_loadGame.GetSelected()).gameObject);
-			_loadGame.SetSelected(string.Empty);
+			Destroy(_gameContainer.transform.Find(GameManagement.LoadGame.GetSelected()).gameObject);
+			GameManagement.LoadGame.SetSelected(string.Empty);
 		}
 		
 	}

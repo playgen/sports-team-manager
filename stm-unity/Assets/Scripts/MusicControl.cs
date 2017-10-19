@@ -9,8 +9,14 @@ public class MusicControl : MonoBehaviour {
 	private AudioClip[] _music;
 	private AudioSource _audio;
 	private int _currentTrack;
+    private static MusicControl _instance;
 
-	void Start () {
+    void Awake()
+    {
+        _instance = this;
+    }
+
+    void Start () {
 		_audio = GetComponent<AudioSource>();
         if (_music.Length > 0)
         {

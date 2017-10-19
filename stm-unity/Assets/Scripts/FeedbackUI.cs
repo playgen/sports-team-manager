@@ -14,10 +14,8 @@ using UnityEngine.UI;
 /// <summary>
 /// Contains all logic relating to displaying post-game feedback
 /// </summary>
-[RequireComponent(typeof(Feedback))]
 public class FeedbackUI : MonoBehaviour {
 
-	private Feedback _feedback;
 	private int _pageNumber;
 	[SerializeField]
 	private GameObject[] _pages;
@@ -33,11 +31,6 @@ public class FeedbackUI : MonoBehaviour {
 	private GameObject _descriptionPopUp;
 	[SerializeField]
 	private Text _finalResultText;
-
-	private void Awake()
-	{
-		_feedback = GetComponent<Feedback>();
-	}
 
 	private void OnEnable()
 	{
@@ -96,14 +89,14 @@ public class FeedbackUI : MonoBehaviour {
 			Destroy(child.gameObject);
 		}
 
-		var styles = _feedback.GatherManagementStyles();
+		var styles = GameManagement.Feedback.GatherManagementStyles();
 		foreach (var style in styles)
 		{
 			var styleObj = Instantiate(_selectionPrefab, _selectionGraph.transform, false);
 			styleObj.transform.Find("Style").GetComponent<Text>().text = Localization.Get(style.Key);
 			styleObj.transform.Find("Style").GetComponent<TextLocalization>().Key = style.Key;
 			styleObj.transform.Find("Amount").GetComponent<Image>().fillAmount = style.Value;
-			styleObj.transform.Find("Percentage").GetComponent<Text>().text = (Mathf.Round(style.Value * 1000) * 0.1f).ToString(Localization.SelectedLanguage.GetSpecificCulture()) + "%";
+			styleObj.transform.Find("Percentage").GetComponent<Text>().text = (Mathf.Round(style.Value * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
 			if (Mathf.Approximately(style.Value, styles.Values.Max()))
 			{
 				styleObj.transform.Find("Questions").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_High");
@@ -128,7 +121,7 @@ public class FeedbackUI : MonoBehaviour {
 	/// </summary>
 	private void GetPrevalentLeadershipStyle()
 	{
-		var style = _feedback.GetPrevalentLeadershipStyle();
+		var style = GameManagement.Feedback.GetPrevalentLeadershipStyle();
 		var styleString = string.Empty;
 		foreach (var s in style)
 		{
@@ -146,12 +139,12 @@ public class FeedbackUI : MonoBehaviour {
 	/// </summary>
 	private void SetPrevalentStyleText()
 	{
-		var styles = _feedback.GatherManagementStyles();
+		var styles = GameManagement.Feedback.GatherManagementStyles();
 		foreach (var button in _managementButtons)
 		{
 			if (styles.ContainsKey(button.name.ToLower()))
 			{
-				button.transform.Find("Percentage").GetComponent<Text>().text = (Mathf.Round(styles[button.name.ToLower()] * 1000) * 0.1f).ToString(Localization.SelectedLanguage.GetSpecificCulture()) + "%";
+				button.transform.Find("Percentage").GetComponent<Text>().text = (Mathf.Round(styles[button.name.ToLower()] * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
 			}
 			else
 			{
@@ -159,12 +152,12 @@ public class FeedbackUI : MonoBehaviour {
 			}
 		}
 
-		var leaderStyles = _feedback.GatherLeadershipStyles();
+		var leaderStyles = GameManagement.Feedback.GatherLeadershipStyles();
 		foreach (var button in _leadershipButtons)
 		{
 			if (leaderStyles.ContainsKey(button.name.ToLower()))
 			{
-				button.transform.Find("Percentage").GetComponent<Text>().text = (Mathf.Round(leaderStyles[button.name.ToLower()] * 1000) * 0.1f).ToString(Localization.SelectedLanguage.GetSpecificCulture()) + "%";
+				button.transform.Find("Percentage").GetComponent<Text>().text = (Mathf.Round(leaderStyles[button.name.ToLower()] * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
 			}
 			else
 			{
@@ -181,7 +174,7 @@ public class FeedbackUI : MonoBehaviour {
 		if (SUGARManager.CurrentUser != null)
 		{
 			string url = "username=" + SUGARManager.CurrentUser.Name; 
-			var styles = _feedback.GatherManagementStyles();
+			var styles = GameManagement.Feedback.GatherManagementStyles();
 			url += "&par1=" + Mathf.Round(styles["competing"] * 100000f);
 			url += "&par2=" + Mathf.Round(styles["avoiding"] * 100000f);
 			url += "&par3=" + Mathf.Round(styles["accommodating"] * 100000f);

@@ -15,10 +15,8 @@ using RAGE.Analytics.Formats;
 /// <summary>
 /// Contains all UI logic related to the Position pop-up
 /// </summary>
-[RequireComponent(typeof(PositionDisplay))]
 public class PositionDisplayUI : ObservableMonoBehaviour
 {
-	private PositionDisplay _positionDisplay;
 	[SerializeField]
 	private MemberMeetingUI _meetingUI;
 	[SerializeField]
@@ -43,11 +41,6 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	private GameObject _historyPrefab;
 
 	private Position _current;
-
-	private void Awake()
-	{
-		_positionDisplay = GetComponent<PositionDisplay>();
-	}
 
 	private void OnEnable()
 	{
@@ -113,19 +106,15 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	/// </summary>
 	public void SetUpDisplay(Position position, string source)
 	{
-		if (!_positionDisplay)
-		{
-			_positionDisplay = GetComponent<PositionDisplay>();
-		}
-		var currentCrew = _positionDisplay.GetTeam().Boat.PositionCrew.ContainsKey(position) ? _positionDisplay.GetTeam().Boat.PositionCrew[position] : null;
-		var boatPos = string.Join(",", _positionDisplay.GetTeam().Boat.Positions.Select(pos => pos.ToString()).ToArray());
+		var currentCrew = GameManagement.PositionDisplay.GetTeam().Boat.PositionCrew.ContainsKey(position) ? GameManagement.PositionDisplay.GetTeam().Boat.PositionCrew[position] : null;
+		var boatPos = string.Join(",", GameManagement.PositionDisplay.GetTeam().Boat.Positions.Select(pos => pos.ToString()).ToArray());
 		TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.PositionName.ToString(), position.ToString() },
 			{ TrackerContextKeys.PositionCrewMember.ToString(), currentCrew != null ? currentCrew.Name : "None" },
 			{ TrackerContextKeys.BoatLayout.ToString(), boatPos },
 			{ TrackerContextKeys.TriggerUI.ToString(), source },
-			{ TrackerContextKeys.SessionsIncludedCount.ToString(), (_positionDisplay.GetLineUpHistory().Sum(boat => boat.Positions.Count(pos => pos == position)) + 1).ToString() },
+			{ TrackerContextKeys.SessionsIncludedCount.ToString(), (GameManagement.PositionDisplay.GetLineUpHistory().Sum(boat => boat.Positions.Count(pos => pos == position)) + 1).ToString() },
 		}, AccessibleTracker.Accessible.Screen));
 		SUGARManager.GameData.Send("View Position Screen", position.ToString());
 		gameObject.SetActive(true);
@@ -143,7 +132,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	private void Display(Position position)
 	{
 		_current = position;
-		var team = _positionDisplay.GetTeam();
+		var team = GameManagement.PositionDisplay.GetTeam();
 		CrewMember currentCrew = null;
 		//get current CrewMember in this position if any
 		if (team.Boat.PositionCrew.ContainsKey(position))
@@ -185,7 +174,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 		}
 		//gather a count of how many times CrewMembers have been placed in this position
 		var positionMembers = new Dictionary<CrewMember, int>();
-		foreach (var boat in _positionDisplay.GetLineUpHistory())
+		foreach (var boat in GameManagement.PositionDisplay.GetLineUpHistory())
 		{
 			var positions = boat.Positions.Where(pos => pos == position).ToArray();
 			foreach (var pos in positions)

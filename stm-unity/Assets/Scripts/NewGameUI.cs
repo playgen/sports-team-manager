@@ -8,11 +8,8 @@ using PlayGen.Unity.Utilities.Localization;
 /// <summary>
 /// Contains all UI logic related to creating new games
 /// </summary>
-[RequireComponent(typeof(NewGame))]
 public class NewGameUI : MonoBehaviour {
 
-	private NewGame _newGame;
-	private UIStateManager _stateManager;
 	[SerializeField]
 	private InputField _boatName;
 	[SerializeField]
@@ -34,8 +31,6 @@ public class NewGameUI : MonoBehaviour {
 
 	private void Awake()
 	{
-		_stateManager = FindObjectOfType(typeof(UIStateManager)) as UIStateManager;
-		_newGame = GetComponent<NewGame>();
 		_overwritePopUp.SetActive(false);
 		WarningDisable();
 		RandomColor();
@@ -59,7 +54,7 @@ public class NewGameUI : MonoBehaviour {
 
 	private void OnEnable()
 	{
-		_tutorialToggle.enabled = _newGame.ExistingSaves();
+		_tutorialToggle.enabled = GameManagement.NewGame.ExistingSaves();
 		_tutorialToggle.isOn = true;
 		BestFit.ResolutionChange += DoBestFit;
 		Invoke("DoBestFit", 0f);
@@ -126,7 +121,7 @@ public class NewGameUI : MonoBehaviour {
 		}
 		if (valid)
 		{
-			var exists = _newGame.ExistingGameCheck(_boatName.text);
+			var exists = GameManagement.NewGame.ExistingGameCheck(_boatName.text);
 			if (exists)
 			{
 				_overwritePopUp.SetActive(true);
@@ -157,10 +152,10 @@ public class NewGameUI : MonoBehaviour {
 				(byte)(_colorImageSecondary.color.g * 255),
 				(byte)(_colorImageSecondary.color.b * 255)
 		};
-		var success = _newGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _tutorialToggle.isOn);
+		var success = GameManagement.NewGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _tutorialToggle.isOn);
 		if (success)
 		{
-			_stateManager.GoToGame(gameObject);
+            UIStateManager.StaticGoToGame(gameObject);
 		}
 		else
 		{

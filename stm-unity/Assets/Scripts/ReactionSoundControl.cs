@@ -13,8 +13,14 @@ public class ReactionSoundControl : MonoBehaviour {
 	private AudioSource _audio;
 	[SerializeField]
 	private Reaction[] _reactions;
+    private static ReactionSoundControl _instance;
 
-	void Start () {
+    void Awake ()
+    {
+        _instance = this;
+    }
+
+    void Start () {
 		_audio = GetComponent<AudioSource>();
 	}
 	
@@ -25,17 +31,17 @@ public class ReactionSoundControl : MonoBehaviour {
 		}
 	}
 
-	public void PlaySound(string reaction, bool male, float height, float weight)
+	public static void PlaySound(string reaction, bool male, float height, float weight)
 	{
-		if (!_audio.mute)
+		if (!_instance._audio.mute)
 		{
-			var react = _reactions.FirstOrDefault(r => r.Name == reaction);
+			var react = _instance._reactions.FirstOrDefault(r => r.Name == reaction);
 			if (react != null && react.Clips.Any())
 			{
-				_audio.Stop();
-				_audio.clip = react.Clips[UnityEngine.Random.Range(0, react.Clips.Length)];
-				_audio.pitch = (male ? 1 : 1.1f) - (0.05f * height * weight);
-				_audio.Play();
+                _instance._audio.Stop();
+                _instance._audio.clip = react.Clips[UnityEngine.Random.Range(0, react.Clips.Length)];
+                _instance._audio.pitch = (male ? 1 : 1.1f) - (0.05f * height * weight);
+                _instance._audio.Play();
 			}
 		}
 	}

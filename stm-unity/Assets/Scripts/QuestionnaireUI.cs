@@ -10,22 +10,19 @@ using System.Linq;
 /// <summary>
 /// Contains all logic relating to displaying post-game questionnaire
 /// </summary>
-[RequireComponent(typeof(Questionnaire))]
 public class QuestionnaireUI : MonoBehaviour
 {
-	private Questionnaire _questionnaire;
-	[SerializeField]
+    [SerializeField]
+    private TextAsset _questionAsset;
+    [SerializeField]
+    private TextAsset _answerStyleAsset;
+    [SerializeField]
 	private GameObject _questionnairePanel;
 	[SerializeField]
 	private GameObject _questionPrefab;
 	[SerializeField]
 	private GameObject _submitButton;
 	private readonly List<GameObject> _questionObjs = new List<GameObject>();
-
-	private void Awake()
-	{
-		_questionnaire = GetComponent<Questionnaire>();
-	}
 
 	/// <summary>
 	/// On Enable, clear questionnaire and recreate
@@ -39,10 +36,10 @@ public class QuestionnaireUI : MonoBehaviour
 			Destroy(obj);
 		}
 		_questionObjs.Clear();
-		_questionnaire.GetQuestionniare();
-		foreach (var question in _questionnaire.Questions)
+		GameManagement.Questionnaire.GetQuestionniare(_questionAsset, _answerStyleAsset);
+		foreach (var question in GameManagement.Questionnaire.Questions)
 		{
-			var questionObj = Instantiate(_questionPrefab, _questionnairePanel.transform, false);
+			var questionObj = Instantiate(_questionPrefab, transform, false);
 			questionObj.name = _questionPrefab.name;
 			questionObj.transform.Find("Question").GetComponent<Text>().text = Localization.Get("QUESTION") + " " + (_questionObjs.Count + 1);
 			questionObj.transform.Find("Answer A").GetComponentInChildren<Text>().text = "A. " + question.AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
@@ -52,7 +49,7 @@ public class QuestionnaireUI : MonoBehaviour
 			_questionObjs.Add(questionObj);
 		}
 		CheckAllToggled();
-		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_questionnairePanel.transform);
+		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
 		Invoke("DoBestFit", 0);
 	}
 
@@ -81,11 +78,11 @@ public class QuestionnaireUI : MonoBehaviour
 			var style = string.Empty;
 			if (_questionObjs[i].transform.Find("Answer A").GetComponentInChildren<Toggle>().isOn)
 			{
-				style = _questionnaire.Questions[i].AnswerA.Style;
+				style = GameManagement.Questionnaire.Questions[i].AnswerA.Style;
 			}
 			else if (_questionObjs[i].transform.Find("Answer B").GetComponentInChildren<Toggle>().isOn)
 			{
-				style = _questionnaire.Questions[i].AnswerB.Style;
+				style = GameManagement.Questionnaire.Questions[i].AnswerB.Style;
 			}
 			if (results.ContainsKey(style))
 			{
@@ -96,8 +93,8 @@ public class QuestionnaireUI : MonoBehaviour
 				results.Add(style, 1);
 			}
 		}
-		_questionnaire.SubmitAnswers(results);
-		((UIStateManager)FindObjectOfType(typeof(UIStateManager))).GoToFeedback();
+		GameManagement.Questionnaire.SubmitAnswers(results);
+        UIStateManager.StaticGoToFeedback();
 	}
 
 	private void OnLanguageChange()
@@ -105,16 +102,16 @@ public class QuestionnaireUI : MonoBehaviour
 		for (int i = 0; i < _questionObjs.Count; i++)
 		{
 			_questionObjs[i].transform.Find("Question").GetComponent<Text>().text = Localization.Get("QUESTION") + " " + (i + 1);
-			_questionObjs[i].transform.Find("Answer A").GetComponentInChildren<Text>().text = "A. " + _questionnaire.Questions[i].AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
-			_questionObjs[i].transform.Find("Answer B").GetComponentInChildren<Text>().text = "B. " + _questionnaire.Questions[i].AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
+			_questionObjs[i].transform.Find("Answer A").GetComponentInChildren<Text>().text = "A. " + GameManagement.Questionnaire.Questions[i].AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
+			_questionObjs[i].transform.Find("Answer B").GetComponentInChildren<Text>().text = "B. " + GameManagement.Questionnaire.Questions[i].AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
 		}
 		DoBestFit();
 	}
 
 	private void DoBestFit()
 	{
-		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_questionnairePanel.transform);
-		_questionnairePanel.GetComponentsInChildren<Text>().BestFit();
+		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
+		GetComponentsInChildren<Text>().BestFit();
 		_questionObjs.ForEach(q => q.transform.Find("Question").GetComponent<Text>().fontSize = (int)(q.transform.Find("Question").GetComponent<Text>().fontSize * 1.5f));
 	}
 }

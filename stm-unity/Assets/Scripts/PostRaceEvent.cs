@@ -4,17 +4,13 @@ using System.Linq;
 using PlayGen.SUGAR.Unity;
 
 using RAGE.Analytics.Formats;
-
 using UnityEngine;
 
 /// <summary>
 /// Contains all logic to communicate between PostRaceEventUI and GameManager
 /// </summary>
-public class PostRaceEvent : ObservableMonoBehaviour
+public class PostRaceEvent
 {
-	private GameManager _gameManager;
-	[SerializeField]
-	private ReactionSoundControl _reactionSound;
 	private List<PostRaceEventState> _currentEvent;
 	public List<PostRaceEventState> CurrentEvent
 	{
@@ -27,6 +23,10 @@ public class PostRaceEvent : ObservableMonoBehaviour
 	{
 		get { return _enableCounter; }
 	}
+    private GameObject _gameObject
+    {
+        get { return GameObject.Find("Canvas/Team Management/Pop-up Bounds/Event Pop-Up"); }
+    }
 
 	/// <summary>
 	/// Display pop-up if there is an event to show
@@ -35,15 +35,11 @@ public class PostRaceEvent : ObservableMonoBehaviour
 	{
 		_disableCounter = 0;
 		_enableCounter = 0;
-		if (_gameManager == null)
+		if (GameManagement.GameManager.EventController.PostRaceEvents.Count > 0)
 		{
-			_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
+			_currentEvent = GameManagement.GameManager.EventController.PostRaceEvents.First();
 		}
-		if (_gameManager.EventController.PostRaceEvents.Count > 0)
-		{
-			_currentEvent = _gameManager.EventController.PostRaceEvents.First();
-		}
-		gameObject.SetActive(true);
+        _gameObject.SetActive(true);
 	}
 
 	/// <summary>
@@ -60,9 +56,9 @@ public class PostRaceEvent : ObservableMonoBehaviour
 	public void DisableCheck()
 	{
 		_disableCounter++;
-		if (_disableCounter == transform.childCount)
+		if (_disableCounter == _gameObject.transform.childCount)
 		{
-			gameObject.SetActive(false);
+            _gameObject.SetActive(false);
 		}
 	}
 
@@ -71,7 +67,7 @@ public class PostRaceEvent : ObservableMonoBehaviour
 	/// </summary>
 	public Dictionary<CrewMember, List<PostRaceEventState>> GetEventReplies()
 	{
-		var replies = _gameManager.EventController.GetEventDialogues(_gameManager.Team.Manager);
+		var replies = GameManagement.GameManager.EventController.GetEventDialogues(GameManagement.GameManager.Team.Manager);
 		var replyDict = new Dictionary<CrewMember, List<PostRaceEventState>>();
 		foreach (var ev in _currentEvent)
 		{
@@ -100,9 +96,9 @@ public class PostRaceEvent : ObservableMonoBehaviour
 			}
 		}
 		//if there is another event that can be set as current, do so
-		if (_currentEvent == null && _gameManager.EventController.PostRaceEvents.Count > 0)
+		if (_currentEvent == null && GameManagement.GameManager.EventController.PostRaceEvents.Count > 0)
 		{
-			_currentEvent = _gameManager.EventController.PostRaceEvents.First();
+			_currentEvent = GameManagement.GameManager.EventController.PostRaceEvents.First();
 		}
 		return replyDict;
 	}
@@ -140,7 +136,7 @@ public class PostRaceEvent : ObservableMonoBehaviour
 			float beforeValues = GetTeamAverageMood() + GetTeamAverageManagerOpinion() + GetTeamAverageOpinion();
 			foreach (var res in _selectedResponses)
 			{
-				_reactionSound.PlaySound(res.Value.Dialogue.Meaning[0], res.Key.Gender == "Male", res.Key.Avatar.Height, res.Key.Avatar.Weight);
+				ReactionSoundControl.PlaySound(res.Value.Dialogue.Meaning[0], res.Key.Gender == "Male", res.Key.Avatar.Height, res.Key.Avatar.Weight);
 			}
 			var replies = SendReply();
 			float afterValues = GetTeamAverageMood() + GetTeamAverageManagerOpinion() + GetTeamAverageOpinion();
@@ -174,7 +170,7 @@ public class PostRaceEvent : ObservableMonoBehaviour
 	/// </summary>
 	private List<PostRaceEventState> SendReply()
 	{
-		var replies = _gameManager.SendPostRaceEvent(_selectedResponses.Values.ToList());
+		var replies = GameManagement.GameManager.SendPostRaceEvent(_selectedResponses.Values.ToList());
 		_selectedResponses = null;
 		return replies;
 	}
@@ -184,7 +180,7 @@ public class PostRaceEvent : ObservableMonoBehaviour
 	/// </summary>
 	public float GetTeamAverageMood()
 	{
-		return _gameManager.Team.AverageTeamMood();
+		return GameManagement.GameManager.Team.AverageTeamMood();
 	}
 
 	/// <summary>
@@ -192,7 +188,7 @@ public class PostRaceEvent : ObservableMonoBehaviour
 	/// </summary>
 	public float GetTeamAverageManagerOpinion()
 	{
-		return _gameManager.Team.AverageTeamManagerOpinion();
+		return GameManagement.GameManager.Team.AverageTeamManagerOpinion();
 	}
 
 	/// <summary>
@@ -200,7 +196,7 @@ public class PostRaceEvent : ObservableMonoBehaviour
 	/// </summary>
 	public float GetTeamAverageOpinion()
 	{
-		return _gameManager.Team.AverageTeamOpinion();
+		return GameManagement.GameManager.Team.AverageTeamOpinion();
 	}
 
 	/// <summary>
@@ -208,6 +204,6 @@ public class PostRaceEvent : ObservableMonoBehaviour
 	/// </summary>
 	public string GetEventKey (string state)
 	{
-		return _gameManager.GetPostRaceEventKeys().First(state.StartsWith);
+		return GameManagement.GameManager.GetPostRaceEventKeys().First(state.StartsWith);
 	}
 }

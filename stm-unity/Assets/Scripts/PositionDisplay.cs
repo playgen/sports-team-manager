@@ -5,25 +5,14 @@ using System.Collections.Generic;
 /// <summary>
 /// Contains all logic to communicate between PositionDisplayUI and GameManager
 /// </summary>
-public class PositionDisplay : MonoBehaviour
+public class PositionDisplay
 {
-	private GameManager _gameManager;
-
-	private void Awake()
-	{
-		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
-	}
-
 	/// <summary>
 	/// Get the current team
 	/// </summary>
 	public Team GetTeam()
 	{
-		if (_gameManager == null)
-		{
-			_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
-		}
-		return _gameManager.Team;
+		return GameManagement.GameManager.Team;
 	}
 
 	/// <summary>
@@ -31,6 +20,6 @@ public class PositionDisplay : MonoBehaviour
 	/// </summary>
 	public List<Boat> GetLineUpHistory()
 	{
-		return _gameManager.Team.LineUpHistory;
+		return GameManagement.GameManager.Team.LineUpHistory;
 	}
 }

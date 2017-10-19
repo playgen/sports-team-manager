@@ -16,7 +16,6 @@ using RAGE.Analytics.Formats;
 /// </summary>
 public class PostRaceEventUI : ObservableMonoBehaviour
 {
-	private PostRaceEvent _postRaceEvent;
 	private CanvasGroup _canvasGroup;
 	[SerializeField]
 	private LearningPillUI _learningPill;
@@ -32,14 +31,10 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	{
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
-		if (_postRaceEvent == null)
-		{
-			_postRaceEvent = GetComponentInParent<PostRaceEvent>();
-			_canvasGroup = GetComponent<CanvasGroup>();
-		}
-		//reorder pop-ups and blockers
-		_popUpBlocker.transform.SetAsLastSibling();
-		_postRaceEvent.transform.SetAsLastSibling();
+        _canvasGroup = GetComponent<CanvasGroup>();
+        //reorder pop-ups and blockers
+        _popUpBlocker.transform.SetAsLastSibling();
+		transform.parent.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
 		ResetDisplay();
@@ -54,10 +49,10 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			person.EnableQuestions();
 			DoBestFit();
 		}
-		if (_postRaceEvent.transform.GetSiblingIndex() == _postRaceEvent.transform.parent.childCount - 1)
+		if (transform.parent.GetSiblingIndex() == transform.parent.parent.childCount - 1)
 		{
 			_popUpBlocker.transform.SetAsLastSibling();
-			_postRaceEvent.transform.SetAsLastSibling();
+            transform.parent.SetAsLastSibling();
 			_popUpBlocker.onClick.RemoveAllListeners();
 			_popUpBlocker.gameObject.SetActive(false);
 		}
@@ -69,11 +64,11 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	public void ResetDisplay()
 	{
 		_closeButton.SetActive(false);
-		var current = _postRaceEvent.CurrentEvent;
+		var current = GameManagement.PostRaceEvent.CurrentEvent;
 		//if there is an event
-		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length && _postRaceEvent.EnableCounter == 0)
+		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length && GameManagement.PostRaceEvent.EnableCounter == 0)
 		{
-			_postRaceEvent.EnableCheck();
+			GameManagement.PostRaceEvent.EnableCheck();
 			for (int i = 0; i < _postRacePeople.Length; i++)
 			{
 				_postRacePeople[i].ResetDisplay(current[i]);
@@ -104,13 +99,13 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		_canvasGroup.alpha = 0;
 		_canvasGroup.interactable = false;
 		_canvasGroup.blocksRaycasts = false;
-		_postRaceEvent.DisableCheck();
+		GameManagement.PostRaceEvent.DisableCheck();
 		if (!string.IsNullOrEmpty(source))
 		{
 			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.TriggerUI.ToString(), source },
-				{ TrackerContextKeys.EventID.ToString(), _postRaceEvent.GetEventKey(_lastStates[0]) },
+				{ TrackerContextKeys.EventID.ToString(), GameManagement.PostRaceEvent.GetEventKey(_lastStates[0]) },
 			}, AccessibleTracker.Accessible.Screen));
 		}
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
@@ -121,10 +116,10 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	/// </summary>
 	private void ResetQuestions()
 	{
-		var current = _postRaceEvent.CurrentEvent;
+		var current = GameManagement.PostRaceEvent.CurrentEvent;
 		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length)
 		{
-			var replies = _postRaceEvent.GetEventReplies();
+			var replies = GameManagement.PostRaceEvent.GetEventReplies();
 			for (int i = 0; i < _postRacePeople.Length; i++)
 			{
 				_postRacePeople[i].ResetQuestions(current[i], replies[current[i].CrewMember]);
@@ -132,9 +127,9 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			if (replies.Values.Sum(dos => dos.Count) == 0)
 			{
 				SetBlockerOnClick();
-				SUGARManager.GameData.Send("Post Event Crew Average Mood", _postRaceEvent.GetTeamAverageMood());
-				SUGARManager.GameData.Send("Post Event Crew Average Manager Opinion", _postRaceEvent.GetTeamAverageManagerOpinion());
-				SUGARManager.GameData.Send("Post Event Crew Average Opinion", _postRaceEvent.GetTeamAverageOpinion());
+				SUGARManager.GameData.Send("Post Event Crew Average Mood", GameManagement.PostRaceEvent.GetTeamAverageMood());
+				SUGARManager.GameData.Send("Post Event Crew Average Manager Opinion", GameManagement.PostRaceEvent.GetTeamAverageManagerOpinion());
+				SUGARManager.GameData.Send("Post Event Crew Average Opinion", GameManagement.PostRaceEvent.GetTeamAverageOpinion());
 			}
 			else
 			{
@@ -154,7 +149,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			_closeButton.SetActive(true);
 			_popUpBlocker.onClick.AddListener(GetLearningPill);
 			_popUpBlocker.onClick.AddListener(delegate { Hide(TrackerTriggerSources.PopUpBlocker.ToString()); });
-			_popUpBlocker.onClick.AddListener(_postRaceEvent.GetEvent);
+			_popUpBlocker.onClick.AddListener(GameManagement.PostRaceEvent.GetEvent);
 			var teamSelection = (TeamSelectionUI)FindObjectOfType(typeof(TeamSelectionUI));
 			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
 			_popUpBlocker.onClick.AddListener(SendLearningPill);
@@ -183,7 +178,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	/// </summary>
 	public void SendReply(PostRaceEventState reply)
 	{
-		var responses = _postRaceEvent.AddReply(reply);
+		var responses = GameManagement.PostRaceEvent.AddReply(reply);
 		if (responses != null)
 		{
 			foreach (PostRacePersonUI person in _postRacePeople)
@@ -202,7 +197,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 
 	private void OnLanguageChange()
 	{
-		var current = _postRaceEvent.CurrentEvent;
+		var current = GameManagement.PostRaceEvent.CurrentEvent;
 		//if there is an event
 		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length)
 		{

@@ -16,7 +16,6 @@ using System.Globalization;
 /// </summary>
 public class TutorialController : MonoBehaviour
 {
-	private GameManager _gameManager;
 	[SerializeField]
 	private GameObject _tutorialSectionPrefab;
 	[SerializeField]
@@ -82,14 +81,13 @@ public class TutorialController : MonoBehaviour
 
 	public void Start()
 	{
-		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
-		gameObject.SetActive(_gameManager.ShowTutorial);
-		_tutorialQuitButton.SetActive(_gameManager.ShowTutorial);
+		gameObject.SetActive(GameManagement.GameManager.ShowTutorial);
+		_tutorialQuitButton.SetActive(GameManagement.GameManager.ShowTutorial);
 		foreach (Transform child in transform)
 		{
-			child.gameObject.SetActive(child.GetSiblingIndex() == _gameManager.TutorialStage);
+			child.gameObject.SetActive(child.GetSiblingIndex() == GameManagement.GameManager.TutorialStage);
 		}
-		_tutorialExitBlocker.SetActive(transform.childCount == _gameManager.TutorialStage + 1);
+		_tutorialExitBlocker.SetActive(transform.childCount == GameManagement.GameManager.TutorialStage + 1);
 	}
 
 	/// <summary>
@@ -97,12 +95,12 @@ public class TutorialController : MonoBehaviour
 	/// </summary>
 	public void AdvanceStage()
 	{
-		var stage = _gameManager.TutorialStage;
+		var stage = GameManagement.GameManager.TutorialStage;
 		transform.GetChild(stage).gameObject.SetActive(false);
 		var saveAmount = transform.GetChild(stage).GetComponent<TutorialSectionUI>().SaveNextSection;
-		_gameManager.SaveTutorialProgress(saveAmount, transform.childCount <= stage + 1);
+        GameManagement.GameManager.SaveTutorialProgress(saveAmount, transform.childCount <= stage + 1);
 		_tutorialExitBlocker.SetActive(transform.childCount == stage + 2);
-		if (_gameManager.ShowTutorial)
+		if (GameManagement.GameManager.ShowTutorial)
 		{
 			transform.GetChild(stage + 1).gameObject.SetActive(true);
 		}
@@ -119,9 +117,9 @@ public class TutorialController : MonoBehaviour
 	/// </summary>
 	public void QuitTutorial()
 	{
-		var stage = _gameManager.TutorialStage;
+		var stage = GameManagement.GameManager.TutorialStage;
 		transform.GetChild(stage).gameObject.SetActive(false);
-		_gameManager.SaveTutorialProgress(0, true);
+        GameManagement.GameManager.SaveTutorialProgress(0, true);
 		gameObject.SetActive(false);
 		_tutorialQuitButton.SetActive(false);
 		_tutorialExitBlocker.SetActive(false);
@@ -132,7 +130,7 @@ public class TutorialController : MonoBehaviour
 	/// </summary>
 	public void CustomAttributes(Dictionary<string, string> attributes)
 	{
-		_gameManager.SetCustomTutorialAttributes(attributes);
+        GameManagement.GameManager.SetCustomTutorialAttributes(attributes);
 	}
 }
 

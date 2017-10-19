@@ -31,13 +31,20 @@ public class UIStateManager : ObservableMonoBehaviour {
 	[SerializeField]
 	private GameObject _feedback;
 	private static bool _loaded;
+    private static UIStateManager _instance;
+
+    private void Awake()
+    {
+        _instance = this;
+    }
 
 	/// <summary>
 	/// Load Music and Sound settings, trigger SUGAR sign-in on first load
 	/// </summary>
 	void Start()
 	{
-		if (PlayerPrefs.HasKey("Music"))
+        AvatarDisplay.LoadSprites();
+        if (PlayerPrefs.HasKey("Music"))
 		{
 			MusicOn = PlayerPrefs.GetInt("Music") == 1;
 		}
@@ -93,12 +100,19 @@ public class UIStateManager : ObservableMonoBehaviour {
 				CloseGame();
 			}
 		}
-	}
+#if UNITY_EDITOR
+        //takes a screenshot whenever down arrow is pressed
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Application.CaptureScreenshot(System.DateTime.UtcNow.ToFileTimeUtc() + ".png");
+        }
+#endif
+    }
 
-	/// <summary>
-	/// Hide Main Menu, display New Game screen
-	/// </summary>
-	public void MenuToNewGame()
+    /// <summary>
+    /// Hide Main Menu, display New Game screen
+    /// </summary>
+    public void MenuToNewGame()
 	{
 		_mainMenu.SetActive(false);
 		_newGame.SetActive(true);
@@ -124,8 +138,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 		_feedback.SetActive(false);
 		_mainMenu.SetActive(true);
 		DoBestFit();
-		var gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
-		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = gameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves")).Count != 0;
+		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = GameManagement.GameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves")).Count != 0;
 	}
 
 	/// <summary>
@@ -224,4 +237,24 @@ public class UIStateManager : ObservableMonoBehaviour {
 	{
 		_mainMenu.GetComponentsInChildren<Text>().Where(t => t.transform.parent == _mainMenu.transform || t.transform.parent.parent == _mainMenu.transform).BestFit();
 	}
+
+    public static void StaticGoToQuestionnaire()
+    {
+        _instance.GoToQuestionnaire();
+    }
+
+    public static void StaticGoToFeedback()
+    {
+        _instance.GoToFeedback();
+    }
+
+    public static void StaticGoToGame(GameObject go)
+    {
+        _instance.GoToGame(go);
+    }
+
+    public static void StaticBackToMenu(GameObject go)
+    {
+        _instance.BackToMenu(go);
+    }
 }

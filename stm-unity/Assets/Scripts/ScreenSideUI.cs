@@ -8,7 +8,6 @@ using PlayGen.Unity.Utilities.BestFit;
 /// Controls the UI displayed at the top of the screen
 /// </summary>
 public class ScreenSideUI : MonoBehaviour {
-	private GameManager _gameManager;
 	[SerializeField]
 	private Text _nameText;
 	[SerializeField]
@@ -23,8 +22,7 @@ public class ScreenSideUI : MonoBehaviour {
 	/// </summary>
 	private void OnEnable()
 	{
-		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
-		_nameText.text = _gameManager.Team.Name.ToUpper();
+		_nameText.text = GameManagement.GameManager.Team.Name.ToUpper();
 		BestFit.ResolutionChange += DoBestFit;
 		Invoke("DoBestFit", 0f);
 	}

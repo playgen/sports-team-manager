@@ -1,22 +1,17 @@
-﻿using UnityEngine;
-using PlayGen.RAGE.SportsTeamManager.Simulation;
+﻿using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Collections.Generic;
 using System.Linq;
 
 /// <summary>
 /// Contains all logic to communicate between TeamSelectionUI and GameManager
 /// </summary>
-public class TeamSelection : MonoBehaviour {
-	private GameManager _gameManager;
-	[SerializeField]
-	private PostRaceEvent _postRaceEvent;
+public class TeamSelection {
 	private int _confirmCount;
 
-	private void Start()
+	public void Start()
 	{
-		_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
-		_postRaceEvent.GetEvent();
-		_confirmCount = _gameManager.Team.LineUpHistory.Count;
+		GameManagement.PostRaceEvent.GetEvent();
+		_confirmCount = GameManagement.GameManager.Team.LineUpHistory.Count;
 	}
 
 	/// <summary>
@@ -24,9 +19,9 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public List<KeyValuePair<Boat, KeyValuePair<int, int>>> GetLineUpHistory(int skipAmount, int takeAmount)
 	{
-		var boats = _gameManager.Team.LineUpHistory.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
-		var offsets = _gameManager.Team.HistoricTimeOffset.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
-		var sessions = _gameManager.Team.HistoricSessionNumber.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
+		var boats = GameManagement.GameManager.Team.LineUpHistory.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
+		var offsets = GameManagement.GameManager.Team.HistoricTimeOffset.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
+		var sessions = GameManagement.GameManager.Team.HistoricSessionNumber.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
 		var boatOffsets = new List<KeyValuePair<Boat, KeyValuePair<int, int>>>();
 		for (var i = 0; i < boats.Count; i++)
 		{
@@ -43,7 +38,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public List<KeyValuePair<int, int>> GetRaceResults()
 	{
-		return _gameManager.Team.RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList();
+		return GameManagement.GameManager.Team.RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList();
 	}
 
 	/// <summary>
@@ -51,11 +46,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public List<CrewMember> LoadCrew()
 	{
-		if (_gameManager == null)
-		{
-			_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
-		}
-		return _gameManager.Team.CrewMembers.Values.ToList();
+		return GameManagement.GameManager.Team.CrewMembers.Values.ToList();
 	}
 
 	/// <summary>
@@ -63,11 +54,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public Team GetTeam()
 	{
-		if (_gameManager == null)
-		{
-			_gameManager = ((GameManagerObject)FindObjectOfType(typeof(GameManagerObject))).GameManager;
-		}
-		return _gameManager.Team;
+		return GameManagement.GameManager.Team;
 	}
 
 	/// <summary>
@@ -75,7 +62,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public void AssignCrew(CrewMember crewMember, Position position)
 	{
-		_gameManager.Team.Boat.AssignCrewMember(position, crewMember);
+		GameManagement.GameManager.Team.Boat.AssignCrewMember(position, crewMember);
 	}
 
 	/// <summary>
@@ -83,7 +70,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public void RemoveCrew(CrewMember crewMember)
 	{
-		_gameManager.Team.Boat.AssignCrewMember(0, crewMember);
+		GameManagement.GameManager.Team.Boat.AssignCrewMember(0, crewMember);
 	}
 
 	/// <summary>
@@ -99,7 +86,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public int GetStage()
 	{
-		return _gameManager.CurrentRaceSession + 1;
+		return GameManagement.GameManager.CurrentRaceSession + 1;
 	}
 
 	/// <summary>
@@ -107,7 +94,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public int GetSessionLength()
 	{
-		return _gameManager.RaceSessionLength;
+		return GameManagement.GameManager.RaceSessionLength;
 	}
 
 	/// <summary>
@@ -115,7 +102,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public void SkipToRace()
 	{
-		_gameManager.SkipToRace();
+		GameManagement.GameManager.SkipToRace();
 	}
 
 	/// <summary>
@@ -124,9 +111,9 @@ public class TeamSelection : MonoBehaviour {
 	public Boat ConfirmLineUp(int offset = 0)
 	{
 		_confirmCount++;
-		_gameManager.SaveLineUp(offset);
-		_postRaceEvent.GetEvent();
-		return _gameManager.Team.LineUpHistory.Last();
+		GameManagement.GameManager.SaveLineUp(offset);
+        GameManagement.PostRaceEvent.GetEvent();
+		return GameManagement.GameManager.Team.LineUpHistory.Last();
 	}
 
 	/// <summary>
@@ -134,7 +121,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public int QuestionAllowance()
 	{
-		return _gameManager.ActionAllowance;
+		return GameManagement.GameManager.ActionAllowance;
 	}
 
 	/// <summary>
@@ -142,7 +129,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public int StartingQuestionAllowance()
 	{
-		return _gameManager.GetStartingActionAllowance();
+		return GameManagement.GameManager.GetStartingActionAllowance();
 	}
 
 	/// <summary>
@@ -150,7 +137,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public int StartingCrewEditAllowance()
 	{
-		return _gameManager.GetStartingCrewEditAllowance();
+		return GameManagement.GameManager.GetStartingCrewEditAllowance();
 	}
 
 	/// <summary>
@@ -158,7 +145,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public float GetConfigValue(ConfigKeys eventKey)
 	{
-		return _gameManager.GetConfigValue(eventKey);
+		return GameManagement.GameManager.GetConfigValue(eventKey);
 	}
 
 	/// <summary>
@@ -166,7 +153,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public int CrewEditAllowance()
 	{
-		return _gameManager.CrewEditAllowance;
+		return GameManagement.GameManager.CrewEditAllowance;
 	}
 
 	/// <summary>
@@ -174,7 +161,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public bool CanAddCheck()
 	{
-		return _gameManager.Team.CanAddToCrew();
+		return GameManagement.GameManager.Team.CanAddToCrew();
 	}
 
 	/// <summary>
@@ -182,7 +169,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public int CanAddAmount()
 	{
-		return _gameManager.Team.CrewLimitLeft();
+		return GameManagement.GameManager.Team.CrewLimitLeft();
 	}
 
 	/// <summary>
@@ -190,7 +177,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public List<string> GetAssignmentMistakes(int amount)
 	{
-		return _gameManager.Team.Boat.GetAssignmentMistakes(amount);
+		return GameManagement.GameManager.Team.Boat.GetAssignmentMistakes(amount);
 	}
 
 	/// <summary>
@@ -198,7 +185,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public float GetTeamAverageMood()
 	{
-		return _gameManager.Team.AverageTeamMood();
+		return GameManagement.GameManager.Team.AverageTeamMood();
 	}
 
 	/// <summary>
@@ -206,7 +193,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public float GetTeamAverageManagerOpinion()
 	{
-		return _gameManager.Team.AverageTeamManagerOpinion();
+		return GameManagement.GameManager.Team.AverageTeamManagerOpinion();
 	}
 
 	/// <summary>
@@ -214,7 +201,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public float GetTeamAverageOpinion()
 	{
-		return _gameManager.Team.AverageTeamOpinion();
+		return GameManagement.GameManager.Team.AverageTeamOpinion();
 	}
 
 	/// <summary>
@@ -222,7 +209,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public float GetBoatAverageMood()
 	{
-		return _gameManager.Team.Boat.AverageBoatMood();
+		return GameManagement.GameManager.Team.Boat.AverageBoatMood();
 	}
 
 	/// <summary>
@@ -230,7 +217,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public float GetBoatAverageManagerOpinion()
 	{
-		return _gameManager.Team.Boat.AverageBoatManagerOpinion(GetTeam().Manager.Name);
+		return GameManagement.GameManager.Team.Boat.AverageBoatManagerOpinion(GetTeam().Manager.Name);
 	}
 
 	/// <summary>
@@ -238,7 +225,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public float GetBoatAverageOpinion()
 	{
-		return _gameManager.Team.Boat.AverageBoatOpinion();
+		return GameManagement.GameManager.Team.Boat.AverageBoatOpinion();
 	}
 
 	/// <summary>
@@ -246,7 +233,7 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public bool TutorialInProgress()
 	{
-		return _gameManager.ShowTutorial;
+		return GameManagement.GameManager.ShowTutorial;
 	}
 
 	/// <summary>
@@ -254,6 +241,6 @@ public class TeamSelection : MonoBehaviour {
 	/// </summary>
 	public bool QuestionnaireCompleted()
 	{
-		return _gameManager.QuestionnaireCompleted;
+		return GameManagement.GameManager.QuestionnaireCompleted;
 	}
 }

@@ -11,10 +11,8 @@ using RAGE.Analytics.Formats;
 /// <summary>
 /// Contains all logic relating to displaying post-race event 'learning pills'
 /// </summary>
-[RequireComponent(typeof(LearningPill))]
 public class LearningPillUI : ObservableMonoBehaviour {
 
-	private LearningPill _learningPill;
 	[SerializeField]
 	private PostRaceEventUI[] _postRaceEvents;
 	[SerializeField]
@@ -42,12 +40,8 @@ public class LearningPillUI : ObservableMonoBehaviour {
 	/// </summary>
 	public void SetHelp(List<string> keys, bool further = false)
 	{
-		if (_learningPill == null)
-		{
-			_learningPill = GetComponent<LearningPill>();
-		}
 		_currentHelp = keys[0];
-		var tip = _learningPill.GetHelpText(keys[0]);
+		var tip = GameManagement.LearningPill.GetHelpText(keys[0]);
 		keys.RemoveAt(0);
 		_furtherHelp = keys;
 		if (tip != null)
@@ -140,7 +134,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 	private void OnLanguageChange()
 	{
 		if (_currentHelp != null) {
-			var tip = _learningPill.GetHelpText(_currentHelp);
+			var tip = GameManagement.LearningPill.GetHelpText(_currentHelp);
 			_helpText.text = Localization.Get(tip);
 		}
 	}
