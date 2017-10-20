@@ -52,7 +52,7 @@ public class LoadGameUI : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-            UIStateManager.StaticBackToMenu(gameObject);
+            UIStateManager.StaticBackToMenu();
 		}
 	}
 
@@ -103,7 +103,7 @@ public class LoadGameUI : MonoBehaviour
 			var success = GameManagement.LoadGame.LoadSelectedGame();
 			if (success)
 			{
-                UIStateManager.StaticGoToGame(gameObject);
+                UIStateManager.StaticGoToGame();
 			}
 			else
 			{

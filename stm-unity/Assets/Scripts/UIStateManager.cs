@@ -60,7 +60,7 @@ public class UIStateManager : ObservableMonoBehaviour {
 		{
 			PlayerPrefs.SetInt("Sound", 1);
 		}
-		BackToMenu(_mainMenu);
+		BackToMenu();
 		if (SUGARManager.CurrentUser == null && !_loaded)
 		{
 			_loaded = true;
@@ -130,13 +130,14 @@ public class UIStateManager : ObservableMonoBehaviour {
 	/// <summary>
 	/// Hide all other screens, display Main Menu
 	/// </summary>
-	public void BackToMenu(GameObject go)
+	public void BackToMenu()
 	{
-		go.SetActive(false);
-		_teamManagement.SetActive(false);
+        _newGame.SetActive(false);
+        _loadGame.SetActive(false);
+        _teamManagement.SetActive(false);
 		_questionnaire.SetActive(false);
 		_feedback.SetActive(false);
-		_mainMenu.SetActive(true);
+        _mainMenu.SetActive(true);
 		DoBestFit();
 		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = GameManagement.GameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves")).Count != 0;
 	}
@@ -152,10 +153,11 @@ public class UIStateManager : ObservableMonoBehaviour {
 	/// <summary>
 	/// Display top section and team selection, hide New Game/Load Game screen
 	/// </summary>
-	public void GoToGame(GameObject go)
+	public void GoToGame()
 	{
-		go.SetActive(false);
-		_teamManagement.SetActive(true);
+        _newGame.SetActive(false);
+        _loadGame.SetActive(false);
+        _teamManagement.SetActive(true);
 		_questionnaire.SetActive(false);
 		_feedback.SetActive(false);
 		((ScreenSideUI)FindObjectOfType(typeof(ScreenSideUI))).ChangeSelected(0);
@@ -248,13 +250,13 @@ public class UIStateManager : ObservableMonoBehaviour {
         _instance.GoToFeedback();
     }
 
-    public static void StaticGoToGame(GameObject go)
+    public static void StaticGoToGame()
     {
-        _instance.GoToGame(go);
+        _instance.GoToGame();
     }
 
-    public static void StaticBackToMenu(GameObject go)
+    public static void StaticBackToMenu()
     {
-        _instance.BackToMenu(go);
+        _instance.BackToMenu();
     }
 }
