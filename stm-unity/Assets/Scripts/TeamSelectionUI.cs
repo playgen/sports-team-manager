@@ -411,7 +411,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		crewMember.transform.SetParent(parent, false);
 		crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(cm.Name, true);
 		crewMember.name = SplitName(cm.Name);
-		crewMember.GetComponent<CrewMemberUI>().SetUp(usable, current, GameManagement.TeamSelection, _meetingUI, _positionUI, cm, parent, _roleIcons);
+		crewMember.GetComponent<CrewMemberUI>().SetUp(usable, current, _meetingUI, _positionUI, cm, parent, _roleIcons);
 		crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(cm.Avatar, cm.GetMood(), true);
 		return crewMember;
 	}
@@ -448,7 +448,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			var current = currentCrew.ContainsKey(pair.Value.Name);
 			crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(pair.Value.Name, true);
 			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, scoreDiff * (2f / boat.Positions.Count) + 3, true);
-			crewMember.GetComponent<CrewMemberUI>().SetUp(false, current, GameManagement.TeamSelection, _meetingUI, _positionUI, pair.Value, crewContainer, _roleIcons);
+			crewMember.GetComponent<CrewMemberUI>().SetUp(false, current, _meetingUI, _positionUI, pair.Value, crewContainer, _roleIcons);
 
 			var positionImage = crewMember.transform.Find("Position").gameObject;
 			//update current position button
@@ -952,9 +952,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				//if this UI is for the positioned CrewMember, place and remove the CrewMemberUI and Position from their lists to remove their availability
 				if (crewMember.name == SplitName(member.Name))
 				{
-					crewMember.PlacedEvent();
+                    position.RemoveCrew();
 					crewMember.Place(position.gameObject);
-					crewMembers.Remove(crewMember);
+                    crewMembers.Remove(crewMember);
 					currentPositions.Remove(position.Position);
 					break;
 				}

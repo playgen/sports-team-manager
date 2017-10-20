@@ -56445,6 +56445,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ddfc14e8c52aff4f809e125e3ff89fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tutorial: {fileID: 52273891}
+  _settings: {fileID: 108226953}
+  _recruitment: {fileID: 1197854538}
+  _position: {fileID: 38095101}
+  _meeting: {fileID: 1950819050}
+  _teamSelection: {fileID: 1334125065}
+  _side: {fileID: 1968505536}
 --- !u!1 &1340633441
 GameObject:
   m_ObjectHideFlags: 0

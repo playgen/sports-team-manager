@@ -53,12 +53,11 @@ public class PositionUI : ObservableMonoBehaviour
 		{
 			if (_crewMemberUI != null)
 			{
-				_crewMemberUI.Reset();
+				_crewMemberUI.OnReset();
 			}
 			RemoveCrew();
 			_crewMemberUI = crewMember;
 			_teamSelectionUI.PositionChange(1);
-			crewMember.ReplacedEvent += OnReset;
 		}
 		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString(), crewMember);
 	}
@@ -70,17 +69,8 @@ public class PositionUI : ObservableMonoBehaviour
 	{
 		if (_crewMemberUI != null)
 		{
-			_crewMemberUI.ReplacedEvent -= OnReset;
 			_teamSelectionUI.PositionChange(-1);
 			_crewMemberUI = null;
 		}
-	}
-
-	/// <summary>
-	/// Triggered by a CrewMember being removed from the position. Removes listener and updates number of currently empty positions
-	/// </summary>
-	private void OnReset()
-	{
-		RemoveCrew();
 	}
 }

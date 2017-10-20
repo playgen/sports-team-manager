@@ -16,7 +16,6 @@ using RAGE.Analytics.Formats;
 /// </summary>
 public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPointerClickHandler
 {
-	private TeamSelection _teamSelection;
 	private MemberMeetingUI _meetingUI;
 	private PositionDisplayUI _positionUI;
 	private CrewMember _crewMember;
@@ -33,14 +32,12 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 	}
 	public bool Usable;
 	public bool Current;
-	public event Action ReplacedEvent = delegate { };
 
 	/// <summary>
 	/// Bring in elements that need to be known to this object
 	/// </summary>
-	public void SetUp(bool usable, bool current, TeamSelection teamSelection, MemberMeetingUI meetingUI, PositionDisplayUI positionUI, CrewMember crewMember, Transform parent, Icon[] roleIcons)
+	public void SetUp(bool usable, bool current, MemberMeetingUI meetingUI, PositionDisplayUI positionUI, CrewMember crewMember, Transform parent, Icon[] roleIcons)
 	{
-		_teamSelection = teamSelection;
 		_meetingUI = meetingUI;
 		_positionUI = positionUI;
 		_crewMember = crewMember;
@@ -84,7 +81,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 		//_dragPosition is used to offset according to where the click occurred
 		_dragPosition = Input.mousePosition - transform.position;
 		//set as child of parent many levels up so this displays above all other CrewMember objects
-		transform.SetParent(_defaultParent.parent.parent.parent.parent.parent, false);
+		transform.SetParent(transform.root, false);
 		transform.position = (Vector2)Input.mousePosition - _dragPosition;
 		//set as last sibling so this always appears in front of other UI objects (except pop-ups)
 		transform.SetAsLastSibling();
@@ -98,19 +95,19 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 		if (_beingDragged)
 		{
 			transform.position = (Vector2)Input.mousePosition - _dragPosition;
-			if (Input.GetMouseButtonUp(0))
+            var raycastResults = new List<RaycastResult>();
+            //gets all UI objects below the cursor
+            EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
+            if (Input.GetMouseButtonUp(0))
 			{
-				EndDrag();
+				EndDrag(raycastResults);
 			}
-			var raycastResults = new List<RaycastResult>();
-			//gets all UI objects below the cursor
-			EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
 			//end drag if currently under a blocker
 			foreach (var result in raycastResults)
 			{
 				if (result.gameObject.layer == 8)
 				{
-					EndDrag();
+					EndDrag(raycastResults);
 				}
 			}
 		}
@@ -126,10 +123,10 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 	/// <summary>
 	/// MouseUp ends the current drag. Check if the CrewMember has been placed into a position. If beingClicked is true, the CrewMember pop-up is displayed.
 	/// </summary>
-	private void EndDrag()
+	private void EndDrag(List<RaycastResult> raycastResults)
 	{
 		_beingDragged = false;
-		CheckPlacement();
+		CheckPlacement(raycastResults);
 		if (_beingClicked) {
 			ShowPopUp();
 		}
@@ -148,13 +145,8 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 	/// <summary>
 	/// Check if the drag stopped over a Position UI element.
 	/// </summary>
-	private void CheckPlacement()
+	private void CheckPlacement(List<RaycastResult> raycastResults)
 	{
-		PlacedEvent();
-		var raycastResults = new List<RaycastResult>();
-		//gets all UI objects below the cursor
-		EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
-		var placed = false;
 		foreach (var result in raycastResults)
 		{
 			if (result.gameObject.GetComponent<PositionUI>())
@@ -171,15 +163,14 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 				SUGARManager.GameData.Send("Place Crew Member", _crewMember.Name);
 				SUGARManager.GameData.Send("Fill Position", pos.ToString());
 				Place(result.gameObject);
-				placed = true;
 				break;
 			}
-		}
-		//remove this CrewMember from their position if they were in one
-		if (!placed)
-		{
-			_teamSelection.RemoveCrew(_crewMember);
-			Reset();
+            else if (result.Equals(raycastResults.Last()))
+            {
+                //remove this CrewMember from their position if they were in one
+                GameManagement.TeamSelection.RemoveCrew(_crewMember);
+                OnReset();
+            }
 		}
 		//reset the meeting UI if it is currently being displayed
 		if (_meetingUI.gameObject.activeInHierarchy)
@@ -189,26 +180,22 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 	}
 
 	/// <summary>
-	/// Event triggered when the placement of this object is changed
-	/// </summary>
-	public void PlacedEvent()
-	{
-		ReplacedEvent();
-	}
-
-	/// <summary>
 	/// Place the CrewMember to be in-line with the Position it is now paired with
 	/// </summary>
 	public void Place(GameObject position, bool swap = false)
 	{
-		var currentPosition = position.gameObject.GetComponent<PositionUI>().Position;
+        if (_currentPlacement)
+        {
+            _currentPlacement.RemoveCrew();
+        }
+        var currentPosition = position.gameObject.GetComponent<PositionUI>().Position;
 		var currentPositionCrew = position.gameObject.GetComponent<PositionUI>().CrewMemberUI;
 		var positionTransform = (RectTransform)position.gameObject.transform;
 		//set size and position
 		transform.SetParent(positionTransform, false);
 		((RectTransform)transform).sizeDelta = positionTransform.sizeDelta;
 		((RectTransform)transform).anchoredPosition = new Vector2(0, -((RectTransform)transform).sizeDelta.y * 0.5f);
-		_teamSelection.AssignCrew(_crewMember, currentPosition);
+        GameManagement.TeamSelection.AssignCrew(_crewMember, currentPosition);
 		position.gameObject.GetComponent<PositionUI>().LinkCrew(this);
 		if (!swap)
 		{
@@ -219,7 +206,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 			}
 		}
 		_currentPlacement = position.gameObject.GetComponent<PositionUI>();
-		var positionImage = transform.Find("Position").gameObject;
+        var positionImage = transform.Find("Position").gameObject;
 		//update current position button
 		positionImage.GetComponent<Image>().enabled = true;
 		positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == currentPosition.ToString()).Image;
@@ -232,7 +219,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 	/// <summary>
 	/// Reset this UI back to its defaults.
 	/// </summary>
-	public void Reset()
+	public void OnReset()
 	{
 		//set back to default parent and position
 		transform.SetParent(_defaultParent, true);

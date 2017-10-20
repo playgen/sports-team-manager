@@ -1,8 +1,5 @@
-﻿//#define USE_SPRITESHEET
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-
 using UnityEngine;
 using UnityEngine.UI;
 using Avatar = PlayGen.RAGE.SportsTeamManager.Simulation.Avatar;
@@ -40,9 +37,6 @@ public class AvatarDisplay : MonoBehaviour
 	private Image _outfitShadow;
 	[SerializeField]
 	private RectTransform _spriteParent;
-#if USE_SPRITESHEET
-	Dictionary<string, Sprite> Sprites = new Dictionary<string, Sprite>();
-#endif
 
 	/// <summary>
 	/// Load all avatar sprites from resources.
@@ -57,9 +51,6 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	public void SetAvatar(Avatar avatar, float mood, bool isIcon = false)
 	{
-#if USE_SPRITESHEET
-		LoadDictionary();
-#endif
 		_body.sprite = avatarSprites[avatar.BodyType.ToLower()];
 		_outfit.sprite = avatarSprites[avatar.OutfitBaseType.ToLower()];
 		if (avatarSprites.ContainsKey(avatar.OutfitHighlightType.ToLower()))
@@ -128,16 +119,16 @@ public class AvatarDisplay : MonoBehaviour
 		switch (reaction.Replace(" ", string.Empty))
 		{
 			case "StrongAgree":
-				UpdateMood(avatar, 4);
+				UpdateMood(avatar, 3);
 				return;
 			case "Agree":
-				UpdateMood(avatar, 2);
+				UpdateMood(avatar, 1);
 				return;
 			case "Disagree":
-				UpdateMood(avatar, -2);
+				UpdateMood(avatar, -1);
 				return;
 			case "StrongDisagree":
-				UpdateMood(avatar, -4);
+				UpdateMood(avatar, -3);
 				return;
 			default:
 				UpdateMood(avatar, 0);
@@ -151,19 +142,19 @@ public class AvatarDisplay : MonoBehaviour
 	public void UpdateMood(Avatar avatar, float mood)
 	{
 		var moodStr = "Neutral";
-		if (mood >= 3)
+		if (mood > 2)
 		{
 			moodStr = "StronglyAgree";
 		}
-		else if (mood >= 1)
+		else if (mood > 0)
 		{
 			moodStr = "Agree";
 		}
-		else if (mood <= -3)
+		else if (mood < -2)
 		{
 			moodStr = "StronglyDisagree";
 		}
-		else if (mood <= -1)
+		else if (mood < 0)
 		{
 			moodStr = "Disagree";
 		}
@@ -191,8 +182,10 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	private void SetIconProperties(Avatar a)
 	{
-		if (_spriteParent == null)
-			return;
+        if (_spriteParent == null)
+        {
+            return;
+        }
 		_spriteParent.offsetMax = a.IsMale ? new Vector2(_spriteParent.offsetMax.x, -1f * (_spriteParent.rect.height / _maleOffsetPercent)) : new Vector2(_spriteParent.offsetMax.x, 0);
 	}
 
@@ -203,22 +196,4 @@ public class AvatarDisplay : MonoBehaviour
 	{
 		((RectTransform)transform).localScale = new Vector3(a.Weight, a.Height, 1f);
 	}
-
-#if USE_SPRITESHEET
-	// Code for texture atlas
-	private void LoadDictionary()
-	{
-		var SpritesData = Resources.LoadAll<Sprite>("Head/SpriteSheet_Head");
-		Sprites = new Dictionary<string, Sprite>();
-
-		foreach (var s in SpritesData)
-		{
-			Sprites.Add(s.characterName, s);
-		}
-	}
-	public Sprite GetSpriteByName(string spriteName)
-	{
-		return Sprites.ContainsKey(spriteName) ? Sprites[spriteName] : null;
-	}
-#endif
 }
