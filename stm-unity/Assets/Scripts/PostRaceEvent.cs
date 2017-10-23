@@ -11,11 +11,6 @@ using UnityEngine;
 /// </summary>
 public class PostRaceEvent
 {
-	private List<PostRaceEventState> _currentEvent;
-	public List<PostRaceEventState> CurrentEvent
-	{
-		get { return _currentEvent; }
-	}
 	private Dictionary<CrewMember, PostRaceEventState> _selectedResponses;
 	private int _disableCounter;
 	private int _enableCounter;
@@ -35,10 +30,6 @@ public class PostRaceEvent
 	{
 		_disableCounter = 0;
 		_enableCounter = 0;
-		if (GameManagement.GameManager.EventController.PostRaceEvents.Count > 0)
-		{
-			_currentEvent = GameManagement.GameManager.EventController.PostRaceEvents.First();
-		}
 		_gameObject.SetActive(true);
 	}
 
@@ -67,9 +58,9 @@ public class PostRaceEvent
 	/// </summary>
 	public Dictionary<CrewMember, List<PostRaceEventState>> GetEventReplies()
 	{
-		var replies = GameManagement.GameManager.EventController.GetEventDialogues(GameManagement.GameManager.Team.Manager);
+		var replies = GameManagement.GameManager.EventController.GetEventDialogues(GameManagement.Manager);
 		var replyDict = new Dictionary<CrewMember, List<PostRaceEventState>>();
-		foreach (var ev in _currentEvent)
+		foreach (var ev in GameManagement.CurrentEvent)
 		{
 			if (!replyDict.ContainsKey(ev.CrewMember))
 			{
@@ -77,11 +68,7 @@ public class PostRaceEvent
 			}
 		}
 		//if there are no replies, reset the current event
-		if (replies.Count == 0)
-		{
-			_currentEvent = null;
-		}
-		else
+		if (replies.Count != 0)
 		{
 			foreach (var reply in replies)
 			{
@@ -94,11 +81,6 @@ public class PostRaceEvent
 					AddReply(new PostRaceEventState(reply.Key, null));
 				}
 			}
-		}
-		//if there is another event that can be set as current, do so
-		if (_currentEvent == null && GameManagement.GameManager.EventController.PostRaceEvents.Count > 0)
-		{
-			_currentEvent = GameManagement.GameManager.EventController.PostRaceEvents.First();
 		}
 		return replyDict;
 	}
@@ -121,7 +103,7 @@ public class PostRaceEvent
 		{
 			_selectedResponses.Add(response.CrewMember, response);
 		}
-		if (_currentEvent != null && _selectedResponses.Count == _currentEvent.Count)
+		if (GameManagement.CurrentEvent != null && _selectedResponses.Count == GameManagement.CurrentEvent.Count)
 		{
 			foreach (var res in _selectedResponses.Values)
 			{
@@ -149,7 +131,7 @@ public class PostRaceEvent
 				SUGARManager.GameData.Send("Post Race Event Positive Outcome", false);
 			}
 			var replyDict = new Dictionary<CrewMember, PostRaceEventState>();
-			foreach (var ev in _currentEvent)
+			foreach (var ev in GameManagement.CurrentEvent)
 			{
 				if (!replyDict.ContainsKey(ev.CrewMember))
 				{
@@ -180,7 +162,7 @@ public class PostRaceEvent
 	/// </summary>
 	public float GetTeamAverageMood()
 	{
-		return GameManagement.GameManager.Team.AverageTeamMood();
+		return GameManagement.Team.AverageTeamMood();
 	}
 
 	/// <summary>
@@ -188,7 +170,7 @@ public class PostRaceEvent
 	/// </summary>
 	public float GetTeamAverageManagerOpinion()
 	{
-		return GameManagement.GameManager.Team.AverageTeamManagerOpinion();
+		return GameManagement.Team.AverageTeamManagerOpinion();
 	}
 
 	/// <summary>
@@ -196,7 +178,7 @@ public class PostRaceEvent
 	/// </summary>
 	public float GetTeamAverageOpinion()
 	{
-		return GameManagement.GameManager.Team.AverageTeamOpinion();
+		return GameManagement.Team.AverageTeamOpinion();
 	}
 
 	/// <summary>

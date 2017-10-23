@@ -18,7 +18,7 @@ using RAGE.Analytics.Formats;
 /// <summary>
 /// Contains all UI logic related to the Recruitment pop-up
 /// </summary>
-public class RecruitMemberUI : ObservableMonoBehaviour
+public class RecruitMemberUI : MonoBehaviour
 {
 	[SerializeField]
 	private TeamSelectionUI _teamSelectionUI;
@@ -53,9 +53,9 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	{
 		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.RecruitMember.QuestionAllowance().ToString() },
-			{ TrackerContextKeys.CurrentSession.ToString(), GameManagement.RecruitMember.SessionInRace() },
-			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.RecruitMember.TeamSize().ToString() },
+			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
+			{ TrackerContextKeys.CurrentSession.ToString(), GameManagement.CurrentSessionString },
+			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewMembers.Count.ToString() },
 			{ TrackerContextKeys.SessionsSinceBoatLayoutChange.ToString(), GameManagement.RecruitMember.SessionsSinceLastChange().ToString() },
 		}, AccessibleTracker.Accessible.Screen));
 		_lastQuestion = null;
@@ -85,8 +85,8 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	private void ResetDisplay()
 	{
 		//ActionAllowance display
-		_allowanceBar.fillAmount = GameManagement.RecruitMember.QuestionAllowance() / (float)GameManagement.RecruitMember.StartingQuestionAllowance();
-		_allowanceText.text = GameManagement.RecruitMember.QuestionAllowance().ToString();
+		_allowanceBar.fillAmount = GameManagement.ActionAllowance / (float)GameManagement.StartingActionAllowance;
+		_allowanceText.text = GameManagement.ActionAllowance.ToString();
 		//set initial text displayed in center of pop-up
 		SetDialogueText("RECRUITMENT_INTRO");
 		//get recruits
@@ -162,7 +162,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		}
 		DoBestFit();
 		CostCheck();
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -170,10 +170,9 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	/// </summary>
 	private void CostCheck()
 	{
-		var allowance = GameManagement.RecruitMember.QuestionAllowance();
-		_allowanceBar.fillAmount = allowance / (float)GameManagement.RecruitMember.StartingQuestionAllowance();
-		_allowanceText.text = allowance.ToString();
-		if (allowance < GameManagement.RecruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost))
+		_allowanceBar.fillAmount = GameManagement.ActionAllowance / (float)GameManagement.StartingActionAllowance;
+		_allowanceText.text = GameManagement.ActionAllowance.ToString();
+		if (GameManagement.ActionAllowance < GameManagement.RecruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost))
 		{
 			_questionButtons.ToList().ForEach(qb => qb.interactable = false);
 		}
@@ -207,14 +206,14 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		CostCheck();
 		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentQuestionAsked", TrackerVerbs.Selected, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.RecruitMember.QuestionAllowance().ToString() },
-			{ TrackerContextKeys.CurrentSession.ToString(), GameManagement.RecruitMember.SessionInRace() },
+			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
+			{ TrackerContextKeys.CurrentSession.ToString(), GameManagement.CurrentSessionString },
 			{ TrackerContextKeys.QuestionAsked.ToString(), skill.ToString() },
 			{ TrackerContextKeys.QuestionCost.ToString(), GameManagement.RecruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost).ToString(CultureInfo.InvariantCulture) },
-			{ TrackerContextKeys.RaceStartTalkTime.ToString(), GameManagement.RecruitMember.StartingQuestionAllowance().ToString() },
+			{ TrackerContextKeys.RaceStartTalkTime.ToString(), GameManagement.StartingActionAllowance.ToString() },
 		}, skill.ToString(), AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill.ToString());
+	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill.ToString());
 	}
 
 	/// <summary>
@@ -240,7 +239,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		_popUpBlocker.onClick.RemoveAllListeners();
 		_popUpBlocker.onClick.AddListener(delegate { CloseHireCrewWarning(TrackerTriggerSources.PopUpBlocker.ToString()); });
 		//adjust text, button text and button positioning based on context
-		if (GameManagement.RecruitMember.QuestionAllowance() < GameManagement.RecruitMember.GetConfigValue(ConfigKeys.RecruitmentCost))
+		if (GameManagement.ActionAllowance < GameManagement.RecruitMember.GetConfigValue(ConfigKeys.RecruitmentCost))
 		{
 			_hireWarningText.text = Localization.Get("HIRE_WARNING_NOT_POSSIBLE");
 			_hireWarningAccept.gameObject.SetActive(false);
@@ -268,7 +267,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		TrackerEventSender.SendEvent(new TraceEvent("HirePopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.CrewMemberName.ToString(), recruit.Name },
-			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.RecruitMember.QuestionAllowance().ToString() },
+			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
 			{ TrackerContextKeys.HiringCost.ToString(), GameManagement.RecruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString(CultureInfo.InvariantCulture) },
 		}, AccessibleTracker.Accessible.Screen));
 	}
@@ -293,7 +292,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		TrackerEventSender.SendEvent(new TraceEvent("HirePopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.CrewMemberName.ToString(), _currentSelected },
-			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.RecruitMember.QuestionAllowance().ToString() },
+			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
 			{ TrackerContextKeys.HiringCost.ToString(), GameManagement.RecruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString(CultureInfo.InvariantCulture) },
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
 		}, AccessibleTracker.Accessible.Screen));
@@ -312,12 +311,12 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberHired", TrackerVerbs.Interacted, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.CrewMemberName.ToString(), crewMember.Name },
-			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.RecruitMember.QuestionAllowance().ToString() },
+			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
 			{ TrackerContextKeys.HiringCost.ToString(), GameManagement.RecruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString(CultureInfo.InvariantCulture) },
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Hired", true);
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -327,7 +326,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	{
 		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.RecruitMember.QuestionAllowance().ToString() },
+			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
 		}, AccessibleTracker.Accessible.Screen));
 		gameObject.SetActive(false);
@@ -354,7 +353,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 	private void OnLanguageChange()
 	{
 		SetDialogueText(_lastQuestion ?? "RECRUITMENT_INTRO");
-		if (GameManagement.RecruitMember.QuestionAllowance() < GameManagement.RecruitMember.GetConfigValue(ConfigKeys.RecruitmentCost))
+		if (GameManagement.ActionAllowance < GameManagement.RecruitMember.GetConfigValue(ConfigKeys.RecruitmentCost))
 		{
 			_hireWarningText.text = Localization.Get("HIRE_WARNING_NOT_POSSIBLE");
 			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("OK", true);

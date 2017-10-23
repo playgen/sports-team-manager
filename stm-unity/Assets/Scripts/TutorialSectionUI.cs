@@ -1,7 +1,10 @@
-﻿using PlayGen.Unity.Utilities.BestFit;
+﻿using System;
+
+using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
 using System.Collections.Generic;
 using System.Linq;
+
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
@@ -9,9 +12,9 @@ using UnityEngine.UI.Extensions;
 /// <summary>
 /// A piece of the in-game tutorial UI
 /// </summary>
-public class TutorialSectionUI : ObserverMonoBehaviour
+public class TutorialSectionUI : MonoBehaviour
 {
-	[System.Serializable]
+	[Serializable]
 	class LanguageKeyValuePair
 	{
 		public string Key;
@@ -41,6 +44,8 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 
 	[Header("Tutorial Trigger")]
 	[SerializeField]
+	protected KeyValuePair<string, string>[] _triggers;
+	[SerializeField]
 	private bool _uniqueEvents;
 	private static readonly List<object[]> _triggeredObjects = new List<object[]>();
 	[SerializeField]
@@ -62,7 +67,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	/// <summary>
 	/// Set-up the values required for creating this piece of the tutorial
 	/// </summary>
-	public void Construct(Dictionary<string, string[]> text, int highlightTrigger, bool reversed, KeyValueMessage[] triggers, int triggerCount, bool uniqueTriggers, int saveSection, List<string> blacklist, List<string> attributes)
+	public void Construct(Dictionary<string, string[]> text, int highlightTrigger, bool reversed, KeyValuePair<string, string>[] triggers, int triggerCount, bool uniqueTriggers, int saveSection, List<string> blacklist, List<string> attributes)
 	{
 		_sectionTextHolder = new List<LanguageKeyValuePair>();
 		foreach (var kvp in text)
@@ -82,9 +87,8 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	/// <summary>
 	/// Set-up connections to UI elements for this piece of the tutorial
 	/// </summary>
-	protected override void OnEnable()
+	protected void OnEnable()
 	{
-		base.OnEnable();
 		_tutorial = GetComponentInParent<TutorialController>();
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += SetUp;
@@ -115,9 +119,8 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 		Invoke("SetUp", 0f);
 	}
 
-	protected override void OnDisable()
+	protected void OnDisable()
 	{
-		base.OnDisable();
 		Localization.LanguageChange -= OnLanguageChange;
 		BestFit.ResolutionChange -= SetUp;
 	}
@@ -254,22 +257,22 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 	/// <summary>
 	/// Upon an event related to this part of the tutorial being triggered, add to count of events and advance to next section if required
 	/// </summary>
-	public override void OnNext(KeyValueMessage message)
+	public void EventReceived(string typeName, string methodName, params object[] additional)
 	{
 		foreach (var trigger in _triggers)
 		{
-			if (message.TypeName == trigger.TypeName && message.MethodName == trigger.MethodName)
+			if (typeName == trigger.Key && methodName == trigger.Value)
 			{
 				if (_uniqueEvents)
 				{
 					foreach (var to in _triggeredObjects)
 					{
-						if (to.Length == message.Additional.Length)
+						if (to.Length == additional.Length)
 						{
 							var match = true;
 							for (var i = 0; i < to.Length; i++)
 							{
-								if (match && !to[i].Equals(message.Additional[i]))
+								if (match && !to[i].Equals(additional[i]))
 								{
 									match = false;
 								}
@@ -281,7 +284,7 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 						}
 					}
 				}
-				_triggeredObjects.Add(message.Additional);
+				_triggeredObjects.Add(additional);
 				_eventTriggerCount++;
 				if (_eventTriggerCount >= _eventTriggerCountRequired)
 				{

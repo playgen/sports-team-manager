@@ -10,7 +10,7 @@ using RAGE.Analytics.Formats;
 /// <summary>
 /// Used on hover text object to set text and reposition when needed
 /// </summary>
-public class HoverPopUpUI : ObservableMonoBehaviour {
+public class HoverPopUpUI : MonoBehaviour {
 
 	private Vector2 _currentHovered;
 	private string _currentText;
@@ -31,7 +31,7 @@ public class HoverPopUpUI : ObservableMonoBehaviour {
 	public void DisplayHover(string text)
 	{
 		_currentText = text;
-		Invoke("HoverCheck", 1);
+		Invoke("HoverCheck", 0.4f);
 	}
 
 	/// <summary>
@@ -96,7 +96,7 @@ public class HoverPopUpUI : ObservableMonoBehaviour {
 			{
 				{ TrackerContextKeys.HoverKey.ToString(), _currentText }
 			}, AccessibleTracker.Accessible.Accessible));
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentText);
+		    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentText);
 		}
 	}
 
@@ -107,6 +107,6 @@ public class HoverPopUpUI : ObservableMonoBehaviour {
 	{
 		gameObject.SetActive(false);
 		_currentHovered = Vector2.zero;
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 }

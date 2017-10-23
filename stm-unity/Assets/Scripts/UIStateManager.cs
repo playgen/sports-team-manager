@@ -11,7 +11,7 @@ using PlayGen.Unity.Utilities.BestFit;
 /// <summary>
 /// Controls switching between different game state panels
 /// </summary>
-public class UIStateManager : ObservableMonoBehaviour {
+public class UIStateManager : MonoBehaviour {
 	public static bool MusicOn = true;
 	public static bool SoundOn = true;
 	[SerializeField]
@@ -31,20 +31,20 @@ public class UIStateManager : ObservableMonoBehaviour {
 	[SerializeField]
 	private GameObject _feedback;
 	private static bool _loaded;
-    private static UIStateManager _instance;
+	private static UIStateManager _instance;
 
-    private void Awake()
-    {
-        _instance = this;
-    }
+	private void Awake()
+	{
+		_instance = this;
+	}
 
 	/// <summary>
 	/// Load Music and Sound settings, trigger SUGAR sign-in on first load
 	/// </summary>
 	void Start()
 	{
-        AvatarDisplay.LoadSprites();
-        if (PlayerPrefs.HasKey("Music"))
+		AvatarDisplay.LoadSprites();
+		if (PlayerPrefs.HasKey("Music"))
 		{
 			MusicOn = PlayerPrefs.GetInt("Music") == 1;
 		}
@@ -101,18 +101,18 @@ public class UIStateManager : ObservableMonoBehaviour {
 			}
 		}
 #if UNITY_EDITOR
-        //takes a screenshot whenever down arrow is pressed
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            Application.CaptureScreenshot(System.DateTime.UtcNow.ToFileTimeUtc() + ".png");
-        }
+		//takes a screenshot whenever down arrow is pressed
+		if (Input.GetKeyDown(KeyCode.DownArrow))
+		{
+			Application.CaptureScreenshot(System.DateTime.UtcNow.ToFileTimeUtc() + ".png");
+		}
 #endif
-    }
+	}
 
-    /// <summary>
-    /// Hide Main Menu, display New Game screen
-    /// </summary>
-    public void MenuToNewGame()
+	/// <summary>
+	/// Hide Main Menu, display New Game screen
+	/// </summary>
+	public void MenuToNewGame()
 	{
 		_mainMenu.SetActive(false);
 		_newGame.SetActive(true);
@@ -132,12 +132,12 @@ public class UIStateManager : ObservableMonoBehaviour {
 	/// </summary>
 	public void BackToMenu()
 	{
-        _newGame.SetActive(false);
-        _loadGame.SetActive(false);
-        _teamManagement.SetActive(false);
+		_newGame.SetActive(false);
+		_loadGame.SetActive(false);
+		_teamManagement.SetActive(false);
 		_questionnaire.SetActive(false);
 		_feedback.SetActive(false);
-        _mainMenu.SetActive(true);
+		_mainMenu.SetActive(true);
 		DoBestFit();
 		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = GameManagement.GameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves")).Count != 0;
 	}
@@ -155,9 +155,9 @@ public class UIStateManager : ObservableMonoBehaviour {
 	/// </summary>
 	public void GoToGame()
 	{
-        _newGame.SetActive(false);
-        _loadGame.SetActive(false);
-        _teamManagement.SetActive(true);
+		_newGame.SetActive(false);
+		_loadGame.SetActive(false);
+		_teamManagement.SetActive(true);
 		_questionnaire.SetActive(false);
 		_feedback.SetActive(false);
 		((ScreenSideUI)FindObjectOfType(typeof(ScreenSideUI))).ChangeSelected(0);
@@ -240,23 +240,23 @@ public class UIStateManager : ObservableMonoBehaviour {
 		_mainMenu.GetComponentsInChildren<Text>().Where(t => t.transform.parent == _mainMenu.transform || t.transform.parent.parent == _mainMenu.transform).BestFit();
 	}
 
-    public static void StaticGoToQuestionnaire()
-    {
-        _instance.GoToQuestionnaire();
-    }
+	public static void StaticGoToQuestionnaire()
+	{
+		_instance.GoToQuestionnaire();
+	}
 
-    public static void StaticGoToFeedback()
-    {
-        _instance.GoToFeedback();
-    }
+	public static void StaticGoToFeedback()
+	{
+		_instance.GoToFeedback();
+	}
 
-    public static void StaticGoToGame()
-    {
-        _instance.GoToGame();
-    }
+	public static void StaticGoToGame()
+	{
+		_instance.GoToGame();
+	}
 
-    public static void StaticBackToMenu()
-    {
-        _instance.BackToMenu();
-    }
+	public static void StaticBackToMenu()
+	{
+		_instance.BackToMenu();
+	}
 }

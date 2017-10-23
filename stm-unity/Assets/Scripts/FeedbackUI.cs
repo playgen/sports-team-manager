@@ -89,7 +89,7 @@ public class FeedbackUI : MonoBehaviour {
 			Destroy(child.gameObject);
 		}
 
-		var styles = GameManagement.Feedback.GatherManagementStyles();
+		var styles = GameManagement.GameManager.GatherManagementStyles();
 		foreach (var style in styles)
 		{
 			var styleObj = Instantiate(_selectionPrefab, _selectionGraph.transform, false);
@@ -121,7 +121,7 @@ public class FeedbackUI : MonoBehaviour {
 	/// </summary>
 	private void GetPrevalentLeadershipStyle()
 	{
-		var style = GameManagement.Feedback.GetPrevalentLeadershipStyle();
+		var style = GameManagement.GameManager.GetPrevalentLeadershipStyle();
 		var styleString = string.Empty;
 		foreach (var s in style)
 		{
@@ -139,7 +139,7 @@ public class FeedbackUI : MonoBehaviour {
 	/// </summary>
 	private void SetPrevalentStyleText()
 	{
-		var styles = GameManagement.Feedback.GatherManagementStyles();
+		var styles = GameManagement.GameManager.GatherManagementStyles();
 		foreach (var button in _managementButtons)
 		{
 			if (styles.ContainsKey(button.name.ToLower()))
@@ -152,7 +152,7 @@ public class FeedbackUI : MonoBehaviour {
 			}
 		}
 
-		var leaderStyles = GameManagement.Feedback.GatherLeadershipStyles();
+		var leaderStyles = GameManagement.GameManager.GatherLeadershipStyles();
 		foreach (var button in _leadershipButtons)
 		{
 			if (leaderStyles.ContainsKey(button.name.ToLower()))
@@ -174,7 +174,7 @@ public class FeedbackUI : MonoBehaviour {
 		if (SUGARManager.CurrentUser != null)
 		{
 			var url = "username=" + SUGARManager.CurrentUser.Name; 
-			var styles = GameManagement.Feedback.GatherManagementStyles();
+			var styles = GameManagement.GameManager.GatherManagementStyles();
 			url += "&par1=" + Mathf.Round(styles["competing"] * 100000f);
 			url += "&par2=" + Mathf.Round(styles["avoiding"] * 100000f);
 			url += "&par3=" + Mathf.Round(styles["accommodating"] * 100000f);

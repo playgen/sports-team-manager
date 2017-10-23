@@ -52,7 +52,7 @@ public class LoadGameUI : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-            UIStateManager.StaticBackToMenu();
+			UIStateManager.StaticBackToMenu();
 		}
 	}
 
@@ -103,7 +103,7 @@ public class LoadGameUI : MonoBehaviour
 			var success = GameManagement.LoadGame.LoadSelectedGame();
 			if (success)
 			{
-                UIStateManager.StaticGoToGame();
+				UIStateManager.StaticGoToGame();
 			}
 			else
 			{
@@ -119,11 +119,10 @@ public class LoadGameUI : MonoBehaviour
 			Destroy(_gameContainer.transform.Find(GameManagement.LoadGame.GetSelected()).gameObject);
 			GameManagement.LoadGame.SetSelected(string.Empty);
 		}
-		
 	}
 
 	private void DoBestFit()
 	{
-	    _gameContainer.BestFit();
+		_gameContainer.BestFit();
 	}
 }

@@ -11,7 +11,7 @@ using RAGE.Analytics.Formats;
 /// <summary>
 /// Contains all logic relating to displaying post-race event 'learning pills'
 /// </summary>
-public class LearningPillUI : ObservableMonoBehaviour {
+public class LearningPillUI : MonoBehaviour {
 
 	[SerializeField]
 	private PostRaceEventUI[] _postRaceEvents;
@@ -41,7 +41,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 	public void SetHelp(List<string> keys, bool further = false)
 	{
 		_currentHelp = keys[0];
-		var tip = GameManagement.LearningPill.GetHelpText(keys[0]);
+		var tip = GameManagement.GameManager.EventController.GetHelpText(keys[0]);
 		keys.RemoveAt(0);
 		_furtherHelp = keys;
 		if (tip != null)
@@ -98,7 +98,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 			{ TrackerContextKeys.LearningPillID.ToString(), _currentHelp },
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
 		}, AccessibleTracker.Accessible.Accessible));
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -119,7 +119,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 		}
 		_popUpAnim["LearningPill"].speed = 0;
 		_popUpAnim["LearningPill"].time = start + limit;
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, upward, keep, tip);
+	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, upward, keep, tip);
 		if (upward)
 		{
 			_helpText.text = tip;
@@ -134,7 +134,7 @@ public class LearningPillUI : ObservableMonoBehaviour {
 	private void OnLanguageChange()
 	{
 		if (_currentHelp != null) {
-			var tip = GameManagement.LearningPill.GetHelpText(_currentHelp);
+			var tip = GameManagement.GameManager.EventController.GetHelpText(_currentHelp);
 			_helpText.text = Localization.Get(tip);
 		}
 	}

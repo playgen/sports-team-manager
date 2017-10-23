@@ -13,7 +13,7 @@ using RAGE.Analytics.Formats;
 /// <summary>
 /// Contains all logic related to CrewMember prefabs
 /// </summary>
-public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPointerClickHandler
+public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHandler
 {
 	private MemberMeetingUI _meetingUI;
 	private PositionDisplayUI _positionUI;
@@ -138,7 +138,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 	private void ShowPopUp()
 	{
 		_meetingUI.SetUpDisplay(_crewMember, TrackerTriggerSources.TeamManagementScreen.ToString());
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
+	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
 	}
 
 	/// <summary>
@@ -164,11 +164,11 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 				Place(result.gameObject);
 				break;
 			}
-			else if (result.Equals(raycastResults.Last()))
+			if (result.Equals(raycastResults.Last()))
 			{
-				//remove this CrewMember from their position if they were in one
-				GameManagement.TeamSelection.RemoveCrew(_crewMember);
-				OnReset();
+                //remove this CrewMember from their position if they were in one
+			    GameManagement.Boat.AssignCrewMember(0, _crewMember);
+                OnReset();
 			}
 		}
 		//reset the meeting UI if it is currently being displayed
@@ -187,15 +187,16 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 		{
 			_currentPlacement.RemoveCrew();
 		}
-		var currentPosition = position.gameObject.GetComponent<PositionUI>().Position;
-		var currentPositionCrew = position.gameObject.GetComponent<PositionUI>().CrewMemberUI;
+		var positionComp = position.gameObject.GetComponent<PositionUI>();
+		var currentPosition = positionComp.Position;
+		var currentPositionCrew = positionComp.CrewMemberUI;
 		var positionTransform = (RectTransform)position.gameObject.transform;
 		//set size and position
 		transform.SetParent(positionTransform, false);
 		((RectTransform)transform).sizeDelta = positionTransform.sizeDelta;
 		((RectTransform)transform).anchoredPosition = new Vector2(0, -((RectTransform)transform).sizeDelta.y * 0.5f);
-		GameManagement.TeamSelection.AssignCrew(_crewMember, currentPosition);
-		position.gameObject.GetComponent<PositionUI>().LinkCrew(this);
+	    GameManagement.Boat.AssignCrewMember(currentPosition, _crewMember);
+		positionComp.LinkCrew(this);
 		if (!swap)
 		{
 			if (currentPositionCrew != null && _currentPlacement != null)
@@ -204,7 +205,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 				currentPositionCrew.Place(currentPos, true);
 			}
 		}
-		_currentPlacement = position.gameObject.GetComponent<PositionUI>();
+		_currentPlacement = positionComp;
 		var positionImage = transform.Find("Position").gameObject;
 		//update current position button
 		positionImage.GetComponent<Image>().enabled = true;
@@ -212,7 +213,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 		_positionUI.UpdateDisplay();
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 		positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentPosition, TrackerTriggerSources.CrewMemberPopUp.ToString()); });
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
+	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
 	}
 
 	/// <summary>
@@ -239,6 +240,6 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 		//reset position pop-up if it is currently being shown
 		_positionUI.UpdateDisplay();
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
+	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
 	}
 }

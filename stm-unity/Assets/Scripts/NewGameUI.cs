@@ -155,7 +155,7 @@ public class NewGameUI : MonoBehaviour {
 		var success = GameManagement.NewGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _tutorialToggle.isOn);
 		if (success)
 		{
-            UIStateManager.StaticGoToGame();
+			UIStateManager.StaticGoToGame();
 		}
 		else
 		{

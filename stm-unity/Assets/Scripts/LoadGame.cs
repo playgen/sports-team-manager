@@ -53,13 +53,13 @@ public class LoadGame
 	{
 		if (_selectedName != null)
 		{
-            GameManagement.GameManager.LoadGame(Path.Combine(Application.persistentDataPath, "GameSaves"), _selectedName);
-			if (GameManagement.GameManager.Team != null && GameManagement.GameManager.Team.Name.ToLower() == _selectedName.ToLower())
+			GameManagement.GameManager.LoadGame(Path.Combine(Application.persistentDataPath, "GameSaves"), _selectedName);
+			if (GameManagement.Team != null && GameManagement.TeamName.ToLower() == _selectedName.ToLower())
 			{
-				var newString = string.Join(",", GameManagement.GameManager.Team.Boat.Positions.Select(pos => pos.ToString()).ToArray());
+				var newString = string.Join(",", GameManagement.Positions.Select(pos => pos.ToString()).ToArray());
 				TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
 				{
-					{ TrackerContextKeys.GameName.ToString(), GameManagement.GameManager.Team.Name },
+					{ TrackerContextKeys.GameName.ToString(), GameManagement.TeamName },
 					{ TrackerContextKeys.BoatLayout.ToString(), string.IsNullOrEmpty(newString) ? "NullAsGameFinished" : newString },
 				}, CompletableTracker.Completable.Game));
 				return true;

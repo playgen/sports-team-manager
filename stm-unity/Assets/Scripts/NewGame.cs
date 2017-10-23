@@ -23,17 +23,17 @@ public class NewGame {
 	/// </summary>
 	public bool CreateNewGame(string boatName, byte[] colorsPri, byte[] colorsSec, string managerName, bool showTutorial)
 	{
-        GameManagement.GameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), boatName.TrimEnd(), colorsPri, colorsSec, managerName.TrimEnd(), showTutorial, string.IsNullOrEmpty(Localization.SelectedLanguage.Parent.Name) ? Localization.SelectedLanguage.EnglishName : Localization.SelectedLanguage.Parent.EnglishName);
-		if (GameManagement.GameManager.Team != null && GameManagement.GameManager.Team.Name == boatName.TrimEnd())
+		GameManagement.GameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), boatName.TrimEnd(), colorsPri, colorsSec, managerName.TrimEnd(), showTutorial, string.IsNullOrEmpty(Localization.SelectedLanguage.Parent.Name) ? Localization.SelectedLanguage.EnglishName : Localization.SelectedLanguage.Parent.EnglishName);
+		if (GameManagement.Team != null && GameManagement.TeamName == boatName.TrimEnd())
 		{
-			var newString = string.Join(",", GameManagement.GameManager.Team.Boat.Positions.Select(pos => pos.ToString()).ToArray());
+			var newString = string.Join(",", GameManagement.Positions.Select(pos => pos.ToString()).ToArray());
 			TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.GameName.ToString(), GameManagement.GameManager.Team.Name },
+				{ TrackerContextKeys.GameName.ToString(), GameManagement.TeamName },
 				{ TrackerContextKeys.BoatLayout.ToString(), newString },
 			}, CompletableTracker.Completable.Game));
 		}
-		return GameManagement.GameManager.Team != null && GameManagement.GameManager.Team.Name == boatName.TrimEnd();
+		return GameManagement.Team != null && GameManagement.TeamName == boatName.TrimEnd();
 	}
 
 	/// <summary>

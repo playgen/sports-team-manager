@@ -1,10 +1,11 @@
 ﻿using System.Reflection;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
+using UnityEngine;
 
 /// <summary>
 /// Contains all logic related to Position prefabs
 /// </summary>
-public class PositionUI : ObservableMonoBehaviour
+public class PositionUI : MonoBehaviour
 {
 	private TeamSelectionUI _teamSelectionUI;
 	private PositionDisplayUI _positionUI;
@@ -41,7 +42,7 @@ public class PositionUI : ObservableMonoBehaviour
 	public void ShowPopUp()
 	{
 		_positionUI.SetUpDisplay(_position, TrackerTriggerSources.TeamManagementScreen.ToString());
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString());
+	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString());
 	}
 
 	/// <summary>
@@ -59,7 +60,7 @@ public class PositionUI : ObservableMonoBehaviour
 			_crewMemberUI = crewMember;
 			_teamSelectionUI.PositionChange(1);
 		}
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString(), crewMember);
+	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString(), crewMember);
 	}
 
 	/// <summary>

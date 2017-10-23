@@ -14,7 +14,7 @@ using RAGE.Analytics.Formats;
 /// <summary>
 /// Contains UI logic related to the Post Race pop-up
 /// </summary>
-public class PostRaceEventUI : ObservableMonoBehaviour
+public class PostRaceEventUI : MonoBehaviour
 {
 	private CanvasGroup _canvasGroup;
 	[SerializeField]
@@ -64,7 +64,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	public void ResetDisplay()
 	{
 		_closeButton.SetActive(false);
-		var current = GameManagement.PostRaceEvent.CurrentEvent;
+		var current = GameManagement.CurrentEvent;
 		//if there is an event
 		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length && GameManagement.PostRaceEvent.EnableCounter == 0)
 		{
@@ -108,7 +108,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 				{ TrackerContextKeys.EventID.ToString(), GameManagement.PostRaceEvent.GetEventKey(_lastStates[0]) },
 			}, AccessibleTracker.Accessible.Screen));
 		}
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -116,7 +116,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	/// </summary>
 	private void ResetQuestions()
 	{
-		var current = GameManagement.PostRaceEvent.CurrentEvent;
+		var current = GameManagement.CurrentEvent;
 		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length)
 		{
 			var replies = GameManagement.PostRaceEvent.GetEventReplies();
@@ -153,7 +153,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 			var teamSelection = (TeamSelectionUI)FindObjectOfType(typeof(TeamSelectionUI));
 			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
 			_popUpBlocker.onClick.AddListener(SendLearningPill);
-			ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
 	}
 
@@ -197,7 +197,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 
 	private void OnLanguageChange()
 	{
-		var current = GameManagement.PostRaceEvent.CurrentEvent;
+		var current = GameManagement.CurrentEvent;
 		//if there is an event
 		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length)
 		{

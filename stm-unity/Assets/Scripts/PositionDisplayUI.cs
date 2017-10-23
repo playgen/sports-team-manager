@@ -15,7 +15,7 @@ using RAGE.Analytics.Formats;
 /// <summary>
 /// Contains all UI logic related to the Position pop-up
 /// </summary>
-public class PositionDisplayUI : ObservableMonoBehaviour
+public class PositionDisplayUI : MonoBehaviour
 {
 	[SerializeField]
 	private MemberMeetingUI _meetingUI;
@@ -106,15 +106,15 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	/// </summary>
 	public void SetUpDisplay(Position position, string source)
 	{
-		var currentCrew = GameManagement.PositionDisplay.GetTeam().Boat.PositionCrew.ContainsKey(position) ? GameManagement.PositionDisplay.GetTeam().Boat.PositionCrew[position] : null;
-		var boatPos = string.Join(",", GameManagement.PositionDisplay.GetTeam().Boat.Positions.Select(pos => pos.ToString()).ToArray());
+		var currentCrew = GameManagement.PositionCrew.ContainsKey(position) ? GameManagement.PositionCrew[position] : null;
+		var boatPos = string.Join(",", GameManagement.Positions.Select(pos => pos.ToString()).ToArray());
 		TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.PositionName.ToString(), position.ToString() },
 			{ TrackerContextKeys.PositionCrewMember.ToString(), currentCrew != null ? currentCrew.Name : "None" },
 			{ TrackerContextKeys.BoatLayout.ToString(), boatPos },
 			{ TrackerContextKeys.TriggerUI.ToString(), source },
-			{ TrackerContextKeys.SessionsIncludedCount.ToString(), (GameManagement.PositionDisplay.GetLineUpHistory().Sum(boat => boat.Positions.Count(pos => pos == position)) + 1).ToString() },
+			{ TrackerContextKeys.SessionsIncludedCount.ToString(), (GameManagement.LineUpHistory.Sum(boat => boat.Positions.Count(pos => pos == position)) + 1).ToString() },
 		}, AccessibleTracker.Accessible.Screen));
 		SUGARManager.GameData.Send("View Position Screen", position.ToString());
 		gameObject.SetActive(true);
@@ -132,12 +132,11 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 	private void Display(Position position)
 	{
 		_current = position;
-		var team = GameManagement.PositionDisplay.GetTeam();
 		CrewMember currentCrew = null;
 		//get current CrewMember in this position if any
-		if (team.Boat.PositionCrew.ContainsKey(position))
+		if (GameManagement.PositionCrew.ContainsKey(position))
 		{
-			currentCrew = team.Boat.PositionCrew[position];
+			currentCrew = GameManagement.PositionCrew[position];
 		}
 		//set title and description text
 		_textList[0].text = Localization.Get(position.ToString());
@@ -174,7 +173,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 		}
 		//gather a count of how many times CrewMembers have been placed in this position
 		var positionMembers = new Dictionary<CrewMember, int>();
-		foreach (var boat in GameManagement.PositionDisplay.GetLineUpHistory())
+		foreach (var boat in GameManagement.LineUpHistory)
 		{
 			var positions = boat.Positions.Where(pos => pos == position).ToArray();
 			foreach (var pos in positions)
@@ -197,7 +196,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 			var positionHistory = Instantiate(_historyPrefab);
 			positionHistory.transform.SetParent(_historyContainer.transform, false);
 			positionHistory.transform.Find("Name").GetComponent<Text>().text = SplitName(member.Key.Name);
-			if (team.CrewMembers.ContainsKey(member.Key.Name))
+			if (GameManagement.CrewMembers.ContainsKey(member.Key.Name))
 			{
 				var current = member.Key;
 				positionHistory.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { _meetingUI.SetUpDisplay(current, TrackerTriggerSources.PositionPopUp.ToString()); });
@@ -206,8 +205,8 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 			{
 				positionHistory.transform.Find("Button").GetComponent<Button>().interactable = false;
 			}
-            positionHistory.transform.Find("AvatarIcon").GetComponent<Image>().color = UnityEngine.Color.grey;
-            positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, member.Key.GetMood(), true);
+			positionHistory.transform.Find("AvatarIcon").GetComponent<Image>().color = UnityEngine.Color.grey;
+			positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, member.Key.GetMood(), true);
 			positionHistory.transform.Find("Session Back/Sessions").GetComponent<Text>().text = member.Value.ToString();
 		}
 	}
@@ -237,7 +236,7 @@ public class PositionDisplayUI : ObservableMonoBehaviour
 		{
 			_popUpBlocker.gameObject.SetActive(false);
 		}
-		ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>

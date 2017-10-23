@@ -21,6 +21,7 @@ public class TutorialController : MonoBehaviour
 	private GameObject _tutorialQuitButton;
 	[SerializeField]
 	private GameObject _tutorialExitBlocker;
+	private static TutorialController _instance;
 
 	/// <summary>
 	/// Load and parse tutorial JSON, creating a new game object for each 
@@ -64,7 +65,7 @@ public class TutorialController : MonoBehaviour
 			tutorialSection.GetComponentInChildren<ReverseRaycastTarget>().MaskRect.Add(anchorObject);
 			var reversed = bool.Parse(parsedAsset[i]["Reversed UI"].RemoveJSONNodeChars());
 			var triggerSplit = parsedAsset[i]["Triggers"].RemoveJSONNodeChars().Split('\n').ToList().Select(te => te.RemoveJSONNodeChars()).ToList();
-			var triggers = triggerSplit.Select(ts => ts.NoSpaces().Split(',')).Select(ts => new KeyValueMessage(ts[0], ts[1])).ToArray();
+			var triggers = triggerSplit.Select(ts => ts.NoSpaces().Split(',')).Select(ts => new KeyValuePair<string, string>(ts[0], ts[1])).ToArray();
 			var triggerCount = int.Parse(parsedAsset[i]["Trigger Count Required"].RemoveJSONNodeChars());
 			var uniqueTriggers = bool.Parse(parsedAsset[i]["Unique Triggers"].RemoveJSONNodeChars());
 			var saveToSection = int.Parse(parsedAsset[i]["Save Progress"].RemoveJSONNodeChars());
@@ -78,15 +79,28 @@ public class TutorialController : MonoBehaviour
 		}
 	}
 
-	public void Start()
+	private void Awake()
 	{
-		gameObject.SetActive(GameManagement.GameManager.ShowTutorial);
-		_tutorialQuitButton.SetActive(GameManagement.GameManager.ShowTutorial);
+		_instance = this;
+	}
+
+	private void Start()
+	{
+		gameObject.SetActive(GameManagement.ShowTutorial);
+		_tutorialQuitButton.SetActive(GameManagement.ShowTutorial);
 		foreach (Transform child in transform)
 		{
-			child.gameObject.SetActive(child.GetSiblingIndex() == GameManagement.GameManager.TutorialStage);
+			child.gameObject.SetActive(child.GetSiblingIndex() == GameManagement.TutorialStage);
 		}
-		_tutorialExitBlocker.SetActive(transform.childCount == GameManagement.GameManager.TutorialStage + 1);
+		_tutorialExitBlocker.SetActive(transform.childCount == GameManagement.TutorialStage + 1);
+	}
+
+	public static void ShareEvent(string typeName, string methodName, params object[] passed)
+	{
+		if (GameManagement.ShowTutorial)
+		{
+			_instance.transform.GetChild(GameManagement.TutorialStage).GetComponent<TutorialSectionUI>().EventReceived(typeName, methodName, passed);
+		}
 	}
 
 	/// <summary>
@@ -94,12 +108,12 @@ public class TutorialController : MonoBehaviour
 	/// </summary>
 	public void AdvanceStage()
 	{
-		var stage = GameManagement.GameManager.TutorialStage;
+		var stage = GameManagement.TutorialStage;
 		transform.GetChild(stage).gameObject.SetActive(false);
 		var saveAmount = transform.GetChild(stage).GetComponent<TutorialSectionUI>().SaveNextSection;
-        GameManagement.GameManager.SaveTutorialProgress(saveAmount, transform.childCount <= stage + 1);
+		GameManagement.GameManager.SaveTutorialProgress(saveAmount, transform.childCount <= stage + 1);
 		_tutorialExitBlocker.SetActive(transform.childCount == stage + 2);
-		if (GameManagement.GameManager.ShowTutorial)
+		if (GameManagement.ShowTutorial)
 		{
 			transform.GetChild(stage + 1).gameObject.SetActive(true);
 		}
@@ -116,9 +130,8 @@ public class TutorialController : MonoBehaviour
 	/// </summary>
 	public void QuitTutorial()
 	{
-		var stage = GameManagement.GameManager.TutorialStage;
-		transform.GetChild(stage).gameObject.SetActive(false);
-        GameManagement.GameManager.SaveTutorialProgress(0, true);
+		transform.GetChild(GameManagement.TutorialStage).gameObject.SetActive(false);
+		GameManagement.GameManager.SaveTutorialProgress(0, true);
 		gameObject.SetActive(false);
 		_tutorialQuitButton.SetActive(false);
 		_tutorialExitBlocker.SetActive(false);
@@ -129,7 +142,7 @@ public class TutorialController : MonoBehaviour
 	/// </summary>
 	public void CustomAttributes(Dictionary<string, string> attributes)
 	{
-        GameManagement.GameManager.SetCustomTutorialAttributes(attributes);
+		GameManagement.GameManager.SetCustomTutorialAttributes(attributes);
 	}
 }
 

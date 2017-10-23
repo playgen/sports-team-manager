@@ -12,7 +12,7 @@ public class RecruitMember {
 	/// </summary>
 	public List<CrewMember> GetRecruits()
 	{
-		return GameManagement.GameManager.Team.Recruits.Values.ToList();
+		return GameManagement.Team.Recruits.Values.ToList();
 	}
 
 	/// <summary>
@@ -40,14 +40,6 @@ public class RecruitMember {
 	}
 
 	/// <summary>
-	/// Get the current ActionAllowance remaining
-	/// </summary>
-	public int QuestionAllowance()
-	{
-		return GameManagement.GameManager.ActionAllowance;
-	}
-
-	/// <summary>
 	/// Get the value stored in the config
 	/// </summary>
 	public float GetConfigValue(ConfigKeys eventKey)
@@ -56,36 +48,12 @@ public class RecruitMember {
 	}
 
 	/// <summary>
-	/// Get the amount of ActionAllowance provided at the beginning of the race session
-	/// </summary>
-	public int StartingQuestionAllowance()
-	{
-		return GameManagement.GameManager.GetStartingActionAllowance();
-	}
-
-	/// <summary>
-	/// Get the current session for the current race
-	/// </summary>
-	public string SessionInRace()
-	{
-		return (GameManagement.GameManager.CurrentRaceSession + 1) + "/" + GameManagement.GameManager.RaceSessionLength;
-	}
-
-	/// <summary>
-	/// Get the number of Crew Members within the team
-	/// </summary>
-	public int TeamSize()
-	{
-		return GameManagement.GameManager.Team.CrewMembers.Count;
-	}
-
-	/// <summary>
 	/// Get the amount of sessions since the boat type had changed
 	/// </summary>
 	public int SessionsSinceLastChange()
 	{
-		var history = GameManagement.GameManager.Team.LineUpHistory.AsEnumerable().Reverse().ToList();
-		var firstMismatch = history.FirstOrDefault(b => b.Type != GameManagement.GameManager.Team.Boat.Type);
+		var history = GameManagement.LineUpHistory.AsEnumerable().Reverse().ToList();
+		var firstMismatch = history.FirstOrDefault(b => b.Type != GameManagement.Boat.Type);
 		return firstMismatch != null ? history.IndexOf(firstMismatch) : 0;
 	}
 }
