@@ -90,8 +90,8 @@ MonoBehaviour:
   m_Script: {fileID: 1827919002, guid: d0e5a7bb27289d449babc70013481680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spinSpeed: 600
-  _spinClockwise: 0
+  _spinSpeed: 900
+  _spinClockwise: 1
 --- !u!114 &114669874930601928
 MonoBehaviour:
   m_ObjectHideFlags: 1

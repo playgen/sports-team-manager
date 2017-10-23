@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using PlayGen.RAGE.SportsTeamManager.Simulation;
@@ -37,7 +36,7 @@ public class RecruitMember {
 	/// </summary>
 	public void Recruit(CrewMember crewMember)
 	{
-        GameManagement.GameManager.AddRecruit(crewMember);
+		GameManagement.GameManager.AddRecruit(crewMember);
 	}
 
 	/// <summary>

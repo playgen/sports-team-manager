@@ -31,9 +31,9 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	{
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
-        _canvasGroup = GetComponent<CanvasGroup>();
-        //reorder pop-ups and blockers
-        _popUpBlocker.transform.SetAsLastSibling();
+		_canvasGroup = GetComponent<CanvasGroup>();
+		//reorder pop-ups and blockers
+		_popUpBlocker.transform.SetAsLastSibling();
 		transform.parent.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
@@ -44,7 +44,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 	{
 		Localization.LanguageChange -= OnLanguageChange;
 		BestFit.ResolutionChange -= DoBestFit;
-		foreach (PostRacePersonUI person in _postRacePeople)
+		foreach (var person in _postRacePeople)
 		{
 			person.EnableQuestions();
 			DoBestFit();
@@ -52,7 +52,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		if (transform.parent.GetSiblingIndex() == transform.parent.parent.childCount - 1)
 		{
 			_popUpBlocker.transform.SetAsLastSibling();
-            transform.parent.SetAsLastSibling();
+			transform.parent.SetAsLastSibling();
 			_popUpBlocker.onClick.RemoveAllListeners();
 			_popUpBlocker.gameObject.SetActive(false);
 		}
@@ -69,7 +69,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length && GameManagement.PostRaceEvent.EnableCounter == 0)
 		{
 			GameManagement.PostRaceEvent.EnableCheck();
-			for (int i = 0; i < _postRacePeople.Length; i++)
+			for (var i = 0; i < _postRacePeople.Length; i++)
 			{
 				_postRacePeople[i].ResetDisplay(current[i]);
 			}
@@ -120,7 +120,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length)
 		{
 			var replies = GameManagement.PostRaceEvent.GetEventReplies();
-			for (int i = 0; i < _postRacePeople.Length; i++)
+			for (var i = 0; i < _postRacePeople.Length; i++)
 			{
 				_postRacePeople[i].ResetQuestions(current[i], replies[current[i].CrewMember]);
 			}
@@ -181,7 +181,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		var responses = GameManagement.PostRaceEvent.AddReply(reply);
 		if (responses != null)
 		{
-			foreach (PostRacePersonUI person in _postRacePeople)
+			foreach (var person in _postRacePeople)
 			{
 				foreach (var res in responses)
 				{
@@ -201,7 +201,7 @@ public class PostRaceEventUI : ObservableMonoBehaviour
 		//if there is an event
 		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length)
 		{
-			for (int i = 0; i < _postRacePeople.Length; i++)
+			for (var i = 0; i < _postRacePeople.Length; i++)
 			{
 				_postRacePeople[i].ResetDisplay(current[i]);
 			}

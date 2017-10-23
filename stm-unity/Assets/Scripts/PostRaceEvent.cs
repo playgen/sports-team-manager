@@ -23,10 +23,10 @@ public class PostRaceEvent
 	{
 		get { return _enableCounter; }
 	}
-    private GameObject _gameObject
-    {
-        get { return GameObject.Find("Canvas/Team Management/Pop-up Bounds/Event Pop-Up"); }
-    }
+	private GameObject _gameObject
+	{
+		get { return GameObject.Find("Canvas/Team Management/Pop-up Bounds/Event Pop-Up"); }
+	}
 
 	/// <summary>
 	/// Display pop-up if there is an event to show
@@ -39,7 +39,7 @@ public class PostRaceEvent
 		{
 			_currentEvent = GameManagement.GameManager.EventController.PostRaceEvents.First();
 		}
-        _gameObject.SetActive(true);
+		_gameObject.SetActive(true);
 	}
 
 	/// <summary>
@@ -58,7 +58,7 @@ public class PostRaceEvent
 		_disableCounter++;
 		if (_disableCounter == _gameObject.transform.childCount)
 		{
-            _gameObject.SetActive(false);
+			_gameObject.SetActive(false);
 		}
 	}
 
@@ -133,13 +133,13 @@ public class PostRaceEvent
 				}, res.Dialogue.NextState, AlternativeTracker.Alternative.Dialog));
 				SUGARManager.GameData.Send("Post Race Event Reply", res.Dialogue.NextState);
 			}
-			float beforeValues = GetTeamAverageMood() + GetTeamAverageManagerOpinion() + GetTeamAverageOpinion();
+			var beforeValues = GetTeamAverageMood() + GetTeamAverageManagerOpinion() + GetTeamAverageOpinion();
 			foreach (var res in _selectedResponses)
 			{
 				ReactionSoundControl.PlaySound(res.Value.Dialogue.Meaning[0], res.Key.Gender == "Male", res.Key.Avatar.Height, res.Key.Avatar.Weight);
 			}
 			var replies = SendReply();
-			float afterValues = GetTeamAverageMood() + GetTeamAverageManagerOpinion() + GetTeamAverageOpinion();
+			var afterValues = GetTeamAverageMood() + GetTeamAverageManagerOpinion() + GetTeamAverageOpinion();
 			if (afterValues > beforeValues)
 			{
 				SUGARManager.GameData.Send("Post Race Event Positive Outcome", true);

@@ -10,7 +10,7 @@ public static class TransformExtensions
 	public static Transform FindInactive(this Transform parent, string name)
 	{
 		var trs = parent.GetComponentsInChildren<Transform>(true);
-		foreach (Transform t in trs)
+		foreach (var t in trs)
 		{
 			if (t.name == name && t.parent == parent)
 			{
@@ -27,7 +27,7 @@ public static class TransformExtensions
 	{
 		var found = new List<Transform>();
 		var trs = parent.GetComponentsInChildren<Transform>(true);
-		foreach (Transform t in trs)
+		foreach (var t in trs)
 		{
 			if (t.name == name)
 			{
@@ -42,9 +42,9 @@ public static class TransformExtensions
 	/// </summary>
 	public static bool IsRectTransformVisible(this RectTransform obj, RectTransform visibleRect)
 	{
-		Vector3[] objCorners = new Vector3[4];
+		var objCorners = new Vector3[4];
 		obj.GetWorldCorners(objCorners);
-		bool isVisible = true;
+		var isVisible = true;
 		foreach (var corner in objCorners)
 		{
 		    if (!RectTransformUtility.RectangleContainsScreenPoint(visibleRect, corner, null))

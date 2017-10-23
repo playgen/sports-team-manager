@@ -266,8 +266,8 @@ public class TutorialSectionUI : ObserverMonoBehaviour
 					{
 						if (to.Length == message.Additional.Length)
 						{
-							bool match = true;
-							for (int i = 0; i < to.Length; i++)
+							var match = true;
+							for (var i = 0; i < to.Length; i++)
 							{
 								if (match && !to[i].Equals(message.Additional[i]))
 								{

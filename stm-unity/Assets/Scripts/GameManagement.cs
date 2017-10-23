@@ -6,17 +6,17 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 /// </summary>
 public static class GameManagement
 {
-    private static GameManager _gameManager = new GameManager(Application.platform == RuntimePlatform.Android);
-    private static Feedback _feedback = new Feedback();
-    private static LearningPill _learningPill = new LearningPill();
-    private static LoadGame _loadGame = new LoadGame();
-    private static MemberMeeting _memberMeeting = new MemberMeeting();
-    private static NewGame _newGame = new NewGame();
-    private static PositionDisplay _positionDisplay = new PositionDisplay();
-    private static PostRaceEvent _postRaceEvent = new PostRaceEvent();
-    private static Questionnaire _questionnaire = new Questionnaire();
-    private static RecruitMember _recruitMember = new RecruitMember();
-    private static TeamSelection _teamSelection = new TeamSelection();
+    private static readonly GameManager _gameManager = new GameManager(Application.platform == RuntimePlatform.Android);
+    private static readonly Feedback _feedback = new Feedback();
+    private static readonly LearningPill _learningPill = new LearningPill();
+    private static readonly LoadGame _loadGame = new LoadGame();
+    private static readonly MemberMeeting _memberMeeting = new MemberMeeting();
+    private static readonly NewGame _newGame = new NewGame();
+    private static readonly PositionDisplay _positionDisplay = new PositionDisplay();
+    private static readonly PostRaceEvent _postRaceEvent = new PostRaceEvent();
+    private static readonly Questionnaire _questionnaire = new Questionnaire();
+    private static readonly RecruitMember _recruitMember = new RecruitMember();
+    private static readonly TeamSelection _teamSelection = new TeamSelection();
 
     public static GameManager GameManager
     {

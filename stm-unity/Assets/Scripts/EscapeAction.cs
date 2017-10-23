@@ -5,28 +5,26 @@
 /// </summary>
 public class EscapeAction : MonoBehaviour {
 
-    [SerializeField]
-    private TutorialController _tutorial;
-    [SerializeField]
-    private SettingsUI _settings;
-    [SerializeField]
-    private RecruitMemberUI _recruitment;
-    [SerializeField]
-    private PositionDisplayUI _position;
-    [SerializeField]
-    private MemberMeetingUI _meeting;
-    [SerializeField]
-    private TeamSelectionUI _teamSelection;
-    [SerializeField]
-    private ScreenSideUI _side;
+	[SerializeField]
+	private TutorialController _tutorial;
+	[SerializeField]
+	private SettingsUI _settings;
+	[SerializeField]
+	private RecruitMemberUI _recruitment;
+	[SerializeField]
+	private PositionDisplayUI _position;
+	[SerializeField]
+	private MemberMeetingUI _meeting;
+	[SerializeField]
+	private TeamSelectionUI _teamSelection;
 
-    void Update () {
+	void Update () {
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			//if settings panel is open, close settings panel
 			if (_settings.gameObject.activeInHierarchy)
 			{
-                _settings.transform.parent.gameObject.SetActive(false);
+				_settings.transform.parent.gameObject.SetActive(false);
 				return;
 			}
 			//if tutorial quitting pop-up is open, close this pop-up
@@ -44,7 +42,7 @@ public class EscapeAction : MonoBehaviour {
 			{
 				if (!_tutorial.gameObject.activeInHierarchy)
 				{
-                    _recruitment.OnEscape();
+					_recruitment.OnEscape();
 				}
 				return;
 			}
@@ -53,7 +51,7 @@ public class EscapeAction : MonoBehaviour {
 			{
 				if (_position.transform.GetSiblingIndex() == _position.transform.parent.childCount - 1)
 				{
-                    _position.ClosePositionPopUp(TrackerTriggerSources.EscapeKey.ToString());
+					_position.ClosePositionPopUp(TrackerTriggerSources.EscapeKey.ToString());
 					return;
 				}
 			}
@@ -62,14 +60,14 @@ public class EscapeAction : MonoBehaviour {
 			{
 				if (!_tutorial.gameObject.activeInHierarchy)
 				{
-                    _meeting.OnEscape();
+					_meeting.OnEscape();
 				}
 				return;
 			}
 			//if no pop-ups are open, trigger the OnEscape method in TeamSelectionUI
 			if (_teamSelection.gameObject.activeInHierarchy)
 			{
-                _teamSelection.OnEscape();
+				_teamSelection.OnEscape();
 			}
 		}
 	}

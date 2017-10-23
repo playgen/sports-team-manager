@@ -91,6 +91,9 @@
     <Reference Include="Facebook.Unity.Settings">
       <HintPath>Library\FacebookSDK\Facebook.Unity.Settings.dll</HintPath>
     </Reference>
+    <Reference Include="PlayGen.Unity.Utilities.AudioManagement">
+      <HintPath>Assets\Plugins\PlayGen.Utilities.AudioManagement\PlayGen.Unity.Utilities.AudioManagement.dll</HintPath>
+    </Reference>
     <Reference Include="ActionLibrary">
       <HintPath>Assets\Plugins\stm-logic\ActionLibrary.dll</HintPath>
     </Reference>
@@ -184,9 +187,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
       <HintPath>Assets\SUGAR\bin\System.ComponentModel.DataAnnotations.dll</HintPath>
     </Reference>
-    <Reference Include="PlayGen.Unity.Utilities.AudioManagement">
-      <HintPath>Assets\Plugins\PlayGen.Utilities.AudioManagement\PlayGen.Unity.Utilities.AudioManagement.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\SUGAR\Scripts\AccountInterface.cs" />
@@ -198,11 +198,10 @@
     <Compile Include="Assets\SUGAR\Scripts\LeaderboardPositionInterface.cs" />
     <Compile Include="Assets\Scripts\AvatarDisplay.cs" />
     <Compile Include="Assets\Scripts\CrewMemberUI.cs" />
-    <Compile Include="Assets\Scripts\CultureExtensions.cs" />
     <Compile Include="Assets\Scripts\EscapeAction.cs" />
     <Compile Include="Assets\Scripts\Feedback.cs" />
     <Compile Include="Assets\Scripts\FeedbackUI.cs" />
-    <Compile Include="Assets\Scripts\GameManagerObject.cs" />
+    <Compile Include="Assets\Scripts\GameManagement.cs" />
     <Compile Include="Assets\Scripts\HoverObject.cs" />
     <Compile Include="Assets\Scripts\HoverPopUpUI.cs" />
     <Compile Include="Assets\Scripts\KeyValueMessage.cs" />

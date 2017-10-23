@@ -12,11 +12,11 @@ using System.Linq;
 /// </summary>
 public class QuestionnaireUI : MonoBehaviour
 {
-    [SerializeField]
-    private TextAsset _questionAsset;
-    [SerializeField]
-    private TextAsset _answerStyleAsset;
-    [SerializeField]
+	[SerializeField]
+	private TextAsset _questionAsset;
+	[SerializeField]
+	private TextAsset _answerStyleAsset;
+	[SerializeField]
 	private GameObject _questionnairePanel;
 	[SerializeField]
 	private GameObject _questionPrefab;
@@ -39,7 +39,7 @@ public class QuestionnaireUI : MonoBehaviour
 		GameManagement.Questionnaire.GetQuestionniare(_questionAsset, _answerStyleAsset);
 		foreach (var question in GameManagement.Questionnaire.Questions)
 		{
-			var questionObj = Instantiate(_questionPrefab, transform, false);
+			var questionObj = Instantiate(_questionPrefab, _questionnairePanel.transform, false);
 			questionObj.name = _questionPrefab.name;
 			questionObj.transform.Find("Question").GetComponent<Text>().text = Localization.Get("QUESTION") + " " + (_questionObjs.Count + 1);
 			questionObj.transform.Find("Answer A").GetComponentInChildren<Text>().text = "A. " + question.AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
@@ -49,7 +49,7 @@ public class QuestionnaireUI : MonoBehaviour
 			_questionObjs.Add(questionObj);
 		}
 		CheckAllToggled();
-		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
+		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_questionnairePanel.transform);
 		Invoke("DoBestFit", 0);
 	}
 
@@ -73,7 +73,7 @@ public class QuestionnaireUI : MonoBehaviour
 	public void SubmitAnswers()
 	{
 		var results = new Dictionary<string, int>();
-		for (int i = 0; i < _questionObjs.Count; i++)
+		for (var i = 0; i < _questionObjs.Count; i++)
 		{
 			var style = string.Empty;
 			if (_questionObjs[i].transform.Find("Answer A").GetComponentInChildren<Toggle>().isOn)
@@ -94,12 +94,12 @@ public class QuestionnaireUI : MonoBehaviour
 			}
 		}
 		GameManagement.Questionnaire.SubmitAnswers(results);
-        UIStateManager.StaticGoToFeedback();
+		UIStateManager.StaticGoToFeedback();
 	}
 
 	private void OnLanguageChange()
 	{
-		for (int i = 0; i < _questionObjs.Count; i++)
+		for (var i = 0; i < _questionObjs.Count; i++)
 		{
 			_questionObjs[i].transform.Find("Question").GetComponent<Text>().text = Localization.Get("QUESTION") + " " + (i + 1);
 			_questionObjs[i].transform.Find("Answer A").GetComponentInChildren<Text>().text = "A. " + GameManagement.Questionnaire.Questions[i].AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];

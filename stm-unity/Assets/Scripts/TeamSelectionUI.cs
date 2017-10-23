@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -136,8 +137,8 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	/// </summary>
 	private void Start()
 	{
-        GameManagement.TeamSelection.Start();
-        _recruitCost = GameManagement.TeamSelection.GetConfigValue(ConfigKeys.RecruitmentCost);
+		GameManagement.TeamSelection.Start();
+		_recruitCost = GameManagement.TeamSelection.GetConfigValue(ConfigKeys.RecruitmentCost);
 		ResetScrollbar();
 		CreateNewBoat();
 	}
@@ -322,7 +323,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		_skipToRaceButton.GetComponentInChildren<Text>().fontSize = 20;
 		var positionContainer = _boatMain.transform.Find("Position Container");
 		//set up position containers
-		for (int i = 0; i < positionContainer.childCount; i++)
+		for (var i = 0; i < positionContainer.childCount; i++)
 		{
 			var positionObject = positionContainer.Find("Position " + i).gameObject;
 			if (team.Boat.Positions.Count <= i)
@@ -461,7 +462,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			crewMember.transform.Find("Name").GetComponent<Text>().color = current ? UnityEngine.Color.white : UnityEngine.Color.grey;
 			crewCount++;
 		}
-		for (int i = crewCount; i < crewContainer.childCount; i++)
+		for (var i = crewCount; i < crewContainer.childCount; i++)
 		{
 			var crewMember = crewContainer.Find("Crew Member " + i).gameObject;
 			crewMember.SetActive(false);
@@ -475,7 +476,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	private void SetMistakeIcons(List<string> mistakes, GameObject boat, float idealScore, int positionCount)
 	{
 		var mistakeParent = boat.transform.Find("Icon Container");
-		for (int i = 0; i < mistakeParent.childCount; i++)
+		for (var i = 0; i < mistakeParent.childCount; i++)
 		{
 			var mistakeObject = mistakeParent.Find("Ideal Icon " + i).gameObject;
 			if (mistakes.Count <= i || string.IsNullOrEmpty(mistakes[i]))
@@ -572,7 +573,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 			CreateHistoricalBoat(boatObject, boat.Key, boat.Value.Key, boat.Value.Value);
 			setUpCount++;
 		}
-		for (int i = setUpCount; i < _boatPool.Count; i++)
+		for (var i = setUpCount; i < _boatPool.Count; i++)
 		{
 			_boatPool[i].SetActive(false);
 		}
@@ -952,9 +953,9 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				//if this UI is for the positioned CrewMember, place and remove the CrewMemberUI and Position from their lists to remove their availability
 				if (crewMember.name == SplitName(member.Name))
 				{
-                    position.RemoveCrew();
+					position.RemoveCrew();
 					crewMember.Place(position.gameObject);
-                    crewMembers.Remove(crewMember);
+					crewMembers.Remove(crewMember);
 					currentPositions.Remove(position.Position);
 					break;
 				}
@@ -1043,7 +1044,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 				{ TrackerContextKeys.SessionType.ToString(), isRace ? "Race" : "Practice" },
 				{ TrackerContextKeys.BoatLayout.ToString(), newString },
 				{ TrackerContextKeys.Score.ToString(), boat.Score.ToString() },
-				{ TrackerContextKeys.ScoreAverage.ToString(), ((float)boat.Score / boat.Positions.Count).ToString() },
+				{ TrackerContextKeys.ScoreAverage.ToString(), ((float)boat.Score / boat.Positions.Count).ToString(CultureInfo.InvariantCulture) },
 				{ TrackerContextKeys.IdealCorrectPlacement.ToString(), ((int)boat.IdealMatchScore).ToString() },
 				{ TrackerContextKeys.IdealCorrectMemberWrongPosition.ToString(), Mathf.RoundToInt(((boat.IdealMatchScore % 1) * 10)).ToString() },
 				{ TrackerContextKeys.IdealIncorrectPlacement.ToString(), Mathf.RoundToInt(boat.Positions.Count - (int)boat.IdealMatchScore - ((boat.IdealMatchScore % 1) * 10)).ToString() },
@@ -1117,7 +1118,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 		while (!finalPositionLocked && finalPosition < 10)
 		{
 			var otherTeamTotal = 0;
-			foreach (int r in racePositions)
+			foreach (var r in racePositions)
 			{
 				otherTeamTotal += (finalPosition < r ? finalPosition : finalPosition + 1);
 			}
@@ -1220,7 +1221,7 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	/// </summary>
 	private void TriggerQuestionnaire()
 	{
-        UIStateManager.StaticGoToQuestionnaire();
+		UIStateManager.StaticGoToQuestionnaire();
 	}
 
 	/// <summary>
@@ -1228,6 +1229,6 @@ public class TeamSelectionUI : ObservableMonoBehaviour, IScrollHandler, IDragHan
 	/// </summary>
 	private void TriggerFeedback()
 	{
-        UIStateManager.StaticGoToFeedback();
+		UIStateManager.StaticGoToFeedback();
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -209,7 +210,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.RecruitMember.QuestionAllowance().ToString() },
 			{ TrackerContextKeys.CurrentSession.ToString(), GameManagement.RecruitMember.SessionInRace() },
 			{ TrackerContextKeys.QuestionAsked.ToString(), skill.ToString() },
-			{ TrackerContextKeys.QuestionCost.ToString(), GameManagement.RecruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost).ToString() },
+			{ TrackerContextKeys.QuestionCost.ToString(), GameManagement.RecruitMember.GetConfigValue(ConfigKeys.SendRecruitmentQuestionCost).ToString(CultureInfo.InvariantCulture) },
 			{ TrackerContextKeys.RaceStartTalkTime.ToString(), GameManagement.RecruitMember.StartingQuestionAllowance().ToString() },
 		}, skill.ToString(), AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
@@ -268,7 +269,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		{
 			{ TrackerContextKeys.CrewMemberName.ToString(), recruit.Name },
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.RecruitMember.QuestionAllowance().ToString() },
-			{ TrackerContextKeys.HiringCost.ToString(), GameManagement.RecruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString() },
+			{ TrackerContextKeys.HiringCost.ToString(), GameManagement.RecruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString(CultureInfo.InvariantCulture) },
 		}, AccessibleTracker.Accessible.Screen));
 	}
 
@@ -293,7 +294,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		{
 			{ TrackerContextKeys.CrewMemberName.ToString(), _currentSelected },
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.RecruitMember.QuestionAllowance().ToString() },
-			{ TrackerContextKeys.HiringCost.ToString(), GameManagement.RecruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString() },
+			{ TrackerContextKeys.HiringCost.ToString(), GameManagement.RecruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString(CultureInfo.InvariantCulture) },
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
 		}, AccessibleTracker.Accessible.Screen));
 		_currentSelected = string.Empty;
@@ -312,7 +313,7 @@ public class RecruitMemberUI : ObservableMonoBehaviour
 		{
 			{ TrackerContextKeys.CrewMemberName.ToString(), crewMember.Name },
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.RecruitMember.QuestionAllowance().ToString() },
-			{ TrackerContextKeys.HiringCost.ToString(), GameManagement.RecruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString() },
+			{ TrackerContextKeys.HiringCost.ToString(), GameManagement.RecruitMember.GetConfigValue(ConfigKeys.RecruitmentCost).ToString(CultureInfo.InvariantCulture) },
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Hired", true);

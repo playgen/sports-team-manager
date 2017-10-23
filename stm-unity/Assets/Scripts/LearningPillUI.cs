@@ -107,9 +107,9 @@ public class LearningPillUI : ObservableMonoBehaviour {
 	private IEnumerator Animate(bool upward = false, bool keep = false, string tip = "")
 	{
 		_helpText.text = string.Empty;
-		WaitForEndOfFrame endFrame = new WaitForEndOfFrame();
-		int start = upward ? keep ? 1 : 0 : 2;
-		int limit = keep ? 1 : 2;
+		var endFrame = new WaitForEndOfFrame();
+		var start = upward ? keep ? 1 : 0 : 2;
+		var limit = keep ? 1 : 2;
 		_popUpAnim["LearningPill"].speed = 1;
 		_popUpAnim["LearningPill"].time = start;
 		_popUpAnim.Play();

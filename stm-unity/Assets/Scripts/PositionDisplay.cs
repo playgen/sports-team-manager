@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using PlayGen.RAGE.SportsTeamManager.Simulation;
+﻿using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Collections.Generic;
 
 /// <summary>

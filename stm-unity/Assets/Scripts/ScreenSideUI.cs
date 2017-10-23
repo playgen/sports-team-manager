@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.UI;
 using System.Linq;
 using PlayGen.Unity.Utilities.BestFit;

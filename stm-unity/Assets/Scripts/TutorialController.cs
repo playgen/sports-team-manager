@@ -9,7 +9,6 @@ using PlayGen.SUGAR.Unity;
 
 using UnityEngine.UI.Extensions;
 using PlayGen.Unity.Utilities.Localization;
-using System.Globalization;
 
 /// <summary>
 /// Connecting class between GameManager in logic and the Tutorial Section UIs
@@ -35,12 +34,12 @@ public class TutorialController : MonoBehaviour
 		}
 		var textAsset = (TextAsset)Resources.Load("Tutorial/Tutorial");
 		var parsedAsset = JSON.Parse(textAsset.text);
-		for (int i = 0; i < parsedAsset.Count; i++)
+		for (var i = 0; i < parsedAsset.Count; i++)
 		{
 			var tutorialSection = Instantiate(_tutorialSectionPrefab, transform, false);
 			var section = tutorialSection.GetComponent<TutorialSectionUI>();
 			var textDict = new Dictionary<string, string[]>();
-			foreach (CultureInfo langName in Localization.Languages)
+			foreach (var langName in Localization.Languages)
 			{
 				var lang = langName.EnglishName;
 				if (parsedAsset[i]["Section Text " + lang] != null)

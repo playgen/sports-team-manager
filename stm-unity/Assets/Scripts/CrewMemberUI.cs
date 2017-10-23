@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -95,10 +94,10 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 		if (_beingDragged)
 		{
 			transform.position = (Vector2)Input.mousePosition - _dragPosition;
-            var raycastResults = new List<RaycastResult>();
-            //gets all UI objects below the cursor
-            EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
-            if (Input.GetMouseButtonUp(0))
+			var raycastResults = new List<RaycastResult>();
+			//gets all UI objects below the cursor
+			EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
+			if (Input.GetMouseButtonUp(0))
 			{
 				EndDrag(raycastResults);
 			}
@@ -165,12 +164,12 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 				Place(result.gameObject);
 				break;
 			}
-            else if (result.Equals(raycastResults.Last()))
-            {
-                //remove this CrewMember from their position if they were in one
-                GameManagement.TeamSelection.RemoveCrew(_crewMember);
-                OnReset();
-            }
+			else if (result.Equals(raycastResults.Last()))
+			{
+				//remove this CrewMember from their position if they were in one
+				GameManagement.TeamSelection.RemoveCrew(_crewMember);
+				OnReset();
+			}
 		}
 		//reset the meeting UI if it is currently being displayed
 		if (_meetingUI.gameObject.activeInHierarchy)
@@ -184,18 +183,18 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 	/// </summary>
 	public void Place(GameObject position, bool swap = false)
 	{
-        if (_currentPlacement)
-        {
-            _currentPlacement.RemoveCrew();
-        }
-        var currentPosition = position.gameObject.GetComponent<PositionUI>().Position;
+		if (_currentPlacement)
+		{
+			_currentPlacement.RemoveCrew();
+		}
+		var currentPosition = position.gameObject.GetComponent<PositionUI>().Position;
 		var currentPositionCrew = position.gameObject.GetComponent<PositionUI>().CrewMemberUI;
 		var positionTransform = (RectTransform)position.gameObject.transform;
 		//set size and position
 		transform.SetParent(positionTransform, false);
 		((RectTransform)transform).sizeDelta = positionTransform.sizeDelta;
 		((RectTransform)transform).anchoredPosition = new Vector2(0, -((RectTransform)transform).sizeDelta.y * 0.5f);
-        GameManagement.TeamSelection.AssignCrew(_crewMember, currentPosition);
+		GameManagement.TeamSelection.AssignCrew(_crewMember, currentPosition);
 		position.gameObject.GetComponent<PositionUI>().LinkCrew(this);
 		if (!swap)
 		{
@@ -206,7 +205,7 @@ public class CrewMemberUI : ObservableMonoBehaviour, IPointerDownHandler, IPoint
 			}
 		}
 		_currentPlacement = position.gameObject.GetComponent<PositionUI>();
-        var positionImage = transform.Find("Position").gameObject;
+		var positionImage = transform.Find("Position").gameObject;
 		//update current position button
 		positionImage.GetComponent<Image>().enabled = true;
 		positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == currentPosition.ToString()).Image;

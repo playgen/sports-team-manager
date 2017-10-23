@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -234,7 +235,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 		managerOpinionImage.sprite = null;
 		var managerName = GameManagement.MemberMeeting.GetManagerName();
 		var managerOpinion = _currentMember.RevealedCrewOpinions[managerName];
-        managerOpinionImage.color = UnityEngine.Color.cyan;
+		managerOpinionImage.color = UnityEngine.Color.cyan;
 		managerOpinionImage.sprite = _opinionIcons[(managerOpinion > 0 ? Mathf.CeilToInt(managerOpinion / 3f) : Mathf.FloorToInt(managerOpinion / 3f)) + 2];
 		DoBestFit();
 	}
@@ -322,7 +323,7 @@ public class MemberMeetingUI : ObservableMonoBehaviour
 			{ TrackerContextKeys.CurrentSession.ToString(), GameManagement.MemberMeeting.SessionInRace() },
 			{ TrackerContextKeys.CrewMemberPosition.ToString(), GameManagement.MemberMeeting.GetCrewMemberPosition(_currentMember).ToString() },
 			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.MemberMeeting.TeamSize().ToString() },
-			{ TrackerContextKeys.FiringCost.ToString(), GameManagement.MemberMeeting.GetConfigValue(ConfigKeys.FiringCost).ToString() },
+			{ TrackerContextKeys.FiringCost.ToString(), GameManagement.MemberMeeting.GetConfigValue(ConfigKeys.FiringCost).ToString(CultureInfo.InvariantCulture) },
 			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), GameManagement.MemberMeeting.GetTimeInTeam(_currentMember).ToString() },
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Fired", true);
