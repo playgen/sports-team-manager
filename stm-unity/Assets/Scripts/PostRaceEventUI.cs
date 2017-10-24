@@ -64,14 +64,13 @@ public class PostRaceEventUI : MonoBehaviour
 	public void ResetDisplay()
 	{
 		_closeButton.SetActive(false);
-		var current = GameManagement.CurrentEvent;
 		//if there is an event
-		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length && GameManagement.PostRaceEvent.EnableCounter == 0)
+		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count != 0 && GameManagement.CurrentEvent.Count == _postRacePeople.Length && GameManagement.PostRaceEvent.EnableCounter == 0)
 		{
 			GameManagement.PostRaceEvent.EnableCheck();
 			for (var i = 0; i < _postRacePeople.Length; i++)
 			{
-				_postRacePeople[i].ResetDisplay(current[i]);
+				_postRacePeople[i].ResetDisplay(GameManagement.CurrentEvent[i]);
 			}
 			//set alpha to 1 (fully visible)
 			GetComponent<CanvasGroup>().alpha = 1;
@@ -81,9 +80,9 @@ public class PostRaceEventUI : MonoBehaviour
 			ResetQuestions();
 			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.EventID.ToString(), current[0].Dialogue.NextState },
+				{ TrackerContextKeys.EventID.ToString(),  GameManagement.CurrentEvent[0].Dialogue.NextState },
 			}, AccessibleTracker.Accessible.Screen));
-			SUGARManager.GameData.Send("Post Race Event Start", current[0].Dialogue.NextState);
+			SUGARManager.GameData.Send("Post Race Event Start", GameManagement.CurrentEvent[0].Dialogue.NextState);
 		}
 		else
 		{
@@ -108,7 +107,7 @@ public class PostRaceEventUI : MonoBehaviour
 				{ TrackerContextKeys.EventID.ToString(), GameManagement.PostRaceEvent.GetEventKey(_lastStates[0]) },
 			}, AccessibleTracker.Accessible.Screen));
 		}
-	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -116,13 +115,22 @@ public class PostRaceEventUI : MonoBehaviour
 	/// </summary>
 	private void ResetQuestions()
 	{
-		var current = GameManagement.CurrentEvent;
-		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length)
+		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count != 0 && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
 		{
 			var replies = GameManagement.PostRaceEvent.GetEventReplies();
-			for (var i = 0; i < _postRacePeople.Length; i++)
+			if (GameManagement.CurrentEvent != null)
 			{
-				_postRacePeople[i].ResetQuestions(current[i], replies[current[i].CrewMember]);
+				for (var i = 0; i < _postRacePeople.Length; i++)
+				{
+					_postRacePeople[i].ResetQuestions(GameManagement.CurrentEvent[i], replies[GameManagement.CurrentEvent[i].CrewMember]);
+				}
+			}
+			else
+			{
+				for (var i = 0; i < _postRacePeople.Length; i++)
+				{
+					_postRacePeople[i].ResetQuestions(new PostRaceEventState(_postRacePeople[i].CurrentCrewMember, null), new List<PostRaceEventState>());
+				}
 			}
 			if (replies.Values.Sum(dos => dos.Count) == 0)
 			{
@@ -153,7 +161,7 @@ public class PostRaceEventUI : MonoBehaviour
 			var teamSelection = (TeamSelectionUI)FindObjectOfType(typeof(TeamSelectionUI));
 			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
 			_popUpBlocker.onClick.AddListener(SendLearningPill);
-		    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+			TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
 	}
 
@@ -197,13 +205,12 @@ public class PostRaceEventUI : MonoBehaviour
 
 	private void OnLanguageChange()
 	{
-		var current = GameManagement.CurrentEvent;
 		//if there is an event
-		if (current != null && current.Count != 0 && current.Count == _postRacePeople.Length)
+		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count != 0 && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
 		{
 			for (var i = 0; i < _postRacePeople.Length; i++)
 			{
-				_postRacePeople[i].ResetDisplay(current[i]);
+				_postRacePeople[i].ResetDisplay(GameManagement.CurrentEvent[i]);
 			}
 		}
 		ResetQuestions();

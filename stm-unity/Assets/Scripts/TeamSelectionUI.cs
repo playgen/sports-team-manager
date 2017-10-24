@@ -190,7 +190,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 				stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
 				stageIcon.gameObject.SetActive(true);
 				_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = GameManagement.CurrentRaceSession.ToString();
-				_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.CurrentRaceSession - 1);
+				_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
 				_raceButton.GetComponentInChildren<Text>().fontSize = 16;
 			}
 		}
@@ -207,7 +207,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	{
 		_raceButton.interactable = false;
 		_skipToRaceButton.interactable = false;
-	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -425,7 +425,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		var idealScore = boat.IdealMatchScore;
 		//get selection mistakes for this line-up and set-up feedback UI
 		var mistakeList = GameManagement.Boat.GetAssignmentMistakes(3);
-		if (GameManagement.ShowTutorial && (GameManagement.LineUpHistory.Count - 1) == 1)
+		if (GameManagement.ShowTutorial && GameManagement.LineUpHistory.Count == 1)
 		{
 			mistakeList = _mistakeIcons.Select(m => m.Name).Where(m => m != "Correct" && m != "Hidden").OrderBy(m => Guid.NewGuid()).Take(2).ToList();
 			mistakeList.Add("Hidden");
@@ -716,8 +716,8 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	public void SkipToRace()
 	{
-	    GameManagement.GameManager.SkipToRace();
-    }
+		GameManagement.GameManager.SkipToRace();
+	}
 
 	/// <summary>
 	/// Confirm the current line-up
@@ -742,7 +742,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		GetResult(GameManagement.CurrentRaceSession - 1 == 0, currentBoat, offset, _raceButton.GetComponentInChildren<Text>(), true);
 		//set-up next boat
 		CreateNewBoat();
-	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -817,7 +817,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		{
 			DisplayPostCupPopUp();
 		}
-	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>

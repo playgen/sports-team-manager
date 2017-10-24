@@ -60,11 +60,14 @@ public class PostRaceEvent
 	{
 		var replies = GameManagement.GameManager.EventController.GetEventDialogues(GameManagement.Manager);
 		var replyDict = new Dictionary<CrewMember, List<PostRaceEventState>>();
-		foreach (var ev in GameManagement.CurrentEvent)
+		if (GameManagement.CurrentEvent != null)
 		{
-			if (!replyDict.ContainsKey(ev.CrewMember))
+			foreach (var ev in GameManagement.CurrentEvent)
 			{
-				replyDict.Add(ev.CrewMember, new List<PostRaceEventState>());
+				if (!replyDict.ContainsKey(ev.CrewMember))
+				{
+					replyDict.Add(ev.CrewMember, new List<PostRaceEventState>());
+				}
 			}
 		}
 		//if there are no replies, reset the current event

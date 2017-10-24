@@ -89,7 +89,7 @@ public static class GameManagement
     }
     public static List<PostRaceEventState> CurrentEvent
     {
-        get { return _gameManager.EventController.PostRaceEvents.First(); }
+        get { return _gameManager.EventController.PostRaceEvents.FirstOrDefault(); }
     }
     public static bool ShowTutorial
     {

@@ -27,6 +27,18 @@ public class TutorialSectionUI : MonoBehaviour
 			Value = v;
 		}
 	}
+	[Serializable]
+	class TriggerKeyValuePair
+	{
+		public string Key;
+		public string Value;
+
+		public TriggerKeyValuePair(string k, string v)
+		{
+			Key = k;
+			Value = v;
+		}
+	}
 	private TutorialController _tutorial;
 	[Header("UI")]
 	[SerializeField]
@@ -44,7 +56,7 @@ public class TutorialSectionUI : MonoBehaviour
 
 	[Header("Tutorial Trigger")]
 	[SerializeField]
-	protected KeyValuePair<string, string>[] _triggers;
+	private List<TriggerKeyValuePair> _triggers;
 	[SerializeField]
 	private bool _uniqueEvents;
 	private static readonly List<object[]> _triggeredObjects = new List<object[]>();
@@ -74,9 +86,13 @@ public class TutorialSectionUI : MonoBehaviour
 		{
 			_sectionTextHolder.Add(new LanguageKeyValuePair(kvp.Key, kvp.Value));
 		}
+		_triggers = new List<TriggerKeyValuePair>();
+		foreach (var kvp in triggers)
+		{
+			_triggers.Add(new TriggerKeyValuePair(kvp.Key, kvp.Value));
+		}
 		_highlightTrigger = highlightTrigger;
 		_reversed = reversed;
-		_triggers = triggers;
 		_eventTriggerCountRequired = triggerCount;
 		_uniqueEvents = uniqueTriggers;
 		_saveNextSection = saveSection;
@@ -293,7 +309,7 @@ public class TutorialSectionUI : MonoBehaviour
 				}
 			}
 		}
-		if (_eventTriggerCountRequired > 1)
+		if (_buttons && _eventTriggerCountRequired > 1)
 		{
 			_buttons.Find("Progress Count").GetComponent<Text>().text = (_eventTriggerCountRequired - _eventTriggerCount).ToString();
 		}

@@ -138,7 +138,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	private void ShowPopUp()
 	{
 		_meetingUI.SetUpDisplay(_crewMember, TrackerTriggerSources.TeamManagementScreen.ToString());
-	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
+		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
 	}
 
 	/// <summary>
@@ -166,9 +166,9 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			}
 			if (result.Equals(raycastResults.Last()))
 			{
-                //remove this CrewMember from their position if they were in one
-			    GameManagement.Boat.AssignCrewMember(0, _crewMember);
-                OnReset();
+				//remove this CrewMember from their position if they were in one
+				GameManagement.Boat.AssignCrewMember(0, _crewMember);
+				OnReset();
 			}
 		}
 		//reset the meeting UI if it is currently being displayed
@@ -183,7 +183,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// </summary>
 	public void Place(GameObject position, bool swap = false)
 	{
-		if (_currentPlacement)
+		if (!swap && _currentPlacement)
 		{
 			_currentPlacement.RemoveCrew();
 		}
@@ -195,14 +195,21 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		transform.SetParent(positionTransform, false);
 		((RectTransform)transform).sizeDelta = positionTransform.sizeDelta;
 		((RectTransform)transform).anchoredPosition = new Vector2(0, -((RectTransform)transform).sizeDelta.y * 0.5f);
-	    GameManagement.Boat.AssignCrewMember(currentPosition, _crewMember);
+		GameManagement.Boat.AssignCrewMember(currentPosition, _crewMember);
 		positionComp.LinkCrew(this);
 		if (!swap)
 		{
-			if (currentPositionCrew != null && _currentPlacement != null)
+			if (currentPositionCrew != null)
 			{
-				var currentPos = _currentPlacement.gameObject;
-				currentPositionCrew.Place(currentPos, true);
+				if (_currentPlacement != null)
+				{
+					var currentPos = _currentPlacement.gameObject;
+					currentPositionCrew.Place(currentPos, true);
+				}
+				else
+				{
+					currentPositionCrew.OnReset();
+				}
 			}
 		}
 		_currentPlacement = positionComp;
@@ -213,7 +220,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		_positionUI.UpdateDisplay();
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 		positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentPosition, TrackerTriggerSources.CrewMemberPopUp.ToString()); });
-	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
+		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
 	}
 
 	/// <summary>
@@ -233,13 +240,17 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 				{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()},
 			}, GameObjectTracker.TrackedGameObject.Npc));
 		}
-		_currentPlacement = null;
+		if (_currentPlacement)
+		{
+			_currentPlacement.RemoveCrew();
+			_currentPlacement = null;
+		}
 		var positionImage = transform.Find("Position").gameObject;
 		//hide current position button and remove all listeners
 		positionImage.GetComponent<Image>().enabled = false;
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 		//reset position pop-up if it is currently being shown
 		_positionUI.UpdateDisplay();
-	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
+		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
 	}
 }
