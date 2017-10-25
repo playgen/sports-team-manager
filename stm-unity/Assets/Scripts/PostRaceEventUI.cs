@@ -16,7 +16,6 @@ using RAGE.Analytics.Formats;
 /// </summary>
 public class PostRaceEventUI : MonoBehaviour
 {
-	private CanvasGroup _canvasGroup;
 	[SerializeField]
 	private LearningPillUI _learningPill;
 	[SerializeField]
@@ -25,36 +24,48 @@ public class PostRaceEventUI : MonoBehaviour
 	private Button _popUpBlocker;
 	[SerializeField]
 	private PostRacePersonUI[] _postRacePeople;
+	private Dictionary<CrewMember, PostRaceEventState> _selectedResponses;
 	private List<string> _lastStates;
 
 	private void OnEnable()
 	{
-		Localization.LanguageChange += OnLanguageChange;
-		BestFit.ResolutionChange += DoBestFit;
-		_canvasGroup = GetComponent<CanvasGroup>();
-		//reorder pop-ups and blockers
-		_popUpBlocker.transform.SetAsLastSibling();
-		transform.parent.SetAsLastSibling();
-		_popUpBlocker.gameObject.SetActive(true);
-		_popUpBlocker.onClick.RemoveAllListeners();
-		ResetDisplay();
+		_closeButton.SetActive(false);
+		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
+		{
+			Localization.LanguageChange += OnLanguageChange;
+			BestFit.ResolutionChange += DoBestFit;
+			//reorder pop-ups and blockers
+			_popUpBlocker.transform.SetAsLastSibling();
+			transform.parent.SetAsLastSibling();
+			_popUpBlocker.gameObject.SetActive(true);
+			_popUpBlocker.onClick.RemoveAllListeners();
+			ResetDisplay();
+		}
+		else
+		{
+			Close(string.Empty);
+		}
 	}
 
 	private void OnDisable()
 	{
-		Localization.LanguageChange -= OnLanguageChange;
-		BestFit.ResolutionChange -= DoBestFit;
-		foreach (var person in _postRacePeople)
+		if (_closeButton.activeSelf)
 		{
-			person.EnableQuestions();
-			DoBestFit();
-		}
-		if (transform.parent.GetSiblingIndex() == transform.parent.parent.childCount - 1)
-		{
-			_popUpBlocker.transform.SetAsLastSibling();
-			transform.parent.SetAsLastSibling();
-			_popUpBlocker.onClick.RemoveAllListeners();
-			_popUpBlocker.gameObject.SetActive(false);
+			Localization.LanguageChange -= OnLanguageChange;
+			BestFit.ResolutionChange -= DoBestFit;
+			foreach (var person in _postRacePeople)
+			{
+				person.EnableQuestions();
+				DoBestFit();
+			}
+			if (transform.parent.GetSiblingIndex() == transform.parent.parent.childCount - 1)
+			{
+				_popUpBlocker.transform.SetAsLastSibling();
+				transform.parent.SetAsLastSibling();
+				_popUpBlocker.onClick.RemoveAllListeners();
+				_popUpBlocker.gameObject.SetActive(false);
+			}
+			TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
 	}
 
@@ -64,50 +75,33 @@ public class PostRaceEventUI : MonoBehaviour
 	public void ResetDisplay()
 	{
 		_closeButton.SetActive(false);
-		//if there is an event
-		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length && GameManagement.PostRaceEvent.EnableCounter == 0)
+		for (var i = 0; i < _postRacePeople.Length; i++)
 		{
-			GameManagement.PostRaceEvent.EnableCheck();
-			for (var i = 0; i < _postRacePeople.Length; i++)
-			{
-				_postRacePeople[i].ResetDisplay(GameManagement.CurrentEvent[i]);
-			}
-			//set alpha to 1 (fully visible)
-			GetComponent<CanvasGroup>().alpha = 1;
-			_canvasGroup.interactable = true;
-			_canvasGroup.blocksRaycasts = true;
-			//set current NPC dialogue
-			ResetQuestions();
-			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
-			{
-				{ TrackerContextKeys.EventID.ToString(),  GameManagement.CurrentEvent[0].Dialogue.NextState },
-			}, AccessibleTracker.Accessible.Screen));
-			SUGARManager.GameData.Send("Post Race Event Start", GameManagement.CurrentEvent[0].Dialogue.NextState);
+			_postRacePeople[i].ResetDisplay(GameManagement.CurrentEvent[i]);
 		}
-		else
-		{
-			Hide(string.Empty);
-		}
+		//set current NPC dialogue
+		ResetQuestions();
+		SUGARManager.GameData.Send("Post Race Event Start", GameManagement.CurrentEvent[0].Dialogue.NextState);
 	}
 
 	/// <summary>
-	/// Hide this UI
+	/// Close this UI
 	/// </summary>
-	public void Hide(string source)
+	public void Close(string source)
 	{
-		_canvasGroup.alpha = 0;
-		_canvasGroup.interactable = false;
-		_canvasGroup.blocksRaycasts = false;
-		GameManagement.PostRaceEvent.DisableCheck();
+		gameObject.SetActive(false);
 		if (!string.IsNullOrEmpty(source))
 		{
 			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.TriggerUI.ToString(), source },
-				{ TrackerContextKeys.EventID.ToString(), GameManagement.PostRaceEvent.GetEventKey(_lastStates[0]) },
+				{ TrackerContextKeys.EventID.ToString(), GameManagement.GameManager.GetPostRaceEventKeys().First(_lastStates[0].StartsWith) },
 			}, AccessibleTracker.Accessible.Screen));
+			foreach (Transform child in transform.parent)
+			{
+				child.gameObject.SetActive(true);
+			}
 		}
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -117,27 +111,53 @@ public class PostRaceEventUI : MonoBehaviour
 	{
 		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
 		{
-			var replies = GameManagement.PostRaceEvent.GetEventReplies();
+			var replies = GameManagement.GameManager.EventController.GetEventDialogues(GameManagement.Manager);
+			var replyDict = new Dictionary<CrewMember, List<PostRaceEventState>>();
+			if (GameManagement.CurrentEvent != null)
+			{
+				foreach (var ev in GameManagement.CurrentEvent)
+				{
+					if (!replyDict.ContainsKey(ev.CrewMember))
+					{
+						replyDict.Add(ev.CrewMember, new List<PostRaceEventState>());
+					}
+				}
+			}
+			//if there are no replies, reset the current event
+			if (replies.Count != 0)
+			{
+				foreach (var reply in replies)
+				{
+					replyDict[reply.CrewMember].Add(reply);
+				}
+				foreach (var reply in replyDict)
+				{
+					if (reply.Value.Count == 0)
+					{
+						AddReply(new PostRaceEventState(reply.Key, null));
+					}
+				}
+			}
 			if (GameManagement.CurrentEvent != null)
 			{
 				for (var i = 0; i < _postRacePeople.Length; i++)
 				{
-					_postRacePeople[i].ResetQuestions(GameManagement.CurrentEvent[i], replies[GameManagement.CurrentEvent[i].CrewMember]);
+					_postRacePeople[i].ResetQuestions(GameManagement.CurrentEvent[i], replyDict[GameManagement.CurrentEvent[i].CrewMember]);
 				}
 			}
 			else
 			{
-				for (var i = 0; i < _postRacePeople.Length; i++)
+				foreach (PostRacePersonUI p in _postRacePeople)
 				{
-					_postRacePeople[i].ResetQuestions(new PostRaceEventState(_postRacePeople[i].CurrentCrewMember, null), new List<PostRaceEventState>());
+					p.ResetQuestions(new PostRaceEventState(p.CurrentCrewMember, null), new List<PostRaceEventState>());
 				}
 			}
-			if (replies.Values.Sum(dos => dos.Count) == 0)
+			if (replyDict.Values.Sum(dos => dos.Count) == 0)
 			{
 				SetBlockerOnClick();
-				SUGARManager.GameData.Send("Post Event Crew Average Mood", GameManagement.PostRaceEvent.GetTeamAverageMood());
-				SUGARManager.GameData.Send("Post Event Crew Average Manager Opinion", GameManagement.PostRaceEvent.GetTeamAverageManagerOpinion());
-				SUGARManager.GameData.Send("Post Event Crew Average Opinion", GameManagement.PostRaceEvent.GetTeamAverageOpinion());
+				SUGARManager.GameData.Send("Post Event Crew Average Mood", GameManagement.Team.AverageTeamMood());
+				SUGARManager.GameData.Send("Post Event Crew Average Manager Opinion", GameManagement.Team.AverageTeamManagerOpinion());
+				SUGARManager.GameData.Send("Post Event Crew Average Opinion", GameManagement.Team.AverageTeamOpinion());
 			}
 			else
 			{
@@ -145,6 +165,91 @@ public class PostRaceEventUI : MonoBehaviour
 			}
 			DoBestFit();
 		}
+	}
+
+	/// <summary>
+	/// Triggered by button. Send the selected dialogue to the character
+	/// </summary>
+	public void SendReply(PostRaceEventState reply)
+	{
+		var responses = AddReply(reply);
+		if (responses != null)
+		{
+			foreach (var person in _postRacePeople)
+			{
+				foreach (var res in responses)
+				{
+					if (res.Key == person.CurrentCrewMember)
+					{
+						person.UpdateDialogue(res.Value.Dialogue, res.Value.Subjects);
+					}
+				}
+			}
+			ResetQuestions();
+		}
+	}
+
+	/// <summary>
+	/// Add a reply to the dictionary of selected responses. If the number of responses matches the number expected, get replies from crew members.
+	/// </summary>
+	public Dictionary<CrewMember, PostRaceEventState> AddReply(PostRaceEventState response)
+	{
+		if (_selectedResponses == null)
+		{
+			_selectedResponses = new Dictionary<CrewMember, PostRaceEventState>();
+		}
+		//overwrite response if one had already been given for this crew member.
+		if (_selectedResponses.ContainsKey(response.CrewMember))
+		{
+			_selectedResponses[response.CrewMember] = response;
+		}
+		else
+		{
+			_selectedResponses.Add(response.CrewMember, response);
+		}
+		if (GameManagement.CurrentEvent != null && _selectedResponses.Count == GameManagement.CurrentEvent.Count)
+		{
+			foreach (var res in _selectedResponses.Values)
+			{
+				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventDialogueSelected", TrackerVerbs.Selected, new Dictionary<string, string>
+				{
+					{ TrackerContextKeys.DialogueID.ToString(), res.Dialogue.NextState },
+					{ TrackerContextKeys.DialogueStyle.ToString(), res.Dialogue.Meaning[0] },
+					{ TrackerContextKeys.EventID.ToString(), GameManagement.GameManager.GetPostRaceEventKeys().First(res.Dialogue.NextState.StartsWith) },
+				}, res.Dialogue.NextState, AlternativeTracker.Alternative.Dialog));
+				SUGARManager.GameData.Send("Post Race Event Reply", res.Dialogue.NextState);
+			}
+			var beforeValues = GameManagement.Team.AverageTeamMood() + GameManagement.Team.AverageTeamManagerOpinion() + GameManagement.Team.AverageTeamOpinion();
+			foreach (var res in _selectedResponses)
+			{
+				ReactionSoundControl.PlaySound(res.Value.Dialogue.Meaning[0], res.Key.Gender == "Male", res.Key.Avatar.Height, res.Key.Avatar.Weight);
+			}
+			var replies = GameManagement.GameManager.SendPostRaceEvent(_selectedResponses.Values.ToList());
+			_selectedResponses = null;
+			var afterValues = GameManagement.Team.AverageTeamMood() + GameManagement.Team.AverageTeamManagerOpinion() + GameManagement.Team.AverageTeamOpinion();
+			if (afterValues > beforeValues)
+			{
+				SUGARManager.GameData.Send("Post Race Event Positive Outcome", true);
+			}
+			else if (afterValues < beforeValues)
+			{
+				SUGARManager.GameData.Send("Post Race Event Positive Outcome", false);
+			}
+			var replyDict = new Dictionary<CrewMember, PostRaceEventState>();
+			foreach (var ev in GameManagement.CurrentEvent)
+			{
+				if (!replyDict.ContainsKey(ev.CrewMember))
+				{
+					replyDict.Add(ev.CrewMember, null);
+				}
+			}
+			foreach (var reply in replies)
+			{
+				replyDict[reply.CrewMember] = reply;
+			}
+			return replyDict;
+		}
+		return null;
 	}
 
 	/// <summary>
@@ -156,8 +261,7 @@ public class PostRaceEventUI : MonoBehaviour
 		{
 			_closeButton.SetActive(true);
 			_popUpBlocker.onClick.AddListener(GetLearningPill);
-			_popUpBlocker.onClick.AddListener(() => Hide(TrackerTriggerSources.PopUpBlocker.ToString()));
-			_popUpBlocker.onClick.AddListener(GameManagement.PostRaceEvent.GetEvent);
+			_popUpBlocker.onClick.AddListener(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
 			var teamSelection = (TeamSelectionUI)FindObjectOfType(typeof(TeamSelectionUI));
 			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
 			_popUpBlocker.onClick.AddListener(SendLearningPill);
@@ -179,28 +283,6 @@ public class PostRaceEventUI : MonoBehaviour
 	public void SendLearningPill()
 	{
 		_learningPill.SetHelp(_lastStates);
-	}
-
-	/// <summary>
-	/// Triggered by button. Send the selected dialogue to the character
-	/// </summary>
-	public void SendReply(PostRaceEventState reply)
-	{
-		var responses = GameManagement.PostRaceEvent.AddReply(reply);
-		if (responses != null)
-		{
-			foreach (var person in _postRacePeople)
-			{
-				foreach (var res in responses)
-				{
-					if (res.Key == person.CurrentCrewMember)
-					{
-						person.UpdateDialogue(res.Value.Dialogue, res.Value.Subjects);
-					}
-				}
-			}
-			ResetQuestions();
-		}
 	}
 
 	private void OnLanguageChange()

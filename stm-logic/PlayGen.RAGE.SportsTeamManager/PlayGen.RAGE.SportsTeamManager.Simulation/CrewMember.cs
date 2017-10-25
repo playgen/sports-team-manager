@@ -698,7 +698,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string GetSocialImportanceRating()
 		{
 			return SocialImportance.DecideConferral("SELF") != null ? SocialImportance.DecideConferral("SELF").Key.ToString() : "MID";
-        }
+		}
 
 		/// <summary>
 		/// Compare this crew member to anothe by checking their names

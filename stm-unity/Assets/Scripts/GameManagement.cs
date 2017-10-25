@@ -13,15 +13,10 @@ using PlayGen.Unity.Utilities.Localization;
 public static class GameManagement
 {
     private static readonly GameManager _gameManager = new GameManager(Application.platform == RuntimePlatform.Android);
-    private static readonly PostRaceEvent _postRaceEvent = new PostRaceEvent();
 
     public static GameManager GameManager
     {
         get { return _gameManager; }
-    }
-    public static PostRaceEvent PostRaceEvent
-    {
-        get { return _postRaceEvent; }
     }
 
     public static List<string> GameNames

@@ -240,7 +240,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 				{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()},
 			}, GameObjectTracker.TrackedGameObject.Npc));
 		}
-		if (_currentPlacement)
+		if (_currentPlacement != null)
 		{
 			_currentPlacement.RemoveCrew();
 			_currentPlacement = null;

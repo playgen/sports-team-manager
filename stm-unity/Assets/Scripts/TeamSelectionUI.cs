@@ -136,7 +136,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	private void Start()
 	{
-		GameManagement.PostRaceEvent.GetEvent();
+		_postRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
 		ResetScrollbar();
 		CreateNewBoat();
 	}
@@ -743,7 +743,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		//confirm the line-up with the simulation 
 		SUGARManager.GameData.Send("Current Crew Size", GameManagement.CrewCount);
 		GameManagement.GameManager.SaveLineUp(offset);
-		GameManagement.PostRaceEvent.GetEvent();
+		_postRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
 		ResetScrollbar();
 		if (!GameManagement.ShowTutorial)
 		{
@@ -919,7 +919,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	{
 		foreach (var pre in _postRaceEvents)
 		{
-			if (pre.gameObject.activeInHierarchy && !Mathf.Approximately(pre.GetComponent<CanvasGroup>().alpha, 0))
+			if (pre.gameObject.activeInHierarchy)
 			{
 				_popUpBlocker.transform.SetAsLastSibling();
 				pre.transform.parent.SetAsLastSibling();
