@@ -113,10 +113,10 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKeys.CrewMemberName.ToString(), crewMember.Name },
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
 			{ TrackerContextKeys.CurrentSession.ToString(), GameManagement.CurrentSessionString },
-			{ TrackerContextKeys.CrewMemberPosition.ToString(), crewMember.GetBoatPosition(GameManagement.PositionCrew).ToString() },
-			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewMembers.Count.ToString() },
+			{ TrackerContextKeys.CrewMemberPosition.ToString(), crewMember.BoatPosition().ToString() },
+			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
 			{ TrackerContextKeys.TriggerUI.ToString(), source },
-			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), GameManagement.MemberMeeting.GetTimeInTeam(crewMember).ToString() },
+			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(crewMember.Name) },
 		}, AccessibleTracker.Accessible.Screen));
 		SUGARManager.GameData.Send("View Crew Member Screen", crewMember.Name);
 		Display();
@@ -125,7 +125,7 @@ public class MemberMeetingUI : MonoBehaviour
 		transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(delegate { CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()); });
+		_popUpBlocker.onClick.AddListener(() => CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 	}
 
 	/// <summary>
@@ -134,21 +134,21 @@ public class MemberMeetingUI : MonoBehaviour
 	public void Display()
 	{
 		//ActionAllowance display
-		_allowanceBar.fillAmount = GameManagement.ActionAllowance / (float)GameManagement.StartingActionAllowance;
+		_allowanceBar.fillAmount = GameManagement.ActionAllowancePercentage;
 		_allowanceText.text = GameManagement.ActionAllowance.ToString();
 		//CrewMember avatar
 		_avatarDisplay.SetAvatar(_currentMember.Avatar, _currentMember.GetMood());
 		//CrewMember information
 		_textList[0].text = _currentMember.Name;
 		_textList[1].text = _currentMember.Age.ToString();
-		var currentRole = _currentMember.GetBoatPosition(GameManagement.PositionCrew);
+		var currentRole = _currentMember.BoatPosition();
 		_textList[2].text = currentRole == Position.Null ? Localization.Get("NO_ROLE") : string.Empty;
 		_roleButton.onClick.RemoveAllListeners();
 		//set up button onclick if CrewMember is positioned
 		if (currentRole != Position.Null)
 		{
 			_roleButton.gameObject.SetActive(true);
-			_roleButton.onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentRole, TrackerTriggerSources.TeamManagementScreen.ToString()); });
+			_roleButton.onClick.AddListener(() => _positionUI.SetUpDisplay(currentRole, TrackerTriggerSources.TeamManagementScreen.ToString()));
 			_roleButton.GetComponentInChildren<Text>().text = Localization.Get(currentRole.ToString(), true);
 			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = _teamSelectionUI.RoleLogos.First(mo => mo.Name == currentRole.ToString()).Image;
 		}
@@ -167,29 +167,29 @@ public class MemberMeetingUI : MonoBehaviour
 		//set default starting dialogue
 		_dialogueText.text = Localization.Get("MEETING_INTRO_" + _currentMember.GetSocialImportanceRating());
 		//set question text for the player
-		_statQuestion.text = Localization.Get(GameManagement.MemberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).First());
-		_roleQuestion.text = Localization.Get(GameManagement.MemberMeeting.GetEventText("RoleReveal").OrderBy(s => Guid.NewGuid()).First());
-		_opinionPositiveQuestion.text = Localization.Get(GameManagement.MemberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).First());
-		_opinionNegativeQuestion.text = Localization.Get(GameManagement.MemberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).First());
+		_statQuestion.text = "StatReveal".EventString();
+		_roleQuestion.text = "RoleReveal".EventString();
+		_opinionPositiveQuestion.text = "OpinionRevealPositive".EventString();
+		_opinionNegativeQuestion.text = "OpinionRevealNegative".EventString();
 		//set the cost shown for each question and for firing
-		_statQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = GameManagement.MemberMeeting.GetConfigValue(ConfigKeys.StatRevealCost, _currentMember).ToString(Localization.SpecificSelectedLanguage);
-		_roleQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = GameManagement.MemberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost).ToString(Localization.SpecificSelectedLanguage);
-		_opinionPositiveQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = GameManagement.MemberMeeting.GetConfigValue(ConfigKeys.OpinionRevealPositiveCost).ToString(Localization.SpecificSelectedLanguage);
-		_opinionNegativeQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = GameManagement.MemberMeeting.GetConfigValue(ConfigKeys.OpinionRevealNegativeCost).ToString(Localization.SpecificSelectedLanguage);
-		_fireButton.transform.Find("Image/Text").GetComponent<Text>().text = GameManagement.MemberMeeting.GetConfigValue(ConfigKeys.FiringCost).ToString(Localization.SpecificSelectedLanguage);
+		_statQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = ConfigKeys.StatRevealCost.Value(_currentMember).ToString(Localization.SpecificSelectedLanguage);
+		_roleQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = ConfigKeys.RoleRevealCost.Value().ToString(Localization.SpecificSelectedLanguage);
+		_opinionPositiveQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = ConfigKeys.OpinionRevealPositiveCost.Value().ToString(Localization.SpecificSelectedLanguage);
+		_opinionNegativeQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = ConfigKeys.OpinionRevealNegativeCost.Value().ToString(Localization.SpecificSelectedLanguage);
+		_fireButton.transform.Find("Image/Text").GetComponent<Text>().text = ConfigKeys.FiringCost.Value().ToString(Localization.SpecificSelectedLanguage);
 		//set if each button is interactable according to if the player has enough allowance
-		_fireButton.interactable = GameManagement.ActionAllowance >= GameManagement.MemberMeeting.GetConfigValue(ConfigKeys.FiringCost) && GameManagement.CrewEditAllowance != 0 && GameManagement.Team.CanRemoveFromCrew() && !GameManagement.ShowTutorial;
-		_statQuestion.GetComponentInParent<Button>().interactable = GameManagement.ActionAllowance >= GameManagement.MemberMeeting.GetConfigValue(ConfigKeys.StatRevealCost, _currentMember);
-		_roleQuestion.GetComponentInParent<Button>().interactable = GameManagement.ActionAllowance >= GameManagement.MemberMeeting.GetConfigValue(ConfigKeys.RoleRevealCost);
-		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = GameManagement.ActionAllowance >= GameManagement.MemberMeeting.GetConfigValue(ConfigKeys.OpinionRevealPositiveCost);
-		_opinionNegativeQuestion.GetComponentInParent<Button>().interactable = GameManagement.ActionAllowance >= GameManagement.MemberMeeting.GetConfigValue(ConfigKeys.OpinionRevealNegativeCost);
+		_fireButton.interactable = ConfigKeys.FiringCost.Affordable() && GameManagement.CrewEditAllowed && GameManagement.Team.CanRemoveFromCrew() && !GameManagement.ShowTutorial;
+		_statQuestion.GetComponentInParent<Button>().interactable = ConfigKeys.StatRevealCost.Affordable(_currentMember);
+		_roleQuestion.GetComponentInParent<Button>().interactable = ConfigKeys.RoleRevealCost.Affordable();
+		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = ConfigKeys.OpinionRevealPositiveCost.Affordable();
+		_opinionNegativeQuestion.GetComponentInParent<Button>().interactable = ConfigKeys.OpinionRevealNegativeCost.Affordable();
 		if (!_fireButton.interactable)
 		{
-			if (GameManagement.ActionAllowance < GameManagement.MemberMeeting.GetConfigValue(ConfigKeys.FiringCost))
+			if (!ConfigKeys.FiringCost.Affordable())
 			{
 				FeedbackHoverOver(_fireButton.transform, "FIRE_BUTTON_HOVER_ALLOWANCE");
 			}
-			else if (GameManagement.CrewEditAllowance == 0)
+			else if (!GameManagement.CrewEditAllowed)
 			{
 				FeedbackHoverOver(_fireButton.transform, Localization.GetAndFormat("FIRE_BUTTON_HOVER_LIMIT", false, GameManagement.StartingCrewEditAllowance));
 			}
@@ -244,7 +244,7 @@ public class MemberMeetingUI : MonoBehaviour
 	public void AskQuestion(string questionType)
 	{
 		var allowanceBefore = GameManagement.ActionAllowance;
-		var reply = GameManagement.MemberMeeting.AskQuestion(questionType, _currentMember);
+		var reply = GameManagement.GameManager.SendMeetingEvent(questionType, _currentMember);
 		_lastReply = reply;
 		Display();
 		var replyExtras = reply.Count > 0 ? reply.Where(r => r != reply.First()).Select(r => Localization.Get(r)).ToArray() : new string[0];
@@ -256,10 +256,15 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKeys.QuestionCost.ToString(), (allowanceBefore - GameManagement.ActionAllowance).ToString() },
 			{ TrackerContextKeys.CrewMemberName.ToString(), _currentMember.Name },
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), allowanceBefore.ToString() },
-			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewMembers.Count.ToString() }
+			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() }
 		}, questionType, AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Meeting Question Directed At", _currentMember.Name);
 		SUGARManager.GameData.Send("Meeting Question Asked", questionType);
+	}
+
+	private string MemberTimeInTeam(string memberName)
+	{
+		return GameManagement.LineUpHistory.Count(boat => boat.PositionCrew.Values.ToList().Any(c => c.Name == memberName)).ToString();
 	}
 
 	/// <summary>
@@ -272,16 +277,16 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKeys.CrewMemberName.ToString(), _currentMember.Name },
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
 			{ TrackerContextKeys.CurrentSession.ToString(), GameManagement.CurrentSessionString },
-			{ TrackerContextKeys.CrewMemberPosition.ToString(), _currentMember.GetBoatPosition(GameManagement.PositionCrew).ToString() },
-			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewMembers.Count.ToString() },
-			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), GameManagement.MemberMeeting.GetTimeInTeam(_currentMember).ToString() },
+			{ TrackerContextKeys.CrewMemberPosition.ToString(), _currentMember.BoatPosition().ToString() },
+			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
+			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(_currentMember.Name) },
 		}, AccessibleTracker.Accessible.Screen));
 		_fireWarningPopUp.SetActive(true);
 		_popUpBlocker.transform.SetAsLastSibling();
 		_fireWarningPopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(delegate { CloseFireCrewWarning(TrackerTriggerSources.PopUpBlocker.ToString()); });
+		_popUpBlocker.onClick.AddListener(() => CloseFireCrewWarning(TrackerTriggerSources.PopUpBlocker.ToString()));
 		DoBestFit();
 	}
 
@@ -301,7 +306,7 @@ public class MemberMeetingUI : MonoBehaviour
 			_popUpBlocker.transform.SetAsLastSibling();
 			transform.SetAsLastSibling();
 			_popUpBlocker.onClick.RemoveAllListeners();
-			_popUpBlocker.onClick.AddListener(delegate { CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()); });
+			_popUpBlocker.onClick.AddListener(() => CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 		}
 		else
 		{
@@ -319,13 +324,13 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKeys.CrewMemberName.ToString(), _currentMember.Name },
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
 			{ TrackerContextKeys.CurrentSession.ToString(), GameManagement.CurrentSessionString },
-			{ TrackerContextKeys.CrewMemberPosition.ToString(), _currentMember.GetBoatPosition(GameManagement.PositionCrew).ToString() },
-			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewMembers.Count.ToString() },
-			{ TrackerContextKeys.FiringCost.ToString(), GameManagement.MemberMeeting.GetConfigValue(ConfigKeys.FiringCost).ToString(CultureInfo.InvariantCulture) },
-			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), GameManagement.MemberMeeting.GetTimeInTeam(_currentMember).ToString() },
+			{ TrackerContextKeys.CrewMemberPosition.ToString(), _currentMember.BoatPosition().ToString() },
+			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
+			{ TrackerContextKeys.FiringCost.ToString(), ConfigKeys.FiringCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(_currentMember.Name) },
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Fired", true);
-		GameManagement.MemberMeeting.FireCrewMember(_currentMember);
+		GameManagement.GameManager.RetireCrewMember(_currentMember);
 		_teamSelectionUI.ResetCrew();
 		CloseFireCrewWarning(string.Empty);
 		CloseCrewMemberPopUp(string.Empty);
@@ -376,7 +381,7 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	private void OnLanguageChange()
 	{
-		var currentRole = _currentMember.GetBoatPosition(GameManagement.PositionCrew);
+		var currentRole = _currentMember.BoatPosition();
 		_textList[2].text = currentRole == Position.Null ? Localization.Get("NO_ROLE") : string.Empty;
 		if (currentRole != Position.Null)
 		{
@@ -387,10 +392,10 @@ public class MemberMeetingUI : MonoBehaviour
 		{
 			_closeText.text = Localization.Get("MEETING_EXIT");
 		}
-		_statQuestion.text = Localization.Get(GameManagement.MemberMeeting.GetEventText("StatReveal").OrderBy(s => Guid.NewGuid()).First());
-		_roleQuestion.text = Localization.Get(GameManagement.MemberMeeting.GetEventText("RoleReveal").OrderBy(s => Guid.NewGuid()).First());
-		_opinionPositiveQuestion.text = Localization.Get(GameManagement.MemberMeeting.GetEventText("OpinionRevealPositive").OrderBy(s => Guid.NewGuid()).First());
-		_opinionNegativeQuestion.text = Localization.Get(GameManagement.MemberMeeting.GetEventText("OpinionRevealNegative").OrderBy(s => Guid.NewGuid()).First());
+		_statQuestion.text = "StatReveal".EventString();
+		_roleQuestion.text = "RoleReveal".EventString();
+		_opinionPositiveQuestion.text = "OpinionRevealPositive".EventString();
+		_opinionNegativeQuestion.text = "OpinionRevealNegative".EventString();
 		_dialogueText.text = _lastReply != null ? Localization.GetAndFormat(_lastReply.First(), false, _lastReply.Where(r => r != _lastReply.First()).ToArray()) : Localization.Get("MEETING_INTRO");
 		DoBestFit();
 	}

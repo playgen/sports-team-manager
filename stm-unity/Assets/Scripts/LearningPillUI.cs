@@ -127,7 +127,7 @@ public class LearningPillUI : MonoBehaviour {
 			{
 				{ TrackerContextKeys.LearningPillID.ToString(), _currentHelp },
 			}, AccessibleTracker.Accessible.Accessible));
-			_popUpBlocker.onClick.AddListener(delegate { ClosePill(TrackerTriggerSources.PopUpBlocker.ToString()); });
+			_popUpBlocker.onClick.AddListener(() => ClosePill(TrackerTriggerSources.PopUpBlocker.ToString()));
 		}
 	}
 

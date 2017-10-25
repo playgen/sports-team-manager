@@ -107,7 +107,7 @@ public class PositionDisplayUI : MonoBehaviour
 	public void SetUpDisplay(Position position, string source)
 	{
 		var currentCrew = GameManagement.PositionCrew.ContainsKey(position) ? GameManagement.PositionCrew[position] : null;
-		var boatPos = string.Join(",", GameManagement.Positions.Select(pos => pos.ToString()).ToArray());
+		var boatPos = GameManagement.PositionString;
 		TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.PositionName.ToString(), position.ToString() },
@@ -122,7 +122,7 @@ public class PositionDisplayUI : MonoBehaviour
 		gameObject.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(delegate { ClosePositionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()); });
+		_popUpBlocker.onClick.AddListener(() => ClosePositionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 		Display(position);
 	}
 
@@ -152,7 +152,7 @@ public class PositionDisplayUI : MonoBehaviour
 		{
 			_currentAvatar.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), true);
 			_currentName.text = currentCrew.Name;
-			_currentButton.onClick.AddListener(delegate { _meetingUI.SetUpDisplay(currentCrew, TrackerTriggerSources.PositionPopUp.ToString()); });
+			_currentButton.onClick.AddListener(() => _meetingUI.SetUpDisplay(currentCrew, TrackerTriggerSources.PositionPopUp.ToString()));
 		}
 		//wipe previous position history objects
 		foreach (Transform child in _historyContainer.transform)
@@ -199,7 +199,7 @@ public class PositionDisplayUI : MonoBehaviour
 			if (GameManagement.CrewMembers.ContainsKey(member.Key.Name))
 			{
 				var current = member.Key;
-				positionHistory.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { _meetingUI.SetUpDisplay(current, TrackerTriggerSources.PositionPopUp.ToString()); });
+				positionHistory.transform.Find("Button").GetComponent<Button>().onClick.AddListener(() => _meetingUI.SetUpDisplay(current, TrackerTriggerSources.PositionPopUp.ToString()));
 			}
 			else
 			{
@@ -230,7 +230,7 @@ public class PositionDisplayUI : MonoBehaviour
 			_popUpBlocker.transform.SetAsLastSibling();
 			_meetingUI.gameObject.transform.SetAsLastSibling();
 			_popUpBlocker.onClick.RemoveAllListeners();
-			_popUpBlocker.onClick.AddListener(delegate { _meetingUI.CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString());});
+			_popUpBlocker.onClick.AddListener(() => _meetingUI.CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 		}
 		else
 		{
@@ -249,7 +249,7 @@ public class PositionDisplayUI : MonoBehaviour
 			_popUpBlocker.transform.SetAsLastSibling();
 			gameObject.transform.SetAsLastSibling();
 			_popUpBlocker.onClick.RemoveAllListeners();
-			_popUpBlocker.onClick.AddListener(delegate { ClosePositionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()); });
+			_popUpBlocker.onClick.AddListener(() => ClosePositionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 
 		}
 		else

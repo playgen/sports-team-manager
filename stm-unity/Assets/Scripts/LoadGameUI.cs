@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
-
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
+using RAGE.Analytics.Formats;
 
 /// <summary>
 /// Contains all UI logic related to loading saved games
@@ -19,6 +22,8 @@ public class LoadGameUI : MonoBehaviour
 	private GameObject _gameContainer;
 	[SerializeField]
 	private Text _errorText;
+
+	private string _selectedName;
 
 	/// <summary>
 	/// Get available games and wipe error text
@@ -40,12 +45,12 @@ public class LoadGameUI : MonoBehaviour
 	/// </summary>
 	private void Update()
 	{
-		if (string.IsNullOrEmpty(GameManagement.LoadGame.GetSelected()) && _loadButton.interactable)
+		if (string.IsNullOrEmpty(_selectedName) && _loadButton.interactable)
 		{
 			_loadButton.interactable = false;
 			_selectedIcon.SetActive(false);
 		}
-		else if(!string.IsNullOrEmpty(GameManagement.LoadGame.GetSelected()) && !_loadButton.interactable)
+		else if(!string.IsNullOrEmpty(_selectedName) && !_loadButton.interactable)
 		{
 			_loadButton.interactable = true;
 			_selectedIcon.SetActive(true);
@@ -67,8 +72,7 @@ public class LoadGameUI : MonoBehaviour
 		{
 			Destroy(child.gameObject);
 		}
-		var gameNames = GameManagement.LoadGame.GetGames();
-		foreach (var game in gameNames)
+		foreach (var game in GameManagement.GameNames)
 		{
 			var gameButton = Instantiate(_gameButtonPrefab);
 			gameButton.transform.SetParent(_gameContainer.transform, false);
@@ -85,7 +89,7 @@ public class LoadGameUI : MonoBehaviour
 	public void SelectGame(Text nameText)
 	{
 		_errorText.text = string.Empty;
-		GameManagement.LoadGame.SetSelected(nameText.text);
+		_selectedName = nameText.text;
 		_selectedIcon.transform.SetParent(nameText.transform, false);
 		_selectedIcon.transform.position = nameText.transform.position;
 	}
@@ -95,30 +99,35 @@ public class LoadGameUI : MonoBehaviour
 	/// </summary>
 	public void LoadGame()
 	{
-		_errorText.text = string.Empty;
-		//check if the game exists
-		var exists = GameManagement.LoadGame.ExistingGameCheck();
-		if (exists)
+		if (_selectedName != null)
 		{
-			var success = GameManagement.LoadGame.LoadSelectedGame();
-			if (success)
+			_errorText.text = string.Empty;
+			//check if the game exists
+			if (GameManagement.GameManager.CheckIfGameExists(Path.Combine(Application.persistentDataPath, "GameSaves"), _selectedName))
 			{
-				UIStateManager.StaticGoToGame();
+				GameManagement.GameManager.LoadGame(Path.Combine(Application.persistentDataPath, "GameSaves"), _selectedName);
+				if (GameManagement.Team != null && GameManagement.TeamName.ToLower() == _selectedName.ToLower())
+				{
+					var newString = GameManagement.PositionString;
+					TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
+					{
+						{ TrackerContextKeys.GameName.ToString(), GameManagement.TeamName },
+						{ TrackerContextKeys.BoatLayout.ToString(), string.IsNullOrEmpty(newString) ? "NullAsGameFinished" : newString }
+					}, CompletableTracker.Completable.Game));
+					UIStateManager.StaticGoToGame();
+				}
 			}
+			//display error and remove game from the list if the game could not be found
 			else
 			{
-				_errorText.text = Localization.Get("LOAD_GAME_NOT_LOADED");
+				_errorText.text = Localization.Get("LOAD_GAME_MISSING_FILES");
+				_selectedIcon.transform.SetParent(_gameContainer.transform, true);
+				_selectedIcon.SetActive(false);
+				Destroy(_gameContainer.transform.Find(_selectedName).gameObject);
+				_selectedName = string.Empty;
 			}
 		}
-		//display error and remove game from the list if the game could not be found
-		else
-		{
-			_errorText.text = Localization.Get("LOAD_GAME_MISSING_FILES");
-			_selectedIcon.transform.SetParent(_gameContainer.transform, true);
-			_selectedIcon.SetActive(false);
-			Destroy(_gameContainer.transform.Find(GameManagement.LoadGame.GetSelected()).gameObject);
-			GameManagement.LoadGame.SetSelected(string.Empty);
-		}
+		_errorText.text = Localization.Get("LOAD_GAME_NOT_LOADED");
 	}
 
 	private void DoBestFit()

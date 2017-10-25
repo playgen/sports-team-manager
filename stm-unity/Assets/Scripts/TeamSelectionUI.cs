@@ -94,7 +94,6 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private Sprite _practiceIcon;
 	[SerializeField]
 	private Sprite _raceIcon;
-	private float _recruitCost;
 	[SerializeField]
 	private HoverPopUpUI _hoverPopUp;
 
@@ -107,10 +106,10 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	{
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
-		if (GameManagement.PositionCount == 0)
+		if (!GameManagement.SeasonOngoing)
 		{
 			_feedbackButton.onClick.RemoveAllListeners();
-			if (GameManagement.TeamSelection.QuestionnaireCompleted())
+			if (GameManagement.GameManager.QuestionnaireCompleted)
 			{
 				_feedbackButton.onClick.AddListener(TriggerFeedback);
 				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
@@ -137,8 +136,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	private void Start()
 	{
-		GameManagement.TeamSelection.Start();
-		_recruitCost = GameManagement.TeamSelection.GetConfigValue(ConfigKeys.RecruitmentCost);
+		GameManagement.PostRaceEvent.GetEvent();
 		ResetScrollbar();
 		CreateNewBoat();
 	}
@@ -157,23 +155,23 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		{
 			EnableRacing();
 		}
-		if ((GameManagement.ActionAllowance < _recruitCost || GameManagement.CrewEditAllowance == 0 || !GameManagement.Team.CanAddToCrew()) && _recruitButtons.Count > 0 && _recruitButtons[0].IsInteractable())
+		if ((!ConfigKeys.RecruitmentCost.Affordable() || !GameManagement.CrewEditAllowed || !GameManagement.Team.CanAddToCrew()) && _recruitButtons.Count > 0 && _recruitButtons[0].IsInteractable())
 		{
 			foreach (var b in _recruitButtons)
 			{
 				b.interactable = false;
-				if (GameManagement.ActionAllowance < _recruitCost)
+				if (!ConfigKeys.RecruitmentCost.Affordable())
 				{
 					FeedbackHoverOver(b.transform, "RECRUIT_BUTTON_HOVER_ALLOWANCE");
 				}
-				else if (GameManagement.CrewEditAllowance == 0)
+				else if (!GameManagement.CrewEditAllowed)
 				{
 					FeedbackHoverOver(b.transform, Localization.GetAndFormat("RECRUIT_BUTTON_HOVER_LIMIT", false, GameManagement.StartingCrewEditAllowance));
 				}
 			}
 			
 		}
-		else if (GameManagement.ActionAllowance >= _recruitCost && GameManagement.CrewEditAllowance > 0 && GameManagement.Team.CanAddToCrew() && _recruitButtons.Count > 0 && !_recruitButtons[0].IsInteractable())
+		else if (ConfigKeys.RecruitmentCost.Affordable() && GameManagement.CrewEditAllowed && GameManagement.Team.CanAddToCrew() && _recruitButtons.Count > 0 && !_recruitButtons[0].IsInteractable())
 		{
 			foreach (var b in _recruitButtons)
 			{
@@ -181,13 +179,12 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 				b.GetComponent<HoverObject>().Enabled = false;
 			}
 		}
-		if (_raceButton.gameObject.activeSelf && GameManagement.CurrentRaceSession != GameManagement.RaceSessionLength)
+		if (_raceButton.gameObject.activeSelf && !GameManagement.IsRace)
 		{
 			if (_raceButton.GetComponentInChildren<Text>().text.Last().ToString() != GameManagement.RaceSessionLength.ToString())
 			{
 				var stageIcon = _boatMain.transform.Find("Stage").GetComponent<Image>();
-				var isRace = GameManagement.CurrentRaceSession == GameManagement.RaceSessionLength;
-				stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
+				stageIcon.sprite = GameManagement.IsRace ? _raceIcon : _practiceIcon;
 				stageIcon.gameObject.SetActive(true);
 				_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = GameManagement.CurrentRaceSession.ToString();
 				_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
@@ -254,10 +251,9 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private void CreateNewBoat()
 	{
 		var stageIcon = _boatMain.transform.Find("Stage").GetComponent<Image>();
-		var isRace = GameManagement.CurrentRaceSession == GameManagement.RaceSessionLength;
-		if (GameManagement.PositionCount > 0)
+		if (GameManagement.SeasonOngoing)
 		{
-			stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
+			stageIcon.sprite = GameManagement.IsRace ? _raceIcon : _practiceIcon;
 			stageIcon.gameObject.SetActive(true);
 			_endRace.gameObject.SetActive(false);
 			_boatMain.gameObject.SetActive(true);
@@ -267,7 +263,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		{
 			stageIcon.gameObject.SetActive(false);
 			_feedbackButton.onClick.RemoveAllListeners();
-			if (GameManagement.TeamSelection.QuestionnaireCompleted())
+			if (GameManagement.GameManager.QuestionnaireCompleted)
 			{
 				_feedbackButton.onClick.AddListener(TriggerFeedback);
 				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
@@ -282,7 +278,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			{
 				Destroy(child.gameObject);
 			}
-			foreach (var result in GameManagement.TeamSelection.GetRaceResults())
+			foreach (var result in GameManagement.Team.RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList())
 			{
 				var position = GetRacePosition(result.Key, result.Value);
 				var resultObj = Instantiate(_resultPrefab, _resultContainer.transform, false);
@@ -296,12 +292,12 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			_endRace.gameObject.SetActive(true);
 			_boatMain.gameObject.SetActive(false);
 		}
-		_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = isRace || GameManagement.PositionCount == 0 ? string.Empty : GameManagement.CurrentRaceSession.ToString();
+		_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = GameManagement.IsRace || !GameManagement.SeasonOngoing ? string.Empty : GameManagement.CurrentRaceSession.ToString();
 		_positionsEmpty = GameManagement.PositionCount;
 		_raceButton.onClick.RemoveAllListeners();
 		_skipToRaceButton.onClick.RemoveAllListeners();
 		//add click handler to raceButton according to session taking place
-		if (GameManagement.CurrentRaceSession != GameManagement.RaceSessionLength)
+		if (!GameManagement.IsRace)
 		{
 			_raceButton.onClick.AddListener(ConfirmLineUpCheck);
 			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
@@ -313,7 +309,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			_raceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
 			_raceButton.GetComponentInChildren<Text>().fontSize = 20;
 		}
-		_raceButton.onClick.AddListener(delegate { Invoke("QuickClickDisable", 0.5f); });
+		_raceButton.onClick.AddListener(() => Invoke("QuickClickDisable", 0.5f));
 		_skipToRaceButton.onClick.AddListener(ConfirmPopUp);
 		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
 		_skipToRaceButton.GetComponentInChildren<Text>().fontSize = 20;
@@ -333,10 +329,10 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.ToString()).Image;
 			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
 		}
-		_raceButton.gameObject.SetActive(GameManagement.PositionCount > 0);
+		_raceButton.gameObject.SetActive(GameManagement.SeasonOngoing);
 		_skipToRaceButton.gameObject.SetActive(false);
-		if (GameManagement.PositionCount > 0 && !isRace && !GameManagement.ShowTutorial) {
-			var previousSessions = GameManagement.TeamSelection.GetLineUpHistory(0, GameManagement.RaceSessionLength);
+		if (GameManagement.SeasonOngoing && !GameManagement.IsRace && !GameManagement.ShowTutorial) {
+			var previousSessions = GetLineUpHistory(0, GameManagement.RaceSessionLength);
 			foreach (var session in previousSessions)
 			{
 				if (session.Value.Value == 0)
@@ -373,7 +369,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			sortedCrew.Add(crewMember.transform);
 			_currentCrewButtons.Add(crewMember);
 			//create the draggable copy of the above
-			if (GameManagement.PositionCount > 0)
+			if (GameManagement.SeasonOngoing)
 			{
 				var crewMemberDraggable = CreateCrewMember(cm, crewMember.transform, true, true);
 				crewMemberDraggable.transform.position = crewMember.transform.position;
@@ -386,7 +382,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			var recruit = Instantiate(_recruitPrefab);
 			recruit.transform.SetParent(_crewContainer.transform, false);
 			recruit.name = "zz Recruit";
-			recruit.GetComponent<Button>().onClick.AddListener(delegate { _recruitPopUp.SetActive(true); });
+			recruit.GetComponent<Button>().onClick.AddListener(() => _recruitPopUp.SetActive(true));
 			_recruitButtons.Add(recruit.GetComponent<Button>());
 			sortedCrew.Add(recruit.transform);
 		}
@@ -410,6 +406,25 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		crewMember.GetComponent<CrewMemberUI>().SetUp(usable, current, _meetingUI, _positionUI, cm, parent, _roleIcons);
 		crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(cm.Avatar, cm.GetMood(), true);
 		return crewMember;
+	}
+
+	/// <summary>
+	/// Get the history of results, taking and skipping the amount given
+	/// </summary>
+	public List<KeyValuePair<Boat, KeyValuePair<int, int>>> GetLineUpHistory(int skipAmount, int takeAmount)
+	{
+		var boats = GameManagement.LineUpHistory.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
+		var offsets = GameManagement.Team.HistoricTimeOffset.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
+		var sessions = GameManagement.Team.HistoricSessionNumber.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
+		var boatOffsets = new List<KeyValuePair<Boat, KeyValuePair<int, int>>>();
+		for (var i = 0; i < boats.Count; i++)
+		{
+			if (i < offsets.Count)
+			{
+				boatOffsets.Add(new KeyValuePair<Boat, KeyValuePair<int, int>>(boats[i], new KeyValuePair<int, int>(offsets[i], sessions[i])));
+			}
+		}
+		return boatOffsets;
 	}
 
 	/// <summary>
@@ -451,7 +466,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == pair.Key.ToString()).Image;
 			positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 			var currentPosition = pair.Key;
-			positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentPosition, TrackerTriggerSources.TeamManagementScreen.ToString()); });
+			positionImage.GetComponent<Button>().onClick.AddListener(() => _positionUI.SetUpDisplay(currentPosition, TrackerTriggerSources.TeamManagementScreen.ToString()));
 			//if CrewMember has since retired, change color of the object
 			crewMember.transform.Find("Name").GetComponent<Text>().color = current ? UnityEngine.Color.white : UnityEngine.Color.grey;
 			crewCount++;
@@ -560,7 +575,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		}
 		var skipAmount = _boatContainerScroll.size > 0 ? Mathf.RoundToInt(_boatContainerScroll.value * (_boatContainerScroll.numberOfSteps - 1)) : 0;
 		var setUpCount = 0;
-		foreach (var boat in GameManagement.TeamSelection.GetLineUpHistory(skipAmount, 4))
+		foreach (var boat in GetLineUpHistory(skipAmount, 4))
 		{
 			var boatObject = _boatPool[setUpCount];
 			boatObject.SetActive(true);
@@ -582,50 +597,48 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		_preRacePopUp.SetActive(true);
 		var yesButton = _preRacePopUp.transform.Find("Yes").GetComponent<Button>();
 		yesButton.onClick.RemoveAllListeners();
-		if (GameManagement.CurrentRaceSession != GameManagement.RaceSessionLength)
+		if (!GameManagement.IsRace)
 		{
-			_preRacePopUp.GetComponentInChildren<Text>().text = GameManagement.ActionAllowance > 0 ? Localization.GetAndFormat("RACE_SKIP_CONFIRM_ALLOWANCE_REMAINING", false, GameManagement.ActionAllowance) : Localization.Get("RACE_SKIP_CONFIRM_NO_ALLOWANCE");
+			_preRacePopUp.GetComponentInChildren<Text>().text = GameManagement.ActionRemaining ? Localization.GetAndFormat("RACE_SKIP_CONFIRM_ALLOWANCE_REMAINING", false, GameManagement.ActionAllowance) : Localization.Get("RACE_SKIP_CONFIRM_NO_ALLOWANCE");
 			TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceConfirmPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-				{ TrackerContextKeys.RemainingSessions.ToString(), (GameManagement.RaceSessionLength - GameManagement.CurrentRaceSession).ToString() },
+				{ TrackerContextKeys.RemainingSessions.ToString(), GameManagement.SessionsRemaining.ToString() },
 			}, AccessibleTracker.Accessible.Screen));
-			yesButton.onClick.AddListener(delegate
-			{
+			yesButton.onClick.AddListener(() =>
 				TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceApproved", TrackerVerbs.Selected, new Dictionary<string, string>
 				{
 					{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-					{ TrackerContextKeys.RemainingSessions.ToString(), (GameManagement.RaceSessionLength - GameManagement.CurrentRaceSession).ToString() },
-				}, "SkipToRace", AlternativeTracker.Alternative.Menu));
-			});
-			yesButton.onClick.AddListener(delegate { SUGARManager.GameData.Send("Practice Sessions Skipped", GameManagement.RaceSessionLength - GameManagement.CurrentRaceSession); });
+					{ TrackerContextKeys.RemainingSessions.ToString(), GameManagement.SessionsRemaining.ToString() },
+				}, "SkipToRace", AlternativeTracker.Alternative.Menu))
+			);
+			yesButton.onClick.AddListener(() => SUGARManager.GameData.Send("Practice Sessions Skipped", GameManagement.SessionsRemaining));
 		}
 		else
 		{
-			_preRacePopUp.GetComponentInChildren<Text>().text = GameManagement.ActionAllowance > 0 ? Localization.GetAndFormat("RACE_CONFIRM_ALLOWANCE_REMAINING", false, GameManagement.ActionAllowance) : Localization.Get("RACE_CONFIRM_NO_ALLOWANCE");
+			_preRacePopUp.GetComponentInChildren<Text>().text = GameManagement.ActionRemaining ? Localization.GetAndFormat("RACE_CONFIRM_ALLOWANCE_REMAINING", false, GameManagement.ActionAllowance) : Localization.Get("RACE_CONFIRM_NO_ALLOWANCE");
 			TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
 			}, AccessibleTracker.Accessible.Screen));
-			yesButton.onClick.AddListener(delegate
-			{
+			yesButton.onClick.AddListener(() =>
 				TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmApproved", TrackerVerbs.Selected, new Dictionary<string, string>
 				{
 					{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-				}, "RaceConfirm", AlternativeTracker.Alternative.Menu));
-			});
+				}, "RaceConfirm", AlternativeTracker.Alternative.Menu))
+			);
 		}
 		yesButton.onClick.AddListener(SkipToRace);
 		yesButton.onClick.AddListener(ConfirmLineUp);
 		var noButton = _preRacePopUp.transform.Find("No").GetComponent<Button>();
 		noButton.onClick.RemoveAllListeners();
-		noButton.onClick.AddListener(delegate { CloseConfirmPopUp(TrackerTriggerSources.NoButtonSelected.ToString()); });
+		noButton.onClick.AddListener(() => CloseConfirmPopUp(TrackerTriggerSources.NoButtonSelected.ToString()));
 		DoBestFit();
 		_popUpBlocker.transform.SetAsLastSibling();
 		_preRacePopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(delegate { CloseConfirmPopUp(TrackerTriggerSources.PopUpBlocker.ToString()); });
+		_popUpBlocker.onClick.AddListener(() => CloseConfirmPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 	}
 
 	/// <summary>
@@ -637,12 +650,12 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		_popUpBlocker.gameObject.SetActive(false);
 		if (!string.IsNullOrEmpty(source))
 		{
-			if (GameManagement.CurrentRaceSession != GameManagement.RaceSessionLength)
+			if (!GameManagement.IsRace)
 			{
 				TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceDeclined", TrackerVerbs.Skipped, new Dictionary<string, string>
 				{
 					{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-					{ TrackerContextKeys.RemainingSessions.ToString(), (GameManagement.RaceSessionLength - GameManagement.CurrentRaceSession).ToString() },
+					{ TrackerContextKeys.RemainingSessions.ToString(), GameManagement.SessionsRemaining.ToString() },
 					{ TrackerContextKeys.TriggerUI.ToString(), source }
 				}, AccessibleTracker.Accessible.Screen));
 			}
@@ -662,7 +675,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	public void ConfirmLineUpCheck()
 	{
-		var lastRace = GameManagement.TeamSelection.GetLineUpHistory(0, 1).FirstOrDefault();
+		var lastRace = GetLineUpHistory(0, 1).FirstOrDefault();
 		if (lastRace.Key != null)
 		{
 			if (GameManagement.Positions.SequenceEqual(lastRace.Key.Positions) && GameManagement.PositionCrew.OrderBy(pc => pc.Key.ToString()).SequenceEqual(lastRace.Key.PositionCrew.OrderBy(pc => pc.Key.ToString())))
@@ -685,17 +698,17 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		var yesButton = _preRacePopUp.transform.Find("Yes").GetComponent<Button>();
 		yesButton.onClick.RemoveAllListeners();
 		yesButton.onClick.AddListener(ConfirmLineUp);
-		yesButton.onClick.AddListener(delegate { TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpApproved", TrackerVerbs.Selected, new Dictionary<string, string>(), "RepeatLineUp", AlternativeTracker.Alternative.Menu)); });
+		yesButton.onClick.AddListener(() => TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpApproved", TrackerVerbs.Selected, new Dictionary<string, string>(), "RepeatLineUp", AlternativeTracker.Alternative.Menu)));
 
 		var noButton = _preRacePopUp.transform.Find("No").GetComponent<Button>();
 		noButton.onClick.RemoveAllListeners();
-		noButton.onClick.AddListener(delegate { CloseRepeatWarning(TrackerTriggerSources.NoButtonSelected.ToString()); });
+		noButton.onClick.AddListener(() => CloseRepeatWarning(TrackerTriggerSources.NoButtonSelected.ToString()));
 		DoBestFit();
 		_popUpBlocker.transform.SetAsLastSibling();
 		_preRacePopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(delegate { CloseRepeatWarning(TrackerTriggerSources.PopUpBlocker.ToString()); });
+		_popUpBlocker.onClick.AddListener(() => CloseRepeatWarning(TrackerTriggerSources.PopUpBlocker.ToString()));
 	}
 
 	/// <summary>
@@ -728,18 +741,19 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		//select random time offset
 		var offset = UnityEngine.Random.Range(0, 10);
 		//confirm the line-up with the simulation 
-		SUGARManager.GameData.Send("Current Crew Size", GameManagement.CrewMembers.Count);
-		var currentBoat = GameManagement.TeamSelection.ConfirmLineUp(offset);
+		SUGARManager.GameData.Send("Current Crew Size", GameManagement.CrewCount);
+		GameManagement.GameManager.SaveLineUp(offset);
+		GameManagement.PostRaceEvent.GetEvent();
 		ResetScrollbar();
 		if (!GameManagement.ShowTutorial)
 		{
-			var oldLayout = currentBoat.Positions;
-			if (GameManagement.PositionCount > 0 && !oldLayout.SequenceEqual(GameManagement.Positions))
+			var oldLayout = GameManagement.Positions;
+			if (GameManagement.SeasonOngoing && !oldLayout.SequenceEqual(GameManagement.Positions))
 			{
 				DisplayPromotionPopUp(oldLayout, GameManagement.Positions);
 			}
 		}
-		GetResult(GameManagement.CurrentRaceSession - 1 == 0, currentBoat, offset, _raceButton.GetComponentInChildren<Text>(), true);
+		GetResult(GameManagement.CurrentRaceSession - 1 == 0, GameManagement.LineUpHistory.Last(), offset, _raceButton.GetComponentInChildren<Text>(), true);
 		//set-up next boat
 		CreateNewBoat();
 		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
@@ -757,7 +771,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		_postRacePopUp.transform.SetAsLastSibling();
 		_popUpBlocker.gameObject.SetActive(true);
 		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(delegate { ClosePostRacePopUp(TrackerTriggerSources.PopUpBlocker.ToString()); });
+		_popUpBlocker.onClick.AddListener(() => ClosePostRacePopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 		_lastRacePosition = finishPosition;
 		foreach (Transform child in _postRacePopUp.transform.Find("Crew"))
 		{
@@ -807,13 +821,13 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			_promotionPopUp.transform.SetAsLastSibling();
 			_popUpBlocker.gameObject.SetActive(true);
 			_popUpBlocker.onClick.RemoveAllListeners();
-			_popUpBlocker.onClick.AddListener(delegate { ClosePromotionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()); });
+			_popUpBlocker.onClick.AddListener(() => ClosePromotionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 		}
 		else
 		{
 			SetPostRaceEventBlocker();
 		}
-		if (GameManagement.PositionCount == 0)
+		if (!GameManagement.SeasonOngoing)
 		{
 			DisplayPostCupPopUp();
 		}
@@ -890,7 +904,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		_promotionPopUp.SetActive(false);
 		_popUpBlocker.gameObject.SetActive(false);
 		SetPostRaceEventBlocker();
-		var newString = string.Join(",", GameManagement.Positions.Select(pos => pos.ToString()).ToArray());
+		var newString = GameManagement.PositionString;
 		TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.BoatLayout.ToString(), newString },
@@ -1030,7 +1044,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			TrackerEventSender.SendEvent(new TraceEvent("RaceResult", TrackerVerbs.Completed, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.RaceNumber.ToString(), (GameManagement.Team.RaceHistory.Count + 1).ToString() },
-				{ TrackerContextKeys.CurrentSession.ToString(), (GameManagement.CurrentRaceSession - 1) + "/" + GameManagement.RaceSessionLength },
+				{ TrackerContextKeys.CurrentSession.ToString(), (isRace ? GameManagement.RaceSessionLength : GameManagement.CurrentRaceSession - 1) + "/" + GameManagement.RaceSessionLength },
 				{ TrackerContextKeys.SessionType.ToString(), isRace ? "Race" : "Practice" },
 				{ TrackerContextKeys.BoatLayout.ToString(), newString },
 				{ TrackerContextKeys.Score.ToString(), boat.Score.ToString() },
@@ -1094,7 +1108,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private int GetCupPosition()
 	{
 		var totalScore = 0;
-		var raceResults = GameManagement.TeamSelection.GetRaceResults();
+		var raceResults = GameManagement.Team.RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList();
 		var racePositions = new List<int>();
 		var finalPosition = 1;
 		var finalPositionLocked = false;
@@ -1166,7 +1180,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		foreach (var position in _boatMain.GetComponentsInChildren<PositionUI>()) {
 			position.transform.Find("Name").GetComponent<Text>().text = Localization.Get(position.Position.ToString());
 		}
-		if (GameManagement.CurrentRaceSession != GameManagement.RaceSessionLength)
+		if (!GameManagement.IsRace)
 		{
 			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
 		}
@@ -1176,15 +1190,15 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		}
 		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
 		ChangeVisibleBoats(true);
-		_preRacePopUp.GetComponentInChildren<Text>().text = GameManagement.ActionAllowance > 0 ? Localization.GetAndFormat("RACE_CONFIRM_ALLOWANCE_REMAINING", false, GameManagement.ActionAllowance) : Localization.Get("RACE_CONFIRM_NO_ALLOWANCE");
+		_preRacePopUp.GetComponentInChildren<Text>().text = GameManagement.ActionRemaining ? Localization.GetAndFormat("RACE_CONFIRM_ALLOWANCE_REMAINING", false, GameManagement.ActionAllowance) : Localization.Get("RACE_CONFIRM_NO_ALLOWANCE");
 		if (_postRacePopUp.activeInHierarchy)
 		{
-			var lastRace = GameManagement.TeamSelection.GetLineUpHistory(0, 1).First();
+			var lastRace = GetLineUpHistory(0, 1).First();
 			GetResult(true, lastRace.Key, lastRace.Value.Key, _boatPool[0].transform.Find("Score").GetComponent<Text>());
 		}
 		if (_endRace.gameObject.activeSelf)
 		{
-			_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get(GameManagement.TeamSelection.QuestionnaireCompleted() ? "FEEDBACK_BUTTON" : "CONFLICT_QUESTIONNAIRE");
+			_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get(GameManagement.GameManager.QuestionnaireCompleted ? "FEEDBACK_BUTTON" : "CONFLICT_QUESTIONNAIRE");
 		}
 		DoBestFit();
 	}

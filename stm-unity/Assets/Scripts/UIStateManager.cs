@@ -139,7 +139,7 @@ public class UIStateManager : MonoBehaviour {
 		_feedback.SetActive(false);
 		_mainMenu.SetActive(true);
 		DoBestFit();
-		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = GameManagement.GameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves")).Count != 0;
+		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = GameManagement.GameNames.Count != 0;
 	}
 
 	/// <summary>

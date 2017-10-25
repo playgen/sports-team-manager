@@ -74,8 +74,8 @@ public class PostRacePersonUI : MonoBehaviour
 			var postRaceEvent = GetComponentInParent<PostRaceEventUI>();
 			var question = _questions[i];
 			_questions[i].GetComponent<Button>().onClick.RemoveAllListeners();
-			_questions[i].GetComponent<Button>().onClick.AddListener(delegate { UpdateSelected(question); });
-			_questions[i].GetComponent<Button>().onClick.AddListener(delegate { postRaceEvent.SendReply(currentReply); });
+			_questions[i].GetComponent<Button>().onClick.AddListener(() => UpdateSelected(question));
+			_questions[i].GetComponent<Button>().onClick.AddListener(() => postRaceEvent.SendReply(currentReply));
 		}
 		//display the button for closing the pop-up and update the displayed character mood if there are no more dialogue options
 		if (replies.Count == 0)

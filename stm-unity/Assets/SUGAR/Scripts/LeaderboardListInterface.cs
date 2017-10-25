@@ -47,8 +47,8 @@ public class LeaderboardListInterface : BaseLeaderboardListInterface
 	protected override void Awake()
 	{
 		base.Awake();
-		_previousButton.onClick.AddListener(delegate { UpdatePageNumber(-1); });
-		_nextButton.onClick.AddListener(delegate { UpdatePageNumber(1); });
+		_previousButton.onClick.AddListener(() => UpdatePageNumber(-1));
+		_nextButton.onClick.AddListener(() => UpdatePageNumber(1));
 	}
 
 	/// <summary>
@@ -107,7 +107,7 @@ public class LeaderboardListInterface : BaseLeaderboardListInterface
 				_leaderboardButtons[i].onClick.RemoveAllListeners();
 				_leaderboardButtons[i].GetComponentInChildren<Text>().text = Localization.Get(leaderboardList[i].Token);
 				var token = leaderboardList[i].Token;
-				_leaderboardButtons[i].onClick.AddListener(delegate { SUGARManager.Leaderboard.Display(token, SUGARManager.Leaderboard.CurrentFilter); });
+				_leaderboardButtons[i].onClick.AddListener(() => SUGARManager.Leaderboard.Display(token, SUGARManager.Leaderboard.CurrentFilter));
 				_leaderboardButtons[i].gameObject.SetActive(true);
 			}
 		}

@@ -65,7 +65,7 @@ public class PostRaceEventUI : MonoBehaviour
 	{
 		_closeButton.SetActive(false);
 		//if there is an event
-		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count != 0 && GameManagement.CurrentEvent.Count == _postRacePeople.Length && GameManagement.PostRaceEvent.EnableCounter == 0)
+		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length && GameManagement.PostRaceEvent.EnableCounter == 0)
 		{
 			GameManagement.PostRaceEvent.EnableCheck();
 			for (var i = 0; i < _postRacePeople.Length; i++)
@@ -115,7 +115,7 @@ public class PostRaceEventUI : MonoBehaviour
 	/// </summary>
 	private void ResetQuestions()
 	{
-		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count != 0 && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
+		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
 		{
 			var replies = GameManagement.PostRaceEvent.GetEventReplies();
 			if (GameManagement.CurrentEvent != null)
@@ -156,7 +156,7 @@ public class PostRaceEventUI : MonoBehaviour
 		{
 			_closeButton.SetActive(true);
 			_popUpBlocker.onClick.AddListener(GetLearningPill);
-			_popUpBlocker.onClick.AddListener(delegate { Hide(TrackerTriggerSources.PopUpBlocker.ToString()); });
+			_popUpBlocker.onClick.AddListener(() => Hide(TrackerTriggerSources.PopUpBlocker.ToString()));
 			_popUpBlocker.onClick.AddListener(GameManagement.PostRaceEvent.GetEvent);
 			var teamSelection = (TeamSelectionUI)FindObjectOfType(typeof(TeamSelectionUI));
 			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
@@ -206,7 +206,7 @@ public class PostRaceEventUI : MonoBehaviour
 	private void OnLanguageChange()
 	{
 		//if there is an event
-		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count != 0 && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
+		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
 		{
 			for (var i = 0; i < _postRacePeople.Length; i++)
 			{

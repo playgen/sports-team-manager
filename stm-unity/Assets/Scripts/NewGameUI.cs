@@ -1,9 +1,13 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
+
+using RAGE.Analytics.Formats;
 
 /// <summary>
 /// Contains all UI logic related to creating new games
@@ -54,7 +58,7 @@ public class NewGameUI : MonoBehaviour {
 
 	private void OnEnable()
 	{
-		_tutorialToggle.enabled = GameManagement.NewGame.ExistingSaves();
+		_tutorialToggle.enabled = GameManagement.GameNames.Count != 0;
 		_tutorialToggle.isOn = true;
 		BestFit.ResolutionChange += DoBestFit;
 		Invoke("DoBestFit", 0f);
@@ -121,8 +125,7 @@ public class NewGameUI : MonoBehaviour {
 		}
 		if (valid)
 		{
-			var exists = GameManagement.NewGame.ExistingGameCheck(_boatName.text);
-			if (exists)
+			if (GameManagement.GameManager.CheckIfGameExists(Path.Combine(Application.persistentDataPath, "GameSaves"), _boatName.text))
 			{
 				_overwritePopUp.SetActive(true);
 				DoBestFit();
@@ -152,9 +155,18 @@ public class NewGameUI : MonoBehaviour {
 				(byte)(_colorImageSecondary.color.g * 255),
 				(byte)(_colorImageSecondary.color.b * 255)
 		};
-		var success = GameManagement.NewGame.CreateNewGame(_boatName.text, colorsPri, colorsSec, _managerName.text, _tutorialToggle.isOn);
-		if (success)
+		_boatName.text = _boatName.text.TrimEnd();
+		_managerName.text = _managerName.text.TrimEnd();
+		var language = string.IsNullOrEmpty(Localization.SelectedLanguage.Parent.Name) ? Localization.SelectedLanguage.EnglishName : Localization.SelectedLanguage.Parent.EnglishName;
+		GameManagement.GameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), _boatName.text, colorsPri, colorsSec, _managerName.text, _tutorialToggle.isOn, language);
+		if (GameManagement.Team != null && GameManagement.TeamName == _boatName.text)
 		{
+			var newString = GameManagement.PositionString;
+			TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
+			{
+				{ TrackerContextKeys.GameName.ToString(), GameManagement.TeamName },
+				{ TrackerContextKeys.BoatLayout.ToString(), newString },
+			}, CompletableTracker.Completable.Game));
 			UIStateManager.StaticGoToGame();
 		}
 		else

@@ -219,7 +219,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == currentPosition.ToString()).Image;
 		_positionUI.UpdateDisplay();
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
-		positionImage.GetComponent<Button>().onClick.AddListener(delegate { _positionUI.SetUpDisplay(currentPosition, TrackerTriggerSources.CrewMemberPopUp.ToString()); });
+		positionImage.GetComponent<Button>().onClick.AddListener(() => _positionUI.SetUpDisplay(currentPosition, TrackerTriggerSources.CrewMemberPopUp.ToString()));
 		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
 	}
 
