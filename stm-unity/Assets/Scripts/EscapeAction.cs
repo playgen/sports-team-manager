@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using PlayGen.Unity.Utilities.Localization;
+
+using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Manages menu state changes when escape key is pressed
@@ -17,6 +20,14 @@ public class EscapeAction : MonoBehaviour {
 	private MemberMeetingUI _meeting;
 	[SerializeField]
 	private TeamSelectionUI _teamSelection;
+	[SerializeField]
+	private RaceResultUI _raceResult;
+	[SerializeField]
+	private CupResultUI _cupResult;
+	[SerializeField]
+	private BoatPromotionUI _boatPromotion;
+	[SerializeField]
+	private PreRaceConfirmUI _preRace;
 
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.Escape))
@@ -61,6 +72,46 @@ public class EscapeAction : MonoBehaviour {
 				if (!_tutorial.gameObject.activeInHierarchy)
 				{
 					_meeting.OnEscape();
+				}
+				return;
+			}
+			//if the race result pop-up is open and the current top pop-up, close this pop-up
+			if (_raceResult.gameObject.activeInHierarchy)
+			{
+				if (_raceResult.transform.GetSiblingIndex() == _raceResult.transform.parent.childCount - 1)
+				{
+					_raceResult.Close(TrackerTriggerSources.EscapeKey.ToString());
+					return;
+				}
+			}
+			//if the cup result pop-up is open and the current top pop-up, close this pop-up
+			if (_cupResult.gameObject.activeInHierarchy)
+			{
+				if (_cupResult.transform.GetSiblingIndex() == _cupResult.transform.parent.childCount - 1)
+				{
+					_cupResult.Close(TrackerTriggerSources.EscapeKey.ToString());
+					return;
+				}
+			}
+			//if the boat promotion pop-up is open and the current top pop-up, close this pop-up
+			if (_boatPromotion.gameObject.activeInHierarchy)
+			{
+				if (_boatPromotion.transform.GetSiblingIndex() == _boatPromotion.transform.parent.childCount - 1)
+				{
+					_boatPromotion.Close(TrackerTriggerSources.EscapeKey.ToString());
+					return;
+				}
+			}
+			//if the pre-race pop-up is open and the current top pop-up, close this pop-up
+			if (_preRace.gameObject.activeInHierarchy)
+			{
+				if (_preRace.GetComponentInChildren<Text>().text == Localization.Get("REPEAT_CONFIRM"))
+				{
+					_preRace.CloseRepeatWarning(TrackerTriggerSources.EscapeKey.ToString());
+				}
+				else
+				{
+					_preRace.CloseConfirmPopUp(TrackerTriggerSources.EscapeKey.ToString());
 				}
 				return;
 			}

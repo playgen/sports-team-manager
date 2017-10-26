@@ -84,6 +84,10 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void SetUpDisplay(CrewMember crewMember, string source)
 	{
+		if (!GameManagement.SeasonOngoing)
+		{
+			return;
+		}
 		_currentMember = crewMember;
 
 		//adjust the crew member scroll rect position to ensure this crew member is shown
@@ -348,18 +352,18 @@ public class MemberMeetingUI : MonoBehaviour
 				{ TrackerContextKeys.PositionName.ToString(), _currentMember.Name },
 				{ TrackerContextKeys.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
-		}
-		gameObject.SetActive(false);
-		foreach (var crewMember in (CrewMemberUI[])FindObjectsOfType(typeof(CrewMemberUI)))
-		{
-			if (crewMember.Current)
+			gameObject.SetActive(false);
+			foreach (var crewMember in (CrewMemberUI[])FindObjectsOfType(typeof(CrewMemberUI)))
 			{
-				crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
+				if (crewMember.Current)
+				{
+					crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
+				}
 			}
+			_lastReply = null;
 		}
-		_positionUI.ChangeBlockerOrder();
-		_lastReply = null;
-	}
+	    _positionUI.ChangeBlockerOrder();
+    }
 
 	/// <summary>
 	/// On the escape key being pressed, close pop-up or fire warning pop-up if open

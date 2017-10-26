@@ -140,12 +140,71 @@ public static class GameManagement
 
     public static string EventString(this string key, bool localize = true)
     {
-        var eventString = Localization.Get(_gameManager.EventController.GetEventStrings(key).OrderBy(s => Guid.NewGuid()).First());
+        var eventString = _gameManager.EventController.GetEventStrings(key).OrderBy(s => Guid.NewGuid()).First();
         return localize ? Localization.Get(eventString) : eventString;
     }
 
     public static Position BoatPosition(this CrewMember member)
     {
         return member.GetBoatPosition(PositionCrew);
+    }
+
+    /// <summary>
+    /// Get the position finished in a race with the provided score and position count
+    /// </summary>
+    public static int GetRacePosition(int score, int positionCount)
+    {
+        var finishPosition = 1;
+        var expected = GetExpectedScore(positionCount);
+        while (score < expected && finishPosition < 10)
+        {
+            finishPosition++;
+            expected -= positionCount;
+        }
+        return finishPosition;
+    }
+
+    /// <summary>
+    /// Get the score expected to be able to finish first in a position
+    /// </summary>
+    public static float GetExpectedScore(int positionCount)
+    {
+        return (8f * positionCount) + 1;
+    }
+
+    /// <summary>
+    /// Get the position the team finished after taking in their results over all the races
+    /// </summary>
+    public static int GetCupPosition()
+    {
+        var totalScore = 0;
+        var raceResults = Team.RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList();
+        var racePositions = new List<int>();
+        var finalPosition = 1;
+        var finalPositionLocked = false;
+        foreach (var result in raceResults)
+        {
+            var position = GetRacePosition(result.Key, result.Value);
+            totalScore += position;
+            racePositions.Add(position);
+        }
+
+        while (!finalPositionLocked && finalPosition < 10)
+        {
+            var otherTeamTotal = 0;
+            foreach (var r in racePositions)
+            {
+                otherTeamTotal += (finalPosition < r ? finalPosition : finalPosition + 1);
+            }
+            if (otherTeamTotal < totalScore)
+            {
+                finalPosition++;
+            }
+            else
+            {
+                finalPositionLocked = true;
+            }
+        }
+        return finalPosition;
     }
 }

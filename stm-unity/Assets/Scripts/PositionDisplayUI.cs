@@ -106,6 +106,10 @@ public class PositionDisplayUI : MonoBehaviour
 	/// </summary>
 	public void SetUpDisplay(Position position, string source)
 	{
+		if (!GameManagement.SeasonOngoing)
+		{
+			return;
+		}
 		var currentCrew = GameManagement.PositionCrew.ContainsKey(position) ? GameManagement.PositionCrew[position] : null;
 		var boatPos = GameManagement.PositionString;
 		TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
@@ -223,20 +227,20 @@ public class PositionDisplayUI : MonoBehaviour
 				{ TrackerContextKeys.PositionName.ToString(), _current.ToString() },
 				{ TrackerContextKeys.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
+			gameObject.SetActive(false);
+			if (_meetingUI.gameObject.activeInHierarchy)
+			{
+				_popUpBlocker.transform.SetAsLastSibling();
+				_meetingUI.gameObject.transform.SetAsLastSibling();
+				_popUpBlocker.onClick.RemoveAllListeners();
+				_popUpBlocker.onClick.AddListener(() => _meetingUI.CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+			}
+			else
+			{
+				_popUpBlocker.gameObject.SetActive(false);
+			}
+			TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
-		gameObject.SetActive(false);
-		if (_meetingUI.gameObject.activeInHierarchy)
-		{
-			_popUpBlocker.transform.SetAsLastSibling();
-			_meetingUI.gameObject.transform.SetAsLastSibling();
-			_popUpBlocker.onClick.RemoveAllListeners();
-			_popUpBlocker.onClick.AddListener(() => _meetingUI.CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
-		}
-		else
-		{
-			_popUpBlocker.gameObject.SetActive(false);
-		}
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -250,9 +254,8 @@ public class PositionDisplayUI : MonoBehaviour
 			gameObject.transform.SetAsLastSibling();
 			_popUpBlocker.onClick.RemoveAllListeners();
 			_popUpBlocker.onClick.AddListener(() => ClosePositionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
-
 		}
-		else
+		else if (!transform.parent.GetChild(transform.parent.childCount - 1).gameObject.activeInHierarchy)
 		{
 			_popUpBlocker.gameObject.SetActive(false);
 		}

@@ -67,7 +67,10 @@ public class LearningPillUI : MonoBehaviour {
 	/// </summary>
 	public void ClosePill(string source)
 	{
-		_popUpBlocker.onClick.RemoveAllListeners();
+        if (gameObject.activeInHierarchy)
+        {
+            _popUpBlocker.onClick.RemoveAllListeners();
+        }
 		if (_furtherHelp.Count == 0)
 		{
 			StartCoroutine(Animate());

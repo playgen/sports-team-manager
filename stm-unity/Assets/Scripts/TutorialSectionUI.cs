@@ -275,6 +275,10 @@ public class TutorialSectionUI : MonoBehaviour
 	/// </summary>
 	public void EventReceived(string typeName, string methodName, params object[] additional)
 	{
+		if (!_tutorial)
+		{
+			return;
+		}
 		foreach (var trigger in _triggers)
 		{
 			if (typeName == trigger.Key && methodName == trigger.Value)
