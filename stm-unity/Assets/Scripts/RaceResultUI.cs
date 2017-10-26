@@ -15,17 +15,12 @@ public class RaceResultUI : MonoBehaviour
 {
 	[SerializeField]
 	private GameObject _postRaceCrewPrefab;
-	[SerializeField]
 	private MemberMeetingUI _meetingUI;
-	[SerializeField]
 	private PositionDisplayUI _positionUI;
-	[SerializeField]
 	private CupResultUI _cupResult;
-	[SerializeField]
 	private BoatPromotionUI _promotion;
 	[SerializeField]
 	private Button _popUpBlocker;
-
 	private Icon[] _roleLogos;
 	private Dictionary<Position, CrewMember> _lastRacePositions;
 	private int _lastRaceFinishPosition;
@@ -56,6 +51,14 @@ public class RaceResultUI : MonoBehaviour
 	/// </summary>
 	public void Display(Dictionary<Position, CrewMember> currentPositions, int finishPosition, string finishPositionText)
 	{
+		if (!_cupResult)
+		{
+			_cupResult = transform.root.GetComponentsInChildren<CupResultUI>(true).First();
+			_promotion = transform.root.GetComponentsInChildren<BoatPromotionUI>(true).First();
+			_meetingUI = transform.root.GetComponentsInChildren<MemberMeetingUI>(true).First();
+			_positionUI = transform.root.GetComponentsInChildren<PositionDisplayUI>(true).First();
+		}
+
 		_meetingUI.CloseCrewMemberPopUp(string.Empty);
 		_positionUI.ClosePositionPopUp(string.Empty);
 		gameObject.SetActive(true);

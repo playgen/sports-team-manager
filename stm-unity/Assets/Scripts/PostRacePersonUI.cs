@@ -85,7 +85,7 @@ public class PostRacePersonUI : MonoBehaviour
 			{
 				_avatarDisplay.UpdateMood(eventMember.Avatar, eventMember.GetMood());
 			}
-			foreach (var crewMember in (CrewMemberUI[])FindObjectsOfType(typeof(CrewMemberUI)))
+			foreach (var crewMember in GameManagement.CrewMemberUI)
 			{
 				if (crewMember.Current)
 				{

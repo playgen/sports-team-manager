@@ -1,4 +1,6 @@
-﻿using PlayGen.Unity.Utilities.Localization;
+﻿using System.Linq;
+
+using PlayGen.Unity.Utilities.Localization;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,26 +10,30 @@ using UnityEngine.UI;
 /// </summary>
 public class EscapeAction : MonoBehaviour {
 
-	[SerializeField]
 	private TutorialController _tutorial;
-	[SerializeField]
 	private SettingsUI _settings;
-	[SerializeField]
 	private RecruitMemberUI _recruitment;
-	[SerializeField]
 	private PositionDisplayUI _position;
-	[SerializeField]
 	private MemberMeetingUI _meeting;
-	[SerializeField]
 	private TeamSelectionUI _teamSelection;
-	[SerializeField]
 	private RaceResultUI _raceResult;
-	[SerializeField]
 	private CupResultUI _cupResult;
-	[SerializeField]
 	private BoatPromotionUI _boatPromotion;
-	[SerializeField]
 	private PreRaceConfirmUI _preRace;
+
+	private void Start()
+	{
+		_tutorial = transform.root.GetComponentsInChildren<TutorialController>(true).First();
+		_settings = transform.root.GetComponentsInChildren<SettingsUI>(true).Last();
+		_recruitment = transform.root.GetComponentsInChildren<RecruitMemberUI>(true).First();
+		_position = transform.root.GetComponentsInChildren<PositionDisplayUI>(true).First();
+		_meeting = transform.root.GetComponentsInChildren<MemberMeetingUI>(true).First();
+		_teamSelection = transform.root.GetComponentsInChildren<TeamSelectionUI>(true).First();
+		_raceResult = transform.root.GetComponentsInChildren<RaceResultUI>(true).First();
+		_cupResult = transform.root.GetComponentsInChildren<CupResultUI>(true).First();
+		_boatPromotion = transform.root.GetComponentsInChildren<BoatPromotionUI>(true).First();
+		_preRace = transform.root.GetComponentsInChildren<PreRaceConfirmUI>(true).First();
+	}
 
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.Escape))

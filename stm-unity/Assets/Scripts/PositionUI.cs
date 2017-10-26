@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
 
@@ -29,11 +30,11 @@ public class PositionUI : MonoBehaviour
 	/// <summary>
 	/// Bring in elements that need to be known to this object
 	/// </summary>
-	public void SetUp(TeamSelectionUI teamSelectionUI, PositionDisplayUI positionUI, Position position)
+	public void SetUp(Position position)
 	{
-		_teamSelectionUI = teamSelectionUI;
+		_teamSelectionUI = transform.root.GetComponentsInChildren<TeamSelectionUI>(true).First();
 		_position = position;
-		_positionUI = positionUI;
+		_positionUI = transform.root.GetComponentsInChildren<PositionDisplayUI>(true).First();
 	}
 
 	/// <summary>
@@ -42,7 +43,7 @@ public class PositionUI : MonoBehaviour
 	public void ShowPopUp()
 	{
 		_positionUI.SetUpDisplay(_position, TrackerTriggerSources.TeamManagementScreen.ToString());
-	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString());
+		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString());
 	}
 
 	/// <summary>
@@ -60,7 +61,7 @@ public class PositionUI : MonoBehaviour
 			_crewMemberUI = crewMember;
 			_teamSelectionUI.PositionChange(1);
 		}
-	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString(), crewMember);
+		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString(), crewMember);
 	}
 
 	/// <summary>

@@ -13,7 +13,6 @@ using RAGE.Analytics.Formats;
 /// </summary>
 public class LearningPillUI : MonoBehaviour {
 
-	[SerializeField]
 	private PostRaceEventUI[] _postRaceEvents;
 	[SerializeField]
 	private Text _helpText;
@@ -67,10 +66,10 @@ public class LearningPillUI : MonoBehaviour {
 	/// </summary>
 	public void ClosePill(string source)
 	{
-        if (gameObject.activeInHierarchy)
-        {
-            _popUpBlocker.onClick.RemoveAllListeners();
-        }
+		if (gameObject.activeInHierarchy)
+		{
+			_popUpBlocker.onClick.RemoveAllListeners();
+		}
 		if (_furtherHelp.Count == 0)
 		{
 			StartCoroutine(Animate());
@@ -85,6 +84,7 @@ public class LearningPillUI : MonoBehaviour {
 		}
 		else
 		{
+			_postRaceEvents = transform.root.GetComponentsInChildren<PostRaceEventUI>(true);
 			foreach (var pre in _postRaceEvents)
 			{
 				if (pre.gameObject.activeInHierarchy && !Mathf.Approximately(pre.GetComponent<CanvasGroup>().alpha, 0))
@@ -101,7 +101,7 @@ public class LearningPillUI : MonoBehaviour {
 			{ TrackerContextKeys.LearningPillID.ToString(), _currentHelp },
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
 		}, AccessibleTracker.Accessible.Accessible));
-	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -122,7 +122,7 @@ public class LearningPillUI : MonoBehaviour {
 		}
 		_popUpAnim["LearningPill"].speed = 0;
 		_popUpAnim["LearningPill"].time = start + limit;
-	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, upward, keep, tip);
+		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, upward, keep, tip);
 		if (upward)
 		{
 			_helpText.text = tip;

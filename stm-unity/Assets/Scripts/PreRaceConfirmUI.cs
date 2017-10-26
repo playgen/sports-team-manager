@@ -12,7 +12,6 @@ using UnityEngine.UI;
 
 public class PreRaceConfirmUI : MonoBehaviour
 {
-	[SerializeField]
 	private TeamSelectionUI _teamSelection;
 	[SerializeField]
 	private Button _popUpBlocker;
@@ -34,6 +33,11 @@ public class PreRaceConfirmUI : MonoBehaviour
 	/// </summary>
 	public void ConfirmPopUp()
 	{
+		if (!_teamSelection)
+		{
+			_teamSelection = transform.root.GetComponentsInChildren<TeamSelectionUI>(true).First();
+		}
+
 		gameObject.SetActive(true);
 		var yesButton = transform.Find("Yes").GetComponent<Button>();
 		yesButton.onClick.RemoveAllListeners();
@@ -68,8 +72,8 @@ public class PreRaceConfirmUI : MonoBehaviour
 				}, "RaceConfirm", AlternativeTracker.Alternative.Menu))
 			);
 		}
-	    yesButton.onClick.AddListener(() => CloseConfirmPopUp(string.Empty));
-        yesButton.onClick.AddListener(_teamSelection.SkipToRace);
+		yesButton.onClick.AddListener(() => CloseConfirmPopUp(string.Empty));
+		yesButton.onClick.AddListener(_teamSelection.SkipToRace);
 		yesButton.onClick.AddListener(_teamSelection.ConfirmLineUp);
 		var noButton = transform.Find("No").GetComponent<Button>();
 		noButton.onClick.RemoveAllListeners();
@@ -87,31 +91,31 @@ public class PreRaceConfirmUI : MonoBehaviour
 	/// </summary>
 	public void CloseConfirmPopUp(string source)
 	{
-        if (gameObject.activeInHierarchy)
-        {
-            gameObject.SetActive(false);
-            _popUpBlocker.gameObject.SetActive(false);
-            if (!string.IsNullOrEmpty(source))
-            {
-                if (!GameManagement.IsRace)
-                {
-                    TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceDeclined", TrackerVerbs.Skipped, new Dictionary<string, string>
-                {
-                    { TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-                    { TrackerContextKeys.RemainingSessions.ToString(), GameManagement.SessionsRemaining.ToString() },
-                    { TrackerContextKeys.TriggerUI.ToString(), source }
-                }, AccessibleTracker.Accessible.Screen));
-                }
-                else
-                {
-                    TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmDeclined", TrackerVerbs.Skipped, new Dictionary<string, string>
-                {
-                    { TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-                    { TrackerContextKeys.TriggerUI.ToString(), source }
-                }, AccessibleTracker.Accessible.Screen));
-                }
-            }
-        }
+		if (gameObject.activeInHierarchy)
+		{
+			gameObject.SetActive(false);
+			_popUpBlocker.gameObject.SetActive(false);
+			if (!string.IsNullOrEmpty(source))
+			{
+				if (!GameManagement.IsRace)
+				{
+					TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceDeclined", TrackerVerbs.Skipped, new Dictionary<string, string>
+				{
+					{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
+					{ TrackerContextKeys.RemainingSessions.ToString(), GameManagement.SessionsRemaining.ToString() },
+					{ TrackerContextKeys.TriggerUI.ToString(), source }
+				}, AccessibleTracker.Accessible.Screen));
+				}
+				else
+				{
+					TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmDeclined", TrackerVerbs.Skipped, new Dictionary<string, string>
+				{
+					{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
+					{ TrackerContextKeys.TriggerUI.ToString(), source }
+				}, AccessibleTracker.Accessible.Screen));
+				}
+			}
+		}
 	}
 
 	/// <summary>
@@ -119,6 +123,11 @@ public class PreRaceConfirmUI : MonoBehaviour
 	/// </summary>
 	public void ConfirmLineUpCheck()
 	{
+		if (!_teamSelection)
+		{
+			_teamSelection = transform.root.GetComponentsInChildren<TeamSelectionUI>(true).First();
+		}
+
 		var lastRace = GameManagement.LineUpHistory.LastOrDefault();
 		if (lastRace != null)
 		{
@@ -137,6 +146,11 @@ public class PreRaceConfirmUI : MonoBehaviour
 	/// </summary>
 	public void DisplayRepeatWarning()
 	{
+		if (!_teamSelection)
+		{
+			_teamSelection = transform.root.GetComponentsInChildren<TeamSelectionUI>(true).First();
+		}
+
 		gameObject.SetActive(true);
 		GetComponentInChildren<Text>().text = Localization.Get("REPEAT_CONFIRM");
 		TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpConfirmPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>(), AccessibleTracker.Accessible.Screen));
@@ -162,15 +176,15 @@ public class PreRaceConfirmUI : MonoBehaviour
 	/// </summary>
 	public void CloseRepeatWarning(string source)
 	{
-        if (gameObject.activeInHierarchy)
-        {
-            gameObject.SetActive(false);
-            _popUpBlocker.gameObject.SetActive(false);
-            TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpDeclined", TrackerVerbs.Skipped, new Dictionary<string, string>
-            {
-                { TrackerContextKeys.TriggerUI.ToString(), source }
-            }, AccessibleTracker.Accessible.Screen));
-        }
+		if (gameObject.activeInHierarchy)
+		{
+			gameObject.SetActive(false);
+			_popUpBlocker.gameObject.SetActive(false);
+			TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpDeclined", TrackerVerbs.Skipped, new Dictionary<string, string>
+			{
+				{ TrackerContextKeys.TriggerUI.ToString(), source }
+			}, AccessibleTracker.Accessible.Screen));
+		}
 	}
 
 	/// <summary>

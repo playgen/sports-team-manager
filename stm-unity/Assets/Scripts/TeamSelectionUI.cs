@@ -67,15 +67,10 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private GameObject _recruitPopUp;
 	private readonly List<GameObject> _currentCrewButtons = new List<GameObject>();
 	private readonly List<Button> _recruitButtons = new List<Button>();
-	[SerializeField]
 	private MemberMeetingUI _meetingUI;
-	[SerializeField]
 	private PositionDisplayUI _positionUI;
-	[SerializeField]
 	private RaceResultUI _raceResult;
-	[SerializeField]
 	private PreRaceConfirmUI _preRace;
-	[SerializeField]
 	private PostRaceEventUI[] _postRaceEvents;
 	private int _positionsEmpty;
 	[SerializeField]
@@ -127,7 +122,12 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	private void Start()
 	{
+		_meetingUI = GetComponentsInChildren<MemberMeetingUI>(true).First();
+		_positionUI = GetComponentsInChildren<PositionDisplayUI>(true).First();
+		_raceResult = GetComponentsInChildren<RaceResultUI>(true).First();
 		_raceResult.SetRoleLogos(RoleLogos);
+		_preRace = GetComponentsInChildren<PreRaceConfirmUI>(true).First();
+		_postRaceEvents = transform.root.GetComponentsInChildren<PostRaceEventUI>(true);
 		_postRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
 		ResetScrollbar();
 		CreateNewBoat();
@@ -319,7 +319,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			var pos = GameManagement.Positions[i];
 			positionObject.transform.Find("Name").GetComponent<Text>().text = Localization.Get(pos.ToString());
 			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.ToString()).Image;
-			positionObject.GetComponent<PositionUI>().SetUp(this, _positionUI, pos);
+			positionObject.GetComponent<PositionUI>().SetUp(pos);
 		}
 		_raceButton.gameObject.SetActive(GameManagement.SeasonOngoing);
 		_skipToRaceButton.gameObject.SetActive(false);
@@ -395,7 +395,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		crewMember.transform.SetParent(parent, false);
 		crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(cm.Name, true);
 		crewMember.name = SplitName(cm.Name);
-		crewMember.GetComponent<CrewMemberUI>().SetUp(usable, current, _meetingUI, _positionUI, cm, parent, _roleIcons);
+		crewMember.GetComponent<CrewMemberUI>().SetUp(usable, current, cm, parent, _roleIcons);
 		crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(cm.Avatar, cm.GetMood(), true);
 		return crewMember;
 	}
@@ -450,7 +450,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			var current = GameManagement.CrewMembers.ContainsKey(pair.Value.Name);
 			crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(pair.Value.Name, true);
 			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, scoreDiff * (2f / boat.Positions.Count) + 3, true);
-			crewMember.GetComponent<CrewMemberUI>().SetUp(false, current, _meetingUI, _positionUI, pair.Value, crewContainer, _roleIcons);
+			crewMember.GetComponent<CrewMemberUI>().SetUp(false, current, pair.Value, crewContainer, _roleIcons);
 
 			var positionImage = crewMember.transform.Find("Position").gameObject;
 			//update current position button
@@ -663,7 +663,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		{
 			Destroy(b);
 		}
-		foreach (var crewMember in (CrewMemberUI[])FindObjectsOfType(typeof(CrewMemberUI)))
+		foreach (var crewMember in GameManagement.CrewMemberUI)
 		{
 			//destroy CrewMemberUI (making them unclickable) from those that are no longer in the currentCrew. Update avatar so they change into their causal outfit
 			if (GameManagement.CrewMembers.All(cm => cm.Key != crewMember.CrewMember.Name))
@@ -797,7 +797,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private void DoBestFit()
 	{
 		_boatMain.transform.Find("Position Container").gameObject.BestFit();
-		((CrewMemberUI[])FindObjectsOfType(typeof(CrewMemberUI))).Select(c => c.gameObject).BestFit();
+		GameManagement.CrewMemberUI.Select(c => c.gameObject).BestFit();
 		var currentPosition = _boatContainer.transform.localPosition.y - ((RectTransform)_boatContainer.transform).anchoredPosition.y;
 		if (!Mathf.Approximately(_boatMain.GetComponent<LayoutElement>().preferredHeight, Mathf.Abs(currentPosition) * 0.2f))
 		{

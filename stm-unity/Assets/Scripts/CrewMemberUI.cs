@@ -35,10 +35,10 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// <summary>
 	/// Bring in elements that need to be known to this object
 	/// </summary>
-	public void SetUp(bool usable, bool current, MemberMeetingUI meetingUI, PositionDisplayUI positionUI, CrewMember crewMember, Transform parent, Icon[] roleIcons)
+	public void SetUp(bool usable, bool current, CrewMember crewMember, Transform parent, Icon[] roleIcons)
 	{
-		_meetingUI = meetingUI;
-		_positionUI = positionUI;
+		_meetingUI = transform.root.GetComponentsInChildren<MemberMeetingUI>(true).First();
+		_positionUI = transform.root.GetComponentsInChildren<PositionDisplayUI>(true).First();
 		_crewMember = crewMember;
 		_defaultParent = parent;
 		_roleIcons = roleIcons;

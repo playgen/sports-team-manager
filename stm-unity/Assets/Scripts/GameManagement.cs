@@ -7,6 +7,8 @@ using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using PlayGen.Unity.Utilities.Localization;
 
+using UnityEngine.SceneManagement;
+
 /// <summary>
 /// Container for the GameManager in the Simulation
 /// </summary>
@@ -147,6 +149,11 @@ public static class GameManagement
     public static Position BoatPosition(this CrewMember member)
     {
         return member.GetBoatPosition(PositionCrew);
+    }
+
+    public static CrewMemberUI[] CrewMemberUI
+    {
+        get { return SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<CrewMemberUI>()).ToArray(); }
     }
 
     /// <summary>

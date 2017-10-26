@@ -20,9 +20,7 @@ using RAGE.Analytics.Formats;
 public class MemberMeetingUI : MonoBehaviour
 {
 	private CrewMember _currentMember;
-	[SerializeField]
-	private TeamSelectionUI _teamSelectionUI;
-	[SerializeField]
+	private TeamSelectionUI _teamSelection;
 	private PositionDisplayUI _positionUI;
 	[SerializeField]
 	private AvatarDisplay _avatarDisplay;
@@ -105,7 +103,7 @@ public class MemberMeetingUI : MonoBehaviour
 		gameObject.SetActive(true);
 		_fireWarningPopUp.SetActive(false);
 		//disable opinion images on CrewMember UI objects
-		foreach (var cmui in (CrewMemberUI[])FindObjectsOfType(typeof(CrewMemberUI)))
+		foreach (var cmui in GameManagement.CrewMemberUI)
 		{
 			if (cmui.Current)
 			{
@@ -137,6 +135,11 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void Display()
 	{
+		if (!_teamSelection)
+		{
+			_teamSelection = transform.root.GetComponentsInChildren<TeamSelectionUI>(true).First();
+			_positionUI = transform.root.GetComponentsInChildren<PositionDisplayUI>(true).First();
+		}
 		//ActionAllowance display
 		_allowanceBar.fillAmount = GameManagement.ActionAllowancePercentage;
 		_allowanceText.text = GameManagement.ActionAllowance.ToString();
@@ -154,7 +157,7 @@ public class MemberMeetingUI : MonoBehaviour
 			_roleButton.gameObject.SetActive(true);
 			_roleButton.onClick.AddListener(() => _positionUI.SetUpDisplay(currentRole, TrackerTriggerSources.TeamManagementScreen.ToString()));
 			_roleButton.GetComponentInChildren<Text>().text = Localization.Get(currentRole.ToString(), true);
-			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = _teamSelectionUI.RoleLogos.First(mo => mo.Name == currentRole.ToString()).Image;
+			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = _teamSelection.RoleLogos.First(mo => mo.Name == currentRole.ToString()).Image;
 		}
 		//hide if not positioned
 		else
@@ -218,7 +221,7 @@ public class MemberMeetingUI : MonoBehaviour
 			_closeText.text = Localization.Get("MEETING_EXIT");
 		}
 		//display revealed opinions for each other active CrewMember
-		foreach (var crewMember in (CrewMemberUI[])FindObjectsOfType(typeof(CrewMemberUI)))
+		foreach (var crewMember in GameManagement.CrewMemberUI)
 		{
 			if (crewMember.Current)
 			{
@@ -335,7 +338,7 @@ public class MemberMeetingUI : MonoBehaviour
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Fired", true);
 		GameManagement.GameManager.RetireCrewMember(_currentMember);
-		_teamSelectionUI.ResetCrew();
+		_teamSelection.ResetCrew();
 		CloseFireCrewWarning(string.Empty);
 		CloseCrewMemberPopUp(string.Empty);
 	}
@@ -353,7 +356,7 @@ public class MemberMeetingUI : MonoBehaviour
 				{ TrackerContextKeys.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
 			gameObject.SetActive(false);
-			foreach (var crewMember in (CrewMemberUI[])FindObjectsOfType(typeof(CrewMemberUI)))
+			foreach (var crewMember in GameManagement.CrewMemberUI)
 			{
 				if (crewMember.Current)
 				{
@@ -362,8 +365,12 @@ public class MemberMeetingUI : MonoBehaviour
 			}
 			_lastReply = null;
 		}
-	    _positionUI.ChangeBlockerOrder();
-    }
+		if (!_positionUI)
+		{
+			_positionUI = transform.root.GetComponentsInChildren<PositionDisplayUI>(true).First();
+		}
+		_positionUI.ChangeBlockerOrder();
+	}
 
 	/// <summary>
 	/// On the escape key being pressed, close pop-up or fire warning pop-up if open

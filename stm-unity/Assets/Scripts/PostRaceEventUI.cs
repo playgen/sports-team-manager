@@ -16,13 +16,11 @@ using RAGE.Analytics.Formats;
 /// </summary>
 public class PostRaceEventUI : MonoBehaviour
 {
-	[SerializeField]
 	private LearningPillUI _learningPill;
 	[SerializeField]
 	private GameObject _closeButton;
 	[SerializeField]
 	private Button _popUpBlocker;
-	[SerializeField]
 	private PostRacePersonUI[] _postRacePeople;
 	private Dictionary<CrewMember, PostRaceEventState> _selectedResponses;
 	private List<string> _lastStates;
@@ -30,6 +28,11 @@ public class PostRaceEventUI : MonoBehaviour
 	private void OnEnable()
 	{
 		_closeButton.SetActive(false);
+		if (!_learningPill)
+		{
+			_learningPill = transform.root.GetComponentsInChildren<LearningPillUI>(true).First();
+			_postRacePeople = GetComponentsInChildren<PostRacePersonUI>(true);
+		}
 		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
 		{
 			Localization.LanguageChange += OnLanguageChange;
@@ -262,7 +265,7 @@ public class PostRaceEventUI : MonoBehaviour
 			_closeButton.SetActive(true);
 			_popUpBlocker.onClick.AddListener(GetLearningPill);
 			_popUpBlocker.onClick.AddListener(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
-			var teamSelection = (TeamSelectionUI)FindObjectOfType(typeof(TeamSelectionUI));
+			var teamSelection = transform.root.GetComponentsInChildren<TeamSelectionUI>(true).First();
 			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
 			_popUpBlocker.onClick.AddListener(SendLearningPill);
 			TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);

@@ -12,10 +12,14 @@ using UnityEngine.UI;
 
 public class BoatPromotionUI : MonoBehaviour
 {
-	[SerializeField]
 	private PostRaceEventUI[] _postRaceEvents;
 	[SerializeField]
 	private Button _popUpBlocker;
+
+	private void Start()
+	{
+		_postRaceEvents = transform.root.GetComponentsInChildren<PostRaceEventUI>(true);
+	}
 
 	private void OnEnable()
 	{
@@ -68,21 +72,21 @@ public class BoatPromotionUI : MonoBehaviour
 	/// </summary>
 	public void Close(string source)
 	{
-        if (gameObject.activeInHierarchy)
-        {
-            gameObject.SetActive(false);
-            _popUpBlocker.gameObject.SetActive(false);
-            _postRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
-            if (!string.IsNullOrEmpty(source))
-            {
-                var newString = GameManagement.PositionString;
-                TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
-            {
-                { TrackerContextKeys.BoatLayout.ToString(), newString },
-                { TrackerContextKeys.TriggerUI.ToString(), source },
-            }, AccessibleTracker.Accessible.Screen));
-            }
-        }
+		if (gameObject.activeInHierarchy)
+		{
+			gameObject.SetActive(false);
+			_popUpBlocker.gameObject.SetActive(false);
+			_postRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
+			if (!string.IsNullOrEmpty(source))
+			{
+				var newString = GameManagement.PositionString;
+				TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
+			{
+				{ TrackerContextKeys.BoatLayout.ToString(), newString },
+				{ TrackerContextKeys.TriggerUI.ToString(), source },
+			}, AccessibleTracker.Accessible.Screen));
+			}
+		}
 	}
 
 	/// <summary>

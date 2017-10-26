@@ -17,7 +17,6 @@ using RAGE.Analytics.Formats;
 /// </summary>
 public class PositionDisplayUI : MonoBehaviour
 {
-	[SerializeField]
 	private MemberMeetingUI _meetingUI;
 	[SerializeField]
 	private Button _popUpBlocker;
@@ -41,6 +40,11 @@ public class PositionDisplayUI : MonoBehaviour
 	private GameObject _historyPrefab;
 
 	private Position _current;
+
+	private void Start()
+	{
+		_meetingUI = transform.root.GetComponentsInChildren<MemberMeetingUI>(true).First();
+	}
 
 	private void OnEnable()
 	{

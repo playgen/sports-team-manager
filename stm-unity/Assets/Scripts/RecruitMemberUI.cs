@@ -20,8 +20,7 @@ using RAGE.Analytics.Formats;
 /// </summary>
 public class RecruitMemberUI : MonoBehaviour
 {
-	[SerializeField]
-	private TeamSelectionUI _teamSelectionUI;
+	private TeamSelectionUI _teamSelection;
 	[SerializeField]
 	private GameObject[] _recruitUI;
 	[SerializeField]
@@ -48,6 +47,11 @@ public class RecruitMemberUI : MonoBehaviour
 	private string _lastQuestion;
 	private Dictionary<CrewMember, string> _lastAnswers;
 	private string _currentSelected;
+
+	private void Start()
+	{
+		_teamSelection = transform.root.GetComponentsInChildren<TeamSelectionUI>(true).First();
+	}
 
 	private void OnEnable()
 	{
@@ -308,7 +312,7 @@ public class RecruitMemberUI : MonoBehaviour
 	public void Recruit(CrewMember crewMember, string source)
 	{
 		GameManagement.GameManager.AddRecruit(crewMember);
-		_teamSelectionUI.ResetCrew();
+		_teamSelection.ResetCrew();
 		CloseRecruitmentPopUp(string.Empty);
 		CloseHireCrewWarning(string.Empty);
 		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberHired", TrackerVerbs.Interacted, new Dictionary<string, string>
