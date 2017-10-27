@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 
 public static class UIManagement
 {
-    private static GameObject[] _rootObjects;
+    private static List<GameObject> _rootObjects = new List<GameObject>();
     private static PostRaceEventUI[] _postRaceEvents;
     private static MemberMeetingUI _memberMeeting;
     private static PositionDisplayUI _positionDisplay;
@@ -88,7 +89,8 @@ public static class UIManagement
 
     public static void Initialize()
     {
-        _rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+        _rootObjects.Clear();
+        _rootObjects = SceneManager.GetActiveScene().GetRootGameObjects().Where(r => r.gameObject != null).ToList();
         _postRaceEvents = _rootObjects.SelectMany(g => g.GetComponentsInChildren<PostRaceEventUI>(true)).ToArray();
         _memberMeeting = _rootObjects.SelectMany(g => g.GetComponentsInChildren<MemberMeetingUI>(true)).First();
         _positionDisplay = _rootObjects.SelectMany(g => g.GetComponentsInChildren<PositionDisplayUI>(true)).First();
@@ -109,7 +111,7 @@ public static class UIManagement
 
     public static CrewMemberUI[] CrewMemberUI
     {
-        get { return _rootObjects.SelectMany(g => g.GetComponentsInChildren<CrewMemberUI>()).ToArray(); }
+        get { return _rootObjects.Where(r => r.gameObject != null).SelectMany(g => g.GetComponentsInChildren<CrewMemberUI>()).ToArray(); }
     }
 
     public static void EnableSmallBlocker(this Transform obj, params UnityAction[] actions)

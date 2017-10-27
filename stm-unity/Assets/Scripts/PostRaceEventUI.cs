@@ -32,7 +32,7 @@ public class PostRaceEventUI : MonoBehaviour
 			Localization.LanguageChange += OnLanguageChange;
 			BestFit.ResolutionChange += DoBestFit;
 			//reorder pop-ups and blockers
-			transform.EnableBlocker();
+			transform.parent.EnableBlocker();
 			ResetDisplay();
 		}
 		else
@@ -252,7 +252,7 @@ public class PostRaceEventUI : MonoBehaviour
 		if (_postRacePeople.All(prp => prp.ActiveQuestions() == false))
 		{
 			_closeButton.SetActive(true);
-			transform.EnableBlocker(GetLearningPill, () => Close(TrackerTriggerSources.PopUpBlocker.ToString()), UIManagement.TeamSelection.ResetCrew, SendLearningPill);
+			transform.parent.EnableBlocker(GetLearningPill, () => Close(TrackerTriggerSources.PopUpBlocker.ToString()), UIManagement.TeamSelection.ResetCrew, SendLearningPill);
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
 	}

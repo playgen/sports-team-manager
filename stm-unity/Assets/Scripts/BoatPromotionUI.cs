@@ -45,6 +45,10 @@ public class BoatPromotionUI : MonoBehaviour
 				{ TrackerContextKeys.BoatLayout.ToString(), newString },
 			}, AccessibleTracker.Accessible.Screen));
 		}
+		else
+		{
+			Close(string.Empty);
+		}
 	}
 
 	/// <summary>
@@ -56,7 +60,6 @@ public class BoatPromotionUI : MonoBehaviour
 		{
 			gameObject.SetActive(false);
 			UIManagement.Blocker.gameObject.SetActive(false);
-			UIManagement.PostRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
 			if (!string.IsNullOrEmpty(source))
 			{
 				var newString = GameManagement.PositionString;
@@ -67,6 +70,7 @@ public class BoatPromotionUI : MonoBehaviour
 			}, AccessibleTracker.Accessible.Screen));
 			}
 		}
+		UIManagement.PostRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
 	}
 
 	/// <summary>

@@ -419,7 +419,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		oldBoat.transform.Find("Stage Number").GetComponent<Text>().text = isRace ? string.Empty : stageNumber.ToString();
 		var idealScore = boat.IdealMatchScore;
 		//get selection mistakes for this line-up and set-up feedback UI
-		var mistakeList = GameManagement.Boat.GetAssignmentMistakes(3);
+		var mistakeList = boat.GetAssignmentMistakes(3);
 		if (GameManagement.ShowTutorial && GameManagement.LineUpHistory.Count == 1)
 		{
 			mistakeList = _mistakeIcons.Select(m => m.Name).Where(m => m != "Correct" && m != "Hidden").OrderBy(m => Guid.NewGuid()).Take(2).ToList();
@@ -673,7 +673,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		//recreate crew and repeat previous line-up
 		CreateCrew();
 		RepeatLineUp();
-		//close any open pop-ups
+		//close any open pop-ups if needed
 		UIManagement.MemberMeeting.CloseCrewMemberPopUp(string.Empty);
 		UIManagement.PositionDisplay.ClosePositionPopUp(string.Empty);
 		DoBestFit();

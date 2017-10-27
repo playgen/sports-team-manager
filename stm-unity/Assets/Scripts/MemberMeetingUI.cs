@@ -287,7 +287,7 @@ public class MemberMeetingUI : MonoBehaviour
 		_fireWarningPopUp.SetActive(false);
 		if (gameObject.activeInHierarchy)
 		{
-			transform.EnableBlocker(() => CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+			transform.EnableSmallBlocker(() => CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 		}
 		else
 		{
