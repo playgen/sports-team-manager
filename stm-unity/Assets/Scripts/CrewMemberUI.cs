@@ -15,13 +15,10 @@ using RAGE.Analytics.Formats;
 /// </summary>
 public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHandler
 {
-	private MemberMeetingUI _meetingUI;
-	private PositionDisplayUI _positionUI;
 	private CrewMember _crewMember;
 	private bool _beingClicked;
 	private bool _beingDragged;
 	private Vector2 _dragPosition;
-	private Icon[] _roleIcons;
 	private Transform _defaultParent;
 	private PositionUI _currentPlacement;
 	private Vector2 _currentPositon;
@@ -35,13 +32,10 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// <summary>
 	/// Bring in elements that need to be known to this object
 	/// </summary>
-	public void SetUp(bool usable, bool current, CrewMember crewMember, Transform parent, Icon[] roleIcons)
+	public void SetUp(bool usable, bool current, CrewMember crewMember, Transform parent)
 	{
-		_meetingUI = transform.root.GetComponentsInChildren<MemberMeetingUI>(true).First();
-		_positionUI = transform.root.GetComponentsInChildren<PositionDisplayUI>(true).First();
 		_crewMember = crewMember;
 		_defaultParent = parent;
-		_roleIcons = roleIcons;
 		Usable = usable;
 		Current = current;
 		transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? UnityEngine.Color.white : UnityEngine.Color.grey;
@@ -137,8 +131,8 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// </summary>
 	private void ShowPopUp()
 	{
-		_meetingUI.SetUpDisplay(_crewMember, TrackerTriggerSources.TeamManagementScreen.ToString());
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
+		UIManagement.MemberMeeting.SetUpDisplay(_crewMember, TrackerTriggerSources.TeamManagementScreen.ToString());
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
 	}
 
 	/// <summary>
@@ -172,9 +166,9 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			}
 		}
 		//reset the meeting UI if it is currently being displayed
-		if (_meetingUI.gameObject.activeInHierarchy)
+		if (UIManagement.MemberMeeting.gameObject.activeInHierarchy)
 		{
-			_meetingUI.Display();
+			UIManagement.MemberMeeting.Display();
 		}
 	}
 
@@ -216,11 +210,11 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		var positionImage = transform.Find("Position").gameObject;
 		//update current position button
 		positionImage.GetComponent<Image>().enabled = true;
-		positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == currentPosition.ToString()).Image;
-		_positionUI.UpdateDisplay();
+		positionImage.GetComponent<Image>().sprite = UIManagement.TeamSelection.RoleIcons.First(mo => mo.Name == currentPosition.ToString()).Image;
+		UIManagement.PositionDisplay.UpdateDisplay();
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
-		positionImage.GetComponent<Button>().onClick.AddListener(() => _positionUI.SetUpDisplay(currentPosition, TrackerTriggerSources.CrewMemberPopUp.ToString()));
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
+		positionImage.GetComponent<Button>().onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentPosition, TrackerTriggerSources.CrewMemberPopUp.ToString()));
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
 	}
 
 	/// <summary>
@@ -250,7 +244,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		positionImage.GetComponent<Image>().enabled = false;
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 		//reset position pop-up if it is currently being shown
-		_positionUI.UpdateDisplay();
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
+		UIManagement.PositionDisplay.UpdateDisplay();
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
 	}
 }

@@ -7,16 +7,14 @@ using UnityEngine.EventSystems;
 public class HoverObject : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
 	private string _hoverText;
-	private HoverPopUpUI _hoverPopUp;
 	public bool Enabled;
 
 	/// <summary>
 	/// Set text and pop-up for this object
 	/// </summary>
-	public void SetHoverText(string text, HoverPopUpUI popUpUI)
+	public void SetHoverText(string text)
 	{
 		_hoverText = text;
-		_hoverPopUp = popUpUI;
 	}
 
 	/// <summary>
@@ -26,8 +24,8 @@ public class HoverObject : MonoBehaviour, IPointerEnterHandler, IPointerClickHan
 	{
 		if (Enabled)
 		{
-			_hoverPopUp.SetHoverObject(transform);
-			_hoverPopUp.DisplayHoverNoDelay(_hoverText);
+		    UIManagement.Hover.SetHoverObject(transform);
+		    UIManagement.Hover.DisplayHoverNoDelay(_hoverText);
 		}
 	}
 
@@ -38,8 +36,8 @@ public class HoverObject : MonoBehaviour, IPointerEnterHandler, IPointerClickHan
 	{
 		if (Enabled)
 		{
-			_hoverPopUp.SetHoverObject(transform);
-			_hoverPopUp.DisplayHover(_hoverText);
+		    UIManagement.Hover.SetHoverObject(transform);
+		    UIManagement.Hover.DisplayHover(_hoverText);
 		}
 	}
 
@@ -50,7 +48,7 @@ public class HoverObject : MonoBehaviour, IPointerEnterHandler, IPointerClickHan
 	{
 		if (Enabled)
 		{
-			_hoverPopUp.HideHover();
+		    UIManagement.Hover.HideHover();
 		}
 	}
 }

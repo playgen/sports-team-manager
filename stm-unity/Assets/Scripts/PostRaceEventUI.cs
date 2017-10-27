@@ -16,7 +16,6 @@ using RAGE.Analytics.Formats;
 /// </summary>
 public class PostRaceEventUI : MonoBehaviour
 {
-	private LearningPillUI _learningPill;
 	[SerializeField]
 	private GameObject _closeButton;
 	[SerializeField]
@@ -28,9 +27,8 @@ public class PostRaceEventUI : MonoBehaviour
 	private void OnEnable()
 	{
 		_closeButton.SetActive(false);
-		if (!_learningPill)
+		if (_postRacePeople == null)
 		{
-			_learningPill = transform.root.GetComponentsInChildren<LearningPillUI>(true).First();
 			_postRacePeople = GetComponentsInChildren<PostRacePersonUI>(true);
 		}
 		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
@@ -68,7 +66,7 @@ public class PostRaceEventUI : MonoBehaviour
 				_popUpBlocker.onClick.RemoveAllListeners();
 				_popUpBlocker.gameObject.SetActive(false);
 			}
-			TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
 	}
 
@@ -100,6 +98,7 @@ public class PostRaceEventUI : MonoBehaviour
 				{ TrackerContextKeys.TriggerUI.ToString(), source },
 				{ TrackerContextKeys.EventID.ToString(), GameManagement.GameManager.GetPostRaceEventKeys().First(_lastStates[0].StartsWith) },
 			}, AccessibleTracker.Accessible.Screen));
+			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 			foreach (Transform child in transform.parent)
 			{
 				child.gameObject.SetActive(true);
@@ -150,7 +149,7 @@ public class PostRaceEventUI : MonoBehaviour
 			}
 			else
 			{
-				foreach (PostRacePersonUI p in _postRacePeople)
+				foreach (var p in _postRacePeople)
 				{
 					p.ResetQuestions(new PostRaceEventState(p.CurrentCrewMember, null), new List<PostRaceEventState>());
 				}
@@ -265,10 +264,9 @@ public class PostRaceEventUI : MonoBehaviour
 			_closeButton.SetActive(true);
 			_popUpBlocker.onClick.AddListener(GetLearningPill);
 			_popUpBlocker.onClick.AddListener(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
-			var teamSelection = transform.root.GetComponentsInChildren<TeamSelectionUI>(true).First();
-			_popUpBlocker.onClick.AddListener(teamSelection.ResetCrew);
+			_popUpBlocker.onClick.AddListener(UIManagement.TeamSelection.ResetCrew);
 			_popUpBlocker.onClick.AddListener(SendLearningPill);
-			TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
 	}
 
@@ -285,7 +283,7 @@ public class PostRaceEventUI : MonoBehaviour
 	/// </summary>
 	public void SendLearningPill()
 	{
-		_learningPill.SetHelp(_lastStates);
+		UIManagement.LearningPill.SetHelp(_lastStates);
 	}
 
 	private void OnLanguageChange()

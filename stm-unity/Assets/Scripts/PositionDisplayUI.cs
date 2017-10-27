@@ -17,7 +17,6 @@ using RAGE.Analytics.Formats;
 /// </summary>
 public class PositionDisplayUI : MonoBehaviour
 {
-	private MemberMeetingUI _meetingUI;
 	[SerializeField]
 	private Button _popUpBlocker;
 	[SerializeField]
@@ -33,18 +32,11 @@ public class PositionDisplayUI : MonoBehaviour
 	[SerializeField]
 	private Image _roleImage;
 	[SerializeField]
-	private Icon[] _roleSprites;
-	[SerializeField]
 	private GameObject _historyContainer;
 	[SerializeField]
 	private GameObject _historyPrefab;
 
 	private Position _current;
-
-	private void Start()
-	{
-		_meetingUI = transform.root.GetComponentsInChildren<MemberMeetingUI>(true).First();
-	}
 
 	private void OnEnable()
 	{
@@ -150,7 +142,7 @@ public class PositionDisplayUI : MonoBehaviour
 		_textList[0].text = Localization.Get(position.ToString());
 		_textList[1].text = Localization.Get(position + "_DESCRIPTION");
 		//set role image (displayed if no-one is in this position)
-		_roleImage.sprite = _roleSprites.First(mo => mo.Name == position.ToString()).Image;
+		_roleImage.sprite = UIManagement.TeamSelection.RoleLogos.First(mo => mo.Name == position.ToString()).Image;
 		_currentButton.onClick.RemoveAllListeners();
 		//display avatar and CrewMember name accordingly
 		_currentAvatar.gameObject.SetActive(currentCrew != null);
@@ -160,7 +152,7 @@ public class PositionDisplayUI : MonoBehaviour
 		{
 			_currentAvatar.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), true);
 			_currentName.text = currentCrew.Name;
-			_currentButton.onClick.AddListener(() => _meetingUI.SetUpDisplay(currentCrew, TrackerTriggerSources.PositionPopUp.ToString()));
+			_currentButton.onClick.AddListener(() => UIManagement.MemberMeeting.SetUpDisplay(currentCrew, TrackerTriggerSources.PositionPopUp.ToString()));
 		}
 		//wipe previous position history objects
 		foreach (Transform child in _historyContainer.transform)
@@ -207,7 +199,7 @@ public class PositionDisplayUI : MonoBehaviour
 			if (GameManagement.CrewMembers.ContainsKey(member.Key.Name))
 			{
 				var current = member.Key;
-				positionHistory.transform.Find("Button").GetComponent<Button>().onClick.AddListener(() => _meetingUI.SetUpDisplay(current, TrackerTriggerSources.PositionPopUp.ToString()));
+				positionHistory.transform.Find("Button").GetComponent<Button>().onClick.AddListener(() => UIManagement.MemberMeeting.SetUpDisplay(current, TrackerTriggerSources.PositionPopUp.ToString()));
 			}
 			else
 			{
@@ -232,18 +224,18 @@ public class PositionDisplayUI : MonoBehaviour
 				{ TrackerContextKeys.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
 			gameObject.SetActive(false);
-			if (_meetingUI.gameObject.activeInHierarchy)
+			if (UIManagement.MemberMeeting.gameObject.activeInHierarchy)
 			{
 				_popUpBlocker.transform.SetAsLastSibling();
-				_meetingUI.gameObject.transform.SetAsLastSibling();
+			    UIManagement.MemberMeeting.gameObject.transform.SetAsLastSibling();
 				_popUpBlocker.onClick.RemoveAllListeners();
-				_popUpBlocker.onClick.AddListener(() => _meetingUI.CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+				_popUpBlocker.onClick.AddListener(() => UIManagement.MemberMeeting.CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 			}
 			else
 			{
 				_popUpBlocker.gameObject.SetActive(false);
 			}
-			TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
 	}
 

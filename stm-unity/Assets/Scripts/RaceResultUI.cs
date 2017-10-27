@@ -15,13 +15,8 @@ public class RaceResultUI : MonoBehaviour
 {
 	[SerializeField]
 	private GameObject _postRaceCrewPrefab;
-	private MemberMeetingUI _meetingUI;
-	private PositionDisplayUI _positionUI;
-	private CupResultUI _cupResult;
-	private BoatPromotionUI _promotion;
 	[SerializeField]
 	private Button _popUpBlocker;
-	private Icon[] _roleLogos;
 	private Dictionary<Position, CrewMember> _lastRacePositions;
 	private int _lastRaceFinishPosition;
 	private string _lastRaceFinishPositionText;
@@ -41,26 +36,13 @@ public class RaceResultUI : MonoBehaviour
 		BestFit.ResolutionChange -= DoBestFit;
 	}
 
-	public void SetRoleLogos(Icon[] logos)
-	{
-		_roleLogos = logos;
-	}
-
 	/// <summary>
 	/// Display pop-up which shows the race result
 	/// </summary>
 	public void Display(Dictionary<Position, CrewMember> currentPositions, int finishPosition, string finishPositionText)
 	{
-		if (!_cupResult)
-		{
-			_cupResult = transform.root.GetComponentsInChildren<CupResultUI>(true).First();
-			_promotion = transform.root.GetComponentsInChildren<BoatPromotionUI>(true).First();
-			_meetingUI = transform.root.GetComponentsInChildren<MemberMeetingUI>(true).First();
-			_positionUI = transform.root.GetComponentsInChildren<PositionDisplayUI>(true).First();
-		}
-
-		_meetingUI.CloseCrewMemberPopUp(string.Empty);
-		_positionUI.ClosePositionPopUp(string.Empty);
+	    UIManagement.MemberMeeting.CloseCrewMemberPopUp(string.Empty);
+	    UIManagement.PositionDisplay.ClosePositionPopUp(string.Empty);
 		gameObject.SetActive(true);
 		_popUpBlocker.transform.SetAsLastSibling();
 		transform.SetAsLastSibling();
@@ -81,7 +63,7 @@ public class RaceResultUI : MonoBehaviour
 			memberObject.transform.SetParent(transform.Find("Crew"), false);
 			memberObject.name = pair.Value.Name;
 			memberObject.transform.Find("Avatar").GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, -(finishPosition - 3) * 2);
-			memberObject.transform.Find("Position").GetComponent<Image>().sprite = _roleLogos.First(mo => mo.Name == pair.Key.ToString()).Image;
+			memberObject.transform.Find("Position").GetComponent<Image>().sprite = UIManagement.TeamSelection.RoleLogos.First(mo => mo.Name == pair.Key.ToString()).Image;
 			((RectTransform)memberObject.transform.Find("Position").transform).offsetMin = new Vector2(10, 0);
 			if (crewCount % 2 != 0)
 			{
@@ -116,13 +98,13 @@ public class RaceResultUI : MonoBehaviour
 			}, AccessibleTracker.Accessible.Screen));
 			if (!GameManagement.SeasonOngoing)
 			{
-				_cupResult.Display();
+			    UIManagement.CupResult.Display();
 			}
 			else
 			{
-				_promotion.gameObject.SetActive(true);
+			    UIManagement.Promotion.gameObject.SetActive(true);
 			}
-			TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
 	}
 

@@ -2008,7 +2008,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc57ce705f932cc48b3410790baa484d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meetingUI: {fileID: 1950819050}
   _popUpBlocker: {fileID: 1047302245}
   _textList:
   - {fileID: 1919122502}
@@ -2024,23 +2023,6 @@ MonoBehaviour:
   _currentName: {fileID: 188931265}
   _currentButton: {fileID: 1846595369}
   _roleImage: {fileID: 899542281}
-  _roleSprites:
-  - Name: Bowman
-    Image: {fileID: 21300000, guid: 284e431379065d246a367f6f94dd82d0, type: 3}
-  - Name: Grinder
-    Image: {fileID: 21300000, guid: 9379e8a4b1c2c3d4390b1e0eda157bb0, type: 3}
-  - Name: Skipper
-    Image: {fileID: 21300000, guid: 3d5fe8c2ecb28934f80bbdd81cae1205, type: 3}
-  - Name: Helmsman
-    Image: {fileID: 21300000, guid: 9bf83ee32d423024a8e2ee440d702b1b, type: 3}
-  - Name: MidBowman
-    Image: {fileID: 21300000, guid: fbc1bb0646dd5f14590c4c56cff0b730, type: 3}
-  - Name: Navigator
-    Image: {fileID: 21300000, guid: 249c01e6c3d094f438bd4659f527c7d1, type: 3}
-  - Name: Pitman
-    Image: {fileID: 21300000, guid: e139bbb1216b3a547a0d72eb67743858, type: 3}
-  - Name: Trimmer
-    Image: {fileID: 21300000, guid: 95f8c1db0ac1eab4999f2c9dd01a9894, type: 3}
   _historyContainer: {fileID: 847425285}
   _historyPrefab: {fileID: 115054, guid: 67b920194e5c2db41b72273d4b3c9b37, type: 2}
 --- !u!1 &39480347
@@ -3027,7 +3009,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &58951074
@@ -4575,7 +4557,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &89239527
@@ -5295,12 +5277,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 574c13a51598ce84e9935d97c9e0956b, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &89471451 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114000010696954520, guid: 574c13a51598ce84e9935d97c9e0956b,
-    type: 2}
-  m_PrefabInternal: {fileID: 89471450}
-  m_Script: {fileID: 11500000, guid: 4afb7a0ecddbdea4f8a1a9a597e7c335, type: 3}
 --- !u!224 &89471452 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224000013375698574, guid: 574c13a51598ce84e9935d97c9e0956b,
@@ -10428,7 +10404,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &192596458
@@ -16730,7 +16706,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &354923617
@@ -17342,7 +17318,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &364502548
@@ -17931,7 +17907,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &385920649
@@ -18828,11 +18804,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d923a3f534edbb74fa86636158241ba6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _learningPill: {fileID: 936595975}
   _closeButton: {fileID: 523496579}
   _popUpBlocker: {fileID: 1116239688}
-  _postRacePeople:
-  - {fileID: 610936537}
 --- !u!114 &396689107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21514,7 +21487,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &485322793
@@ -27313,12 +27286,6 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224000013375698574, guid: 574c13a51598ce84e9935d97c9e0956b,
     type: 2}
   m_PrefabInternal: {fileID: 1385023650}
---- !u!114 &610936537 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114000010696954520, guid: 574c13a51598ce84e9935d97c9e0956b,
-    type: 2}
-  m_PrefabInternal: {fileID: 1385023650}
-  m_Script: {fileID: 11500000, guid: 4afb7a0ecddbdea4f8a1a9a597e7c335, type: 3}
 --- !u!1 &612036162
 GameObject:
   m_ObjectHideFlags: 0
@@ -33173,7 +33140,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &760177634
@@ -34825,9 +34792,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f7be6d800fb5f4aa9357d706577851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _postRaceEvents:
-  - {fileID: 2028613896}
-  - {fileID: 396689105}
   _popUpBlocker: {fileID: 1116239688}
 --- !u!1 &809255646
 GameObject:
@@ -36250,7 +36214,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2d958c710c8e12479590e68a5f18b30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _teamSelection: {fileID: 1334125065}
   _popUpBlocker: {fileID: 1116239688}
 --- !u!1 &847425285
 GameObject:
@@ -36552,7 +36515,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &857627123
@@ -37706,7 +37669,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &882939660
@@ -39852,9 +39815,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99fda864f0be1a94086cb9dd96956441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _postRaceEvents:
-  - {fileID: 2028613896}
-  - {fileID: 396689105}
   _helpText: {fileID: 800811309}
   _popUpAnim: {fileID: 936595976}
   _popUpBlocker: {fileID: 1116239688}
@@ -47628,7 +47588,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1161964077
@@ -48037,7 +47997,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1174093897
@@ -49099,7 +49059,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 293e71457f7a57c409c041d712f3440a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _teamSelectionUI: {fileID: 1334125065}
   _recruitUI:
   - {fileID: 515259110}
   - {fileID: 1463088166}
@@ -49477,7 +49436,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1204822895
@@ -50262,7 +50221,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1235148098
@@ -51652,7 +51611,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1273152038
@@ -53154,7 +53113,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1300433592
@@ -53442,7 +53401,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1305224679
@@ -54391,13 +54350,11 @@ MonoBehaviour:
     Image: {fileID: 21300000, guid: 926ea231c32b0d848b568b69efb9a844, type: 3}
   - Name: Trimmer
     Image: {fileID: 21300000, guid: 5f4bfce720ec9eb4cbf503c73965204a, type: 3}
-  RoleLogos:
+  _roleLogos:
   - Name: Bowman
     Image: {fileID: 21300000, guid: 284e431379065d246a367f6f94dd82d0, type: 3}
   - Name: Grinder
     Image: {fileID: 21300000, guid: 9379e8a4b1c2c3d4390b1e0eda157bb0, type: 3}
-  - Name: Skipper
-    Image: {fileID: 21300000, guid: 3d5fe8c2ecb28934f80bbdd81cae1205, type: 3}
   - Name: Helmsman
     Image: {fileID: 21300000, guid: 9bf83ee32d423024a8e2ee440d702b1b, type: 3}
   - Name: MidBowman
@@ -54406,6 +54363,8 @@ MonoBehaviour:
     Image: {fileID: 21300000, guid: 249c01e6c3d094f438bd4659f527c7d1, type: 3}
   - Name: Pitman
     Image: {fileID: 21300000, guid: e139bbb1216b3a547a0d72eb67743858, type: 3}
+  - Name: Skipper
+    Image: {fileID: 21300000, guid: 3d5fe8c2ecb28934f80bbdd81cae1205, type: 3}
   - Name: Trimmer
     Image: {fileID: 21300000, guid: 95f8c1db0ac1eab4999f2c9dd01a9894, type: 3}
   _crewPrefab: {fileID: 185380, guid: 8b95f0f42c5b19449851262db2955833, type: 2}
@@ -54418,20 +54377,11 @@ MonoBehaviour:
   _resultPrefab: {fileID: 1480566661865404, guid: 8835163995ef0fa4285a24e5c37374c3,
     type: 2}
   _finalPlacementText: {fileID: 562758936}
-  _recruitPopUp: {fileID: 1197854536}
-  _meetingUI: {fileID: 1950819050}
-  _positionUI: {fileID: 38095101}
-  _raceResult: {fileID: 1802306485}
-  _preRace: {fileID: 846296766}
-  _postRaceEvents:
-  - {fileID: 2028613896}
-  - {fileID: 396689105}
   _popUpBlocker: {fileID: 1116239688}
   _smallerPopUpBlocker: {fileID: 1047302245}
   _quitBlocker: {fileID: 1362662758}
   _practiceIcon: {fileID: 21300000, guid: e99df4a4fe4e706419e4588b9d926d2b, type: 3}
   _raceIcon: {fileID: 21300000, guid: 60fed05e51ac6124eb010ce30567b43a, type: 3}
-  _hoverPopUp: {fileID: 1617721040}
 --- !u!114 &1334125067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54443,16 +54393,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ddfc14e8c52aff4f809e125e3ff89fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tutorial: {fileID: 52273891}
-  _settings: {fileID: 108226953}
-  _recruitment: {fileID: 1197854538}
-  _position: {fileID: 38095101}
-  _meeting: {fileID: 1950819050}
-  _teamSelection: {fileID: 1334125065}
-  _raceResult: {fileID: 1802306485}
-  _cupResult: {fileID: 1175002297}
-  _boatPromotion: {fileID: 804180615}
-  _preRace: {fileID: 846296766}
 --- !u!1 &1336887076
 GameObject:
   m_ObjectHideFlags: 0
@@ -58244,7 +58184,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1408670209
@@ -60959,7 +60899,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1476146432
@@ -65402,7 +65342,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1586716168
@@ -72661,7 +72601,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1768544528
@@ -73810,7 +73750,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1799819603
@@ -74043,10 +73983,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _postRaceCrewPrefab: {fileID: 1000011329384166, guid: 395ae411659436545aa216ec076e029b,
     type: 2}
-  _meetingUI: {fileID: 1950819050}
-  _positionUI: {fileID: 38095101}
-  _cupResult: {fileID: 1175002297}
-  _promotion: {fileID: 804180615}
   _popUpBlocker: {fileID: 1116239688}
 --- !u!1 &1802780481
 GameObject:
@@ -79655,8 +79591,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13539bceec7532f40bbe44eab6a38604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _teamSelectionUI: {fileID: 1334125065}
-  _positionUI: {fileID: 38095101}
   _avatarDisplay: {fileID: 64453451}
   _textList:
   - {fileID: 994816216}
@@ -79687,7 +79621,6 @@ MonoBehaviour:
   _popUpBlocker: {fileID: 1047302245}
   _allowanceBar: {fileID: 1972574781}
   _allowanceText: {fileID: 835265187}
-  _hoverPopUp: {fileID: 1617721040}
   _crewContainer: {fileID: 1197197874}
 --- !u!114 &1950819052
 MonoBehaviour:
@@ -80640,7 +80573,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1972565998
@@ -81646,7 +81579,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &2007564336
@@ -81716,7 +81649,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &2007631789
@@ -82886,12 +82819,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d923a3f534edbb74fa86636158241ba6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _learningPill: {fileID: 936595975}
   _closeButton: {fileID: 1912283961}
   _popUpBlocker: {fileID: 1116239688}
-  _postRacePeople:
-  - {fileID: 2064727492}
-  - {fileID: 89471451}
 --- !u!114 &2028613898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83578,7 +83507,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &2044571117
@@ -83648,7 +83577,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &2045370743
@@ -85046,12 +84975,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 574c13a51598ce84e9935d97c9e0956b, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &2064727492 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114000010696954520, guid: 574c13a51598ce84e9935d97c9e0956b,
-    type: 2}
-  m_PrefabInternal: {fileID: 2064727491}
-  m_Script: {fileID: 11500000, guid: 4afb7a0ecddbdea4f8a1a9a597e7c335, type: 3}
 --- !u!224 &2064727493 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224000013375698574, guid: 574c13a51598ce84e9935d97c9e0956b,
@@ -85343,7 +85266,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &2073744752
@@ -85591,7 +85514,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 26, y: -136.00003}
+  m_AnchoredPosition: {x: 26, y: -136}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &2076199979

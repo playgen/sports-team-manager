@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
 
@@ -8,8 +7,6 @@ using UnityEngine;
 /// </summary>
 public class PositionUI : MonoBehaviour
 {
-	private TeamSelectionUI _teamSelectionUI;
-	private PositionDisplayUI _positionUI;
 	private Position _position;
 	private CrewMemberUI _crewMemberUI;
 	public CrewMemberUI CrewMemberUI
@@ -32,9 +29,7 @@ public class PositionUI : MonoBehaviour
 	/// </summary>
 	public void SetUp(Position position)
 	{
-		_teamSelectionUI = transform.root.GetComponentsInChildren<TeamSelectionUI>(true).First();
 		_position = position;
-		_positionUI = transform.root.GetComponentsInChildren<PositionDisplayUI>(true).First();
 	}
 
 	/// <summary>
@@ -42,8 +37,8 @@ public class PositionUI : MonoBehaviour
 	/// </summary>
 	public void ShowPopUp()
 	{
-		_positionUI.SetUpDisplay(_position, TrackerTriggerSources.TeamManagementScreen.ToString());
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString());
+	    UIManagement.PositionDisplay.SetUpDisplay(_position, TrackerTriggerSources.TeamManagementScreen.ToString());
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString());
 	}
 
 	/// <summary>
@@ -59,9 +54,9 @@ public class PositionUI : MonoBehaviour
 			}
 			RemoveCrew();
 			_crewMemberUI = crewMember;
-			_teamSelectionUI.PositionChange(1);
+		    UIManagement.TeamSelection.PositionChange(1);
 		}
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString(), crewMember);
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString(), crewMember);
 	}
 
 	/// <summary>
@@ -71,7 +66,7 @@ public class PositionUI : MonoBehaviour
 	{
 		if (_crewMemberUI != null)
 		{
-			_teamSelectionUI.PositionChange(-1);
+		    UIManagement.TeamSelection.PositionChange(-1);
 			_crewMemberUI = null;
 		}
 	}

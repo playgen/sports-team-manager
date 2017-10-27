@@ -21,7 +21,6 @@ public class TutorialController : MonoBehaviour
 	private GameObject _tutorialQuitButton;
 	[SerializeField]
 	private GameObject _tutorialExitBlocker;
-	private static TutorialController _instance;
 
 	/// <summary>
 	/// Load and parse tutorial JSON, creating a new game object for each 
@@ -79,11 +78,6 @@ public class TutorialController : MonoBehaviour
 		}
 	}
 
-	private void Awake()
-	{
-		_instance = this;
-	}
-
 	private void Start()
 	{
 		gameObject.SetActive(GameManagement.ShowTutorial);
@@ -95,11 +89,11 @@ public class TutorialController : MonoBehaviour
 		_tutorialExitBlocker.SetActive(transform.childCount == GameManagement.TutorialStage + 1);
 	}
 
-	public static void ShareEvent(string typeName, string methodName, params object[] passed)
+	public void ShareEvent(string typeName, string methodName, params object[] passed)
 	{
 		if (GameManagement.ShowTutorial)
 		{
-			_instance.transform.GetChild(GameManagement.TutorialStage).GetComponent<TutorialSectionUI>().EventReceived(typeName, methodName, passed);
+			transform.GetChild(GameManagement.TutorialStage).GetComponent<TutorialSectionUI>().EventReceived(typeName, methodName, passed);
 		}
 	}
 

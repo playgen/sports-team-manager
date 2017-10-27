@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -20,8 +19,6 @@ using RAGE.Analytics.Formats;
 public class MemberMeetingUI : MonoBehaviour
 {
 	private CrewMember _currentMember;
-	private TeamSelectionUI _teamSelection;
-	private PositionDisplayUI _positionUI;
 	[SerializeField]
 	private AvatarDisplay _avatarDisplay;
 	[SerializeField]
@@ -56,8 +53,6 @@ public class MemberMeetingUI : MonoBehaviour
 	private Text _allowanceText;
 	private List<string> _lastReply;
 	[SerializeField]
-	private HoverPopUpUI _hoverPopUp;
-	[SerializeField]
 	private ScrollRect _crewContainer;
 
 	private void OnEnable()
@@ -74,7 +69,7 @@ public class MemberMeetingUI : MonoBehaviour
 		_fireWarningPopUp.SetActive(false);
 		Localization.LanguageChange -= OnLanguageChange;
 		BestFit.ResolutionChange -= DoBestFit;
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name);
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name);
 	}
 
 	/// <summary>
@@ -103,7 +98,7 @@ public class MemberMeetingUI : MonoBehaviour
 		gameObject.SetActive(true);
 		_fireWarningPopUp.SetActive(false);
 		//disable opinion images on CrewMember UI objects
-		foreach (var cmui in GameManagement.CrewMemberUI)
+		foreach (var cmui in UIManagement.CrewMemberUI)
 		{
 			if (cmui.Current)
 			{
@@ -135,11 +130,6 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void Display()
 	{
-		if (!_teamSelection)
-		{
-			_teamSelection = transform.root.GetComponentsInChildren<TeamSelectionUI>(true).First();
-			_positionUI = transform.root.GetComponentsInChildren<PositionDisplayUI>(true).First();
-		}
 		//ActionAllowance display
 		_allowanceBar.fillAmount = GameManagement.ActionAllowancePercentage;
 		_allowanceText.text = GameManagement.ActionAllowance.ToString();
@@ -155,9 +145,9 @@ public class MemberMeetingUI : MonoBehaviour
 		if (currentRole != Position.Null)
 		{
 			_roleButton.gameObject.SetActive(true);
-			_roleButton.onClick.AddListener(() => _positionUI.SetUpDisplay(currentRole, TrackerTriggerSources.TeamManagementScreen.ToString()));
+			_roleButton.onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentRole, TrackerTriggerSources.TeamManagementScreen.ToString()));
 			_roleButton.GetComponentInChildren<Text>().text = Localization.Get(currentRole.ToString(), true);
-			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = _teamSelection.RoleLogos.First(mo => mo.Name == currentRole.ToString()).Image;
+			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = UIManagement.TeamSelection.RoleLogos.First(mo => mo.Name == currentRole.ToString()).Image;
 		}
 		//hide if not positioned
 		else
@@ -221,7 +211,7 @@ public class MemberMeetingUI : MonoBehaviour
 			_closeText.text = Localization.Get("MEETING_EXIT");
 		}
 		//display revealed opinions for each other active CrewMember
-		foreach (var crewMember in GameManagement.CrewMemberUI)
+		foreach (var crewMember in UIManagement.CrewMemberUI)
 		{
 			if (crewMember.Current)
 			{
@@ -256,7 +246,7 @@ public class MemberMeetingUI : MonoBehaviour
 		Display();
 		var replyExtras = reply.Count > 0 ? reply.Where(r => r != reply.First()).Select(r => Localization.Get(r)).ToArray() : new string[0];
 		_dialogueText.text = reply.Count > 0 ? Localization.GetAndFormat(reply.First(), false, replyExtras) : string.Empty;
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		TrackerEventSender.SendEvent(new TraceEvent("MeetingQuestionAsked", TrackerVerbs.Selected, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.QuestionAsked.ToString(), questionType },
@@ -338,7 +328,7 @@ public class MemberMeetingUI : MonoBehaviour
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Fired", true);
 		GameManagement.GameManager.RetireCrewMember(_currentMember);
-		_teamSelection.ResetCrew();
+	    UIManagement.TeamSelection.ResetCrew();
 		CloseFireCrewWarning(string.Empty);
 		CloseCrewMemberPopUp(string.Empty);
 	}
@@ -356,7 +346,7 @@ public class MemberMeetingUI : MonoBehaviour
 				{ TrackerContextKeys.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
 			gameObject.SetActive(false);
-			foreach (var crewMember in GameManagement.CrewMemberUI)
+			foreach (var crewMember in UIManagement.CrewMemberUI)
 			{
 				if (crewMember.Current)
 				{
@@ -365,11 +355,7 @@ public class MemberMeetingUI : MonoBehaviour
 			}
 			_lastReply = null;
 		}
-		if (!_positionUI)
-		{
-			_positionUI = transform.root.GetComponentsInChildren<PositionDisplayUI>(true).First();
-		}
-		_positionUI.ChangeBlockerOrder();
+	    UIManagement.PositionDisplay.ChangeBlockerOrder();
 	}
 
 	/// <summary>
@@ -417,7 +403,7 @@ public class MemberMeetingUI : MonoBehaviour
 	private void FeedbackHoverOver(Transform feedback, string text)
 	{
 		feedback.GetComponent<HoverObject>().Enabled = true;
-		feedback.GetComponent<HoverObject>().SetHoverText(text, _hoverPopUp);
+		feedback.GetComponent<HoverObject>().SetHoverText(text);
 	}
 
 	private void DoBestFit()

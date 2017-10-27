@@ -39,7 +39,6 @@ public class TutorialSectionUI : MonoBehaviour
 			Value = v;
 		}
 	}
-	private TutorialController _tutorial;
 	[Header("UI")]
 	[SerializeField]
 	private List<LanguageKeyValuePair> _sectionTextHolder;
@@ -105,7 +104,6 @@ public class TutorialSectionUI : MonoBehaviour
 	/// </summary>
 	protected void OnEnable()
 	{
-		_tutorial = GetComponentInParent<TutorialController>();
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += SetUp;
 		_sectionText = new Dictionary<string, string[]>();
@@ -131,7 +129,7 @@ public class TutorialSectionUI : MonoBehaviour
 			}
 		}
 		var attributeDict = _customAttributes.Select(a => new KeyValuePair<string, string>(a.Split('=')[0], a.Split('=')[1])).ToDictionary(c => c.Key, c => c.Value);
-		_tutorial.CustomAttributes(attributeDict);
+		UIManagement.Tutorial.CustomAttributes(attributeDict);
 		Invoke("SetUp", 0f);
 	}
 
@@ -275,10 +273,6 @@ public class TutorialSectionUI : MonoBehaviour
 	/// </summary>
 	public void EventReceived(string typeName, string methodName, params object[] additional)
 	{
-		if (!_tutorial)
-		{
-			return;
-		}
 		foreach (var trigger in _triggers)
 		{
 			if (typeName == trigger.Key && methodName == trigger.Value)
@@ -308,7 +302,7 @@ public class TutorialSectionUI : MonoBehaviour
 				_eventTriggerCount++;
 				if (_eventTriggerCount >= _eventTriggerCountRequired)
 				{
-					_tutorial.AdvanceStage();
+				    UIManagement.Tutorial.AdvanceStage();
 
 				}
 			}

@@ -20,7 +20,6 @@ using RAGE.Analytics.Formats;
 /// </summary>
 public class RecruitMemberUI : MonoBehaviour
 {
-	private TeamSelectionUI _teamSelection;
 	[SerializeField]
 	private GameObject[] _recruitUI;
 	[SerializeField]
@@ -47,11 +46,6 @@ public class RecruitMemberUI : MonoBehaviour
 	private string _lastQuestion;
 	private Dictionary<CrewMember, string> _lastAnswers;
 	private string _currentSelected;
-
-	private void Start()
-	{
-		_teamSelection = transform.root.GetComponentsInChildren<TeamSelectionUI>(true).First();
-	}
 
 	private void OnEnable()
 	{
@@ -169,7 +163,7 @@ public class RecruitMemberUI : MonoBehaviour
 		}
 		DoBestFit();
 		CostCheck();
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -220,7 +214,7 @@ public class RecruitMemberUI : MonoBehaviour
 			{ TrackerContextKeys.RaceStartTalkTime.ToString(), GameManagement.StartingActionAllowance.ToString() },
 		}, skill.ToString(), AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill.ToString());
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill.ToString());
 	}
 
 	/// <summary>
@@ -312,7 +306,7 @@ public class RecruitMemberUI : MonoBehaviour
 	public void Recruit(CrewMember crewMember, string source)
 	{
 		GameManagement.GameManager.AddRecruit(crewMember);
-		_teamSelection.ResetCrew();
+	    UIManagement.TeamSelection.ResetCrew();
 		CloseRecruitmentPopUp(string.Empty);
 		CloseHireCrewWarning(string.Empty);
 		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberHired", TrackerVerbs.Interacted, new Dictionary<string, string>
@@ -323,7 +317,7 @@ public class RecruitMemberUI : MonoBehaviour
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Hired", true);
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -374,7 +368,7 @@ public class RecruitMemberUI : MonoBehaviour
 		for (var i = 0; i < _questionButtons.Length; i++)
 		{
 			var selected = skills[i];
-			_questionButtons[i].transform.Find("Text").GetComponent<Text>().text = ("Recruit" + selected).EventString(); ;
+			_questionButtons[i].transform.Find("Text").GetComponent<Text>().text = ("Recruit" + selected).EventString();
 		}
 		if (_lastAnswers != null)
 		{

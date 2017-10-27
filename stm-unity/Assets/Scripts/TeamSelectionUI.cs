@@ -44,7 +44,16 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private Icon[] _mistakeIcons;
 	[SerializeField]
 	private Icon[] _roleIcons;
-	public Icon[] RoleLogos;
+	public Icon[] RoleIcons
+	{
+		get { return _roleIcons; }
+	}
+	[SerializeField]
+	public Icon[] _roleLogos;
+	public Icon[] RoleLogos
+	{
+		get { return _roleLogos; }
+	}
 	[SerializeField]
 	private GameObject _crewPrefab;
 	[SerializeField]
@@ -63,15 +72,8 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private GameObject _resultPrefab;
 	[SerializeField]
 	private Text _finalPlacementText;
-	[SerializeField]
-	private GameObject _recruitPopUp;
 	private readonly List<GameObject> _currentCrewButtons = new List<GameObject>();
 	private readonly List<Button> _recruitButtons = new List<Button>();
-	private MemberMeetingUI _meetingUI;
-	private PositionDisplayUI _positionUI;
-	private RaceResultUI _raceResult;
-	private PreRaceConfirmUI _preRace;
-	private PostRaceEventUI[] _postRaceEvents;
 	private int _positionsEmpty;
 	[SerializeField]
 	private Button _popUpBlocker;
@@ -83,8 +85,6 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private Sprite _practiceIcon;
 	[SerializeField]
 	private Sprite _raceIcon;
-	[SerializeField]
-	private HoverPopUpUI _hoverPopUp;
 
 	/// <summary>
 	/// On enabling this object, ensure correct UI sections are displayed depending on progress
@@ -122,13 +122,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	private void Start()
 	{
-		_meetingUI = GetComponentsInChildren<MemberMeetingUI>(true).First();
-		_positionUI = GetComponentsInChildren<PositionDisplayUI>(true).First();
-		_raceResult = GetComponentsInChildren<RaceResultUI>(true).First();
-		_raceResult.SetRoleLogos(RoleLogos);
-		_preRace = GetComponentsInChildren<PreRaceConfirmUI>(true).First();
-		_postRaceEvents = transform.root.GetComponentsInChildren<PostRaceEventUI>(true);
-		_postRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
+		UIManagement.PostRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
 		ResetScrollbar();
 		CreateNewBoat();
 	}
@@ -189,14 +183,14 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	{
 		_raceButton.interactable = true;
 		_skipToRaceButton.interactable = true;
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	private void DisableRacing()
 	{
 		_raceButton.interactable = false;
 		_skipToRaceButton.interactable = false;
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -291,18 +285,18 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		//add click handler to raceButton according to session taking place
 		if (!GameManagement.IsRace)
 		{
-			_raceButton.onClick.AddListener(_preRace.ConfirmLineUpCheck);
+			_raceButton.onClick.AddListener(UIManagement.PreRace.ConfirmLineUpCheck);
 			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
 			_raceButton.GetComponentInChildren<Text>().fontSize = 16;
 		}
 		else
 		{
-			_raceButton.onClick.AddListener(_preRace.ConfirmPopUp);
+			_raceButton.onClick.AddListener(UIManagement.PreRace.ConfirmPopUp);
 			_raceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
 			_raceButton.GetComponentInChildren<Text>().fontSize = 20;
 		}
 		_raceButton.onClick.AddListener(() => Invoke("QuickClickDisable", 0.5f));
-		_skipToRaceButton.onClick.AddListener(_preRace.ConfirmPopUp);
+		_skipToRaceButton.onClick.AddListener(UIManagement.PreRace.ConfirmPopUp);
 		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
 		_skipToRaceButton.GetComponentInChildren<Text>().fontSize = 20;
 		var positionContainer = _boatMain.transform.Find("Position Container");
@@ -318,7 +312,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			positionObject.SetActive(true);
 			var pos = GameManagement.Positions[i];
 			positionObject.transform.Find("Name").GetComponent<Text>().text = Localization.Get(pos.ToString());
-			positionObject.transform.Find("Image").GetComponent<Image>().sprite = RoleLogos.First(mo => mo.Name == pos.ToString()).Image;
+			positionObject.transform.Find("Image").GetComponent<Image>().sprite = _roleLogos.First(mo => mo.Name == pos.ToString()).Image;
 			positionObject.GetComponent<PositionUI>().SetUp(pos);
 		}
 		_raceButton.gameObject.SetActive(GameManagement.SeasonOngoing);
@@ -374,7 +368,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			var recruit = Instantiate(_recruitPrefab);
 			recruit.transform.SetParent(_crewContainer.transform, false);
 			recruit.name = "zz Recruit";
-			recruit.GetComponent<Button>().onClick.AddListener(() => _recruitPopUp.SetActive(true));
+			recruit.GetComponent<Button>().onClick.AddListener(() => UIManagement.Recruitment.gameObject.SetActive(true));
 			_recruitButtons.Add(recruit.GetComponent<Button>());
 			sortedCrew.Add(recruit.transform);
 		}
@@ -395,7 +389,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		crewMember.transform.SetParent(parent, false);
 		crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(cm.Name, true);
 		crewMember.name = SplitName(cm.Name);
-		crewMember.GetComponent<CrewMemberUI>().SetUp(usable, current, cm, parent, _roleIcons);
+		crewMember.GetComponent<CrewMemberUI>().SetUp(usable, current, cm, parent);
 		crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(cm.Avatar, cm.GetMood(), true);
 		return crewMember;
 	}
@@ -450,7 +444,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			var current = GameManagement.CrewMembers.ContainsKey(pair.Value.Name);
 			crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(pair.Value.Name, true);
 			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, scoreDiff * (2f / boat.Positions.Count) + 3, true);
-			crewMember.GetComponent<CrewMemberUI>().SetUp(false, current, pair.Value, crewContainer, _roleIcons);
+			crewMember.GetComponent<CrewMemberUI>().SetUp(false, current, pair.Value, crewContainer);
 
 			var positionImage = crewMember.transform.Find("Position").gameObject;
 			//update current position button
@@ -458,7 +452,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == pair.Key.ToString()).Image;
 			positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 			var currentPosition = pair.Key;
-			positionImage.GetComponent<Button>().onClick.AddListener(() => _positionUI.SetUpDisplay(currentPosition, TrackerTriggerSources.TeamManagementScreen.ToString()));
+			positionImage.GetComponent<Button>().onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentPosition, TrackerTriggerSources.TeamManagementScreen.ToString()));
 			//if CrewMember has since retired, change color of the object
 			crewMember.transform.Find("Name").GetComponent<Text>().color = current ? UnityEngine.Color.white : UnityEngine.Color.grey;
 			crewCount++;
@@ -510,7 +504,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private void FeedbackHoverOver(Transform feedback, string text)
 	{
 		feedback.GetComponent<HoverObject>().Enabled = true;
-		feedback.GetComponent<HoverObject>().SetHoverText(text, _hoverPopUp);
+		feedback.GetComponent<HoverObject>().SetHoverText(text);
 	}
 
 	/// <summary>
@@ -603,7 +597,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		GetResult(GameManagement.CurrentRaceSession - 1 == 0, GameManagement.LineUpHistory.Last(), offset, _raceButton.GetComponentInChildren<Text>(), true);
 		//set-up next boat
 		CreateNewBoat();
-		TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
 	/// <summary>
@@ -663,7 +657,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		{
 			Destroy(b);
 		}
-		foreach (var crewMember in GameManagement.CrewMemberUI)
+		foreach (var crewMember in UIManagement.CrewMemberUI)
 		{
 			//destroy CrewMemberUI (making them unclickable) from those that are no longer in the currentCrew. Update avatar so they change into their causal outfit
 			if (GameManagement.CrewMembers.All(cm => cm.Key != crewMember.CrewMember.Name))
@@ -686,8 +680,8 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		CreateCrew();
 		RepeatLineUp();
 		//close any open pop-ups
-		_meetingUI.CloseCrewMemberPopUp(string.Empty);
-		_positionUI.ClosePositionPopUp(string.Empty);
+		UIManagement.MemberMeeting.CloseCrewMemberPopUp(string.Empty);
+		UIManagement.PositionDisplay.ClosePositionPopUp(string.Empty);
 		DoBestFit();
 	}
 
@@ -710,7 +704,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			scoreText.text = string.Format("{0} {1}", Localization.Get("RACE_POSITION"), finishPositionText);
 			if (current)
 			{
-				_raceResult.Display(boat.PositionCrew, finishPosition, finishPositionText.ToLower());
+				UIManagement.RaceResult.Display(boat.PositionCrew, finishPosition, finishPositionText.ToLower());
 			}
 		}
 		if (current)
@@ -797,7 +791,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private void DoBestFit()
 	{
 		_boatMain.transform.Find("Position Container").gameObject.BestFit();
-		GameManagement.CrewMemberUI.Select(c => c.gameObject).BestFit();
+		UIManagement.CrewMemberUI.Select(c => c.gameObject).BestFit();
 		var currentPosition = _boatContainer.transform.localPosition.y - ((RectTransform)_boatContainer.transform).anchoredPosition.y;
 		if (!Mathf.Approximately(_boatMain.GetComponent<LayoutElement>().preferredHeight, Mathf.Abs(currentPosition) * 0.2f))
 		{

@@ -191,6 +191,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\BoatPromotionUI.cs" />
+    <Compile Include="Assets\Scripts\CupResultUI.cs" />
+    <Compile Include="Assets\Scripts\PreRaceConfirmUI.cs" />
+    <Compile Include="Assets\Scripts\RaceResultUI.cs" />
+    <Compile Include="Assets\Scripts\UIManagement.cs" />
     <Compile Include="Assets\SUGAR\Scripts\AccountInterface.cs" />
     <Compile Include="Assets\SUGAR\Scripts\AchievementItemInterface.cs" />
     <Compile Include="Assets\SUGAR\Scripts\AchievementListInterface.cs" />

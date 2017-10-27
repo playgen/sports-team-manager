@@ -12,14 +12,8 @@ using UnityEngine.UI;
 
 public class BoatPromotionUI : MonoBehaviour
 {
-	private PostRaceEventUI[] _postRaceEvents;
 	[SerializeField]
 	private Button _popUpBlocker;
-
-	private void Start()
-	{
-		_postRaceEvents = transform.root.GetComponentsInChildren<PostRaceEventUI>(true);
-	}
 
 	private void OnEnable()
 	{
@@ -76,7 +70,7 @@ public class BoatPromotionUI : MonoBehaviour
 		{
 			gameObject.SetActive(false);
 			_popUpBlocker.gameObject.SetActive(false);
-			_postRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
+			UIManagement.PostRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
 			if (!string.IsNullOrEmpty(source))
 			{
 				var newString = GameManagement.PositionString;

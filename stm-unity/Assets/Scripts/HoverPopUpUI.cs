@@ -96,7 +96,7 @@ public class HoverPopUpUI : MonoBehaviour {
 			{
 				{ TrackerContextKeys.HoverKey.ToString(), _currentText }
 			}, AccessibleTracker.Accessible.Accessible));
-		    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentText);
+		    UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentText);
 		}
 	}
 
@@ -107,6 +107,6 @@ public class HoverPopUpUI : MonoBehaviour {
 	{
 		gameObject.SetActive(false);
 		_currentHovered = Vector2.zero;
-	    TutorialController.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+	    UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 }

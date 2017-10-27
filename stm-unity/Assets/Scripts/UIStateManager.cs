@@ -1,5 +1,4 @@
-﻿using System.IO;
-using PlayGen.SUGAR.Unity;
+﻿using PlayGen.SUGAR.Unity;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -43,6 +42,7 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	void Start()
 	{
+		UIManagement.Initialize();
 		AvatarDisplay.LoadSprites();
 		if (PlayerPrefs.HasKey("Music"))
 		{
