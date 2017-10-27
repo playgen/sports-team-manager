@@ -37,5 +37,6 @@ public enum TrackerContextKeys
 	SessionsIncludedCount,
 	SessionsSinceBoatLayoutChange,
 	SizeOfTeam,
-	TriggerUI
+	TriggerUI,
+	TutorialStage
 }

@@ -7,6 +7,8 @@ using PlayGen.SUGAR.Unity;
 using UnityEngine.UI.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 
+using RAGE.Analytics.Formats;
+
 /// <summary>
 /// Connecting class between GameManager in logic and the Tutorial Section UIs
 /// </summary>
@@ -121,6 +123,17 @@ public class TutorialController : MonoBehaviour
 	/// </summary>
 	public void QuitTutorial()
 	{
+        if (transform.childCount <= GameManagement.TutorialStage + 1)
+        {
+            TrackerEventSender.SendEvent(new TraceEvent("TutorialFinished", TrackerVerbs.Completed, new Dictionary<string, string>(), CompletableTracker.Completable.Completable));
+        }
+        else
+        {
+            TrackerEventSender.SendEvent(new TraceEvent("TutorialExited", TrackerVerbs.Skipped, new Dictionary<string, string>
+            {
+                { TrackerContextKeys.TutorialStage.ToString(), (GameManagement.TutorialStage + 1).ToString() },
+            }, CompletableTracker.Completable.Completable));
+        }
 		transform.GetChild(GameManagement.TutorialStage).gameObject.SetActive(false);
 		GameManagement.GameManager.SaveTutorialProgress(0, true);
 		gameObject.SetActive(false);
