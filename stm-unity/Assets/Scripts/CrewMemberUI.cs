@@ -22,12 +22,21 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	private Transform _defaultParent;
 	private PositionUI _currentPlacement;
 	private Vector2 _currentPositon;
+	private bool _usable;
+	private bool _current;
+
 	public CrewMember CrewMember
 	{
 		get { return _crewMember; }
 	}
-	public bool Usable;
-	public bool Current;
+	public bool Usable
+	{
+		get { return _usable; }
+	}
+	public bool Current
+	{
+		get { return _current; }
+	}
 
 	/// <summary>
 	/// Bring in elements that need to be known to this object
@@ -36,9 +45,14 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	{
 		_crewMember = crewMember;
 		_defaultParent = parent;
-		Usable = usable;
-		Current = current;
+		_usable = usable;
+		_current = current;
 		transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? UnityEngine.Color.white : UnityEngine.Color.grey;
+	}
+
+	public void NotCurrent()
+	{
+		_current = false;
 	}
 
 	/// <summary>

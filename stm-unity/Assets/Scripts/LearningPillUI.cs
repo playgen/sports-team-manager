@@ -17,8 +17,6 @@ public class LearningPillUI : MonoBehaviour {
 	private Text _helpText;
 	[SerializeField]
 	private Animation _popUpAnim;
-	[SerializeField]
-	private Button _popUpBlocker;
 	private string _currentHelp;
 	private List<string> _furtherHelp;
 
@@ -44,10 +42,7 @@ public class LearningPillUI : MonoBehaviour {
 		_furtherHelp = keys;
 		if (tip != null)
 		{
-			_popUpBlocker.transform.SetAsLastSibling();
-			transform.SetAsLastSibling();
-			_popUpBlocker.gameObject.SetActive(true);
-			_popUpBlocker.onClick.RemoveAllListeners();
+			transform.EnableBlocker();
 			StartCoroutine(Animate(true, further, Localization.Get(tip)));
 		}
 	}
@@ -67,14 +62,14 @@ public class LearningPillUI : MonoBehaviour {
 	{
 		if (gameObject.activeInHierarchy)
 		{
-			_popUpBlocker.onClick.RemoveAllListeners();
+		    UIManagement.Blocker.onClick.RemoveAllListeners();
 		}
 		if (_furtherHelp.Count == 0)
 		{
 			StartCoroutine(Animate());
-			_popUpBlocker.transform.SetAsLastSibling();
+		    UIManagement.Blocker.transform.SetAsLastSibling();
 			transform.SetAsLastSibling();
-			_popUpBlocker.gameObject.SetActive(false);
+		    UIManagement.Blocker.gameObject.SetActive(false);
 		}
 		if (_furtherHelp.Count > 0)
 		{
@@ -87,7 +82,7 @@ public class LearningPillUI : MonoBehaviour {
 			{
 				if (pre.gameObject.activeInHierarchy && !Mathf.Approximately(pre.GetComponent<CanvasGroup>().alpha, 0))
 				{
-					_popUpBlocker.gameObject.SetActive(true);
+				    UIManagement.Blocker.gameObject.SetActive(true);
 					pre.transform.parent.SetAsLastSibling();
 					pre.SetBlockerOnClick();
 					return;
@@ -128,7 +123,7 @@ public class LearningPillUI : MonoBehaviour {
 			{
 				{ TrackerContextKeys.LearningPillID.ToString(), _currentHelp },
 			}, AccessibleTracker.Accessible.Accessible));
-			_popUpBlocker.onClick.AddListener(() => ClosePill(TrackerTriggerSources.PopUpBlocker.ToString()));
+		    transform.EnableBlocker(() => ClosePill(TrackerTriggerSources.PopUpBlocker.ToString()));
 		}
 	}
 

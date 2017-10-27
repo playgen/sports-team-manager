@@ -13,8 +13,6 @@ public class CupResultUI : MonoBehaviour
 {
 	[SerializeField]
 	private GameObject _postRaceCrewPrefab;
-	[SerializeField]
-	private Button _popUpBlocker;
 	private int _cupPosition;
 
 	private void OnEnable()
@@ -36,10 +34,7 @@ public class CupResultUI : MonoBehaviour
 	public void Display()
 	{
 		gameObject.SetActive(true);
-		_popUpBlocker.transform.SetAsLastSibling();
-		transform.SetAsLastSibling();
-		_popUpBlocker.gameObject.SetActive(true);
-		_popUpBlocker.onClick.RemoveAllListeners();
+		transform.EnableBlocker();
 
 		foreach (Transform child in transform.Find("Crew"))
 		{
@@ -79,7 +74,7 @@ public class CupResultUI : MonoBehaviour
 		if (gameObject.activeInHierarchy)
 		{
 			gameObject.SetActive(false);
-			_popUpBlocker.gameObject.SetActive(false);
+		    UIManagement.Blocker.gameObject.SetActive(false);
 			TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.CupFinishingPosition.ToString(), _cupPosition.ToString() },

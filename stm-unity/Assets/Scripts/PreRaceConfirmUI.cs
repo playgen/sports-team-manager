@@ -12,9 +12,6 @@ using UnityEngine.UI;
 
 public class PreRaceConfirmUI : MonoBehaviour
 {
-	[SerializeField]
-	private Button _popUpBlocker;
-
 	private void OnEnable()
 	{
 		Localization.LanguageChange += OnLanguageChange;
@@ -73,11 +70,7 @@ public class PreRaceConfirmUI : MonoBehaviour
 		noButton.onClick.RemoveAllListeners();
 		noButton.onClick.AddListener(() => CloseConfirmPopUp(TrackerTriggerSources.NoButtonSelected.ToString()));
 		DoBestFit();
-		_popUpBlocker.transform.SetAsLastSibling();
-		transform.SetAsLastSibling();
-		_popUpBlocker.gameObject.SetActive(true);
-		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(() => CloseConfirmPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+	    transform.EnableBlocker(() => CloseConfirmPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 	}
 
 	/// <summary>
@@ -88,7 +81,7 @@ public class PreRaceConfirmUI : MonoBehaviour
 		if (gameObject.activeInHierarchy)
 		{
 			gameObject.SetActive(false);
-			_popUpBlocker.gameObject.SetActive(false);
+		    UIManagement.Blocker.gameObject.SetActive(false);
 			if (!string.IsNullOrEmpty(source))
 			{
 				if (!GameManagement.IsRace)
@@ -148,11 +141,7 @@ public class PreRaceConfirmUI : MonoBehaviour
 		noButton.onClick.RemoveAllListeners();
 		noButton.onClick.AddListener(() => CloseRepeatWarning(TrackerTriggerSources.NoButtonSelected.ToString()));
 		DoBestFit();
-		_popUpBlocker.transform.SetAsLastSibling();
-		transform.SetAsLastSibling();
-		_popUpBlocker.gameObject.SetActive(true);
-		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(() => CloseRepeatWarning(TrackerTriggerSources.PopUpBlocker.ToString()));
+	    transform.EnableBlocker(() => CloseRepeatWarning(TrackerTriggerSources.PopUpBlocker.ToString()));
 	}
 
 	/// <summary>
@@ -163,7 +152,7 @@ public class PreRaceConfirmUI : MonoBehaviour
 		if (gameObject.activeInHierarchy)
 		{
 			gameObject.SetActive(false);
-			_popUpBlocker.gameObject.SetActive(false);
+		    UIManagement.Blocker.gameObject.SetActive(false);
 			TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpDeclined", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.TriggerUI.ToString(), source }

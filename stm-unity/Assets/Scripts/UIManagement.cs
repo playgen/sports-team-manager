@@ -1,9 +1,13 @@
 ﻿using System.Linq;
 
+using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public static class UIManagement
 {
+    private static GameObject[] _rootObjects;
     private static PostRaceEventUI[] _postRaceEvents;
     private static MemberMeetingUI _memberMeeting;
     private static PositionDisplayUI _positionDisplay;
@@ -17,6 +21,9 @@ public static class UIManagement
     private static PreRaceConfirmUI _preRace;
     private static LearningPillUI _learningPill;
     private static HoverPopUpUI _hover;
+
+    private static Button _smallBlocker;
+    private static Button _blocker;
 
     public static PostRaceEventUI[] PostRaceEvents
     {
@@ -71,25 +78,62 @@ public static class UIManagement
         get { return _hover; }
     }
 
+    public static Button SmallBlocker
+    {
+        get { return _smallBlocker; }
+    }
+    public static Button Blocker
+    {
+        get { return _blocker; }
+    }
+
     public static void Initialize()
     {
-        _postRaceEvents = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<PostRaceEventUI>(true)).ToArray();
-        _memberMeeting = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<MemberMeetingUI>(true)).First();
-        _positionDisplay = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<PositionDisplayUI>(true)).First();
-        _tutorial = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<TutorialController>(true)).First();
-        _settings = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<SettingsUI>(true)).Last();
-        _recruitment = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<RecruitMemberUI>(true)).First();
-        _teamSelection = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<TeamSelectionUI>(true)).First();
-        _raceResult = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<RaceResultUI>(true)).First();
-        _cupResult = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<CupResultUI>(true)).First();
-        _promotion = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<BoatPromotionUI>(true)).First();
-        _preRace = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<PreRaceConfirmUI>(true)).First();
-        _learningPill = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<LearningPillUI>(true)).First();
-        _hover = SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<HoverPopUpUI>(true)).First();
+        _rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+        _postRaceEvents = _rootObjects.SelectMany(g => g.GetComponentsInChildren<PostRaceEventUI>(true)).ToArray();
+        _memberMeeting = _rootObjects.SelectMany(g => g.GetComponentsInChildren<MemberMeetingUI>(true)).First();
+        _positionDisplay = _rootObjects.SelectMany(g => g.GetComponentsInChildren<PositionDisplayUI>(true)).First();
+        _tutorial = _rootObjects.SelectMany(g => g.GetComponentsInChildren<TutorialController>(true)).First();
+        _settings = _rootObjects.SelectMany(g => g.GetComponentsInChildren<SettingsUI>(true)).Last();
+        _recruitment = _rootObjects.SelectMany(g => g.GetComponentsInChildren<RecruitMemberUI>(true)).First();
+        _teamSelection = _rootObjects.SelectMany(g => g.GetComponentsInChildren<TeamSelectionUI>(true)).First();
+        _raceResult = _rootObjects.SelectMany(g => g.GetComponentsInChildren<RaceResultUI>(true)).First();
+        _cupResult = _rootObjects.SelectMany(g => g.GetComponentsInChildren<CupResultUI>(true)).First();
+        _promotion = _rootObjects.SelectMany(g => g.GetComponentsInChildren<BoatPromotionUI>(true)).First();
+        _preRace = _rootObjects.SelectMany(g => g.GetComponentsInChildren<PreRaceConfirmUI>(true)).First();
+        _learningPill = _rootObjects.SelectMany(g => g.GetComponentsInChildren<LearningPillUI>(true)).First();
+        _hover = _rootObjects.SelectMany(g => g.GetComponentsInChildren<HoverPopUpUI>(true)).First();
+
+        _smallBlocker = _rootObjects.Single(g => g.name == "Canvas").transform.Find("Team Management/Pop-up Bounds/Blocker").GetComponent<Button>();
+        _blocker = _rootObjects.Single(g => g.name == "Canvas").transform.Find("Team Management/Pop-up Bounds/Bigger Blocker").GetComponent<Button>();
     }
 
     public static CrewMemberUI[] CrewMemberUI
     {
-        get { return SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<CrewMemberUI>()).ToArray(); }
+        get { return _rootObjects.SelectMany(g => g.GetComponentsInChildren<CrewMemberUI>()).ToArray(); }
+    }
+
+    public static void EnableSmallBlocker(this Transform obj, params UnityAction[] actions)
+    {
+        _smallBlocker.transform.SetAsLastSibling();
+        obj.SetAsLastSibling();
+        _smallBlocker.gameObject.SetActive(true);
+        _smallBlocker.onClick.RemoveAllListeners();
+        foreach (var action in actions)
+        {
+            _smallBlocker.onClick.AddListener(action);
+        }
+    }
+
+    public static void EnableBlocker(this Transform obj, params UnityAction[] actions)
+    {
+        _blocker.transform.SetAsLastSibling();
+        obj.SetAsLastSibling();
+        _blocker.gameObject.SetActive(true);
+        _blocker.onClick.RemoveAllListeners();
+        foreach (var action in actions)
+        {
+            _blocker.onClick.AddListener(action);
+        }
     }
 }

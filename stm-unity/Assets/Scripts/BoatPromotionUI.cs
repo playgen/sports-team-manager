@@ -12,9 +12,6 @@ using UnityEngine.UI;
 
 public class BoatPromotionUI : MonoBehaviour
 {
-	[SerializeField]
-	private Button _popUpBlocker;
-
 	private void OnEnable()
 	{
 		Localization.LanguageChange += OnLanguageChange;
@@ -40,11 +37,7 @@ public class BoatPromotionUI : MonoBehaviour
 	/// </summary>
 	public void Display(List<Position> oldPos, List<Position> newPos)
 	{
-		_popUpBlocker.transform.SetAsLastSibling();
-		transform.SetAsLastSibling();
-		_popUpBlocker.gameObject.SetActive(true);
-		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
+		transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
 
 		var addedText = transform.Find("Added List").GetComponent<Text>();
 		var removedText = transform.Find("Removed List").GetComponent<Text>();
@@ -69,7 +62,7 @@ public class BoatPromotionUI : MonoBehaviour
 		if (gameObject.activeInHierarchy)
 		{
 			gameObject.SetActive(false);
-			_popUpBlocker.gameObject.SetActive(false);
+		    UIManagement.Blocker.gameObject.SetActive(false);
 			UIManagement.PostRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
 			if (!string.IsNullOrEmpty(source))
 			{

@@ -13,29 +13,17 @@ public class AvatarDisplay : MonoBehaviour
 	private const float _maleOffsetPercent = 18f;
 	private static Dictionary<string, Sprite> avatarSprites;
 	private float _lastMood;
-	[SerializeField]
 	private Image _body;
-	[SerializeField]
 	private Image _hairBack;
-	[SerializeField]
 	private Image _hairFront;
-	[SerializeField]
 	private Image _eyebrow;
-	[SerializeField]
 	private Image _nose;
-	[SerializeField]
 	private Image _mouth;
-	[SerializeField]
 	private Image _teeth;
-	[SerializeField]
 	private Image _eyes;
-	[SerializeField]
 	private Image _outfit;
-	[SerializeField]
 	private Image _outfitHighlight;
-	[SerializeField]
 	private Image _outfitShadow;
-	[SerializeField]
 	private RectTransform _spriteParent;
 
 	/// <summary>
@@ -51,6 +39,21 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	public void SetAvatar(Avatar avatar, float mood, bool isIcon = false)
 	{
+		if (!_body)
+		{
+			_body = (transform.Find("IconMask/AvatarSprites/Body") ?? transform.Find("AvatarSprites/Body")).GetComponent<Image>();
+			_hairBack = (transform.Find("IconMask/AvatarSprites/HairBack") ?? transform.Find("AvatarSprites/HairBack")).GetComponent<Image>();
+			_hairFront = (transform.Find("IconMask/AvatarSprites/HairFront") ?? transform.Find("AvatarSprites/HairFront")).GetComponent<Image>();
+			_eyebrow = (transform.Find("IconMask/AvatarSprites/Eyebrows") ?? transform.Find("AvatarSprites/Eyebrows")).GetComponent<Image>();
+			_nose = (transform.Find("IconMask/AvatarSprites/Nose") ?? transform.Find("AvatarSprites/Nose")).GetComponent<Image>();
+			_mouth = (transform.Find("IconMask/AvatarSprites/Mouth") ?? transform.Find("AvatarSprites/Mouth")).GetComponent<Image>();
+			_teeth = (transform.Find("IconMask/AvatarSprites/Teeth") ?? transform.Find("AvatarSprites/Teeth")).GetComponent<Image>();
+			_eyes = (transform.Find("IconMask/AvatarSprites/Eyes") ?? transform.Find("AvatarSprites/Eyes")).GetComponent<Image>();
+			_outfit = (transform.Find("IconMask/AvatarSprites/Outfit") ?? transform.Find("AvatarSprites/Outfit")).GetComponent<Image>();
+			_outfitHighlight = (transform.Find("IconMask/AvatarSprites/OutfitHighlight") ?? transform.Find("AvatarSprites/OutfitHighlight")).GetComponent<Image>();
+			_outfitShadow = (transform.Find("IconMask/AvatarSprites/OutfitShadow") ?? transform.Find("AvatarSprites/OutfitShadow")).GetComponent<Image>();
+			_spriteParent = (RectTransform)transform.Find("IconMask/AvatarSprites");
+		}
 		_body.sprite = avatarSprites[avatar.BodyType.ToLower()];
 		_outfit.sprite = avatarSprites[avatar.OutfitBaseType.ToLower()];
 		if (avatarSprites.ContainsKey(avatar.OutfitHighlightType.ToLower()))

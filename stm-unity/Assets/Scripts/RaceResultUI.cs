@@ -15,8 +15,6 @@ public class RaceResultUI : MonoBehaviour
 {
 	[SerializeField]
 	private GameObject _postRaceCrewPrefab;
-	[SerializeField]
-	private Button _popUpBlocker;
 	private Dictionary<Position, CrewMember> _lastRacePositions;
 	private int _lastRaceFinishPosition;
 	private string _lastRaceFinishPositionText;
@@ -41,14 +39,10 @@ public class RaceResultUI : MonoBehaviour
 	/// </summary>
 	public void Display(Dictionary<Position, CrewMember> currentPositions, int finishPosition, string finishPositionText)
 	{
-	    UIManagement.MemberMeeting.CloseCrewMemberPopUp(string.Empty);
-	    UIManagement.PositionDisplay.ClosePositionPopUp(string.Empty);
+		UIManagement.MemberMeeting.CloseCrewMemberPopUp(string.Empty);
+		UIManagement.PositionDisplay.ClosePositionPopUp(string.Empty);
 		gameObject.SetActive(true);
-		_popUpBlocker.transform.SetAsLastSibling();
-		transform.SetAsLastSibling();
-		_popUpBlocker.gameObject.SetActive(true);
-		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
+		transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
 		_lastRacePositions = new Dictionary<Position, CrewMember>(currentPositions);
 		_lastRaceFinishPosition = finishPosition;
 		_lastRaceFinishPositionText = finishPositionText;
@@ -90,7 +84,7 @@ public class RaceResultUI : MonoBehaviour
 		if (gameObject.activeInHierarchy)
 		{
 			gameObject.SetActive(false);
-			_popUpBlocker.gameObject.SetActive(false);
+			UIManagement.Blocker.gameObject.SetActive(false);
 			TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.FinishingPosition.ToString(), _lastRaceFinishPosition.ToString() },
@@ -98,11 +92,11 @@ public class RaceResultUI : MonoBehaviour
 			}, AccessibleTracker.Accessible.Screen));
 			if (!GameManagement.SeasonOngoing)
 			{
-			    UIManagement.CupResult.Display();
+				UIManagement.CupResult.Display();
 			}
 			else
 			{
-			    UIManagement.Promotion.gameObject.SetActive(true);
+				UIManagement.Promotion.gameObject.SetActive(true);
 			}
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}

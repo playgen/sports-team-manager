@@ -27,8 +27,6 @@ public class RecruitMemberUI : MonoBehaviour
 	[SerializeField]
 	private Text _dialogueText;
 	[SerializeField]
-	private Button _popUpBlocker;
-	[SerializeField]
 	private Text _hireWarningText;
 	[SerializeField]
 	private GameObject _hireWarningPopUp;
@@ -62,19 +60,15 @@ public class RecruitMemberUI : MonoBehaviour
 		_lastQuestion = null;
 		_lastAnswers = null;
 		ResetDisplay();
-		_popUpBlocker.transform.SetAsLastSibling();
-		transform.SetAsLastSibling();
-		_popUpBlocker.gameObject.SetActive(true);
-		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(() => CloseRecruitmentPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+		transform.EnableBlocker(() => CloseRecruitmentPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
 	}
 
 	private void OnDisable()
 	{
-		_popUpBlocker.gameObject.SetActive(false);
-		_popUpBlocker.transform.SetAsFirstSibling();
+	    UIManagement.Blocker.gameObject.SetActive(false);
+	    UIManagement.Blocker.transform.SetAsFirstSibling();
 		transform.SetAsFirstSibling();
 		Localization.LanguageChange -= OnLanguageChange;
 		BestFit.ResolutionChange -= DoBestFit;
@@ -233,12 +227,7 @@ public class RecruitMemberUI : MonoBehaviour
 		_currentSelected = recruit.Name;
 		//pop-up and blocker reordering
 		_hireWarningPopUp.SetActive(true);
-		_popUpBlocker.transform.SetAsLastSibling();
-		_hireWarningPopUp.transform.SetAsLastSibling();
-		_popUpBlocker.gameObject.SetActive(true);
-		//update of blocker click handling
-		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(() => CloseHireCrewWarning(TrackerTriggerSources.PopUpBlocker.ToString()));
+		_hireWarningPopUp.transform.EnableBlocker(() => CloseHireCrewWarning(TrackerTriggerSources.PopUpBlocker.ToString()));
 		//adjust text, button text and button positioning based on context
 		if (!ConfigKeys.RecruitmentCost.Affordable())
 		{
@@ -281,14 +270,11 @@ public class RecruitMemberUI : MonoBehaviour
 		_hireWarningPopUp.SetActive(false);
 		if (gameObject.activeInHierarchy)
 		{
-			_popUpBlocker.transform.SetAsLastSibling();
-			transform.SetAsLastSibling();
-			_popUpBlocker.onClick.RemoveAllListeners();
-			_popUpBlocker.onClick.AddListener(() => CloseRecruitmentPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+			transform.EnableBlocker(() => CloseRecruitmentPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 		}
 		else
 		{
-			_popUpBlocker.gameObject.SetActive(false);
+		    UIManagement.Blocker.gameObject.SetActive(false);
 		}
 		TrackerEventSender.SendEvent(new TraceEvent("HirePopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 		{
@@ -306,7 +292,7 @@ public class RecruitMemberUI : MonoBehaviour
 	public void Recruit(CrewMember crewMember, string source)
 	{
 		GameManagement.GameManager.AddRecruit(crewMember);
-	    UIManagement.TeamSelection.ResetCrew();
+		UIManagement.TeamSelection.ResetCrew();
 		CloseRecruitmentPopUp(string.Empty);
 		CloseHireCrewWarning(string.Empty);
 		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberHired", TrackerVerbs.Interacted, new Dictionary<string, string>

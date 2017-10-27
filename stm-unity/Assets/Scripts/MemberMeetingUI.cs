@@ -46,8 +46,6 @@ public class MemberMeetingUI : MonoBehaviour
 	[SerializeField]
 	private Button _fireButton;
 	[SerializeField]
-	private Button _popUpBlocker;
-	[SerializeField]
 	private Image _allowanceBar;
 	[SerializeField]
 	private Text _allowanceText;
@@ -118,11 +116,7 @@ public class MemberMeetingUI : MonoBehaviour
 		SUGARManager.GameData.Send("View Crew Member Screen", crewMember.Name);
 		Display();
 		//set the order of the pop-ups and pop-up blockers and set-up the click event for the blocker
-		_popUpBlocker.transform.SetAsLastSibling();
-		transform.SetAsLastSibling();
-		_popUpBlocker.gameObject.SetActive(true);
-		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(() => CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+		transform.EnableSmallBlocker(() => CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 	}
 
 	/// <summary>
@@ -279,11 +273,7 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(_currentMember.Name) },
 		}, AccessibleTracker.Accessible.Screen));
 		_fireWarningPopUp.SetActive(true);
-		_popUpBlocker.transform.SetAsLastSibling();
-		_fireWarningPopUp.transform.SetAsLastSibling();
-		_popUpBlocker.gameObject.SetActive(true);
-		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(() => CloseFireCrewWarning(TrackerTriggerSources.PopUpBlocker.ToString()));
+		_fireWarningPopUp.transform.EnableSmallBlocker(() => CloseFireCrewWarning(TrackerTriggerSources.PopUpBlocker.ToString()));
 		DoBestFit();
 	}
 
@@ -300,14 +290,11 @@ public class MemberMeetingUI : MonoBehaviour
 		_fireWarningPopUp.SetActive(false);
 		if (gameObject.activeInHierarchy)
 		{
-			_popUpBlocker.transform.SetAsLastSibling();
-			transform.SetAsLastSibling();
-			_popUpBlocker.onClick.RemoveAllListeners();
-			_popUpBlocker.onClick.AddListener(() => CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+			transform.EnableBlocker(() => CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 		}
 		else
 		{
-			_popUpBlocker.gameObject.SetActive(false);
+		    UIManagement.SmallBlocker.gameObject.SetActive(false);
 		}
 	}
 
@@ -328,7 +315,7 @@ public class MemberMeetingUI : MonoBehaviour
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Fired", true);
 		GameManagement.GameManager.RetireCrewMember(_currentMember);
-	    UIManagement.TeamSelection.ResetCrew();
+		UIManagement.TeamSelection.ResetCrew();
 		CloseFireCrewWarning(string.Empty);
 		CloseCrewMemberPopUp(string.Empty);
 	}
@@ -355,7 +342,7 @@ public class MemberMeetingUI : MonoBehaviour
 			}
 			_lastReply = null;
 		}
-	    UIManagement.PositionDisplay.ChangeBlockerOrder();
+		UIManagement.PositionDisplay.ChangeBlockerOrder();
 	}
 
 	/// <summary>

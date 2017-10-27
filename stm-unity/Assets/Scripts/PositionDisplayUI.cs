@@ -18,8 +18,6 @@ using RAGE.Analytics.Formats;
 public class PositionDisplayUI : MonoBehaviour
 {
 	[SerializeField]
-	private Button _popUpBlocker;
-	[SerializeField]
 	private Text[] _textList;
 	[SerializeField]
 	private Image[] _skillImages;
@@ -118,11 +116,7 @@ public class PositionDisplayUI : MonoBehaviour
 		}, AccessibleTracker.Accessible.Screen));
 		SUGARManager.GameData.Send("View Position Screen", position.ToString());
 		gameObject.SetActive(true);
-		_popUpBlocker.transform.SetAsLastSibling();
-		gameObject.transform.SetAsLastSibling();
-		_popUpBlocker.gameObject.SetActive(true);
-		_popUpBlocker.onClick.RemoveAllListeners();
-		_popUpBlocker.onClick.AddListener(() => ClosePositionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+		transform.EnableSmallBlocker(() => ClosePositionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 		Display(position);
 	}
 
@@ -226,14 +220,11 @@ public class PositionDisplayUI : MonoBehaviour
 			gameObject.SetActive(false);
 			if (UIManagement.MemberMeeting.gameObject.activeInHierarchy)
 			{
-				_popUpBlocker.transform.SetAsLastSibling();
-			    UIManagement.MemberMeeting.gameObject.transform.SetAsLastSibling();
-				_popUpBlocker.onClick.RemoveAllListeners();
-				_popUpBlocker.onClick.AddListener(() => UIManagement.MemberMeeting.CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+				UIManagement.MemberMeeting.gameObject.transform.EnableSmallBlocker(() => UIManagement.MemberMeeting.CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 			}
 			else
 			{
-				_popUpBlocker.gameObject.SetActive(false);
+				UIManagement.SmallBlocker.gameObject.SetActive(false);
 			}
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
@@ -246,14 +237,11 @@ public class PositionDisplayUI : MonoBehaviour
 	{
 		if (gameObject.activeInHierarchy)
 		{
-			_popUpBlocker.transform.SetAsLastSibling();
-			gameObject.transform.SetAsLastSibling();
-			_popUpBlocker.onClick.RemoveAllListeners();
-			_popUpBlocker.onClick.AddListener(() => ClosePositionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+			transform.EnableSmallBlocker(() => ClosePositionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 		}
 		else if (!transform.parent.GetChild(transform.parent.childCount - 1).gameObject.activeInHierarchy)
 		{
-			_popUpBlocker.gameObject.SetActive(false);
+			UIManagement.SmallBlocker.gameObject.SetActive(false);
 		}
 	}
 

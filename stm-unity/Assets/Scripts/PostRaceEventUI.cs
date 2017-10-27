@@ -18,8 +18,6 @@ public class PostRaceEventUI : MonoBehaviour
 {
 	[SerializeField]
 	private GameObject _closeButton;
-	[SerializeField]
-	private Button _popUpBlocker;
 	private PostRacePersonUI[] _postRacePeople;
 	private Dictionary<CrewMember, PostRaceEventState> _selectedResponses;
 	private List<string> _lastStates;
@@ -36,10 +34,7 @@ public class PostRaceEventUI : MonoBehaviour
 			Localization.LanguageChange += OnLanguageChange;
 			BestFit.ResolutionChange += DoBestFit;
 			//reorder pop-ups and blockers
-			_popUpBlocker.transform.SetAsLastSibling();
-			transform.parent.SetAsLastSibling();
-			_popUpBlocker.gameObject.SetActive(true);
-			_popUpBlocker.onClick.RemoveAllListeners();
+			transform.EnableBlocker();
 			ResetDisplay();
 		}
 		else
@@ -61,10 +56,7 @@ public class PostRaceEventUI : MonoBehaviour
 			}
 			if (transform.parent.GetSiblingIndex() == transform.parent.parent.childCount - 1)
 			{
-				_popUpBlocker.transform.SetAsLastSibling();
-				transform.parent.SetAsLastSibling();
-				_popUpBlocker.onClick.RemoveAllListeners();
-				_popUpBlocker.gameObject.SetActive(false);
+				UIManagement.Blocker.gameObject.SetActive(false);
 			}
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
@@ -163,7 +155,7 @@ public class PostRaceEventUI : MonoBehaviour
 			}
 			else
 			{
-				_popUpBlocker.onClick.RemoveAllListeners();
+				UIManagement.Blocker.onClick.RemoveAllListeners();
 			}
 			DoBestFit();
 		}
@@ -262,10 +254,7 @@ public class PostRaceEventUI : MonoBehaviour
 		if (_postRacePeople.All(prp => prp.ActiveQuestions() == false))
 		{
 			_closeButton.SetActive(true);
-			_popUpBlocker.onClick.AddListener(GetLearningPill);
-			_popUpBlocker.onClick.AddListener(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
-			_popUpBlocker.onClick.AddListener(UIManagement.TeamSelection.ResetCrew);
-			_popUpBlocker.onClick.AddListener(SendLearningPill);
+			transform.EnableBlocker(GetLearningPill, () => Close(TrackerTriggerSources.PopUpBlocker.ToString()), UIManagement.TeamSelection.ResetCrew, SendLearningPill);
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
 	}

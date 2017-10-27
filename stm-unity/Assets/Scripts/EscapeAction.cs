@@ -61,15 +61,6 @@ public class EscapeAction : MonoBehaviour {
 					return;
 				}
 			}
-			//if the cup result pop-up is open and the current top pop-up, close this pop-up
-			if (UIManagement.CupResult.gameObject.activeInHierarchy)
-			{
-				if (UIManagement.CupResult.transform.GetSiblingIndex() == UIManagement.CupResult.transform.parent.childCount - 1)
-				{
-				    UIManagement.CupResult.Close(TrackerTriggerSources.EscapeKey.ToString());
-					return;
-				}
-			}
 			//if the boat promotion pop-up is open and the current top pop-up, close this pop-up
 			if (UIManagement.Promotion.gameObject.activeInHierarchy)
 			{

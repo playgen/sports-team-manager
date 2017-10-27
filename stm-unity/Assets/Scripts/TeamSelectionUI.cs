@@ -76,10 +76,6 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private readonly List<Button> _recruitButtons = new List<Button>();
 	private int _positionsEmpty;
 	[SerializeField]
-	private Button _popUpBlocker;
-	[SerializeField]
-	private Button _smallerPopUpBlocker;
-	[SerializeField]
 	private Button _quitBlocker;
 	[SerializeField]
 	private Sprite _practiceIcon;
@@ -520,7 +516,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	public void OnScroll(PointerEventData eventData)
 	{
-		if (!_popUpBlocker.gameObject.activeInHierarchy && !_smallerPopUpBlocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy)
+		if (!UIManagement.SmallBlocker.gameObject.activeInHierarchy && !UIManagement.Blocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy)
 		{
 			_boatContainerScroll.value += eventData.scrollDelta.y * 0.55f * _boatContainerScroll.size;
 		}
@@ -531,7 +527,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	public void OnDrag(PointerEventData eventData)
 	{
-		if (!_popUpBlocker.gameObject.activeInHierarchy && !_smallerPopUpBlocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy)
+		if (!UIManagement.SmallBlocker.gameObject.activeInHierarchy && !UIManagement.Blocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy)
 		{
 			_boatContainerScroll.value -= Mathf.Clamp(eventData.delta.y * 0.1f, -1, 1) * _boatContainerScroll.size;
 		}
@@ -663,7 +659,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			if (GameManagement.CrewMembers.All(cm => cm.Key != crewMember.CrewMember.Name))
 			{
 				crewMember.GetComponentInChildren<AvatarDisplay>().UpdateAvatar(crewMember.CrewMember.Avatar, true);
-				crewMember.Current = false;
+				crewMember.NotCurrent();
 				crewMember.transform.Find("Name").GetComponent<Text>().color = UnityEngine.Color.grey;
 			}
 		}
