@@ -1,12 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
-using PlayGen.RAGE.SportsTeamManager.Simulation;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
-
 using RAGE.Analytics.Formats;
-
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,14 +12,6 @@ public class BoatPromotionUI : MonoBehaviour
 	{
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
-		if (!GameManagement.ShowTutorial && GameManagement.SeasonOngoing && GameManagement.Boat.Type != GameManagement.LineUpHistory.Last().Type)
-		{
-			Display(GameManagement.LineUpHistory.Last().Positions, GameManagement.Positions);
-		}
-		else
-		{
-			Close(string.Empty);
-		}
 	}
 
 	private void OnDisable()
@@ -35,23 +23,28 @@ public class BoatPromotionUI : MonoBehaviour
 	/// <summary>
 	/// Display pop-up which shows the boat promotion
 	/// </summary>
-	public void Display(List<Position> oldPos, List<Position> newPos)
+	public void Display()
 	{
-		transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
-
-		var addedText = transform.Find("Added List").GetComponent<Text>();
-		var removedText = transform.Find("Removed List").GetComponent<Text>();
-		var newPositions = newPos.Where(n => !oldPos.Contains(n)).Select(n => Localization.Get(n.ToString())).ToArray();
-		var oldPositions = oldPos.Where(o => !newPos.Contains(o)).Select(o => Localization.Get(o.ToString())).ToArray();
-		var newList = string.Join("\n", newPositions);
-		var oldList = string.Join("\n", oldPositions);
-		addedText.text = newList;
-		removedText.text = oldList;
-		var newString = string.Join(",", newPos.Select(pos => pos.ToString()).ToArray());
-		TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
+		if (!GameManagement.ShowTutorial && GameManagement.SeasonOngoing && GameManagement.Boat.Type != GameManagement.LineUpHistory.Last().Type)
 		{
-			{ TrackerContextKeys.BoatLayout.ToString(), newString },
-		}, AccessibleTracker.Accessible.Screen));
+			var oldPos = GameManagement.LineUpHistory.Last().Positions;
+			var newPos = GameManagement.Positions;
+			gameObject.SetActive(true);
+			transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
+			var addedText = transform.Find("Added List").GetComponent<Text>();
+			var removedText = transform.Find("Removed List").GetComponent<Text>();
+			var newPositions = newPos.Where(n => !oldPos.Contains(n)).Select(n => Localization.Get(n.ToString())).ToArray();
+			var oldPositions = oldPos.Where(o => !newPos.Contains(o)).Select(o => Localization.Get(o.ToString())).ToArray();
+			var newList = string.Join("\n", newPositions);
+			var oldList = string.Join("\n", oldPositions);
+			addedText.text = newList;
+			removedText.text = oldList;
+			var newString = string.Join(",", newPos.Select(pos => pos.ToString()).ToArray());
+			TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
+			{
+				{ TrackerContextKeys.BoatLayout.ToString(), newString },
+			}, AccessibleTracker.Accessible.Screen));
+		}
 	}
 
 	/// <summary>
@@ -62,7 +55,7 @@ public class BoatPromotionUI : MonoBehaviour
 		if (gameObject.activeInHierarchy)
 		{
 			gameObject.SetActive(false);
-		    UIManagement.Blocker.gameObject.SetActive(false);
+			UIManagement.Blocker.gameObject.SetActive(false);
 			UIManagement.PostRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
 			if (!string.IsNullOrEmpty(source))
 			{
@@ -81,7 +74,7 @@ public class BoatPromotionUI : MonoBehaviour
 	/// </summary>
 	private void OnLanguageChange()
 	{
-		Display(GameManagement.LineUpHistory.Last().Positions, GameManagement.Positions);	
+		Display();	
 		DoBestFit();
 	}
 

@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,7 +11,6 @@ using UnityEngine.UI;
 using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
-
 using RAGE.Analytics.Formats;
 
 /// <summary>

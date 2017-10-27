@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using PlayGen.SUGAR.Unity;
-
 using RAGE.Analytics;
 using RAGE.Analytics.Formats;
-
 using UnityEngine;
 
 public class TraceEvent

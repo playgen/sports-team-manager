@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
-
 using RAGE.Analytics.Formats;
-
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +16,6 @@ public class CupResultUI : MonoBehaviour
 	{
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
-		_cupPosition = 0;
 	}
 
 	private void OnDisable()
@@ -33,6 +29,7 @@ public class CupResultUI : MonoBehaviour
 	/// </summary>
 	public void Display()
 	{
+		_cupPosition = 0;
 		gameObject.SetActive(true);
 		transform.EnableBlocker();
 
@@ -74,7 +71,7 @@ public class CupResultUI : MonoBehaviour
 		if (gameObject.activeInHierarchy)
 		{
 			gameObject.SetActive(false);
-		    UIManagement.Blocker.gameObject.SetActive(false);
+			UIManagement.Blocker.gameObject.SetActive(false);
 			TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.CupFinishingPosition.ToString(), _cupPosition.ToString() },

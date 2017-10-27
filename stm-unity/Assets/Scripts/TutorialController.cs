@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
-
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using SimpleJSON;
 using UnityEngine;
 using System.Linq;
-
 using PlayGen.SUGAR.Unity;
-
 using UnityEngine.UI.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 

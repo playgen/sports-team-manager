@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
-
 using RAGE.Analytics.Formats;
-
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -96,7 +93,7 @@ public class RaceResultUI : MonoBehaviour
 			}
 			else
 			{
-				UIManagement.Promotion.gameObject.SetActive(true);
+				UIManagement.Promotion.Display();
 			}
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}

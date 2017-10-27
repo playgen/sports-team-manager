@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 using PlayGen.RAGE.SportsTeamManager.Simulation;
-
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.SUGAR.Unity;

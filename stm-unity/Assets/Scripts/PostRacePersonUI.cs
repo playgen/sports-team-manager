@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-
 using IntegratedAuthoringTool.DTOs;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.UI;

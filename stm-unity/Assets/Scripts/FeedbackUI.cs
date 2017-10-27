@@ -1,13 +1,10 @@
 ﻿using System;
-
 using PlayGen.Unity.Utilities.Localization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-
 using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.BestFit;
-
 using UnityEngine;
 using UnityEngine.UI;
 

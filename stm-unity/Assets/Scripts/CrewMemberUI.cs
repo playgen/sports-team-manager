@@ -5,9 +5,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 using PlayGen.SUGAR.Unity;
-
 using RAGE.Analytics.Formats;
 
 /// <summary>

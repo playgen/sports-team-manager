@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-
 using UnityEngine;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
-
 using PlayGen.SUGAR.Unity;
-
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
-
 using RAGE.Analytics.Formats;
 
 /// <summary>

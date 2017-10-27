@@ -1,5 +1,4 @@
 ﻿using PlayGen.SUGAR.Unity;
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;

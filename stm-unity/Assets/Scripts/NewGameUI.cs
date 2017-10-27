@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
-
 using RAGE.Analytics.Formats;
 
 /// <summary>
