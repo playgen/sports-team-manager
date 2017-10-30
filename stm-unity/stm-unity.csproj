@@ -193,6 +193,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\BoatPromotionUI.cs" />
     <Compile Include="Assets\Scripts\CupResultUI.cs" />
+    <Compile Include="Assets\Scripts\PostRaceEventImpactUI.cs" />
     <Compile Include="Assets\Scripts\PreRaceConfirmUI.cs" />
     <Compile Include="Assets\Scripts\RaceResultUI.cs" />
     <Compile Include="Assets\Scripts\UIManagement.cs" />

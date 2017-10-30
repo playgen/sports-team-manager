@@ -104,6 +104,15 @@ public class PostRacePersonUI : MonoBehaviour
 			subjects = subjects.Select(s => Localization.HasKey(s) ? Localization.Get(s) : Regex.Replace(s, @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0")).ToList();
 			_dialogueText.text = Localization.GetAndFormat(response.Utterance, false, subjects.ToArray());
 			_lastState = response.CurrentState;
+			if (response.Style.Length > 0)
+			{
+				foreach (var style in response.Style)
+				{
+					var impactSubjects = new List<string>(subjects);
+					impactSubjects.Insert(0, _currentCrewMember.Name);
+					UIManagement.EventImpact.AddImpact(style, impactSubjects);
+				}
+			}
 		}
 	}
 

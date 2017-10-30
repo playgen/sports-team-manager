@@ -60,14 +60,14 @@ public class LearningPillUI : MonoBehaviour {
 	{
 		if (gameObject.activeInHierarchy)
 		{
-		    UIManagement.Blocker.onClick.RemoveAllListeners();
+			UIManagement.Blocker.onClick.RemoveAllListeners();
 		}
 		if (_furtherHelp.Count == 0)
 		{
 			StartCoroutine(Animate());
-		    UIManagement.Blocker.transform.SetAsLastSibling();
+			UIManagement.Blocker.transform.SetAsLastSibling();
 			transform.SetAsLastSibling();
-		    UIManagement.Blocker.gameObject.SetActive(false);
+			UIManagement.Blocker.gameObject.SetActive(false);
 		}
 		if (_furtherHelp.Count > 0)
 		{
@@ -76,16 +76,7 @@ public class LearningPillUI : MonoBehaviour {
 		}
 		else
 		{
-			foreach (var pre in UIManagement.PostRaceEvents)
-			{
-				if (pre.gameObject.activeInHierarchy && !Mathf.Approximately(pre.GetComponent<CanvasGroup>().alpha, 0))
-				{
-				    UIManagement.Blocker.gameObject.SetActive(true);
-					pre.transform.parent.SetAsLastSibling();
-					pre.SetBlockerOnClick();
-					return;
-				}
-			}
+			UIManagement.EventImpact.Display();
 		}
 		TrackerEventSender.SendEvent(new TraceEvent("LearningPillClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 		{
@@ -121,7 +112,7 @@ public class LearningPillUI : MonoBehaviour {
 			{
 				{ TrackerContextKeys.LearningPillID.ToString(), _currentHelp },
 			}, AccessibleTracker.Accessible.Accessible));
-		    transform.EnableBlocker(() => ClosePill(TrackerTriggerSources.PopUpBlocker.ToString()));
+			transform.EnableBlocker(() => ClosePill(TrackerTriggerSources.PopUpBlocker.ToString()));
 		}
 	}
 

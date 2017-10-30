@@ -89,10 +89,6 @@ public class PostRaceEventUI : MonoBehaviour
 				{ TrackerContextKeys.EventID.ToString(), GameManagement.GameManager.GetPostRaceEventKeys().First(_lastStates[0].StartsWith) },
 			}, AccessibleTracker.Accessible.Screen));
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
-			foreach (Transform child in transform.parent)
-			{
-				child.gameObject.SetActive(true);
-			}
 		}
 	}
 

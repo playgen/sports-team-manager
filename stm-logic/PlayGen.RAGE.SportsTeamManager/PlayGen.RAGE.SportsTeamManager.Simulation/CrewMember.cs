@@ -560,121 +560,124 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				eventString = string.Format(ev);
 			}
 			RolePlayCharacter.Perceive(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
-			//trigger different changes based off of what dialogue the player last picked
-			switch (ev)
+			if (Enum.IsDefined(typeof(PostRaceEventImpact), ev))
 			{
-				case "ExpectedPosition":
-					AddOrUpdateOpinion(team.Manager.Name, 1);
-					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), subjects[0]);
-					break;
-				case "ExpectedPositionAfter":
-					AddOrUpdateOpinion(team.Manager.Name, 1);
-					UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), subjects[0]);
-					break;
-				case "ManagerOpinionWorse":
-					AddOrUpdateOpinion(team.Manager.Name, -1);
-					break;
-				case "ManagerOpinionAllCrewWorse":
-					foreach (var cm in team.CrewMembers)
-					{
-						cm.Value.AddOrUpdateOpinion(team.Manager.Name, -2);
-						cm.Value.SaveStatus();
-					}
-					break;
-				case "ManagerOpinionBetter":
-					AddOrUpdateOpinion(team.Manager.Name, 1);
-					break;
-				case "ManagerOpinionAllCrewBetter":
-					foreach (var cm in team.CrewMembers)
-					{
-						cm.Value.AddOrUpdateOpinion(team.Manager.Name, 2);
-						cm.Value.SaveStatus();
-					}
-					break;
-				case "ManagerOpinionMuchBetter":
-					AddOrUpdateOpinion(team.Manager.Name, 5);
-					break;
-				case "ManagerOpinionMuchWorse":
-					AddOrUpdateOpinion(team.Manager.Name, -5);
-					break;
-				case "RevealTwoSkills":
-					AddOrUpdateOpinion(team.Manager.Name, 1);
-					for (var i = 0; i < 2; i++)
-					{
-						var randomStat = Math.Pow(2, StaticRandom.Int(0, Skills.Count));
-						var statName = ((CrewMemberSkill)randomStat).ToString();
-						var statValue = Skills[(CrewMemberSkill)randomStat];
-						RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
-						UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
-					}
-					break;
-				case "RevealFourSkills":
-					AddOrUpdateOpinion(team.Manager.Name, 3);
-					for (var i = 0; i < 4; i++)
-					{
-						var randomStat = Math.Pow(2, StaticRandom.Int(0, Skills.Count));
-						var statName = ((CrewMemberSkill)randomStat).ToString();
-						var statValue = Skills[(CrewMemberSkill)randomStat];
-						RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
-						UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
-					}
-					break;
-				case "ImproveConflictOpinionGreatly":
-					var subGreatHelp = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
-					foreach (var cm in team.CrewMembers)
-					{
-						if (cm.Key != subGreatHelp)
+				//trigger different changes based off of what dialogue the player last picked
+				switch ((PostRaceEventImpact)Enum.Parse(typeof(PostRaceEventImpact), ev))
+				{
+					case PostRaceEventImpact.ExpectedPosition:
+						AddOrUpdateOpinion(team.Manager.Name, 1);
+						UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), subjects[0]);
+						break;
+					case PostRaceEventImpact.ExpectedPositionAfter:
+						AddOrUpdateOpinion(team.Manager.Name, 1);
+						UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), subjects[0]);
+						break;
+					case PostRaceEventImpact.ManagerOpinionWorse:
+						AddOrUpdateOpinion(team.Manager.Name, -1);
+						break;
+					case PostRaceEventImpact.ManagerOpinionAllCrewWorse:
+						foreach (var cm in team.CrewMembers)
 						{
-							cm.Value.AddOrUpdateOpinion(subGreatHelp, 2);
-							cm.Value.AddOrUpdateRevealedOpinion(subGreatHelp, cm.Value.CrewOpinions[subGreatHelp]);
+							cm.Value.AddOrUpdateOpinion(team.Manager.Name, -2);
 							cm.Value.SaveStatus();
 						}
-					}
-					break;
-				case "ImproveConflictTeamOpinion":
-					var subHelp = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
-					foreach (var cm in team.CrewMembers)
-					{
-						if (cm.Key != subHelp)
+						break;
+					case PostRaceEventImpact.ManagerOpinionBetter:
+						AddOrUpdateOpinion(team.Manager.Name, 1);
+						break;
+					case PostRaceEventImpact.ManagerOpinionAllCrewBetter:
+						foreach (var cm in team.CrewMembers)
 						{
-							cm.Value.AddOrUpdateOpinion(subHelp, 1);
-							cm.Value.AddOrUpdateRevealedOpinion(subHelp, cm.Value.CrewOpinions[subHelp]);
+							cm.Value.AddOrUpdateOpinion(team.Manager.Name, 2);
 							cm.Value.SaveStatus();
 						}
-					}
-					break;
-				case "ImproveConflictKnowledge":
-					var subKnow = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
-					AddOrUpdateOpinion(team.Manager.Name, 1);
-					foreach (var cm in team.CrewMembers)
-					{
-						if (cm.Key != subKnow)
+						break;
+					case PostRaceEventImpact.ManagerOpinionMuchBetter:
+						AddOrUpdateOpinion(team.Manager.Name, 5);
+						break;
+					case PostRaceEventImpact.ManagerOpinionMuchWorse:
+						AddOrUpdateOpinion(team.Manager.Name, -5);
+						break;
+					case PostRaceEventImpact.RevealTwoSkills:
+						AddOrUpdateOpinion(team.Manager.Name, 1);
+						for (var i = 0; i < 2; i++)
 						{
-							cm.Value.AddOrUpdateRevealedOpinion(subKnow, cm.Value.CrewOpinions[subKnow]);
-							cm.Value.SaveStatus();
+							var randomStat = Math.Pow(2, StaticRandom.Int(0, Skills.Count));
+							var statName = ((CrewMemberSkill)randomStat).ToString();
+							var statValue = Skills[(CrewMemberSkill)randomStat];
+							RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
+							UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
 						}
-					}
-					break;
-				case "CausesSelectionAfter":
-					AddOrUpdateOpinion(team.Manager.Name, 1);
-					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), subjects[0]);
-					var otherPlayer = Regex.Replace(subjects[1], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
-					team.CrewMembers[otherPlayer].AddOrUpdateOpinion(team.Manager.Name, 1);
-					team.CrewMembers[otherPlayer].UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), subjects[0]);
-					team.CrewMembers[otherPlayer].SaveStatus();
-					break;
-				case "WholeTeamChange":
-					AddOrUpdateOpinion(team.Manager.Name, 4);
-					foreach (var cm in team.CrewMembers)
-					{
-						if (!team.LineUpHistory.Last().PositionCrew.Values.Select(v => v.Name).Contains(cm.Key))
+						break;
+					case PostRaceEventImpact.RevealFourSkills:
+						AddOrUpdateOpinion(team.Manager.Name, 3);
+						for (var i = 0; i < 4; i++)
 						{
-							cm.Value.AddOrUpdateOpinion(team.Manager.Name, 1);
-							cm.Value.UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "true");
-							cm.Value.SaveStatus();
+							var randomStat = Math.Pow(2, StaticRandom.Int(0, Skills.Count));
+							var statName = ((CrewMemberSkill)randomStat).ToString();
+							var statValue = Skills[(CrewMemberSkill)randomStat];
+							RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
+							UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
 						}
-					}
-					break;
+						break;
+					case PostRaceEventImpact.ImproveConflictOpinionGreatly:
+						var subGreatHelp = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
+						foreach (var cm in team.CrewMembers)
+						{
+							if (cm.Key != subGreatHelp)
+							{
+								cm.Value.AddOrUpdateOpinion(subGreatHelp, 2);
+								cm.Value.AddOrUpdateRevealedOpinion(subGreatHelp, cm.Value.CrewOpinions[subGreatHelp]);
+								cm.Value.SaveStatus();
+							}
+						}
+						break;
+					case PostRaceEventImpact.ImproveConflictTeamOpinion:
+						var subHelp = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
+						foreach (var cm in team.CrewMembers)
+						{
+							if (cm.Key != subHelp)
+							{
+								cm.Value.AddOrUpdateOpinion(subHelp, 1);
+								cm.Value.AddOrUpdateRevealedOpinion(subHelp, cm.Value.CrewOpinions[subHelp]);
+								cm.Value.SaveStatus();
+							}
+						}
+						break;
+					case PostRaceEventImpact.ImproveConflictKnowledge:
+						var subKnow = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
+						AddOrUpdateOpinion(team.Manager.Name, 1);
+						foreach (var cm in team.CrewMembers)
+						{
+							if (cm.Key != subKnow)
+							{
+								cm.Value.AddOrUpdateRevealedOpinion(subKnow, cm.Value.CrewOpinions[subKnow]);
+								cm.Value.SaveStatus();
+							}
+						}
+						break;
+					case PostRaceEventImpact.CausesSelectionAfter:
+						AddOrUpdateOpinion(team.Manager.Name, 1);
+						UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), subjects[0]);
+						var otherPlayer = Regex.Replace(subjects[1], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
+						team.CrewMembers[otherPlayer].AddOrUpdateOpinion(team.Manager.Name, 1);
+						team.CrewMembers[otherPlayer].UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), subjects[0]);
+						team.CrewMembers[otherPlayer].SaveStatus();
+						break;
+					case PostRaceEventImpact.WholeTeamChange:
+						AddOrUpdateOpinion(team.Manager.Name, 4);
+						foreach (var cm in team.CrewMembers)
+						{
+							if (!team.LineUpHistory.Last().PositionCrew.Values.Select(v => v.Name).Contains(cm.Key))
+							{
+								cm.Value.AddOrUpdateOpinion(team.Manager.Name, 1);
+								cm.Value.UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "true");
+								cm.Value.SaveStatus();
+							}
+						}
+						break;
+				}
 			}
 			TickUpdate(0);
 		}

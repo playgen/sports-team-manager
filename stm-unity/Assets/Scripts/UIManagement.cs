@@ -21,6 +21,7 @@ public static class UIManagement
     private static PreRaceConfirmUI _preRace;
     private static LearningPillUI _learningPill;
     private static HoverPopUpUI _hover;
+    private static PostRaceEventImpactUI _eventImpact;
 
     private static Button _smallBlocker;
     private static Button _blocker;
@@ -77,6 +78,10 @@ public static class UIManagement
     {
         get { return _hover; }
     }
+    public static PostRaceEventImpactUI EventImpact
+    {
+        get { return _eventImpact; }
+    }
 
     public static Button SmallBlocker
     {
@@ -104,6 +109,7 @@ public static class UIManagement
         _preRace = _rootObjects.SelectMany(g => g.GetComponentsInChildren<PreRaceConfirmUI>(true)).First();
         _learningPill = _rootObjects.SelectMany(g => g.GetComponentsInChildren<LearningPillUI>(true)).First();
         _hover = _rootObjects.SelectMany(g => g.GetComponentsInChildren<HoverPopUpUI>(true)).First();
+        _eventImpact = _rootObjects.SelectMany(g => g.GetComponentsInChildren<PostRaceEventImpactUI>(true)).First();
 
         _smallBlocker = _rootObjects.Single(g => g.name == "Canvas").transform.Find("Team Management/Pop-up Bounds/Blocker").GetComponent<Button>();
         _blocker = _rootObjects.Single(g => g.name == "Canvas").transform.Find("Team Management/Pop-up Bounds/Bigger Blocker").GetComponent<Button>();
