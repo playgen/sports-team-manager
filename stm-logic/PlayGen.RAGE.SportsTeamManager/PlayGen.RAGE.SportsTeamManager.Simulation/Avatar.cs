@@ -15,7 +15,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string OutfitShadowType { get; private set; }
 		public string HairType { get; private set; }
 		public string EyeType { get; private set; }
-		public string EyeColor { get; private set; }
 		public string EyebrowType { get; private set; }
 		public string NoseType { get; private set; }
 		public string MouthType { get; private set; }
@@ -30,6 +29,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Color SkinColor { get; private set; }
 		public string MouthColor { get; private set; }
 		public Color HairColor { get; private set; }
+		public Color EyeColor { get; private set; }
 		public Color PrimaryOutfitColor { get; set; }
 		public Color SecondaryOutfitColor { get; set; }
 
@@ -66,6 +66,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 			//Set Hair Color
 			HairColor = Config.RandomHairColor ? GetRandomHairColor() : GetHairColorForSkin(SkinColor);
+			var hairChange = StaticRandom.Int(-50, 50);
+			var hairColorRed = HairColor.R + hairChange;
+			var hairColorGreen = HairColor.G + hairChange;
+			var hairColorBlue = HairColor.B + hairChange;
+			HairColor = new Color((byte)(hairColorRed < 0 ? 0 : hairColorRed > 255 ? 255 : hairColorRed), (byte)(hairColorGreen < 0 ? 0 : hairColorGreen > 255 ? 255 : hairColorGreen), (byte)(hairColorBlue < 0 ? 0 : hairColorBlue > 255 ? 255 : hairColorBlue), 255);
 
 			//Set Primary Color
 			PrimaryOutfitColor = CustomOutfitColor ? StaticRandom.Color() : new Color(255, 255, 255, 255);
@@ -84,6 +89,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 			//Set Eye Color
 			EyeColor = GetRandomEyeColor();
+			var eyeChange = StaticRandom.Int(-50, 50);
+			var eyeColorRed = EyeColor.R + eyeChange;
+			var eyeColorGreen = EyeColor.G + eyeChange;
+			var eyeColorBlue = EyeColor.B + eyeChange;
+			EyeColor = new Color((byte)(eyeColorRed < 0 ? 0 : eyeColorRed > 255 ? 255 : eyeColorRed), (byte)(eyeColorGreen < 0 ? 0 : eyeColorGreen > 255 ? 255 : eyeColorGreen), (byte)(eyeColorBlue < 0 ? 0 : eyeColorBlue > 255 ? 255 : eyeColorBlue), 255);
 
 			//Set Face type
 			EyebrowType = string.Format("Face{0}_{1}_Eyebrows", gender, BestSkill);
@@ -201,16 +211,29 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
-		private string GetRandomEyeColor()
+		private Color GetRandomEyeColor()
 		{
 			switch (StaticRandom.Int(0, 3))
 			{
 				case 0:
-					return "Blue";
+					return Config.BlueEyeColor;
 				case 1:
-					return "Green";
+					return Config.GreenEyeColor;
 				default:
-					return "Brown";
+					return Config.BrownEyeColor;
+			}
+		}
+
+		private Color GetEyeColorFromText(string color)
+		{
+			switch (color)
+			{
+				case "Blue":
+					return Config.BlueEyeColor;
+				case "Green":
+					return Config.GreenEyeColor;
+				default:
+					return Config.BrownEyeColor;
 			}
 		}
 
@@ -223,7 +246,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			BodyType = crewMember.LoadBelief(NPCBeliefs.AvatarBodyType.GetDescription());
 			EyebrowType = crewMember.LoadBelief(NPCBeliefs.AvatarEyebrowType.GetDescription());
 			EyeType = crewMember.LoadBelief(NPCBeliefs.AvatarEyeType.GetDescription());
-			EyeColor = crewMember.LoadBelief(NPCBeliefs.AvatarEyeColor.GetDescription());
+			if (crewMember.LoadBelief(NPCBeliefs.AvatarEyeColor.GetDescription()) != null)
+			{
+				EyeColor = GetEyeColorFromText(crewMember.LoadBelief(NPCBeliefs.AvatarEyeColor.GetDescription()));
+			}
+			else
+			{
+				var eyeColorRed = Convert.ToByte(crewMember.LoadBelief(NPCBeliefs.AvatarEyeColorRed.GetDescription()));
+				var eyeColorGreen = Convert.ToByte(crewMember.LoadBelief(NPCBeliefs.AvatarEyeColorGreen.GetDescription()));
+				var eyeColorBlue = Convert.ToByte(crewMember.LoadBelief(NPCBeliefs.AvatarEyeColorBlue.GetDescription()));
+				EyeColor = new Color(eyeColorRed, eyeColorGreen, eyeColorBlue, 255);
+			}
 			var hairColorRed = Convert.ToByte(crewMember.LoadBelief(NPCBeliefs.AvatarHairColorRed.GetDescription()));
 			var hairColorGreen = Convert.ToByte(crewMember.LoadBelief(NPCBeliefs.AvatarHairColorGreen.GetDescription()));
 			var hairColorBlue = Convert.ToByte(crewMember.LoadBelief(NPCBeliefs.AvatarHairColorBlue.GetDescription()));
@@ -250,7 +283,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarBodyType.GetDescription(), BodyType);
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyebrowType.GetDescription(), EyebrowType);
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyeType.GetDescription(), EyeType);
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyeColor.GetDescription(), EyeColor);
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyeColorRed.GetDescription(), EyeColor.R.ToString());
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyeColorGreen.GetDescription(), EyeColor.G.ToString());
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarEyeColorBlue.GetDescription(), EyeColor.B.ToString());
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHairColorRed.GetDescription(), HairColor.R.ToString());
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHairColorGreen.GetDescription(), HairColor.G.ToString());
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHairColorBlue.GetDescription(), HairColor.B.ToString());

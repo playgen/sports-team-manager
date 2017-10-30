@@ -21,6 +21,7 @@ public class AvatarDisplay : MonoBehaviour
 	private Image _mouth;
 	private Image _teeth;
 	private Image _eyes;
+	private Image _eyePupils;
 	private Image _outfit;
 	private Image _outfitHighlight;
 	private Image _outfitShadow;
@@ -49,6 +50,7 @@ public class AvatarDisplay : MonoBehaviour
 			_mouth = (transform.Find("IconMask/AvatarSprites/Mouth") ?? transform.Find("AvatarSprites/Mouth")).GetComponent<Image>();
 			_teeth = (transform.Find("IconMask/AvatarSprites/Teeth") ?? transform.Find("AvatarSprites/Teeth")).GetComponent<Image>();
 			_eyes = (transform.Find("IconMask/AvatarSprites/Eyes") ?? transform.Find("AvatarSprites/Eyes")).GetComponent<Image>();
+			_eyePupils = (transform.Find("IconMask/AvatarSprites/Eye Pupils") ?? transform.Find("AvatarSprites/Eye Pupils")).GetComponent<Image>();
 			_outfit = (transform.Find("IconMask/AvatarSprites/Outfit") ?? transform.Find("AvatarSprites/Outfit")).GetComponent<Image>();
 			_outfitHighlight = (transform.Find("IconMask/AvatarSprites/OutfitHighlight") ?? transform.Find("AvatarSprites/OutfitHighlight")).GetComponent<Image>();
 			_outfitShadow = (transform.Find("IconMask/AvatarSprites/OutfitShadow") ?? transform.Find("AvatarSprites/OutfitShadow")).GetComponent<Image>();
@@ -72,6 +74,7 @@ public class AvatarDisplay : MonoBehaviour
 		_body.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
 		_nose.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
 		_mouth.color = avatar.IsMale ? new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255) : (Color32)Color.white;
+		_eyePupils.color = new Color32(avatar.EyeColor.R, avatar.EyeColor.G, avatar.EyeColor.B, 255);
 		_hairFront.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
 		_hairBack.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
 		_eyebrow.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, _eyebrowAlpha);
@@ -161,9 +164,9 @@ public class AvatarDisplay : MonoBehaviour
 		{
 			moodStr = "Disagree";
 		}
-		if (avatarSprites.ContainsKey(string.Format("{0}_{1}_{2}", avatar.EyeType, avatar.EyeColor, moodStr).ToLower()))
+		if (avatarSprites.ContainsKey(string.Format("{0}_{1}_{2}", avatar.EyeType, "Brown", moodStr).ToLower()))
 		{
-			_eyes.sprite = avatarSprites[string.Format("{0}_{1}_{2}", avatar.EyeType, avatar.EyeColor, moodStr).ToLower()];
+			_eyes.sprite = avatarSprites[string.Format("{0}_{1}_{2}", avatar.EyeType, "Brown", moodStr).ToLower()];
 		}
 		else if (avatarSprites.ContainsKey(string.Format("{0}_{1}", avatar.EyeType, moodStr).ToLower()))
 		{
@@ -171,11 +174,13 @@ public class AvatarDisplay : MonoBehaviour
 		}
 		else
 		{
-			_eyes.sprite = avatarSprites[string.Format("{0}_{1}_Neutral", avatar.EyeType, avatar.EyeColor).ToLower()];
+			_eyes.sprite = avatarSprites[string.Format("{0}_{1}_Neutral", avatar.EyeType, "Brown").ToLower()];
 		}
+		_eyePupils.sprite = avatarSprites.ContainsKey(string.Format("{0}_{1}_{2}", avatar.EyeType, "Pupil", moodStr).ToLower()) ? avatarSprites[string.Format("{0}_{1}_{2}", avatar.EyeType, "Pupil", moodStr).ToLower()] : null;
 		_eyebrow.sprite = avatarSprites[string.Format("{0}_{1}", avatar.EyebrowType, moodStr).ToLower()];
 		_mouth.sprite = avatarSprites[string.Format("{0}_{1}", avatar.MouthType, moodStr).ToLower()];
 		_teeth.sprite = avatarSprites.ContainsKey(string.Format("{0}_{1}", avatar.TeethType, moodStr).ToLower()) ? avatarSprites[string.Format("{0}_{1}", avatar.TeethType, moodStr).ToLower()] : null;
+		_eyePupils.enabled = _eyePupils.sprite != null;
 		_teeth.enabled = _teeth.sprite != null;
 		_lastMood = mood;
 	}

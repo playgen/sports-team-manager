@@ -377,7 +377,7 @@ public class MemberMeetingUI : MonoBehaviour
 		_roleQuestion.text = "RoleReveal".EventString();
 		_opinionPositiveQuestion.text = "OpinionRevealPositive".EventString();
 		_opinionNegativeQuestion.text = "OpinionRevealNegative".EventString();
-		_dialogueText.text = _lastReply != null ? Localization.GetAndFormat(_lastReply.First(), false, _lastReply.Where(r => r != _lastReply.First()).ToArray()) : Localization.Get("MEETING_INTRO");
+		_dialogueText.text = _lastReply != null ? Localization.GetAndFormat(_lastReply.First(), false, _lastReply.Where(r => r != _lastReply.First()).ToArray()) : Localization.Get("MEETING_INTRO_" + _currentMember.GetSocialImportanceRating());
 		DoBestFit();
 	}
 

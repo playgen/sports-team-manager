@@ -42,7 +42,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			previous = previous.Where(pb => pb.Type == Type).ToList();
 			foreach (var type in possibleTypes)
 			{
-				int consecutiveMatches = 0;
+				var consecutiveMatches = 0;
 				foreach (var boat in previous)
 				{
 					if (boat.Score >= type.ScoreRequired)
@@ -346,7 +346,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					//for each combination
 					foreach (var combo in combos)
 					{
-						int score = 0;
+						var score = 0;
 						//assign crew members to their positions and get the score for this set-up
 						for (var i = 0; i < combo.Count; i++)
 						{

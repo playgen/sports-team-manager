@@ -36,5 +36,20 @@
 		204,
 		108,
 		6
+	],
+	"BlueEyeColorValues": [
+		30,
+		51,
+		90
+	],
+	"BrownEyeColorValues": [
+		90,
+		51,
+		30
+	],
+	"GreenEyeColorValues": [
+		30,
+		91,
+		33
 	]
 }

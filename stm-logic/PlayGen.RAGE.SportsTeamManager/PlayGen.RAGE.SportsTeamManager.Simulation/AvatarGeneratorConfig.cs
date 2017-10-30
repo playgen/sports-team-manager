@@ -17,7 +17,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public byte[] BrownHairColorValues { get; internal set; }
 		public byte[] BlackHairColorValues { get; internal set; }
 		public byte[] GingerHairColorValues { get; internal set; }
-		
+		public byte[] BlueEyeColorValues { get; internal set; }
+		public byte[] BrownEyeColorValues { get; internal set; }
+		public byte[] GreenEyeColorValues { get; internal set; }
+
 		public Color LightSkinColor { get; private set; }
 		public Color MediumSkinColor { get; private set; }
 		public Color DarkSkinColor { get; private set; }
@@ -25,6 +28,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Color BrownHairColor { get; private set; }
 		public Color BlackHairColor { get; private set; }
 		public Color GingerHairColor { get; private set; }
+		public Color BlueEyeColor { get; private set; }
+		public Color BrownEyeColor { get; private set; }
+		public Color GreenEyeColor { get; private set; }
 
 		//get and return values for avatar configs
 		internal AvatarGeneratorConfig GetConfig()
@@ -43,6 +49,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			config.BrownHairColor = new Color(config.BrownHairColorValues[0], config.BrownHairColorValues[1], config.BrownHairColorValues[2], 255);
 			config.BlackHairColor = new Color(config.BlackHairColorValues[0], config.BlackHairColorValues[1], config.BlackHairColorValues[2], 255);
 			config.GingerHairColor = new Color(config.GingerHairColorValues[0], config.GingerHairColorValues[1], config.GingerHairColorValues[2], 255);
+			config.BlueEyeColor = new Color(config.BlueEyeColorValues[0], config.BlueEyeColorValues[1], config.BlueEyeColorValues[2], 255);
+			config.BrownEyeColor = new Color(config.BrownEyeColorValues[0], config.BrownEyeColorValues[1], config.BrownEyeColorValues[2], 255);
+			config.GreenEyeColor = new Color(config.GreenEyeColorValues[0], config.GreenEyeColorValues[1], config.GreenEyeColorValues[2], 255);
 			return config;
 		}
 	}

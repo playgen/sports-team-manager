@@ -410,9 +410,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void LoadCurrentEvents()
 		{
-			bool noEventFound = false;
-			int eventsFound = 0;
-			int eventSectionsFound = 0;
+			var noEventFound = false;
+			var eventsFound = 0;
+			var eventSectionsFound = 0;
 			while (!noEventFound)
 			{
 				var crewMemberName = Team.Manager.LoadBelief(String.Format("PRECrew{0}({1})", eventsFound, eventSectionsFound));
@@ -815,5 +815,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var managementStyles = GatherLeadershipStyles();
 			return managementStyles.Where(m => m.Value == managementStyles.Values.Max()).ToDictionary(b => b.Key, b => b.Value).Keys.ToArray();
 		}
+
+	    public int GetTotalRaceCount()
+	    {
+	        return config.GameConfig.PromotionTriggers.Sum(p => p.ScoreMetSinceLast);
+	    }
 	}
 }

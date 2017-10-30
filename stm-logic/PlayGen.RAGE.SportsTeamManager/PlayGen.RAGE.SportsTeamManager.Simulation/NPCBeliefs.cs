@@ -61,14 +61,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		AvatarSkinColorRed,
 		[Description("Avatar(HairColorRed)")]
 		AvatarHairColorRed,
+		[Description("Avatar(EyeColorRed)")]
+		AvatarEyeColorRed,
 		[Description("Avatar(SkinColorGreen)")]
 		AvatarSkinColorGreen,
 		[Description("Avatar(HairColorGreen)")]
 		AvatarHairColorGreen,
+		[Description("Avatar(EyeColorGreen)")]
+		AvatarEyeColorGreen,
 		[Description("Avatar(SkinColorBlue)")]
 		AvatarSkinColorBlue,
 		[Description("Avatar(HairColorBlue)")]
 		AvatarHairColorBlue,
+		[Description("Avatar(EyeColorBlue)")]
+		AvatarEyeColorBlue,
 		[Description("Avatar(BodyType)")]
 		AvatarBodyType,
 		[Description("Avatar(HairType)")]

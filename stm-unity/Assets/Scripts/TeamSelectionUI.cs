@@ -65,6 +65,8 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	[SerializeField]
 	private Button _feedbackButton;
 	[SerializeField]
+	private GameObject _ongoingResultContainer;
+	[SerializeField]
 	private GameObject _resultContainer;
 	[SerializeField]
 	private GameObject _resultPrefab;
@@ -118,6 +120,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	{
 		UIManagement.PostRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
 		ResetScrollbar();
+		CreateSeasonProgress();
 		CreateNewBoat();
 	}
 
@@ -225,6 +228,32 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		return lastName + firstName;
 	}
 
+	private void CreateSeasonProgress()
+	{
+		foreach (Transform child in _ongoingResultContainer.transform)
+		{
+			Destroy(child.gameObject);
+		}
+		var raceHistory = GameManagement.Team.RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList();
+		for (var i = 0; i < GameManagement.GameManager.GetTotalRaceCount(); i++)
+		{
+			var resultObj = Instantiate(_resultPrefab, _ongoingResultContainer.transform, false);
+			if (raceHistory.Count > i)
+			{
+				var position = GameManagement.GetRacePosition(raceHistory[i].Key, raceHistory[i].Value);
+				resultObj.GetComponent<Image>().fillAmount = 1;
+				resultObj.GetComponentInChildren<Text>().gameObject.AddComponent<TextLocalization>();
+				resultObj.GetComponentInChildren<TextLocalization>().Key = "POSITION_" + position;
+				resultObj.GetComponentInChildren<TextLocalization>().Set();
+			}
+			else
+			{
+				resultObj.GetComponent<Image>().fillAmount = raceHistory.Count == i ? (GameManagement.CurrentRaceSession - 1) / (float)GameManagement.RaceSessionLength : 0;
+				resultObj.GetComponentInChildren<Text>().text = string.Empty;
+			}
+		}
+	}
+
 	/// <summary>
 	/// Set up a new boat (aka, one used for positioning and racing)
 	/// </summary>
@@ -262,9 +291,10 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			{
 				var position = GameManagement.GetRacePosition(result.Key, result.Value);
 				var resultObj = Instantiate(_resultPrefab, _resultContainer.transform, false);
-				resultObj.GetComponent<Text>().text = position.ToString();
+				resultObj.GetComponent<Image>().fillAmount = 0;
+				resultObj.GetComponentInChildren<Text>().text = position.ToString();
 			}
-
+			_ongoingResultContainer.transform.parent.gameObject.SetActive(false);
 			var finalPosition = GameManagement.GetCupPosition();
 			_finalPlacementText.GetComponent<TextLocalization>().Key = "POSITION_" + finalPosition;
 			_finalPlacementText.GetComponent<TextLocalization>().Set();
@@ -690,6 +720,10 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		if (!isRace)
 		{
 			scoreText.text = string.Format("{0:D2}:{1:D2}", timeTaken.Minutes, timeTaken.Seconds);
+			if (current)
+			{
+				UpdateSeasonProgress();
+			}
 		}
 		else
 		{
@@ -698,6 +732,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			scoreText.text = string.Format("{0} {1}", Localization.Get("RACE_POSITION"), finishPositionText);
 			if (current)
 			{
+				UpdateSeasonProgress(finishPosition);
 				UIManagement.RaceResult.Display(boat.PositionCrew, finishPosition, finishPositionText.ToLower());
 			}
 		}
@@ -740,6 +775,21 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			}
 		}
 		return scoreDiff;
+	}
+
+	private void UpdateSeasonProgress(int result = 0)
+	{
+		if (result > 0)
+		{
+			_ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1).GetComponent<Image>().fillAmount = 1;
+			_ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1).GetComponentInChildren<Text>().gameObject.AddComponent<TextLocalization>();
+			_ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1).GetComponentInChildren<TextLocalization>().Key = "POSITION_" + result;
+			_ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1).GetComponentInChildren<TextLocalization>().Set();
+		}
+		else
+		{
+			_ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count).GetComponent<Image>().fillAmount = (GameManagement.CurrentRaceSession - 1) / (float)GameManagement.RaceSessionLength;
+		}
 	}
 
 	/// <summary>
@@ -785,6 +835,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private void DoBestFit()
 	{
 		_boatMain.transform.Find("Position Container").gameObject.BestFit();
+		_ongoingResultContainer.transform.parent.BestFit();
 		UIManagement.CrewMemberUI.Select(c => c.gameObject).BestFit();
 		var currentPosition = _boatContainer.transform.localPosition.y - ((RectTransform)_boatContainer.transform).anchoredPosition.y;
 		if (!Mathf.Approximately(_boatMain.GetComponent<LayoutElement>().preferredHeight, Mathf.Abs(currentPosition) * 0.2f))

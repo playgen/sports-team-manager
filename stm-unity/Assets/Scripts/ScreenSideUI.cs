@@ -60,6 +60,6 @@ public class ScreenSideUI : MonoBehaviour {
 
 	private void DoBestFit()
 	{
-		gameObject.BestFit();
+		transform.Find("Side Menu").BestFit();
 	}
 }

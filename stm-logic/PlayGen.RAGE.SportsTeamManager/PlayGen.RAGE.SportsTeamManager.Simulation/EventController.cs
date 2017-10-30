@@ -35,7 +35,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public List<PostRaceEventState> GetEventDialogues(Person manager)
 		{
-			List<PostRaceEventState> dialogueOptions = new List<PostRaceEventState>();
+			var dialogueOptions = new List<PostRaceEventState>();
 			foreach (var current in PostRaceEvents.First())
 			{
 				var dialogues = iat.GetDialogueActionsByState(IATConsts.PLAYER, current.Dialogue.NextState).ToList();
@@ -246,13 +246,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			var betterPosition = new KeyValuePair<Position, int>(Position.Null, 0);
 			var currentPosition = team.LineUpHistory.Last().PositionCrew.SingleOrDefault(pair => pair.Value == cm).Key;
-			foreach (Position boatPosition in team.LineUpHistory.Last().Positions)
+			foreach (var boatPosition in team.LineUpHistory.Last().Positions)
 			{
 				if (boatPosition == currentPosition)
 				{
 					continue;
 				}
-				int possiblePositionScore = boatPosition.GetPositionRating(cm);
+				var possiblePositionScore = boatPosition.GetPositionRating(cm);
 				if ((currentPosition != Position.Null && possiblePositionScore > team.LineUpHistory.Last().PositionScores[currentPosition]) || possiblePositionScore > betterPosition.Value)
 				{
 					betterPosition = new KeyValuePair<Position, int>(boatPosition, possiblePositionScore);
@@ -382,9 +382,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void RemoveEvents(Person manager)
 		{
-			for (int i = 0; i < PostRaceEvents.Count; i++)
+			for (var i = 0; i < PostRaceEvents.Count; i++)
 			{
-				for (int j = 0; j < PostRaceEvents[i].Count; j++)
+				for (var j = 0; j < PostRaceEvents[i].Count; j++)
 				{
 					manager.UpdateSingleBelief(string.Format("PRECrew{0}({1})", i, j), "null");
 					manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), "null");
@@ -473,9 +473,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void SaveEvents(Person manager)
 		{
-			for (int i = 0; i < PostRaceEvents.Count; i++)
+			for (var i = 0; i < PostRaceEvents.Count; i++)
 			{
-				for (int j = 0; j < PostRaceEvents[i].Count; j++)
+				for (var j = 0; j < PostRaceEvents[i].Count; j++)
 				{
 					manager.UpdateSingleBelief(string.Format("PRECrew{0}({1})", i, j), PostRaceEvents[i][j].CrewMember.Name.NoSpaces());
 					manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), PostRaceEvents[i][j].Dialogue.NextState != "-" ?

@@ -592,7 +592,6 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 					randomBodyType[newCrew.BodyType] = (randomBodyType.ContainsKey(newCrew.BodyType) ? randomBodyType[newCrew.BodyType] : 0) + 1;
 					randomHairType[newCrew.HairType] = (randomHairType.ContainsKey(newCrew.HairType) ? randomHairType[newCrew.HairType] : 0) + 1;
 					randomEyeType[newCrew.EyeType] = (randomEyeType.ContainsKey(newCrew.EyeType) ? randomEyeType[newCrew.EyeType] : 0) + 1;
-					randomEyeColor[newCrew.EyeColor] = (randomEyeColor.ContainsKey(newCrew.EyeColor) ? randomEyeColor[newCrew.EyeColor] : 0) + 1;
 					randomEyebrowType[newCrew.EyebrowType] = (randomEyebrowType.ContainsKey(newCrew.EyebrowType) ? randomEyebrowType[newCrew.EyebrowType] : 0) + 1;
 					randomNoseType[newCrew.NoseType] = (randomNoseType.ContainsKey(newCrew.NoseType) ? randomNoseType[newCrew.NoseType] : 0) + 1;
 					randomMouthType[newCrew.MouthType] = (randomMouthType.ContainsKey(newCrew.MouthType) ? randomMouthType[newCrew.MouthType] : 0) + 1;
