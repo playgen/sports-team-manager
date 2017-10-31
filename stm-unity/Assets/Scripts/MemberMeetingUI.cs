@@ -121,7 +121,7 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void Display()
 	{
-		if (_currentMember == null)
+		if (!gameObject.activeInHierarchy)
 		{
 			return;
 		}

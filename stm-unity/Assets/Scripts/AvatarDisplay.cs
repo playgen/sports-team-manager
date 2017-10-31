@@ -38,7 +38,7 @@ public class AvatarDisplay : MonoBehaviour
 	public static Color MoodColor(float value)
 	{
 		value = value < -5 ? -5 : value > 5 ? 5 : value;
-		return new Color(-value * 0.2f, (value + 5) * 0.2f, (5 - (Mathf.Abs(value) - 5)) * 0.1f);
+		return new Color(-value * 0.2f, (value + 5) * 0.2f, (5 - Mathf.Abs(value)) * 0.2f);
 	}
 
 	/// <summary>
