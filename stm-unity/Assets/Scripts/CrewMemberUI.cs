@@ -45,12 +45,13 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		_defaultParent = parent;
 		_usable = usable;
 		_current = current;
-		transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? UnityEngine.Color.white : UnityEngine.Color.grey;
+		transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(_crewMember.GetMood()) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
 	}
 
 	public void NotCurrent()
 	{
 		_current = false;
+		transform.Find("AvatarIcon").GetComponent<Image>().color = UnityEngine.Color.white;
 	}
 
 	/// <summary>
@@ -101,22 +102,27 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		if (Input.GetKeyDown("1"))
 		{
 			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, "StrongDisagree");
+			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(-3) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
 		}
 		if (Input.GetKeyDown("2"))
 		{
 			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, "Disagree");
+			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(-1) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
 		}
 		if (Input.GetKeyDown("3"))
 		{
 			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, string.Empty);
+			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(0) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
 		}
 		if (Input.GetKeyDown("4"))
 		{
 			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, "Agree");
+			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(1) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
 		}
 		if (Input.GetKeyDown("5"))
 		{
 			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, "StrongAgree");
+			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(3) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
 		}
 #endif
 		if (_beingDragged)

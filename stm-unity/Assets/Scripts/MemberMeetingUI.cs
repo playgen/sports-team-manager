@@ -130,6 +130,7 @@ public class MemberMeetingUI : MonoBehaviour
 		_allowanceText.text = GameManagement.ActionAllowance.ToString();
 		//CrewMember avatar
 		_avatarDisplay.SetAvatar(_currentMember.Avatar, _currentMember.GetMood());
+		_avatarDisplay.GetComponent<Image>().color = AvatarDisplay.MoodColor(_currentMember.GetMood());
 		//CrewMember information
 		_textList[0].text = _currentMember.Name;
 		_textList[1].text = _currentMember.Age.ToString();

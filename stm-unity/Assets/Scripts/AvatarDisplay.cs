@@ -35,6 +35,12 @@ public class AvatarDisplay : MonoBehaviour
 		avatarSprites = Resources.LoadAll(string.Empty, typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name.ToLower(), a => a);
 	}
 
+	public static Color MoodColor(float value)
+	{
+		value = value < -5 ? -5 : value > 5 ? 5 : value;
+		return new Color(-value * 0.2f, (value + 5) * 0.2f, (5 - (Mathf.Abs(value) - 5)) * 0.1f);
+	}
+
 	/// <summary>
 	/// Load the images for each part of the avatar.
 	/// </summary>
@@ -54,7 +60,7 @@ public class AvatarDisplay : MonoBehaviour
 			_outfit = (transform.Find("IconMask/AvatarSprites/Outfit") ?? transform.Find("AvatarSprites/Outfit")).GetComponent<Image>();
 			_outfitHighlight = (transform.Find("IconMask/AvatarSprites/OutfitHighlight") ?? transform.Find("AvatarSprites/OutfitHighlight")).GetComponent<Image>();
 			_outfitShadow = (transform.Find("IconMask/AvatarSprites/OutfitShadow") ?? transform.Find("AvatarSprites/OutfitShadow")).GetComponent<Image>();
-			_spriteParent = (RectTransform)transform.Find("IconMask/AvatarSprites");
+			_spriteParent = (RectTransform)transform.Find("IconMask/AvatarSprites") ?? (RectTransform)transform.Find("AvatarSprites");
 		}
 		_body.sprite = avatarSprites[avatar.BodyType.ToLower()];
 		_outfit.sprite = avatarSprites[avatar.OutfitBaseType.ToLower()];
@@ -202,6 +208,6 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	private void SetFullBodyProperties(Avatar a)
 	{
-		((RectTransform)transform).localScale = new Vector3(a.Weight, a.Height, 1f);
+		_spriteParent.localScale = new Vector3(a.Weight, a.Height, 1f);
 	}
 }
