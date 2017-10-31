@@ -97,6 +97,28 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// </summary>
 	private void Update ()
 	{
+#if UNITY_EDITOR
+		if (Input.GetKeyDown("1"))
+		{
+			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, "StrongDisagree");
+		}
+		if (Input.GetKeyDown("2"))
+		{
+			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, "Disagree");
+		}
+		if (Input.GetKeyDown("3"))
+		{
+			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, string.Empty);
+		}
+		if (Input.GetKeyDown("4"))
+		{
+			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, "Agree");
+		}
+		if (Input.GetKeyDown("5"))
+		{
+			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, "StrongAgree");
+		}
+#endif
 		if (_beingDragged)
 		{
 			transform.position = (Vector2)Input.mousePosition - _dragPosition;
@@ -176,6 +198,12 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 				GameManagement.Boat.AssignCrewMember(0, _crewMember);
 				OnReset();
 			}
+		}
+		if (raycastResults.Count == 0)
+		{
+			//remove this CrewMember from their position if they were in one
+			GameManagement.Boat.AssignCrewMember(0, _crewMember);
+			OnReset();
 		}
 		//reset the meeting UI if it is currently being displayed
 		if (UIManagement.MemberMeeting.gameObject.activeInHierarchy)

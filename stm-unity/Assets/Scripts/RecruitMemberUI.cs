@@ -63,8 +63,8 @@ public class RecruitMemberUI : MonoBehaviour
 
 	private void OnDisable()
 	{
-	    UIManagement.Blocker.gameObject.SetActive(false);
-	    UIManagement.Blocker.transform.SetAsFirstSibling();
+		UIManagement.Blocker.gameObject.SetActive(false);
+		UIManagement.Blocker.transform.SetAsFirstSibling();
 		transform.SetAsFirstSibling();
 		Localization.LanguageChange -= OnLanguageChange;
 		BestFit.ResolutionChange -= DoBestFit;
@@ -270,7 +270,7 @@ public class RecruitMemberUI : MonoBehaviour
 		}
 		else
 		{
-		    UIManagement.Blocker.gameObject.SetActive(false);
+			UIManagement.Blocker.gameObject.SetActive(false);
 		}
 		TrackerEventSender.SendEvent(new TraceEvent("HirePopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 		{
@@ -312,6 +312,7 @@ public class RecruitMemberUI : MonoBehaviour
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
 		}, AccessibleTracker.Accessible.Screen));
+		UIManagement.MemberMeeting.Display();
 		gameObject.SetActive(false);
 	}
 

@@ -121,6 +121,10 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void Display()
 	{
+		if (_currentMember == null)
+		{
+			return;
+		}
 		//ActionAllowance display
 		_allowanceBar.fillAmount = GameManagement.ActionAllowancePercentage;
 		_allowanceText.text = GameManagement.ActionAllowance.ToString();
@@ -291,7 +295,7 @@ public class MemberMeetingUI : MonoBehaviour
 		}
 		else
 		{
-		    UIManagement.SmallBlocker.gameObject.SetActive(false);
+			UIManagement.SmallBlocker.gameObject.SetActive(false);
 		}
 	}
 

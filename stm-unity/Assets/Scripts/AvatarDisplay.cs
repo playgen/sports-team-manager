@@ -176,7 +176,7 @@ public class AvatarDisplay : MonoBehaviour
 		{
 			_eyes.sprite = avatarSprites[string.Format("{0}_{1}_Neutral", avatar.EyeType, "Brown").ToLower()];
 		}
-		_eyePupils.sprite = avatarSprites.ContainsKey(string.Format("{0}_{1}_{2}", avatar.EyeType, "Pupil", moodStr).ToLower()) ? avatarSprites[string.Format("{0}_{1}_{2}", avatar.EyeType, "Pupil", moodStr).ToLower()] : null;
+		_eyePupils.sprite = _eyes.sprite.name.Contains("Brown") ? avatarSprites.ContainsKey(_eyes.sprite.name.Replace("Brown", "Pupil").ToLower()) ? avatarSprites[_eyes.sprite.name.Replace("Brown", "Pupil").ToLower()] : null : null;
 		_eyebrow.sprite = avatarSprites[string.Format("{0}_{1}", avatar.EyebrowType, moodStr).ToLower()];
 		_mouth.sprite = avatarSprites[string.Format("{0}_{1}", avatar.MouthType, moodStr).ToLower()];
 		_teeth.sprite = avatarSprites.ContainsKey(string.Format("{0}_{1}", avatar.TeethType, moodStr).ToLower()) ? avatarSprites[string.Format("{0}_{1}", avatar.TeethType, moodStr).ToLower()] : null;

@@ -48,37 +48,27 @@ public class PostRaceEventImpactUI : MonoBehaviour
 				var subList = new List<string>();
 				foreach (var sub in impact.Value)
 				{
-					subList.Add(Regex.Replace(sub, @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0"));
+					subList.Add(Regex.Replace(sub, @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0").Replace("  ", " "));
 				}
 				if (impact.Key.Contains(PostRaceEventImpact.MoodChange.ToString()))
 				{
-					if (int.Parse(Regex.Match(impact.Key, @"-?\d+").Value) > 0)
-					{
-						_impactText.text += (_impactText.text.Length > 0 ? "\n" : string.Empty) + Localization.GetAndFormat("IMPACT_MOOD_BETTER", false, impact.Value);
-					}
-					else
-					{
-						_impactText.text += (_impactText.text.Length > 0 ? "\n" : string.Empty) + Localization.GetAndFormat("IMPACT_MOOD_WORSE", false, impact.Value);
-					}
+					_impactText.text += (_impactText.text.Length > 0 ? "\n\n" : string.Empty) + Localization.GetAndFormat("IMPACT_MOOD_" + (int.Parse(Regex.Match(impact.Key, @"-?\d+").Value) > 0 ? "BETTER" : "WORSE"), false, subList.ToArray());
 				}
 				if (Enum.IsDefined(typeof(PostRaceEventImpact), impact.Key))
 				{
 					switch ((PostRaceEventImpact)Enum.Parse(typeof(PostRaceEventImpact), impact.Key))
 					{
 						case PostRaceEventImpact.ImproveConflictOpinionGreatly:
-							_impactText.text += (_impactText.text.Length > 0 ? "\n" : string.Empty) + Localization.GetAndFormat("IMPACT_IMPROVE_CONFLICT_OPINION_GREATLY", false, impact.Value[1]);
+							_impactText.text += (_impactText.text.Length > 0 ? "\n\n" : string.Empty) + Localization.GetAndFormat("IMPACT_IMPROVE_CONFLICT_OPINION_GREATLY", false, subList[1]);
 							break;
 						case PostRaceEventImpact.ImproveConflictTeamOpinion:
-							_impactText.text += (_impactText.text.Length > 0 ? "\n" : string.Empty) + Localization.GetAndFormat("IMPACT_IMPROVE_CONFLICT_TEAM_OPINION", false, impact.Value[1]);
+							_impactText.text += (_impactText.text.Length > 0 ? "\n\n" : string.Empty) + Localization.GetAndFormat("IMPACT_IMPROVE_CONFLICT_TEAM_OPINION", false, subList[1]);
 							break;
 						case PostRaceEventImpact.ImproveConflictKnowledge:
-							_impactText.text += (_impactText.text.Length > 0 ? "\n" : string.Empty) + Localization.GetAndFormat("IMPACT_IMPROVE_CONFLICT_KNOWLEDGE", false, impact.Value[1]);
-							break;
-						case PostRaceEventImpact.CausesSelectionAfter:
-							_impactText.text += (_impactText.text.Length > 0 ? "\n" : string.Empty) + Localization.GetAndFormat("IMPACT_CAUSES_SELECTION_AFTER", false, impact.Value[0], impact.Value[1], impact.Value[2]);
+							_impactText.text += (_impactText.text.Length > 0 ? "\n\n" : string.Empty) + Localization.GetAndFormat("IMPACT_IMPROVE_CONFLICT_KNOWLEDGE", false, subList[1]);
 							break;
 						default:
-							_impactText.text += (_impactText.text.Length > 0 ? "\n" : string.Empty) + Localization.GetAndFormat("IMPACT_" + Regex.Replace(impact.Key, @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", "_$0").ToUpper(), false, impact.Value[0]);
+							_impactText.text += (_impactText.text.Length > 0 ? "\n\n" : string.Empty) + Localization.GetAndFormat("IMPACT_" + Regex.Replace(impact.Key, @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", "_$0").ToUpper(), false, subList.ToArray());
 							break;
 					}
 				}
