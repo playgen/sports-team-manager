@@ -29,7 +29,10 @@ public class LoadGameUI : MonoBehaviour
 	/// </summary>
 	private void OnEnable()
 	{
-		GetGames();
+        _selectedName = string.Empty;
+        _loadButton.interactable = false;
+        _selectedIcon.SetActive(false);
+        GetGames();
 		_errorText.text = string.Empty;
 		BestFit.ResolutionChange += DoBestFit;
 	}
@@ -44,16 +47,6 @@ public class LoadGameUI : MonoBehaviour
 	/// </summary>
 	private void Update()
 	{
-		if (string.IsNullOrEmpty(_selectedName) && _loadButton.interactable)
-		{
-			_loadButton.interactable = false;
-			_selectedIcon.SetActive(false);
-		}
-		else if(!string.IsNullOrEmpty(_selectedName) && !_loadButton.interactable)
-		{
-			_loadButton.interactable = true;
-			_selectedIcon.SetActive(true);
-		}
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			UIStateManager.StaticBackToMenu();
@@ -89,7 +82,9 @@ public class LoadGameUI : MonoBehaviour
 	{
 		_errorText.text = string.Empty;
 		_selectedName = nameText.text;
-		_selectedIcon.transform.SetParent(nameText.transform, false);
+        _loadButton.interactable = true;
+        _selectedIcon.SetActive(true);
+        _selectedIcon.transform.SetParent(nameText.transform, false);
 		_selectedIcon.transform.position = nameText.transform.position;
 	}
 
@@ -124,7 +119,9 @@ public class LoadGameUI : MonoBehaviour
 				_selectedIcon.SetActive(false);
 				Destroy(_gameContainer.transform.Find(_selectedName).gameObject);
 				_selectedName = string.Empty;
-			}
+                _loadButton.interactable = false;
+                _selectedIcon.SetActive(false);
+            }
 		}
 		_errorText.text = Localization.Get("LOAD_GAME_NOT_LOADED");
 	}

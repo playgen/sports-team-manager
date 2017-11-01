@@ -211,12 +211,9 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			GameManagement.Boat.AssignCrewMember(0, _crewMember);
 			OnReset();
 		}
-		//reset the meeting UI if it is currently being displayed
-		if (UIManagement.MemberMeeting.gameObject.activeInHierarchy)
-		{
-			UIManagement.MemberMeeting.Display();
-		}
-	}
+        //reset the meeting UI
+        UIManagement.MemberMeeting.Display();
+    }
 
 	/// <summary>
 	/// Place the CrewMember to be in-line with the Position it is now paired with
