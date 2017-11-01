@@ -477,8 +477,6 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 			var currentPosition = pair.Key;
 			positionImage.GetComponent<Button>().onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentPosition, TrackerTriggerSources.TeamManagementScreen.ToString()));
-			//if CrewMember has since retired, change color of the object
-			crewMember.transform.Find("Name").GetComponent<Text>().color = current ? UnityEngine.Color.white : UnityEngine.Color.black;
 			crewCount++;
 		}
 		for (var i = crewCount; i < crewContainer.childCount; i++)
@@ -688,7 +686,6 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			{
 				crewMember.GetComponentInChildren<AvatarDisplay>().UpdateAvatar(crewMember.CrewMember.Avatar, true);
 				crewMember.NotCurrent();
-				crewMember.transform.Find("Name").GetComponent<Text>().color = UnityEngine.Color.black;
 			}
 		}
 		//destroy recruitment buttons
