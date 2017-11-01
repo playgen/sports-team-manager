@@ -100,8 +100,8 @@ public class AvatarDisplay : MonoBehaviour
 			_outfitHighlight.color = Color.white;
 		}
 
-		_outfitHighlight.gameObject.SetActive(avatar.CustomOutfitColor);
-		_outfitShadow.gameObject.SetActive(avatar.CustomOutfitColor);
+		_outfitHighlight.gameObject.Active(avatar.CustomOutfitColor);
+		_outfitShadow.gameObject.Active(avatar.CustomOutfitColor);
 
 		if (isIcon)
 		{

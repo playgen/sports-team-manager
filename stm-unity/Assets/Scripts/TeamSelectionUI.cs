@@ -102,8 +102,8 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 				_feedbackButton.onClick.AddListener(TriggerQuestionnaire);
 				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("CONFLICT_QUESTIONNAIRE");
 			}
-			_endRace.gameObject.SetActive(true);
-			_boatMain.gameObject.SetActive(false);
+			_endRace.gameObject.Active(true);
+			_boatMain.gameObject.Active(false);
 		}
 	}
 
@@ -118,7 +118,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	private void Start()
 	{
-		UIManagement.PostRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
+		UIManagement.PostRaceEvents.ToList().ForEach(e => e.Display());
 		ResetScrollbar();
 		CreateSeasonProgress();
 		CreateNewBoat();
@@ -250,14 +250,14 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		if (GameManagement.SeasonOngoing)
 		{
 			stageIcon.sprite = GameManagement.IsRace ? _raceIcon : _practiceIcon;
-			stageIcon.gameObject.SetActive(true);
-			_endRace.gameObject.SetActive(false);
-			_boatMain.gameObject.SetActive(true);
+			stageIcon.gameObject.Active(true);
+			_endRace.gameObject.Active(false);
+			_boatMain.gameObject.Active(true);
 		}
 		//set up buttons and race result UI if player has completed all races
 		else
 		{
-			stageIcon.gameObject.SetActive(false);
+			stageIcon.gameObject.Active(false);
 			_feedbackButton.onClick.RemoveAllListeners();
 			if (GameManagement.GameManager.QuestionnaireCompleted)
 			{
@@ -281,13 +281,13 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 				resultObj.GetComponent<Image>().fillAmount = 0;
 				resultObj.GetComponentInChildren<Text>().text = position.ToString();
 			}
-			_ongoingResultContainer.transform.parent.gameObject.SetActive(false);
+			_ongoingResultContainer.transform.parent.gameObject.Active(false);
 			var finalPosition = GameManagement.GetCupPosition();
 			_finalPlacementText.GetComponent<TextLocalization>().Key = "POSITION_" + finalPosition;
 			_finalPlacementText.GetComponent<TextLocalization>().Set();
 
-			_endRace.gameObject.SetActive(true);
-			_boatMain.gameObject.SetActive(false);
+			_endRace.gameObject.Active(true);
+			_boatMain.gameObject.Active(false);
 		}
 		_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = GameManagement.IsRace || !GameManagement.SeasonOngoing ? string.Empty : GameManagement.CurrentRaceSession.ToString();
 		_positionsEmpty = GameManagement.PositionCount;
@@ -317,17 +317,17 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			var positionObject = positionContainer.Find("Position " + i).gameObject;
 			if (GameManagement.PositionCount <= i)
 			{
-				positionObject.SetActive(false);
+				positionObject.Active(false);
 				continue;
 			}
-			positionObject.SetActive(true);
+			positionObject.Active(true);
 			var pos = GameManagement.Positions[i];
 			positionObject.transform.Find("Name").GetComponent<Text>().text = Localization.Get(pos.ToString());
 			positionObject.transform.Find("Image").GetComponent<Image>().sprite = _roleLogos.First(mo => mo.Name == pos.ToString()).Image;
 			positionObject.GetComponent<PositionUI>().SetUp(pos);
 		}
-		_raceButton.gameObject.SetActive(GameManagement.SeasonOngoing);
-		_skipToRaceButton.gameObject.SetActive(false);
+		_raceButton.gameObject.Active(GameManagement.SeasonOngoing);
+		_skipToRaceButton.gameObject.Active(false);
 		if (GameManagement.SeasonOngoing && !GameManagement.IsRace && !GameManagement.ShowTutorial) {
 			var previousSessions = GetLineUpHistory(0, GameManagement.RaceSessionLength);
 			foreach (var session in previousSessions)
@@ -338,7 +338,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 				}
 				if (Mathf.Approximately(session.Key.IdealMatchScore, session.Key.Positions.Count))
 				{
-					_skipToRaceButton.gameObject.SetActive(true);
+					_skipToRaceButton.gameObject.Active(true);
 					break;
 				}
 			}
@@ -379,7 +379,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			var recruit = Instantiate(_recruitPrefab);
 			recruit.transform.SetParent(_crewContainer.transform, false);
 			recruit.name = "zz Recruit";
-			recruit.GetComponent<Button>().onClick.AddListener(() => UIManagement.Recruitment.gameObject.SetActive(true));
+			recruit.GetComponent<Button>().onClick.AddListener(() => UIManagement.Recruitment.gameObject.Active(true));
 			_recruitButtons.Add(recruit.GetComponent<Button>());
 			sortedCrew.Add(recruit.transform);
 		}
@@ -429,7 +429,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	private void CreateHistoricalBoat(GameObject oldBoat, Boat boat, int offset, int stageNumber)
 	{
-		oldBoat.SetActive(true);
+		oldBoat.Active(true);
 		var stageIcon = oldBoat.transform.Find("Stage").GetComponent<Image>();
 		var isRace = stageNumber == 0;
 		stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
@@ -451,7 +451,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		{
 			//create CrewMember UI object for the CrewMember that was in this position
 			var crewMember = crewContainer.Find("Crew Member " + crewCount).gameObject;
-			crewMember.SetActive(true);
+			crewMember.Active(true);
 			var current = GameManagement.CrewMembers.ContainsKey(pair.Value.Name);
 			crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(pair.Value.Name, true);
 			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, scoreDiff * (2f / boat.Positions.Count) + 3, true);
@@ -469,7 +469,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		for (var i = crewCount; i < crewContainer.childCount; i++)
 		{
 			var crewMember = crewContainer.Find("Crew Member " + i).gameObject;
-			crewMember.SetActive(false);
+			crewMember.Active(false);
 		}
 		DoBestFit();
 	}
@@ -485,10 +485,10 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			var mistakeObject = mistakeParent.Find("Ideal Icon " + i).gameObject;
 			if (mistakes.Count <= i || string.IsNullOrEmpty(mistakes[i]))
 			{
-				mistakeObject.SetActive(false);
+				mistakeObject.Active(false);
 				continue;
 			}
-			mistakeObject.SetActive(true);
+			mistakeObject.Active(true);
 			//set image based on mistake name
 			var mistakeIcon = _mistakeIcons.First(mo => mo.Name == mistakes[i]).Image;
 			mistakeObject.GetComponent<Image>().sprite = mistakeIcon;
@@ -498,7 +498,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		}
 		//set numbers for each 'light'
 		var unideal = positionCount - (int)idealScore - ((idealScore % 1) * 10);
-		boat.transform.Find("Light Container").gameObject.SetActive(true);
+		boat.transform.Find("Light Container").gameObject.Active(true);
 		boat.transform.Find("Light Container/Green").GetComponentInChildren<Text>().text = ((int)idealScore).ToString();
 		FeedbackHoverOver(boat.transform.Find("Light Container/Green"), "GREEN_PLACEMENT");
 		boat.transform.Find("Light Container/Yellow").GetComponentInChildren<Text>().text = Mathf.RoundToInt(((idealScore % 1) * 10)).ToString();
@@ -564,7 +564,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		_boatContainerScroll.size = 1f / _boatContainerScroll.numberOfSteps;
 		_boatContainerScroll.value = 0;
 		_previousScrollValue = 1;
-		_boatContainerScroll.gameObject.SetActive(_boatContainerScroll.numberOfSteps >= 2);
+		_boatContainerScroll.gameObject.Active(_boatContainerScroll.numberOfSteps >= 2);
 		ChangeVisibleBoats();
 	}
 
@@ -582,13 +582,13 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		foreach (var boat in GetLineUpHistory(skipAmount, 4))
 		{
 			var boatObject = _boatPool[setUpCount];
-			boatObject.SetActive(true);
+			boatObject.Active(true);
 			CreateHistoricalBoat(boatObject, boat.Key, boat.Value.Key, boat.Value.Value);
 			setUpCount++;
 		}
 		for (var i = setUpCount; i < _boatPool.Count; i++)
 		{
-			_boatPool[i].SetActive(false);
+			_boatPool[i].Active(false);
 		}
 		_previousScrollValue = skipAmount;
 	}

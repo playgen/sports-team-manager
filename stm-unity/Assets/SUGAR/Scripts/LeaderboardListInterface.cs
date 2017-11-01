@@ -100,7 +100,7 @@ public class LeaderboardListInterface : BaseLeaderboardListInterface
 		{
 			if (i >= leaderboardList.Count)
 			{
-				_leaderboardButtons[i].gameObject.SetActive(false);
+				_leaderboardButtons[i].gameObject.Active(false);
 			}
 			else
 			{
@@ -108,7 +108,7 @@ public class LeaderboardListInterface : BaseLeaderboardListInterface
 				_leaderboardButtons[i].GetComponentInChildren<Text>().text = Localization.Get(leaderboardList[i].Token);
 				var token = leaderboardList[i].Token;
 				_leaderboardButtons[i].onClick.AddListener(() => SUGARManager.Leaderboard.Display(token, SUGARManager.Leaderboard.CurrentFilter));
-				_leaderboardButtons[i].gameObject.SetActive(true);
+				_leaderboardButtons[i].gameObject.Active(true);
 			}
 		}
 		_leaderboardType.text = SUGARManager.GameLeaderboard.CurrentActorType == ActorType.Undefined ? Localization.Get("COMBINED") : Localization.Get(SUGARManager.GameLeaderboard.CurrentActorType.ToString());

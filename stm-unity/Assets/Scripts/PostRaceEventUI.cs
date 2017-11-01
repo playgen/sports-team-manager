@@ -22,23 +22,10 @@ public class PostRaceEventUI : MonoBehaviour
 
 	private void OnEnable()
 	{
-		_closeButton.SetActive(false);
-		if (_postRacePeople == null)
-		{
-			_postRacePeople = GetComponentsInChildren<PostRacePersonUI>(true);
-		}
-		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
-		{
-			Localization.LanguageChange += OnLanguageChange;
-			BestFit.ResolutionChange += DoBestFit;
-			//reorder pop-ups and blockers
-			transform.parent.EnableBlocker();
-			ResetDisplay();
-		}
-		else
-		{
-			Close(string.Empty);
-		}
+        Localization.LanguageChange += OnLanguageChange;
+        BestFit.ResolutionChange += DoBestFit;
+        //reorder pop-ups and blockers
+        transform.parent.EnableBlocker();
 	}
 
 	private void OnDisable()
@@ -54,18 +41,31 @@ public class PostRaceEventUI : MonoBehaviour
 			}
 			if (transform.parent.GetSiblingIndex() == transform.parent.parent.childCount - 1)
 			{
-				UIManagement.Blocker.gameObject.SetActive(false);
+				UIManagement.DisableBlocker();
 			}
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
 	}
+
+    public void Display()
+    {
+        if (_postRacePeople == null)
+        {
+            _postRacePeople = GetComponentsInChildren<PostRacePersonUI>(true);
+        }
+        if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
+        {
+            gameObject.Active(true);
+            ResetDisplay();
+        }
+    }
 
 	/// <summary>
 	/// Reset and populate the pop-up for a new event
 	/// </summary>
 	public void ResetDisplay()
 	{
-		_closeButton.SetActive(false);
+		_closeButton.Active(false);
 		for (var i = 0; i < _postRacePeople.Length; i++)
 		{
 			_postRacePeople[i].ResetDisplay(GameManagement.CurrentEvent[i]);
@@ -80,7 +80,7 @@ public class PostRaceEventUI : MonoBehaviour
 	/// </summary>
 	public void Close(string source)
 	{
-		gameObject.SetActive(false);
+		gameObject.Active(false);
 		if (!string.IsNullOrEmpty(source))
 		{
 			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
@@ -247,7 +247,7 @@ public class PostRaceEventUI : MonoBehaviour
 	{
 		if (_postRacePeople.All(prp => prp.ActiveQuestions() == false))
 		{
-			_closeButton.SetActive(true);
+			_closeButton.Active(true);
 			transform.parent.EnableBlocker(GetLearningPill, () => Close(TrackerTriggerSources.PopUpBlocker.ToString()), UIManagement.TeamSelection.ResetCrew, SendLearningPill);
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}

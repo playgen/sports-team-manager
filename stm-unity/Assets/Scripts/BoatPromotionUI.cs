@@ -29,7 +29,7 @@ public class BoatPromotionUI : MonoBehaviour
 		{
 			var oldPos = GameManagement.LineUpHistory.Last().Positions;
 			var newPos = GameManagement.Positions;
-			gameObject.SetActive(true);
+			gameObject.Active(true);
 			transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
 			var addedText = transform.Find("Added List").GetComponent<Text>();
 			var removedText = transform.Find("Removed List").GetComponent<Text>();
@@ -58,8 +58,8 @@ public class BoatPromotionUI : MonoBehaviour
 	{
 		if (gameObject.activeInHierarchy)
 		{
-			gameObject.SetActive(false);
-			UIManagement.Blocker.gameObject.SetActive(false);
+			gameObject.Active(false);
+			UIManagement.DisableBlocker();
 			if (!string.IsNullOrEmpty(source))
 			{
 				var newString = GameManagement.PositionString;
@@ -70,7 +70,7 @@ public class BoatPromotionUI : MonoBehaviour
 			}, AccessibleTracker.Accessible.Screen));
 			}
 		}
-		UIManagement.PostRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
+		UIManagement.PostRaceEvents.ToList().ForEach(e => e.Display());
 	}
 
 	/// <summary>

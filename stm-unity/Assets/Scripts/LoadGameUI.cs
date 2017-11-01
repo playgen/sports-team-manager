@@ -31,7 +31,7 @@ public class LoadGameUI : MonoBehaviour
 	{
         _selectedName = string.Empty;
         _loadButton.interactable = false;
-        _selectedIcon.SetActive(false);
+        _selectedIcon.Active(false);
         GetGames();
 		_errorText.text = string.Empty;
 		BestFit.ResolutionChange += DoBestFit;
@@ -83,7 +83,7 @@ public class LoadGameUI : MonoBehaviour
 		_errorText.text = string.Empty;
 		_selectedName = nameText.text;
         _loadButton.interactable = true;
-        _selectedIcon.SetActive(true);
+        _selectedIcon.Active(true);
         _selectedIcon.transform.SetParent(nameText.transform, false);
 		_selectedIcon.transform.position = nameText.transform.position;
 	}
@@ -116,11 +116,10 @@ public class LoadGameUI : MonoBehaviour
 			{
 				_errorText.text = Localization.Get("LOAD_GAME_MISSING_FILES");
 				_selectedIcon.transform.SetParent(_gameContainer.transform, true);
-				_selectedIcon.SetActive(false);
+				_selectedIcon.Active(false);
 				Destroy(_gameContainer.transform.Find(_selectedName).gameObject);
 				_selectedName = string.Empty;
                 _loadButton.interactable = false;
-                _selectedIcon.SetActive(false);
             }
 		}
 		_errorText.text = Localization.Get("LOAD_GAME_NOT_LOADED");

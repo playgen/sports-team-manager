@@ -82,8 +82,8 @@ public class SettingsUI : MonoBehaviour {
 	public void ChangeLanguage()
 	{
 		Localization.UpdateLanguage(Localization.Languages[_languageDropdown.value]);
-		gameObject.SetActive(false);
-		gameObject.SetActive(true);
+		gameObject.Active(false);
+		gameObject.Active(true);
 	}
 
 	private void DoBestFit()

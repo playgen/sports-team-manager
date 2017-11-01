@@ -46,7 +46,7 @@ public class ScreenSideUI : MonoBehaviour {
 	/// </summary>
 	public void DisplayQuitWarning()
 	{
-		_popUpBlocker.gameObject.SetActive(true);
+		_popUpBlocker.gameObject.Active(true);
 		_quitWarningPopUp.GetComponentsInChildren<Button>().Select(b => b.gameObject).BestFit();
 	}
 
@@ -55,7 +55,7 @@ public class ScreenSideUI : MonoBehaviour {
 	/// </summary>
 	public void CloseQuitWarning()
 	{
-		_popUpBlocker.gameObject.SetActive(false);
+		_popUpBlocker.gameObject.Active(false);
 	}
 
 	private void DoBestFit()

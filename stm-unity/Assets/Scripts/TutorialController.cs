@@ -73,19 +73,19 @@ public class TutorialController : MonoBehaviour
 		}
 		foreach (Transform child in transform)
 		{
-			child.gameObject.SetActive(false);
+			child.gameObject.Active(false);
 		}
 	}
 
 	private void Start()
 	{
-		gameObject.SetActive(GameManagement.ShowTutorial);
-		_tutorialQuitButton.SetActive(GameManagement.ShowTutorial);
+		gameObject.Active(GameManagement.ShowTutorial);
+		_tutorialQuitButton.Active(GameManagement.ShowTutorial);
 		foreach (Transform child in transform)
 		{
-			child.gameObject.SetActive(child.GetSiblingIndex() == GameManagement.TutorialStage);
+			child.gameObject.Active(child.GetSiblingIndex() == GameManagement.TutorialStage);
 		}
-		_tutorialExitBlocker.SetActive(transform.childCount == GameManagement.TutorialStage + 1);
+		_tutorialExitBlocker.Active(transform.childCount == GameManagement.TutorialStage + 1);
 	}
 
 	public void ShareEvent(string typeName, string methodName, params object[] passed)
@@ -102,19 +102,19 @@ public class TutorialController : MonoBehaviour
 	public void AdvanceStage()
 	{
 		var stage = GameManagement.TutorialStage;
-		transform.GetChild(stage).gameObject.SetActive(false);
+		transform.GetChild(stage).gameObject.Active(false);
 		var saveAmount = transform.GetChild(stage).GetComponent<TutorialSectionUI>().SaveNextSection;
 		GameManagement.GameManager.SaveTutorialProgress(saveAmount, transform.childCount <= stage + 1);
-		_tutorialExitBlocker.SetActive(transform.childCount == stage + 2);
+		_tutorialExitBlocker.Active(transform.childCount == stage + 2);
 		if (GameManagement.ShowTutorial)
 		{
-			transform.GetChild(stage + 1).gameObject.SetActive(true);
+			transform.GetChild(stage + 1).gameObject.Active(true);
 		}
 		else
 		{
 			SUGARManager.GameData.Send("Tutorial Finished", true);
-			gameObject.SetActive(false);
-			_tutorialQuitButton.SetActive(false);
+			gameObject.Active(false);
+			_tutorialQuitButton.Active(false);
 		}
 	}
 
@@ -134,11 +134,11 @@ public class TutorialController : MonoBehaviour
 				{ TrackerContextKeys.TutorialStage.ToString(), (GameManagement.TutorialStage + 1).ToString() },
 			}, CompletableTracker.Completable.Completable));
 		}
-		transform.GetChild(GameManagement.TutorialStage).gameObject.SetActive(false);
+		transform.GetChild(GameManagement.TutorialStage).gameObject.Active(false);
 		GameManagement.GameManager.SaveTutorialProgress(0, true);
-		gameObject.SetActive(false);
-		_tutorialQuitButton.SetActive(false);
-		_tutorialExitBlocker.SetActive(false);
+		gameObject.Active(false);
+		_tutorialQuitButton.Active(false);
+		_tutorialExitBlocker.Active(false);
 	}
 
 	/// <summary>

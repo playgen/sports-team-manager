@@ -190,24 +190,24 @@ public class TutorialSectionUI : MonoBehaviour
 		//if text is provided, display the tutorial helper
 		if (_sectionText[Localization.SelectedLanguage.Name].Length == 0)
 		{
-			_tutorialObject.SetActive(false);
+			_tutorialObject.Active(false);
 			GetComponentInChildren<ReverseRaycastTarget>().UnblockWhitelisted();
 			pageNumber.text = string.Empty;
 		}
 		else
 		{
 			//display different buttons and sections according to what oart should be displayed
-			_tutorialObject.SetActive(true);
+			_tutorialObject.Active(true);
 			_tutorialText.text = _sectionText[Localization.SelectedLanguage.Name][_currentText];
-			back.SetActive(true);
-			forward.SetActive(true);
+			back.Active(true);
+			forward.Active(true);
 			if (_currentText == 0)
 			{
-				back.SetActive(false);
+				back.Active(false);
 			}
 			if (_currentText == _sectionText[Localization.SelectedLanguage.Name].Length - 1)
 			{
-				forward.SetActive(false);
+				forward.Active(false);
 				GetComponentInChildren<ReverseRaycastTarget>().UnblockWhitelisted();
 				_unblocked = true;
 			}
@@ -236,7 +236,7 @@ public class TutorialSectionUI : MonoBehaviour
 		}
 		if (transform.parent.childCount - 1 == transform.GetSiblingIndex())
 		{
-			_buttons.Find("End Text").gameObject.SetActive(true);
+			_buttons.Find("End Text").gameObject.Active(true);
 		}
 		var speechBubble = transform.Find("Tutorial Helper/Image");
 		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)speechBubble);

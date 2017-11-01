@@ -22,7 +22,7 @@ public class AchievementItemInterface : MonoBehaviour
 	/// </summary>
 	internal void SetText(string achieveName, bool completed)
 	{
-		gameObject.SetActive(true);
+		gameObject.Active(true);
 		_achieveName.text = achieveName;
 		_achieveImage.enabled = completed;
 	}
@@ -32,6 +32,6 @@ public class AchievementItemInterface : MonoBehaviour
 	/// </summary>
 	internal void Disable()
 	{
-		gameObject.SetActive(false);
+		gameObject.Active(false);
 	}
 }

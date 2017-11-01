@@ -38,7 +38,7 @@ public class RaceResultUI : MonoBehaviour
 	{
 		UIManagement.MemberMeeting.CloseCrewMemberPopUp(string.Empty);
 		UIManagement.PositionDisplay.ClosePositionPopUp(string.Empty);
-		gameObject.SetActive(true);
+		gameObject.Active(true);
 		transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
 		_lastRacePositions = new Dictionary<Position, CrewMember>(currentPositions);
 		_lastRaceFinishPosition = finishPosition;
@@ -80,8 +80,8 @@ public class RaceResultUI : MonoBehaviour
 	{
 		if (gameObject.activeInHierarchy)
 		{
-			gameObject.SetActive(false);
-			UIManagement.Blocker.gameObject.SetActive(false);
+			gameObject.Active(false);
+			UIManagement.DisableBlocker();
 			TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.FinishingPosition.ToString(), _lastRaceFinishPosition.ToString() },

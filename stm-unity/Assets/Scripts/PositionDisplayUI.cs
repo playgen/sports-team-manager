@@ -112,7 +112,7 @@ public class PositionDisplayUI : MonoBehaviour
 			{ TrackerContextKeys.SessionsIncludedCount.ToString(), (GameManagement.LineUpHistory.Sum(boat => boat.Positions.Count(pos => pos == position)) + 1).ToString() },
 		}, AccessibleTracker.Accessible.Screen));
 		SUGARManager.GameData.Send("View Position Screen", position.ToString());
-		gameObject.SetActive(true);
+		gameObject.Active(true);
 		transform.EnableSmallBlocker(() => ClosePositionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 		Display(position);
 	}
@@ -136,8 +136,8 @@ public class PositionDisplayUI : MonoBehaviour
 		_roleImage.sprite = UIManagement.TeamSelection.RoleLogos.First(mo => mo.Name == position.ToString()).Image;
 		_currentButton.onClick.RemoveAllListeners();
 		//display avatar and CrewMember name accordingly
-		_currentAvatar.gameObject.SetActive(currentCrew != null);
-		_currentName.gameObject.SetActive(currentCrew != null);
+		_currentAvatar.gameObject.Active(currentCrew != null);
+		_currentName.gameObject.Active(currentCrew != null);
 		//set-up avatar, name and onclick handler if CrewMember is in this position
 		if (currentCrew != null)
 		{
@@ -214,14 +214,14 @@ public class PositionDisplayUI : MonoBehaviour
 				{ TrackerContextKeys.PositionName.ToString(), _current.ToString() },
 				{ TrackerContextKeys.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
-			gameObject.SetActive(false);
+			gameObject.Active(false);
 			if (UIManagement.MemberMeeting.gameObject.activeInHierarchy)
 			{
 				UIManagement.MemberMeeting.gameObject.transform.EnableSmallBlocker(() => UIManagement.MemberMeeting.CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 			}
 			else
 			{
-				UIManagement.SmallBlocker.gameObject.SetActive(false);
+				UIManagement.DisableSmallBlocker();
 			}
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
@@ -238,7 +238,7 @@ public class PositionDisplayUI : MonoBehaviour
 		}
 		else if (!transform.parent.GetChild(transform.parent.childCount - 1).gameObject.activeInHierarchy)
 		{
-			UIManagement.SmallBlocker.gameObject.SetActive(false);
+			UIManagement.DisableSmallBlocker();
 		}
 	}
 

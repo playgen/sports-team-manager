@@ -61,7 +61,7 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	private void OnDisable()
 	{
-		_fireWarningPopUp.SetActive(false);
+		_fireWarningPopUp.Active(false);
 		Localization.LanguageChange -= OnLanguageChange;
 		BestFit.ResolutionChange -= DoBestFit;
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentMember.Name);
@@ -90,8 +90,8 @@ public class MemberMeetingUI : MonoBehaviour
 		}
 
 		//make pop-up visible and firing warning not visible
-		gameObject.SetActive(true);
-		_fireWarningPopUp.SetActive(false);
+		gameObject.Active(true);
+		_fireWarningPopUp.Active(false);
 		//disable opinion images on CrewMember UI objects
 		foreach (var cmui in UIManagement.CrewMemberUI)
 		{
@@ -140,7 +140,7 @@ public class MemberMeetingUI : MonoBehaviour
 		//set up button onclick if CrewMember is positioned
 		if (currentRole != Position.Null)
 		{
-			_roleButton.gameObject.SetActive(true);
+			_roleButton.gameObject.Active(true);
 			_roleButton.onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentRole, TrackerTriggerSources.TeamManagementScreen.ToString()));
 			_roleButton.GetComponentInChildren<Text>().text = Localization.Get(currentRole.ToString(), true);
 			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = UIManagement.TeamSelection.RoleLogos.First(mo => mo.Name == currentRole.ToString()).Image;
@@ -148,7 +148,7 @@ public class MemberMeetingUI : MonoBehaviour
 		//hide if not positioned
 		else
 		{
-			_roleButton.gameObject.SetActive(false);
+			_roleButton.gameObject.Active(false);
 		}
 		//set stat bar fill amount (foreground) and sprite (background)
 		for (var i = 0; i < _barForegrounds.Length; i++)
@@ -274,7 +274,7 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
 			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(_currentMember.Name) },
 		}, AccessibleTracker.Accessible.Screen));
-		_fireWarningPopUp.SetActive(true);
+		_fireWarningPopUp.Active(true);
 		_fireWarningPopUp.transform.EnableSmallBlocker(() => CloseFireCrewWarning(TrackerTriggerSources.PopUpBlocker.ToString()));
 		DoBestFit();
 	}
@@ -289,14 +289,14 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKeys.PositionName.ToString(), _currentMember.Name },
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
 		}, AccessibleTracker.Accessible.Screen));
-		_fireWarningPopUp.SetActive(false);
+		_fireWarningPopUp.Active(false);
 		if (gameObject.activeInHierarchy)
 		{
 			transform.EnableSmallBlocker(() => CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 		}
 		else
 		{
-			UIManagement.SmallBlocker.gameObject.SetActive(false);
+			UIManagement.DisableSmallBlocker();
 		}
 	}
 
@@ -334,7 +334,7 @@ public class MemberMeetingUI : MonoBehaviour
 				{ TrackerContextKeys.PositionName.ToString(), _currentMember.Name },
 				{ TrackerContextKeys.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
-			gameObject.SetActive(false);
+			gameObject.Active(false);
 			foreach (var crewMember in UIManagement.CrewMemberUI)
 			{
 				if (crewMember.Current)

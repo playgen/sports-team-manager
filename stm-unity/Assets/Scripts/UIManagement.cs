@@ -124,7 +124,7 @@ public static class UIManagement
     {
         _smallBlocker.transform.SetAsLastSibling();
         obj.SetAsLastSibling();
-        _smallBlocker.gameObject.SetActive(true);
+        _smallBlocker.gameObject.Active(true);
         _smallBlocker.onClick.RemoveAllListeners();
         foreach (var action in actions)
         {
@@ -136,11 +136,30 @@ public static class UIManagement
     {
         _blocker.transform.SetAsLastSibling();
         obj.SetAsLastSibling();
-        _blocker.gameObject.SetActive(true);
+        _blocker.gameObject.Active(true);
+        _blocker.gameObject.Active(true);
         _blocker.onClick.RemoveAllListeners();
         foreach (var action in actions)
         {
             _blocker.onClick.AddListener(action);
+        }
+    }
+
+    public static void DisableSmallBlocker()
+    {
+        _smallBlocker.gameObject.Active(false);
+    }
+
+    public static void DisableBlocker()
+    {
+        _blocker.gameObject.Active(false);
+    }
+
+    public static void Active(this GameObject go, bool active)
+    {
+        if (go.activeInHierarchy != active)
+        {
+            go.SetActive(active);
         }
     }
 }

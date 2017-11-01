@@ -33,7 +33,7 @@ public class NewGameUI : MonoBehaviour {
 
 	private void Awake()
 	{
-		_overwritePopUp.SetActive(false);
+		_overwritePopUp.Active(false);
 		WarningDisable();
 		RandomColor();
 		_boatName.onValidateInput += (input, charIndex, addedChar) => InvalidFlash(addedChar, _boatName);
@@ -48,7 +48,7 @@ public class NewGameUI : MonoBehaviour {
 		if (!char.IsLetterOrDigit(newChar) && newChar != ' ')
 		{
 			newChar = '\0';
-			inputField.transform.Find("Warning").gameObject.SetActive(true);
+			inputField.transform.Find("Warning").gameObject.Active(true);
 			Invoke("WarningDisable", 0.02f);
 		}
 		return newChar;
@@ -98,10 +98,10 @@ public class NewGameUI : MonoBehaviour {
 	private void WarningDisable()
 	{
 		_errorText.text = string.Empty;
-		_boatName.transform.Find("Required Warning").gameObject.SetActive(false);
-		_managerName.transform.Find("Required Warning").gameObject.SetActive(false);
-		_boatName.transform.Find("Warning").gameObject.SetActive(false);
-		_managerName.transform.Find("Warning").gameObject.SetActive(false);
+		_boatName.transform.Find("Required Warning").gameObject.Active(false);
+		_managerName.transform.Find("Required Warning").gameObject.Active(false);
+		_boatName.transform.Find("Warning").gameObject.Active(false);
+		_managerName.transform.Find("Warning").gameObject.Active(false);
 	}
 
 	/// <summary>
@@ -114,18 +114,18 @@ public class NewGameUI : MonoBehaviour {
 		if (string.IsNullOrEmpty(_boatName.text) || _boatName.text.Trim().Length == 0)
 		{
 			valid = false;
-			_boatName.transform.Find("Required Warning").gameObject.SetActive(true);
+			_boatName.transform.Find("Required Warning").gameObject.Active(true);
 		}
 		if (string.IsNullOrEmpty(_managerName.text) || _managerName.text.Trim().Length == 0)
 		{
 			valid = false;
-			_managerName.transform.Find("Required Warning").gameObject.SetActive(true);
+			_managerName.transform.Find("Required Warning").gameObject.Active(true);
 		}
 		if (valid)
 		{
 			if (GameManagement.GameManager.CheckIfGameExists(Path.Combine(Application.persistentDataPath, "GameSaves"), _boatName.text))
 			{
-				_overwritePopUp.SetActive(true);
+				_overwritePopUp.Active(true);
 				DoBestFit();
 			}
 			else

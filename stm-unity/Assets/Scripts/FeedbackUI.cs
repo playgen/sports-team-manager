@@ -37,7 +37,7 @@ public class FeedbackUI : MonoBehaviour {
 		_pageNumber = 0;
 		foreach (var page in _pages)
 		{
-			page.SetActive(false);
+			page.Active(false);
 		}
 		ChangePage(0);
 		DrawGraph();
@@ -56,9 +56,9 @@ public class FeedbackUI : MonoBehaviour {
 	/// </summary>
 	public void ChangePage(int amount)
 	{
-		_pages[_pageNumber].SetActive(false);
+		_pages[_pageNumber].Active(false);
 		_pageNumber += amount;
-		_pages[_pageNumber].SetActive(true);
+		_pages[_pageNumber].Active(true);
 		if (_pageNumber == 0)
 		{
 			DoBestFit();
@@ -72,7 +72,7 @@ public class FeedbackUI : MonoBehaviour {
 	{
 		_descriptionPopUp.transform.Find("Description Pop-Up/Header").GetComponent<TextLocalization>().Key = descriptionType;
 		_descriptionPopUp.transform.Find("Description Pop-Up/Text").GetComponent<TextLocalization>().Key = descriptionType + "_Description";
-		_descriptionPopUp.SetActive(true);
+		_descriptionPopUp.Active(true);
 	}
 
 	/// <summary>

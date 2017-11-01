@@ -63,7 +63,7 @@ public class RecruitMemberUI : MonoBehaviour
 
 	private void OnDisable()
 	{
-		UIManagement.Blocker.gameObject.SetActive(false);
+		UIManagement.DisableBlocker();
 		UIManagement.Blocker.transform.SetAsFirstSibling();
 		transform.SetAsFirstSibling();
 		Localization.LanguageChange -= OnLanguageChange;
@@ -88,12 +88,12 @@ public class RecruitMemberUI : MonoBehaviour
 			//hide display if not needed
 			if (recruits.Count <= i)
 			{
-				_recruitUI[i].SetActive(false);
+				_recruitUI[i].Active(false);
 				continue;
 			}
 			//make UI element active
 			var thisRecruit = recruits[i];
-			_recruitUI[i].SetActive(true);
+			_recruitUI[i].Active(true);
 			//set-up displayed name
 			var splitName = thisRecruit.Name.Split(' ');
 			var firstName =  ",\n" + splitName.First();
@@ -139,11 +139,11 @@ public class RecruitMemberUI : MonoBehaviour
 		{
 			if (skills.Length <= i)
 			{
-				_questionButtons[i].gameObject.SetActive(false);
+				_questionButtons[i].gameObject.Active(false);
 				continue;
 			}
 			var selected = skills[i];
-			_questionButtons[i].gameObject.SetActive(true);
+			_questionButtons[i].gameObject.Active(true);
 			_questionButtons[i].interactable = true;
 			var questionText = ("Recruit" + selected).EventString(false);
 			_questionButtons[i].transform.Find("Text").GetComponent<Text>().text = Localization.Get(questionText);
@@ -222,13 +222,13 @@ public class RecruitMemberUI : MonoBehaviour
 	{
 		_currentSelected = recruit.Name;
 		//pop-up and blocker reordering
-		_hireWarningPopUp.SetActive(true);
+		_hireWarningPopUp.Active(true);
 		_hireWarningPopUp.transform.EnableBlocker(() => CloseHireCrewWarning(TrackerTriggerSources.PopUpBlocker.ToString()));
 		//adjust text, button text and button positioning based on context
 		if (!ConfigKeys.RecruitmentCost.Affordable())
 		{
 			_hireWarningText.text = Localization.Get("HIRE_WARNING_NOT_POSSIBLE");
-			_hireWarningAccept.gameObject.SetActive(false);
+			_hireWarningAccept.gameObject.Active(false);
 			((RectTransform)_hireWarningReject.transform).anchorMin = new Vector2(0.375f, 0.1f);
 			((RectTransform)_hireWarningReject.transform).anchorMax = new Vector2(0.625f, 0.35f);
 			((RectTransform)_hireWarningReject.transform).anchoredPosition = Vector2.zero;
@@ -240,7 +240,7 @@ public class RecruitMemberUI : MonoBehaviour
 		{
 			_hireWarningAccept.onClick.RemoveAllListeners();
 			_hireWarningAccept.onClick.AddListener(() => Recruit(recruit, TrackerTriggerSources.YesButtonSelected.ToString()));
-			_hireWarningAccept.gameObject.SetActive(true);
+			_hireWarningAccept.gameObject.Active(true);
 			_hireWarningText.text = Localization.GetAndFormat("HIRE_WARNING_POSSIBLE", false, recruit.Name);
 			((RectTransform)_hireWarningReject.transform).anchorMin = new Vector2(0.55f, 0.1f);
 			((RectTransform)_hireWarningReject.transform).anchorMax = new Vector2(0.8f, 0.35f);
@@ -263,14 +263,14 @@ public class RecruitMemberUI : MonoBehaviour
 	/// </summary>
 	public void CloseHireCrewWarning(string source)
 	{
-		_hireWarningPopUp.SetActive(false);
+		_hireWarningPopUp.Active(false);
 		if (gameObject.activeInHierarchy)
 		{
 			transform.EnableBlocker(() => CloseRecruitmentPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
 		}
 		else
 		{
-			UIManagement.Blocker.gameObject.SetActive(false);
+			UIManagement.DisableBlocker();
 		}
 		TrackerEventSender.SendEvent(new TraceEvent("HirePopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 		{
@@ -313,7 +313,7 @@ public class RecruitMemberUI : MonoBehaviour
 			{ TrackerContextKeys.TriggerUI.ToString(), source }
 		}, AccessibleTracker.Accessible.Screen));
 		UIManagement.MemberMeeting.Display();
-		gameObject.SetActive(false);
+		gameObject.Active(false);
 	}
 
 	/// <summary>

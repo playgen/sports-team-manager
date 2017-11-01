@@ -12,7 +12,7 @@ public class EscapeAction : MonoBehaviour {
 			//if settings panel is open, close settings panel
 			if (UIManagement.Settings.gameObject.activeInHierarchy)
 			{
-			    UIManagement.Settings.transform.parent.gameObject.SetActive(false);
+			    UIManagement.Settings.transform.parent.gameObject.Active(false);
 				return;
 			}
 			//if tutorial quitting pop-up is open, close this pop-up
@@ -21,7 +21,7 @@ public class EscapeAction : MonoBehaviour {
 				var popUp = UIManagement.Tutorial.transform.parent.Find("Quit Tutorial Pop-Up").gameObject;
 				if (popUp.activeInHierarchy)
 				{
-					popUp.SetActive(false);
+					popUp.Active(false);
 					return;
 				}
 			}

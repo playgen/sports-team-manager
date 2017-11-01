@@ -67,7 +67,7 @@ public class UIStateManager : MonoBehaviour {
 		}
 		else
 		{
-			_signIn.SetActive(SUGARManager.CurrentUser == null);
+			_signIn.Active(SUGARManager.CurrentUser == null);
 			if (SUGARManager.CurrentUser != null)
 			{
 				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
@@ -113,8 +113,8 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	public void MenuToNewGame()
 	{
-		_mainMenu.SetActive(false);
-		_newGame.SetActive(true);
+		_mainMenu.Active(false);
+		_newGame.Active(true);
 	}
 
 	/// <summary>
@@ -122,8 +122,8 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	public void MenuToLoadGame()
 	{
-		_mainMenu.SetActive(false);
-		_loadGame.SetActive(true);
+		_mainMenu.Active(false);
+		_loadGame.Active(true);
 	}
 
 	/// <summary>
@@ -131,12 +131,12 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	public void BackToMenu()
 	{
-		_newGame.SetActive(false);
-		_loadGame.SetActive(false);
-		_teamManagement.SetActive(false);
-		_questionnaire.SetActive(false);
-		_feedback.SetActive(false);
-		_mainMenu.SetActive(true);
+		_newGame.Active(false);
+		_loadGame.Active(false);
+		_teamManagement.Active(false);
+		_questionnaire.Active(false);
+		_feedback.Active(false);
+		_mainMenu.Active(true);
 		DoBestFit();
 		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = GameManagement.GameNames.Count != 0;
 	}
@@ -154,11 +154,11 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	public void GoToGame()
 	{
-		_newGame.SetActive(false);
-		_loadGame.SetActive(false);
-		_teamManagement.SetActive(true);
-		_questionnaire.SetActive(false);
-		_feedback.SetActive(false);
+		_newGame.Active(false);
+		_loadGame.Active(false);
+		_teamManagement.Active(true);
+		_questionnaire.Active(false);
+		_feedback.Active(false);
 		((ScreenSideUI)FindObjectOfType(typeof(ScreenSideUI))).ChangeSelected(0);
 	}
 
@@ -167,9 +167,9 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	public void GoToQuestionnaire()
 	{
-		_teamManagement.SetActive(false);
-		_questionnaire.SetActive(true);
-		_feedback.SetActive(false);
+		_teamManagement.Active(false);
+		_questionnaire.Active(true);
+		_feedback.Active(false);
 	}
 
 	/// <summary>
@@ -177,9 +177,9 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	public void GoToFeedback()
 	{
-		_teamManagement.SetActive(false);
-		_questionnaire.SetActive(false);
-		_feedback.SetActive(true);
+		_teamManagement.Active(false);
+		_questionnaire.Active(false);
+		_feedback.Active(true);
 	}
 
 	/// <summary>
@@ -207,13 +207,13 @@ public class UIStateManager : MonoBehaviour {
 		{
 			if (success)
 			{
-				_signIn.SetActive(false);
+				_signIn.Active(false);
 				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
 				DoBestFit();
 			}
 			else
 			{
-				_signIn.SetActive(true);
+				_signIn.Active(true);
 			}
 		});
 	}

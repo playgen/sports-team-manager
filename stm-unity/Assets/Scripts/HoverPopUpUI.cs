@@ -53,7 +53,7 @@ public class HoverPopUpUI : MonoBehaviour {
 		if (_currentHovered != Vector2.zero)
 		{
 			_canvasSize = ((RectTransform)GetComponentInParent<CanvasScaler>().gameObject.transform).rect.size;
-			gameObject.SetActive(true);
+			gameObject.Active(true);
 			transform.SetAsLastSibling();
 			GetComponentInChildren<Text>().text = Localization.Get(_currentText);
 			transform.position = Input.mousePosition;
@@ -103,7 +103,7 @@ public class HoverPopUpUI : MonoBehaviour {
 	/// </summary>
 	public void HideHover()
 	{
-		gameObject.SetActive(false);
+		gameObject.Active(false);
 		_currentHovered = Vector2.zero;
 	    UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}

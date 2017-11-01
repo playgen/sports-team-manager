@@ -31,7 +31,7 @@ public class LeaderboardPositionInterface : MonoBehaviour
 	/// </summary>
 	internal void SetText(LeaderboardStandingsResponse res)
 	{
-		gameObject.SetActive(true);
+		gameObject.Active(true);
 		_position.text = res.Ranking.ToString();
 		_playerName.text = res.ActorName;
 		_score.text = res.Value;
@@ -42,6 +42,6 @@ public class LeaderboardPositionInterface : MonoBehaviour
 	/// </summary>
 	internal void Disable()
 	{
-		gameObject.SetActive(false);
+		gameObject.Active(false);
 	}
 }

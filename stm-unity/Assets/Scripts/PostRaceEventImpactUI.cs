@@ -72,7 +72,7 @@ public class PostRaceEventImpactUI : MonoBehaviour
 							break;
 					}
 				}
-				gameObject.SetActive(true);
+				gameObject.Active(true);
 				transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
 			}
 			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventImpactPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>(), AccessibleTracker.Accessible.Screen));
@@ -91,8 +91,8 @@ public class PostRaceEventImpactUI : MonoBehaviour
 		if (gameObject.activeInHierarchy)
 		{
 			_impacts.Clear();
-			gameObject.SetActive(false);
-			UIManagement.Blocker.gameObject.SetActive(false);
+			gameObject.Active(false);
+			UIManagement.DisableBlocker();
 			if (!string.IsNullOrEmpty(source))
 			{
 				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventImpactPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
@@ -101,7 +101,7 @@ public class PostRaceEventImpactUI : MonoBehaviour
 				}, AccessibleTracker.Accessible.Screen));
 			}
 		}
-		UIManagement.PostRaceEvents.ToList().ForEach(e => e.gameObject.SetActive(true));
+		UIManagement.PostRaceEvents.ToList().ForEach(e => e.Display());
 	}
 
 	/// <summary>

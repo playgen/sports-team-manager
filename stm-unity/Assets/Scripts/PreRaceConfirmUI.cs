@@ -26,7 +26,7 @@ public class PreRaceConfirmUI : MonoBehaviour
 	/// </summary>
 	public void ConfirmPopUp()
 	{
-		gameObject.SetActive(true);
+		gameObject.Active(true);
 		var yesButton = transform.Find("Yes").GetComponent<Button>();
 		yesButton.onClick.RemoveAllListeners();
 		if (!GameManagement.IsRace)
@@ -77,8 +77,8 @@ public class PreRaceConfirmUI : MonoBehaviour
 	{
 		if (gameObject.activeInHierarchy)
 		{
-			gameObject.SetActive(false);
-		    UIManagement.Blocker.gameObject.SetActive(false);
+			gameObject.Active(false);
+		    UIManagement.DisableBlocker();
 			if (!string.IsNullOrEmpty(source))
 			{
 				if (!GameManagement.IsRace)
@@ -125,7 +125,7 @@ public class PreRaceConfirmUI : MonoBehaviour
 	/// </summary>
 	public void DisplayRepeatWarning()
 	{
-		gameObject.SetActive(true);
+		gameObject.Active(true);
 		GetComponentInChildren<Text>().text = Localization.Get("REPEAT_CONFIRM");
 		TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpConfirmPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>(), AccessibleTracker.Accessible.Screen));
 		var yesButton = transform.Find("Yes").GetComponent<Button>();
@@ -148,8 +148,8 @@ public class PreRaceConfirmUI : MonoBehaviour
 	{
 		if (gameObject.activeInHierarchy)
 		{
-			gameObject.SetActive(false);
-		    UIManagement.Blocker.gameObject.SetActive(false);
+			gameObject.Active(false);
+		    UIManagement.DisableBlocker();
 			TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpDeclined", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.TriggerUI.ToString(), source }

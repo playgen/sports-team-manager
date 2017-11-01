@@ -63,10 +63,10 @@ public class PostRacePersonUI : MonoBehaviour
 		{
 			if (replies.Count <= i)
 			{
-				_questions[i].SetActive(false);
+				_questions[i].Active(false);
 				continue;
 			}
-			_questions[i].SetActive(true);
+			_questions[i].Active(true);
 			var subjects = current.Subjects.Select(s => Localization.HasKey(s) ? Localization.Get(s) : Regex.Replace(s, @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0")).ToArray();
 			_questions[i].GetComponentInChildren<Text>().text = Localization.GetAndFormat(replies[i].Dialogue.Utterance, false, subjects);
 			var currentReply = replies[i];
@@ -135,7 +135,7 @@ public class PostRacePersonUI : MonoBehaviour
 		foreach (var question in _questions)
 		{
 			question.GetComponentInChildren<Text>().text = string.Empty;
-			question.SetActive(true);
+			question.Active(true);
 		}
 	}
 
