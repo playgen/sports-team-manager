@@ -17,7 +17,7 @@
  */
 using System;
 using System.Collections.Generic;
-using SimpleJSON;
+using RAGESimpleJSON;
 
 namespace RAGE.Analytics.Formats
 {   

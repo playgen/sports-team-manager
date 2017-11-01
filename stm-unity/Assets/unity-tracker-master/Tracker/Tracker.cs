@@ -20,7 +20,7 @@
 /// </summary>
 using System.Collections.Generic;
 using UnityEngine;
-using SimpleJSON;
+using RAGESimpleJSON;
 using System;
 using System.IO;
 using RAGE.Analytics.Formats;
