@@ -91,6 +91,7 @@ public class TutorialController : MonoBehaviour
 	private void Start()
 	{
         _tutorialDisplay = GetComponentsInChildren<TutorialSectionUI>(true).First();
+        _tutorialDisplay.gameObject.Active(GameManagement.ShowTutorial);
         gameObject.Active(GameManagement.ShowTutorial);
 		_tutorialQuitButton.Active(GameManagement.ShowTutorial);
         if (GameManagement.ShowTutorial)
