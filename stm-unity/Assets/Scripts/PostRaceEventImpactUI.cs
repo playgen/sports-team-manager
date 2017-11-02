@@ -13,6 +13,7 @@ using System;
 using System.Text.RegularExpressions;
 
 using PlayGen.RAGE.SportsTeamManager.Simulation;
+using System.Reflection;
 
 public class PostRaceEventImpactUI : MonoBehaviour
 {
@@ -99,7 +100,8 @@ public class PostRaceEventImpactUI : MonoBehaviour
 				{
 					{ TrackerContextKeys.TriggerUI.ToString(), source },
 				}, AccessibleTracker.Accessible.Screen));
-			}
+                UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+            }
 		}
 		UIManagement.PostRaceEvents.ToList().ForEach(e => e.Display());
 	}

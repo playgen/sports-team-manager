@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -7,9 +8,9 @@ public class LanguageKeyValuePair
 {
     public string Key;
     [TextArea]
-    public string[] Value;
+    public List<string> Value;
 
-    public LanguageKeyValuePair(string k, string[] v)
+    public LanguageKeyValuePair(string k, List<string> v)
     {
         Key = k;
         Value = v;
@@ -29,20 +30,35 @@ public class TriggerKeyValuePair
 }
 
 [Serializable]
+public class StringList
+{
+    public List<string> List;
+
+    public StringList(List<string> l)
+    {
+        List = l;
+    }
+
+    public StringList(string[] l)
+    {
+        List = l.ToList();
+    }
+}
+
+[Serializable]
 public class TutorialObject
 {
     public List<LanguageKeyValuePair> SectionTextHolder;
     public bool Reversed;
-    public string[] HighlightedObjects;
-    public int HighlightTrigger;
+    public List<StringList> HighlightedObjects;
     public List<TriggerKeyValuePair> Triggers;
     public bool UniqueEvents;
     public int EventTriggerCountRequired;
     public int SaveNextSection;
-    public List<string> BlacklistButtons;
+    public List<StringList> BlacklistButtons;
     public List<string> CustomAttributes;
 
-    public TutorialObject(Dictionary<string, string[]> text, string[] highlightObjs, int highlightTrigger, bool reversed, KeyValuePair<string, string>[] triggers, int triggerCount, bool uniqueTriggers, int saveSection, List<string> blacklist, List<string> attributes)
+    public TutorialObject(Dictionary<string, List<string>> text, List<string[]> highlightObjs, bool reversed, KeyValuePair<string, string>[] triggers, int triggerCount, bool uniqueTriggers, int saveSection, List<List<string>> blacklist, List<string> attributes)
     {
         SectionTextHolder = new List<LanguageKeyValuePair>();
         foreach (var kvp in text)
@@ -54,13 +70,20 @@ public class TutorialObject
         {
             Triggers.Add(new TriggerKeyValuePair(kvp.Key, kvp.Value));
         }
-        HighlightedObjects = highlightObjs;
-        HighlightTrigger = highlightTrigger;
+        HighlightedObjects = new List<StringList>();
+        foreach (var obj in highlightObjs)
+        {
+            HighlightedObjects.Add(new StringList(obj));
+        }
         Reversed = reversed;
         EventTriggerCountRequired = triggerCount;
         UniqueEvents = uniqueTriggers;
         SaveNextSection = saveSection;
-        BlacklistButtons = blacklist;
+        BlacklistButtons = new List<StringList>();
+        foreach (var obj in blacklist)
+        {
+            BlacklistButtons.Add(new StringList(obj));
+        }
         CustomAttributes = attributes;
     }
 }

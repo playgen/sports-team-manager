@@ -18,7 +18,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private readonly ConfigStore config;
 		private EventController eventController;
 
-		private Dictionary<string, string> _customTutorialAttributes { get; set; }
+		private Dictionary<int, Dictionary<string, string>> _customTutorialAttributes { get; set; }
 		public Team Team { get; private set; }
 		public int ActionAllowance { get; private set; }
 		public int CrewEditAllowance { get; private set; }
@@ -166,7 +166,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			CurrentRaceSession = 0;
 			ShowTutorial = showTutorial;
 			TutorialStage = 0;
-			_customTutorialAttributes = new Dictionary<string, string>();
+            _customTutorialAttributes = new Dictionary<int, Dictionary<string, string>>();
 			QuestionnaireCompleted = false;
 			//create manager files and store game attribute details
 			manager.CreateFile(iat, combinedStorageLocation);
@@ -293,7 +293,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var nation = person.LoadBelief(NPCBeliefs.Nationality.GetDescription());
 					ShowTutorial = bool.Parse(person.LoadBelief(NPCBeliefs.ShowTutorial.GetDescription()));
 					TutorialStage = int.Parse(person.LoadBelief(NPCBeliefs.TutorialStage.GetDescription()));
-					_customTutorialAttributes = new Dictionary<string, string>();
+                    _customTutorialAttributes = new Dictionary<int, Dictionary<string, string>>();
 					QuestionnaireCompleted = bool.Parse(person.LoadBelief(NPCBeliefs.QuestionnaireCompleted.GetDescription()) ?? "false");
 					Team = new Team(iat, storageLocation, config, iat.ScenarioName, nation, boat);
 					if (boat.Type == "Finish")
@@ -575,7 +575,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void DeductCost(int cost)
 		{
-			if (_customTutorialAttributes.ContainsKey("cost") && _customTutorialAttributes["cost"] == "false")
+			if (ShowTutorial && _customTutorialAttributes.ContainsKey(TutorialStage) && _customTutorialAttributes[TutorialStage].ContainsKey("cost") && _customTutorialAttributes[TutorialStage]["cost"] == "false")
 			{
 				return;
 			}
@@ -713,17 +713,21 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Set custom attributes for the tutorial
 		/// </summary>
-		public void SetCustomTutorialAttributes(Dictionary<string, string> attributes)
+		public void SetCustomTutorialAttributes(int stage, Dictionary<string, string> attributes)
 		{
 			foreach (var att in attributes)
 			{
-				if (_customTutorialAttributes.ContainsKey(att.Key))
+                if (!_customTutorialAttributes.ContainsKey(stage))
+                {
+                    _customTutorialAttributes.Add(stage, new Dictionary<string, string>());
+                }
+                if (_customTutorialAttributes[stage].ContainsKey(att.Key))
 				{
-					_customTutorialAttributes[att.Key] = att.Value;
+					_customTutorialAttributes[stage][att.Key] = att.Value;
 				}
 				else
 				{
-					_customTutorialAttributes.Add(att.Key, att.Value);
+					_customTutorialAttributes[stage].Add(att.Key, att.Value);
 				}
 			}
 		}

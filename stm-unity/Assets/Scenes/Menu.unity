@@ -2766,7 +2766,7 @@ Prefab:
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 475.5728
+      value: 475.57077
       objectReference: {fileID: 0}
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -2776,7 +2776,7 @@ Prefab:
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 951.1456
+      value: 951.14154
       objectReference: {fileID: 0}
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -2846,42 +2846,42 @@ Prefab:
     - target: {fileID: 224000010550286744, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011589403642, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011899300364, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010714114462, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000013758115888, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011874776382, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010625854600, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000012375556464, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011631513856, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -2986,7 +2986,7 @@ Prefab:
     - target: {fileID: 224000012990532560, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 13.267212
+      value: 13.267151
       objectReference: {fileID: 0}
     - target: {fileID: 224000012990532560, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -3011,7 +3011,7 @@ Prefab:
     - target: {fileID: 224000013707228680, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 13.267212
+      value: 13.267151
       objectReference: {fileID: 0}
     - target: {fileID: 224000013707228680, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -3036,7 +3036,7 @@ Prefab:
     - target: {fileID: 224000012967643018, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 13.267212
+      value: 13.267151
       objectReference: {fileID: 0}
     - target: {fileID: 224000012967643018, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -3110,92 +3110,92 @@ Prefab:
     - target: {fileID: 224000010714114462, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011874776382, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000012375556464, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010625854600, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011899300364, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011589403642, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000013758115888, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010550286744, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011874776382, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 89.627914
+      value: 89.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000012375556464, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 169.25583
+      value: 169.25513
       objectReference: {fileID: 0}
     - target: {fileID: 224000010625854600, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 248.88374
+      value: 248.88269
       objectReference: {fileID: 0}
     - target: {fileID: 224000011899300364, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 328.51166
+      value: 328.51025
       objectReference: {fileID: 0}
     - target: {fileID: 224000011589403642, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 408.1396
+      value: 408.13782
       objectReference: {fileID: 0}
     - target: {fileID: 224000013758115888, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 487.76752
+      value: 487.76538
       objectReference: {fileID: 0}
     - target: {fileID: 224000010550286744, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 567.39545
+      value: 567.39294
       objectReference: {fileID: 0}
     - target: {fileID: 224000014143717192, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20.860067
+      value: 20.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000010470087190, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20.860067
+      value: 20.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000012388723802, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20.860067
+      value: 20.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000014143717192, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -3205,7 +3205,7 @@ Prefab:
     - target: {fileID: 224000012388723802, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 44.720135
+      value: 44.71997
       objectReference: {fileID: 0}
     - target: {fileID: 224000010410939032, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -3275,7 +3275,7 @@ Prefab:
     - target: {fileID: 224000010470087190, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 22.860067
+      value: 22.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000011126659570, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4266,7 +4266,7 @@ Prefab:
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 475.5728
+      value: 475.57077
       objectReference: {fileID: 0}
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4276,7 +4276,7 @@ Prefab:
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 951.1456
+      value: 951.14154
       objectReference: {fileID: 0}
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4320,42 +4320,42 @@ Prefab:
     - target: {fileID: 224000010714114462, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010625854600, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000013758115888, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010550286744, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011589403642, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000012375556464, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011874776382, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011899300364, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011381745510, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4575,7 +4575,7 @@ Prefab:
     - target: {fileID: 224000014143717192, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20.860067
+      value: 20.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000014143717192, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4595,7 +4595,7 @@ Prefab:
     - target: {fileID: 224000010470087190, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 22.860067
+      value: 22.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000010470087190, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4605,7 +4605,7 @@ Prefab:
     - target: {fileID: 224000010470087190, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20.860067
+      value: 20.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000010470087190, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4625,7 +4625,7 @@ Prefab:
     - target: {fileID: 224000012388723802, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 44.720135
+      value: 44.71997
       objectReference: {fileID: 0}
     - target: {fileID: 224000012388723802, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4635,7 +4635,7 @@ Prefab:
     - target: {fileID: 224000012388723802, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20.860067
+      value: 20.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000012388723802, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4645,17 +4645,17 @@ Prefab:
     - target: {fileID: 224000012990532560, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 13.267212
+      value: 13.267151
       objectReference: {fileID: 0}
     - target: {fileID: 224000013707228680, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 13.267212
+      value: 13.267151
       objectReference: {fileID: 0}
     - target: {fileID: 224000012967643018, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 13.267212
+      value: 13.267151
       objectReference: {fileID: 0}
     - target: {fileID: 224000011631513856, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4665,7 +4665,7 @@ Prefab:
     - target: {fileID: 224000010714114462, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011381745510, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4675,7 +4675,7 @@ Prefab:
     - target: {fileID: 224000011874776382, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000014152291808, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4685,7 +4685,7 @@ Prefab:
     - target: {fileID: 224000012375556464, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000013040080902, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4695,7 +4695,7 @@ Prefab:
     - target: {fileID: 224000010625854600, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010096705044, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4705,7 +4705,7 @@ Prefab:
     - target: {fileID: 224000011899300364, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000013549265112, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4715,7 +4715,7 @@ Prefab:
     - target: {fileID: 224000011589403642, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000013067423850, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4725,7 +4725,7 @@ Prefab:
     - target: {fileID: 224000013758115888, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000012272427044, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -4735,42 +4735,42 @@ Prefab:
     - target: {fileID: 224000010550286744, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011874776382, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 89.627914
+      value: 89.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000012375556464, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 169.25583
+      value: 169.25513
       objectReference: {fileID: 0}
     - target: {fileID: 224000010625854600, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 248.88374
+      value: 248.88269
       objectReference: {fileID: 0}
     - target: {fileID: 224000011899300364, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 328.51166
+      value: 328.51025
       objectReference: {fileID: 0}
     - target: {fileID: 224000011589403642, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 408.1396
+      value: 408.13782
       objectReference: {fileID: 0}
     - target: {fileID: 224000013758115888, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 487.76752
+      value: 487.76538
       objectReference: {fileID: 0}
     - target: {fileID: 224000010550286744, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 567.39545
+      value: 567.39294
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e9a999fedf35dd040bc3db2fa31245f2, type: 2}
@@ -8500,6 +8500,47 @@ MonoBehaviour:
   LanguageOverride: 
   Key: ACCOMMODATING
   ToUpper: 0
+--- !u!21 &222495100
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: UI Extensions/SoftMaskShader
+  m_Shader: {fileID: 4800000, guid: 947afae4d36f1274ea2e4098262ceef6, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AlphaMask:
+        m_Texture: {fileID: 2800000, guid: 3a4c416d080226c4a89132d383c263bd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _ColorMask: 15
+    - _CutOff: 1
+    - _FlipAlphaMask: 0
+    - _HardBlend: 0
+    - _NoOuterClip: 0
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _AlphaUV: {r: 1, g: 1, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Max: {r: 1, g: 1, b: 0, a: 0}
+    - _Min: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &229463816
 GameObject:
   m_ObjectHideFlags: 0
@@ -9724,7 +9765,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 80.33676}
+  m_SizeDelta: {x: 0, y: 80.335144}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &287409924
 MonoBehaviour:
@@ -10330,7 +10371,7 @@ RectTransform:
   m_AnchorMin: {x: 0.75, y: 0.025}
   m_AnchorMax: {x: 1, y: 0.975}
   m_AnchoredPosition: {x: -9.576904, y: 0.00002670288}
-  m_SizeDelta: {x: -57.880127, y: 0}
+  m_SizeDelta: {x: -57.879105, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!95 &301398406
 Animator:
@@ -10504,97 +10545,106 @@ MonoBehaviour:
   - SectionTextHolder:
     - Key: en-GB
       Value:
-      - Welcome to the Team Management screen!
-      - "Here is where you\u2019ll be dealing with your crew and assigning them their
-        positions for races."
+      - "Welcome! Here is where you\u2019ll be dealing with your crew and assigning
+        them to their positions."
       - "Firstly, let\u2019s take a look at the three positions you\u2019ll need to
-        fill."
-      - Click on any of them to display the pop-up for that position.
+        fill. Click on any of them to display the pop-up for that position."
     - Key: it
       Value:
-      - Benvenuto nell'area di gestione della tua squadra!
-      - 'Qui scegli il tuo equipaggio: trova la persona giusta per ogni ruolo.'
-      - 'Prima di tutto dai un''occhiata ai tre ruoli che devi ricoprire. '
-      - 'Clicca su ciascuno ruolo per averne una descrizione. '
+      - XXXX
+      - XXXX
     Reversed: 0
     HighlightedObjects:
-    - Team Management
-    - Boat Container Bounds
-    - Viewport
-    - Content
-    - Boat
-    - Position Container
-    HighlightTrigger: 3
+    - List: []
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Boat
+      - Position Container
     Triggers:
     - Key: PositionUI
       Value: ShowPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
     SaveNextSection: 2
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    BlacklistButtons:
+    - List: []
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
       - This pop-up lists all the skills required for the position you just selected
-        and will, after your first race, also display who is currently in this position
-        and has been in it the most in the past.
-      - To close this pop-up, use the X in the top right of the pop-up.
+        and will also display who is currently in the position and has been in it
+        in the past.
+      - To close this, use the X in the top right of the pop-up.
     - Key: it
       Value:
-      - 'Questa finestra ti mostra la lista delle competenze richieste per il ruolo
-        che hai appena selezionato. Dopo la prima gara, sempre in questo riquadro,
-        troverai sia la persona che attualmente occupa  la posizione, sia chi l''ha
-        ricoperta in passato. '
-      - Per chiudere la finestra, usa la x in alto a destra del riquadro.
+      - XXXX
+      - XXXX
     Reversed: 0
     HighlightedObjects:
-    - Team Management
-    - Pop-up Bounds
-    - Position Pop-Up
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Position Pop-Up
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Position Pop-Up
+      - Close
     Triggers:
     - Key: PositionDisplayUI
       Value: ClosePositionPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
     SaveNextSection: 1
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    BlacklistButtons:
+    - List:
+      - Close
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
-      - "Now that you know how to review positions, it\u2019s time to take a look
-        at the crew you\u2019re starting with. At the bottom of the screen, all your
-        crew members are listed."
-      - The facial expression of each shows their current mood. At the moment all
-        your crew is in a 'neutral' mood, which has no impact on their performance.
-      - 'A happy looking, smiling crew member will be in a good mood and as such will
-        perform better than normal, whilst anyone looking sad or angry will be in
-        a bad mood and will perform worse. '
+      - "Now that you know how to review a position, it\u2019s time to take a look
+        at your starting crew. At the bottom of the screen, all your crew members
+        are listed."
+      - The facial expression and background color of each shows their current mood.
+        At the moment all of your crew is in a 'neutral' mood, which has no impact
+        on their performance.
+      - A happy looking, smiling crew member with a more green background is in a
+        good mood and as such will perform better than normal.
+      - 'Meanwhile, anyone looking sad or angry with a more red background is in a
+        bad mood and will perform worse. '
       - In order to find out more on a crew member, you'll need to talk to them, which
         you can do by clicking on them.
     - Key: it
       Value:
-      - "Ora che conosci quali posizioni devono essere occupate, \xE8 tempo di dare
-        un'occhiata all'equipaggio di partenza. Nella parte bassa dello schermo sono
-        elencati tutti i componenti della tua squadra. "
-      - L'espressione facciale di ciascuno mostra il suo stato d'animo corrente. In
-        questo momento il tuo equipaggio si trova in uno stato d'animo neutrale, che
-        non ha impatto sulla performance.
-      - "Presta attenzione ai cambiamenti delle espressioni: un membro che appare
-        felice e sorridente si trover\xE0 in un  stato d'animo positivo e avr\xE0
-        una prestazione superiore, mentre uno che appare triste o arrabbiato avr\xE0
-        una prestazione peggiore."
-      - "Clicca sul personaggio per conoscere di pi\xF9 su di lui/lei e avviare una
-        conversazione."
+      - XXXX
+      - XXXX
+      - XXXX
+      - XXXX
+      - XXXX
     Reversed: 0
     HighlightedObjects:
-    - Team Management
-    - Crew Container
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Crew Container
+    - List:
+      - Team Management
+      - Crew Container
+    - List:
+      - Team Management
+      - Crew Container
+    - List:
+      - Team Management
+      - Crew Container
+    - List:
+      - Team Management
+      - Crew Container
     Triggers:
     - Key: CrewMemberUI
       Value: ShowPopUp
@@ -10602,9 +10652,13 @@ MonoBehaviour:
     EventTriggerCountRequired: 1
     SaveNextSection: 3
     BlacklistButtons:
-    - zz Recruit
-    CustomAttributes:
-    - cost=true
+    - List: []
+    - List: []
+    - List: []
+    - List: []
+    - List:
+      - zz Recruit
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10613,8 +10667,7 @@ MonoBehaviour:
         as far as you\u2019re aware, their opinion of everyone is neutral."
       - Their opinion on other members of the team is displayed in the top left of
         their respective icons, whilst their opinion of you is shown in the top left
-        of this pop-up. As known information on opinions becomes older, the backgrounds
-        of these icons will also get progressively darker.
+        of this pop-up.
       - "In order to learn more about this crew member, you\u2019re going to need
         to talk to them by clicking any of the available questions, with their response
         displayed above the list of questions."
@@ -10624,26 +10677,28 @@ MonoBehaviour:
         times.
     - Key: it
       Value:
-      - "Questa finestra mostra tutte le abilit\xE0 e le opinioni di questa persona.
-        Poich\xE9 hai appena iniziato non sai ancora nulla sulle competenze che possiede
-        e delle sue opinioni."
-      - "L'opinione nei confronti degli altri membri della squadra \xE8 rappresentata
-        dalla mano nera in alto a sinistra della sua immagine, mentre la sua opinione
-        nei tuoi confronti  \xE8 riportata -con la stessa icona- in alto a sinistra
-        di questa finestra. Quando l'informazione sulle opinioni diventa obsoleta,
-        lo sfondo di queste icone diventer\xE0 progressivamente pi\xF9 scuro. "
-      - "Per imparare di pi\xF9 su un membro dell'equipaggio, devi parlare con lui,
-        cliccando su una delle domande disponibili. La risposta verr\xE0 riportata
-        nel fumetto. "
-      - "Fare domande, cos\xEC come altre azioni nel gioco, richiede una certa quantit\xE0
-        di tempo che \xE8 limitato per ciascuna gara. Nel tutorial il limite \xE8
-        stato rimosso, pertanto sentiti libero di fare tutte le domande che vuoi."
+      - XXXX
+      - XXXX
+      - XXXX
+      - XXXX
     Reversed: 0
     HighlightedObjects:
-    - Team Management
-    - Pop-up Bounds
-    - Meeting Pop-Up
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Meeting Pop-Up
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Meeting Pop-Up
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Meeting Pop-Up
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Meeting Pop-Up
     Triggers:
     - Key: MemberMeetingUI
       Value: AskQuestion
@@ -10651,56 +10706,59 @@ MonoBehaviour:
     EventTriggerCountRequired: 6
     SaveNextSection: 2
     BlacklistButtons:
-    - Close
-    - Close (1)
+    - List: []
+    - List: []
+    - List: []
+    - List:
+      - Close
+      - Close (1)
     CustomAttributes:
     - cost=false
   - SectionTextHolder:
     - Key: en-GB
       Value:
-      - "OK, looks like you\u2019ve got the hang of talking to your team."
+      - "OK, looks like you\u2019ve got the hang of talking to your team members."
       - Now you have some information for this crew member, exit the pop-up using
         the highlighted button.
     - Key: it
       Value:
-      - Ok, sembra che tu abbia concluso di intervistare il candidato per il tuo equipaggio.
-      - "Ora hai qualche informazione in pi\xF9 su di lui. Esci da questa finestra
-        usando il pulsante evidenziato."
+      - XXXX
+      - XXXX
     Reversed: 0
     HighlightedObjects:
-    - Team Management
-    - Pop-up Bounds
-    - Meeting Pop-Up
-    - Close
-    HighlightTrigger: 1
+    - List: []
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Meeting Pop-Up
+      - Close
     Triggers:
     - Key: MemberMeetingUI
       Value: OnDisable
     UniqueEvents: 0
     EventTriggerCountRequired: 1
     SaveNextSection: 1
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=false
+    BlacklistButtons:
+    - List: []
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
       - "Now you know how to question your crew, it\u2019s time to place them into
         positions."
       - "Once you've gathered some further information on your team and the positions
-        you'll need to find, place crew members by dragging them into the position
+        you'll need to fill, place crew members by dragging them into the position
         you think they\u2019d best fit."
     - Key: it
       Value:
-      - 'Ora sai come intervistare i membri del equipaggio. E'' giunto il momento
-        di assegnarli ai ruoli. '
-      - Dopo aver raccolto ancora qualche informazione sul tuo team e sulle posizioni
-        da ricoprire trascina i candidati nei ruoli che ritieni possano interpretare
-        meglio.
+      - XXXX
+      - XXXX
     Reversed: 0
     HighlightedObjects:
-    - Team Management
-    HighlightTrigger: 1
+    - List: []
+    - List:
+      - Team Management
     Triggers:
     - Key: CrewMemberUI
       Value: Place
@@ -10708,25 +10766,26 @@ MonoBehaviour:
     EventTriggerCountRequired: 1
     SaveNextSection: 0
     BlacklistButtons:
-    - zz Recruit
-    CustomAttributes:
-    - cost=true
+    - List: []
+    - List:
+      - zz Recruit
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
-      - If you want to remove a crew member from a position, just drag them out of
-        the position.
+      - If you want to remove a crew member from a position, just drag and drop them
+        out of the position.
     - Key: it
       Value:
-      - Se vuoi rimuovere un membro da una posizione, puoi trascinarlo fuori.
+      - XXXX
     Reversed: 0
     HighlightedObjects:
-    - Team Management
-    - Boat Container Bounds
-    - Viewport
-    - Content
-    - Boat
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Boat
     Triggers:
     - Key: CrewMemberUI
       Value: OnReset
@@ -10734,9 +10793,8 @@ MonoBehaviour:
     EventTriggerCountRequired: 1
     SaveNextSection: -1
     BlacklistButtons:
-    - zz Recruit
-    CustomAttributes:
-    - cost=true
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10744,12 +10802,11 @@ MonoBehaviour:
         ready to take part in the first practice session.
     - Key: it
       Value:
-      - "Quando hai coperto tutte le posizioni, l'equipaggio \xE8 pronto per affrontare
-        la prima sessione di prova."
+      - XXXX
     Reversed: 0
     HighlightedObjects:
-    - Team Management
-    HighlightTrigger: 0
+    - List:
+      - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: EnableRacing
@@ -10757,17 +10814,14 @@ MonoBehaviour:
     EventTriggerCountRequired: 1
     SaveNextSection: -2
     BlacklistButtons:
-    - zz Recruit
-    CustomAttributes:
-    - cost=true
+    - List:
+      - zz Recruit
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
-      - "Don\u2019t worry if you haven't gotten the perfect line-up, as usually you'll
-        get four practice session before the race proper, with feedback on your choices
-        after each session."
-      - Keep in mind however that for this tutorial you'll only be given two practice
-        sessions.
+      - "Don\u2019t worry if you haven't gotten the perfect line-up, as you'll get
+        two practice session before every race."
       - Every session, your performance is based on the skill ratings of your line-up
         in their positions, their opinion of you, their current mood and their opinion
         of everyone else selected.
@@ -10775,34 +10829,31 @@ MonoBehaviour:
         the first practice session.
     - Key: it
       Value:
-      - Non ti preoccupare se non individui la formazione perfetta al primo tentativo,
-        ci sono 4 prove per fare pratica prima della gara vera propria. Riceverai
-        un feedback sulle scelte fatte al termine di ciascuna prova.
-      - 'Per questo tutorial avrai a disposizione solo due prove. '
-      - "Ogni volta la tua performance \xE8 calcolata in base a 4 parametri: 1) la
-        corrisondenza tra le caratteristiche di ogni ruolo e le capacit\xE0 dei giocatori
-        selezionati 2) l'opinione che hanno di te 3) il loro stato d'animo 4) l'opinione
-        di ciascuno rispetto agli altri membri selezionati. "
-      - "Clicca il pulsante evidenziato e la tua squadra parteciper\xE0 alla prima
-        prova."
+      - XXXX
+      - XXXX
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    - Boat Container Bounds
-    - Viewport
-    - Content
-    - Boat
-    - Race
-    HighlightTrigger: 3
+    - List: []
+    - List: []
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Boat
+      - Race
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
     SaveNextSection: 1
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    BlacklistButtons:
+    - List: []
+    - List: []
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10812,53 +10863,62 @@ MonoBehaviour:
       - Hover over or click each box to see what they represent.
     - Key: it
       Value:
-      - 'Dopo ogni sessione riceverai un feedback sulla performance dell''equipaggio
-        che hai selezionato. '
-      - I quadrati colorati indicano quanto ti sei avvicinato alla formazione ideale.
-      - "Clicca, o passa  sopra  ciascuno, per leggere ci\xF2 che rappresenta."
+      - XXXX
+      - XXXX
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    - Boat Container Bounds
-    - Viewport
-    - Content
-    - Historic Boat 0
-    - Light Container
-    HighlightTrigger: 1
+    - List: []
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Historic Boat 0
+      - Light Container
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Historic Boat 0
+      - Light Container
     Triggers:
     - Key: HoverPopUpUI
       Value: HoverCheck
     UniqueEvents: 1
     EventTriggerCountRequired: 3
     SaveNextSection: 2
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    BlacklistButtons:
+    - List: []
+    - List: []
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
       - Hover over or click each box to see what they represent.
     - Key: it
       Value:
-      - "Clicca, o passa  sopra  ciascuno, per leggere ci\xF2 che rappresenta."
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    - Boat Container Bounds
-    - Viewport
-    - Content
-    - Historic Boat 0
-    - Light Container
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Historic Boat 0
+      - Light Container
     Triggers:
     - Key: HoverPopUpUI
       Value: HideHover
     UniqueEvents: 0
     EventTriggerCountRequired: 1
     SaveNextSection: 1
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10870,63 +10930,77 @@ MonoBehaviour:
         the left having more room for improvement.
       - Grey question marks mean that your team needs to be questioned further in
         order to discover what needs improving.
-      - By hovering over each of the blue icons, you can see what each icon represents.
+      - By hovering over each of these icons, you can see what each icon represents.
     - Key: it
       Value:
-      - "Al termine di ciascuna sessione, potrai riceverai anche un feedback sulle
-        aree in cui il tuo team \xE8 carente (se presenti). "
-      - 'I cerchietti con sfondo dall''azzurro al blu rappresentano le dimensioni
-        da migliorare. In questa sessione le icone sono presentate solo a titolo di
-        esempio, '
-      - "Ciascuna icona azzurra rappresenta una dimensione che richiede un miglioramento.
-        Le icone sulla sinistra, di colore pi\xF9 scuro, hanno un margine di miglioramento
-        maggiore. "
-      - "I punti di domanda in grigio indicano che il tuo equipaggio deve essere intervistato
-        ulteriormente per scoprire cosa \xE8 necessario migliorare. "
-      - "Passando su ciascuna icona azzurra puoi leggere ci\xF2 che rappresenta. "
+      - XXXX
+      - XXXX
+      - XXXX
+      - XXXX
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    - Boat Container Bounds
-    - Viewport
-    - Content
-    - Historic Boat 0
-    - Icon Container
-    HighlightTrigger: 2
+    - List: []
+    - List: []
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Historic Boat 0
+      - Icon Container
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Historic Boat 0
+      - Icon Container
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Historic Boat 0
+      - Icon Container
     Triggers:
     - Key: HoverPopUpUI
       Value: HoverCheck
     UniqueEvents: 1
     EventTriggerCountRequired: 3
     SaveNextSection: 2
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    BlacklistButtons:
+    - List: []
+    - List: []
+    - List: []
+    - List: []
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
-      - By hovering over each of the blue icons, you can see what each icon represents.
+      - By hovering over each of these icons, you can see what each icon represents.
     - Key: it
       Value:
-      - "Passando su ciascuna icona azzurra puoi leggere ci\xF2 che rappresenta."
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    - Boat Container Bounds
-    - Viewport
-    - Content
-    - Historic Boat 0
-    - Icon Container
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Historic Boat 0
+      - Icon Container
     Triggers:
     - Key: HoverPopUpUI
       Value: HideHover
     UniqueEvents: 0
     EventTriggerCountRequired: 1
     SaveNextSection: 1
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10937,14 +11011,13 @@ MonoBehaviour:
         to take part in the second practice session.
     - Key: it
       Value:
-      - Ricordati che selezionare la squadra migliore non significa sempre vincere
-        la gara.
-      - "Ora che hai completato la prima sessione di prova, usa ci\xF2 che hai imparato
-        per prender parte alla seconda. "
+      - XXXX
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    HighlightTrigger: 0
+    - List: []
+    - List:
+      - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
@@ -10952,27 +11025,23 @@ MonoBehaviour:
     EventTriggerCountRequired: 1
     SaveNextSection: 1
     BlacklistButtons:
-    - zz Recruit
-    CustomAttributes:
-    - cost=true
+    - List: []
+    - List:
+      - zz Recruit
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
-      - OK, practice is over and it's now time for the race itself! Do you play it
-        safe and pick based on what you know, or try and experiment when it matters?
-      - Once you're happy with your selected line-up, click the 'Race!' button to
-        take part in your first race.
+      - OK, practice is over and it's now time for the race itself! Once you're happy
+        with your selected line-up, click the 'Race!' button to take part in your
+        first race.
     - Key: it
       Value:
-      - "Ok, la pratica \xE8 finita; \xE8 arrivato il momento di gareggiare! Giocherai
-        senza rischiare selezionando in base a ci\xF2 che conosci o proverai a sperimentare
-        una nuova formazione?"
-      - Quando sarai soddisfatto della formazione selezionata, clicca sul pulsante
-        Gara! per prender parte alla prima gara.
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    HighlightTrigger: 1
+    - List:
+      - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
@@ -10980,9 +11049,9 @@ MonoBehaviour:
     EventTriggerCountRequired: 1
     SaveNextSection: 2
     BlacklistButtons:
-    - zz Recruit
-    CustomAttributes:
-    - cost=true
+    - List:
+      - zz Recruit
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10990,12 +11059,13 @@ MonoBehaviour:
         you expected?
     - Key: it
       Value:
-      - "Questa finestra con i risultati apparir\xE0 al termine di ciascuna gara.
-        La gara \xE8 andata come ti aspettavi? "
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Post-Race Pop-Up
     Triggers:
     - Key: RaceResultUI
       Value: Close
@@ -11003,45 +11073,52 @@ MonoBehaviour:
     EventTriggerCountRequired: 1
     SaveNextSection: 1
     BlacklistButtons:
-    - zz Recruit
-    CustomAttributes:
-    - cost=true
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
-      - "Now you\u2019ve completed your first race and seen where you went right and
-        wrong, it\u2019s time to change things up a little."
+      - "Now you\u2019ve completed your first race, it\u2019s time to change things
+        up a little."
       - A navigator is no longer needed on your boat. Instead you need a Helmsman,
         and none of your current crew suit this position very well.
       - "As a result, you\u2019ll need to recruit a new member into your team. But
         first, let\u2019s look at the details behind this new position to fill."
     - Key: it
       Value:
-      - Ora che hai completato la tua prima gara e visto come funziona, cambiamo un
-        po' le cose.
-      - "Un navigatore non \xE8 pi\xF9 necessario sulla tua barca. Ora serve un timoniere,
-        e nessuno del tuo equipaggio attuale ricopre questa posizione molto bene."
-      - "Di conseguenza, sar\xE0 necessario reclutare un nuovo membro per la squadra.
-        Ma prima, diamo un'occhiata ai dettagli di questa posizione da ricoprire. "
+      - XXXX
+      - XXXX
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    - Boat Container Bounds
-    - Viewport
-    - Content
-    - Boat
-    - Position Container
-    - Position 1
-    HighlightTrigger: 1
+    - List: []
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Boat
+      - Position Container
+      - Position 1
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Boat
+      - Position Container
+      - Position 1
     Triggers:
     - Key: PositionUI
       Value: ShowPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
     SaveNextSection: 2
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    BlacklistButtons:
+    - List: []
+    - List: []
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
@@ -11049,23 +11126,22 @@ MonoBehaviour:
         close the pop-up."
     - Key: it
       Value:
-      - Una volta comprese quali siano le competenze necessarie in questa posizione,
-        chiudi la finestra.
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    - Pop-up Bounds
-    - Position Pop-Up
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Position Pop-Up
     Triggers:
     - Key: PositionDisplayUI
       Value: ClosePositionPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
     SaveNextSection: 1
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
@@ -11073,44 +11149,49 @@ MonoBehaviour:
         of the highlighted area.
     - Key: it
       Value:
-      - Per poter procedere con il reclutamento della squadra, clicca uno dei pulsanti
-        neri sulla destra dell'area evidenziata.
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    - Crew Container
-    - zz Recruit
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Crew Container
+      - zz Recruit
     Triggers:
     - Key: RecruitMemberUI
       Value: ResetDisplay
     UniqueEvents: 0
     EventTriggerCountRequired: 1
     SaveNextSection: 0
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
-      - By clicking the skill statements at the bottom of the screen, these four possible
+      - When you click a skill statement at the bottom of the screen, these four possible
         recruits will reply with if they agree or disagree with the statement.
       - By saying the right statements, you should get an idea on who to hire.
       - Note that usually each of these questions would have a cost, as would hiring.
         This cost has been removed for the time being.
     - Key: it
       Value:
-      - 'Cliccando le frasi relative alle competenze, nella parte bassa dello schermo,
-        i candidati diranno quanto gli corrispondono. '
-      - 'Scegliendo l''affermazione giusta, dovresti farti un''idea di chi reclutare. '
-      - "Nota che solitamente ciascuna di queste domande ha un costo, cos\xEC come
-        il reclutamento. Questo costo \xE8 stato rimosso per il momento. "
+      - XXXX
+      - XXXX
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    - Pop-up Bounds
-    - Recruit Pop-Up
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Recruit Pop-Up
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Recruit Pop-Up
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Recruit Pop-Up
     Triggers:
     - Key: RecruitMemberUI
       Value: AskQuestion
@@ -11118,9 +11199,12 @@ MonoBehaviour:
     EventTriggerCountRequired: 2
     SaveNextSection: -1
     BlacklistButtons:
-    - Close
-    - Close (1)
-    - Button
+    - List: []
+    - List: []
+    - List:
+      - Close
+      - Close (1)
+      - Button
     CustomAttributes:
     - cost=false
   - SectionTextHolder:
@@ -11130,14 +11214,13 @@ MonoBehaviour:
         to hire them into your team."
     - Key: it
       Value:
-      - "Una volta che sei convinto chi vuoi reclutare, \xE8 sufficiente cliccare
-        sull'immagine per inserire il giocatore nella tua squadra."
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    - Pop-up Bounds
-    - Recruit Pop-Up
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Recruit Pop-Up
     Triggers:
     - Key: RecruitMemberUI
       Value: Recruit
@@ -11145,8 +11228,9 @@ MonoBehaviour:
     EventTriggerCountRequired: 1
     SaveNextSection: 1
     BlacklistButtons:
-    - Close
-    - Close (1)
+    - List:
+      - Close
+      - Close (1)
     CustomAttributes:
     - cost=false
   - SectionTextHolder:
@@ -11154,39 +11238,13 @@ MonoBehaviour:
       Value:
       - "Now we\u2019ve got someone that you feel fits the new position, it\u2019s
         time for the next set of sessions."
-      - "As before, you\u2019ve got two practice sessions before the race itself."
     - Key: it
       Value:
-      - "Ora hai qualcuno che ritieni possa ricoprire la nuova posizione, \xE8 tempo
-        di passare alle prossime sessioni di gara. "
-      - Come prima, hai 2 prove pratiche prima della gara vera e propria.
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    HighlightTrigger: 1
-    Triggers:
-    - Key: TeamSelectionUI
-      Value: ConfirmLineUp
-    UniqueEvents: 0
-    EventTriggerCountRequired: 1
-    SaveNextSection: 1
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
-  - SectionTextHolder:
-    - Key: en-GB
-      Value:
-      - That's the first practice session completed. This'll be your last chance to
-        experiment risk-free, so pick wisely.
-    - Key: it
-      Value:
-      - "Hai appena completato la tua prima sessione di pratica. Questa sar\xE0 la
-        tua ultima possibilit\xE0 di sperimentare senza rischi, in modo da poter poi
-        scegliere con maggior consapevolezza."
-    Reversed: 1
-    HighlightedObjects:
-    - Team Management
-    HighlightTrigger: 0
+    - List:
+      - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
@@ -11194,9 +11252,30 @@ MonoBehaviour:
     EventTriggerCountRequired: 1
     SaveNextSection: 1
     BlacklistButtons:
-    - zz Recruit
-    CustomAttributes:
-    - cost=true
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - That's the first practice session completed. This'll be your last chance to
+        experiment risk-free, so pick wisely.
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List:
+      - Team Management
+    Triggers:
+    - Key: TeamSelectionUI
+      Value: ConfirmLineUp
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List:
+      - zz Recruit
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
@@ -11204,72 +11283,76 @@ MonoBehaviour:
         first time with this new layout. Good luck!
     - Key: it
       Value:
-      - "Hai completato due sessioni di prova; \xE8 arrivato il momento di gareggiare
-        per la prima volta con questa formazione. Buona fortuna!"
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    HighlightTrigger: 0
+    - List:
+      - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
     SaveNextSection: 2
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
       - Did practice make perfect this time round?
     - Key: it
       Value:
-      - Pensi che la pratica che hai fatto ti aiuti ad affrontare il prossimo round?
+      - XXXX
     Reversed: 1
     HighlightedObjects:
-    - Team Management
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Post-Race Pop-Up
     Triggers:
     - Key: RaceResultUI
       Value: Close
     UniqueEvents: 0
     EventTriggerCountRequired: 1
     SaveNextSection: 1
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
-      - Seems that one of your crew members wants to speak with you.
-      - "Every so often, events like this will occur after a race, and it\u2019s up
-        to you to handle the situation."
+      - "Seems that one of your crew members wants to speak with you. Every so often,
+        events like this will occur after a race, and it\u2019s up to you to handle
+        the situation."
       - Click any of the available options to select and say them back to this crew
         member.
     - Key: it
       Value:
-      - 'Sembra che uno dei membri della squadra voglia parlare con te. '
-      - Ogni tanto, eventi simili a questo, si verificheranno dopo una gara, e tu
-        sarai chiamato a gestire la situazione.
-      - "Fai clic su una delle opzioni disponibili per selezionare ci\xF2 che vuoi
-        dire a questa persona."
+      - XXXX
+      - XXXX
     Reversed: 0
     HighlightedObjects:
-    - Team Management
-    - Pop-up Bounds
-    - Event Pop-Up
-    - Solo
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Event Pop-Up
+      - Solo
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Event Pop-Up
+      - Solo
     Triggers:
     - Key: PostRaceEventUI
       Value: SetBlockerOnClick
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 3
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    SaveNextSection: 4
+    BlacklistButtons:
+    - List: []
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
@@ -11277,25 +11360,24 @@ MonoBehaviour:
         exit the conversation."
     - Key: it
       Value:
-      - "OK, questa conversazione \xE8 finita. Per uscire dalla conversazione fai
-        clic sul pulsante evidenziato."
+      - XXXX
     Reversed: 0
     HighlightedObjects:
-    - Team Management
-    - Pop-up Bounds
-    - Event Pop-Up
-    - Solo
-    - Close
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Event Pop-Up
+      - Solo
+      - Close
     Triggers:
     - Key: PostRaceEventUI
       Value: Close
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 2
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    SaveNextSection: 3
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
@@ -11304,22 +11386,51 @@ MonoBehaviour:
       - To close this feedback, click anywhere on the screen.
     - Key: it
       Value:
-      - "Al termine di ciascun evento comparir\xF2 per darti un feedback su come hai
-        gestito la situazione. "
-      - 'Per chiudere questo feedback, clicca in qualunque punto dello schermo. '
+      - XXXX
+      - XXXX
     Reversed: 0
     HighlightedObjects:
-    - Team Management
-    HighlightTrigger: 0
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Learning Pill Pop-Up
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Learning Pill Pop-Up
     Triggers:
     - Key: LearningPillUI
       Value: ClosePill
     UniqueEvents: 0
     EventTriggerCountRequired: 1
+    SaveNextSection: 2
+    BlacklistButtons:
+    - List: []
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - After every conversation, you'll also be given a list which details the impact
+        of what you've responsed with has had.
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 0
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Event Impact Pop-Up
+    Triggers:
+    - Key: PostRaceEventImpactUI
+      Value: Close
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
     SaveNextSection: 1
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
       Value:
@@ -11327,25 +11438,18 @@ MonoBehaviour:
         time after events to give additional tips. Good luck!
     - Key: it
       Value:
-      - "Da qui in avanti giocherai per conto tuo, ma comparir\xF2 di tanto in tanto
-        dopo gli eventi per darti ulteriori suggerimenti. In bocca al lupo! "
+      - XXXX
     Reversed: 0
     HighlightedObjects:
-    - Team Management
-    HighlightTrigger: 0
-    Triggers:
-    - Key: PositionUI
-      Value: ShowPopUp
-    - Key: CrewMemberUI
-      Value: ShowPopUp
-    - Key: PositionUI
-      Value: LinkCrew
+    - List:
+      - Team Management
+    Triggers: []
     UniqueEvents: 0
     EventTriggerCountRequired: 1
     SaveNextSection: 1
-    BlacklistButtons: []
-    CustomAttributes:
-    - cost=true
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
 --- !u!1 &303733851
 GameObject:
   m_ObjectHideFlags: 0
@@ -15630,7 +15734,7 @@ Prefab:
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 475.5728
+      value: 475.57077
       objectReference: {fileID: 0}
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -15640,7 +15744,7 @@ Prefab:
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 951.1456
+      value: 951.14154
       objectReference: {fileID: 0}
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -15689,22 +15793,22 @@ Prefab:
     - target: {fileID: 224000010550286744, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011589403642, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000012375556464, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011874776382, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000012990532560, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -15714,7 +15818,7 @@ Prefab:
     - target: {fileID: 224000011899300364, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000012967643018, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -15724,17 +15828,17 @@ Prefab:
     - target: {fileID: 224000013758115888, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010625854600, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010714114462, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010096705044, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -15934,17 +16038,17 @@ Prefab:
     - target: {fileID: 224000014143717192, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20.860067
+      value: 20.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000010470087190, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20.860067
+      value: 20.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000012388723802, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20.860067
+      value: 20.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000014143717192, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -15954,12 +16058,12 @@ Prefab:
     - target: {fileID: 224000010470087190, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 22.860067
+      value: 22.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000012388723802, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 44.720135
+      value: 44.71997
       objectReference: {fileID: 0}
     - target: {fileID: 224000011631513856, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -15969,7 +16073,7 @@ Prefab:
     - target: {fileID: 224000010714114462, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011381745510, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -15979,7 +16083,7 @@ Prefab:
     - target: {fileID: 224000011874776382, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000014152291808, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -15989,7 +16093,7 @@ Prefab:
     - target: {fileID: 224000012375556464, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000013040080902, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -15999,7 +16103,7 @@ Prefab:
     - target: {fileID: 224000010625854600, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010096705044, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -16009,7 +16113,7 @@ Prefab:
     - target: {fileID: 224000011899300364, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000013549265112, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -16019,7 +16123,7 @@ Prefab:
     - target: {fileID: 224000011589403642, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000013067423850, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -16029,7 +16133,7 @@ Prefab:
     - target: {fileID: 224000013758115888, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000012272427044, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -16039,57 +16143,57 @@ Prefab:
     - target: {fileID: 224000010550286744, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011874776382, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 89.627914
+      value: 89.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000012375556464, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 169.25583
+      value: 169.25513
       objectReference: {fileID: 0}
     - target: {fileID: 224000010625854600, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 248.88374
+      value: 248.88269
       objectReference: {fileID: 0}
     - target: {fileID: 224000011899300364, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 328.51166
+      value: 328.51025
       objectReference: {fileID: 0}
     - target: {fileID: 224000011589403642, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 408.1396
+      value: 408.13782
       objectReference: {fileID: 0}
     - target: {fileID: 224000013758115888, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 487.76752
+      value: 487.76538
       objectReference: {fileID: 0}
     - target: {fileID: 224000010550286744, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 567.39545
+      value: 567.39294
       objectReference: {fileID: 0}
     - target: {fileID: 224000013707228680, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 13.267212
+      value: 13.267151
       objectReference: {fileID: 0}
     - target: {fileID: 224000012967643018, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 13.267212
+      value: 13.267151
       objectReference: {fileID: 0}
     - target: {fileID: 224000012990532560, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 13.267212
+      value: 13.267151
       objectReference: {fileID: 0}
     - target: {fileID: 224000010470087190, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -17032,8 +17136,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: QuitTutorial
+      - m_Target: {fileID: 302647201}
+        m_MethodName: AdvanceStage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18284,7 +18388,7 @@ RectTransform:
   m_AnchorMin: {x: 0.875, y: 0.7}
   m_AnchorMax: {x: 0.875, y: 0.7}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 155, y: 0}
+  m_SizeDelta: {x: 155, y: 122}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &566971914
 MonoBehaviour:
@@ -20257,7 +20361,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaskRect:
   - {fileID: 285518218}
-  - {fileID: 776995109}
   BlacklistRect: []
 --- !u!114 &627986620
 MonoBehaviour:
@@ -20271,7 +20374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaskArea: {fileID: 627986618}
-  maskScalingRect: {fileID: 776995109}
+  maskScalingRect: {fileID: 0}
   AlphaMask: {fileID: 2800000, guid: 3a4c416d080226c4a89132d383c263bd, type: 3}
   CutOff: 1
   HardBlend: 0
@@ -20289,7 +20392,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 222495100}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -22062,10 +22165,10 @@ RectTransform:
   m_Father: {fileID: 566971913}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 77.5, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 77.5, y: -8}
+  m_SizeDelta: {x: 0, y: 10.187178}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &709088192
 MonoBehaviour:
@@ -24017,11 +24120,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 776069361}
---- !u!224 &776995109 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 224000010050689200, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
-    type: 2}
-  m_PrefabInternal: {fileID: 1045549980}
 --- !u!1 &777707394
 GameObject:
   m_ObjectHideFlags: 0
@@ -24476,8 +24574,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 475.5728, y: -416.625}
-  m_SizeDelta: {x: 951.1456, y: 75.75}
+  m_AnchoredPosition: {x: 475.57077, y: -416.625}
+  m_SizeDelta: {x: 951.14154, y: 75.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &788607234
 CanvasGroup:
@@ -30697,7 +30795,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22411208, guid: 755fefc16ab02ff4eba8a2c8bce60a4e, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 475.5728
+      value: 475.57077
       objectReference: {fileID: 0}
     - target: {fileID: 22411208, guid: 755fefc16ab02ff4eba8a2c8bce60a4e, type: 2}
       propertyPath: m_AnchoredPosition.y
@@ -30705,7 +30803,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22411208, guid: 755fefc16ab02ff4eba8a2c8bce60a4e, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 951.1456
+      value: 951.14154
       objectReference: {fileID: 0}
     - target: {fileID: 22411208, guid: 755fefc16ab02ff4eba8a2c8bce60a4e, type: 2}
       propertyPath: m_SizeDelta.y
@@ -30778,11 +30876,11 @@ Prefab:
     - target: {fileID: 224354591038945014, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: -37.704174
+      value: -37.704323
       objectReference: {fileID: 0}
     - target: {fileID: 22489638, guid: 755fefc16ab02ff4eba8a2c8bce60a4e, type: 2}
       propertyPath: m_SizeDelta.y
-      value: -37.704174
+      value: -37.704323
       objectReference: {fileID: 0}
     - target: {fileID: 224000012737263600, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
@@ -42244,7 +42342,7 @@ Prefab:
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 475.5728
+      value: 475.57077
       objectReference: {fileID: 0}
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -42254,7 +42352,7 @@ Prefab:
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 951.1456
+      value: 951.14154
       objectReference: {fileID: 0}
     - target: {fileID: 224000013306999950, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -42298,42 +42396,42 @@ Prefab:
     - target: {fileID: 224000011899300364, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010550286744, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011874776382, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000012375556464, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010714114462, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011589403642, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010625854600, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000013758115888, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000014152291808, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -42553,7 +42651,7 @@ Prefab:
     - target: {fileID: 224000014143717192, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20.860067
+      value: 20.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000014143717192, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -42573,7 +42671,7 @@ Prefab:
     - target: {fileID: 224000010470087190, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 22.860067
+      value: 22.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000010470087190, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -42583,7 +42681,7 @@ Prefab:
     - target: {fileID: 224000010470087190, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20.860067
+      value: 20.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000010470087190, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -42603,7 +42701,7 @@ Prefab:
     - target: {fileID: 224000012388723802, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 44.720135
+      value: 44.71997
       objectReference: {fileID: 0}
     - target: {fileID: 224000012388723802, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -42613,7 +42711,7 @@ Prefab:
     - target: {fileID: 224000012388723802, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20.860067
+      value: 20.859985
       objectReference: {fileID: 0}
     - target: {fileID: 224000012388723802, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -42623,42 +42721,42 @@ Prefab:
     - target: {fileID: 224000010714114462, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011874776382, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000012375556464, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010625854600, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011899300364, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000011589403642, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000013758115888, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010550286744, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 64.627914
+      value: 64.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000010714114462, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -42668,52 +42766,52 @@ Prefab:
     - target: {fileID: 224000011874776382, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 89.627914
+      value: 89.62756
       objectReference: {fileID: 0}
     - target: {fileID: 224000012375556464, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 169.25583
+      value: 169.25513
       objectReference: {fileID: 0}
     - target: {fileID: 224000010625854600, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 248.88374
+      value: 248.88269
       objectReference: {fileID: 0}
     - target: {fileID: 224000011899300364, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 328.51166
+      value: 328.51025
       objectReference: {fileID: 0}
     - target: {fileID: 224000011589403642, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 408.1396
+      value: 408.13782
       objectReference: {fileID: 0}
     - target: {fileID: 224000013758115888, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 487.76752
+      value: 487.76538
       objectReference: {fileID: 0}
     - target: {fileID: 224000010550286744, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 567.39545
+      value: 567.39294
       objectReference: {fileID: 0}
     - target: {fileID: 224000012990532560, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 13.267212
+      value: 13.267151
       objectReference: {fileID: 0}
     - target: {fileID: 224000013707228680, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 13.267212
+      value: 13.267151
       objectReference: {fileID: 0}
     - target: {fileID: 224000012967643018, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 13.267212
+      value: 13.267151
       objectReference: {fileID: 0}
     - target: {fileID: 224000011631513856, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
@@ -42915,7 +43013,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -0.000030517578, y: 0.000030517578}
-  m_SizeDelta: {x: -719.31213, y: 0}
+  m_SizeDelta: {x: -719.30896, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1500588852
 MonoBehaviour:
@@ -54108,7 +54206,7 @@ RectTransform:
   m_AnchorMin: {x: 0.97, y: 0.96}
   m_AnchorMax: {x: 0.99, y: 0.99}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 3.0053215}
+  m_SizeDelta: {x: 0, y: 3.0051908}
   m_Pivot: {x: 1, y: 1}
 --- !u!95 &1941228541
 Animator:

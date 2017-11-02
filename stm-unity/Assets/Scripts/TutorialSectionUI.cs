@@ -14,7 +14,7 @@ public class TutorialSectionUI : MonoBehaviour
 {
     private TutorialObject _tutorialObj;
 
-	private Dictionary<string, string[]> _sectionText;
+	private Dictionary<string, List<string>> _sectionText;
 	private RectTransform _menuHighlighted;
 	private GameObject _tutorialObject;
 	private Text _tutorialText;
@@ -31,37 +31,14 @@ public class TutorialSectionUI : MonoBehaviour
 	{
         _tutorialObj = tutObj;
 
-        _sectionText = new Dictionary<string, string[]>();
+        _sectionText = new Dictionary<string, List<string>>();
         tutObj.SectionTextHolder.ForEach(st => _sectionText.Add(st.Key, st.Value));
         _menuHighlighted = (RectTransform)transform.Find("Menu Highlighted");
         _tutorialText = GetComponentInChildren<Text>();
         _tutorialObject = transform.Find("Tutorial Helper").gameObject;
         _buttons = (RectTransform)transform.Find("Tutorial Helper/Buttons");
-        var anchorObject = (RectTransform)transform.root;
-        foreach (var obj in tutObj.HighlightedObjects)
-        {
-            anchorObject = (RectTransform)anchorObject.FindInactive(obj) ?? anchorObject;
-        }
-        GetComponentInChildren<SoftMaskScript>().maskScalingRect = anchorObject;
-        GetComponentInChildren<ReverseRaycastTarget>().MaskRect.Add(anchorObject);
-        GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = true;
-        var reverseRaycast = GetComponentInChildren<ReverseRaycastTarget>();
-        if (tutObj.BlacklistButtons != null)
-        {
-            var blacklistButtons = tutObj.BlacklistButtons.Select(blb => reverseRaycast.MaskRect[1].FindAll(blb)).SelectMany(x => x).Select(x => (RectTransform)x).ToList();
-            reverseRaycast.BlacklistRect.AddRange(blacklistButtons);
-            var whiteList = new List<RectTransform>(reverseRaycast.MaskRect);
-            whiteList.RemoveAt(0);
-            foreach (var trans in whiteList)
-            {
-                if (!trans.GetComponent<Canvas>())
-                {
-                    reverseRaycast.BlacklistRect.Add(trans);
-                }
-            }
-        }
         var attributeDict = tutObj.CustomAttributes.Select(a => new KeyValuePair<string, string>(a.Split('=')[0], a.Split('=')[1])).ToDictionary(c => c.Key, c => c.Value);
-        UIManagement.Tutorial.CustomAttributes(attributeDict);
+        GameManagement.GameManager.SetCustomTutorialAttributes(GameManagement.TutorialStage, attributeDict);
         _currentText = 0;
         _eventTriggerCount = 0;
         _triggeredObjects.Clear();
@@ -131,11 +108,48 @@ public class TutorialSectionUI : MonoBehaviour
 			}
 			GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.UpperLeft;
 		}
-		var back = _buttons.Find("Back").gameObject;
+
+        var reverseRaycast = GetComponentInChildren<ReverseRaycastTarget>();
+        reverseRaycast.MaskRect.Clear();
+        reverseRaycast.MaskRect.Add(_menuHighlighted);
+        var anchorObject = (RectTransform)transform.root;
+        if (_tutorialObj.HighlightedObjects[_currentText].List.Count > 0)
+        {
+            GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = false;
+            foreach (var obj in _tutorialObj.HighlightedObjects[_currentText].List)
+            {
+                anchorObject = (RectTransform)anchorObject.FindInactive(obj) ?? anchorObject;
+            }
+            GetComponentInChildren<SoftMaskScript>().maskScalingRect = anchorObject;
+            reverseRaycast.MaskRect.Add(anchorObject);
+        }
+        else
+        {
+            GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = true;
+            GetComponentInChildren<SoftMaskScript>().maskScalingRect = null;
+        }
+
+        if (_tutorialObj.BlacklistButtons[_currentText] != null)
+        {
+            var blacklistButtons = _tutorialObj.BlacklistButtons[_currentText].List.Select(blb => reverseRaycast.MaskRect[1].FindAll(blb)).SelectMany(x => x).Select(x => (RectTransform)x).ToList();
+            reverseRaycast.BlacklistRect.Clear();
+            reverseRaycast.BlacklistRect.AddRange(blacklistButtons);
+            var whiteList = new List<RectTransform>(reverseRaycast.MaskRect);
+            whiteList.RemoveAt(0);
+            foreach (var trans in whiteList)
+            {
+                if (!trans.GetComponent<Canvas>())
+                {
+                    reverseRaycast.BlacklistRect.Add(trans);
+                }
+            }
+        }
+
+        var back = _buttons.Find("Back").gameObject;
 		var forward = _buttons.Find("Forward").gameObject;
 		var pageNumber = _buttons.Find("Page Number").GetComponent<Text>();
 		//if text is provided, display the tutorial helper
-		if (_sectionText[Localization.SelectedLanguage.Name].Length == 0)
+		if (_sectionText[Localization.SelectedLanguage.Name].Count == 0)
 		{
 			_tutorialObject.Active(false);
 			GetComponentInChildren<ReverseRaycastTarget>().UnblockWhitelisted();
@@ -152,19 +166,19 @@ public class TutorialSectionUI : MonoBehaviour
 			{
 				back.Active(false);
 			}
-			if (_currentText == _sectionText[Localization.SelectedLanguage.Name].Length - 1)
+			if (_currentText == _sectionText[Localization.SelectedLanguage.Name].Count - 1)
 			{
 				forward.Active(false);
 				GetComponentInChildren<ReverseRaycastTarget>().UnblockWhitelisted();
 				_unblocked = true;
 			}
-			if (_sectionText[Localization.SelectedLanguage.Name].Length == 1)
+			if (_sectionText[Localization.SelectedLanguage.Name].Count == 1)
 			{
 				pageNumber.text = string.Empty;
 			}
 			else
 			{
-				pageNumber.text = _currentText + 1 + "/" + _sectionText[Localization.SelectedLanguage.Name].Length;
+				pageNumber.text = _currentText + 1 + "/" + _sectionText[Localization.SelectedLanguage.Name].Count;
 			}
 		}
 		if (_tutorialObj.EventTriggerCountRequired > 1 && _unblocked)
@@ -177,11 +191,7 @@ public class TutorialSectionUI : MonoBehaviour
 			((RectTransform)pageNumber.transform).anchorMin = new Vector2(0.45f, 0);
 			((RectTransform)pageNumber.transform).anchorMax = new Vector2(0.65f, 1);
 		}
-		if (_currentText >= _tutorialObj.HighlightTrigger)
-		{
-			GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = false;
-		}
-		if (UIManagement.Tutorial.SectionCount == transform.GetSiblingIndex())
+		if (UIManagement.Tutorial.SectionCount == GameManagement.TutorialStage + 1)
 		{
 			_buttons.Find("End Text").gameObject.Active(true);
 		}
