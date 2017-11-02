@@ -21,22 +21,25 @@ public class TutorialController : MonoBehaviour
 	[SerializeField]
 	private GameObject _tutorialExitBlocker;
 
+    [SerializeField]
+    private List<TutorialObject> _tutorialSections;
+    private TutorialSectionUI _tutorialDisplay;
+    public int SectionCount
+    {
+        get { return _tutorialSections.Count; }
+    }
+
 	/// <summary>
 	/// Load and parse tutorial JSON, creating a new game object for each 
 	/// </summary>
 	[ContextMenu("Create Tutorial")]
 	public void CreateTutorial()
 	{
-		while (transform.childCount > 0)
-		{
-			DestroyImmediate(transform.GetChild(0).gameObject);
-		}
 		var textAsset = (TextAsset)Resources.Load("Tutorial/Tutorial");
 		var parsedAsset = JSON.Parse(textAsset.text);
-		for (var i = 0; i < parsedAsset.Count; i++)
+        _tutorialSections = new List<TutorialObject>();
+        for (var i = 0; i < parsedAsset.Count; i++)
 		{
-			var tutorialSection = Instantiate(_tutorialSectionPrefab, transform, false);
-			var section = tutorialSection.GetComponent<TutorialSectionUI>();
 			var textDict = new Dictionary<string, string[]>();
 			foreach (var langName in Localization.Languages)
 			{
@@ -52,15 +55,8 @@ public class TutorialController : MonoBehaviour
 			}
 			var objectNames = parsedAsset[i]["Highlighted Object"].RemoveJSONNodeChars().Split('/');
 			var objectHightlight = int.Parse(parsedAsset[i]["Highlight Text Trigger"].RemoveJSONNodeChars());
-			var anchorObject = (RectTransform)transform.root;
-			foreach (var obj in objectNames)
-			{
-				anchorObject = (RectTransform)anchorObject.FindInactive(obj) ?? anchorObject;
-			}
 			var blacklistObjectNames = parsedAsset[i]["Button Blacklist"].RemoveJSONNodeChars().Split('\n').ToList();
 			var blacklistNames = blacklistObjectNames.Where(blon => blon.Length > 0).ToList();
-			tutorialSection.GetComponentInChildren<SoftMaskScript>().maskScalingRect = anchorObject;
-			tutorialSection.GetComponentInChildren<ReverseRaycastTarget>().MaskRect.Add(anchorObject);
 			var reversed = bool.Parse(parsedAsset[i]["Reversed UI"].RemoveJSONNodeChars());
 			var triggerSplit = parsedAsset[i]["Triggers"].RemoveJSONNodeChars().Split('\n').ToList().Select(te => te.RemoveJSONNodeChars()).ToList();
 			var triggers = triggerSplit.Select(ts => ts.NoSpaces().Split(',')).Select(ts => new KeyValuePair<string, string>(ts[0], ts[1])).ToArray();
@@ -68,31 +64,27 @@ public class TutorialController : MonoBehaviour
 			var uniqueTriggers = bool.Parse(parsedAsset[i]["Unique Triggers"].RemoveJSONNodeChars());
 			var saveToSection = int.Parse(parsedAsset[i]["Save Progress"].RemoveJSONNodeChars());
 			var customAttributes = parsedAsset[i]["Custom Attributes"].RemoveJSONNodeChars().Split('\n').ToList();
-			section.Construct(textDict, objectHightlight, reversed, triggers, triggerCount, uniqueTriggers, saveToSection, blacklistNames, customAttributes);
-			tutorialSection.name = _tutorialSectionPrefab.name;
-		}
-		foreach (Transform child in transform)
-		{
-			child.gameObject.Active(false);
+            _tutorialSections.Add(new TutorialObject(textDict, objectNames, objectHightlight, reversed, triggers, triggerCount, uniqueTriggers, saveToSection, blacklistNames, customAttributes));
 		}
 	}
 
 	private void Start()
 	{
-		gameObject.Active(GameManagement.ShowTutorial);
+        _tutorialDisplay = GetComponentsInChildren<TutorialSectionUI>(true).First();
+        gameObject.Active(GameManagement.ShowTutorial);
 		_tutorialQuitButton.Active(GameManagement.ShowTutorial);
-		foreach (Transform child in transform)
-		{
-			child.gameObject.Active(child.GetSiblingIndex() == GameManagement.TutorialStage);
-		}
-		_tutorialExitBlocker.Active(transform.childCount == GameManagement.TutorialStage + 1);
+        if (GameManagement.ShowTutorial)
+        {
+            _tutorialDisplay.Construct(_tutorialSections[GameManagement.TutorialStage]);
+        }
+		_tutorialExitBlocker.Active(SectionCount == GameManagement.TutorialStage + 1);
 	}
 
 	public void ShareEvent(string typeName, string methodName, params object[] passed)
 	{
-		if (GameManagement.ShowTutorial)
+		if (GameManagement.ShowTutorial && _tutorialDisplay)
 		{
-			transform.GetChild(GameManagement.TutorialStage).GetComponent<TutorialSectionUI>().EventReceived(typeName, methodName, passed);
+			_tutorialDisplay.EventReceived(typeName, methodName, passed);
 		}
 	}
 
@@ -102,20 +94,19 @@ public class TutorialController : MonoBehaviour
 	public void AdvanceStage()
 	{
 		var stage = GameManagement.TutorialStage;
-		transform.GetChild(stage).gameObject.Active(false);
-		var saveAmount = transform.GetChild(stage).GetComponent<TutorialSectionUI>().SaveNextSection;
-		GameManagement.GameManager.SaveTutorialProgress(saveAmount, transform.childCount <= stage + 1);
-		_tutorialExitBlocker.Active(transform.childCount == stage + 2);
-		if (GameManagement.ShowTutorial)
-		{
-			transform.GetChild(stage + 1).gameObject.Active(true);
-		}
-		else
-		{
-			SUGARManager.GameData.Send("Tutorial Finished", true);
-			gameObject.Active(false);
-			_tutorialQuitButton.Active(false);
-		}
+		var saveAmount = _tutorialSections[stage].SaveNextSection;
+		GameManagement.GameManager.SaveTutorialProgress(saveAmount, SectionCount <= stage + 1);
+		_tutorialExitBlocker.Active(SectionCount == stage + 2);
+        if (GameManagement.ShowTutorial)
+        {
+            _tutorialDisplay.Construct(_tutorialSections[GameManagement.TutorialStage]);
+        }
+        else
+        {
+            SUGARManager.GameData.Send("Tutorial Finished", true);
+            gameObject.Active(false);
+            _tutorialQuitButton.Active(false);
+        }
 	}
 
 	/// <summary>
@@ -123,7 +114,7 @@ public class TutorialController : MonoBehaviour
 	/// </summary>
 	public void QuitTutorial()
 	{
-		if (transform.childCount <= GameManagement.TutorialStage + 1)
+		if (SectionCount <= GameManagement.TutorialStage + 1)
 		{
 			TrackerEventSender.SendEvent(new TraceEvent("TutorialFinished", TrackerVerbs.Completed, new Dictionary<string, string>(), CompletableTracker.Completable.Completable));
 		}
@@ -134,7 +125,6 @@ public class TutorialController : MonoBehaviour
 				{ TrackerContextKeys.TutorialStage.ToString(), (GameManagement.TutorialStage + 1).ToString() },
 			}, CompletableTracker.Completable.Completable));
 		}
-		transform.GetChild(GameManagement.TutorialStage).gameObject.Active(false);
 		GameManagement.GameManager.SaveTutorialProgress(0, true);
 		gameObject.Active(false);
 		_tutorialQuitButton.Active(false);
