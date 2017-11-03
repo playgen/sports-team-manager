@@ -222,7 +222,7 @@ public class MemberMeetingUI : MonoBehaviour
 				}
 			}
 		}
-		var managerOpinionImage = transform.Find("Manager Opinion").GetComponent<Image>();
+		var managerOpinionImage = transform.Find("Manager Opinion").GetComponentInChildren<Image>();
 		managerOpinionImage.enabled = true;
 		managerOpinionImage.sprite = null;
 		var managerOpinion = _currentMember.RevealedCrewOpinions[GameManagement.Manager.Name];

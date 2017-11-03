@@ -13,7 +13,7 @@ public class QuestionnaireUI : MonoBehaviour
 {
 	class Answer
 	{
-		public Dictionary<string, string> Text = new Dictionary<string, string>();
+		public readonly Dictionary<string, string> Text = new Dictionary<string, string>();
 		public string Style;
 	}
 
@@ -86,14 +86,7 @@ public class QuestionnaireUI : MonoBehaviour
 			foreach (var lang in Localization.Languages)
 			{
 				var langName = lang.Name.ToLower();
-				if (parsedQuestionAsset[i][langName] != null)
-				{
-					questionLangDict.Add(langName, parsedQuestionAsset[i][langName].Value.Replace("\"", ""));
-				}
-				else
-				{
-					questionLangDict.Add(langName, parsedQuestionAsset[i][0].Value.Replace("\"", ""));
-				}
+			    questionLangDict.Add(langName, (parsedQuestionAsset[i][langName] != null ? parsedQuestionAsset[i][langName] : parsedQuestionAsset[i][0]).Value.Replace("\"", ""));
 			}
 			questionDict.Add(parsedQuestionAsset[i][0], questionLangDict);
 		}
@@ -124,22 +117,8 @@ public class QuestionnaireUI : MonoBehaviour
 				foreach (var lang in Localization.Languages)
 				{
 					var langName = lang.Name.ToLower();
-					if (questionDict[currentQuestion + "_A"][langName] != null)
-					{
-						q.AnswerA.Text.Add(langName, questionDict[currentQuestion + "_A"][langName].RemoveJSONNodeChars());
-					}
-					else
-					{
-						q.AnswerA.Text.Add(langName, questionDict[currentQuestion + "_A"][questionDict[currentQuestion + "_A"].Keys.ToList()[0]].RemoveJSONNodeChars());
-					}
-					if (questionDict[currentQuestion + "_B"][langName] != null)
-					{
-						q.AnswerB.Text.Add(langName, questionDict[currentQuestion + "_B"][langName].RemoveJSONNodeChars());
-					}
-					else
-					{
-						q.AnswerB.Text.Add(lang.Name, questionDict[currentQuestion + "_B"][questionDict[currentQuestion + "_B"].Keys.ToList()[0]].RemoveJSONNodeChars());
-					}
+				    q.AnswerA.Text.Add(langName, (questionDict[currentQuestion + "_A"][langName] != null ? questionDict[currentQuestion + "_A"][langName] : questionDict[currentQuestion + "_A"][questionDict[currentQuestion + "_A"].Keys.ToList()[0]]).RemoveJSONNodeChars());
+				    q.AnswerB.Text.Add(langName, (questionDict[currentQuestion + "_B"][langName] != null ? questionDict[currentQuestion + "_B"][langName] : questionDict[currentQuestion + "_B"][questionDict[currentQuestion + "_B"].Keys.ToList()[0]]).RemoveJSONNodeChars());
 				}
 				q.AnswerA.Style = styleDict[currentQuestion]["A"].RemoveJSONNodeChars();
 				q.AnswerB.Style = styleDict[currentQuestion]["B"].RemoveJSONNodeChars();

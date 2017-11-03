@@ -1,5 +1,4 @@
-﻿using System;
-using PlayGen.Unity.Utilities.BestFit;
+﻿using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,7 @@ using UnityEngine.UI.Extensions;
 /// </summary>
 public class TutorialSectionUI : MonoBehaviour
 {
-    private TutorialObject _tutorialObj;
+	private TutorialObject _tutorialObj;
 
 	private Dictionary<string, List<string>> _sectionText;
 	private RectTransform _menuHighlighted;
@@ -29,22 +28,22 @@ public class TutorialSectionUI : MonoBehaviour
 	/// </summary>
 	public void Construct(TutorialObject tutObj)
 	{
-        _tutorialObj = tutObj;
+		_tutorialObj = tutObj;
 
-        _sectionText = new Dictionary<string, List<string>>();
-        tutObj.SectionTextHolder.ForEach(st => _sectionText.Add(st.Key, st.Value));
-        _menuHighlighted = (RectTransform)transform.Find("Menu Highlighted");
-        _tutorialText = GetComponentInChildren<Text>();
-        _tutorialObject = transform.Find("Tutorial Helper").gameObject;
-        _buttons = (RectTransform)transform.Find("Tutorial Helper/Buttons");
-        var attributeDict = tutObj.CustomAttributes.Select(a => new KeyValuePair<string, string>(a.Split('=')[0], a.Split('=')[1])).ToDictionary(c => c.Key, c => c.Value);
-        GameManagement.GameManager.SetCustomTutorialAttributes(GameManagement.TutorialStage, attributeDict);
-        _currentText = 0;
-        _eventTriggerCount = 0;
-        _triggeredObjects.Clear();
-        _unblocked = false;
-        Invoke("SetUp", 0f);
-    }
+		_sectionText = new Dictionary<string, List<string>>();
+		tutObj.SectionTextHolder.ForEach(st => _sectionText.Add(st.Key, st.Value));
+		_menuHighlighted = (RectTransform)transform.Find("Menu Highlighted");
+		_tutorialText = GetComponentInChildren<Text>();
+		_tutorialObject = transform.Find("Tutorial Helper").gameObject;
+		_buttons = (RectTransform)transform.Find("Tutorial Helper/Buttons");
+		var attributeDict = tutObj.CustomAttributes.Select(a => new KeyValuePair<string, string>(a.Split('=')[0], a.Split('=')[1])).ToDictionary(c => c.Key, c => c.Value);
+		GameManagement.GameManager.SetCustomTutorialAttributes(GameManagement.TutorialStage, attributeDict);
+		_currentText = 0;
+		_eventTriggerCount = 0;
+		_triggeredObjects.Clear();
+		_unblocked = false;
+		Invoke("SetUp", 0f);
+	}
 
 	/// <summary>
 	/// Set-up connections to UI elements for this piece of the tutorial
@@ -109,43 +108,43 @@ public class TutorialSectionUI : MonoBehaviour
 			GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.UpperLeft;
 		}
 
-        var reverseRaycast = GetComponentInChildren<ReverseRaycastTarget>();
-        reverseRaycast.MaskRect.Clear();
-        reverseRaycast.MaskRect.Add(_menuHighlighted);
-        var anchorObject = (RectTransform)transform.root;
-        if (_tutorialObj.HighlightedObjects[_currentText].List.Count > 0)
-        {
-            GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = false;
-            foreach (var obj in _tutorialObj.HighlightedObjects[_currentText].List)
-            {
-                anchorObject = (RectTransform)anchorObject.FindInactive(obj) ?? anchorObject;
-            }
-            GetComponentInChildren<SoftMaskScript>().maskScalingRect = anchorObject;
-            reverseRaycast.MaskRect.Add(anchorObject);
-        }
-        else
-        {
-            GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = true;
-            GetComponentInChildren<SoftMaskScript>().maskScalingRect = null;
-        }
+		var reverseRaycast = GetComponentInChildren<ReverseRaycastTarget>();
+		reverseRaycast.MaskRect.Clear();
+		reverseRaycast.MaskRect.Add(_menuHighlighted);
+		var anchorObject = (RectTransform)transform.root;
+		if (_tutorialObj.HighlightedObjects[_currentText].List.Count > 0)
+		{
+			GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = false;
+			foreach (var obj in _tutorialObj.HighlightedObjects[_currentText].List)
+			{
+				anchorObject = (RectTransform)anchorObject.FindInactive(obj) ?? anchorObject;
+			}
+			GetComponentInChildren<SoftMaskScript>().maskScalingRect = anchorObject;
+			reverseRaycast.MaskRect.Add(anchorObject);
+		}
+		else
+		{
+			GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = true;
+			GetComponentInChildren<SoftMaskScript>().maskScalingRect = null;
+		}
 
-        if (_tutorialObj.BlacklistButtons[_currentText] != null)
-        {
-            var blacklistButtons = _tutorialObj.BlacklistButtons[_currentText].List.Select(blb => reverseRaycast.MaskRect[1].FindAll(blb)).SelectMany(x => x).Select(x => (RectTransform)x).ToList();
-            reverseRaycast.BlacklistRect.Clear();
-            reverseRaycast.BlacklistRect.AddRange(blacklistButtons);
-            var whiteList = new List<RectTransform>(reverseRaycast.MaskRect);
-            whiteList.RemoveAt(0);
-            foreach (var trans in whiteList)
-            {
-                if (!trans.GetComponent<Canvas>())
-                {
-                    reverseRaycast.BlacklistRect.Add(trans);
-                }
-            }
-        }
+		if (_tutorialObj.BlacklistButtons[_currentText] != null)
+		{
+			var blacklistButtons = _tutorialObj.BlacklistButtons[_currentText].List.Select(blb => reverseRaycast.MaskRect[1].FindAll(blb)).SelectMany(x => x).Select(x => (RectTransform)x).ToList();
+			reverseRaycast.BlacklistRect.Clear();
+			reverseRaycast.BlacklistRect.AddRange(blacklistButtons);
+			var whiteList = new List<RectTransform>(reverseRaycast.MaskRect);
+			whiteList.RemoveAt(0);
+			foreach (var trans in whiteList)
+			{
+				if (!trans.GetComponent<Canvas>())
+				{
+					reverseRaycast.BlacklistRect.Add(trans);
+				}
+			}
+		}
 
-        var back = _buttons.Find("Back").gameObject;
+		var back = _buttons.Find("Back").gameObject;
 		var forward = _buttons.Find("Forward").gameObject;
 		var pageNumber = _buttons.Find("Page Number").GetComponent<Text>();
 		//if text is provided, display the tutorial helper
@@ -256,7 +255,7 @@ public class TutorialSectionUI : MonoBehaviour
 				_eventTriggerCount++;
 				if (_eventTriggerCount >= _tutorialObj.EventTriggerCountRequired)
 				{
-				    UIManagement.Tutorial.AdvanceStage();
+					UIManagement.Tutorial.AdvanceStage();
 
 				}
 			}

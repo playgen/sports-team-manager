@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-
-using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
 
 using UnityEngine;
@@ -17,7 +15,7 @@ using System.Reflection;
 
 public class PostRaceEventImpactUI : MonoBehaviour
 {
-	private List<KeyValuePair<string, List<string>>> _impacts = new List<KeyValuePair<string, List<string>>>();
+	private readonly List<KeyValuePair<string, List<string>>> _impacts = new List<KeyValuePair<string, List<string>>>();
 	[SerializeField]
 	private Text _impactText;
 

@@ -809,14 +809,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		foreach (var position in _boatMain.GetComponentsInChildren<PositionUI>()) {
 			position.transform.Find("Name").GetComponent<Text>().text = Localization.Get(position.Position.ToString());
 		}
-		if (!GameManagement.IsRace)
-		{
-			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
-		}
-		else
-		{
-			_raceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
-		}
+		_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat(GameManagement.IsRace ? "RACE_BUTTON_RACE" : "RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
 		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
 		ChangeVisibleBoats(true);
 		if (_endRace.gameObject.activeSelf)

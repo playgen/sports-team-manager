@@ -108,6 +108,47 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!21 &386339
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: UI Extensions/SoftMaskShader
+  m_Shader: {fileID: 4800000, guid: 947afae4d36f1274ea2e4098262ceef6, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AlphaMask:
+        m_Texture: {fileID: 2800000, guid: 3a4c416d080226c4a89132d383c263bd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _ColorMask: 15
+    - _CutOff: 1
+    - _FlipAlphaMask: 0
+    - _HardBlend: 0
+    - _NoOuterClip: 0
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _AlphaUV: {r: 1, g: 1, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Max: {r: 1, g: 1, b: 0, a: 0}
+    - _Min: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &972233
 GameObject:
   m_ObjectHideFlags: 0
@@ -760,7 +801,7 @@ RectTransform:
   m_Children:
   - {fileID: 202269920}
   m_Father: {fileID: 1695583527}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.625}
   m_AnchorMax: {x: 1, y: 0.75}
@@ -4838,7 +4879,7 @@ RectTransform:
   - {fileID: 715883217}
   - {fileID: 1672117937}
   m_Father: {fileID: 1695583527}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05, y: 0}
   m_AnchorMax: {x: 0.95, y: 0.135}
@@ -5914,74 +5955,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 123607075}
---- !u!1 &125086752
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 125086753}
-  - component: {fileID: 125086755}
-  - component: {fileID: 125086754}
-  m_Layer: 5
-  m_Name: Left Bottom
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &125086753
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 125086752}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: -1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1275026955}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.005, y: 0.05}
-  m_AnchorMax: {x: 0.495, y: 0.57}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &125086754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 125086752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 748382ddbe9ed2340bfdb98f9441d32d, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
---- !u!222 &125086755
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 125086752}
 --- !u!1 &126222826
 GameObject:
   m_ObjectHideFlags: 0
@@ -6491,7 +6464,7 @@ RectTransform:
   m_Children:
   - {fileID: 1015216149}
   m_Father: {fileID: 1950819049}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.025, y: 0.09}
   m_AnchorMax: {x: 0.475, y: 0.15}
@@ -7233,7 +7206,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -11.000026, y: 0}
+  m_AnchoredPosition: {x: -11.000028, y: 0}
   m_SizeDelta: {x: -22, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &183698027
@@ -8197,8 +8170,8 @@ RectTransform:
   m_Father: {fileID: 2134179620}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.12, y: 0.815}
-  m_AnchorMax: {x: 0.87, y: 0.945}
+  m_AnchorMin: {x: 0.05, y: 0.815}
+  m_AnchorMax: {x: 0.92, y: 0.945}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10517,11 +10490,918 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 294e5fff25cb6874695f1a467b27bbc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tutorialSectionPrefab: {fileID: 1000013896229048, guid: 21095ee2d49966e45aed719c57d8984e,
-    type: 2}
   _tutorialQuitButton: {fileID: 1941228535}
   _tutorialExitBlocker: {fileID: 515993620}
-  _tutorialSections: []
+  _tutorialSections:
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - "Welcome! Here is where you\u2019ll be dealing with your crew and assigning
+        them to their positions."
+      - "Firstly, let\u2019s take a look at the three positions you\u2019ll need to
+        fill. Click on any of them to display the pop-up for that position."
+    - Key: it
+      Value:
+      - XXXX
+      - XXXX
+    Reversed: 0
+    HighlightedObjects:
+    - List: []
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Boat
+      - Position Container
+    Triggers:
+    - Key: PositionUI
+      Value: ShowPopUp
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 2
+    BlacklistButtons:
+    - List: []
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - This pop-up lists all the skills required for the position you just selected
+        and will also display who is currently in the position and has been in it
+        in the past.
+      - To close this, use the X in the top right of the pop-up.
+    - Key: it
+      Value:
+      - XXXX
+      - XXXX
+    Reversed: 0
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Position Pop-Up
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Position Pop-Up
+      - Close
+    Triggers:
+    - Key: PositionDisplayUI
+      Value: ClosePositionPopUp
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List:
+      - Close
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - "Now that you know how to review a position, it\u2019s time to take a look
+        at your starting crew. At the bottom of the screen, all your crew members
+        are listed."
+      - The facial expression and background color of each shows their current mood.
+        At the moment all of your crew is in a 'neutral' mood, which has no impact
+        on their performance.
+      - A happy looking, smiling crew member with a more green background is in a
+        good mood and as such will perform better than normal.
+      - 'Meanwhile, anyone looking sad or angry with a more red background is in a
+        bad mood and will perform worse. '
+      - In order to find out more on a crew member, you'll need to talk to them, which
+        you can do by clicking on them.
+    - Key: it
+      Value:
+      - XXXX
+      - XXXX
+      - XXXX
+      - XXXX
+      - XXXX
+    Reversed: 0
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Crew Container
+    - List:
+      - Team Management
+      - Crew Container
+    - List:
+      - Team Management
+      - Crew Container
+    - List:
+      - Team Management
+      - Crew Container
+    - List:
+      - Team Management
+      - Crew Container
+    Triggers:
+    - Key: CrewMemberUI
+      Value: ShowPopUp
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 3
+    BlacklistButtons:
+    - List: []
+    - List: []
+    - List: []
+    - List: []
+    - List:
+      - zz Recruit
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - "This pop-up displays all the known skills and opinions for this person, but
+        as you\u2019ve only just started, you know nothing about their skills and,
+        as far as you\u2019re aware, their opinion of everyone is neutral."
+      - Their opinion on other members of the team is displayed in the top left of
+        their respective icons, whilst their opinion of you is shown in the top left
+        of this pop-up.
+      - "In order to learn more about this crew member, you\u2019re going to need
+        to talk to them by clicking any of the available questions, with their response
+        displayed above the list of questions."
+      - Asking questions, along with some other actions in the game, require an amount
+        of 'Talk Time' to do, with a limited amount available per race. For now, this
+        limitation has been removed, so feel free to ask each question a couple of
+        times.
+    - Key: it
+      Value:
+      - XXXX
+      - XXXX
+      - XXXX
+      - XXXX
+    Reversed: 0
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Meeting Pop-Up
+      - Details
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Meeting Pop-Up
+      - Manager Opinion
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Meeting Pop-Up
+      - Conversation
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Meeting Pop-Up
+    Triggers:
+    - Key: MemberMeetingUI
+      Value: AskQuestion
+    UniqueEvents: 0
+    EventTriggerCountRequired: 6
+    SaveNextSection: 2
+    BlacklistButtons:
+    - List: []
+    - List: []
+    - List: []
+    - List:
+      - Close
+      - Close (1)
+    CustomAttributes:
+    - cost=false
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - "OK, looks like you\u2019ve got the hang of talking to your team members."
+      - Now you have some information for this crew member, exit the pop-up using
+        the highlighted button.
+    - Key: it
+      Value:
+      - XXXX
+      - XXXX
+    Reversed: 0
+    HighlightedObjects:
+    - List: []
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Meeting Pop-Up
+      - Close
+    Triggers:
+    - Key: MemberMeetingUI
+      Value: OnDisable
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List: []
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - "Now you know how to question your crew, it\u2019s time to place them into
+        positions."
+      - "Once you've gathered some further information on your team and the positions
+        you'll need to fill, place crew members by dragging them into the position
+        you think they\u2019d best fit."
+    - Key: it
+      Value:
+      - XXXX
+      - XXXX
+    Reversed: 0
+    HighlightedObjects:
+    - List: []
+    - List:
+      - Team Management
+    Triggers:
+    - Key: CrewMemberUI
+      Value: Place
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 0
+    BlacklistButtons:
+    - List: []
+    - List:
+      - zz Recruit
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - If you want to remove a crew member from a position, just drag and drop them
+        out of the position.
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 0
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Boat
+    Triggers:
+    - Key: CrewMemberUI
+      Value: OnReset
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: -1
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - Once you've filled all of the positions wth crew members, the boat will be
+        ready to take part in the first practice session.
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 0
+    HighlightedObjects:
+    - List:
+      - Team Management
+    Triggers:
+    - Key: TeamSelectionUI
+      Value: EnableRacing
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: -2
+    BlacklistButtons:
+    - List:
+      - zz Recruit
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - "Don\u2019t worry if you haven't gotten the perfect line-up, as you'll get
+        two practice session before every race."
+      - Every session, your performance is based on the skill ratings of your line-up
+        in their positions, their opinion of you, their current mood and their opinion
+        of everyone else selected.
+      - By clicking the highlighted button, your selected line-up will take part in
+        the first practice session.
+    - Key: it
+      Value:
+      - XXXX
+      - XXXX
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List: []
+    - List: []
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Boat
+      - Race
+    Triggers:
+    - Key: TeamSelectionUI
+      Value: ConfirmLineUp
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List: []
+    - List: []
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - After every session, you'll be given feedback on how your selected crew performed.
+      - These colored boxes represent how close you are to selecting the best possible
+        line-up available to you.
+      - Hover over or click each box to see what they represent.
+    - Key: it
+      Value:
+      - XXXX
+      - XXXX
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List: []
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Historic Boat 0
+      - Light Container
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Historic Boat 0
+      - Light Container
+    Triggers:
+    - Key: HoverPopUpUI
+      Value: HoverCheck
+    UniqueEvents: 1
+    EventTriggerCountRequired: 3
+    SaveNextSection: 2
+    BlacklistButtons:
+    - List: []
+    - List: []
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - Hover over or click each box to see what they represent.
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Historic Boat 0
+      - Light Container
+    Triggers:
+    - Key: HoverPopUpUI
+      Value: HideHover
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - You'll also be given feedback after every session on which areas your team
+        needs to improve in, if any.
+      - Note that, for this session only, these icons aren't representative of which
+        areas actually require improvement.
+      - Each blue icon represents an area that requires improvement, with icons on
+        the left having more room for improvement.
+      - Grey question marks mean that your team needs to be questioned further in
+        order to discover what needs improving.
+      - By hovering over each of these icons, you can see what each icon represents.
+    - Key: it
+      Value:
+      - XXXX
+      - XXXX
+      - XXXX
+      - XXXX
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List: []
+    - List: []
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Historic Boat 0
+      - Icon Container
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Historic Boat 0
+      - Icon Container
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Historic Boat 0
+      - Icon Container
+    Triggers:
+    - Key: HoverPopUpUI
+      Value: HoverCheck
+    UniqueEvents: 1
+    EventTriggerCountRequired: 3
+    SaveNextSection: 2
+    BlacklistButtons:
+    - List: []
+    - List: []
+    - List: []
+    - List: []
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - By hovering over each of these icons, you can see what each icon represents.
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Historic Boat 0
+      - Icon Container
+    Triggers:
+    - Key: HoverPopUpUI
+      Value: HideHover
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - Also keep in mind that selecting the best possible crew won't always mean
+        you'll win the race. After all, the best of a poor crew is still going to
+        be fairly bad.
+      - Now that you've completed the first practice session, use what you've learned
+        to take part in the second practice session.
+    - Key: it
+      Value:
+      - XXXX
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List: []
+    - List:
+      - Team Management
+    Triggers:
+    - Key: TeamSelectionUI
+      Value: ConfirmLineUp
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List: []
+    - List:
+      - zz Recruit
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - OK, practice is over and it's now time for the race itself! Once you're happy
+        with your selected line-up, click the 'Race!' button to take part in your
+        first race.
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List:
+      - Team Management
+    Triggers:
+    - Key: TeamSelectionUI
+      Value: ConfirmLineUp
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 2
+    BlacklistButtons:
+    - List:
+      - zz Recruit
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - This result pop-up will apear after every race. Did this race go as well as
+        you expected?
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Post-Race Pop-Up
+    Triggers:
+    - Key: RaceResultUI
+      Value: Close
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - "Now you\u2019ve completed your first race, it\u2019s time to change things
+        up a little."
+      - A navigator is no longer needed on your boat. Instead you need a Helmsman,
+        and none of your current crew suit this position very well.
+      - "As a result, you\u2019ll need to recruit a new member into your team. But
+        first, let\u2019s look at the details behind this new position to fill."
+    - Key: it
+      Value:
+      - XXXX
+      - XXXX
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List: []
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Boat
+      - Position Container
+      - Position 1
+    - List:
+      - Team Management
+      - Boat Container Bounds
+      - Viewport
+      - Content
+      - Boat
+      - Position Container
+      - Position 1
+    Triggers:
+    - Key: PositionUI
+      Value: ShowPopUp
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 2
+    BlacklistButtons:
+    - List: []
+    - List: []
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - "Once you\u2019re happy you know what skills will be needed in this position,
+        close the pop-up."
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Position Pop-Up
+    Triggers:
+    - Key: PositionDisplayUI
+      Value: ClosePositionPopUp
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - To go to the recruitment screen, click one of the black buttons on the right
+        of the highlighted area.
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Crew Container
+      - zz Recruit
+    Triggers:
+    - Key: RecruitMemberUI
+      Value: ResetDisplay
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 0
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - When you click a skill statement at the bottom of the screen, these four possible
+        recruits will reply with if they agree or disagree with the statement. By
+        saying the right statements, you should get an idea on who to hire.
+      - Note that usually each of these questions would have a cost, as would hiring.
+        This cost has been removed for the time being.
+    - Key: it
+      Value:
+      - XXXX
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Recruit Pop-Up
+      - Questions
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Recruit Pop-Up
+    Triggers:
+    - Key: RecruitMemberUI
+      Value: AskQuestion
+    UniqueEvents: 1
+    EventTriggerCountRequired: 2
+    SaveNextSection: -1
+    BlacklistButtons:
+    - List: []
+    - List:
+      - Close
+      - Close (1)
+      - Button
+    CustomAttributes:
+    - cost=false
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - "Once you\u2019re happy that you know who you want to hire, click on them
+        to hire them into your team."
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Recruit Pop-Up
+      - Recruits
+    Triggers:
+    - Key: RecruitMemberUI
+      Value: Recruit
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List:
+      - Close
+      - Close (1)
+      - Question 1
+      - Question 2
+      - Question 3
+      - Question 4
+      - Question 5
+      - Question 6
+    CustomAttributes:
+    - cost=false
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - "Now we\u2019ve got someone that you feel fits the new position, it\u2019s
+        time for the next set of sessions."
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List:
+      - Team Management
+    Triggers:
+    - Key: TeamSelectionUI
+      Value: ConfirmLineUp
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - That's the first practice session completed. This'll be your last chance to
+        experiment risk-free, so pick wisely.
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List:
+      - Team Management
+    Triggers:
+    - Key: TeamSelectionUI
+      Value: ConfirmLineUp
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List:
+      - zz Recruit
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - Two practice sessions have come and gone, so now it's time to race for the
+        first time with this new layout. Good luck!
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List:
+      - Team Management
+    Triggers:
+    - Key: TeamSelectionUI
+      Value: ConfirmLineUp
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 2
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - Did practice make perfect this time round?
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 1
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Post-Race Pop-Up
+    Triggers:
+    - Key: RaceResultUI
+      Value: Close
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - "Seems that one of your crew members wants to speak with you. Every so often,
+        events like this will occur after a race, and it\u2019s up to you to handle
+        the situation."
+      - Click any of the available options to select and say them back to this crew
+        member.
+    - Key: it
+      Value:
+      - XXXX
+      - XXXX
+    Reversed: 0
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Event Pop-Up
+      - Solo
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Event Pop-Up
+      - Solo
+    Triggers:
+    - Key: PostRaceEventUI
+      Value: SetBlockerOnClick
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 4
+    BlacklistButtons:
+    - List: []
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - "OK, that\u2019s the conversation finished. Click the highlighted button to
+        exit the conversation."
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 0
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Event Pop-Up
+      - Solo
+      - Close
+    Triggers:
+    - Key: PostRaceEventUI
+      Value: Close
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 3
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - This dashing fellow (no relation, I assure you...) will pop up after every
+        event to give you some feedback on how you handled the situation.
+      - To close this feedback, click anywhere on the screen.
+    - Key: it
+      Value:
+      - XXXX
+      - XXXX
+    Reversed: 0
+    HighlightedObjects:
+    - List:
+      - Team Management
+    - List:
+      - Team Management
+    Triggers:
+    - Key: LearningPillUI
+      Value: ClosePill
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 2
+    BlacklistButtons:
+    - List: []
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - After every conversation, you'll also be given a list which details the impact
+        of what you've responsed with has had.
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 0
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Event Impact Pop-Up
+    Triggers:
+    - Key: PostRaceEventImpactUI
+      Value: Close
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - From here on out, you're mostly on your own, but I'll pop up from time to
+        time after events to give additional tips. Good luck!
+    - Key: it
+      Value:
+      - XXXX
+    Reversed: 0
+    HighlightedObjects:
+    - List:
+      - Team Management
+    Triggers: []
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 1
+    BlacklistButtons:
+    - List: []
+    CustomAttributes: []
 --- !u!1 &303733851
 GameObject:
   m_ObjectHideFlags: 0
@@ -10750,7 +11630,7 @@ RectTransform:
   - {fileID: 192195125}
   - {fileID: 784060692}
   m_Father: {fileID: 1695583527}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05, y: 0.155}
   m_AnchorMax: {x: 0.95, y: 0.29}
@@ -13837,47 +14717,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 433807696}
---- !u!21 &435409996
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: UI Extensions/SoftMaskShader
-  m_Shader: {fileID: 4800000, guid: 947afae4d36f1274ea2e4098262ceef6, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _AlphaMask:
-        m_Texture: {fileID: 2800000, guid: 3a4c416d080226c4a89132d383c263bd, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _ColorMask: 15
-    - _CutOff: 1
-    - _FlipAlphaMask: 0
-    - _HardBlend: 0
-    - _NoOuterClip: 0
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    m_Colors:
-    - _AlphaUV: {r: 1, g: 1, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Max: {r: 1, g: 1, b: 0, a: 0}
-    - _Min: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &448608264
 GameObject:
   m_ObjectHideFlags: 0
@@ -14332,6 +15171,74 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 464292247}
+--- !u!1 &467597523
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 467597524}
+  - component: {fileID: 467597526}
+  - component: {fileID: 467597525}
+  m_Layer: 5
+  m_Name: Top Backer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &467597524
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 467597523}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1695583527}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: -0.2}
+  m_AnchorMax: {x: 1, y: 0.62}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &467597525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 467597523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 748382ddbe9ed2340bfdb98f9441d32d, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &467597526
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 467597523}
 --- !u!1 &469958987
 GameObject:
   m_ObjectHideFlags: 0
@@ -15779,6 +16686,74 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 2.2928433}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &502295049
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 502295050}
+  - component: {fileID: 502295052}
+  - component: {fileID: 502295051}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &502295050
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 502295049}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1849060055}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.667, y: 0.4}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &502295051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 502295049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: e7fa7ee478ebc3f4d9ac98cb5bac5120, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &502295052
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 502295049}
 --- !u!1 &502975887
 GameObject:
   m_ObjectHideFlags: 0
@@ -17811,8 +18786,8 @@ RectTransform:
   m_Father: {fileID: 1849060055}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.05, y: 1.1}
-  m_AnchorMax: {x: 1.5, y: 2.5}
+  m_AnchorMin: {x: 0.05, y: 0.42}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -18846,8 +19821,8 @@ RectTransform:
   m_Father: {fileID: 2134179620}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.12, y: 0.655}
-  m_AnchorMax: {x: 0.87, y: 0.785}
+  m_AnchorMin: {x: 0.05, y: 0.655}
+  m_AnchorMax: {x: 0.92, y: 0.785}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -19541,7 +20516,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 435409996}
+  m_Material: {fileID: 386339}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -21314,9 +22289,9 @@ RectTransform:
   m_Father: {fileID: 566971913}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 77.5, y: -8}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -8}
   m_SizeDelta: {x: 0, y: 10.187178}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &709088192
@@ -21719,7 +22694,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -11.000026, y: 0}
+  m_AnchoredPosition: {x: -11.000028, y: 0}
   m_SizeDelta: {x: -22, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &731641933
@@ -24783,7 +25758,7 @@ RectTransform:
   - {fileID: 1514634575}
   - {fileID: 585712153}
   m_Father: {fileID: 1695583527}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05, y: 0.31}
   m_AnchorMax: {x: 0.95, y: 0.445}
@@ -27517,7 +28492,7 @@ RectTransform:
   m_Children:
   - {fileID: 64453453}
   m_Father: {fileID: 1950819049}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.495, y: 0.05}
   m_AnchorMax: {x: 0.705, y: 0.82}
@@ -31218,7 +32193,7 @@ RectTransform:
   - {fileID: 253989102}
   - {fileID: 754006568}
   m_Father: {fileID: 1950819049}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.77, y: 0.03}
   m_AnchorMax: {x: 0.94, y: 0.11}
@@ -33556,7 +34531,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -11.000022, y: 0}
+  m_AnchoredPosition: {x: -11.000024, y: 0}
   m_SizeDelta: {x: -22, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1202155373
@@ -34839,41 +35814,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0.000015258789}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1275026954
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1275026955}
-  m_Layer: 5
-  m_Name: Backers
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1275026955
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1275026954}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1405025415}
-  - {fileID: 125086753}
-  m_Father: {fileID: 1950819049}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1276219934
 GameObject:
   m_ObjectHideFlags: 0
@@ -35601,6 +36541,74 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!1 &1295803872
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1295803873}
+  - component: {fileID: 1295803875}
+  - component: {fileID: 1295803874}
+  m_Layer: 5
+  m_Name: Bottom Backer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1295803873
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1295803872}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: -1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1695583527}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: -0.2}
+  m_AnchorMax: {x: 1, y: 0.61}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1295803874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1295803872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 748382ddbe9ed2340bfdb98f9441d32d, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1295803875
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1295803872}
 --- !u!1 &1298594407
 GameObject:
   m_ObjectHideFlags: 0
@@ -37808,7 +38816,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -11.000026, y: 0}
+  m_AnchoredPosition: {x: -11.000028, y: 0}
   m_SizeDelta: {x: -22, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1364760029
@@ -38361,12 +39369,12 @@ RectTransform:
   m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 1}
   m_Children: []
   m_Father: {fileID: 1950819049}
-  m_RootOrder: 9
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.96, y: 0.95}
   m_AnchorMax: {x: 0.985, y: 0.98}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 2.632154}
+  m_SizeDelta: {x: 0, y: 2.6321015}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1377872060
 MonoBehaviour:
@@ -39117,74 +40125,6 @@ MonoBehaviour:
   LanguageOverride: 
   Key: BODY
   ToUpper: 1
---- !u!1 &1405025414
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1405025415}
-  - component: {fileID: 1405025417}
-  - component: {fileID: 1405025416}
-  m_Layer: 5
-  m_Name: Left Top
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1405025415
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1405025414}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1275026955}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.005, y: 0.055}
-  m_AnchorMax: {x: 0.495, y: 0.575}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1405025416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1405025414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 748382ddbe9ed2340bfdb98f9441d32d, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
---- !u!222 &1405025417
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1405025414}
 --- !u!1 &1407039600
 GameObject:
   m_ObjectHideFlags: 0
@@ -42232,7 +43172,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0.000030517578}
+  m_AnchoredPosition: {x: 0, y: 0.000030517578}
   m_SizeDelta: {x: -719.3075, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1500588852
@@ -43001,7 +43941,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -11.000022, y: 0}
+  m_AnchoredPosition: {x: -11.000024, y: 0}
   m_SizeDelta: {x: -22, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1535831465
@@ -43410,7 +44350,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -11.000022, y: 0}
+  m_AnchoredPosition: {x: -11.000024, y: 0}
   m_SizeDelta: {x: -22, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1560014014
@@ -46136,7 +47076,7 @@ RectTransform:
   - {fileID: 613524164}
   - {fileID: 1102365752}
   m_Father: {fileID: 1695583527}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05, y: 0.465}
   m_AnchorMax: {x: 0.95, y: 0.6}
@@ -46718,6 +47658,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 467597524}
+  - {fileID: 1295803873}
   - {fileID: 2069411694}
   - {fileID: 12054590}
   - {fileID: 1679758279}
@@ -46725,7 +47667,7 @@ RectTransform:
   - {fileID: 310833415}
   - {fileID: 97704934}
   m_Father: {fileID: 1950819049}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.005, y: 0.18}
   m_AnchorMax: {x: 0.495, y: 0.82}
@@ -51253,8 +52195,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1849060055}
-  - component: {fileID: 1849060057}
-  - component: {fileID: 1849060056}
   m_Layer: 5
   m_Name: Manager Opinion
   m_TagString: Untagged
@@ -51273,47 +52213,15 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 571885396}
+  - {fileID: 502295050}
   m_Father: {fileID: 1950819049}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.004, y: 0.85}
-  m_AnchorMax: {x: 0.054, y: 0.9}
+  m_AnchorMax: {x: 0.08, y: 0.975}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1849060056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1849060054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: e7fa7ee478ebc3f4d9ac98cb5bac5120, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
---- !u!222 &1849060057
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1849060054}
 --- !u!1 &1849669986
 GameObject:
   m_ObjectHideFlags: 0
@@ -51439,8 +52347,8 @@ RectTransform:
   m_Father: {fileID: 2134179620}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.12, y: 0.175}
-  m_AnchorMax: {x: 0.87, y: 0.305}
+  m_AnchorMin: {x: 0.05, y: 0.175}
+  m_AnchorMax: {x: 0.92, y: 0.305}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -51474,7 +52382,7 @@ RectTransform:
   - {fileID: 1972574780}
   - {fileID: 800990194}
   m_Father: {fileID: 1950819049}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.3, y: 0.855}
   m_AnchorMax: {x: 0.7, y: 0.955}
@@ -51514,8 +52422,8 @@ RectTransform:
   m_Father: {fileID: 2134179620}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.12, y: 0.495}
-  m_AnchorMax: {x: 0.87, y: 0.625}
+  m_AnchorMin: {x: 0.05, y: 0.495}
+  m_AnchorMax: {x: 0.92, y: 0.625}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -53687,12 +54595,10 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1275026955}
   - {fileID: 1850810148}
   - {fileID: 949732269}
   - {fileID: 1849060055}
-  - {fileID: 2121551095}
-  - {fileID: 2134179620}
+  - {fileID: 2117458764}
   - {fileID: 1112984670}
   - {fileID: 1695583527}
   - {fileID: 136742135}
@@ -53703,7 +54609,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -423.71906, y: 0}
+  m_SizeDelta: {x: -423.716, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1950819050
 MonoBehaviour:
@@ -56854,7 +57760,7 @@ RectTransform:
   m_Children:
   - {fileID: 1732577633}
   m_Father: {fileID: 1695583527}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.1, y: 0.8}
   m_AnchorMax: {x: 0.9, y: 1}
@@ -56927,8 +57833,8 @@ RectTransform:
   m_Father: {fileID: 2134179620}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.12, y: 0.335}
-  m_AnchorMax: {x: 0.87, y: 0.465}
+  m_AnchorMin: {x: 0.05, y: 0.335}
+  m_AnchorMax: {x: 0.92, y: 0.465}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -57040,7 +57946,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 25.999786, y: -136.00015}
+  m_AnchoredPosition: {x: 25.999786, y: -136.00003}
   m_SizeDelta: {x: 256, y: 455}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &2076199979
@@ -57109,8 +58015,8 @@ RectTransform:
   m_Father: {fileID: 2134179620}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.12, y: 0.015}
-  m_AnchorMax: {x: 0.87, y: 0.145}
+  m_AnchorMin: {x: 0.05, y: 0.015}
+  m_AnchorMax: {x: 0.92, y: 0.145}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -57899,6 +58805,41 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -100}
   m_SizeDelta: {x: 250, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2117458763
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2117458764}
+  m_Layer: 5
+  m_Name: Details
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2117458764
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2117458763}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2121551095}
+  - {fileID: 2134179620}
+  m_Father: {fileID: 1950819049}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.71, y: 0.13}
+  m_AnchorMax: {x: 1, y: 0.8185}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2121551094
 GameObject:
   m_ObjectHideFlags: 0
@@ -57920,7 +58861,7 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2121551094}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -57931,11 +58872,11 @@ RectTransform:
   - {fileID: 1027082277}
   - {fileID: 1204848450}
   - {fileID: 863895114}
-  m_Father: {fileID: 1950819049}
-  m_RootOrder: 4
+  m_Father: {fileID: 2117458764}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.73, y: 0.6585}
-  m_AnchorMax: {x: 0.9995, y: 0.8185}
+  m_AnchorMin: {x: 0, y: 0.8}
+  m_AnchorMax: {x: 0.98, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -58262,7 +59203,7 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2134179619}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -58274,11 +59215,11 @@ RectTransform:
   - {fileID: 2069764317}
   - {fileID: 1850422427}
   - {fileID: 2078748417}
-  m_Father: {fileID: 1950819049}
-  m_RootOrder: 5
+  m_Father: {fileID: 2117458764}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.7, y: 0.13}
-  m_AnchorMax: {x: 1, y: 0.66}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0.8}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
