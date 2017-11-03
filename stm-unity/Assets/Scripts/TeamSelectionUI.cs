@@ -129,38 +129,38 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	private void Update()
 	{
-        if (_recruitButtons.Count > 0)
-        {
-            if (ConfigKeys.RecruitmentCost.Affordable() && GameManagement.CrewEditAllowed && GameManagement.Team.CanAddToCrew())
-            {
-                if (!_recruitButtons[0].IsInteractable())
-                {
-                    foreach (var b in _recruitButtons)
-                    {
-                        b.interactable = true;
-                        b.GetComponent<HoverObject>().Enabled = false;
-                    }
-                }
-            }
-            else
-            {
-                if (_recruitButtons[0].IsInteractable())
-                {
-                    foreach (var b in _recruitButtons)
-                    {
-                        b.interactable = false;
-                        if (!ConfigKeys.RecruitmentCost.Affordable())
-                        {
-                            FeedbackHoverOver(b.transform, "RECRUIT_BUTTON_HOVER_ALLOWANCE");
-                        }
-                        else if (!GameManagement.CrewEditAllowed)
-                        {
-                            FeedbackHoverOver(b.transform, Localization.GetAndFormat("RECRUIT_BUTTON_HOVER_LIMIT", false, GameManagement.StartingCrewEditAllowance));
-                        }
-                    }
-                }
-            }
-        }
+		if (_recruitButtons.Count > 0)
+		{
+			if (ConfigKeys.RecruitmentCost.Affordable() && GameManagement.CrewEditAllowed && GameManagement.Team.CanAddToCrew())
+			{
+				if (!_recruitButtons[0].IsInteractable())
+				{
+					foreach (var b in _recruitButtons)
+					{
+						b.interactable = true;
+						b.GetComponent<HoverObject>().Enabled = false;
+					}
+				}
+			}
+			else
+			{
+				if (_recruitButtons[0].IsInteractable())
+				{
+					foreach (var b in _recruitButtons)
+					{
+						b.interactable = false;
+						if (!ConfigKeys.RecruitmentCost.Affordable())
+						{
+							FeedbackHoverOver(b.transform, "RECRUIT_BUTTON_HOVER_ALLOWANCE");
+						}
+						else if (!GameManagement.CrewEditAllowed)
+						{
+							FeedbackHoverOver(b.transform, Localization.GetAndFormat("RECRUIT_BUTTON_HOVER_LIMIT", false, GameManagement.StartingCrewEditAllowance));
+						}
+					}
+				}
+			}
+		}
 	}
 
 	private void EnableRacing()
@@ -306,7 +306,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			_raceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
 			_raceButton.GetComponentInChildren<Text>().fontSize = 20;
 		}
-        _raceButton.onClick.AddListener(() => Invoke("QuickClickDisable", 0.5f));
+		_raceButton.onClick.AddListener(() => Invoke("QuickClickDisable", 0.5f));
 		_skipToRaceButton.onClick.AddListener(UIManagement.PreRace.ConfirmPopUp);
 		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
 		_skipToRaceButton.GetComponentInChildren<Text>().fontSize = 20;
@@ -522,16 +522,16 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	public void PositionChange(int change)
 	{
 		_positionsEmpty -= change;
-        //enable race button if all positions are filled and QuickClickDisable isn't being invoked
-        if ((_positionsEmpty > 0 && _raceButton.interactable) || IsInvoking("QuickClickDisable"))
-        {
-            DisableRacing();
-        }
-        else if (_positionsEmpty == 0 && !_raceButton.interactable)
-        {
-            EnableRacing();
-        }
-    }
+		//enable race button if all positions are filled and QuickClickDisable isn't being invoked
+		if ((_positionsEmpty > 0 && _raceButton.interactable) || IsInvoking("QuickClickDisable"))
+		{
+			DisableRacing();
+		}
+		else if (_positionsEmpty == 0 && !_raceButton.interactable)
+		{
+			EnableRacing();
+		}
+	}
 
 	/// <summary>
 	/// Use Unity Event System OnScroll to change displayed results
@@ -623,7 +623,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	private void RepeatLineUp()
 	{
-        DisableRacing();
+		DisableRacing();
 		//get currently positioned
 		var currentPositions = new Dictionary<Position, CrewMember>();
 		foreach (var pair in GameManagement.PositionCrew)

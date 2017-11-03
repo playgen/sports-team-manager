@@ -100,8 +100,8 @@ public class PostRaceEventImpactUI : MonoBehaviour
 				{
 					{ TrackerContextKeys.TriggerUI.ToString(), source },
 				}, AccessibleTracker.Accessible.Screen));
-                UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
-            }
+				UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+			}
 		}
 		UIManagement.PostRaceEvents.ToList().ForEach(e => e.Display());
 	}
