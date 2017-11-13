@@ -222,4 +222,6 @@
 {"Key":"IMPACT_IMPROVE_CONFLICT_KNOWLEDGE","en-gb":"You now know how well the crew gets along with {0}.","it":"{0}"},
 {"Key":"IMPACT_CAUSES_SELECTION_AFTER","en-gb":"{0} expects to be the {1} in the next race.\n{2} expects to be the {1} in two races time.","it":"{0} {1} {2} {1}"},
 {"Key":"IMPACT_WHOLE_TEAM_CHANGE","en-gb":"All of the crew not selected for the last race now expect to be selected for the next race.","it":"XXXX"},
-{"Key":"IMPACT_HEADER","en-gb":"As a result of that conversation...","it":"XXXX"}]
+{"Key":"IMPACT_HEADER","en-gb":"As a result of that conversation...","it":"XXXX"},
+{"Key":"RESTART","en-gb":"Restart","it":"XXXX"},
+{"Key":"CONTINUE","en-gb":"Continue","it":"XXXX"}]

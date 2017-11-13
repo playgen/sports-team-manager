@@ -10496,8 +10496,10 @@ MonoBehaviour:
         fill. Click on any of them to display the pop-up for that position."
     - Key: it
       Value:
-      - XXXX
-      - XXXX
+      - 'Benvenuto! Qui scegli il tuo equipaggio: trova la persona giusta per ogni
+        ruolo.'
+      - 'Prima di tutto dai un''occhiata ai tre ruoli che devi ricoprire. Clicca su
+        ciascuno ruolo per averne una descrizione. '
     Reversed: 0
     HighlightedObjects:
     - List: []
@@ -10527,8 +10529,10 @@ MonoBehaviour:
       - To close this, use the X in the top right of the pop-up.
     - Key: it
       Value:
-      - XXXX
-      - XXXX
+      - Questa finestra ti mostra la lista delle competenze richieste per il ruolo
+        che hai appena selezionato. In questo riquadro, troverai sia la persona che
+        attualmente occupa  la posizione, sia chi l'ha ricoperta in passato.
+      - Per chiudere la finestra, usa la x in alto a destra del riquadro.
     Reversed: 0
     HighlightedObjects:
     - List:
@@ -10568,11 +10572,18 @@ MonoBehaviour:
         you can do by clicking on them.
     - Key: it
       Value:
-      - XXXX
-      - XXXX
-      - XXXX
-      - XXXX
-      - XXXX
+      - "Ora che conosci quali posizioni devono essere occupate, \xE8 tempo di dare
+        un'occhiata all'equipaggio di partenza. Nella parte bassa dello schermo sono
+        elencati tutti i componenti della tua squadra."
+      - L'espressione facciale e il colore di sfondo di ciascuno mostra il suo stato
+        d'animo corrente. In questo momento il tuo equipaggio si trova in uno stato
+        d'animo neutrale, che non ha impatto sulla performance.
+      - "Un membro che appare felice e sorridente con uno sfondo pi\xF9 verde sar\xE0
+        si trover\xE0 in un stato d'animo positivo e avr\xE0 una prestazione superiore."
+      - "Nel frattempo, uno che appare triste o arrabbiato con uno sfondo pi\xF9 rosso
+        avr\xE0 una prestazione peggiore."
+      - "Clicca sul personaggio per conoscere di pi\xF9 su di lui/lei e avviare una
+        conversazione."
     Reversed: 0
     HighlightedObjects:
     - List:
@@ -10622,10 +10633,19 @@ MonoBehaviour:
         times.
     - Key: it
       Value:
-      - XXXX
-      - XXXX
-      - XXXX
-      - XXXX
+      - "Questa finestra mostra tutte le abilit\xE0 e le opinioni di questa persona.
+        Poich\xE9 hai appena iniziato non sai ancora nulla sulle competenze che possiede
+        e delle sue opinioni."
+      - "L'opinione nei confronti degli altri membri della squadra \xE8 rappresentata
+        dalla mano nera in alto a sinistra della sua immagine, mentre la sua opinione
+        nei tuoi confronti  \xE8 riportata -con la stessa icona- in alto a sinistra
+        di questa finestra."
+      - "Per imparare di pi\xF9 su un membro dell'equipaggio, devi parlare con lui,
+        cliccando su una delle domande disponibili. La risposta verr\xE0 riportata
+        nel fumetto."
+      - "Fare domande, cos\xEC come altre azioni nel gioco, richiede una certa quantit\xE0
+        di tempo che \xE8 limitato per ciascuna gara. Nel tutorial il limite \xE8
+        stato rimosso, pertanto sentiti libero di fare tutte le domande che vuoi."
     Reversed: 0
     HighlightedObjects:
     - List:
@@ -10670,8 +10690,9 @@ MonoBehaviour:
         the highlighted button.
     - Key: it
       Value:
-      - XXXX
-      - XXXX
+      - Ok, sembra che tu abbia concluso di intervistare il candidato per il tuo equipaggio.
+      - "Ora hai qualche informazione in pi\xF9 su di lui. Esci da questa finestra
+        usando il pulsante evidenziato."
     Reversed: 0
     HighlightedObjects:
     - List: []
@@ -10700,8 +10721,11 @@ MonoBehaviour:
         you think they\u2019d best fit."
     - Key: it
       Value:
-      - XXXX
-      - XXXX
+      - Ora sai come intervistare i membri del equipaggio. E' giunto il momento di
+        assegnarli ai ruoli.
+      - Dopo aver raccolto ancora qualche informazione sul tuo team e sulle posizioni
+        da ricoprire trascina i candidati nei ruoli che ritieni possano interpretare
+        meglio.
     Reversed: 0
     HighlightedObjects:
     - List: []
@@ -10725,7 +10749,7 @@ MonoBehaviour:
         out of the position.
     - Key: it
       Value:
-      - XXXX
+      - Se vuoi rimuovere un membro da una posizione, puoi trascinarlo fuori.
     Reversed: 0
     HighlightedObjects:
     - List:
@@ -10750,7 +10774,8 @@ MonoBehaviour:
         ready to take part in the first practice session.
     - Key: it
       Value:
-      - XXXX
+      - "Quando hai coperto tutte le posizioni, l'equipaggio \xE8 pronto per affrontare
+        la prima sessione di prova."
     Reversed: 0
     HighlightedObjects:
     - List:
@@ -10777,9 +10802,14 @@ MonoBehaviour:
         the first practice session.
     - Key: it
       Value:
-      - XXXX
-      - XXXX
-      - XXXX
+      - Non ti preoccupare se non individui la formazione perfetta al primo tentativo,
+        ci sono 2 prove per fare pratica prima della gara vera propria.
+      - "Ogni volta la tua performance \xE8 calcolata in base a 4 parametri: 1) la
+        corrisondenza tra le caratteristiche di ogni ruolo e le capacit\xE0 dei giocatori
+        selezionati 2) l'opinione che hanno di te 3) il loro stato d'animo 4) l'opinione
+        di ciascuno rispetto agli altri membri selezionati."
+      - "Clicca il pulsante evidenziato e la tua squadra parteciper\xE0 alla prima
+        prova."
     Reversed: 1
     HighlightedObjects:
     - List: []
@@ -10811,9 +10841,10 @@ MonoBehaviour:
       - Hover over or click each box to see what they represent.
     - Key: it
       Value:
-      - XXXX
-      - XXXX
-      - XXXX
+      - Dopo ogni sessione riceverai un feedback sulla performance dell'equipaggio
+        che hai selezionato.
+      - I quadrati colorati indicano quanto ti sei avvicinato alla formazione ideale.
+      - "Clicca, o passa sopra ciascuno, per leggere ci\xF2 che rappresenta."
     Reversed: 1
     HighlightedObjects:
     - List: []
@@ -10848,7 +10879,7 @@ MonoBehaviour:
       - Hover over or click each box to see what they represent.
     - Key: it
       Value:
-      - XXXX
+      - "Clicca, o passa sopra ciascuno, per leggere ci\xF2 che rappresenta."
     Reversed: 1
     HighlightedObjects:
     - List:
@@ -10881,11 +10912,13 @@ MonoBehaviour:
       - By hovering over each of these icons, you can see what each icon represents.
     - Key: it
       Value:
-      - XXXX
-      - XXXX
-      - XXXX
-      - XXXX
-      - XXXX
+      - "Al termine di ciascuna sessione, potrai riceverai anche un feedback sulle
+        aree in cui il tuo team \xE8 carente."
+      - In questa sessione le icone sono presentate solo a titolo di esempio.
+      - Ciascuna icona azzurra rappresenta una dimensione che richiede un miglioramento.
+      - "I punti di domanda in grigio indicano che il tuo equipaggio deve essere intervistato
+        ulteriormente per scoprire cosa \xE8 necessario migliorare."
+      - "Passando su ciascuna icona puoi leggere ci\xF2 che rappresenta."
     Reversed: 1
     HighlightedObjects:
     - List: []
@@ -10930,7 +10963,7 @@ MonoBehaviour:
       - By hovering over each of these icons, you can see what each icon represents.
     - Key: it
       Value:
-      - XXXX
+      - "Passando su ciascuna icona puoi leggere ci\xF2 che rappresenta."
     Reversed: 1
     HighlightedObjects:
     - List:
@@ -10959,8 +10992,10 @@ MonoBehaviour:
         to take part in the second practice session.
     - Key: it
       Value:
-      - XXXX
-      - XXXX
+      - Ricordati che selezionare la squadra migliore non significa sempre vincere
+        la gara.
+      - "Ora che hai completato la prima sessione di prova, usa ci\xF2 che hai imparato
+        per prender parte alla seconda."
     Reversed: 1
     HighlightedObjects:
     - List: []
@@ -10985,7 +11020,9 @@ MonoBehaviour:
         first race.
     - Key: it
       Value:
-      - XXXX
+      - "Ok, la pratica \xE8 finita; \xE8 arrivato il momento di gareggiare! Quando
+        sarai soddisfatto della formazione selezionata, clicca sul pulsante Gara!
+        per prender parte alla prima gara."
     Reversed: 1
     HighlightedObjects:
     - List:
@@ -11007,7 +11044,8 @@ MonoBehaviour:
         you expected?
     - Key: it
       Value:
-      - XXXX
+      - "Questa finestra con i risultati apparir\xE0 al termine di ciascuna gara.
+        La gara \xE8 andata come ti aspettavi?"
     Reversed: 1
     HighlightedObjects:
     - List:
@@ -11034,9 +11072,12 @@ MonoBehaviour:
         first, let\u2019s look at the details behind this new position to fill."
     - Key: it
       Value:
-      - XXXX
-      - XXXX
-      - XXXX
+      - Ora che hai completato la tua prima gara e visto come funziona, cambiamo un
+        po' le cose.
+      - "Un navigatore non \xE8 pi\xF9 necessario sulla tua barca. Ora serve un timoniere,
+        e nessuno del tuo equipaggio attuale ricopre questa posizione molto bene."
+      - "Di conseguenza, sar\xE0 necessario reclutare un nuovo membro per la squadra.
+        Ma prima, diamo un'occhiata ai dettagli di questa posizione da ricoprire."
     Reversed: 1
     HighlightedObjects:
     - List: []
@@ -11074,7 +11115,8 @@ MonoBehaviour:
         close the pop-up."
     - Key: it
       Value:
-      - XXXX
+      - Una volta comprese quali siano le competenze necessarie in questa posizione,
+        chiudi la finestra.
     Reversed: 1
     HighlightedObjects:
     - List:
@@ -11097,7 +11139,8 @@ MonoBehaviour:
         of the highlighted area.
     - Key: it
       Value:
-      - XXXX
+      - Per poter procedere con il reclutamento della squadra, clicca uno dei pulsanti
+        neri sulla destra dell'area evidenziata.
     Reversed: 1
     HighlightedObjects:
     - List:
@@ -11123,8 +11166,11 @@ MonoBehaviour:
         This cost has been removed for the time being.
     - Key: it
       Value:
-      - XXXX
-      - XXXX
+      - Cliccando le frasi relative alle competenze, nella parte bassa dello schermo,
+        i candidati diranno quanto gli corrispondono. Scegliendo l'affermazione giusta,
+        dovresti farti un'idea di chi reclutare.
+      - "Nota che solitamente ciascuna di queste domande ha un costo, cos\xEC come
+        il reclutamento. Questo costo \xE8 stato rimosso per il momento."
     Reversed: 1
     HighlightedObjects:
     - List:
@@ -11157,7 +11203,8 @@ MonoBehaviour:
         to hire them into your team."
     - Key: it
       Value:
-      - XXXX
+      - "Una volta che sei convinto chi vuoi reclutare, \xE8 sufficiente cliccare
+        sull'immagine per inserire il giocatore nella tua squadra."
     Reversed: 1
     HighlightedObjects:
     - List:
@@ -11190,7 +11237,8 @@ MonoBehaviour:
         time for the next set of sessions."
     - Key: it
       Value:
-      - XXXX
+      - "Ora hai qualcuno che ritieni possa ricoprire la nuova posizione, \xE8 tempo
+        di passare alle prossime sessioni di gara."
     Reversed: 1
     HighlightedObjects:
     - List:
@@ -11211,7 +11259,9 @@ MonoBehaviour:
         experiment risk-free, so pick wisely.
     - Key: it
       Value:
-      - XXXX
+      - "Hai appena completato la tua prima sessione di pratica. Questa sar\xE0 la
+        tua ultima possibilit\xE0 di sperimentare senza rischi, in modo da poter poi
+        scegliere con maggior consapevolezza."
     Reversed: 1
     HighlightedObjects:
     - List:
@@ -11233,7 +11283,8 @@ MonoBehaviour:
         first time with this new layout. Good luck!
     - Key: it
       Value:
-      - XXXX
+      - "Hai completato due sessioni di prova; \xE8 arrivato il momento di gareggiare
+        per la prima volta con questa formazione. Buona fortuna!"
     Reversed: 1
     HighlightedObjects:
     - List:
@@ -11253,7 +11304,7 @@ MonoBehaviour:
       - Did practice make perfect this time round?
     - Key: it
       Value:
-      - XXXX
+      - Pensi che la pratica che hai fatto ti aiuti ad affrontare il prossimo round?
     Reversed: 1
     HighlightedObjects:
     - List:
@@ -11279,8 +11330,11 @@ MonoBehaviour:
         member.
     - Key: it
       Value:
-      - XXXX
-      - XXXX
+      - Sembra che uno dei membri della squadra voglia parlare con te. Ogni tanto,
+        eventi simili a questo, si verificheranno dopo una gara, e tu sarai chiamato
+        a gestire la situazione.
+      - "Fai clic su una delle opzioni disponibili per selezionare ci\xF2 che vuoi
+        dire a questa persona."
     Reversed: 0
     HighlightedObjects:
     - List:
@@ -11310,7 +11364,8 @@ MonoBehaviour:
         exit the conversation."
     - Key: it
       Value:
-      - XXXX
+      - "OK, questa conversazione \xE8 finita. Per uscire dalla conversazione fai
+        clic sul pulsante evidenziato."
     Reversed: 0
     HighlightedObjects:
     - List:
@@ -11336,8 +11391,9 @@ MonoBehaviour:
       - To close this feedback, click anywhere on the screen.
     - Key: it
       Value:
-      - XXXX
-      - XXXX
+      - "Al termine di ciascun evento comparir\xF2 per darti un feedback su come hai
+        gestito la situazione."
+      - 'Per chiudere questo feedback, clicca in qualunque punto dello schermo. '
     Reversed: 0
     HighlightedObjects:
     - List:
@@ -11384,11 +11440,11 @@ MonoBehaviour:
         time after events to give additional tips. Good luck!
     - Key: it
       Value:
-      - XXXX
+      - "Da qui in avanti giocherai per conto tuo, ma comparir\xF2 di tanto in tanto
+        dopo gli eventi per darti ulteriori suggerimenti. In bocca al lupo!"
     Reversed: 0
     HighlightedObjects:
-    - List:
-      - Team Management
+    - List: []
     Triggers: []
     UniqueEvents: 0
     EventTriggerCountRequired: 1
