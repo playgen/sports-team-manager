@@ -1,4 +1,6 @@
-﻿using PlayGen.SUGAR.Unity;
+﻿using System.IO;
+
+using PlayGen.SUGAR.Unity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -29,6 +31,7 @@ public class UIStateManager : MonoBehaviour {
 	[SerializeField]
 	private GameObject _feedback;
 	private static bool _loaded;
+	private static bool _reload;
 	private static UIStateManager _instance;
 
 	private void Awake()
@@ -72,6 +75,12 @@ public class UIStateManager : MonoBehaviour {
 			{
 				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
 			}
+		}
+		if (_reload)
+		{
+			GameManagement.GameManager.LoadGame(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.Team.Name);
+			GoToGame();
+			_reload = false;
 		}
 	}
 
@@ -257,5 +266,11 @@ public class UIStateManager : MonoBehaviour {
 	public static void StaticBackToMenu()
 	{
 		_instance.BackToMenu();
+	}
+
+	public static void ReloadGame()
+	{
+		_reload = true;
+		_instance.ReloadScene();
 	}
 }

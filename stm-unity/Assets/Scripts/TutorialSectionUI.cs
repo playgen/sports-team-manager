@@ -33,9 +33,9 @@ public class TutorialSectionUI : MonoBehaviour
 		_sectionText = new Dictionary<string, List<string>>();
 		tutObj.SectionTextHolder.ForEach(st => _sectionText.Add(st.Key, st.Value));
 		_menuHighlighted = (RectTransform)transform.Find("Menu Highlighted");
-		_tutorialText = GetComponentInChildren<Text>();
-		_tutorialObject = transform.Find("Tutorial Helper").gameObject;
-		_buttons = (RectTransform)transform.Find("Tutorial Helper/Buttons");
+		_tutorialObject = UIManagement.Tutorial.SectionCount == GameManagement.TutorialStage + 1 ? transform.parent.Find("End Close/Tutorial Helper").gameObject : transform.Find("Tutorial Helper").gameObject;
+		_buttons = (RectTransform)_tutorialObject.transform.Find("Buttons");
+		_tutorialText = _tutorialObject.GetComponentInChildren<Text>();
 		var attributeDict = tutObj.CustomAttributes.Select(a => new KeyValuePair<string, string>(a.Split('=')[0], a.Split('=')[1])).ToDictionary(c => c.Key, c => c.Value);
 		GameManagement.GameManager.SetCustomTutorialAttributes(GameManagement.TutorialStage, attributeDict);
 		_currentText = 0;
@@ -77,37 +77,6 @@ public class TutorialSectionUI : MonoBehaviour
 	/// </summary>
 	private void SetUp()
 	{
-		//draw UI differently according to if the side displaying the helper is reversed
-		if (_tutorialObj.Reversed)
-		{
-			transform.localScale = new Vector2(-1, 1);
-			_tutorialText.transform.localScale = new Vector2(-1, 1);
-			_buttons.transform.localScale = new Vector2(-1, 1);
-			var mhMin = _menuHighlighted.anchorMin.x;
-			if (mhMin < 0)
-			{
-				var mhMax = _menuHighlighted.anchorMax.x;
-				_menuHighlighted.anchorMin = new Vector2(1 - mhMax, _menuHighlighted.anchorMin.y);
-				_menuHighlighted.anchorMax = new Vector2(1 - mhMin, _menuHighlighted.anchorMax.y);
-				GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.UpperRight;
-			}
-		}
-		else
-		{
-			transform.localScale = Vector2.one;
-			_tutorialText.transform.localScale = Vector2.one;
-			_buttons.transform.localScale = Vector2.one;
-			var mhMin = _menuHighlighted.anchorMin.x;
-			if (mhMin > 0)
-			{
-				var mhMax = _menuHighlighted.anchorMax.x;
-				_menuHighlighted.anchorMin = new Vector2(1 - mhMax, _menuHighlighted.anchorMin.y);
-				_menuHighlighted.anchorMax = new Vector2(1 - mhMin, _menuHighlighted.anchorMax.y);
-				GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.UpperRight;
-			}
-			GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.UpperLeft;
-		}
-
 		var reverseRaycast = GetComponentInChildren<ReverseRaycastTarget>();
 		reverseRaycast.MaskRect.Clear();
 		reverseRaycast.MaskRect.Add(_menuHighlighted);
@@ -144,57 +113,93 @@ public class TutorialSectionUI : MonoBehaviour
 			}
 		}
 
-		var back = _buttons.Find("Back").gameObject;
-		var forward = _buttons.Find("Forward").gameObject;
-		var pageNumber = _buttons.Find("Page Number").GetComponent<Text>();
-		//if text is provided, display the tutorial helper
-		if (_sectionText[Localization.SelectedLanguage.Name].Count == 0)
+		if (UIManagement.Tutorial.SectionCount == GameManagement.TutorialStage + 1)
 		{
-			_tutorialObject.Active(false);
-			GetComponentInChildren<ReverseRaycastTarget>().UnblockWhitelisted();
-			pageNumber.text = string.Empty;
+			transform.Find("Tutorial Helper").gameObject.Active(false);
+			_tutorialText.text = _sectionText[Localization.SelectedLanguage.Name][_currentText];
 		}
 		else
 		{
-			//display different buttons and sections according to what oart should be displayed
-			_tutorialObject.Active(true);
-			_tutorialText.text = _sectionText[Localization.SelectedLanguage.Name][_currentText];
-			back.Active(true);
-			forward.Active(true);
-			if (_currentText == 0)
+			//draw UI differently according to if the side displaying the helper is reversed
+			if (_tutorialObj.Reversed)
 			{
-				back.Active(false);
+				transform.localScale = new Vector2(-1, 1);
+				_tutorialText.transform.localScale = new Vector2(-1, 1);
+				_buttons.transform.localScale = new Vector2(-1, 1);
+				var mhMin = _menuHighlighted.anchorMin.x;
+				if (mhMin < 0)
+				{
+					var mhMax = _menuHighlighted.anchorMax.x;
+					_menuHighlighted.anchorMin = new Vector2(1 - mhMax, _menuHighlighted.anchorMin.y);
+					_menuHighlighted.anchorMax = new Vector2(1 - mhMin, _menuHighlighted.anchorMax.y);
+					GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.UpperRight;
+				}
 			}
-			if (_currentText == _sectionText[Localization.SelectedLanguage.Name].Count - 1)
+			else
 			{
-				forward.Active(false);
+				transform.localScale = Vector2.one;
+				_tutorialText.transform.localScale = Vector2.one;
+				_buttons.transform.localScale = Vector2.one;
+				var mhMin = _menuHighlighted.anchorMin.x;
+				if (mhMin > 0)
+				{
+					var mhMax = _menuHighlighted.anchorMax.x;
+					_menuHighlighted.anchorMin = new Vector2(1 - mhMax, _menuHighlighted.anchorMin.y);
+					_menuHighlighted.anchorMax = new Vector2(1 - mhMin, _menuHighlighted.anchorMax.y);
+					GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.UpperRight;
+				}
+				GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.UpperLeft;
+			}
+
+			var back = _buttons.Find("Back").gameObject;
+			var forward = _buttons.Find("Forward").gameObject;
+			var pageNumber = _buttons.Find("Page Number").GetComponent<Text>();
+			//if text is provided, display the tutorial helper
+			if (_sectionText[Localization.SelectedLanguage.Name].Count == 0)
+			{
+				_tutorialObject.Active(false);
 				GetComponentInChildren<ReverseRaycastTarget>().UnblockWhitelisted();
-				_unblocked = true;
-			}
-			if (_sectionText[Localization.SelectedLanguage.Name].Count == 1)
-			{
 				pageNumber.text = string.Empty;
 			}
 			else
 			{
-				pageNumber.text = _currentText + 1 + "/" + _sectionText[Localization.SelectedLanguage.Name].Count;
+				//display different buttons and sections according to what oart should be displayed
+				_tutorialObject.Active(true);
+				_tutorialText.text = _sectionText[Localization.SelectedLanguage.Name][_currentText];
+				back.Active(true);
+				forward.Active(true);
+				if (_currentText == 0)
+				{
+					back.Active(false);
+				}
+				if (_currentText == _sectionText[Localization.SelectedLanguage.Name].Count - 1)
+				{
+					forward.Active(false);
+					GetComponentInChildren<ReverseRaycastTarget>().UnblockWhitelisted();
+					_unblocked = true;
+				}
+				if (_sectionText[Localization.SelectedLanguage.Name].Count == 1)
+				{
+					pageNumber.text = string.Empty;
+				}
+				else
+				{
+					pageNumber.text = _currentText + 1 + "/" + _sectionText[Localization.SelectedLanguage.Name].Count;
+				}
+			}
+			if (_tutorialObj.EventTriggerCountRequired > 1 && _unblocked)
+			{
+				_buttons.Find("Progress Count").GetComponent<Text>().text = (_tutorialObj.EventTriggerCountRequired - _eventTriggerCount).ToString();
+			}
+			else
+			{
+				_buttons.Find("Progress Count").GetComponent<Text>().text = string.Empty;
+				((RectTransform)pageNumber.transform).anchorMin = new Vector2(0.45f, 0);
+				((RectTransform)pageNumber.transform).anchorMax = new Vector2(0.65f, 1);
 			}
 		}
-		if (_tutorialObj.EventTriggerCountRequired > 1 && _unblocked)
-		{
-			_buttons.Find("Progress Count").GetComponent<Text>().text = (_tutorialObj.EventTriggerCountRequired - _eventTriggerCount).ToString();
-		}
-		else
-		{
-			_buttons.Find("Progress Count").GetComponent<Text>().text = string.Empty;
-			((RectTransform)pageNumber.transform).anchorMin = new Vector2(0.45f, 0);
-			((RectTransform)pageNumber.transform).anchorMax = new Vector2(0.65f, 1);
-		}
-		if (UIManagement.Tutorial.SectionCount == GameManagement.TutorialStage + 1)
-		{
-			_buttons.Find("End Text").gameObject.Active(true);
-		}
-		var speechBubble = transform.Find("Tutorial Helper/Image");
+
+		var speechBubble = _tutorialObject.transform.Find("Image");
 		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)speechBubble);
 		Invoke("PaddingSetUp", 0f);
 	}
@@ -204,7 +209,7 @@ public class TutorialSectionUI : MonoBehaviour
 	/// </summary>
 	private void PaddingSetUp()
 	{
-		var speechBubble = transform.Find("Tutorial Helper/Image");
+		var speechBubble = _tutorialObject.transform.Find("Image");
 		speechBubble.GetComponent<LayoutGroup>().padding.bottom = (int)(((RectTransform)speechBubble).sizeDelta.y * 0.25f) + 16;
 		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)speechBubble);
 		Invoke("ButtonSetUp", 0f);
@@ -215,10 +220,10 @@ public class TutorialSectionUI : MonoBehaviour
 	/// </summary>
 	private void ButtonSetUp()
 	{
-		var speechBubble = transform.Find("Tutorial Helper/Image");
-		var buttons = transform.Find("Tutorial Helper/Buttons");
+		var speechBubble = _tutorialObject.transform.Find("Image");
+		var buttons = _tutorialObject.transform.Find("Buttons");
 		speechBubble.GetComponent<LayoutGroup>().padding.bottom = (int)(((RectTransform)speechBubble).sizeDelta.y * 0.25f) + 16;
-		((RectTransform)buttons).anchoredPosition = new Vector2(0, (int)(((RectTransform)speechBubble).sizeDelta.y * 0.25f) + 16);
+		((RectTransform)buttons).anchoredPosition = new Vector2(0, (int)(((RectTransform)buttons).sizeDelta.y * 2.5f) - 3);
 	}
 
 	/// <summary>

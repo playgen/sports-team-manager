@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using SimpleJSON;
 using UnityEngine;
@@ -52,7 +54,7 @@ public class TutorialController : MonoBehaviour
 			foreach (var langName in Localization.Languages)
 			{
 				var lang = langName.EnglishName;
-			    textDict[langName.Name].Add((parsedAsset[i]["Section Text " + lang] != null ? parsedAsset[i]["Section Text " + lang] : parsedAsset[i][0]).Value.RemoveJSONNodeChars());
+				textDict[langName.Name].Add((parsedAsset[i]["Section Text " + lang] != null ? parsedAsset[i]["Section Text " + lang] : parsedAsset[i][0]).Value.RemoveJSONNodeChars());
 			}
 			objectNames.Add(parsedAsset[i]["Highlighted Object"].RemoveJSONNodeChars().Split('/').Where(s => !string.IsNullOrEmpty(s)).ToArray());
 			var blacklistObjectNames = parsedAsset[i]["Button Blacklist"].RemoveJSONNodeChars().Split('\n').Where(s => !string.IsNullOrEmpty(s)).ToList();
@@ -122,9 +124,29 @@ public class TutorialController : MonoBehaviour
 		else
 		{
 			SUGARManager.GameData.Send("Tutorial Finished", true);
-			gameObject.Active(false);
-			_tutorialQuitButton.Active(false);
+			QuitTutorial();
 		}
+	}
+
+	public void RestartGame()
+	{
+		var language = string.IsNullOrEmpty(Localization.SelectedLanguage.Parent.Name) ? Localization.SelectedLanguage.EnglishName : Localization.SelectedLanguage.Parent.EnglishName;
+		var colorsPri = new[]
+			{
+				GameManagement.Team.TeamColorsPrimary.R,
+				GameManagement.Team.TeamColorsPrimary.G,
+				GameManagement.Team.TeamColorsPrimary.B
+			};
+		var colorsSec = new[]
+		{
+			GameManagement.Team.TeamColorsSecondary.R,
+			GameManagement.Team.TeamColorsSecondary.G,
+			GameManagement.Team.TeamColorsSecondary.B
+		};
+		GameManagement.GameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.Team.Name, colorsPri, colorsSec, GameManagement.Manager.Name, false, language);
+		SUGARManager.GameData.Send("Tutorial Finished", true);
+		QuitTutorial();
+		UIStateManager.ReloadGame();
 	}
 
 	/// <summary>
