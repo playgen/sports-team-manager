@@ -7,6 +7,8 @@ using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
 using RAGE.Analytics.Formats;
 
+using UnityEngine.UI.Extensions.ColorPicker;
+
 /// <summary>
 /// Contains all UI logic related to creating new games
 /// </summary>
@@ -21,9 +23,9 @@ public class NewGameUI : MonoBehaviour {
 	[SerializeField]
 	private Text _errorText;
 	[SerializeField]
-	private Slider[] _colorSliderPrimary;
+	private Slider _colorSliderPrimary;
 	[SerializeField]
-	private Slider[] _colorSliderSecondary;
+	private Slider _colorSliderSecondary;
 	[SerializeField]
 	private Image _colorImagePrimary;
 	[SerializeField]
@@ -72,24 +74,25 @@ public class NewGameUI : MonoBehaviour {
 	/// </summary>
 	public void RandomColor()
 	{
-		foreach (var s in _colorSliderPrimary)
-		{
-			s.value = Random.Range(0, 1f);
-		}
-		foreach (var s in _colorSliderSecondary)
-		{
-			s.value = Random.Range(0, 1f);
-		}
-		UpdateColor();
+		_colorSliderPrimary.value = Random.Range(0, 1f);
+		_colorSliderSecondary.value = Random.Range(0, 1f);
+		_colorSliderPrimary.GetComponentInParent<ColorPickerControl>().AssignColor(ColorValues.Hue, _colorSliderPrimary.value);
+		UpdatePrimaryColor(_colorSliderPrimary.GetComponentInParent<ColorPickerControl>().CurrentColor);
+		_colorSliderSecondary.GetComponentInParent<ColorPickerControl>().AssignColor(ColorValues.Hue, _colorSliderSecondary.value);
+		UpdateSecondaryColor(_colorSliderSecondary.GetComponentInParent<ColorPickerControl>().CurrentColor);
 	}
 
 	/// <summary>
 	/// Update the displayed color to match what has been selected using the sliders
 	/// </summary>
-	public void UpdateColor()
+	public void UpdatePrimaryColor(Color color)
 	{
-		_colorImagePrimary.color = new Color(_colorSliderPrimary[0].value, _colorSliderPrimary[1].value, _colorSliderPrimary[2].value);
-		_colorImageSecondary.color = new Color(_colorSliderSecondary[0].value, _colorSliderSecondary[1].value, _colorSliderSecondary[2].value);
+		_colorImagePrimary.color = color;
+	}
+
+	public void UpdateSecondaryColor(Color color)
+	{
+		_colorImageSecondary.color = color;
 	}
 
 	/// <summary>
