@@ -96,7 +96,7 @@ public class LeaderboardListInterface : BaseLeaderboardListInterface
 			UpdatePageNumber(1);
 			return;
 		}
-		for (int i = 0; i < _leaderboardButtons.Length; i++)
+		for (var i = 0; i < _leaderboardButtons.Length; i++)
 		{
 			if (i >= leaderboardList.Count)
 			{

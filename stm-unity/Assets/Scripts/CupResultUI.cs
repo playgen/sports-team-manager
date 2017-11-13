@@ -59,7 +59,7 @@ public class CupResultUI : MonoBehaviour
 		DoBestFit();
 		TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.CupFinishingPosition.ToString(), _cupPosition.ToString() },
+			{ TrackerContextKeys.CupFinishingPosition.ToString(), _cupPosition.ToString() }
 		}, AccessibleTracker.Accessible.Screen));
 	}
 
@@ -75,7 +75,7 @@ public class CupResultUI : MonoBehaviour
             TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.CupFinishingPosition.ToString(), _cupPosition.ToString() },
-				{ TrackerContextKeys.TriggerUI.ToString(), source },
+				{ TrackerContextKeys.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
 			UIStateManager.StaticGoToQuestionnaire();
 		}

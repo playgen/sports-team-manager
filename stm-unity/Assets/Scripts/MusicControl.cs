@@ -10,7 +10,7 @@ public class MusicControl : MonoBehaviour {
 	private AudioSource _audio;
 	private int _currentTrack;
 
-	void Start () {
+	private void Start () {
 		_audio = GetComponent<AudioSource>();
 		if (_music.Length > 0)
 		{
@@ -22,7 +22,7 @@ public class MusicControl : MonoBehaviour {
 	/// <summary>
 	/// If the current clip has finishing playing, change the clip to next in array and start playing again
 	/// </summary>
-	void Update () {
+	private void Update () {
 		if (_music.Length > 0)
 		{
 			if (UIStateManager.MusicOn == _audio.mute)

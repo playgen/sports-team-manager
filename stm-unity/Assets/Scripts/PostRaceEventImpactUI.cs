@@ -96,7 +96,7 @@ public class PostRaceEventImpactUI : MonoBehaviour
 			{
 				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventImpactPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 				{
-					{ TrackerContextKeys.TriggerUI.ToString(), source },
+					{ TrackerContextKeys.TriggerUI.ToString(), source }
 				}, AccessibleTracker.Accessible.Screen));
 				UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 			}

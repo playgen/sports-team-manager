@@ -69,7 +69,7 @@ public class RaceResultUI : MonoBehaviour
 		DoBestFit();
 		TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.FinishingPosition.ToString(), finishPosition.ToString() },
+			{ TrackerContextKeys.FinishingPosition.ToString(), finishPosition.ToString() }
 		}, AccessibleTracker.Accessible.Screen));
 	}
 
@@ -85,7 +85,7 @@ public class RaceResultUI : MonoBehaviour
 			TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.FinishingPosition.ToString(), _lastRaceFinishPosition.ToString() },
-				{ TrackerContextKeys.TriggerUI.ToString(), source },
+				{ TrackerContextKeys.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
 			if (!GameManagement.SeasonOngoing)
 			{

@@ -110,7 +110,7 @@ public class LearningPillUI : MonoBehaviour {
 			_helpText.text = tip;
 			TrackerEventSender.SendEvent(new TraceEvent("LearningPillDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.LearningPillID.ToString(), _currentHelp },
+				{ TrackerContextKeys.LearningPillID.ToString(), _currentHelp }
 			}, AccessibleTracker.Accessible.Accessible));
 			transform.EnableBlocker(() => ClosePill(TrackerTriggerSources.PopUpBlocker.ToString()));
 		}

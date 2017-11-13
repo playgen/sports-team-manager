@@ -20,16 +20,9 @@ public class PostRacePersonUI : MonoBehaviour
 	private Text _nameText;
 	[SerializeField]
 	private GameObject[] _questions;
-	private string _lastState;
-	public string LastState
-	{
-		get { return _lastState; }
-	}
-	private CrewMember _currentCrewMember;
-	public CrewMember CurrentCrewMember
-	{
-		get { return _currentCrewMember; }
-	}
+
+	public string LastState { get; private set; }
+	public CrewMember CurrentCrewMember { get; private set; }
 
 	/// <summary>
 	/// Reset and populate the pop-up for a new event
@@ -38,16 +31,16 @@ public class PostRacePersonUI : MonoBehaviour
 	{
 		if (current.Dialogue != null)
 		{
-			_lastState = current.Dialogue.NextState;
+			LastState = current.Dialogue.NextState;
 			if (current.Dialogue.NextState == "-")
 			{
-				_lastState = current.Dialogue.CurrentState;
+				LastState = current.Dialogue.CurrentState;
 			}
 			var subjects = current.Subjects.Select(s => Localization.HasKey(s) ? Localization.Get(s) : Regex.Replace(s, @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0")).ToArray();
 			_dialogueText.text = Localization.GetAndFormat(current.Dialogue.Utterance, false, subjects);
 		}
 		_avatarDisplay.SetAvatar(current.CrewMember.Avatar, current.CrewMember.GetMood());
-		_currentCrewMember = current.CrewMember;
+		CurrentCrewMember = current.CrewMember;
 		_nameText.text = current.CrewMember.Name;
 	}
 
@@ -103,13 +96,13 @@ public class PostRacePersonUI : MonoBehaviour
 		{
 			subjects = subjects.Select(s => Localization.HasKey(s) ? Localization.Get(s) : Regex.Replace(s, @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0")).ToList();
 			_dialogueText.text = Localization.GetAndFormat(response.Utterance, false, subjects.ToArray());
-			_lastState = response.CurrentState;
+			LastState = response.CurrentState;
 			if (response.Style.Length > 0)
 			{
 				foreach (var style in response.Style)
 				{
 					var impactSubjects = new List<string>(subjects);
-					impactSubjects.Insert(0, _currentCrewMember.Name);
+					impactSubjects.Insert(0, CurrentCrewMember.Name);
 					UIManagement.EventImpact.AddImpact(style, impactSubjects);
 				}
 			}

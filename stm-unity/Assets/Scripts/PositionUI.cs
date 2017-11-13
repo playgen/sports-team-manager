@@ -7,29 +7,15 @@ using UnityEngine;
 /// </summary>
 public class PositionUI : MonoBehaviour
 {
-	private Position _position;
-	private CrewMemberUI _crewMemberUI;
-	public CrewMemberUI CrewMemberUI
-	{
-		get
-		{
-			return _crewMemberUI;
-		}
-	}
-	public Position Position
-	{
-		get
-		{
-			return _position;
-		}
-	}
+	public CrewMemberUI CrewMemberUI { get; private set; }
+	public Position Position { get; private set; }
 
 	/// <summary>
 	/// Bring in elements that need to be known to this object
 	/// </summary>
 	public void SetUp(Position position)
 	{
-		_position = position;
+		Position = position;
 	}
 
 	/// <summary>
@@ -37,8 +23,8 @@ public class PositionUI : MonoBehaviour
 	/// </summary>
 	public void ShowPopUp()
 	{
-	    UIManagement.PositionDisplay.SetUpDisplay(_position, TrackerTriggerSources.TeamManagementScreen.ToString());
-		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString());
+	    UIManagement.PositionDisplay.SetUpDisplay(Position, TrackerTriggerSources.TeamManagementScreen.ToString());
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, Position.ToString());
 	}
 
 	/// <summary>
@@ -46,17 +32,17 @@ public class PositionUI : MonoBehaviour
 	/// </summary>
 	public void LinkCrew(CrewMemberUI crewMember)
 	{
-		if (crewMember != _crewMemberUI)
+		if (crewMember != CrewMemberUI)
 		{
-			if (_crewMemberUI != null)
+			if (CrewMemberUI != null)
 			{
-				_crewMemberUI.OnReset();
+				CrewMemberUI.OnReset();
 			}
 			RemoveCrew();
-			_crewMemberUI = crewMember;
+			CrewMemberUI = crewMember;
 		    UIManagement.TeamSelection.PositionChange(1);
 		}
-		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _position.ToString(), crewMember);
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, Position.ToString(), crewMember);
 	}
 
 	/// <summary>
@@ -64,10 +50,10 @@ public class PositionUI : MonoBehaviour
 	/// </summary>
 	public void RemoveCrew()
 	{
-		if (_crewMemberUI != null)
+		if (CrewMemberUI != null)
 		{
 		    UIManagement.TeamSelection.PositionChange(-1);
-			_crewMemberUI = null;
+			CrewMemberUI = null;
 		}
 	}
 }

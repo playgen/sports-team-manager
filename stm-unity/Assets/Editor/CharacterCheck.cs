@@ -1,7 +1,5 @@
 ﻿using PlayGen.Unity.Utilities.Localization;
 using SimpleJSON;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -41,8 +39,6 @@ public class CharacterCheck : EditorWindow
                                 //go through the list and add the strings to the dictionary
                                 if (n[i][l.Name.ToLower()] != null)
                                 {
-                                    var key = n[i][0].ToString();
-                                    key = key.Replace("\"", "").ToUpper();
                                     var value = n[i][l.Name.ToLower()].ToString();
                                     value = value.Replace("\"", "");
                                     foreach (var c in value)
@@ -55,8 +51,6 @@ public class CharacterCheck : EditorWindow
                                 }
                                 else if (n[i]["Section Text " + l.EnglishName] != null)
                                 {
-                                    var key = n[i][0].ToString();
-                                    key = key.Replace("\"", "").ToUpper();
                                     var value = n[i]["Section Text " + l.EnglishName].ToString();
                                     value = value.Replace("\"", "");
                                     foreach (var c in value)

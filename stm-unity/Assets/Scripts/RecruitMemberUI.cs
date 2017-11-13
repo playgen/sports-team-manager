@@ -51,7 +51,7 @@ public class RecruitMemberUI : MonoBehaviour
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
 			{ TrackerContextKeys.CurrentSession.ToString(), GameManagement.CurrentSessionString },
 			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
-			{ TrackerContextKeys.SessionsSinceBoatLayoutChange.ToString(), sessionsSinceLastChange.ToString() },
+			{ TrackerContextKeys.SessionsSinceBoatLayoutChange.ToString(), sessionsSinceLastChange.ToString() }
 		}, AccessibleTracker.Accessible.Screen));
 		_lastQuestion = null;
 		_lastAnswers = null;
@@ -201,7 +201,7 @@ public class RecruitMemberUI : MonoBehaviour
 			{ TrackerContextKeys.CurrentSession.ToString(), GameManagement.CurrentSessionString },
 			{ TrackerContextKeys.QuestionAsked.ToString(), skill.ToString() },
 			{ TrackerContextKeys.QuestionCost.ToString(), ConfigKeys.SendRecruitmentQuestionCost.Value().ToString(CultureInfo.InvariantCulture) },
-			{ TrackerContextKeys.RaceStartTalkTime.ToString(), GameManagement.StartingActionAllowance.ToString() },
+			{ TrackerContextKeys.RaceStartTalkTime.ToString(), GameManagement.StartingActionAllowance.ToString() }
 		}, skill.ToString(), AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill.ToString());
@@ -254,7 +254,7 @@ public class RecruitMemberUI : MonoBehaviour
 		{
 			{ TrackerContextKeys.CrewMemberName.ToString(), recruit.Name },
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKeys.HiringCost.ToString(), ConfigKeys.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKeys.HiringCost.ToString(), ConfigKeys.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) }
 		}, AccessibleTracker.Accessible.Screen));
 	}
 

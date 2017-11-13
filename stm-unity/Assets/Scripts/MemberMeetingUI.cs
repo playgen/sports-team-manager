@@ -108,7 +108,7 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKeys.CrewMemberPosition.ToString(), crewMember.BoatPosition().ToString() },
 			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
 			{ TrackerContextKeys.TriggerUI.ToString(), source },
-			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(crewMember.Name) },
+			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(crewMember.Name) }
 		}, AccessibleTracker.Accessible.Screen));
 		SUGARManager.GameData.Send("View Crew Member Screen", crewMember.Name);
 		Display();
@@ -272,7 +272,7 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKeys.CurrentSession.ToString(), GameManagement.CurrentSessionString },
 			{ TrackerContextKeys.CrewMemberPosition.ToString(), _currentMember.BoatPosition().ToString() },
 			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
-			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(_currentMember.Name) },
+			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(_currentMember.Name) }
 		}, AccessibleTracker.Accessible.Screen));
 		_fireWarningPopUp.Active(true);
 		_fireWarningPopUp.transform.EnableSmallBlocker(() => CloseFireCrewWarning(TrackerTriggerSources.PopUpBlocker.ToString()));
@@ -313,7 +313,7 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKeys.CrewMemberPosition.ToString(), _currentMember.BoatPosition().ToString() },
 			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
 			{ TrackerContextKeys.FiringCost.ToString(), ConfigKeys.FiringCost.Value().ToString(CultureInfo.InvariantCulture) },
-			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(_currentMember.Name) },
+			{ TrackerContextKeys.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(_currentMember.Name) }
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Fired", true);
 		GameManagement.GameManager.RetireCrewMember(_currentMember);

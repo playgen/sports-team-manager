@@ -163,7 +163,7 @@ public class NewGameUI : MonoBehaviour {
 			TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.GameName.ToString(), GameManagement.TeamName },
-				{ TrackerContextKeys.BoatLayout.ToString(), newString },
+				{ TrackerContextKeys.BoatLayout.ToString(), newString }
 			}, CompletableTracker.Completable.Game));
 			UIStateManager.StaticGoToGame();
 		}

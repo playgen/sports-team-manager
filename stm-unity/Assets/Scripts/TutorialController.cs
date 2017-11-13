@@ -162,7 +162,7 @@ public class TutorialController : MonoBehaviour
 		{
 			TrackerEventSender.SendEvent(new TraceEvent("TutorialExited", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.TutorialStage.ToString(), (GameManagement.TutorialStage + 1).ToString() },
+				{ TrackerContextKeys.TutorialStage.ToString(), (GameManagement.TutorialStage + 1).ToString() }
 			}, CompletableTracker.Completable.Completable));
 		}
 		GameManagement.GameManager.SaveTutorialProgress(0, true);

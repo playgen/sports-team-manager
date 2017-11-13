@@ -13,44 +13,32 @@ using RAGE.Analytics.Formats;
 /// </summary>
 public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHandler
 {
-	private CrewMember _crewMember;
 	private bool _beingClicked;
 	private bool _beingDragged;
 	private Vector2 _dragPosition;
 	private Transform _defaultParent;
 	private PositionUI _currentPlacement;
 	private Vector2 _currentPositon;
-	private bool _usable;
-	private bool _current;
 
-	public CrewMember CrewMember
-	{
-		get { return _crewMember; }
-	}
-	public bool Usable
-	{
-		get { return _usable; }
-	}
-	public bool Current
-	{
-		get { return _current; }
-	}
+	public CrewMember CrewMember { get; private set; }
+	public bool Usable { get; private set; }
+	public bool Current { get; private set; }
 
 	/// <summary>
 	/// Bring in elements that need to be known to this object
 	/// </summary>
 	public void SetUp(bool usable, bool current, CrewMember crewMember, Transform parent)
 	{
-		_crewMember = crewMember;
+		CrewMember = crewMember;
 		_defaultParent = parent;
-		_usable = usable;
-		_current = current;
-		transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(_crewMember.GetMood()) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
+		Usable = usable;
+		Current = current;
+		transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(CrewMember.GetMood()) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
 	}
 
 	public void NotCurrent()
 	{
-		_current = false;
+		Current = false;
 		transform.Find("AvatarIcon").GetComponent<Image>().color = UnityEngine.Color.white;
 	}
 
@@ -59,7 +47,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// </summary>
 	public void OnPointerDown(PointerEventData eventData)
 	{
-		if (_crewMember.RestCount <= 0 && Usable && Current)
+		if (CrewMember.RestCount <= 0 && Usable && Current)
 		{
 			BeginDrag();
 		}
@@ -70,7 +58,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// </summary>
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		if ((_crewMember.RestCount > 0 || !Usable) && Current)
+		if ((CrewMember.RestCount > 0 || !Usable) && Current)
 		{
 			ShowPopUp();
 		}
@@ -101,27 +89,27 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 #if UNITY_EDITOR
 		if (Input.GetKeyDown("1"))
 		{
-			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, "StrongDisagree");
+			GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "StrongDisagree");
 			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(-3) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
 		}
 		if (Input.GetKeyDown("2"))
 		{
-			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, "Disagree");
+			GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Disagree");
 			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(-1) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
 		}
 		if (Input.GetKeyDown("3"))
 		{
-			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, string.Empty);
+			GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, string.Empty);
 			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(0) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
 		}
 		if (Input.GetKeyDown("4"))
 		{
-			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, "Agree");
+			GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Agree");
 			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(1) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
 		}
 		if (Input.GetKeyDown("5"))
 		{
-			GetComponentInChildren<AvatarDisplay>().UpdateMood(_crewMember.Avatar, "StrongAgree");
+			GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "StrongAgree");
 			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(3) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
 		}
 #endif
@@ -171,8 +159,8 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// </summary>
 	private void ShowPopUp()
 	{
-		UIManagement.MemberMeeting.SetUpDisplay(_crewMember, TrackerTriggerSources.TeamManagementScreen.ToString());
-		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
+		UIManagement.MemberMeeting.SetUpDisplay(CrewMember, TrackerTriggerSources.TeamManagementScreen.ToString());
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, CrewMember.Name);
 	}
 
 	/// <summary>
@@ -188,12 +176,12 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 				var crewMember = result.gameObject.GetComponent<PositionUI>().CrewMemberUI;
 				TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPositioned", TrackerVerbs.Interacted, new Dictionary<string, string>
 				{
-					{ TrackerContextKeys.CrewMemberName.ToString(), _crewMember.Name },
+					{ TrackerContextKeys.CrewMemberName.ToString(), CrewMember.Name },
 					{ TrackerContextKeys.PositionName.ToString(), pos.ToString()},
 					{ TrackerContextKeys.PreviousCrewMemberInPosition.ToString(), crewMember != null ? crewMember.CrewMember.Name : "Null"},
-					{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()},
+					{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()}
 				}, GameObjectTracker.TrackedGameObject.Npc));
-				SUGARManager.GameData.Send("Place Crew Member", _crewMember.Name);
+				SUGARManager.GameData.Send("Place Crew Member", CrewMember.Name);
 				SUGARManager.GameData.Send("Fill Position", pos.ToString());
 				Place(result.gameObject);
 				break;
@@ -201,14 +189,14 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			if (result.Equals(raycastResults.Last()))
 			{
 				//remove this CrewMember from their position if they were in one
-				GameManagement.Boat.AssignCrewMember(0, _crewMember);
+				GameManagement.Boat.AssignCrewMember(0, CrewMember);
 				OnReset();
 			}
 		}
 		if (raycastResults.Count == 0)
 		{
 			//remove this CrewMember from their position if they were in one
-			GameManagement.Boat.AssignCrewMember(0, _crewMember);
+			GameManagement.Boat.AssignCrewMember(0, CrewMember);
 			OnReset();
 		}
 		//reset the meeting UI
@@ -232,7 +220,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		transform.SetParent(positionTransform, false);
 		((RectTransform)transform).sizeDelta = positionTransform.sizeDelta;
 		((RectTransform)transform).anchoredPosition = new Vector2(0, -((RectTransform)transform).sizeDelta.y * 0.5f);
-		GameManagement.Boat.AssignCrewMember(currentPosition, _crewMember);
+		GameManagement.Boat.AssignCrewMember(currentPosition, CrewMember);
 		positionComp.LinkCrew(this);
 		if (!swap)
 		{
@@ -257,7 +245,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		UIManagement.PositionDisplay.UpdateDisplay();
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 		positionImage.GetComponent<Button>().onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentPosition, TrackerTriggerSources.CrewMemberPopUp.ToString()));
-		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, CrewMember.Name);
 	}
 
 	/// <summary>
@@ -273,8 +261,8 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		{
 			TrackerEventSender.SendEvent(new TraceEvent("CrewMemberUnpositioned", TrackerVerbs.Interacted, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.CrewMemberName.ToString(), _crewMember.Name },
-				{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()},
+				{ TrackerContextKeys.CrewMemberName.ToString(), CrewMember.Name },
+				{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()}
 			}, GameObjectTracker.TrackedGameObject.Npc));
 		}
 		if (_currentPlacement != null)
@@ -288,6 +276,6 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 		//reset position pop-up if it is currently being shown
 		UIManagement.PositionDisplay.UpdateDisplay();
-		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _crewMember.Name);
+		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, CrewMember.Name);
 	}
 }

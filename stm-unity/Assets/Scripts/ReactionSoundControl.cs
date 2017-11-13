@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ReactionSoundControl : MonoBehaviour {
 	[Serializable]
-	class Reaction
+	private class Reaction
 	{
 		public string Name;
 		public AudioClip[] Clips;
@@ -15,16 +15,16 @@ public class ReactionSoundControl : MonoBehaviour {
 	private Reaction[] _reactions;
 	private static ReactionSoundControl _instance;
 
-	void Awake ()
+	private void Awake ()
 	{
 		_instance = this;
 	}
 
-	void Start () {
+	private void Start () {
 		_audio = GetComponent<AudioSource>();
 	}
-	
-	void Update () {
+
+	private void Update () {
 		if (UIStateManager.SoundOn == _audio.mute)
 		{
 			_audio.mute = !UIStateManager.SoundOn;

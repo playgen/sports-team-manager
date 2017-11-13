@@ -5,7 +5,7 @@ using UnityEngine.Video;
 
 public class PlayVideoImage : MonoBehaviour
 {
-    IEnumerator PlayVideo()
+	private IEnumerator PlayVideo()
     {
         GetComponent<VideoPlayer>().Prepare();
         while (!GetComponent<VideoPlayer>().isPrepared)

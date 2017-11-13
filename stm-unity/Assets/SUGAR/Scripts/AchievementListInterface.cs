@@ -96,7 +96,7 @@ public class AchievementListInterface : BaseAchievementListInterface
 			UpdatePageNumber(1);
 			return;
 		}
-		for (int i = 0; i < _achievementItems.Length; i++)
+		for (var i = 0; i < _achievementItems.Length; i++)
 		{
 			if (i >= achievementList.Count)
 			{

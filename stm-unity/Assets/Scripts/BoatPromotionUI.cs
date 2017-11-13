@@ -42,7 +42,7 @@ public class BoatPromotionUI : MonoBehaviour
 			var newString = string.Join(",", newPos.Select(pos => pos.ToString()).ToArray());
 			TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.BoatLayout.ToString(), newString },
+				{ TrackerContextKeys.BoatLayout.ToString(), newString }
 			}, AccessibleTracker.Accessible.Screen));
 		}
 		else
@@ -66,7 +66,7 @@ public class BoatPromotionUI : MonoBehaviour
 				TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.BoatLayout.ToString(), newString },
-				{ TrackerContextKeys.TriggerUI.ToString(), source },
+				{ TrackerContextKeys.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
 			}
 		}

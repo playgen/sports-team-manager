@@ -11,13 +11,13 @@ using SimpleJSON;
 /// </summary>
 public class QuestionnaireUI : MonoBehaviour
 {
-	class Answer
+	private class Answer
 	{
 		public readonly Dictionary<string, string> Text = new Dictionary<string, string>();
 		public string Style;
 	}
 
-	class Question
+	private class Question
 	{
 		public Answer AnswerA;
 		public Answer AnswerB;

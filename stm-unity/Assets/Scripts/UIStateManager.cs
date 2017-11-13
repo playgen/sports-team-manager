@@ -42,7 +42,7 @@ public class UIStateManager : MonoBehaviour {
 	/// <summary>
 	/// Load Music and Sound settings, trigger SUGAR sign-in on first load
 	/// </summary>
-	void Start()
+	private void Start()
 	{
 		UIManagement.Initialize();
 		AvatarDisplay.LoadSprites();
@@ -99,7 +99,7 @@ public class UIStateManager : MonoBehaviour {
 	/// <summary>
 	/// Close game when escape is pressed on the main menu
 	/// </summary>
-	void Update()
+	private void Update()
 	{
 		if (_mainMenu.activeInHierarchy)
 		{

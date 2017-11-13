@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// Manages menu state changes when escape key is pressed
 /// </summary>
 public class EscapeAction : MonoBehaviour {
-	void Update () {
+	private void Update () {
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			//if settings panel is open, close settings panel
