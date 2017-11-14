@@ -78,6 +78,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// </summary>
 	private void BeginDrag()
 	{
+		GetComponent<Button>().enabled = false;
 		_currentPositon = transform.position;
 		_beingDragged = true;
 		_beingClicked = true;
@@ -155,6 +156,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// </summary>
 	private void EndDrag(List<RaycastResult> raycastResults)
 	{
+		GetComponent<Button>().enabled = true;
 		_beingDragged = false;
 		CheckPlacement(raycastResults);
 		if (_beingClicked) {
