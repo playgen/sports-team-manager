@@ -34,7 +34,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		Usable = usable;
 		Current = current;
 		transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(CrewMember.GetMood()) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
-		transform.Find("AvatarIcon").GetComponent<Button>().enabled = Current;
+		GetComponent<Button>().enabled = Current;
 		if (!GameManagement.SeasonOngoing)
 		{
 			foreach (var button in GetComponentsInChildren<Button>())
@@ -48,7 +48,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	{
 		Current = false;
 		transform.Find("AvatarIcon").GetComponent<Image>().color = UnityEngine.Color.white;
-		transform.Find("AvatarIcon").GetComponent<Button>().enabled = false;
+		GetComponent<Button>().enabled = false;
 	}
 
 	/// <summary>
