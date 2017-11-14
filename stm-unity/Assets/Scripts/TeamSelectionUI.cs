@@ -322,7 +322,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			}
 			positionObject.Active(true);
 			var pos = GameManagement.Positions[i];
-			positionObject.transform.Find("Name").GetComponent<Text>().text = Localization.Get(pos.ToString());
+			positionObject.transform.Find("Text").GetComponent<Text>().text = Localization.Get(pos.ToString());
 			positionObject.transform.Find("Image").GetComponent<Image>().sprite = _roleLogos.First(mo => mo.Name == pos.ToString()).Image;
 			positionObject.GetComponent<PositionUI>().SetUp(pos);
 		}
@@ -807,7 +807,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private void OnLanguageChange()
 	{
 		foreach (var position in _boatMain.GetComponentsInChildren<PositionUI>()) {
-			position.transform.Find("Name").GetComponent<Text>().text = Localization.Get(position.Position.ToString());
+			position.transform.Find("Text").GetComponent<Text>().text = Localization.Get(position.Position.ToString());
 		}
 		_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat(GameManagement.IsRace ? "RACE_BUTTON_RACE" : "RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
 		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);

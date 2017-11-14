@@ -190,13 +190,14 @@ public class PositionDisplayUI : MonoBehaviour
 			if (GameManagement.CrewMembers.ContainsKey(member.Key.Name))
 			{
 				var current = member.Key;
-				positionHistory.transform.Find("Button").GetComponent<Button>().onClick.AddListener(() => UIManagement.MemberMeeting.SetUpDisplay(current, TrackerTriggerSources.PositionPopUp.ToString()));
+				positionHistory.GetComponentInChildren<Button>().onClick.AddListener(() => UIManagement.MemberMeeting.SetUpDisplay(current, TrackerTriggerSources.PositionPopUp.ToString()));
+				positionHistory.transform.Find("AvatarIcon").GetComponent<Image>().color = new UnityEngine.Color(0, 0.5f, 0.5f);
 			}
 			else
 			{
-				positionHistory.transform.Find("Button").GetComponent<Button>().interactable = false;
+				positionHistory.GetComponentInChildren<Button>().interactable = false;
+				positionHistory.transform.Find("AvatarIcon").GetComponent<Image>().color = UnityEngine.Color.white;
 			}
-			positionHistory.transform.Find("AvatarIcon").GetComponent<Image>().color = new UnityEngine.Color(0, 0.5f, 0.5f);
 			positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, member.Key.GetMood(), true);
 			positionHistory.transform.Find("Session Back/Sessions").GetComponent<Text>().text = member.Value.ToString();
 		}
