@@ -14,13 +14,16 @@ public class PlayVideoImage : MonoBehaviour
 	private IEnumerator PlayVideo()
 	{
 		var player = GetComponent<VideoPlayer>();
+		var image = GetComponent<RawImage>();
+		image.enabled = false;
 		player.Prepare();
 		while (!player.isPrepared)
 		{
-			yield return new WaitForSeconds(1);
+			yield return new WaitForSeconds(0.2f);
 		}
-		GetComponent<RawImage>().texture = player.texture;
+		image.texture = player.texture;
 		player.Play();
+		image.enabled = true;
 		while (player.isPlaying)
 		{
 			if (!gameObject.activeInHierarchy)
@@ -28,8 +31,9 @@ public class PlayVideoImage : MonoBehaviour
 				player.Stop();
 				yield return new WaitForEndOfFrame();
 			}
-			yield return new WaitForSeconds(1);
+			yield return new WaitForSeconds(0.2f);
 		}
+		image.texture = null;
 		gameObject.Active(false);
 	}
 }

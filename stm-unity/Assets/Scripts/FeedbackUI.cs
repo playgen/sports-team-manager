@@ -77,6 +77,7 @@ public class FeedbackUI : MonoBehaviour {
 		_descriptionPopUp.transform.Find("Description Pop-Up/Text").GetComponent<TextLocalization>().Key = descriptionType + "_Description";
 		_descriptionPopUp.transform.Find("Description Pop-Up/Video Display").GetComponent<VideoPlayer>().clip = _videos.First(v => String.Equals(v.name, descriptionType, StringComparison.CurrentCultureIgnoreCase));
 		_descriptionPopUp.Active(true);
+		_descriptionPopUp.transform.Find("Description Pop-Up/Video Display").gameObject.Active(false);
 	}
 
 	/// <summary>
