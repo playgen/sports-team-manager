@@ -23,6 +23,11 @@ public class PlayVideoImage : MonoBehaviour
 		player.Play();
 		while (player.isPlaying)
 		{
+			if (!gameObject.activeInHierarchy)
+			{
+				player.Stop();
+				yield return new WaitForEndOfFrame();
+			}
 			yield return new WaitForSeconds(1);
 		}
 		gameObject.Active(false);
