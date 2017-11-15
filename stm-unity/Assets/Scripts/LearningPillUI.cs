@@ -67,7 +67,7 @@ public class LearningPillUI : MonoBehaviour {
 			StartCoroutine(Animate());
 			UIManagement.Blocker.transform.SetAsLastSibling();
 			transform.SetAsLastSibling();
-            UIManagement.DisableBlocker();
+			UIManagement.DisableBlocker();
 		}
 		if (_furtherHelp.Count > 0)
 		{
