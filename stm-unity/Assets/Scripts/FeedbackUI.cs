@@ -7,6 +7,7 @@ using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.BestFit;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 /// <summary>
 /// Contains all logic relating to displaying post-game feedback
@@ -26,6 +27,8 @@ public class FeedbackUI : MonoBehaviour {
 	private GameObject _selectionPrefab;
 	[SerializeField]
 	private GameObject _descriptionPopUp;
+	[SerializeField]
+	private VideoClip[] _videos;
 	[SerializeField]
 	private Text _finalResultText;
 
@@ -72,6 +75,7 @@ public class FeedbackUI : MonoBehaviour {
 	{
 		_descriptionPopUp.transform.Find("Description Pop-Up/Header").GetComponent<TextLocalization>().Key = descriptionType;
 		_descriptionPopUp.transform.Find("Description Pop-Up/Text").GetComponent<TextLocalization>().Key = descriptionType + "_Description";
+		_descriptionPopUp.transform.Find("Description Pop-Up/Video Display").GetComponent<VideoPlayer>().clip = _videos.First(v => String.Equals(v.name, descriptionType, StringComparison.CurrentCultureIgnoreCase));
 		_descriptionPopUp.Active(true);
 	}
 

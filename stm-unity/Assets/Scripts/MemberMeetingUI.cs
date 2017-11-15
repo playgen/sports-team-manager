@@ -226,7 +226,6 @@ public class MemberMeetingUI : MonoBehaviour
 		managerOpinionImage.enabled = true;
 		managerOpinionImage.sprite = null;
 		var managerOpinion = _currentMember.RevealedCrewOpinions[GameManagement.Manager.Name];
-		managerOpinionImage.color = UnityEngine.Color.cyan;
 		managerOpinionImage.sprite = _opinionIcons[(managerOpinion > 0 ? Mathf.CeilToInt(managerOpinion / 3f) : Mathf.FloorToInt(managerOpinion / 3f)) + 2];
 		DoBestFit();
 	}

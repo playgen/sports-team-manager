@@ -5,14 +5,26 @@ using UnityEngine.Video;
 
 public class PlayVideoImage : MonoBehaviour
 {
+	public void Play()
+	{
+		gameObject.Active(true);
+		StartCoroutine(PlayVideo());
+	}
+
 	private IEnumerator PlayVideo()
-    {
-        GetComponent<VideoPlayer>().Prepare();
-        while (!GetComponent<VideoPlayer>().isPrepared)
-        {
-            yield return new WaitForSeconds(1);
-        }
-        GetComponent<RawImage>().texture = GetComponent<VideoPlayer>().texture;
-        GetComponent<VideoPlayer>().Play();
-    }
+	{
+		var player = GetComponent<VideoPlayer>();
+		player.Prepare();
+		while (!player.isPrepared)
+		{
+			yield return new WaitForSeconds(1);
+		}
+		GetComponent<RawImage>().texture = player.texture;
+		player.Play();
+		while (player.isPlaying)
+		{
+			yield return new WaitForSeconds(1);
+		}
+		gameObject.Active(false);
+	}
 }
