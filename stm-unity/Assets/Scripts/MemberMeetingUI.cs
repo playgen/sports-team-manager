@@ -250,6 +250,7 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKeys.CurrentTalkTime.ToString(), allowanceBefore.ToString() },
 			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() }
 		}, questionType, AlternativeTracker.Alternative.Question));
+		UIManagement.TeamSelection.SortCrew();
 		SUGARManager.GameData.Send("Meeting Question Directed At", _currentMember.Name);
 		SUGARManager.GameData.Send("Meeting Question Asked", questionType);
 	}

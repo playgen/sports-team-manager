@@ -39,6 +39,8 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	[SerializeField]
 	private GameObject _crewContainer;
 	[SerializeField]
+	private Dropdown _crewSort;
+	[SerializeField]
 	private Icon[] _mistakeIcons;
 	[SerializeField]
 	private Icon[] _roleIcons;
@@ -353,7 +355,6 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	private void CreateCrew()
 	{
-		var sortedCrew = new List<Transform>();
 		foreach (var cm in GameManagement.CrewMembers.Values.ToList())
 		{
 			//create the static CrewMember UI (aka, the one that remains greyed out within the container at all times)
@@ -363,7 +364,6 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			((RectTransform)crewMember.transform).anchorMax = new Vector2(0.5f, 0.5f);
 			((RectTransform)crewMember.transform).pivot = new Vector2(0, 0.5f);
 			((RectTransform)crewMember.transform).anchoredPosition = Vector2.zero;
-			sortedCrew.Add(crewMember.transform);
 			_currentCrewButtons.Add(crewMember);
 			//create the draggable copy of the above
 			if (GameManagement.SeasonOngoing)
@@ -378,17 +378,11 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		{
 			var recruit = Instantiate(_recruitPrefab);
 			recruit.transform.SetParent(_crewContainer.transform, false);
-			recruit.name = "zz Recruit";
+			recruit.name = "Recruit";
 			recruit.GetComponent<Button>().onClick.AddListener(() => UIManagement.Recruitment.gameObject.Active(true));
 			_recruitButtons.Add(recruit.GetComponent<Button>());
-			sortedCrew.Add(recruit.transform);
 		}
-		//sort CrewMembers by their surnames
-		sortedCrew = sortedCrew.OrderBy(c => c.name).ToList();
-		foreach (var crewMember in sortedCrew)
-		{
-			crewMember.SetAsLastSibling();
-		}
+		SortCrew();
 	}
 
 	/// <summary>
@@ -403,6 +397,65 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		crewMember.GetComponent<CrewMemberUI>().SetUp(usable, current, cm, parent);
 		crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(cm.Avatar, cm.GetMood(), true);
 		return crewMember;
+	}
+
+	public void SortCrew()
+	{
+		var sortedCrewMembers = _crewContainer.GetComponentsInChildren<CrewMemberUI>().ToList();
+		switch (_crewSort.value)
+		{
+			case 0:
+				sortedCrewMembers = sortedCrewMembers.OrderBy(c => c.name).ToList();
+				break;
+			case 1:
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Charisma]).ToList();
+				break;
+			case 2:
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Perception]).ToList();
+				break;
+			case 3:
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Quickness]).ToList();
+				break;
+			case 4:
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Body]).ToList();
+				break;
+			case 5:
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Willpower]).ToList();
+				break;
+			case 6:
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Wisdom]).ToList();
+				break;
+			case 7:
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.GetMood()).ToList();
+				break;
+			case 8:
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedCrewOpinions.Values.Sum()/ (float)c.CrewMember.RevealedCrewOpinions.Count).ToList();
+				break;
+			case 9:
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedCrewOpinions[GameManagement.Manager.Name.NoSpaces()]).ToList();
+				break;
+			case 10:
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => GameManagement.LineUpHistory.Count(boat => boat.PositionCrew.Values.Any(cm => c.CrewMember.Name == cm.Name))).ToList();
+				break;
+			case 11:
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => GameManagement.LineUpHistory.Count(boat => boat.PositionCrew.Values.Any(cm => c.CrewMember.Name == cm.Name) && GameManagement.GetRacePosition(boat.Score, boat.Positions.Count) == 1)).ToList();
+				break;
+			case 12:
+				sortedCrewMembers = sortedCrewMembers.OrderBy(c => c.CrewMember.Age).ToList();
+				break;
+			case 13:
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.Avatar.Height * (c.CrewMember.Avatar.IsMale ? 1 : 0.935f)).ToList();
+				break;
+		}
+		var sortedCrew = sortedCrewMembers.Select(c => c.transform).ToList();
+		foreach (var recruit in _recruitButtons)
+		{
+			sortedCrew.Add(recruit.transform);
+		}
+		foreach (var crewMember in sortedCrew)
+		{
+			crewMember.SetAsLastSibling();
+		}
 	}
 
 	/// <summary>
@@ -832,6 +885,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 				boat.GetComponent<LayoutElement>().preferredHeight = Mathf.Abs(currentPosition) * 0.2f;
 			}
 		}
+		_crewSort.transform.BestFit();
 	}
 
 	/// <summary>
