@@ -178,7 +178,7 @@ public class NewGameUI : MonoBehaviour {
 
 	private void DoBestFit()
 	{
-		gameObject.BestFit();
+		GetComponentsInChildren<Text>().Where(t => t.gameObject.activeInHierarchy && t.text.Length > 0).BestFit();
 		_overwritePopUp.GetComponentsInChildren<Button>().Where(t => t.gameObject != _overwritePopUp).Select(t => t.gameObject).BestFit();
 	}
 }

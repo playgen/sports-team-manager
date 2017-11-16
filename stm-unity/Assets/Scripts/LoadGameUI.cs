@@ -29,10 +29,10 @@ public class LoadGameUI : MonoBehaviour
 	/// </summary>
 	private void OnEnable()
 	{
-        _selectedName = string.Empty;
-        _loadButton.interactable = false;
-        _selectedIcon.Active(false);
-        GetGames();
+		_selectedName = string.Empty;
+		_loadButton.interactable = false;
+		_selectedIcon.Active(false);
+		GetGames();
 		_errorText.text = string.Empty;
 		BestFit.ResolutionChange += DoBestFit;
 	}
@@ -82,10 +82,11 @@ public class LoadGameUI : MonoBehaviour
 	{
 		_errorText.text = string.Empty;
 		_selectedName = nameText.text;
-        _loadButton.interactable = true;
-        _selectedIcon.Active(true);
-        _selectedIcon.transform.SetParent(nameText.transform, false);
-		_selectedIcon.transform.position = nameText.transform.position;
+		_loadButton.interactable = true;
+		_selectedIcon.Active(true);
+		_selectedIcon.transform.SetParent(nameText.transform.parent, false);
+		((RectTransform)_selectedIcon.transform).anchoredPosition = Vector2.zero;
+		((RectTransform)_selectedIcon.transform).sizeDelta = Vector2.zero;
 	}
 
 	/// <summary>
@@ -119,14 +120,24 @@ public class LoadGameUI : MonoBehaviour
 				_selectedIcon.Active(false);
 				Destroy(_gameContainer.transform.Find(_selectedName).gameObject);
 				_selectedName = string.Empty;
-                _loadButton.interactable = false;
-            }
+				_loadButton.interactable = false;
+			}
 		}
 		_errorText.text = Localization.Get("LOAD_GAME_NOT_LOADED");
 	}
 
 	private void DoBestFit()
 	{
-		_gameContainer.BestFit();
+		Invoke("InvokedBestFit", 0f);
+	}
+
+	private void InvokedBestFit()
+	{
+		Invoke("DelayedInvokedBestFit", 0f);
+	}
+
+	private void DelayedInvokedBestFit()
+	{
+		GetComponentsInChildren<Button>().BestFit();
 	}
 }
