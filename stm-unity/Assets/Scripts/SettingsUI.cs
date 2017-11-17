@@ -89,6 +89,6 @@ public class SettingsUI : MonoBehaviour {
 	private void DoBestFit()
 	{
 		gameObject.GetComponentsInChildren<Text>().Where(t => t.transform.parent == transform).BestFit();
-		_languageDropdown.GetComponentsInChildren<Text>().BestFit();
+		_languageDropdown.GetComponentsInChildren<Text>().Where(t => !t.name.Contains("Checkmark")).BestFit();
 	}
 }

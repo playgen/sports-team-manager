@@ -885,7 +885,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 				boat.GetComponent<LayoutElement>().preferredHeight = Mathf.Abs(currentPosition) * 0.2f;
 			}
 		}
-		_crewSort.transform.BestFit();
+		_crewSort.GetComponentsInChildren<Text>().Where(t => !t.name.Contains("Checkmark")).BestFit();
 	}
 
 	/// <summary>
