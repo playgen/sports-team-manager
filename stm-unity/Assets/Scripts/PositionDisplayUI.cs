@@ -25,6 +25,8 @@ public class PositionDisplayUI : MonoBehaviour
 	[SerializeField]
 	private Button _currentButton;
 	[SerializeField]
+	private Button _notesButton;
+	[SerializeField]
 	private Image _roleImage;
 	[SerializeField]
 	private GameObject _historyContainer;
@@ -134,6 +136,8 @@ public class PositionDisplayUI : MonoBehaviour
 		_textList[1].text = Localization.Get(position + "_DESCRIPTION");
 		//set role image (displayed if no-one is in this position)
 		_roleImage.sprite = UIManagement.TeamSelection.RoleLogos.First(mo => mo.Name == position.ToString()).Image;
+		_notesButton.onClick.RemoveAllListeners();
+		_notesButton.onClick.AddListener(() => UIManagement.Notes.Display(position.ToString()));
 		_currentButton.onClick.RemoveAllListeners();
 		//display avatar and CrewMember name accordingly
 		_currentAvatar.gameObject.Active(currentCrew != null);

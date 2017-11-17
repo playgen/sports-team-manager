@@ -166,7 +166,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			CurrentRaceSession = 0;
 			ShowTutorial = showTutorial;
 			TutorialStage = 0;
-            _customTutorialAttributes = new Dictionary<int, Dictionary<string, string>>();
+			_customTutorialAttributes = new Dictionary<int, Dictionary<string, string>>();
 			QuestionnaireCompleted = false;
 			//create manager files and store game attribute details
 			manager.CreateFile(iat, combinedStorageLocation);
@@ -293,7 +293,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var nation = person.LoadBelief(NPCBeliefs.Nationality.GetDescription());
 					ShowTutorial = bool.Parse(person.LoadBelief(NPCBeliefs.ShowTutorial.GetDescription()));
 					TutorialStage = int.Parse(person.LoadBelief(NPCBeliefs.TutorialStage.GetDescription()));
-                    _customTutorialAttributes = new Dictionary<int, Dictionary<string, string>>();
+					_customTutorialAttributes = new Dictionary<int, Dictionary<string, string>>();
 					QuestionnaireCompleted = bool.Parse(person.LoadBelief(NPCBeliefs.QuestionnaireCompleted.GetDescription()) ?? "false");
 					Team = new Team(iat, storageLocation, config, iat.ScenarioName, nation, boat);
 					if (boat.Type == "Finish")
@@ -717,11 +717,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			foreach (var att in attributes)
 			{
-                if (!_customTutorialAttributes.ContainsKey(stage))
-                {
-                    _customTutorialAttributes.Add(stage, new Dictionary<string, string>());
-                }
-                if (_customTutorialAttributes[stage].ContainsKey(att.Key))
+				if (!_customTutorialAttributes.ContainsKey(stage))
+				{
+					_customTutorialAttributes.Add(stage, new Dictionary<string, string>());
+				}
+				if (_customTutorialAttributes[stage].ContainsKey(att.Key))
 				{
 					_customTutorialAttributes[stage][att.Key] = att.Value;
 				}
@@ -820,9 +820,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return managementStyles.Where(m => m.Value == managementStyles.Values.Max()).ToDictionary(b => b.Key, b => b.Value).Keys.ToArray();
 		}
 
-	    public int GetTotalRaceCount()
-	    {
-	        return config.GameConfig.PromotionTriggers.Sum(p => p.ScoreMetSinceLast);
-	    }
+		public int GetTotalRaceCount()
+		{
+			return config.GameConfig.PromotionTriggers.Sum(p => p.ScoreMetSinceLast);
+		}
 	}
 }

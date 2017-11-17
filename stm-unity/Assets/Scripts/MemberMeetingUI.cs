@@ -39,6 +39,8 @@ public class MemberMeetingUI : MonoBehaviour
 	[SerializeField]
 	private Text _closeText;
 	[SerializeField]
+	private Button _notesButton;
+	[SerializeField]
 	private GameObject _fireWarningPopUp;
 	[SerializeField]
 	private Button _fireButton;
@@ -136,13 +138,15 @@ public class MemberMeetingUI : MonoBehaviour
 		_textList[1].text = _currentMember.Age.ToString();
 		var currentRole = _currentMember.BoatPosition();
 		_textList[2].text = currentRole == Position.Null ? Localization.Get("NO_ROLE") : string.Empty;
+		_notesButton.onClick.RemoveAllListeners();
+		_notesButton.onClick.AddListener(() => UIManagement.Notes.Display(_currentMember.Name));
 		_roleButton.onClick.RemoveAllListeners();
 		//set up button onclick if CrewMember is positioned
 		if (currentRole != Position.Null)
 		{
 			_roleButton.gameObject.Active(true);
 			_roleButton.onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentRole, TrackerTriggerSources.TeamManagementScreen.ToString()));
-			_roleButton.GetComponentInChildren<Text>().text = Localization.Get(currentRole.ToString(), true);
+			_roleButton.GetComponentInChildren<Text>().text = Localization.Get(currentRole.ToString());
 			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = UIManagement.TeamSelection.RoleLogos.First(mo => mo.Name == currentRole.ToString()).Image;
 		}
 		//hide if not positioned
@@ -371,7 +375,7 @@ public class MemberMeetingUI : MonoBehaviour
 		_textList[2].text = currentRole == Position.Null ? Localization.Get("NO_ROLE") : string.Empty;
 		if (currentRole != Position.Null)
 		{
-			_roleButton.GetComponentInChildren<Text>().text = Localization.Get(currentRole.ToString(), true);
+			_roleButton.GetComponentInChildren<Text>().text = Localization.Get(currentRole.ToString());
 		}
 		_closeText.text = Localization.Get("MEETING_EARLY_EXIT");
 		if (_lastReply != null)

@@ -72,7 +72,7 @@ public class CupResultUI : MonoBehaviour
 		{
 			gameObject.Active(false);
 			UIManagement.DisableBlocker();
-            TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.CupFinishingPosition.ToString(), _cupPosition.ToString() },
 				{ TrackerContextKeys.TriggerUI.ToString(), source }

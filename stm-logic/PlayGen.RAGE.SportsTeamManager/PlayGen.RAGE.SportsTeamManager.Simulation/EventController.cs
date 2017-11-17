@@ -486,5 +486,33 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			manager.SaveStatus();
 		}
+
+		public string GetNotes(string subject)
+		{
+			var savedNote = iat.GetDialogueActionsBySpeaker(IATConsts.PLAYER).FirstOrDefault(s => s.CurrentState == "Note" && s.NextState == subject.NoSpaces());
+			return savedNote != null ? savedNote.Utterance : string.Empty;
+		}
+
+		public void SaveNote(string subject, string note)
+		{
+			var newNote = new DialogueStateActionDTO
+			{
+				CurrentState = "Note",
+				NextState = subject.NoSpaces(),
+				Meaning = new string[0],
+				Style = new string[0],
+				Utterance = note
+			};
+			var savedNote = iat.GetDialogueActionsBySpeaker(IATConsts.PLAYER).FirstOrDefault(s => s.CurrentState == "Note" && s.NextState == subject.NoSpaces());
+			if (savedNote == null)
+			{
+				iat.AddPlayerDialogAction(newNote);
+			}
+			else
+			{
+				iat.EditPlayerDialogAction(savedNote, newNote);
+			}
+			iat.Save();
+		}
 	}
 }

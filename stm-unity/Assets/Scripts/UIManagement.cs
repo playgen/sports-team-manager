@@ -12,6 +12,7 @@ public static class UIManagement
 	public static PostRaceEventUI[] PostRaceEvents { get; private set; }
 	public static MemberMeetingUI MemberMeeting { get; private set; }
 	public static PositionDisplayUI PositionDisplay { get; private set; }
+	public static NotesUI Notes { get; private set; }
 	public static TutorialController Tutorial { get; private set; }
 	public static SettingsUI Settings { get; private set; }
 	public static RecruitMemberUI Recruitment { get; private set; }
@@ -32,6 +33,7 @@ public static class UIManagement
 		_rootObjects = SceneManager.GetActiveScene().GetRootGameObjects().Where(r => r.gameObject != null).ToList();
 		PostRaceEvents = _rootObjects.SelectMany(g => g.GetComponentsInChildren<PostRaceEventUI>(true)).ToArray();
 		MemberMeeting = _rootObjects.SelectMany(g => g.GetComponentsInChildren<MemberMeetingUI>(true)).First();
+		Notes = _rootObjects.SelectMany(g => g.GetComponentsInChildren<NotesUI>(true)).First();
 		PositionDisplay = _rootObjects.SelectMany(g => g.GetComponentsInChildren<PositionDisplayUI>(true)).First();
 		Tutorial = _rootObjects.SelectMany(g => g.GetComponentsInChildren<TutorialController>(true)).First();
 		Settings = _rootObjects.SelectMany(g => g.GetComponentsInChildren<SettingsUI>(true)).Last();

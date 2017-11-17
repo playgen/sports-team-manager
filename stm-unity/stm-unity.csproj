@@ -207,6 +207,7 @@
     <Compile Include="Assets\Scripts\MemberMeetingUI.cs" />
     <Compile Include="Assets\Scripts\MusicControl.cs" />
     <Compile Include="Assets\Scripts\NewGameUI.cs" />
+    <Compile Include="Assets\Scripts\NotesUI.cs" />
     <Compile Include="Assets\Scripts\PlayVideoImage.cs" />
     <Compile Include="Assets\Scripts\PositionDisplayUI.cs" />
     <Compile Include="Assets\Scripts\PositionUI.cs" />

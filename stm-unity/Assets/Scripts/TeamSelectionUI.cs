@@ -299,18 +299,18 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		if (!GameManagement.IsRace)
 		{
 			_raceButton.onClick.AddListener(UIManagement.PreRace.ConfirmLineUpCheck);
-			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
+			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", false, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
 			_raceButton.GetComponentInChildren<Text>().fontSize = 16;
 		}
 		else
 		{
 			_raceButton.onClick.AddListener(UIManagement.PreRace.ConfirmPopUp);
-			_raceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
+			_raceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE");
 			_raceButton.GetComponentInChildren<Text>().fontSize = 20;
 		}
 		_raceButton.onClick.AddListener(() => Invoke("QuickClickDisable", 0.5f));
 		_skipToRaceButton.onClick.AddListener(UIManagement.PreRace.ConfirmPopUp);
-		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
+		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE");
 		_skipToRaceButton.GetComponentInChildren<Text>().fontSize = 20;
 		var positionContainer = _boatMain.transform.Find("Position Container");
 		//set up position containers
@@ -401,7 +401,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 
 	public void SortCrew()
 	{
-		var sortedCrewMembers = _crewContainer.GetComponentsInChildren<CrewMemberUI>().ToList();
+		var sortedCrewMembers = _crewContainer.GetComponentsInChildren<CrewMemberUI>().Where(c => c.transform.parent == _crewContainer.transform).ToList();
 		switch (_crewSort.value)
 		{
 			case 0:
@@ -432,7 +432,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedCrewOpinions.Values.Sum()/ (float)c.CrewMember.RevealedCrewOpinions.Count).ToList();
 				break;
 			case 9:
-				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedCrewOpinions[GameManagement.Manager.Name.NoSpaces()]).ToList();
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedCrewOpinions[GameManagement.Manager.Name]).ToList();
 				break;
 			case 10:
 				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => GameManagement.LineUpHistory.Count(boat => boat.PositionCrew.Values.Any(cm => c.CrewMember.Name == cm.Name))).ToList();
@@ -863,7 +863,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			position.transform.Find("Text").GetComponent<Text>().text = Localization.Get(position.Position.ToString());
 		}
 		_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat(GameManagement.IsRace ? "RACE_BUTTON_RACE" : "RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
-		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE", true);
+		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE");
 		ChangeVisibleBoats(true);
 		if (_endRace.gameObject.activeSelf)
 		{
