@@ -12,5 +12,6 @@ public enum TrackerTriggerSources
 	PositionPopUp,
 	NoButtonSelected,
 	YesButtonSelected,
-	OKButtonSelected
+	OKButtonSelected,
+	CloseButtonSelected
 }

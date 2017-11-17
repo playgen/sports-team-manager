@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
+using PlayGen.RAGE.SportsTeamManager.Simulation;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
 
@@ -37,7 +40,7 @@ public class NotesUI : MonoBehaviour {
 		OnLanguageChange();
 		_notesField.text = GameManagement.GameManager.EventController.GetNotes(_notesSubject);
 		gameObject.Active(true);
-		transform.EnableSmallBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
+		transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
 		TrackerEventSender.SendEvent(new TraceEvent("NotesPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.TriggerUI.ToString(), _notesSubject }
@@ -52,9 +55,9 @@ public class NotesUI : MonoBehaviour {
 		if (gameObject.activeInHierarchy)
 		{
 			GameManagement.GameManager.EventController.SaveNote(_notesSubject, _notesField.text);
-			_notesSubject = null;
 			gameObject.Active(false);
-			UIManagement.DisableSmallBlocker();
+			UIManagement.DisableBlocker();
+			_notesSubject = null;
 			if (!string.IsNullOrEmpty(source))
 			{
 				TrackerEventSender.SendEvent(new TraceEvent("NotesPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
