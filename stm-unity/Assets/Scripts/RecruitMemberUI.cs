@@ -229,8 +229,8 @@ public class RecruitMemberUI : MonoBehaviour
 		{
 			_hireWarningText.text = Localization.Get("HIRE_WARNING_NOT_POSSIBLE");
 			_hireWarningAccept.gameObject.Active(false);
-			((RectTransform)_hireWarningReject.transform).anchorMin = new Vector2(0.375f, 0.1f);
-			((RectTransform)_hireWarningReject.transform).anchorMax = new Vector2(0.625f, 0.35f);
+			((RectTransform)_hireWarningReject.transform).anchorMin = new Vector2(0.375f, 0.02f);
+			((RectTransform)_hireWarningReject.transform).anchorMax = new Vector2(0.625f, 0.2f);
 			((RectTransform)_hireWarningReject.transform).anchoredPosition = Vector2.zero;
 			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("OK");
 			_hireWarningReject.onClick.RemoveAllListeners();
@@ -242,8 +242,8 @@ public class RecruitMemberUI : MonoBehaviour
 			_hireWarningAccept.onClick.AddListener(() => Recruit(recruit, TrackerTriggerSources.YesButtonSelected.ToString()));
 			_hireWarningAccept.gameObject.Active(true);
 			_hireWarningText.text = Localization.GetAndFormat("HIRE_WARNING_POSSIBLE", false, recruit.Name);
-			((RectTransform)_hireWarningReject.transform).anchorMin = new Vector2(0.55f, 0.1f);
-			((RectTransform)_hireWarningReject.transform).anchorMax = new Vector2(0.8f, 0.35f);
+			((RectTransform)_hireWarningReject.transform).anchorMin = new Vector2(0.525f, 0.02f);
+			((RectTransform)_hireWarningReject.transform).anchorMax = new Vector2(0.85f, 0.27f);
 			((RectTransform)_hireWarningReject.transform).anchoredPosition = Vector2.zero;
 			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("NO");
 			_hireWarningReject.onClick.RemoveAllListeners();
