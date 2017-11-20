@@ -190,6 +190,8 @@ public class TutorialSectionUI : MonoBehaviour
 			if (_tutorialObj.EventTriggerCountRequired > 1 && _unblocked)
 			{
 				_buttons.Find("Progress Count").GetComponent<Text>().text = (_tutorialObj.EventTriggerCountRequired - _eventTriggerCount).ToString();
+				((RectTransform)pageNumber.transform).anchorMin = new Vector2(0.375f, 0);
+				((RectTransform)pageNumber.transform).anchorMax = new Vector2(0.575f, 1);
 			}
 			else
 			{
@@ -198,7 +200,6 @@ public class TutorialSectionUI : MonoBehaviour
 				((RectTransform)pageNumber.transform).anchorMax = new Vector2(0.65f, 1);
 			}
 		}
-
 		var speechBubble = _tutorialObject.transform.Find("Image");
 		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)speechBubble);
 		Invoke("PaddingSetUp", 0f);
@@ -210,20 +211,7 @@ public class TutorialSectionUI : MonoBehaviour
 	private void PaddingSetUp()
 	{
 		var speechBubble = _tutorialObject.transform.Find("Image");
-		speechBubble.GetComponent<LayoutGroup>().padding.bottom = (int)(((RectTransform)speechBubble).sizeDelta.y * 0.25f) + 16;
 		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)speechBubble);
-		Invoke("ButtonSetUp", 0f);
-	}
-
-	/// <summary>
-	/// Set up button positioning
-	/// </summary>
-	private void ButtonSetUp()
-	{
-		var speechBubble = _tutorialObject.transform.Find("Image");
-		var buttons = _tutorialObject.transform.Find("Buttons");
-		speechBubble.GetComponent<LayoutGroup>().padding.bottom = (int)(((RectTransform)speechBubble).sizeDelta.y * 0.25f) + 16;
-		((RectTransform)buttons).anchoredPosition = new Vector2(0, (int)(((RectTransform)buttons).sizeDelta.y * 2.5f) - 3);
 	}
 
 	/// <summary>

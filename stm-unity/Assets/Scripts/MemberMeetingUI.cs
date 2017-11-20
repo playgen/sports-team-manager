@@ -138,6 +138,9 @@ public class MemberMeetingUI : MonoBehaviour
 		_textList[1].text = _currentMember.Age.ToString();
 		var currentRole = _currentMember.BoatPosition();
 		_textList[2].text = currentRole == Position.Null ? Localization.Get("NO_ROLE") : string.Empty;
+		_textList[3].text = Localization.Get("NAME") + ":";
+		_textList[4].text = Localization.Get("AGE") + ":";
+		_textList[5].text = Localization.Get("ROLE") + ":";
 		_notesButton.onClick.RemoveAllListeners();
 		_notesButton.onClick.AddListener(() => UIManagement.Notes.Display(_currentMember.Name));
 		_roleButton.onClick.RemoveAllListeners();

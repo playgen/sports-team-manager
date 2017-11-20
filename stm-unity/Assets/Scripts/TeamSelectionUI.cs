@@ -867,7 +867,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		ChangeVisibleBoats(true);
 		if (_endRace.gameObject.activeSelf)
 		{
-			_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get(GameManagement.GameManager.QuestionnaireCompleted ? "FEEDBACK_BUTTON" : "CONFLICT_QUESTIONNAIRE");
+			_feedbackButton.GetComponentInChildren<Text>(true).text = Localization.Get(GameManagement.GameManager.QuestionnaireCompleted ? "FEEDBACK_BUTTON" : "CONFLICT_QUESTIONNAIRE");
 		}
 		DoBestFit();
 	}
@@ -885,7 +885,6 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 				boat.GetComponent<LayoutElement>().preferredHeight = Mathf.Abs(currentPosition) * 0.2f;
 			}
 		}
-		_crewSort.GetComponentsInChildren<Text>().Where(t => !t.name.Contains("Checkmark")).BestFit();
 	}
 
 	/// <summary>

@@ -36,10 +36,10 @@ public class NotesUI : MonoBehaviour {
 	/// </summary>
 	public void Display(string subject)
 	{
+		gameObject.Active(true);
 		_notesSubject = subject;
 		OnLanguageChange();
 		_notesField.text = GameManagement.GameManager.EventController.GetNotes(_notesSubject);
-		gameObject.Active(true);
 		transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
 		TrackerEventSender.SendEvent(new TraceEvent("NotesPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
@@ -80,5 +80,6 @@ public class NotesUI : MonoBehaviour {
 	private void DoBestFit()
 	{
 		_title.gameObject.BestFit();
+		_notesField.GetComponent<LayoutElement>().preferredHeight = ((RectTransform)_notesField.GetComponentInParent<ScrollRect>().transform).rect.height;
 	}
 }
