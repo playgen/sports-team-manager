@@ -132,7 +132,8 @@ public class MemberMeetingUI : MonoBehaviour
 		_allowanceText.text = GameManagement.ActionAllowance.ToString();
 		//CrewMember avatar
 		_avatarDisplay.SetAvatar(_currentMember.Avatar, _currentMember.GetMood());
-		_avatarDisplay.GetComponent<Image>().color = AvatarDisplay.MoodColor(_currentMember.GetMood());
+		_avatarDisplay.GetComponent<Image>().color = new UnityEngine.Color(0, 1, 1);
+		_avatarDisplay.transform.parent.GetComponent<Image>().color = AvatarDisplay.MoodColor(_currentMember.GetMood());
 		//CrewMember information
 		_textList[0].text = _currentMember.Name;
 		_textList[1].text = _currentMember.Age.ToString();
@@ -214,6 +215,18 @@ public class MemberMeetingUI : MonoBehaviour
 			_closeText.text = Localization.Get("MEETING_EXIT");
 		}
 		//display revealed opinions for each other active CrewMember
+		ForcedOpinionChange("accurate");
+		var managerOpinionImage = transform.Find("Manager Opinion").GetComponentInChildren<Image>();
+		managerOpinionImage.enabled = true;
+		managerOpinionImage.sprite = null;
+		var managerOpinion = _currentMember.RevealedCrewOpinions[GameManagement.Manager.Name];
+		managerOpinionImage.sprite = _opinionIcons[(managerOpinion > 0 ? Mathf.CeilToInt(managerOpinion / 3f) : Mathf.FloorToInt(managerOpinion / 3f)) + 2];
+		DoBestFit();
+	}
+
+	public void ForcedOpinionChange(string change)
+	{
+		var forceCycle = 0;
 		foreach (var crewMember in UIManagement.CrewMemberUI)
 		{
 			if (crewMember.Current)
@@ -225,16 +238,18 @@ public class MemberMeetingUI : MonoBehaviour
 					opinionImage.enabled = true;
 					opinionImage.sprite = null;
 					var opinion = _currentMember.RevealedCrewOpinions[crewName];
-					opinionImage.sprite = _opinionIcons[(opinion > 0 ? Mathf.CeilToInt(opinion / 3f) : Mathf.FloorToInt(opinion / 3f)) + 2];
+					if (change == "accurate")
+					{
+						opinionImage.sprite = _opinionIcons[(opinion > 0 ? Mathf.CeilToInt(opinion / 3f) : Mathf.FloorToInt(opinion / 3f)) + 2];
+					}
+					else
+					{
+						opinionImage.sprite = _opinionIcons[forceCycle % 5];
+						forceCycle++;
+					}
 				}
 			}
 		}
-		var managerOpinionImage = transform.Find("Manager Opinion").GetComponentInChildren<Image>();
-		managerOpinionImage.enabled = true;
-		managerOpinionImage.sprite = null;
-		var managerOpinion = _currentMember.RevealedCrewOpinions[GameManagement.Manager.Name];
-		managerOpinionImage.sprite = _opinionIcons[(managerOpinion > 0 ? Mathf.CeilToInt(managerOpinion / 3f) : Mathf.FloorToInt(managerOpinion / 3f)) + 2];
-		DoBestFit();
 	}
 
 	/// <summary>

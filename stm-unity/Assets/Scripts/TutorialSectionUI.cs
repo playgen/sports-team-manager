@@ -20,6 +20,7 @@ public class TutorialSectionUI : MonoBehaviour
 	private Transform _buttons;
 	private int _currentText;
 	private static readonly List<object[]> _triggeredObjects = new List<object[]>();
+	private Dictionary<string, string> _attributeDict = new Dictionary<string, string>();
 	private int _eventTriggerCount;
 	private bool _unblocked;
 
@@ -28,6 +29,7 @@ public class TutorialSectionUI : MonoBehaviour
 	/// </summary>
 	public void Construct(TutorialObject tutObj)
 	{
+		_attributeDict.Clear();
 		_tutorialObj = tutObj;
 
 		_sectionText = new Dictionary<string, List<string>>();
@@ -36,8 +38,8 @@ public class TutorialSectionUI : MonoBehaviour
 		_tutorialObject = UIManagement.Tutorial.SectionCount == GameManagement.TutorialStage + 1 ? transform.parent.Find("End Close/Tutorial Helper").gameObject : transform.Find("Tutorial Helper").gameObject;
 		_buttons = (RectTransform)_tutorialObject.transform.Find("Buttons");
 		_tutorialText = _tutorialObject.GetComponentInChildren<Text>();
-		var attributeDict = tutObj.CustomAttributes.Select(a => new KeyValuePair<string, string>(a.Split('=')[0], a.Split('=')[1])).ToDictionary(c => c.Key, c => c.Value);
-		GameManagement.GameManager.SetCustomTutorialAttributes(GameManagement.TutorialStage, attributeDict);
+		_attributeDict = tutObj.CustomAttributes.Select(a => new KeyValuePair<string, string>(a.Split('=')[0], a.Split('=')[1])).ToDictionary(c => c.Key, c => c.Value);
+		GameManagement.GameManager.SetCustomTutorialAttributes(GameManagement.TutorialStage, _attributeDict);
 		_currentText = 0;
 		_eventTriggerCount = 0;
 		_triggeredObjects.Clear();
@@ -77,6 +79,17 @@ public class TutorialSectionUI : MonoBehaviour
 	/// </summary>
 	private void SetUp()
 	{
+		if (_attributeDict.ContainsKey("part" + _currentText))
+		{
+			if (_attributeDict["part" + _currentText].Contains("mood"))
+			{
+				UIManagement.CrewMemberUI.ToList().ForEach(c => c.ForcedMoodChange(_attributeDict["part" + _currentText].Replace("mood-", string.Empty)));
+			}
+			if (_attributeDict["part" + _currentText].Contains("opinion"))
+			{
+				UIManagement.MemberMeeting.ForcedOpinionChange(_attributeDict["part" + _currentText].Replace("opinion-", string.Empty));
+			}
+		}
 		var reverseRaycast = GetComponentInChildren<ReverseRaycastTarget>();
 		reverseRaycast.MaskRect.Clear();
 		reverseRaycast.MaskRect.Add(_menuHighlighted);

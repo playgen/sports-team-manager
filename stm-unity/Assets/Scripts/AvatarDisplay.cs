@@ -37,8 +37,24 @@ public class AvatarDisplay : MonoBehaviour
 
 	public static Color MoodColor(float value)
 	{
-		value = value < -5 ? -5 : value > 5 ? 5 : value;
-		return new Color(-value * 0.2f, (value + 5) * 0.2f, (5 - Mathf.Abs(value)) * 0.2f);
+		var moodColor = Color.cyan;
+		if (value > 2)
+		{
+			moodColor = Color.green;
+		}
+		else if (value > 0)
+		{
+			moodColor = new Color(0, 1, 0.5f);
+		}
+		else if (value < -2)
+		{
+			moodColor = Color.red;
+		}
+		else if (value < 0)
+		{
+			moodColor = new Color(1, 0.5f, 0);
+		}
+		return moodColor;
 	}
 
 	/// <summary>

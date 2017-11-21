@@ -8,6 +8,8 @@ using System.Reflection;
 using PlayGen.SUGAR.Unity;
 using RAGE.Analytics.Formats;
 
+using Color = UnityEngine.Color;
+
 /// <summary>
 /// Contains all logic related to CrewMember prefabs
 /// </summary>
@@ -33,7 +35,8 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		_defaultParent = parent;
 		Usable = usable;
 		Current = current;
-		transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(CrewMember.GetMood()) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
+		transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? new Color(0, 1, 1) : Current ? new Color(0, 0.5f, 0.5f) : Color.white;
+		GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(CrewMember.GetMood()) : Current ? Color.grey : Color.black;
 		GetComponent<Button>().enabled = Current;
 		if (!GameManagement.SeasonOngoing)
 		{
@@ -47,7 +50,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	public void NotCurrent()
 	{
 		Current = false;
-		transform.Find("AvatarIcon").GetComponent<Image>().color = UnityEngine.Color.white;
+		transform.Find("AvatarIcon").GetComponent<Image>().color = Color.white;
 		GetComponent<Button>().enabled = false;
 	}
 
@@ -99,28 +102,19 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 #if UNITY_EDITOR
 		if (Input.GetKeyDown("1"))
 		{
-			GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "StrongDisagree");
-			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(-3) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
+			ForcedMoodChange("negative");
 		}
 		if (Input.GetKeyDown("2"))
 		{
-			GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Disagree");
-			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(-1) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
+			ForcedMoodChange("neutral");
 		}
 		if (Input.GetKeyDown("3"))
 		{
-			GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, string.Empty);
-			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(0) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
+			ForcedMoodChange("positive");
 		}
 		if (Input.GetKeyDown("4"))
 		{
-			GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Agree");
-			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(1) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
-		}
-		if (Input.GetKeyDown("5"))
-		{
-			GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "StrongAgree");
-			transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? AvatarDisplay.MoodColor(3) : Current ? new UnityEngine.Color(0, 0.5f, 0.5f) : UnityEngine.Color.white;
+			ForcedMoodChange("accurate");
 		}
 #endif
 		if (_beingDragged)
@@ -148,6 +142,46 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			{
 				_beingClicked = false;
 			}
+		}
+	}
+
+	public void ForcedMoodChange(string moodChange)
+	{
+		if (moodChange == "negative")
+		{
+			if (CrewMember.Name.Length % 2 == 0)
+			{
+				GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "StrongDisagree");
+				GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(-3) : Current ? Color.grey : Color.black;
+			}
+			else
+			{
+				GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Disagree");
+				GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(-1) : Current ? Color.grey : Color.black;
+			}
+		}
+		else if (moodChange == "positive")
+		{
+			if (CrewMember.Name.Length % 2 == 0)
+			{
+				GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "StrongAgree");
+				GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(3) : Current ? Color.grey : Color.black;
+			}
+			else
+			{
+				GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Agree");
+				GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(1) : Current ? Color.grey : Color.black;
+			}
+		}
+		else if (moodChange == "accurate")
+		{
+			GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, CrewMember.GetMood());
+			GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(CrewMember.GetMood()) : Current ? Color.grey : Color.black;
+		}
+		else
+		{
+			GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Neutral");
+			GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(0) : Current ? Color.grey : Color.black;
 		}
 	}
 
