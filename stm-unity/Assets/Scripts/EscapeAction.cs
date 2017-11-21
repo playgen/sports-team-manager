@@ -18,7 +18,7 @@ public class EscapeAction : MonoBehaviour {
 			//if tutorial quitting pop-up is open, close this pop-up
 			if (UIManagement.Tutorial.gameObject.activeInHierarchy)
 			{
-				var popUp = UIManagement.Tutorial.transform.parent.Find("Quit Tutorial Pop-Up").gameObject;
+				var popUp = UIManagement.Tutorial.transform.parent.FindObject("Quit Tutorial Pop-Up");
 				if (popUp.activeInHierarchy)
 				{
 					popUp.Active(false);

@@ -50,7 +50,7 @@ public class NewGameUI : MonoBehaviour {
 		if (!char.IsLetterOrDigit(newChar) && newChar != ' ')
 		{
 			newChar = '\0';
-			inputField.transform.Find("Warning").gameObject.Active(true);
+			inputField.transform.FindObject("Warning").Active(true);
 			Invoke("WarningDisable", 0.02f);
 		}
 		return newChar;
@@ -101,10 +101,10 @@ public class NewGameUI : MonoBehaviour {
 	private void WarningDisable()
 	{
 		_errorText.text = string.Empty;
-		_boatName.transform.Find("Required Warning").gameObject.Active(false);
-		_managerName.transform.Find("Required Warning").gameObject.Active(false);
-		_boatName.transform.Find("Warning").gameObject.Active(false);
-		_managerName.transform.Find("Warning").gameObject.Active(false);
+		_boatName.transform.FindObject("Required Warning").Active(false);
+		_managerName.transform.FindObject("Required Warning").Active(false);
+		_boatName.transform.FindObject("Warning").Active(false);
+		_managerName.transform.FindObject("Warning").Active(false);
 	}
 
 	/// <summary>
@@ -117,12 +117,12 @@ public class NewGameUI : MonoBehaviour {
 		if (string.IsNullOrEmpty(_boatName.text) || _boatName.text.Trim().Length == 0)
 		{
 			valid = false;
-			_boatName.transform.Find("Required Warning").gameObject.Active(true);
+			_boatName.transform.FindObject("Required Warning").Active(true);
 		}
 		if (string.IsNullOrEmpty(_managerName.text) || _managerName.text.Trim().Length == 0)
 		{
 			valid = false;
-			_managerName.transform.Find("Required Warning").gameObject.Active(true);
+			_managerName.transform.FindObject("Required Warning").Active(true);
 		}
 		if (valid)
 		{

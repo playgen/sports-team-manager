@@ -190,20 +190,20 @@ public class PositionDisplayUI : MonoBehaviour
 		{
 			var positionHistory = Instantiate(_historyPrefab);
 			positionHistory.transform.SetParent(_historyContainer.transform, false);
-			positionHistory.transform.Find("Name").GetComponent<Text>().text = SplitName(member.Key.Name);
+			positionHistory.transform.FindText("Name").text = SplitName(member.Key.Name);
 			if (GameManagement.CrewMembers.ContainsKey(member.Key.Name))
 			{
 				var current = member.Key;
 				positionHistory.GetComponentInChildren<Button>().onClick.AddListener(() => UIManagement.MemberMeeting.SetUpDisplay(current, TrackerTriggerSources.PositionPopUp.ToString()));
-				positionHistory.transform.Find("AvatarIcon").GetComponent<Image>().color = new UnityEngine.Color(0, 0.5f, 0.5f);
+				positionHistory.transform.FindImage("AvatarIcon").color = new UnityEngine.Color(0, 0.5f, 0.5f);
 			}
 			else
 			{
 				positionHistory.GetComponentInChildren<Button>().interactable = false;
-				positionHistory.transform.Find("AvatarIcon").GetComponent<Image>().color = UnityEngine.Color.white;
+				positionHistory.transform.FindImage("AvatarIcon").color = UnityEngine.Color.white;
 			}
 			positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, member.Key.GetMood(), true);
-			positionHistory.transform.Find("Session Back/Sessions").GetComponent<Text>().text = member.Value.ToString();
+			positionHistory.transform.FindText("Session Back/Sessions").text = member.Value.ToString();
 		}
 	}
 

@@ -83,6 +83,6 @@ public class NotesUI : MonoBehaviour {
 	private void DoBestFit()
 	{
 		_title.gameObject.BestFit();
-		_notesField.GetComponent<LayoutElement>().preferredHeight = ((RectTransform)_notesField.GetComponentInParent<ScrollRect>().transform).rect.height;
+		_notesField.GetComponent<LayoutElement>().preferredHeight = _notesField.GetComponentInParent<ScrollRect>().RectTransform().rect.height;
 	}
 }

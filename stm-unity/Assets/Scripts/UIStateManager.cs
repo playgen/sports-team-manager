@@ -147,7 +147,7 @@ public class UIStateManager : MonoBehaviour {
 		_feedback.Active(false);
 		_mainMenu.Active(true);
 		DoBestFit();
-		_mainMenu.transform.Find("Load Game").GetComponent<Button>().interactable = GameManagement.GameNames.Count != 0;
+		_mainMenu.transform.FindButton("Load Game").interactable = GameManagement.GameNames.Count != 0;
 	}
 
 	/// <summary>

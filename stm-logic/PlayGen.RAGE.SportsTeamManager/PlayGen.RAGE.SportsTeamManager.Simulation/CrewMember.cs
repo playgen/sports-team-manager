@@ -708,7 +708,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public int CompareTo(CrewMember other)
 		{
-			return String.Compare(Name, other.Name, StringComparison.Ordinal);
+			return string.Compare(Name, other.Name, StringComparison.Ordinal);
 		}
 	}
 }

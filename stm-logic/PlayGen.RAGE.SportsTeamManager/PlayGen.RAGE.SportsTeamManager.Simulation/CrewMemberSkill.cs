@@ -13,7 +13,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		Perception = 4,
 		Quickness = 8,
 		Willpower = 16,
-		Wisdom = 32,
+		Wisdom = 32
 	}
 
 	public static class CrewMemberSkillsExtensions

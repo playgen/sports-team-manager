@@ -47,8 +47,8 @@ public static class UIManagement
 		Hover = _rootObjects.SelectMany(g => g.GetComponentsInChildren<HoverPopUpUI>(true)).First();
 		EventImpact = _rootObjects.SelectMany(g => g.GetComponentsInChildren<PostRaceEventImpactUI>(true)).First();
 
-		SmallBlocker = _rootObjects.Single(g => g.name == "Canvas").transform.Find("Team Management/Pop-up Bounds/Blocker").GetComponent<Button>();
-		Blocker = _rootObjects.Single(g => g.name == "Canvas").transform.Find("Team Management/Pop-up Bounds/Bigger Blocker").GetComponent<Button>();
+		SmallBlocker = _rootObjects.Single(g => g.name == "Canvas").transform.FindButton("Team Management/Pop-up Bounds/Blocker");
+		Blocker = _rootObjects.Single(g => g.name == "Canvas").transform.FindButton("Team Management/Pop-up Bounds/Bigger Blocker");
 	}
 
 	public static CrewMemberUI[] CrewMemberUI

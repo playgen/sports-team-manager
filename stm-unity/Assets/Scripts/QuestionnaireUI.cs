@@ -53,15 +53,15 @@ public class QuestionnaireUI : MonoBehaviour
 		{
 			var questionObj = Instantiate(_questionPrefab, _questionnairePanel.transform, false);
 			questionObj.name = _questionPrefab.name;
-			questionObj.transform.Find("Question").GetComponent<Text>().text = Localization.Get("QUESTION") + " " + (_questionObjs.Count + 1);
-			questionObj.transform.Find("Answer A").GetComponentInChildren<Text>().text = "A. " + question.AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
-			questionObj.transform.Find("Answer B").GetComponentInChildren<Text>().text = "B. " + question.AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
-			questionObj.transform.Find("Answer A").GetComponentInChildren<Toggle>().onValueChanged.AddListener(CheckAllToggled);
-			questionObj.transform.Find("Answer B").GetComponentInChildren<Toggle>().onValueChanged.AddListener(CheckAllToggled);
+			questionObj.transform.FindText("Question").text = Localization.Get("QUESTION") + " " + (_questionObjs.Count + 1);
+			questionObj.transform.FindComponentInChildren<Text>("Answer A").text = "A. " + question.AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
+			questionObj.transform.FindComponentInChildren<Text>("Answer B").text = "B. " + question.AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
+			questionObj.transform.FindComponentInChildren<Toggle>("Answer A").onValueChanged.AddListener(CheckAllToggled);
+			questionObj.transform.FindComponentInChildren<Toggle>("Answer B").onValueChanged.AddListener(CheckAllToggled);
 			_questionObjs.Add(questionObj);
 		}
 		CheckAllToggled();
-		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_questionnairePanel.transform);
+		LayoutRebuilder.ForceRebuildLayoutImmediate(_questionnairePanel.RectTransform());
 		Invoke("DoBestFit", 0);
 	}
 
@@ -149,11 +149,11 @@ public class QuestionnaireUI : MonoBehaviour
 		for (var i = 0; i < _questionObjs.Count; i++)
 		{
 			var style = string.Empty;
-			if (_questionObjs[i].transform.Find("Answer A").GetComponentInChildren<Toggle>().isOn)
+			if (_questionObjs[i].transform.FindComponentInChildren<Toggle>("Answer A").isOn)
 			{
 				style = _questions[i].AnswerA.Style;
 			}
-			else if (_questionObjs[i].transform.Find("Answer B").GetComponentInChildren<Toggle>().isOn)
+			else if (_questionObjs[i].transform.FindComponentInChildren<Toggle>("Answer B").isOn)
 			{
 				style = _questions[i].AnswerB.Style;
 			}
@@ -174,17 +174,17 @@ public class QuestionnaireUI : MonoBehaviour
 	{
 		for (var i = 0; i < _questionObjs.Count; i++)
 		{
-			_questionObjs[i].transform.Find("Question").GetComponent<Text>().text = Localization.Get("QUESTION") + " " + (i + 1);
-			_questionObjs[i].transform.Find("Answer A").GetComponentInChildren<Text>().text = "A. " + _questions[i].AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
-			_questionObjs[i].transform.Find("Answer B").GetComponentInChildren<Text>().text = "B. " + _questions[i].AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
+			_questionObjs[i].transform.FindText("Question").text = Localization.Get("QUESTION") + " " + (i + 1);
+			_questionObjs[i].transform.FindComponentInChildren<Text>("Answer A").text = "A. " + _questions[i].AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
+			_questionObjs[i].transform.FindComponentInChildren<Text>("Answer B").text = "B. " + _questions[i].AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
 		}
 		DoBestFit();
 	}
 
 	private void DoBestFit()
 	{
-		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
+		LayoutRebuilder.ForceRebuildLayoutImmediate(transform.RectTransform());
 		GetComponentsInChildren<Text>().BestFit();
-		_questionObjs.ForEach(q => q.transform.Find("Question").GetComponent<Text>().fontSize = (int)(q.transform.Find("Question").GetComponent<Text>().fontSize * 1.5f));
+		_questionObjs.ForEach(q => q.transform.FindText("Question").fontSize = (int)(q.transform.FindText("Question").fontSize * 1.5f));
 	}
 }

@@ -248,7 +248,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	private void CreateNewBoat()
 	{
-		var stageIcon = _boatMain.transform.Find("Stage").GetComponent<Image>();
+		var stageIcon = _boatMain.transform.FindImage("Stage");
 		if (GameManagement.SeasonOngoing)
 		{
 			stageIcon.sprite = GameManagement.IsRace ? _raceIcon : _practiceIcon;
@@ -291,7 +291,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			_endRace.gameObject.Active(true);
 			_boatMain.gameObject.Active(false);
 		}
-		_boatMain.transform.Find("Stage Number").GetComponent<Text>().text = GameManagement.IsRace || !GameManagement.SeasonOngoing ? string.Empty : GameManagement.CurrentRaceSession.ToString();
+		_boatMain.transform.FindText("Stage Number").text = GameManagement.IsRace || !GameManagement.SeasonOngoing ? string.Empty : GameManagement.CurrentRaceSession.ToString();
 		_positionsEmpty = GameManagement.PositionCount;
 		_raceButton.onClick.RemoveAllListeners();
 		_skipToRaceButton.onClick.RemoveAllListeners();
@@ -316,7 +316,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		//set up position containers
 		for (var i = 0; i < positionContainer.childCount; i++)
 		{
-			var positionObject = positionContainer.Find("Position " + i).gameObject;
+			var positionObject = positionContainer.FindObject("Position " + i);
 			if (GameManagement.PositionCount <= i)
 			{
 				positionObject.Active(false);
@@ -324,8 +324,8 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			}
 			positionObject.Active(true);
 			var pos = GameManagement.Positions[i];
-			positionObject.transform.Find("Text").GetComponent<Text>().text = Localization.Get(pos.ToString());
-			positionObject.transform.Find("Image").GetComponent<Image>().sprite = _roleLogos.First(mo => mo.Name == pos.ToString()).Image;
+			positionObject.transform.FindText("Text").text = Localization.Get(pos.ToString());
+			positionObject.transform.FindImage("Image").sprite = _roleLogos.First(mo => mo.Name == pos.ToString()).Image;
 			positionObject.GetComponent<PositionUI>().SetUp(pos);
 		}
 		_raceButton.gameObject.Active(GameManagement.SeasonOngoing);
@@ -360,10 +360,10 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			//create the static CrewMember UI (aka, the one that remains greyed out within the container at all times)
 			var crewMember = CreateCrewMember(cm, _crewContainer.transform, false, true);
 			//set anchoring, pivot and anchoredPosition so that they are positioned correctly within the container at the bottom of the screen
-			((RectTransform)crewMember.transform).anchorMin = new Vector2(0.5f, 0.5f);
-			((RectTransform)crewMember.transform).anchorMax = new Vector2(0.5f, 0.5f);
-			((RectTransform)crewMember.transform).pivot = new Vector2(0, 0.5f);
-			((RectTransform)crewMember.transform).anchoredPosition = Vector2.zero;
+			crewMember.RectTransform().anchorMin = new Vector2(0.5f, 0.5f);
+			crewMember.RectTransform().anchorMax = new Vector2(0.5f, 0.5f);
+			crewMember.RectTransform().pivot = new Vector2(0, 0.5f);
+			crewMember.RectTransform().anchoredPosition = Vector2.zero;
 			_currentCrewButtons.Add(crewMember);
 			//create the draggable copy of the above
 			if (GameManagement.SeasonOngoing)
@@ -483,10 +483,10 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private void CreateHistoricalBoat(GameObject oldBoat, Boat boat, int offset, int stageNumber)
 	{
 		oldBoat.Active(true);
-		var stageIcon = oldBoat.transform.Find("Stage").GetComponent<Image>();
+		var stageIcon = oldBoat.transform.FindImage("Stage");
 		var isRace = stageNumber == 0;
 		stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
-		oldBoat.transform.Find("Stage Number").GetComponent<Text>().text = isRace ? string.Empty : stageNumber.ToString();
+		oldBoat.transform.FindText("Stage Number").text = isRace ? string.Empty : stageNumber.ToString();
 		var idealScore = boat.IdealMatchScore;
 		//get selection mistakes for this line-up and set-up feedback UI
 		var mistakeList = boat.GetAssignmentMistakes(3);
@@ -496,21 +496,21 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			mistakeList.Add("Hidden");
 		}
 		SetMistakeIcons(mistakeList, oldBoat, idealScore, boat.Positions.Count);
-		var scoreDiff = GetResult(isRace, boat, offset, oldBoat.transform.Find("Score").GetComponent<Text>());
+		var scoreDiff = GetResult(isRace, boat, offset, oldBoat.transform.FindText("Score"));
 		var crewContainer = oldBoat.transform.Find("Crew Container");
 		var crewCount = 0;
 		//for each position, create a new CrewMember UI object and place accordingly
 		foreach (var pair in boat.PositionCrew)
 		{
 			//create CrewMember UI object for the CrewMember that was in this position
-			var crewMember = crewContainer.Find("Crew Member " + crewCount).gameObject;
+			var crewMember = crewContainer.FindObject("Crew Member " + crewCount);
 			crewMember.Active(true);
 			var current = GameManagement.CrewMembers.ContainsKey(pair.Value.Name);
-			crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(pair.Value.Name, true);
+			crewMember.transform.FindText("Name").text = SplitName(pair.Value.Name, true);
 			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, scoreDiff * (2f / boat.Positions.Count) + 3, true);
 			crewMember.GetComponent<CrewMemberUI>().SetUp(false, current, pair.Value, crewContainer);
 
-			var positionImage = crewMember.transform.Find("Position").gameObject;
+			var positionImage = crewMember.transform.FindObject("Position");
 			//update current position button
 			positionImage.GetComponent<Image>().enabled = true;
 			positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == pair.Key.ToString()).Image;
@@ -521,7 +521,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		}
 		for (var i = crewCount; i < crewContainer.childCount; i++)
 		{
-			var crewMember = crewContainer.Find("Crew Member " + i).gameObject;
+			var crewMember = crewContainer.FindObject("Crew Member " + i);
 			crewMember.Active(false);
 		}
 		DoBestFit();
@@ -535,7 +535,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		var mistakeParent = boat.transform.Find("Icon Container");
 		for (var i = 0; i < mistakeParent.childCount; i++)
 		{
-			var mistakeObject = mistakeParent.Find("Ideal Icon " + i).gameObject;
+			var mistakeObject = mistakeParent.FindObject("Ideal Icon " + i);
 			if (mistakes.Count <= i || string.IsNullOrEmpty(mistakes[i]))
 			{
 				mistakeObject.Active(false);
@@ -551,12 +551,12 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		}
 		//set numbers for each 'light'
 		var unideal = positionCount - (int)idealScore - ((idealScore % 1) * 10);
-		boat.transform.Find("Light Container").gameObject.Active(true);
-		boat.transform.Find("Light Container/Green").GetComponentInChildren<Text>().text = ((int)idealScore).ToString();
+		boat.transform.FindObject("Light Container").Active(true);
+		boat.transform.FindComponentInChildren<Text>("Light Container/Green").text = ((int)idealScore).ToString();
 		FeedbackHoverOver(boat.transform.Find("Light Container/Green"), "GREEN_PLACEMENT");
-		boat.transform.Find("Light Container/Yellow").GetComponentInChildren<Text>().text = Mathf.RoundToInt(((idealScore % 1) * 10)).ToString();
+		boat.transform.FindComponentInChildren<Text>("Light Container/Yellow").text = Mathf.RoundToInt(((idealScore % 1) * 10)).ToString();
 		FeedbackHoverOver(boat.transform.Find("Light Container/Yellow"), "YELLOW_PLACEMENT");
-		boat.transform.Find("Light Container/Red").GetComponentInChildren<Text>().text = Mathf.RoundToInt(unideal).ToString();
+		boat.transform.FindComponentInChildren<Text>("Light Container/Red").text = Mathf.RoundToInt(unideal).ToString();
 		FeedbackHoverOver(boat.transform.Find("Light Container/Red"), "RED_PLACEMENT");
 	}
 
@@ -593,7 +593,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	{
 		if (!UIManagement.SmallBlocker.gameObject.activeInHierarchy && !UIManagement.Blocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy)
 		{
-			_boatContainerScroll.value += eventData.scrollDelta.y * 0.55f * _boatContainerScroll.size;
+			_boatContainerScroll.value += Mathf.Clamp(eventData.scrollDelta.y, -1, 1) * _boatContainerScroll.size;
 		}
 	}
 
@@ -604,7 +604,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	{
 		if (!UIManagement.SmallBlocker.gameObject.activeInHierarchy && !UIManagement.Blocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy)
 		{
-			_boatContainerScroll.value -= Mathf.Clamp(eventData.delta.y * 0.1f, -1, 1) * _boatContainerScroll.size;
+			_boatContainerScroll.value -= Mathf.Clamp(eventData.delta.y * 0.25f, -1, 1) * _boatContainerScroll.size;
 		}
 	}
 
@@ -860,7 +860,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private void OnLanguageChange()
 	{
 		foreach (var position in _boatMain.GetComponentsInChildren<PositionUI>()) {
-			position.transform.Find("Text").GetComponent<Text>().text = Localization.Get(position.Position.ToString());
+			position.transform.FindText("Text").text = Localization.Get(position.Position.ToString());
 		}
 		_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat(GameManagement.IsRace ? "RACE_BUTTON_RACE" : "RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
 		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE");
@@ -874,10 +874,10 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 
 	private void DoBestFit()
 	{
-		_boatMain.transform.Find("Position Container").gameObject.BestFit();
+		_boatMain.transform.FindObject("Position Container").BestFit();
 		_ongoingResultContainer.transform.parent.BestFit();
 		UIManagement.CrewMemberUI.Select(c => c.gameObject).BestFit();
-		var currentPosition = _boatContainer.transform.localPosition.y - ((RectTransform)_boatContainer.transform).anchoredPosition.y;
+		var currentPosition = _boatContainer.transform.localPosition.y - _boatContainer.RectTransform().anchoredPosition.y;
 		if (!Mathf.Approximately(_boatMain.GetComponent<LayoutElement>().preferredHeight, Mathf.Abs(currentPosition) * 0.2f))
 		{
 			foreach (Transform boat in _boatContainer.transform)

@@ -85,8 +85,8 @@ public class LoadGameUI : MonoBehaviour
 		_loadButton.interactable = true;
 		_selectedIcon.Active(true);
 		_selectedIcon.transform.SetParent(nameText.transform.parent, false);
-		((RectTransform)_selectedIcon.transform).anchoredPosition = Vector2.zero;
-		((RectTransform)_selectedIcon.transform).sizeDelta = Vector2.zero;
+		_selectedIcon.RectTransform().anchoredPosition = Vector2.zero;
+		_selectedIcon.RectTransform().sizeDelta = Vector2.zero;
 	}
 
 	/// <summary>
@@ -118,7 +118,7 @@ public class LoadGameUI : MonoBehaviour
 				_errorText.text = Localization.Get("LOAD_GAME_MISSING_FILES");
 				_selectedIcon.transform.SetParent(_gameContainer.transform, true);
 				_selectedIcon.Active(false);
-				Destroy(_gameContainer.transform.Find(_selectedName).gameObject);
+				Destroy(_gameContainer.transform.FindObject(_selectedName));
 				_selectedName = string.Empty;
 				_loadButton.interactable = false;
 			}

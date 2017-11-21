@@ -81,11 +81,11 @@ public class MemberMeetingUI : MonoBehaviour
 		_currentMember = crewMember;
 
 		//adjust the crew member scroll rect position to ensure this crew member is shown
-		var memberTransform = _crewContainer.GetComponentsInChildren<CrewMemberUI>().First(c => c.CrewMember == crewMember && !c.Usable).GetComponent<RectTransform>();
-		if (!memberTransform.IsRectTransformVisible((RectTransform)memberTransform.parent.parent))
+		var memberTransform = _crewContainer.GetComponentsInChildren<CrewMemberUI>().First(c => c.CrewMember == crewMember && !c.Usable).RectTransform();
+		if (!memberTransform.IsRectTransformVisible(memberTransform.parent.parent.RectTransform()))
 		{
 			_crewContainer.horizontalNormalizedPosition = 0;
-			if (!memberTransform.IsRectTransformVisible((RectTransform)memberTransform.parent.parent))
+			if (!memberTransform.IsRectTransformVisible(memberTransform.parent.parent.RectTransform()))
 			{
 				_crewContainer.horizontalNormalizedPosition = 1;
 			}
@@ -99,7 +99,7 @@ public class MemberMeetingUI : MonoBehaviour
 		{
 			if (cmui.Current)
 			{
-				cmui.transform.Find("Opinion").GetComponent<Image>().enabled = false;
+				cmui.transform.FindImage("Opinion").enabled = false;
 			}
 		}
 		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
@@ -151,7 +151,7 @@ public class MemberMeetingUI : MonoBehaviour
 			_roleButton.gameObject.Active(true);
 			_roleButton.onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentRole, TrackerTriggerSources.TeamManagementScreen.ToString()));
 			_roleButton.GetComponentInChildren<Text>().text = Localization.Get(currentRole.ToString());
-			_roleButton.transform.Find("Image").GetComponent<Image>().sprite = UIManagement.TeamSelection.RoleLogos.First(mo => mo.Name == currentRole.ToString()).Image;
+			_roleButton.transform.FindImage("Image").sprite = UIManagement.TeamSelection.RoleLogos.First(mo => mo.Name == currentRole.ToString()).Image;
 		}
 		//hide if not positioned
 		else
@@ -162,8 +162,8 @@ public class MemberMeetingUI : MonoBehaviour
 		for (var i = 0; i < _barForegrounds.Length; i++)
 		{
 			_barForegrounds[i].fillAmount = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] * 0.1f;
-			_barForegrounds[i].transform.parent.Find("Hidden Image").GetComponent<Image>().enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] == 0;
-			_barForegrounds[i].transform.parent.Find("Skill Image").GetComponent<Image>().enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] != 0;
+			_barForegrounds[i].transform.parent.FindImage("Hidden Image").enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] == 0;
+			_barForegrounds[i].transform.parent.FindImage("Skill Image").enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] != 0;
 		}
 		//set default starting dialogue
 		_dialogueText.text = Localization.Get("MEETING_INTRO_" + _currentMember.GetSocialImportanceRating());
@@ -173,11 +173,11 @@ public class MemberMeetingUI : MonoBehaviour
 		_opinionPositiveQuestion.text = "OpinionRevealPositive".EventString();
 		_opinionNegativeQuestion.text = "OpinionRevealNegative".EventString();
 		//set the cost shown for each question and for firing
-		_statQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = ConfigKeys.StatRevealCost.Value(_currentMember).ToString(Localization.SpecificSelectedLanguage);
-		_roleQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = ConfigKeys.RoleRevealCost.Value().ToString(Localization.SpecificSelectedLanguage);
-		_opinionPositiveQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = ConfigKeys.OpinionRevealPositiveCost.Value().ToString(Localization.SpecificSelectedLanguage);
-		_opinionNegativeQuestion.transform.parent.Find("Image/Text").GetComponent<Text>().text = ConfigKeys.OpinionRevealNegativeCost.Value().ToString(Localization.SpecificSelectedLanguage);
-		_fireButton.transform.Find("Image/Text").GetComponent<Text>().text = ConfigKeys.FiringCost.Value().ToString(Localization.SpecificSelectedLanguage);
+		_statQuestion.transform.parent.FindText("Image/Text").text = ConfigKeys.StatRevealCost.Value(_currentMember).ToString(Localization.SpecificSelectedLanguage);
+		_roleQuestion.transform.parent.FindText("Image/Text").text = ConfigKeys.RoleRevealCost.Value().ToString(Localization.SpecificSelectedLanguage);
+		_opinionPositiveQuestion.transform.parent.FindText("Image/Text").text = ConfigKeys.OpinionRevealPositiveCost.Value().ToString(Localization.SpecificSelectedLanguage);
+		_opinionNegativeQuestion.transform.parent.FindText("Image/Text").text = ConfigKeys.OpinionRevealNegativeCost.Value().ToString(Localization.SpecificSelectedLanguage);
+		_fireButton.transform.FindText("Image/Text").text = ConfigKeys.FiringCost.Value().ToString(Localization.SpecificSelectedLanguage);
 		//set if each button is interactable according to if the player has enough allowance
 		_fireButton.interactable = ConfigKeys.FiringCost.Affordable() && GameManagement.CrewEditAllowed && GameManagement.Team.CanRemoveFromCrew() && !GameManagement.ShowTutorial;
 		_statQuestion.GetComponentInParent<Button>().interactable = ConfigKeys.StatRevealCost.Affordable(_currentMember);
@@ -216,7 +216,7 @@ public class MemberMeetingUI : MonoBehaviour
 		}
 		//display revealed opinions for each other active CrewMember
 		ForcedOpinionChange("accurate");
-		var managerOpinionImage = transform.Find("Manager Opinion").GetComponentInChildren<Image>();
+		var managerOpinionImage = transform.FindComponentInChildren<Image>("Manager Opinion");
 		managerOpinionImage.enabled = true;
 		managerOpinionImage.sprite = null;
 		var managerOpinion = _currentMember.RevealedCrewOpinions[GameManagement.Manager.Name];
@@ -232,7 +232,7 @@ public class MemberMeetingUI : MonoBehaviour
 			if (crewMember.Current)
 			{
 				var crewName = crewMember.CrewMember.Name;
-				var opinionImage = crewMember.transform.Find("Opinion").GetComponent<Image>();
+				var opinionImage = crewMember.transform.FindImage("Opinion");
 				if (crewName != _currentMember.Name)
 				{
 					opinionImage.enabled = true;
@@ -361,7 +361,7 @@ public class MemberMeetingUI : MonoBehaviour
 			{
 				if (crewMember.Current)
 				{
-					crewMember.transform.Find("Opinion").GetComponent<Image>().enabled = false;
+					crewMember.transform.FindImage("Opinion").enabled = false;
 				}
 			}
 			_lastReply = null;

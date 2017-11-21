@@ -27,7 +27,7 @@ public class PreRaceConfirmUI : MonoBehaviour
 	public void ConfirmPopUp()
 	{
 		gameObject.Active(true);
-		var yesButton = transform.Find("Yes").GetComponent<Button>();
+		var yesButton = transform.FindButton("Yes");
 		yesButton.onClick.RemoveAllListeners();
 		if (!GameManagement.IsRace)
 		{
@@ -63,7 +63,7 @@ public class PreRaceConfirmUI : MonoBehaviour
 		yesButton.onClick.AddListener(() => CloseConfirmPopUp(string.Empty));
 		yesButton.onClick.AddListener(UIManagement.TeamSelection.SkipToRace);
 		yesButton.onClick.AddListener(UIManagement.TeamSelection.ConfirmLineUp);
-		var noButton = transform.Find("No").GetComponent<Button>();
+		var noButton = transform.FindButton("No");
 		noButton.onClick.RemoveAllListeners();
 		noButton.onClick.AddListener(() => CloseConfirmPopUp(TrackerTriggerSources.NoButtonSelected.ToString()));
 		DoBestFit();
@@ -128,13 +128,13 @@ public class PreRaceConfirmUI : MonoBehaviour
 		gameObject.Active(true);
 		GetComponentInChildren<Text>().text = Localization.Get("REPEAT_CONFIRM");
 		TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpConfirmPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>(), AccessibleTracker.Accessible.Screen));
-		var yesButton = transform.Find("Yes").GetComponent<Button>();
+		var yesButton = transform.FindButton("Yes");
 		yesButton.onClick.RemoveAllListeners();
 		yesButton.onClick.AddListener(UIManagement.TeamSelection.ConfirmLineUp);
 		yesButton.onClick.AddListener(() => CloseConfirmPopUp(string.Empty));
 		yesButton.onClick.AddListener(() => TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpApproved", TrackerVerbs.Selected, new Dictionary<string, string>(), "RepeatLineUp", AlternativeTracker.Alternative.Menu)));
 
-		var noButton = transform.Find("No").GetComponent<Button>();
+		var noButton = transform.FindButton("No");
 		noButton.onClick.RemoveAllListeners();
 		noButton.onClick.AddListener(() => CloseRepeatWarning(TrackerTriggerSources.NoButtonSelected.ToString()));
 		DoBestFit();

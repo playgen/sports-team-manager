@@ -64,19 +64,19 @@ public class AvatarDisplay : MonoBehaviour
 	{
 		if (!_body)
 		{
-			_body = (transform.Find("IconMask/AvatarSprites/Body") ?? transform.Find("AvatarSprites/Body")).GetComponent<Image>();
-			_hairBack = (transform.Find("IconMask/AvatarSprites/HairBack") ?? transform.Find("AvatarSprites/HairBack")).GetComponent<Image>();
-			_hairFront = (transform.Find("IconMask/AvatarSprites/HairFront") ?? transform.Find("AvatarSprites/HairFront")).GetComponent<Image>();
-			_eyebrow = (transform.Find("IconMask/AvatarSprites/Eyebrows") ?? transform.Find("AvatarSprites/Eyebrows")).GetComponent<Image>();
-			_nose = (transform.Find("IconMask/AvatarSprites/Nose") ?? transform.Find("AvatarSprites/Nose")).GetComponent<Image>();
-			_mouth = (transform.Find("IconMask/AvatarSprites/Mouth") ?? transform.Find("AvatarSprites/Mouth")).GetComponent<Image>();
-			_teeth = (transform.Find("IconMask/AvatarSprites/Teeth") ?? transform.Find("AvatarSprites/Teeth")).GetComponent<Image>();
-			_eyes = (transform.Find("IconMask/AvatarSprites/Eyes") ?? transform.Find("AvatarSprites/Eyes")).GetComponent<Image>();
-			_eyePupils = (transform.Find("IconMask/AvatarSprites/Eye Pupils") ?? transform.Find("AvatarSprites/Eye Pupils")).GetComponent<Image>();
-			_outfit = (transform.Find("IconMask/AvatarSprites/Outfit") ?? transform.Find("AvatarSprites/Outfit")).GetComponent<Image>();
-			_outfitHighlight = (transform.Find("IconMask/AvatarSprites/OutfitHighlight") ?? transform.Find("AvatarSprites/OutfitHighlight")).GetComponent<Image>();
-			_outfitShadow = (transform.Find("IconMask/AvatarSprites/OutfitShadow") ?? transform.Find("AvatarSprites/OutfitShadow")).GetComponent<Image>();
-			_spriteParent = (RectTransform)transform.Find("IconMask/AvatarSprites") ?? (RectTransform)transform.Find("AvatarSprites");
+			_body = transform.FindImage("IconMask/AvatarSprites/Body") ?? transform.FindImage("AvatarSprites/Body");
+			_hairBack = transform.FindImage("IconMask/AvatarSprites/HairBack") ?? transform.FindImage("AvatarSprites/HairBack");
+			_hairFront = transform.FindImage("IconMask/AvatarSprites/HairFront") ?? transform.FindImage("AvatarSprites/HairFront");
+			_eyebrow = transform.FindImage("IconMask/AvatarSprites/Eyebrows") ?? transform.FindImage("AvatarSprites/Eyebrows");
+			_nose = transform.FindImage("IconMask/AvatarSprites/Nose") ?? transform.FindImage("AvatarSprites/Nose");
+			_mouth = transform.FindImage("IconMask/AvatarSprites/Mouth") ?? transform.FindImage("AvatarSprites/Mouth");
+			_teeth = transform.FindImage("IconMask/AvatarSprites/Teeth") ?? transform.FindImage("AvatarSprites/Teeth");
+			_eyes = transform.FindImage("IconMask/AvatarSprites/Eyes") ?? transform.FindImage("AvatarSprites/Eyes");
+			_eyePupils = transform.FindImage("IconMask/AvatarSprites/Eye Pupils") ?? transform.FindImage("AvatarSprites/Eye Pupils");
+			_outfit = transform.FindImage("IconMask/AvatarSprites/Outfit") ?? transform.FindImage("AvatarSprites/Outfit");
+			_outfitHighlight = transform.FindImage("IconMask/AvatarSprites/OutfitHighlight") ?? transform.FindImage("AvatarSprites/OutfitHighlight");
+			_outfitShadow = transform.FindImage("IconMask/AvatarSprites/OutfitShadow") ?? transform.FindImage("AvatarSprites/OutfitShadow");
+			_spriteParent = transform.FindRect("IconMask/AvatarSprites") ?? transform.FindRect("AvatarSprites");
 		}
 		_body.sprite = avatarSprites[avatar.BodyType.ToLower()];
 		_outfit.sprite = avatarSprites[avatar.OutfitBaseType.ToLower()];

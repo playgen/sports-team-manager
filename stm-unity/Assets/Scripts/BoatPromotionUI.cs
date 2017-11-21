@@ -31,8 +31,8 @@ public class BoatPromotionUI : MonoBehaviour
 			var newPos = GameManagement.Positions;
 			gameObject.Active(true);
 			transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
-			var addedText = transform.Find("Added List").GetComponent<Text>();
-			var removedText = transform.Find("Removed List").GetComponent<Text>();
+			var addedText = transform.FindText("Added List");
+			var removedText = transform.FindText("Removed List");
 			var newPositions = newPos.Where(n => !oldPos.Contains(n)).Select(n => Localization.Get(n.ToString())).ToArray();
 			var oldPositions = oldPos.Where(o => !newPos.Contains(o)).Select(o => Localization.Get(o.ToString())).ToArray();
 			var newList = string.Join("\n", newPositions);

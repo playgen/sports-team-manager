@@ -87,7 +87,7 @@
 {"Key":"MANAGER_AGE","en-gb":"Manager Age:","it":"Età del coach:"},
 {"Key":"MANAGER_GENDER","en-gb":"Manager Gender:","it":"Sesso del coach:"},
 {"Key":"MANAGER_NAME","en-gb":"Manager Name:","it":"Nome del coach:"},
-{"Key":"MANAGER_OPINION","en-gb":"Manager Opinion","it":"Opinione del coach"},
+{"Key":"MANAGER_OPINION","en-gb":"Opinion of you","it":"Opinione del coach"},
 {"Key":"MANAGER_OPINION_FEEDBACK","en-gb":"An effective line-up who like you more could have been chosen","it":"Avresti potuto scegliere una formazione più efficace in cui le persone vanno più d'accordo con te "},
 {"Key":"MED","en-gb":"Average","it":"Medio"},
 {"Key":"MEETING_EARLY_EXIT","en-gb":"Nevermind, goodbye.","it":"Non importa, ciao."},
@@ -233,5 +233,4 @@
 {"Key":"AVERAGE_OPINION","en-gb":"Average Opinion","it":"XXXX"},
 {"Key":"NOTES_HEADER","en-gb":"Notes on {0}","it":"{0}"},
 {"Key":"NOTES","en-gb":"Notes","it":"XXXX"},
-{"Key":"MOOD","en-gb":"Mood","it":"XXXX"},
-{"Key":"MANAGER_OPINION","en-gb":"Manager Opinion","it":"XXXX"}]
+{"Key":"MOOD","en-gb":"Mood","it":"XXXX"}]

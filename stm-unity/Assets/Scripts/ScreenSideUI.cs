@@ -36,9 +36,9 @@ public class ScreenSideUI : MonoBehaviour {
 	/// </summary>
 	public void ChangeSelected(int position)
 	{
-		((RectTransform)_selected.transform).anchorMax = new Vector2(0.25f + (0.15f * position), 1);
-		((RectTransform)_selected.transform).anchorMin = new Vector2(0.1f + (0.15f * position), 0);
-		((RectTransform)_selected.transform).anchoredPosition = Vector2.zero;
+		_selected.RectTransform().anchorMax = new Vector2(0.25f + (0.15f * position), 1);
+		_selected.RectTransform().anchorMin = new Vector2(0.1f + (0.15f * position), 0);
+		_selected.RectTransform().anchoredPosition = Vector2.zero;
 	}
 
 	/// <summary>

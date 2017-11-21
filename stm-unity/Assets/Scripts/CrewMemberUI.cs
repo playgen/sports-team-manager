@@ -35,7 +35,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		_defaultParent = parent;
 		Usable = usable;
 		Current = current;
-		transform.Find("AvatarIcon").GetComponent<Image>().color = Usable ? new Color(0, 1, 1) : Current ? new Color(0, 0.5f, 0.5f) : Color.white;
+		transform.FindImage("AvatarIcon").color = Usable ? new Color(0, 1, 1) : Current ? new Color(0, 0.5f, 0.5f) : Color.white;
 		GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(CrewMember.GetMood()) : Current ? Color.grey : Color.black;
 		GetComponent<Button>().enabled = Current;
 		if (!GameManagement.SeasonOngoing)
@@ -50,7 +50,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	public void NotCurrent()
 	{
 		Current = false;
-		transform.Find("AvatarIcon").GetComponent<Image>().color = Color.white;
+		transform.FindImage("AvatarIcon").color = Color.white;
 		GetComponent<Button>().enabled = false;
 	}
 
@@ -260,11 +260,11 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		var positionComp = position.gameObject.GetComponent<PositionUI>();
 		var currentPosition = positionComp.Position;
 		var currentPositionCrew = positionComp.CrewMemberUI;
-		var positionTransform = (RectTransform)position.gameObject.transform;
+		var positionTransform = position.RectTransform();
 		//set size and position
 		transform.SetParent(positionTransform, false);
-		((RectTransform)transform).sizeDelta = positionTransform.sizeDelta;
-		((RectTransform)transform).anchoredPosition = new Vector2(0, -((RectTransform)transform).sizeDelta.y * 0.5f);
+		transform.RectTransform().sizeDelta = positionTransform.sizeDelta;
+		transform.RectTransform().anchoredPosition = new Vector2(0, -transform.RectTransform().sizeDelta.y * 0.5f);
 		GameManagement.Boat.AssignCrewMember(currentPosition, CrewMember);
 		positionComp.LinkCrew(this);
 		if (!swap)
@@ -283,7 +283,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			}
 		}
 		_currentPlacement = positionComp;
-		var positionImage = transform.Find("Position").gameObject;
+		var positionImage = transform.FindObject("Position");
 		//update current position button
 		positionImage.GetComponent<Image>().enabled = true;
 		positionImage.GetComponent<Image>().sprite = UIManagement.TeamSelection.RoleIcons.First(mo => mo.Name == currentPosition.ToString()).Image;
@@ -315,7 +315,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			_currentPlacement.RemoveCrew();
 			_currentPlacement = null;
 		}
-		var positionImage = transform.Find("Position").gameObject;
+		var positionImage = transform.FindObject("Position");
 		//hide current position button and remove all listeners
 		positionImage.GetComponent<Image>().enabled = false;
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();

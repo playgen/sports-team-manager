@@ -3,25 +3,25 @@ using System.IO;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	class AndroidBaseBridge : BaseBridge
+	internal class AndroidBaseBridge : BaseBridge
 	{
-		public bool Delete(string fileId)
+		public new bool Delete(string fileId)
 		{
 			throw new NotImplementedException();
 		}
 
-		public bool Exists(string fileId)
+		public new bool Exists(string fileId)
 		{
 			fileId = fileId.Replace('\\', '/');
 			return File.Exists(fileId);
 		}
 
-		public string[] Files()
+		public new string[] Files()
 		{
 			throw new NotImplementedException();
 		}
 
-		public string Load(string fileId)
+		public new string Load(string fileId)
 		{
 			fileId = fileId.Replace('\\', '/');
 			using (var reader = File.OpenText(fileId))
@@ -30,7 +30,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
-		public void Save(string fileId, string fileData)
+		public new void Save(string fileId, string fileData)
 		{
 			using (var writer = File.CreateText(fileId))
 			{

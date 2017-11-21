@@ -16,7 +16,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	public class GameManager
 	{
 		private readonly ConfigStore config;
-		private EventController eventController;
 
 		private Dictionary<int, Dictionary<string, string>> _customTutorialAttributes { get; set; }
 		public Team Team { get; private set; }
@@ -27,7 +26,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public bool ShowTutorial { get; private set; }
 		public int TutorialStage { get; private set; }
 		public bool QuestionnaireCompleted { get; private set; }
-		public EventController EventController => eventController;
+		public EventController EventController { get; private set; }
 
 		/// <summary>
 		/// GameManager Constructor
@@ -126,7 +125,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Directory.CreateDirectory(combinedStorageLocation);
 			var iat = ConfigStore.IntegratedAuthoringTool;
 			var help = ConfigStore.HelpIntegratedAuthoringTool.GetDialogueActionsByState(IATConsts.AGENT, "LearningPill").ToList();
-			eventController = new EventController(iat, help);
+			EventController = new EventController(iat, help);
 			ValidateGameConfig();
 			//set up boat and team
 			var initialType = config.GameConfig.PromotionTriggers.First(pt => pt.StartType == "Start").NewType;
@@ -273,7 +272,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//get the iat file and all characters for this game
 			var combinedStorageLocation = Path.Combine(storageLocation, boatName);
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile(Path.Combine(combinedStorageLocation, boatName + ".iat"));
-			eventController = new EventController(iat, help);
+			EventController = new EventController(iat, help);
 			ValidateGameConfig();
 			var characterList = iat.GetAllCharacterSources();
 
@@ -415,25 +414,25 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var eventSectionsFound = 0;
 			while (!noEventFound)
 			{
-				var crewMemberName = Team.Manager.LoadBelief(String.Format("PRECrew{0}({1})", eventsFound, eventSectionsFound));
+				var crewMemberName = Team.Manager.LoadBelief(string.Format("PRECrew{0}({1})", eventsFound, eventSectionsFound));
 				if (crewMemberName != "null")
 				{
 					var crewMember = Team.CrewMembers.FirstOrDefault(cm => cm.Key.NoSpaces() == crewMemberName).Value
 									?? Team.RetiredCrew.FirstOrDefault(cm => cm.Key.NoSpaces() == crewMemberName).Value;
 					if (crewMember != null)
 					{
-						var evName = Team.Manager.LoadBelief(String.Format("PREEvent{0}({1})", eventsFound, eventSectionsFound));
+						var evName = Team.Manager.LoadBelief(string.Format("PREEvent{0}({1})", eventsFound, eventSectionsFound));
 						if (evName != "null")
 						{
-							var ev = eventController.GetPossibleAgentDialogue(evName).FirstOrDefault()
-								?? eventController.GetPossibleAgentDialogue("PostRaceEventStart").FirstOrDefault(e => e.NextState == evName);
+							var ev = EventController.GetPossibleAgentDialogue(evName).FirstOrDefault()
+								?? EventController.GetPossibleAgentDialogue("PostRaceEventStart").FirstOrDefault(e => e.NextState == evName);
 							if (eventSectionsFound == 0)
 							{
-								eventController.PostRaceEvents.Add(new List<PostRaceEventState>());
+								EventController.PostRaceEvents.Add(new List<PostRaceEventState>());
 							}
-							var subjectString = Team.Manager.LoadBelief(String.Format("PRESubject{0}({1})", eventsFound, eventSectionsFound));
+							var subjectString = Team.Manager.LoadBelief(string.Format("PRESubject{0}({1})", eventsFound, eventSectionsFound));
 							var subjects = subjectString != "null" ? subjectString.Split('_').ToList() : new List<string>();
-							eventController.PostRaceEvents[eventsFound].Add(new PostRaceEventState(crewMember, ev, subjects));
+							EventController.PostRaceEvents[eventsFound].Add(new PostRaceEventState(crewMember, ev, subjects));
 							eventSectionsFound++;
 							continue;
 						}
@@ -550,7 +549,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public List<string> GetPostRaceEventKeys()
 		{
-			return eventController.GetEventKeys();
+			return EventController.GetEventKeys();
 		}
 
 		/// <summary>
@@ -559,7 +558,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private void SelectPostRaceEvents()
 		{
 			var chance = (int)config.ConfigValues[ConfigKeys.EventChance];
-			eventController.SelectPostRaceEvents(config, Team, chance);
+			EventController.SelectPostRaceEvents(config, Team, chance);
 		}
 
 		/// <summary>
@@ -567,7 +566,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public List<PostRaceEventState> SendPostRaceEvent(List<PostRaceEventState> selected)
 		{
-			return eventController.SendPostRaceEvent(selected, Team);
+			return EventController.SendPostRaceEvent(selected, Team);
 		}
 
 		/// <summary>
@@ -675,7 +674,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var cost = (int)GetConfigValue((ConfigKeys)Enum.Parse(typeof(ConfigKeys), eventName + "Cost"), member);
 			if (cost <= ActionAllowance)
 			{
-				var reply = eventController.SendMeetingEvent(eventName, member, Team);
+				var reply = EventController.SendMeetingEvent(eventName, member, Team);
 				DeductCost(cost);
 				return reply;
 			}
@@ -703,7 +702,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (cost <= ActionAllowance)
 			{
 				DeductCost(cost);
-				return eventController.SendRecruitEvent(skill, members);
+				return EventController.SendRecruitEvent(skill, members);
 			}
 			var replies = new Dictionary<CrewMember, string>();
 			members.ForEach(member => replies.Add(member, string.Empty));
@@ -770,7 +769,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Dictionary<string, float> GatherManagementStyles()
 		{
 			var managerBeliefs = Team.Manager.RolePlayCharacter.GetAllBeliefs().ToList();
-			var possibleBeliefs = eventController.GetPlayerEventStyles().Select(s => s.ToLower()).ToArray();
+			var possibleBeliefs = EventController.GetPlayerEventStyles().Select(s => s.ToLower()).ToArray();
 			var gameMeanings = managerBeliefs.Where(b => b.Name.StartsWith("Meaning")).ToList();
 			var managementStyles = gameMeanings.Select(b => new KeyValuePair<string, int>(b.Name.Split('(', ')')[1].ToLower(), int.Parse(b.Value))).ToDictionary(b => b.Key, b => b.Value);
 			var managementTotal = managementStyles.Values.ToList().Sum();
@@ -802,7 +801,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Dictionary<string, float> GatherLeadershipStyles()
 		{
 			var managementStyles = GatherManagementStyles();
-			var managementPercentage = new Dictionary<String, float>
+			var managementPercentage = new Dictionary<string, float>
 											{
 												{ "laissez-faire", managementStyles["avoiding"] + managementStyles["competing"] },
 												{ "transformational", managementStyles["collaborating"] + managementStyles["accommodating"] },
@@ -817,7 +816,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string[] GetPrevalentLeadershipStyle()
 		{
 			var managementStyles = GatherLeadershipStyles();
-			return managementStyles.Where(m => m.Value == managementStyles.Values.Max()).ToDictionary(b => b.Key, b => b.Value).Keys.ToArray();
+			return managementStyles.Where(m => Math.Abs(m.Value - managementStyles.Values.Max()) < 0.01f).ToDictionary(b => b.Key, b => b.Value).Keys.ToArray();
 		}
 
 		public int GetTotalRaceCount()

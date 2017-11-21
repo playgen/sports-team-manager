@@ -4,7 +4,7 @@ using AssetPackage;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-    class BaseBridge : IBridge, IDataStorage
+    internal class BaseBridge : IBridge, IDataStorage
     {
         public bool Delete(string fileId)
         {

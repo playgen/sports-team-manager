@@ -45,8 +45,8 @@ public class CupResultUI : MonoBehaviour
 			var memberObject = Instantiate(_postRaceCrewPrefab);
 			memberObject.transform.SetParent(transform.Find("Crew"), false);
 			memberObject.name = crewMember.Name;
-			memberObject.transform.Find("Avatar").GetComponentInChildren<AvatarDisplay>().SetAvatar(crewMember.Avatar, -(_cupPosition - 3) * 2);
-			memberObject.transform.Find("Position").GetComponent<Image>().enabled = false;
+			memberObject.transform.FindComponentInChildren<AvatarDisplay>("Avatar").SetAvatar(crewMember.Avatar, -(_cupPosition - 3) * 2);
+			memberObject.transform.FindImage("Position").enabled = false;
 			if (crewCount % 2 != 0)
 			{
 				var currentScale = memberObject.transform.Find("Avatar").localScale;
@@ -55,7 +55,7 @@ public class CupResultUI : MonoBehaviour
 			crewCount++;
 			memberObject.transform.SetAsLastSibling();
 		}
-		transform.Find("Result").GetComponent<Text>().text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, GameManagement.TeamName, finalPositionText);
+		transform.FindText("Result").text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, GameManagement.TeamName, finalPositionText);
 		DoBestFit();
 		TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{

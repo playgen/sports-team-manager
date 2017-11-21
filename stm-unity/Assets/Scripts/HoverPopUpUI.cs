@@ -19,8 +19,8 @@ public class HoverPopUpUI : MonoBehaviour {
 	/// </summary>
 	public void SetHoverObject(Transform trans)
 	{
-		var adjust = (Vector2.one * 0.5f) - ((RectTransform)trans.transform).pivot;
-		_currentHovered = (Vector2)trans.position + new Vector2(((RectTransform)trans.transform).rect.width * adjust.x, ((RectTransform)trans.transform).rect.height * adjust.y);
+		var adjust = (Vector2.one * 0.5f) - trans.RectTransform().pivot;
+		_currentHovered = (Vector2)trans.position + new Vector2(trans.RectTransform().rect.width * adjust.x, trans.RectTransform().rect.height * adjust.y);
 	}
 
 	/// <summary>
@@ -52,7 +52,7 @@ public class HoverPopUpUI : MonoBehaviour {
 		}
 		if (_currentHovered != Vector2.zero)
 		{
-			_canvasSize = ((RectTransform)GetComponentInParent<CanvasScaler>().gameObject.transform).rect.size;
+			_canvasSize = GetComponentInParent<CanvasScaler>().RectTransform().rect.size;
 			gameObject.Active(true);
 			transform.SetAsLastSibling();
 			GetComponentInChildren<Text>().text = Localization.Get(_currentText);
@@ -60,34 +60,34 @@ public class HoverPopUpUI : MonoBehaviour {
 			//reposition accordingly if pop-up would display partially off screen
 			if (_currentHovered.x < transform.position.x)
 			{
-				((RectTransform)transform).anchoredPosition += new Vector2(((RectTransform)transform).rect.width * 0.5f, 0);
-				if (((RectTransform)transform).anchoredPosition.x + ((RectTransform)transform).rect.width * 0.5f > _canvasSize.x * 0.5f)
+				transform.RectTransform().anchoredPosition += new Vector2(transform.RectTransform().rect.width * 0.5f, 0);
+				if (transform.RectTransform().anchoredPosition.x + transform.RectTransform().rect.width * 0.5f > _canvasSize.x * 0.5f)
 				{
-					((RectTransform)transform).anchoredPosition -= new Vector2(((RectTransform)transform).rect.width, 0);
+					transform.RectTransform().anchoredPosition -= new Vector2(transform.RectTransform().rect.width, 0);
 				}
 			}
 			else
 			{
-				((RectTransform)transform).anchoredPosition -= new Vector2(((RectTransform)transform).rect.width * 0.5f, 0);
-				if (((RectTransform)transform).anchoredPosition.x - ((RectTransform)transform).rect.width * 0.5f < -_canvasSize.x * 0.5f)
+				transform.RectTransform().anchoredPosition -= new Vector2(transform.RectTransform().rect.width * 0.5f, 0);
+				if (transform.RectTransform().anchoredPosition.x - transform.RectTransform().rect.width * 0.5f < -_canvasSize.x * 0.5f)
 				{
-					((RectTransform)transform).anchoredPosition += new Vector2(((RectTransform)transform).rect.width, 0);
+					transform.RectTransform().anchoredPosition += new Vector2(transform.RectTransform().rect.width, 0);
 				}
 			}
 			if (_currentHovered.y < transform.position.y)
 			{
-				((RectTransform)transform).anchoredPosition += new Vector2(0, ((RectTransform)transform).rect.height * 0.5f);
-				if (((RectTransform)transform).anchoredPosition.y + ((RectTransform)transform).rect.height * 0.5f > _canvasSize.y * 0.5f)
+				transform.RectTransform().anchoredPosition += new Vector2(0, transform.RectTransform().rect.height * 0.5f);
+				if (transform.RectTransform().anchoredPosition.y + transform.RectTransform().rect.height * 0.5f > _canvasSize.y * 0.5f)
 				{
-					((RectTransform)transform).anchoredPosition -= new Vector2(0, -((RectTransform)transform).rect.height);
+					transform.RectTransform().anchoredPosition -= new Vector2(0, -transform.RectTransform().rect.height);
 				}
 			}
 			else
 			{
-				((RectTransform)transform).anchoredPosition -= new Vector2(0, ((RectTransform)transform).rect.height * 0.5f);
-				if (((RectTransform)transform).anchoredPosition.y - ((RectTransform)transform).rect.height * 0.5f < -_canvasSize.y * 0.5f)
+				transform.RectTransform().anchoredPosition -= new Vector2(0, transform.RectTransform().rect.height * 0.5f);
+				if (transform.RectTransform().anchoredPosition.y - transform.RectTransform().rect.height * 0.5f < -_canvasSize.y * 0.5f)
 				{
-					((RectTransform)transform).anchoredPosition -= new Vector2(0, -((RectTransform)transform).rect.height);
+					transform.RectTransform().anchoredPosition -= new Vector2(0, -transform.RectTransform().rect.height);
 				}
 			}
 			TrackerEventSender.SendEvent(new TraceEvent("HoveredOver", TrackerVerbs.Accessed, new Dictionary<string, string>

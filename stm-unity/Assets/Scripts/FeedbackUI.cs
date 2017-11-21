@@ -73,11 +73,11 @@ public class FeedbackUI : MonoBehaviour {
 	/// </summary>
 	public void ShowDescription(string descriptionType)
 	{
-		_descriptionPopUp.transform.Find("Description Pop-Up/Header").GetComponent<TextLocalization>().Key = descriptionType;
-		_descriptionPopUp.transform.Find("Description Pop-Up/Text").GetComponent<TextLocalization>().Key = descriptionType + "_Description";
-		_descriptionPopUp.transform.Find("Description Pop-Up/Video Display").GetComponent<VideoPlayer>().clip = _videos.First(v => String.Equals(v.name, descriptionType, StringComparison.CurrentCultureIgnoreCase));
+		_descriptionPopUp.transform.FindComponent<TextLocalization>("Description Pop-Up/Header").Key = descriptionType;
+		_descriptionPopUp.transform.FindComponent<TextLocalization>("Description Pop-Up/Text").Key = descriptionType + "_Description";
+		_descriptionPopUp.transform.FindComponent<VideoPlayer>("Description Pop-Up/Video Display").clip = _videos.First(v => String.Equals(v.name, descriptionType, StringComparison.CurrentCultureIgnoreCase));
 		_descriptionPopUp.Active(true);
-		_descriptionPopUp.transform.Find("Description Pop-Up/Video Display").gameObject.Active(false);
+		_descriptionPopUp.transform.FindObject("Description Pop-Up/Video Display").Active(false);
 	}
 
 	/// <summary>
@@ -95,24 +95,24 @@ public class FeedbackUI : MonoBehaviour {
 		foreach (var style in styles)
 		{
 			var styleObj = Instantiate(_selectionPrefab, _selectionGraph.transform, false);
-			styleObj.transform.Find("Style").GetComponent<Text>().text = Localization.Get(style.Key);
-			styleObj.transform.Find("Style").GetComponent<TextLocalization>().Key = style.Key;
-			styleObj.transform.Find("Amount").GetComponent<Image>().fillAmount = style.Value;
-			styleObj.transform.Find("Percentage").GetComponent<Text>().text = (Mathf.Round(style.Value * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
+			styleObj.transform.FindText("Style").text = Localization.Get(style.Key);
+			styleObj.transform.FindComponent<TextLocalization>("Style").Key = style.Key;
+			styleObj.transform.FindImage("Amount").fillAmount = style.Value;
+			styleObj.transform.FindText("Percentage").text = (Mathf.Round(style.Value * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
 			if (Mathf.Approximately(style.Value, styles.Values.Max()))
 			{
-				styleObj.transform.Find("Questions").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_High");
-				styleObj.transform.Find("Questions").GetComponent<TextLocalization>().Key = style.Key + "_Questions_High";
+				styleObj.transform.FindText("Questions").text = Localization.Get(style.Key + "_Questions_High");
+				styleObj.transform.FindComponent<TextLocalization>("Questions").Key = style.Key + "_Questions_High";
 			}
 			else if (Mathf.Approximately(style.Value, styles.Values.Min()))
 			{
-				styleObj.transform.Find("Questions").GetComponent<Text>().text = Localization.Get(style.Key + "_Questions_Low");
-				styleObj.transform.Find("Questions").GetComponent<TextLocalization>().Key = style.Key + "_Questions_Low";
+				styleObj.transform.FindText("Questions").text = Localization.Get(style.Key + "_Questions_Low");
+				styleObj.transform.FindComponent<TextLocalization>("Questions").Key = style.Key + "_Questions_Low";
 			}
 			else
 			{
-				styleObj.transform.Find("Questions").GetComponent<Text>().text = string.Empty;
-				styleObj.transform.Find("Questions").GetComponent<TextLocalization>().Key = string.Empty;
+				styleObj.transform.FindText("Questions").text = string.Empty;
+				styleObj.transform.FindComponent<TextLocalization>("Questions").Key = string.Empty;
 			}
 		}
 		Invoke("DoBestFit", 0);
@@ -146,11 +146,11 @@ public class FeedbackUI : MonoBehaviour {
 		{
 			if (styles.ContainsKey(button.name.ToLower()))
 			{
-				button.transform.Find("Percentage").GetComponent<Text>().text = (Mathf.Round(styles[button.name.ToLower()] * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
+				button.transform.FindText("Percentage").text = (Mathf.Round(styles[button.name.ToLower()] * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
 			}
 			else
 			{
-				button.transform.Find("Percentage").GetComponent<Text>().text = "0%";
+				button.transform.FindText("Percentage").text = "0%";
 			}
 		}
 
@@ -159,11 +159,11 @@ public class FeedbackUI : MonoBehaviour {
 		{
 			if (leaderStyles.ContainsKey(button.name.ToLower()))
 			{
-				button.transform.Find("Percentage").GetComponent<Text>().text = (Mathf.Round(leaderStyles[button.name.ToLower()] * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
+				button.transform.FindText("Percentage").text = (Mathf.Round(leaderStyles[button.name.ToLower()] * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
 			}
 			else
 			{
-				button.transform.Find("Percentage").GetComponent<Text>().text = "0%";
+				button.transform.FindText("Percentage").text = "0%";
 			}
 		}
 	}
@@ -203,7 +203,7 @@ public class FeedbackUI : MonoBehaviour {
 	private void DoBestFit()
 	{
 		if (_selectionGraph.activeSelf) {
-			LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_selectionGraph.transform);
+			LayoutRebuilder.ForceRebuildLayoutImmediate(_selectionGraph.RectTransform());
 			var text = _selectionGraph.GetComponentsInChildren<Text>().ToList();
 			text.Where(t => t.name == "Style" || t.name == "Percentage").ToList().BestFit();
 			text.Where(t => t.name == "Questions").ToList().BestFit();

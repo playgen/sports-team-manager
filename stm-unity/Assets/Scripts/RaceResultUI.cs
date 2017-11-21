@@ -53,19 +53,19 @@ public class RaceResultUI : MonoBehaviour
 			var memberObject = Instantiate(_postRaceCrewPrefab);
 			memberObject.transform.SetParent(transform.Find("Crew"), false);
 			memberObject.name = pair.Value.Name;
-			memberObject.transform.Find("Avatar").GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, -(finishPosition - 3) * 2);
-			memberObject.transform.Find("Position").GetComponent<Image>().sprite = UIManagement.TeamSelection.RoleLogos.First(mo => mo.Name == pair.Key.ToString()).Image;
-			((RectTransform)memberObject.transform.Find("Position").transform).offsetMin = new Vector2(10, 0);
+			memberObject.transform.FindComponentInChildren<AvatarDisplay>("Avatar").SetAvatar(pair.Value.Avatar, -(finishPosition - 3) * 2);
+			memberObject.transform.FindImage("Position").sprite = UIManagement.TeamSelection.RoleLogos.First(mo => mo.Name == pair.Key.ToString()).Image;
+			memberObject.transform.FindRect("Position").offsetMin = new Vector2(10, 0);
 			if (crewCount % 2 != 0)
 			{
 				var currentScale = memberObject.transform.Find("Avatar").localScale;
 				memberObject.transform.Find("Avatar").localScale = new Vector3(-currentScale.x, currentScale.y, currentScale.z);
-				((RectTransform)memberObject.transform.Find("Position").transform).offsetMin = new Vector2(-10, 0);
+				memberObject.transform.FindRect("Position").offsetMin = new Vector2(-10, 0);
 			}
 			crewCount++;
 			memberObject.transform.SetAsLastSibling();
 		}
-		transform.Find("Result").GetComponent<Text>().text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, GameManagement.TeamName, finishPositionText);
+		transform.FindText("Result").text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, GameManagement.TeamName, finishPositionText);
 		DoBestFit();
 		TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{

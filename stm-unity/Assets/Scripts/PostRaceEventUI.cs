@@ -286,26 +286,26 @@ public class PostRaceEventUI : MonoBehaviour
 	{
 		var peopleLayout = _postRacePeople.Select(p => p.GetComponentInChildren<LayoutGroup>()).ToList();
 		peopleLayout.ForEach(p => p.GetComponentsInChildren<Text>().ToList().ForEach(t => t.fontSize = 15));
-		peopleLayout.ForEach(p => LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)p.transform));
+		peopleLayout.ForEach(p => LayoutRebuilder.ForceRebuildLayoutImmediate(p.RectTransform()));
 		Invoke("BestFitCheckDelay", 0f);
 	}
 
 	private void BestFitCheckDelay()
 	{
 		var peopleLayout = _postRacePeople.Select(p => p.GetComponentInChildren<LayoutGroup>()).ToList();
-		peopleLayout.ForEach(p => LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)p.transform));
+		peopleLayout.ForEach(p => LayoutRebuilder.ForceRebuildLayoutImmediate(p.RectTransform()));
 		Invoke("BestFitCheck", 0f);
 	}
 
 	private void BestFitCheck()
 	{
 		var peopleLayout = _postRacePeople.Select(p => p.GetComponentInChildren<LayoutGroup>()).ToList();
-		if (peopleLayout.Any(p => ((RectTransform)p.transform).sizeDelta.y > 0))
+		if (peopleLayout.Any(p => p.RectTransform().sizeDelta.y > 0))
 		{
 			peopleLayout.ForEach(p => p.GetComponentsInChildren<Text>().ToList().ForEach(t => t.fontSize--));
-			peopleLayout.ForEach(p => LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)p.transform));
+			peopleLayout.ForEach(p => LayoutRebuilder.ForceRebuildLayoutImmediate(p.RectTransform()));
 			Invoke("BestFitCheckDelay", 0f);
 		}
-		peopleLayout.ForEach(p => LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)p.transform));
+		peopleLayout.ForEach(p => LayoutRebuilder.ForceRebuildLayoutImmediate(p.RectTransform()));
 	}
 }

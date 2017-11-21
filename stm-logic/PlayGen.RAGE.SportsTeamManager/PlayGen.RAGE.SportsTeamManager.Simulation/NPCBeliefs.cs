@@ -100,6 +100,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		[Description("Avatar(BestSkill)")]
 		AvatarBestSkill,
 		[Description("Note({0})")]
-		Note,
+		Note
 	}
 }

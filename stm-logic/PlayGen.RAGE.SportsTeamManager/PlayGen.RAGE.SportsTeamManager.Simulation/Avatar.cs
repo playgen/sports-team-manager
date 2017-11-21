@@ -36,7 +36,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal Avatar (CrewMember crewMember, bool isActive = true, bool canLoad = false)
 		{
 			//set outfit type
-			var outfit = !isActive ? "01" : ("0" + ((StaticRandom.Int(0, 100) % 2) + 2));
+			var outfit = !isActive ? "01" : "0" + ((StaticRandom.Int(0, 100) % 2) + 2);
 			var gender = crewMember.Gender == "Male" ? "M" : "F";
 			IsMale = crewMember.Gender == "Male";
 			CustomOutfitColor = outfit != "01";
@@ -242,7 +242,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void LoadAvatar(CrewMember crewMember)
 		{
-			BestSkill = (CrewMemberSkill)Enum.Parse((typeof(CrewMemberSkill)), crewMember.LoadBelief(NPCBeliefs.AvatarBestSkill.GetDescription()));
+			BestSkill = (CrewMemberSkill)Enum.Parse(typeof(CrewMemberSkill), crewMember.LoadBelief(NPCBeliefs.AvatarBestSkill.GetDescription()));
 			BodyType = crewMember.LoadBelief(NPCBeliefs.AvatarBodyType.GetDescription());
 			EyebrowType = crewMember.LoadBelief(NPCBeliefs.AvatarEyebrowType.GetDescription());
 			EyeType = crewMember.LoadBelief(NPCBeliefs.AvatarEyeType.GetDescription());
