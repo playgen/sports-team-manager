@@ -36,8 +36,9 @@ public class RaceResultUI : MonoBehaviour
 	/// </summary>
 	public void Display(Dictionary<Position, CrewMember> currentPositions, int finishPosition, string finishPositionText)
 	{
-		UIManagement.MemberMeeting.CloseCrewMemberPopUp(string.Empty);
 		UIManagement.PositionDisplay.ClosePositionPopUp(string.Empty);
+		UIManagement.MemberMeeting.CloseCrewMemberPopUp(string.Empty);
+		UIManagement.DisableSmallBlocker();
 		gameObject.Active(true);
 		transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
 		_lastRacePositions = new Dictionary<Position, CrewMember>(currentPositions);

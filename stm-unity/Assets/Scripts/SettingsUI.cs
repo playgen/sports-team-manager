@@ -10,14 +10,6 @@ using UnityEngine.UI;
 /// </summary>
 public class SettingsUI : MonoBehaviour {
 	[SerializeField]
-	private Image _musicToggle;
-	[SerializeField]
-	private Image _soundToggle;
-	[SerializeField]
-	private Sprite _onSprite;
-	[SerializeField]
-	private Sprite _offSprite;
-	[SerializeField]
 	private Dropdown _languageDropdown;
 
 	private void OnEnable()
@@ -36,8 +28,6 @@ public class SettingsUI : MonoBehaviour {
 	/// </summary>
 	private void Setup()
 	{
-		_musicToggle.sprite = UIStateManager.MusicOn ? _onSprite : _offSprite;
-		_soundToggle.sprite = UIStateManager.SoundOn ? _onSprite : _offSprite;
 		_languageDropdown.ClearOptions();
 		var languages = Localization.Languages.Select(l => string.IsNullOrEmpty(l.Parent.Name) ? l.EnglishName : l.Parent.EnglishName).ToList();
 		_languageDropdown.GetComponent<DropdownLocalization>().SetOptions(languages);
@@ -54,26 +44,6 @@ public class SettingsUI : MonoBehaviour {
 			_languageDropdown.value = selectedIndex;
 		}
 		DoBestFit();
-	}
-
-	/// <summary>
-	/// Toggle music on/off
-	/// </summary>
-	public void ToggleMusic()
-	{
-		UIStateManager.MusicOn = !UIStateManager.MusicOn;
-		PlayerPrefs.SetInt("Music", UIStateManager.MusicOn ? 1 : 0);
-		Setup();
-	}
-
-	/// <summary>
-	/// Toggle sound on/off
-	/// </summary>
-	public void ToggleSound()
-	{
-		UIStateManager.SoundOn = !UIStateManager.SoundOn;
-		PlayerPrefs.SetInt("Sound", UIStateManager.SoundOn ? 1 : 0);
-		Setup();
 	}
 
 	/// <summary>

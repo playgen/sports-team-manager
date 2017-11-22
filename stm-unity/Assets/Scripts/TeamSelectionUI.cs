@@ -785,8 +785,9 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		CreateCrew();
 		RepeatLineUp();
 		//close any open pop-ups if needed
-		UIManagement.MemberMeeting.CloseCrewMemberPopUp(string.Empty);
 		UIManagement.PositionDisplay.ClosePositionPopUp(string.Empty);
+		UIManagement.MemberMeeting.CloseCrewMemberPopUp(string.Empty);
+		UIManagement.DisableSmallBlocker();
 		DoBestFit();
 	}
 
