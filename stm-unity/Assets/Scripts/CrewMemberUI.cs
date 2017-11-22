@@ -21,6 +21,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	private Transform _defaultParent;
 	private PositionUI _currentPlacement;
 	private Vector2 _currentPositon;
+	private string _sortValue;
 
 	public CrewMember CrewMember { get; private set; }
 	public bool Usable { get; private set; }
@@ -44,6 +45,17 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			{
 				button.enabled = false;
 			}
+		}
+	}
+
+	public void SetSortValue(string value)
+	{
+		_sortValue = value;
+		transform.FindImage("Sort").enabled = !string.IsNullOrEmpty(_sortValue) && transform.parent == _defaultParent;
+		transform.FindText("Sort/Sort Text").enabled = !string.IsNullOrEmpty(_sortValue) && transform.parent == _defaultParent;
+		if (transform.FindImage("Sort").enabled)
+		{
+			transform.FindText("Sort/Sort Text").text = _sortValue;
 		}
 	}
 
@@ -290,6 +302,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 		positionImage.GetComponent<Button>().onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentPosition, TrackerTriggerSources.CrewMemberPopUp.ToString()));
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, CrewMember.Name);
+		SetSortValue(_sortValue);
 	}
 
 	/// <summary>
@@ -321,5 +334,6 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		//reset position pop-up if it is currently being shown
 		UIManagement.PositionDisplay.UpdateDisplay();
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, CrewMember.Name);
+		SetSortValue(_sortValue);
 	}
 }

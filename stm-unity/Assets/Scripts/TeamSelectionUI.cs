@@ -402,64 +402,79 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	public void SortCrew(bool playerTriggered = false)
 	{
 		var sortedCrewMembers = _crewContainer.GetComponentsInChildren<CrewMemberUI>().Where(c => c.transform.parent == _crewContainer.transform).ToList();
+		var currentMembers = sortedCrewMembers.Concat(UIManagement.CrewMemberUI.Where(c => c.Usable)).ToList();
 		var sortType = string.Empty;
 		switch (_crewSort.value)
 		{
 			case 0:
 				sortedCrewMembers = sortedCrewMembers.OrderBy(c => c.name).ToList();
 				sortType = "Name";
+				currentMembers.ForEach(c => c.SetSortValue(string.Empty));
 				break;
 			case 1:
 				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Charisma]).ToList();
 				sortType = "Charisma";
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[CrewMemberSkill.Charisma] == 0 ? "?" : c.CrewMember.RevealedSkills[CrewMemberSkill.Charisma].ToString()));
 				break;
 			case 2:
 				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Perception]).ToList();
 				sortType = "Perception";
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[CrewMemberSkill.Perception] == 0 ? "?" : c.CrewMember.RevealedSkills[CrewMemberSkill.Perception].ToString()));
 				break;
 			case 3:
 				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Quickness]).ToList();
 				sortType = "Quickness";
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[CrewMemberSkill.Quickness] == 0 ? "?" : c.CrewMember.RevealedSkills[CrewMemberSkill.Quickness].ToString()));
 				break;
 			case 4:
 				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Body]).ToList();
 				sortType = "Strength";
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[CrewMemberSkill.Body] == 0 ? "?" : c.CrewMember.RevealedSkills[CrewMemberSkill.Body].ToString()));
 				break;
 			case 5:
 				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Willpower]).ToList();
 				sortType = "Willpower";
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[CrewMemberSkill.Willpower] == 0 ? "?" : c.CrewMember.RevealedSkills[CrewMemberSkill.Willpower].ToString()));
 				break;
 			case 6:
 				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Wisdom]).ToList();
 				sortType = "Wisdom";
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[CrewMemberSkill.Wisdom] == 0 ? "?" : c.CrewMember.RevealedSkills[CrewMemberSkill.Wisdom].ToString()));
 				break;
 			case 7:
 				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.GetMood()).ToList();
 				sortType = "Mood";
+				currentMembers.ForEach(c => c.SetSortValue(string.Empty));
 				break;
 			case 8:
 				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedCrewOpinions.Values.Sum()/ (float)c.CrewMember.RevealedCrewOpinions.Count).ToList();
 				sortType = "Average Opinion";
+				currentMembers.ForEach(c => c.SetSortValue(string.Empty));
 				break;
 			case 9:
 				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedCrewOpinions[GameManagement.Manager.Name]).ToList();
 				sortType = "Manager Opinion";
+				currentMembers.ForEach(c => c.SetSortValue(string.Empty));
 				break;
 			case 10:
 				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => GameManagement.LineUpHistory.Count(boat => boat.PositionCrew.Values.Any(cm => c.CrewMember.Name == cm.Name))).ToList();
 				sortType = "Races";
+				currentMembers.ForEach(c => c.SetSortValue(GameManagement.LineUpHistory.Count(boat => boat.PositionCrew.Values.Any(cm => c.CrewMember.Name == cm.Name)).ToString()));
 				break;
 			case 11:
-				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => GameManagement.LineUpHistory.Count(boat => boat.PositionCrew.Values.Any(cm => c.CrewMember.Name == cm.Name) && GameManagement.GetRacePosition(boat.Score, boat.Positions.Count) == 1)).ToList();
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => GameManagement.Team.RaceHistory.Count(boat => boat.PositionCrew.Values.Any(cm => c.CrewMember.Name == cm.Name) && GameManagement.GetRacePosition(boat.Score, boat.Positions.Count) == 1)).ToList();
 				sortType = "Wins";
+				currentMembers.ForEach(c => c.SetSortValue(GameManagement.Team.RaceHistory.Count(boat => boat.PositionCrew.Values.Any(cm => c.CrewMember.Name == cm.Name) && GameManagement.GetRacePosition(boat.Score, boat.Positions.Count) == 1).ToString()));
 				break;
 			case 12:
 				sortedCrewMembers = sortedCrewMembers.OrderBy(c => c.CrewMember.Age).ToList();
 				sortType = "Age";
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.Age.ToString()));
 				break;
 			case 13:
 				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.Avatar.Height * (c.CrewMember.Avatar.IsMale ? 1 : 0.935f)).ToList();
 				sortType = "Height";
+				currentMembers.ForEach(c => c.SetSortValue(string.Empty));
 				break;
 		}
 		var sortedCrew = sortedCrewMembers.Select(c => c.transform).ToList();
@@ -895,7 +910,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	{
 		_boatMain.transform.FindObject("Position Container").BestFit();
 		_ongoingResultContainer.transform.parent.BestFit();
-		UIManagement.CrewMemberUI.Select(c => c.gameObject).BestFit();
+		UIManagement.CrewMemberUI.Select(c => c.gameObject.transform.FindText("Name")).BestFit();
 		var currentPosition = _boatContainer.transform.localPosition.y - _boatContainer.RectTransform().anchoredPosition.y;
 		if (!Mathf.Approximately(_boatMain.GetComponent<LayoutElement>().preferredHeight, Mathf.Abs(currentPosition) * 0.2f))
 		{
