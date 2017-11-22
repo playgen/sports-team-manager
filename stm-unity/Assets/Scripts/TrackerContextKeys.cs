@@ -7,6 +7,7 @@ public enum TrackerContextKeys
 	CrewMemberName,
 	CrewMemberPosition,
 	CrewMemberSessionsInTeam,
+	CrewSort,
 	CupFinishingPosition,
 	CurrentSession,
 	CurrentTalkTime,

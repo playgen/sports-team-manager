@@ -165,7 +165,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							break;
 						case "OO":
 							//for this event, select a crew member who is placed with someone they do not get on with
-							var selectedAgainst = team.CrewMembers.OrderBy(c => c.Value.RevealedSkills.Values.Sum()).First();
+							var selectedAgainst = team.CrewMembers.OrderByDescending(c => c.Value.RevealedSkills.Values.Sum()).First();
 							if (allCrew.ContainsKey(selectedAgainst.Key))
 							{
 								allCrew.Remove(selectedAgainst.Key);

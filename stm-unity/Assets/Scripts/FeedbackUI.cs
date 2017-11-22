@@ -75,7 +75,7 @@ public class FeedbackUI : MonoBehaviour {
 	{
 		_descriptionPopUp.transform.FindComponent<TextLocalization>("Description Pop-Up/Header").Key = descriptionType;
 		_descriptionPopUp.transform.FindComponent<TextLocalization>("Description Pop-Up/Text").Key = descriptionType + "_Description";
-		_descriptionPopUp.transform.FindComponent<VideoPlayer>("Description Pop-Up/Video Display").clip = _videos.First(v => String.Equals(v.name, descriptionType, StringComparison.CurrentCultureIgnoreCase));
+		_descriptionPopUp.transform.FindComponent<VideoPlayer>("Description Pop-Up/Video Display").clip = _videos.First(v => string.Equals(v.name, descriptionType, StringComparison.CurrentCultureIgnoreCase));
 		_descriptionPopUp.Active(true);
 		_descriptionPopUp.transform.FindObject("Description Pop-Up/Video Display").Active(false);
 	}

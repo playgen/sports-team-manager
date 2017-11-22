@@ -42,7 +42,7 @@ public class QuestionnaireUI : MonoBehaviour
 	private void OnEnable()
 	{
 		Localization.LanguageChange += OnLanguageChange;
-		BestFit.ResolutionChange += DoBestFit;
+		BestFit.ResolutionChange += DoBestFitDelay;
 		foreach (var obj in _questionObjs)
 		{
 			Destroy(obj);
@@ -54,21 +54,21 @@ public class QuestionnaireUI : MonoBehaviour
 			var questionObj = Instantiate(_questionPrefab, _questionnairePanel.transform, false);
 			questionObj.name = _questionPrefab.name;
 			questionObj.transform.FindText("Question").text = Localization.Get("QUESTION") + " " + (_questionObjs.Count + 1);
-			questionObj.transform.FindComponentInChildren<Text>("Answer A").text = "A. " + question.AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
-			questionObj.transform.FindComponentInChildren<Text>("Answer B").text = "B. " + question.AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
+			questionObj.transform.FindText("Answer A/Label").text = "A. " + question.AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
+			questionObj.transform.FindText("Answer B/Label").text = "B. " + question.AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
 			questionObj.transform.FindComponentInChildren<Toggle>("Answer A").onValueChanged.AddListener(CheckAllToggled);
 			questionObj.transform.FindComponentInChildren<Toggle>("Answer B").onValueChanged.AddListener(CheckAllToggled);
 			_questionObjs.Add(questionObj);
 		}
 		CheckAllToggled();
 		LayoutRebuilder.ForceRebuildLayoutImmediate(_questionnairePanel.RectTransform());
-		Invoke("DoBestFit", 0);
+		Invoke("DoBestFitDelay", 0);
 	}
 
 	private void OnDisable()
 	{
 		Localization.LanguageChange -= OnLanguageChange;
-		BestFit.ResolutionChange -= DoBestFit;
+		BestFit.ResolutionChange -= DoBestFitDelay;
 	}
 
 	/// <summary>
@@ -175,16 +175,26 @@ public class QuestionnaireUI : MonoBehaviour
 		for (var i = 0; i < _questionObjs.Count; i++)
 		{
 			_questionObjs[i].transform.FindText("Question").text = Localization.Get("QUESTION") + " " + (i + 1);
-			_questionObjs[i].transform.FindComponentInChildren<Text>("Answer A").text = "A. " + _questions[i].AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
-			_questionObjs[i].transform.FindComponentInChildren<Text>("Answer B").text = "B. " + _questions[i].AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
+			_questionObjs[i].transform.FindText("Answer A/Label").text = "A. " + _questions[i].AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
+			_questionObjs[i].transform.FindText("Answer B/Label").text = "B. " + _questions[i].AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
 		}
 		DoBestFit();
+	}
+
+	private void DoBestFitDelay()
+	{
+		Invoke("DoBestFitSecondDelay", 0);
+	}
+
+	private void DoBestFitSecondDelay()
+	{
+		Invoke("DoBestFit", 0);
 	}
 
 	private void DoBestFit()
 	{
 		LayoutRebuilder.ForceRebuildLayoutImmediate(transform.RectTransform());
-		GetComponentsInChildren<Text>().BestFit();
+		_questionObjs.SelectMany(s => s.GetComponentsInChildren<Text>(true).Where(t => !t.name.Contains("Checkmark"))).BestFit();
 		_questionObjs.ForEach(q => q.transform.FindText("Question").fontSize = (int)(q.transform.FindText("Question").fontSize * 1.5f));
 	}
 }

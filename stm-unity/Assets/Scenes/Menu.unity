@@ -12466,7 +12466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -12778,7 +12778,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -13758,8 +13758,8 @@ MonoBehaviour:
       Value:
       - 'Benvenuto! Qui scegli il tuo equipaggio: trova la persona giusta per ogni
         ruolo.'
-      - 'Prima di tutto dai un''occhiata ai tre ruoli che devi ricoprire. Clicca su
-        ciascuno ruolo per averne una descrizione. '
+      - Prima di tutto dai un'occhiata ai tre ruoli che devi ricoprire. Clicca su
+        ciascuno ruolo per averne una descrizione.
     Reversed: 0
     HighlightedObjects:
     - List: []
@@ -13784,14 +13784,14 @@ MonoBehaviour:
     - Key: en-GB
       Value:
       - This pop-up lists all the skills required for the position you just selected
-        and will also display who is currently in the position and has been in it
-        in the past.
+        and will display who is currently in the position and has been in it in the
+        past.
       - To close this, use the X in the top right of the pop-up.
     - Key: it
       Value:
       - Questa finestra ti mostra la lista delle competenze richieste per il ruolo
         che hai appena selezionato. In questo riquadro, troverai sia la persona che
-        attualmente occupa  la posizione, sia chi l'ha ricoperta in passato.
+        attualmente occupa la posizione, sia chi l'ha ricoperta in passato.
       - Per chiudere la finestra, usa la x in alto a destra del riquadro.
     Reversed: 0
     HighlightedObjects:
@@ -13821,27 +13821,28 @@ MonoBehaviour:
       - "Now that you know how to review a position, it\u2019s time to take a look
         at your starting crew. At the bottom of the screen, all your crew members
         are listed."
-      - The facial expression and background color of each shows their current mood.
-        At the moment all of your crew is in a 'neutral' mood, which has no impact
-        on their performance.
-      - A happy looking, smiling crew member with a more green background is in a
-        good mood and as such will perform better than normal.
-      - 'Meanwhile, anyone looking sad or angry with a more red background is in a
-        bad mood and will perform worse. '
-      - In order to find out more on a crew member, you'll need to talk to them, which
-        you can do by clicking on them.
+      - The facial expression and border color of each shows their current mood. At
+        the moment all of your crew is in a 'neutral' mood, which has no impact on
+        their performance.
+      - A happy looking, smiling crew member with a green border is in a good mood
+        and as such performs better than normal.
+      - 'Meanwhile, anyone looking sad or angry with an orange or red border is in
+        a bad mood and will perform worse. '
+      - In order to find out more about a crew member, you'll need to talk to them,
+        which you can do by clicking on them.
     - Key: it
       Value:
       - "Ora che conosci quali posizioni devono essere occupate, \xE8 tempo di dare
         un'occhiata all'equipaggio di partenza. Nella parte bassa dello schermo sono
         elencati tutti i componenti della tua squadra."
-      - L'espressione facciale e il colore di sfondo di ciascuno mostra il suo stato
-        d'animo corrente. In questo momento il tuo equipaggio si trova in uno stato
-        d'animo neutrale, che non ha impatto sulla performance.
-      - "Un membro che appare felice e sorridente con uno sfondo pi\xF9 verde sar\xE0
-        si trover\xE0 in un stato d'animo positivo e avr\xE0 una prestazione superiore."
-      - "Nel frattempo, uno che appare triste o arrabbiato con uno sfondo pi\xF9 rosso
-        avr\xE0 una prestazione peggiore."
+      - L'espressione facciale e il colore del bordo di ognuno mostra il loro stato
+        d'animo corrente. Al momento tutti i membri del tuo equipaggio sono in uno
+        stato d'animo neutrale, che non ha alcun impatto sulla prestazione
+      - "Un membro dell'equipaggio che viene rappresentato felice e sorridente con
+        un bordo verde \xE8 di buon uomore, e in quanto tale ha prestazioni migliori
+        del normale."
+      - "Allo stesso modo, chiunque venga rappresentato triste o arrabbiato con un
+        bordo arancione o rosso \xE8 di cattivo umore e avr\xE0 prestazioni peggiori."
       - "Clicca sul personaggio per conoscere di pi\xF9 su di lui/lei e avviare una
         conversazione."
     Reversed: 0
@@ -13866,7 +13867,7 @@ MonoBehaviour:
       Value: ShowPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 3
+    SaveNextSection: 5
     BlacklistButtons:
     - List: []
     - List: []
@@ -13874,16 +13875,28 @@ MonoBehaviour:
     - List: []
     - List:
       - zz Recruit
-    CustomAttributes: []
+    CustomAttributes:
+    - part0=mood-accurate
+    - part1=mood-neutral
+    - part2=mood-positive
+    - part3=mood-negative
+    - part4=mood-accurate
   - SectionTextHolder:
     - Key: en-GB
       Value:
       - "This pop-up displays all the known skills and opinions for this person, but
-        as you\u2019ve only just started, you know nothing about their skills and,
+        as you\u2019ve only just started you know nothing about their skills and,
         as far as you\u2019re aware, their opinion of everyone is neutral."
-      - Their opinion on other members of the team is displayed in the top left of
-        their respective icons, whilst their opinion of you is shown in the top left
-        of this pop-up.
+      - Their opinion of crew members is displayed in the top right of their respective
+        icons. A flat hand means shows that their opinion is neutral, thumbs up shows
+        a positive opinion and thumbs down shows a negative opinion. Double thumbs
+        up or down signifies an extreme positive or negative opinion.
+      - 'Crew members will perform better when they work with team members that they
+        have a positive opinion of and worse when paired with a member they have a
+        negative opinion of. '
+      - Meanwhile, their opinion of you is shown in the top left of this pop-up. As
+        with team members, their opinion of you as a manager has an impact on how
+        they perform, so it's beneficial to get along with your crew members.
       - "In order to learn more about this crew member, you\u2019re going to need
         to talk to them by clicking any of the available questions, with their response
         displayed above the list of questions."
@@ -13896,10 +13909,18 @@ MonoBehaviour:
       - "Questa finestra mostra tutte le abilit\xE0 e le opinioni di questa persona.
         Poich\xE9 hai appena iniziato non sai ancora nulla sulle competenze che possiede
         e delle sue opinioni."
-      - "L'opinione nei confronti degli altri membri della squadra \xE8 rappresentata
-        dalla mano nera in alto a sinistra della sua immagine, mentre la sua opinione
-        nei tuoi confronti  \xE8 riportata -con la stessa icona- in alto a sinistra
-        di questa finestra."
+      - "La loro opinione sui membri dell'equipaggio \xE8 mostrata in alto a destra
+        delle rispettive icone. Una mano aperta significa che loro opinione \xE8 neutrale,
+        il pollice in su indica un'opinione positiva mentre il pollice in gi\xF9 un
+        opinione negativa. Due pollici in su o gi\xF9 indicano un'opinione estremamente
+        positiva o negativa."
+      - I membri dell'equipaggio avranno prestazioni migliori quando lavoreranno con
+        compagni di cui hanno un opinione positiva, prestazioni peggiori quando lavoreranno
+        con compagni di cui hanno un'opinione negativa.
+      - "Allo stesso modo, la loro opinione di te \xE8 mostrata in alto a a sinistra
+        di questa finestra. Come con i membri dell'equipaggio, la loro opinione di
+        te come manager ha un impatto sulle loro prestazioni. Quindi \xE8 vantaggioso
+        andare d\u2019accordo con i membri dell'equipaggio."
       - "Per imparare di pi\xF9 su un membro dell'equipaggio, devi parlare con lui,
         cliccando su una delle domande disponibili. La risposta verr\xE0 riportata
         nel fumetto."
@@ -13913,6 +13934,12 @@ MonoBehaviour:
       - Pop-up Bounds
       - Meeting Pop-Up
       - Details
+    - List:
+      - Team Management
+      - Crew Container
+    - List:
+      - Team Management
+      - Crew Container
     - List:
       - Team Management
       - Pop-up Bounds
@@ -13932,8 +13959,10 @@ MonoBehaviour:
       Value: AskQuestion
     UniqueEvents: 0
     EventTriggerCountRequired: 6
-    SaveNextSection: 2
+    SaveNextSection: 4
     BlacklistButtons:
+    - List: []
+    - List: []
     - List: []
     - List: []
     - List: []
@@ -13942,20 +13971,94 @@ MonoBehaviour:
       - Close (1)
     CustomAttributes:
     - cost=false
+    - part0=opinion-accurate
+    - part1=opinion-inaccurate
+    - part2=opinion-accurate
   - SectionTextHolder:
     - Key: en-GB
       Value:
-      - "OK, looks like you\u2019ve got the hang of talking to your team members."
-      - Now you have some information for this crew member, exit the pop-up using
-        the highlighted button.
+      - "OK, looks like you\u2019ve got the hang of talking to your team members.
+        Let's move onto the 'Notes' feature."
+      - You can make an unlimited amount of notes on any of your current crew members
+        and any of the boat positions you've come across, allowing you to record and
+        store information you want to make sure is available to you later.
+      - In order to open the pop-up and take notes on this crew member, click the
+        highlighted button.
     - Key: it
       Value:
-      - Ok, sembra che tu abbia concluso di intervistare il candidato per il tuo equipaggio.
+      - OK, sembra che tu abbia fatto pratica nel parlare con i membri della squadra.
+      - Puoi prendere un numero illimitato di note su qualunque dei tuoi attuali membri
+        dell'equipaggio e su qualsiasi ruolo che hai incontrato. Questo ti permette
+        di registrare e salvare informazioni che ti saranno sicuramente utili in seguito.
+      - Per aprire la finestra e prendere note su questo membro dell'equipaggio clicca
+        il pulsante evidenziato.
+    Reversed: 0
+    HighlightedObjects:
+    - List: []
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Meeting Pop-Up
+      - Notes
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Meeting Pop-Up
+      - Notes
+    Triggers:
+    - Key: NotesUI
+      Value: Display
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 3
+    BlacklistButtons:
+    - List: []
+    - List: []
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - You can make notes by selecting the black input field and typing whatever
+        information you want to store for later on.
+      - Make as many or as little notes as you wish on this crew member, then exit
+        by using the 'Close' button positioned under the black input field.
+    - Key: it
+      Value:
+      - Per prendere una nota seleziona il campo di testo nero e digita qualsiasi
+        informazione desideri salvare per dopo.
+      - Prendi quante note desideri su questo membro dell'equipaggio, poi esci usando
+        il pulsante Chiudi collocato dietro il campo di testo nero.
+    Reversed: 0
+    HighlightedObjects:
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Notes Pop-Up
+    - List:
+      - Team Management
+      - Pop-up Bounds
+      - Notes Pop-Up
+    Triggers:
+    - Key: NotesUI
+      Value: Close
+    UniqueEvents: 0
+    EventTriggerCountRequired: 1
+    SaveNextSection: 2
+    BlacklistButtons:
+    - List: []
+    - List: []
+    CustomAttributes: []
+  - SectionTextHolder:
+    - Key: en-GB
+      Value:
+      - Exit the crew member meeting pop-up using the highlighted button.
+    - Key: it
+      Value:
       - "Ora hai qualche informazione in pi\xF9 su di lui. Esci da questa finestra
         usando il pulsante evidenziato."
     Reversed: 0
     HighlightedObjects:
-    - List: []
     - List:
       - Team Management
       - Pop-up Bounds
@@ -13969,7 +14072,6 @@ MonoBehaviour:
     SaveNextSection: 1
     BlacklistButtons:
     - List: []
-    - List: []
     CustomAttributes: []
   - SectionTextHolder:
     - Key: en-GB
@@ -13978,7 +14080,7 @@ MonoBehaviour:
         positions."
       - "Once you've gathered some further information on your team and the positions
         you'll need to fill, place crew members by dragging them into the position
-        you think they\u2019d best fit."
+        you think they\u2019ll best fit."
     - Key: it
       Value:
       - Ora sai come intervistare i membri del equipaggio. E' giunto il momento di
@@ -14054,7 +14156,7 @@ MonoBehaviour:
     - Key: en-GB
       Value:
       - "Don\u2019t worry if you haven't gotten the perfect line-up, as you'll get
-        two practice session before every race."
+        two practice sessions before every race."
       - Every session, your performance is based on the skill ratings of your line-up
         in their positions, their opinion of you, their current mood and their opinion
         of everyone else selected.
@@ -14065,7 +14167,7 @@ MonoBehaviour:
       - Non ti preoccupare se non individui la formazione perfetta al primo tentativo,
         ci sono 2 prove per fare pratica prima della gara vera propria.
       - "Ogni volta la tua performance \xE8 calcolata in base a 4 parametri: 1) la
-        corrisondenza tra le caratteristiche di ogni ruolo e le capacit\xE0 dei giocatori
+        corrispondenza tra le caratteristiche di ogni ruolo e le capacit\xE0 dei giocatori
         selezionati 2) l'opinione che hanno di te 3) il loro stato d'animo 4) l'opinione
         di ciascuno rispetto agli altri membri selezionati."
       - "Clicca il pulsante evidenziato e la tua squadra parteciper\xE0 alla prima
@@ -14096,7 +14198,7 @@ MonoBehaviour:
     - Key: en-GB
       Value:
       - After every session, you'll be given feedback on how your selected crew performed.
-      - These colored boxes represent how close you are to selecting the best possible
+      - These colored boxes represent how close you were to selecting the best possible
         line-up available to you.
       - Hover over or click each box to see what they represent.
     - Key: it
@@ -14653,7 +14755,7 @@ MonoBehaviour:
       Value:
       - "Al termine di ciascun evento comparir\xF2 per darti un feedback su come hai
         gestito la situazione."
-      - 'Per chiudere questo feedback, clicca in qualunque punto dello schermo. '
+      - Per chiudere questo feedback, clicca in qualunque punto dello schermo.
     Reversed: 0
     HighlightedObjects:
     - List:
@@ -14677,7 +14779,8 @@ MonoBehaviour:
         of what you've responsed with has had.
     - Key: it
       Value:
-      - XXXX
+      - "Dopo ciascuna conversazione, ti verr\xE0 data una lista che specifica l'impatto
+        delle tue risposte."
     Reversed: 0
     HighlightedObjects:
     - List:
@@ -15514,7 +15617,7 @@ RectTransform:
   m_AnchorMin: {x: 0.7, y: 0.01}
   m_AnchorMax: {x: 0.95, y: 0.09}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -110.40959, y: 0}
+  m_SizeDelta: {x: -46.615204, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!95 &341771777
 Animator:
@@ -18935,7 +19038,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -26903,6 +27006,8 @@ GameObject:
   m_Component:
   - component: {fileID: 680483991}
   - component: {fileID: 680483992}
+  - component: {fileID: 680483994}
+  - component: {fileID: 680483993}
   m_Layer: 5
   m_Name: Graph
   m_TagString: Untagged
@@ -26943,6 +27048,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 3
   m_AspectRatio: 1.25
+--- !u!114 &680483993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 680483990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 41c739f8e223388418126f797ec20e85, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &680483994
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 680483990}
 --- !u!21 &681940512
 Material:
   serializedVersion: 6
@@ -28159,7 +28297,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 2124753d591850a429da4a8ac53b2b92, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 4
@@ -31968,6 +32106,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 849277579}
+  - component: {fileID: 849277581}
+  - component: {fileID: 849277580}
   m_Layer: 5
   m_Name: Graph Bounds
   m_TagString: Untagged
@@ -31994,6 +32134,39 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &849277580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 849277578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 41c739f8e223388418126f797ec20e85, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &849277581
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 849277578}
 --- !u!1 &860246440
 GameObject:
   m_ObjectHideFlags: 0
@@ -38437,7 +38610,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -50942,7 +51115,7 @@ RectTransform:
   m_Father: {fileID: 849277579}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.0045, y: 0.003}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -52464,7 +52637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -52965,7 +53138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -56290,6 +56463,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1780694242}
   - component: {fileID: 1780694243}
+  - component: {fileID: 1780694245}
+  - component: {fileID: 1780694244}
   m_Layer: 5
   m_Name: Graph
   m_TagString: Untagged
@@ -56330,6 +56505,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 3
   m_AspectRatio: 1.25
+--- !u!114 &1780694244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1780694241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 41c739f8e223388418126f797ec20e85, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1780694245
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1780694241}
 --- !u!1 &1782845103
 GameObject:
   m_ObjectHideFlags: 0
@@ -59268,14 +59476,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1334125065}
         m_MethodName: SortCrew
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Dropdown+DropdownEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null

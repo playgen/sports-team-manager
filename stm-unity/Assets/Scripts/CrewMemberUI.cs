@@ -147,41 +147,40 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 
 	public void ForcedMoodChange(string moodChange)
 	{
-		if (moodChange == "negative")
+		switch (moodChange)
 		{
-			if (CrewMember.Name.Length % 2 == 0)
-			{
-				GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "StrongDisagree");
-				GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(-3) : Current ? Color.grey : Color.black;
-			}
-			else
-			{
-				GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Disagree");
-				GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(-1) : Current ? Color.grey : Color.black;
-			}
-		}
-		else if (moodChange == "positive")
-		{
-			if (CrewMember.Name.Length % 2 == 0)
-			{
-				GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "StrongAgree");
-				GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(3) : Current ? Color.grey : Color.black;
-			}
-			else
-			{
-				GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Agree");
-				GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(1) : Current ? Color.grey : Color.black;
-			}
-		}
-		else if (moodChange == "accurate")
-		{
-			GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, CrewMember.GetMood());
-			GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(CrewMember.GetMood()) : Current ? Color.grey : Color.black;
-		}
-		else
-		{
-			GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Neutral");
-			GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(0) : Current ? Color.grey : Color.black;
+			case "negative":
+				if (CrewMember.Name.Length % 2 == 0)
+				{
+					GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "StrongDisagree");
+					GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(-3) : Current ? Color.grey : Color.black;
+				}
+				else
+				{
+					GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Disagree");
+					GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(-1) : Current ? Color.grey : Color.black;
+				}
+				break;
+			case "positive":
+				if (CrewMember.Name.Length % 2 == 0)
+				{
+					GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "StrongAgree");
+					GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(3) : Current ? Color.grey : Color.black;
+				}
+				else
+				{
+					GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Agree");
+					GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(1) : Current ? Color.grey : Color.black;
+				}
+				break;
+			case "accurate":
+				GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, CrewMember.GetMood());
+				GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(CrewMember.GetMood()) : Current ? Color.grey : Color.black;
+				break;
+			default:
+				GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Neutral");
+				GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(0) : Current ? Color.grey : Color.black;
+				break;
 		}
 	}
 

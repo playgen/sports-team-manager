@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
 using RAGE.Analytics.Formats;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CupResultUI : MonoBehaviour
 {
@@ -15,13 +13,11 @@ public class CupResultUI : MonoBehaviour
 	private void OnEnable()
 	{
 		Localization.LanguageChange += OnLanguageChange;
-		BestFit.ResolutionChange += DoBestFit;
 	}
 
 	private void OnDisable()
 	{
 		Localization.LanguageChange -= OnLanguageChange;
-		BestFit.ResolutionChange -= DoBestFit;
 	}
 
 	/// <summary>
@@ -56,7 +52,6 @@ public class CupResultUI : MonoBehaviour
 			memberObject.transform.SetAsLastSibling();
 		}
 		transform.FindText("Result").text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, GameManagement.TeamName, finalPositionText);
-		DoBestFit();
 		TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
 		{
 			{ TrackerContextKeys.CupFinishingPosition.ToString(), _cupPosition.ToString() }
@@ -87,11 +82,5 @@ public class CupResultUI : MonoBehaviour
 	private void OnLanguageChange()
 	{
 		Display();
-		DoBestFit();
-	}
-
-	private void DoBestFit()
-	{
-		GetComponentsInChildren<Text>().Where(t => t.transform.parent == transform).BestFit();
 	}
 }
