@@ -483,17 +483,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//add the difference in mood to mistakeScores
 				mistakeScores["Mood"] += (int)((nearestIdealMatch[i].Key.GetMood() - PositionCrew[Positions[i]].GetMood()) * config.ConfigValues[ConfigKeys.MoodRatingWeighting]);
 				//calculate the average opinion for this position in the ideal crew
-				var idealOpinion = 0;
+				var idealOpinion = 0f;
 				foreach (var pair in nearestIdealMatch)
 				{
 					if (pair.Key != nearestIdealMatch[i].Key)
 					{
 						idealOpinion += nearestIdealMatch[i].Key.CrewOpinions[pair.Key.Name];
+						idealOpinion += pair.Key.CrewOpinions[nearestIdealMatch[i].Key.Name];
 					}
 				}
-				idealOpinion /= Positions.Count - 1;
+				idealOpinion /= (Positions.Count - 1) * 2;
+				idealOpinion = (float)Math.Round(idealOpinion);
 				//calculate the average opinion for this position in the current crew and how many opinions are currently unknown
-				var currentOpinion = 0;
+				var currentOpinion = 0f;
 				var unknownCrewOpinions = 0;
 				foreach (var position in Positions)
 				{
@@ -504,13 +506,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						{
 							unknownCrewOpinions++;
 						}
+						currentOpinion += PositionCrew[position].CrewOpinions[PositionCrew[Positions[i]].Name];
+						if (PositionCrew[position].CrewOpinions[PositionCrew[Positions[i]].Name] != PositionCrew[position].RevealedCrewOpinions[PositionCrew[Positions[i]].Name])
+						{
+							unknownCrewOpinions++;
+						}
 					}
 				}
-				currentOpinion /= Positions.Count - 1;
+				currentOpinion /= (Positions.Count - 1) * 2;
+				currentOpinion = (float)Math.Round(currentOpinion);
 				//add the difference to mistakeScores
 				mistakeScores["CrewOpinion"] += (int)((idealOpinion - currentOpinion) * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
 				//if the percentage of unknown opinions is above the given amount, add the difference to hiddenScores
-				if (unknownCrewOpinions >= (Positions.Count - 1) * config.ConfigValues[ConfigKeys.HiddenOpinionLimit])
+				if (unknownCrewOpinions >= ((Positions.Count - 1) * 2) * config.ConfigValues[ConfigKeys.HiddenOpinionLimit])
 				{
 					hiddenScores["CrewOpinion"] += (int)((idealOpinion - currentOpinion) * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
 				}
