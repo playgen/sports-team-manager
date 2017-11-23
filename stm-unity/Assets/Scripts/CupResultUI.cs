@@ -56,6 +56,8 @@ public class CupResultUI : MonoBehaviour
 		{
 			{ TrackerContextKeys.CupFinishingPosition.ToString(), _cupPosition.ToString() }
 		}, AccessibleTracker.Accessible.Screen));
+		transform.FindObject("Questionnaire").Active(GameManagement.PlatformSettings.Rage);
+		transform.FindObject("OK").Active(!GameManagement.PlatformSettings.Rage);
 	}
 
 	/// <summary>
@@ -72,7 +74,10 @@ public class CupResultUI : MonoBehaviour
 				{ TrackerContextKeys.CupFinishingPosition.ToString(), _cupPosition.ToString() },
 				{ TrackerContextKeys.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
-			UIStateManager.StaticGoToQuestionnaire();
+			if (GameManagement.PlatformSettings.Rage)
+			{
+				UIStateManager.StaticGoToQuestionnaire();
+			}
 		}
 	}
 

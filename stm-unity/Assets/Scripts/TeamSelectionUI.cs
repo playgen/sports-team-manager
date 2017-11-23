@@ -93,16 +93,23 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		BestFit.ResolutionChange += DoBestFit;
 		if (!GameManagement.SeasonOngoing)
 		{
-			_feedbackButton.onClick.RemoveAllListeners();
-			if (GameManagement.GameManager.QuestionnaireCompleted)
+			if (GameManagement.PlatformSettings.Rage)
 			{
-				_feedbackButton.onClick.AddListener(TriggerFeedback);
-				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
+				_feedbackButton.onClick.RemoveAllListeners();
+				if (GameManagement.GameManager.QuestionnaireCompleted)
+				{
+					_feedbackButton.onClick.AddListener(TriggerFeedback);
+					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
+				}
+				else
+				{
+					_feedbackButton.onClick.AddListener(TriggerQuestionnaire);
+					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("CONFLICT_QUESTIONNAIRE");
+				}
 			}
 			else
 			{
-				_feedbackButton.onClick.AddListener(TriggerQuestionnaire);
-				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("CONFLICT_QUESTIONNAIRE");
+				_feedbackButton.gameObject.Active(false);
 			}
 			_endRace.gameObject.Active(true);
 			_boatMain.gameObject.Active(false);
@@ -883,7 +890,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		{
 			_quitBlocker.onClick.Invoke();
 		}
-		else if (!SUGARManager.Unity.AnyActiveUI)
+		else if (GameManagement.PlatformSettings.Rage && !SUGARManager.Unity.AnyActiveUI)
 		{
 			FindObjectOfType<ScreenSideUI>().DisplayQuitWarning();
 		}
@@ -928,7 +935,10 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	private void TriggerQuestionnaire()
 	{
-		UIStateManager.StaticGoToQuestionnaire();
+		if (GameManagement.PlatformSettings.Rage)
+		{
+			UIStateManager.StaticGoToQuestionnaire();
+		}
 	}
 
 	/// <summary>
@@ -936,6 +946,9 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	/// </summary>
 	private void TriggerFeedback()
 	{
-		UIStateManager.StaticGoToFeedback();
+		if (GameManagement.PlatformSettings.Rage)
+		{
+			UIStateManager.StaticGoToFeedback();
+		}
 	}
 }

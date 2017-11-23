@@ -10,8 +10,6 @@ public class ScreenSideUI : MonoBehaviour {
 	[SerializeField]
 	private Text _nameText;
 	[SerializeField]
-	private GameObject _selected;
-	[SerializeField]
 	private GameObject _quitWarningPopUp;
 	[SerializeField]
 	private Button _popUpBlocker;
@@ -23,22 +21,15 @@ public class ScreenSideUI : MonoBehaviour {
 	{
 		_nameText.text = GameManagement.TeamName;
 		BestFit.ResolutionChange += DoBestFit;
+		transform.FindObject("Side Menu/Team Management").Active(GameManagement.PlatformSettings.Rage);
+		transform.FindObject("Side Menu/Achievements").Active(GameManagement.PlatformSettings.Rage);
+		transform.FindObject("Side Menu/Leaderboards").Active(GameManagement.PlatformSettings.Rage);
 		Invoke("DoBestFit", 0f);
 	}
 
 	private void OnDisable()
 	{
 		BestFit.ResolutionChange -= DoBestFit;
-	}
-
-	/// <summary>
-	/// Change the position of the selected object to match the current UI screen
-	/// </summary>
-	public void ChangeSelected(int position)
-	{
-		_selected.RectTransform().anchorMax = new Vector2(0.25f + (0.15f * position), 1);
-		_selected.RectTransform().anchorMin = new Vector2(0.1f + (0.15f * position), 0);
-		_selected.RectTransform().anchoredPosition = Vector2.zero;
 	}
 
 	/// <summary>

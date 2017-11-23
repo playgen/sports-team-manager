@@ -28,6 +28,10 @@ public class TraceEvent
 public class TrackerEventSender {
 	public static void SendEvent(TraceEvent trace)
 	{
+		if (!GameManagement.PlatformSettings.Rage)
+		{
+			return;
+		}
 		foreach (var v in trace.Values.OrderBy(v => v.Key))
 		{
 			if (v.Key == TrackerContextKeys.TriggerUI.ToString())

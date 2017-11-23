@@ -27,11 +27,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal static EmotionalAppraisalAsset EmotionalAppraisal { get; set; }
 		internal static EmotionalDecisionMakingAsset EmotionalDecisionMaking { get; set; }
 		internal static SocialImportanceAsset SocialImportance { get; set; }
-		internal static bool Android { get; set; }
+		internal static Platform Platform { get; set; }
 
-		public ConfigStore(bool android = false)
+		public ConfigStore(Platform platform)
 		{
-			Android = android;
+			Platform = platform;
 			ConfigValues = new Dictionary<ConfigKeys, float>();
 			var configText = Templates.ResourceManager.GetString("config");
 			ConfigValues = JsonConvert.DeserializeObject<Dictionary<ConfigKeys, float>>(configText);
@@ -60,7 +60,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			SocialImportance = SocialImportanceAsset.LoadFromFile(RolePlayCharacter.SocialImportanceAssetSource);
 			IntegratedAuthoringTool = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
 			HelpIntegratedAuthoringTool = IntegratedAuthoringToolAsset.LoadFromFile("help_dialogue");
-			AssetManager.Instance.Bridge = Android ? new AndroidBaseBridge() : new BaseBridge();
+			switch (Platform)
+			{
+				case Platform.Android:
+					AssetManager.Instance.Bridge = new AndroidBaseBridge();
+					break;
+				case Platform.iOS:
+					AssetManager.Instance.Bridge = new AndroidBaseBridge();
+					break;
+				case Platform.Windows:
+					AssetManager.Instance.Bridge = new BaseBridge();
+					break;
+			}
 		}
 	}
 }

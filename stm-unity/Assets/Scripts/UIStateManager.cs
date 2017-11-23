@@ -40,41 +40,43 @@ public class UIStateManager : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Load Music and Sound settings, trigger SUGAR sign-in on first load
+	/// Trigger SUGAR sign-in on first load
 	/// </summary>
 	private void Start()
 	{
+		Debug.Log(Application.persistentDataPath);
 		UIManagement.Initialize();
 		AvatarDisplay.LoadSprites();
-		if (PlayerPrefs.HasKey("Music"))
-		{
-			MusicOn = PlayerPrefs.GetInt("Music") == 1;
-		}
-		else
-		{
-			PlayerPrefs.SetInt("Music", 1);
-		}
-		if (PlayerPrefs.HasKey("Sound"))
-		{
-			SoundOn = PlayerPrefs.GetInt("Sound") == 1;
-		}
-		else
-		{
-			PlayerPrefs.SetInt("Sound", 1);
-		}
 		BackToMenu();
-		if (SUGARManager.CurrentUser == null && !_loaded)
+		if (GameManagement.PlatformSettings.Rage)
 		{
-			_loaded = true;
-			SignIn();
+			foreach (var obj in GameManagement.PlatformSettings.RageObjects)
+			{
+				var newObj = Instantiate(obj);
+				newObj.name = obj.name;
+			}
+			if (SUGARManager.CurrentUser == null && !_loaded)
+			{
+				_loaded = true;
+				SignIn();
+			}
+			else
+			{
+				_signIn.Active(SUGARManager.CurrentUser == null);
+				if (SUGARManager.CurrentUser != null)
+				{
+					_userSignedInText.gameObject.Active(true);
+					_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
+				}
+			}
 		}
 		else
 		{
-			_signIn.Active(SUGARManager.CurrentUser == null);
-			if (SUGARManager.CurrentUser != null)
-			{
-				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
-			}
+			_mainMenu.transform.FindObject("Buttons/SUGAR Sign-In").Active(false);
+		}
+		if (Application.platform != RuntimePlatform.WindowsPlayer)
+		{
+			_mainMenu.transform.FindObject("Buttons/Exit").Active(false);
 		}
 		if (_reload)
 		{
@@ -140,6 +142,7 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	public void BackToMenu()
 	{
+		_mainMenu.transform.FindObject("Buttons").Active(true);
 		_newGame.Active(false);
 		_loadGame.Active(false);
 		_teamManagement.Active(false);
@@ -147,7 +150,7 @@ public class UIStateManager : MonoBehaviour {
 		_feedback.Active(false);
 		_mainMenu.Active(true);
 		DoBestFit();
-		_mainMenu.transform.FindButton("Load Game").interactable = GameManagement.GameNames.Count != 0;
+		_mainMenu.transform.FindButton("Buttons/Load Game").interactable = GameManagement.GameNames.Count != 0;
 	}
 
 	/// <summary>
@@ -168,7 +171,6 @@ public class UIStateManager : MonoBehaviour {
 		_teamManagement.Active(true);
 		_questionnaire.Active(false);
 		_feedback.Active(false);
-		((ScreenSideUI)FindObjectOfType(typeof(ScreenSideUI))).ChangeSelected(0);
 	}
 
 	/// <summary>
@@ -217,6 +219,7 @@ public class UIStateManager : MonoBehaviour {
 			if (success)
 			{
 				_signIn.Active(false);
+				_userSignedInText.gameObject.Active(true);
 				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
 				DoBestFit();
 			}
@@ -237,8 +240,9 @@ public class UIStateManager : MonoBehaviour {
 
 	private void OnLanguageChange()
 	{
-		if (SUGARManager.CurrentUser != null)
+		if (GameManagement.PlatformSettings.Rage && SUGARManager.CurrentUser != null)
 		{
+			_userSignedInText.gameObject.Active(true);
 			_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
 		}
 	}
