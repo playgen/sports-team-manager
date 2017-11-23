@@ -11,7 +11,24 @@ using PlayGen.Unity.Utilities.Localization;
 /// </summary>
 public static class GameManagement
 {
-	private static readonly GameManager _gameManager = new GameManager(Application.platform == RuntimePlatform.Android);
+	private static Platform _platform
+	{
+		get
+		{
+			switch (Application.platform)
+			{
+				case RuntimePlatform.WindowsPlayer:
+					return Platform.Windows;
+				case RuntimePlatform.Android:
+					return Platform.Android;
+				case RuntimePlatform.IPhonePlayer:
+					return Platform.iOS;
+				default:
+					return Platform.Windows;
+			}
+		}
+	}
+	private static readonly GameManager _gameManager = new GameManager(_platform);
 	private static readonly PlatformSettings _platformSettings = (PlatformSettings)Resources.Load("PlatformSettings", typeof(PlatformSettings));
 
 	public static GameManager GameManager

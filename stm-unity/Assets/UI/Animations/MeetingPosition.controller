@@ -213,58 +213,67 @@ AnimationClip:
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
     genericBindings:
-    - path: 0
+    - serializedVersion: 2
+      path: 0
       attribute: 2526845255
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 0
+    - serializedVersion: 2
+      path: 0
       attribute: 4215373228
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 0
+    - serializedVersion: 2
+      path: 0
       attribute: 2334886179
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 2612594937
+    - serializedVersion: 2
+      path: 2612594937
       attribute: 2526845255
       script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 2612594937
+    - serializedVersion: 2
+      path: 2612594937
       attribute: 4215373228
       script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 2612594937
+    - serializedVersion: 2
+      path: 2612594937
       attribute: 2334886179
       script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 83635035
+    - serializedVersion: 2
+      path: 83635035
       attribute: 2526845255
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 83635035
+    - serializedVersion: 2
+      path: 83635035
       attribute: 4215373228
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 83635035
+    - serializedVersion: 2
+      path: 83635035
       attribute: 2334886179
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
     pptrCurveMapping: []
@@ -437,7 +446,6 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_GenerateMotionCurves: 0
-  m_IsEmpty: 0
   m_Events: []
 --- !u!74 &74458317807440090
 AnimationClip:
@@ -607,58 +615,67 @@ AnimationClip:
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
     genericBindings:
-    - path: 0
+    - serializedVersion: 2
+      path: 0
       attribute: 2526845255
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 0
+    - serializedVersion: 2
+      path: 0
       attribute: 4215373228
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 0
+    - serializedVersion: 2
+      path: 0
       attribute: 2334886179
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 2612594937
+    - serializedVersion: 2
+      path: 2612594937
       attribute: 2526845255
       script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 2612594937
+    - serializedVersion: 2
+      path: 2612594937
       attribute: 4215373228
       script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 2612594937
+    - serializedVersion: 2
+      path: 2612594937
       attribute: 2334886179
       script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 83635035
+    - serializedVersion: 2
+      path: 83635035
       attribute: 2526845255
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 83635035
+    - serializedVersion: 2
+      path: 83635035
       attribute: 4215373228
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 83635035
+    - serializedVersion: 2
+      path: 83635035
       attribute: 2334886179
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
     pptrCurveMapping: []
@@ -831,7 +848,6 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_GenerateMotionCurves: 0
-  m_IsEmpty: 0
   m_Events: []
 --- !u!74 &74616526411986322
 AnimationClip:
@@ -1017,64 +1033,74 @@ AnimationClip:
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
     genericBindings:
-    - path: 0
+    - serializedVersion: 2
+      path: 0
       attribute: 2526845255
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 0
+    - serializedVersion: 2
+      path: 0
       attribute: 4215373228
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 0
+    - serializedVersion: 2
+      path: 0
       attribute: 2334886179
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 2612594937
+    - serializedVersion: 2
+      path: 2612594937
       attribute: 2526845255
       script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 2612594937
+    - serializedVersion: 2
+      path: 2612594937
       attribute: 4215373228
       script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 2612594937
+    - serializedVersion: 2
+      path: 2612594937
       attribute: 2334886179
       script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 83635035
+    - serializedVersion: 2
+      path: 83635035
       attribute: 2526845255
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 83635035
+    - serializedVersion: 2
+      path: 83635035
       attribute: 4215373228
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 83635035
+    - serializedVersion: 2
+      path: 83635035
       attribute: 2334886179
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 83635035
+    - serializedVersion: 2
+      path: 83635035
       attribute: 304273561
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
     pptrCurveMapping: []
@@ -1263,7 +1289,6 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_GenerateMotionCurves: 0
-  m_IsEmpty: 0
   m_Events: []
 --- !u!74 &74932846698718060
 AnimationClip:
@@ -1433,58 +1458,67 @@ AnimationClip:
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
     genericBindings:
-    - path: 0
+    - serializedVersion: 2
+      path: 0
       attribute: 2526845255
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 0
+    - serializedVersion: 2
+      path: 0
       attribute: 4215373228
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 0
+    - serializedVersion: 2
+      path: 0
       attribute: 2334886179
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 2612594937
+    - serializedVersion: 2
+      path: 2612594937
       attribute: 2526845255
       script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 2612594937
+    - serializedVersion: 2
+      path: 2612594937
       attribute: 4215373228
       script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 2612594937
+    - serializedVersion: 2
+      path: 2612594937
       attribute: 2334886179
       script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 83635035
+    - serializedVersion: 2
+      path: 83635035
       attribute: 2526845255
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 83635035
+    - serializedVersion: 2
+      path: 83635035
       attribute: 4215373228
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
-    - path: 83635035
+    - serializedVersion: 2
+      path: 83635035
       attribute: 2334886179
       script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-      classID: 114
+      typeID: 114
       customType: 0
       isPPtrCurve: 0
     pptrCurveMapping: []
@@ -1657,7 +1691,6 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_GenerateMotionCurves: 0
-  m_IsEmpty: 0
   m_Events: []
 --- !u!1101 &1101161986995118166
 AnimatorStateTransition:

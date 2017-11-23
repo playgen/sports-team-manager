@@ -31,9 +31,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// GameManager Constructor
 		/// </summary>
-		public GameManager(bool android = false)
+		public GameManager(Platform platform = Platform.Windows)
 		{
-			config = new ConfigStore(android);
+			config = new ConfigStore(platform);
 		}
 
 		/// <summary>

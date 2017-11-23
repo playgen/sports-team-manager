@@ -44,7 +44,6 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	private void Start()
 	{
-		Debug.Log(Application.persistentDataPath);
 		UIManagement.Initialize();
 		AvatarDisplay.LoadSprites();
 		BackToMenu();
