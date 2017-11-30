@@ -99,21 +99,6 @@ public class FeedbackUI : MonoBehaviour {
 			styleObj.transform.FindComponent<TextLocalization>("Style").Key = style.Key;
 			styleObj.transform.FindImage("Amount").fillAmount = style.Value;
 			styleObj.transform.FindText("Percentage").text = (Mathf.Round(style.Value * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
-			if (Mathf.Approximately(style.Value, styles.Values.Max()))
-			{
-				styleObj.transform.FindText("Questions").text = Localization.Get(style.Key + "_Questions_High");
-				styleObj.transform.FindComponent<TextLocalization>("Questions").Key = style.Key + "_Questions_High";
-			}
-			else if (Mathf.Approximately(style.Value, styles.Values.Min()))
-			{
-				styleObj.transform.FindText("Questions").text = Localization.Get(style.Key + "_Questions_Low");
-				styleObj.transform.FindComponent<TextLocalization>("Questions").Key = style.Key + "_Questions_Low";
-			}
-			else
-			{
-				styleObj.transform.FindText("Questions").text = string.Empty;
-				styleObj.transform.FindComponent<TextLocalization>("Questions").Key = string.Empty;
-			}
 		}
 		Invoke("DoBestFit", 0);
 	}

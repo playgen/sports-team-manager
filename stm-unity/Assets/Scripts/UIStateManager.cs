@@ -141,6 +141,7 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	public void BackToMenu()
 	{
+		_mainMenu.transform.FindImage("Image").enabled = true;
 		_mainMenu.transform.FindObject("Buttons").Active(true);
 		_newGame.Active(false);
 		_loadGame.Active(false);
