@@ -6,10 +6,16 @@ public class PlatformSettings : ScriptableObject {
 	[SerializeField]
 	private bool _rage;
 	[SerializeField]
+	private bool _demoMode;
+	[SerializeField]
 	private GameObject[] _rageObjects;
 	public bool Rage
 	{
 		get { return _rage; }
+	}
+	public bool DemoMode
+	{
+		get { return _demoMode; }
 	}
 	public GameObject[] RageObjects
 	{

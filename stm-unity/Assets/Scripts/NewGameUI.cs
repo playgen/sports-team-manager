@@ -58,8 +58,24 @@ public class NewGameUI : MonoBehaviour {
 
 	private void OnEnable()
 	{
-		_tutorialToggle.enabled = GameManagement.GameNames.Count != 0;
-		_tutorialToggle.isOn = true;
+		if (GameManagement.PlatformSettings.DemoMode)
+		{
+			_tutorialToggle.transform.parent.gameObject.Active(false);
+			_tutorialToggle.isOn = false;
+			if (string.IsNullOrEmpty(_boatName.text))
+			{
+				_boatName.text = "Demo" + (GameManagement.GameNames.Count + 1);
+			}
+			if (string.IsNullOrEmpty(_managerName.text))
+			{
+				_managerName.text = "Demo" + (GameManagement.GameNames.Count + 1);
+			}
+		}
+		else
+		{
+			_tutorialToggle.enabled = GameManagement.GameNames.Count != 0;
+			_tutorialToggle.isOn = true;
+		}
 		BestFit.ResolutionChange += DoBestFit;
 		Invoke("DoBestFit", 0f);
 	}
@@ -178,7 +194,7 @@ public class NewGameUI : MonoBehaviour {
 
 	private void DoBestFit()
 	{
-		GetComponentsInChildren<Text>().Where(t => t.gameObject.activeInHierarchy && t.text.Length > 0).BestFit();
+		GetComponentsInChildren<Text>().Where(t => t.gameObject.activeInHierarchy && (t.text.Length > 0 || t.GetComponentInParent<InputField>())).BestFit();
 		_overwritePopUp.GetComponentsInChildren<Button>().Where(t => t.gameObject != _overwritePopUp).Select(t => t.gameObject).BestFit();
 	}
 }

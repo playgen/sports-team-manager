@@ -21,6 +21,7 @@ public class ScreenSideUI : MonoBehaviour {
 	{
 		_nameText.text = GameManagement.TeamName;
 		BestFit.ResolutionChange += DoBestFit;
+		transform.FindObject("Side Menu/Settings").Active(!GameManagement.PlatformSettings.DemoMode);
 		transform.FindObject("Side Menu/Team Management").Active(GameManagement.PlatformSettings.Rage);
 		transform.FindObject("Side Menu/Achievements").Active(GameManagement.PlatformSettings.Rage);
 		transform.FindObject("Side Menu/Leaderboards").Active(GameManagement.PlatformSettings.Rage);

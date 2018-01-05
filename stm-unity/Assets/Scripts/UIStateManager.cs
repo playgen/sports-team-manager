@@ -47,7 +47,15 @@ public class UIStateManager : MonoBehaviour {
 		UIManagement.Initialize();
 		AvatarDisplay.LoadSprites();
 		BackToMenu();
-		if (GameManagement.PlatformSettings.Rage)
+		if (GameManagement.PlatformSettings.DemoMode)
+		{
+			foreach (Transform child in _mainMenu.transform.Find("Buttons"))
+			{
+				child.gameObject.Active(false);
+			}
+			_mainMenu.transform.FindObject("Buttons/New Game").Active(true);
+		}
+		else if (GameManagement.PlatformSettings.Rage)
 		{
 			foreach (var obj in GameManagement.PlatformSettings.RageObjects)
 			{
@@ -73,7 +81,7 @@ public class UIStateManager : MonoBehaviour {
 		{
 			_mainMenu.transform.FindObject("Buttons/SUGAR Sign-In").Active(false);
 		}
-		if (Application.platform != RuntimePlatform.WindowsPlayer)
+		if (GameManagement.PlatformSettings.DemoMode || Application.platform != RuntimePlatform.WindowsPlayer)
 		{
 			_mainMenu.transform.FindObject("Buttons/Exit").Active(false);
 		}

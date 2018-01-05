@@ -234,6 +234,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		for (var i = 0; i < GameManagement.GameManager.GetTotalRaceCount(); i++)
 		{
 			var resultObj = Instantiate(_resultPrefab, _ongoingResultContainer.transform, false);
+			resultObj.GetComponentInChildren<Text>().color = UnityEngine.Color.black;
 			if (raceHistory.Count > i)
 			{
 				var position = GameManagement.GetRacePosition(raceHistory[i].Key, raceHistory[i].Value);
