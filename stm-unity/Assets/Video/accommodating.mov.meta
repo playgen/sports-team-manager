@@ -3,27 +3,20 @@ guid: 5c203ea7727b86a42bee5ea3c86c900f
 timeCreated: 1510666632
 licenseType: Free
 VideoClipImporter:
+  externalObjects: {}
   serializedVersion: 2
   useLegacyImporter: 0
   quality: 0.5
   isColorLinear: 0
-  originalWidth: 716
-  originalHeight: 540
   frameRange: 0
   startFrame: -1
   endFrame: -1
-  frameCount: 4526
-  frameRate: 60
   colorSpace: 0
   deinterlace: 0
-  sourceFileSize: 9661773
   encodeAlpha: 0
-  sourceHasAlpha: 0
   flipVertical: 0
   flipHorizontal: 0
   importAudio: 0
-  sourceAudioChannelCount: 
-  sourceAudioSampleRate: 
   targetSettings:
     0:
       enableTranscoding: 1
@@ -34,25 +27,6 @@ VideoClipImporter:
       customHeight: 540
       bitrateMode: 2
       spatialQuality: 2
-  output:
-    format: 1
-    settings:
-      enableTranscoding: 1
-      codec: 0
-      resizeFormat: 0
-      aspectRatio: 0
-      customWidth: 716
-      customHeight: 540
-      bitrateMode: 2
-      spatialQuality: 2
-    encodedWidth: 716
-    encodedHeight: 540
-    encodedStartFrame: 0
-    encodedEndFrame: 4526
-    streamedResource:
-      source: library/metadata/5c/5c203ea7727b86a42bee5ea3c86c900f.resource
-      offset: 0
-      size: 4422742
   userData: 
   assetBundleName: 
   assetBundleVariant: 

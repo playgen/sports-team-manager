@@ -3,27 +3,20 @@ guid: abb5f9840867af2438da8320a926d0ae
 timeCreated: 1510666633
 licenseType: Free
 VideoClipImporter:
+  externalObjects: {}
   serializedVersion: 2
   useLegacyImporter: 0
   quality: 0.5
   isColorLinear: 0
-  originalWidth: 714
-  originalHeight: 532
   frameRange: 0
   startFrame: -1
   endFrame: -1
-  frameCount: 3890
-  frameRate: 60
   colorSpace: 0
   deinterlace: 0
-  sourceFileSize: 6018026
   encodeAlpha: 0
-  sourceHasAlpha: 0
   flipVertical: 0
   flipHorizontal: 0
   importAudio: 0
-  sourceAudioChannelCount: 
-  sourceAudioSampleRate: 
   targetSettings:
     0:
       enableTranscoding: 1
@@ -34,25 +27,6 @@ VideoClipImporter:
       customHeight: 532
       bitrateMode: 2
       spatialQuality: 2
-  output:
-    format: 1
-    settings:
-      enableTranscoding: 1
-      codec: 0
-      resizeFormat: 0
-      aspectRatio: 0
-      customWidth: 714
-      customHeight: 532
-      bitrateMode: 2
-      spatialQuality: 2
-    encodedWidth: 714
-    encodedHeight: 532
-    encodedStartFrame: 0
-    encodedEndFrame: 3890
-    streamedResource:
-      source: library/metadata/ab/abb5f9840867af2438da8320a926d0ae.resource
-      offset: 0
-      size: 3069322
   userData: 
   assetBundleName: 
   assetBundleVariant: 

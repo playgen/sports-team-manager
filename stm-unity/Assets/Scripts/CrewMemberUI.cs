@@ -100,7 +100,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		//_dragPosition is used to offset according to where the click occurred
 		_dragPosition = Input.mousePosition - transform.position;
 		//set as child of parent many levels up so this displays above all other CrewMember objects
-		transform.SetParent(transform.root, false);
+		transform.SetParent(GameObject.Find("Drag Canvas").transform, false);
 		transform.position = (Vector2)Input.mousePosition - _dragPosition;
 		//set as last sibling so this always appears in front of other UI objects (except pop-ups)
 		transform.SetAsLastSibling();

@@ -121,7 +121,7 @@ public class UIStateManager : MonoBehaviour {
 		//takes a screenshot whenever down arrow is pressed
 		if (Input.GetKeyDown(KeyCode.DownArrow))
 		{
-			Application.CaptureScreenshot(System.DateTime.UtcNow.ToFileTimeUtc() + ".png");
+			ScreenCapture.CaptureScreenshot(System.DateTime.UtcNow.ToFileTimeUtc() + ".png");
 		}
 #endif
 	}
