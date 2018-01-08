@@ -268,18 +268,24 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		else
 		{
 			stageIcon.gameObject.Active(false);
-			_feedbackButton.onClick.RemoveAllListeners();
-			if (GameManagement.GameManager.QuestionnaireCompleted)
+			if (GameManagement.PlatformSettings.Rage)
 			{
-				_feedbackButton.onClick.AddListener(TriggerFeedback);
-				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
+				_feedbackButton.onClick.RemoveAllListeners();
+				if (GameManagement.GameManager.QuestionnaireCompleted)
+				{
+					_feedbackButton.onClick.AddListener(TriggerFeedback);
+					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
+				}
+				else
+				{
+					_feedbackButton.onClick.AddListener(TriggerQuestionnaire);
+					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("CONFLICT_QUESTIONNAIRE");
+				}
 			}
 			else
 			{
-				_feedbackButton.onClick.AddListener(TriggerQuestionnaire);
-				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("CONFLICT_QUESTIONNAIRE");
+				_feedbackButton.gameObject.Active(false);
 			}
-
 			foreach (Transform child in _resultContainer.transform)
 			{
 				Destroy(child.gameObject);
@@ -908,7 +914,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat(GameManagement.IsRace ? "RACE_BUTTON_RACE" : "RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
 		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE");
 		ChangeVisibleBoats(true);
-		if (_endRace.gameObject.activeSelf)
+		if (_endRace.gameObject.activeSelf && GameManagement.PlatformSettings.Rage)
 		{
 			_feedbackButton.GetComponentInChildren<Text>(true).text = Localization.Get(GameManagement.GameManager.QuestionnaireCompleted ? "FEEDBACK_BUTTON" : "CONFLICT_QUESTIONNAIRE");
 		}

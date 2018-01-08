@@ -56,6 +56,7 @@ public class CupResultUI : MonoBehaviour
 		{
 			{ TrackerContextKeys.CupFinishingPosition.ToString(), _cupPosition.ToString() }
 		}, AccessibleTracker.Accessible.Screen));
+		transform.FindObject("Outro").Active(GameManagement.PlatformSettings.Rage);
 		transform.FindObject("Questionnaire").Active(GameManagement.PlatformSettings.Rage);
 		transform.FindObject("OK").Active(!GameManagement.PlatformSettings.Rage);
 	}
