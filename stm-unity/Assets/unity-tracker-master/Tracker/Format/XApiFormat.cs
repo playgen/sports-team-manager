@@ -17,7 +17,7 @@
  */
 using UnityEngine;
 using System.Collections.Generic;
-using RAGESimpleJSON;
+using SimpleJSON;
 using System;
 using RAGE.Analytics.Exceptions;
 

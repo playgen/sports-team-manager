@@ -66,7 +66,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace RAGESimpleJSON
+namespace SimpleJSON
 {
     public enum JSONBinaryTag
     {

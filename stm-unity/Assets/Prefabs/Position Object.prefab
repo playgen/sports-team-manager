@@ -61,6 +61,7 @@ GameObject:
   - component: {fileID: 224000014154040692}
   - component: {fileID: 222000010236181060}
   - component: {fileID: 114000014086225398}
+  - component: {fileID: 114851908107294452}
   m_Layer: 5
   m_Name: Session Back
   m_TagString: Untagged
@@ -471,6 +472,7 @@ MonoBehaviour:
   m_PreferredHeight: -1
   m_FlexibleWidth: 1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!114 &114000010973709512
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -924,6 +926,23 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114851908107294452
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010214739486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2024c9582234be044b6f4820c8cc32db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _standalonePositioning:
+    Min: {x: 0, y: 0.8}
+    Max: {x: 0.25, y: 1}
+  _mobilePositioning:
+    Min: {x: 0, y: 0.68}
+    Max: {x: 0.4, y: 1}
 --- !u!114 &114994109360924382
 MonoBehaviour:
   m_ObjectHideFlags: 1

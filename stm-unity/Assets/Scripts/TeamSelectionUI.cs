@@ -44,16 +44,12 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private Icon[] _mistakeIcons;
 	[SerializeField]
 	private Icon[] _roleIcons;
-	public Icon[] RoleIcons
-	{
-		get { return _roleIcons; }
-	}
+	public Icon[] RoleIcons => _roleIcons;
+
 	[SerializeField]
 	public Icon[] _roleLogos;
-	public Icon[] RoleLogos
-	{
-		get { return _roleLogos; }
-	}
+	public Icon[] RoleLogos => _roleLogos;
+
 	[SerializeField]
 	private GameObject _crewPrefab;
 	[SerializeField]

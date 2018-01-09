@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlatformPositioning : MonoBehaviour
 {
 	[Serializable]
-	class Anchor
+	private class Anchor
 	{
 		public Vector2 Min;
 		public Vector2 Max;

@@ -23,10 +23,7 @@ public class TutorialController : MonoBehaviour
 	[SerializeField]
 	private List<TutorialObject> _tutorialSections;
 	private TutorialSectionUI _tutorialDisplay;
-	public int SectionCount
-	{
-		get { return _tutorialSections.Count; }
-	}
+	public int SectionCount => _tutorialSections.Count;
 
 	/// <summary>
 	/// Load and parse tutorial JSON, creating a new game object for each 

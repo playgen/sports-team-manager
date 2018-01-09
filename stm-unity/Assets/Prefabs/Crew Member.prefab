@@ -198,6 +198,7 @@ GameObject:
   - component: {fileID: 22270624}
   - component: {fileID: 11440092}
   - component: {fileID: 114000013950508032}
+  - component: {fileID: 114773067276138748}
   m_Layer: 5
   m_Name: Position
   m_TagString: Untagged
@@ -279,6 +280,7 @@ MonoBehaviour:
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!114 &11414016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1099,6 +1101,7 @@ GameObject:
   - component: {fileID: 224000010358187948}
   - component: {fileID: 222000010879351178}
   - component: {fileID: 114000010901772436}
+  - component: {fileID: 114139764434629488}
   m_Layer: 5
   m_Name: Opinion
   m_TagString: Untagged
@@ -1133,6 +1136,7 @@ GameObject:
   - component: {fileID: 224288953100721556}
   - component: {fileID: 222915838986488794}
   - component: {fileID: 114681794696364728}
+  - component: {fileID: 114171224439942828}
   m_Layer: 5
   m_Name: Sort
   m_TagString: Untagged
@@ -1292,6 +1296,40 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114139764434629488
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013134669404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2024c9582234be044b6f4820c8cc32db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _standalonePositioning:
+    Min: {x: 0.75, y: 0.8}
+    Max: {x: 1, y: 1}
+  _mobilePositioning:
+    Min: {x: 0.6, y: 0.68}
+    Max: {x: 1, y: 1}
+--- !u!114 &114171224439942828
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1752158893965418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2024c9582234be044b6f4820c8cc32db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _standalonePositioning:
+    Min: {x: 0, y: 0.8}
+    Max: {x: 0.25, y: 1}
+  _mobilePositioning:
+    Min: {x: 0, y: 0.68}
+    Max: {x: 0.4, y: 1}
 --- !u!114 &114473887623994366
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1346,6 +1384,23 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114773067276138748
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 181230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2024c9582234be044b6f4820c8cc32db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _standalonePositioning:
+    Min: {x: 0, y: 0.8}
+    Max: {x: 0.25, y: 1}
+  _mobilePositioning:
+    Min: {x: 0, y: 0.68}
+    Max: {x: 0.4, y: 1}
 --- !u!114 &114809591658884922
 MonoBehaviour:
   m_ObjectHideFlags: 1
