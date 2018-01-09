@@ -25,7 +25,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(null, obj)) return false;
-			return obj is Color && Equals((Color)obj);
+			return obj is Color color && Equals(color);
 		}
 
 		public override int GetHashCode()

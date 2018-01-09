@@ -177,7 +177,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				recruit.Value.UpdateBeliefs("Recruit");
 				recruit.Value.Avatar = new Avatar(recruit.Value, false);
 			}
-			iat.SaveToFile(iat.AssetFilePath);
+			iat.SaveToFile(Path.Combine(storageLocation, Name + ".iat"));
 		}
 
 		/// <summary>
@@ -203,7 +203,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			member.UpdateBeliefs("null");
 			member.SaveStatus();
 			Recruits.Remove(member.Name);
-			iat.SaveToFile(iat.AssetFilePath);
+			iat.Save();
 		}
 
 		/// <summary>
@@ -261,12 +261,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				crewMember.TickRevealedOpinionAge();
 			}
-			Manager.SaveStatus();
 			PostRaceRest();
 			TickCrewMembers(0);
 			PromoteBoat();
 			//update available recruits for the next race
 			CreateRecruits();
+			Manager.SaveStatus();
 		}
 
 		/// <summary>
@@ -286,7 +286,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			//store that the boat type has been changed
 			Manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.Type);
-			Manager.SaveStatus();
 			//calculate how many new members should be created
 			extraMembers = (Boat.Positions.Count - extraMembers) * 2;
 			//reset the positions on the boat to those for the new type
@@ -310,7 +309,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					newMember.UpdateBeliefs("null");
 					newMember.SaveStatus();
-					iat.SaveToFile(iat.AssetFilePath);
 					//if the boat is under-staffed for the current boat size, this new CrewMember is not counted
 					if (!CanRemoveFromCrew())
 					{

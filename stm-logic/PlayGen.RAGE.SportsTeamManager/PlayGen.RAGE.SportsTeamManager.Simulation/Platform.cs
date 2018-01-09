@@ -2,6 +2,7 @@
 {
 	public enum Platform
 	{
+		Null,
 		Android,
 		iOS,
 		Windows

@@ -14,7 +14,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoat()
 		{
-			var config = new ConfigStore();
+			var config = new ConfigStore(Platform.Windows);
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -32,7 +32,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void BadBoat()
 		{
-			var config = new ConfigStore();
+			var config = new ConfigStore(Platform.Windows);
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -50,7 +50,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void OnePersonBoat()
 		{
-			var config = new ConfigStore();
+			var config = new ConfigStore(Platform.Windows);
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -68,7 +68,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithFriendlyCrew()
 		{
-			var config = new ConfigStore();
+			var config = new ConfigStore(Platform.Windows);
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -95,7 +95,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithUnfriendlyCrew()
 		{
-			var config = new ConfigStore();
+			var config = new ConfigStore(Platform.Windows);
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -122,7 +122,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithMixedOpinionCrew()
 		{
-			var config = new ConfigStore();
+			var config = new ConfigStore(Platform.Windows);
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -149,7 +149,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithUnfriendlySkip()
 		{
-			var config = new ConfigStore();
+			var config = new ConfigStore(Platform.Windows);
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -172,7 +172,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithManagerOpinions()
 		{
-			var config = new ConfigStore();
+			var config = new ConfigStore(Platform.Windows);
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -197,7 +197,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithManagerAndCrewOpinions()
 		{
-			var config = new ConfigStore();
+			var config = new ConfigStore(Platform.Windows);
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -229,7 +229,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithOpinionsOnUnused()
 		{
-			var config = new ConfigStore();
+			var config = new ConfigStore(Platform.Windows);
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -265,7 +265,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void PerfectBoatWithOpinionUpdates()
 		{
-			var config = new ConfigStore();
+			var config = new ConfigStore(Platform.Windows);
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -312,7 +312,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void CreateAndSaveNewBoat()
 		{
-			var config = new ConfigStore();
+			var config = new ConfigStore(Platform.Windows);
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -321,7 +321,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		[TestMethod]
 		public void CreateAndLoadNewBoat()
 		{
-			var config = new ConfigStore();
+			var config = new ConfigStore(Platform.Windows);
 			var crew = CreateInitialCrew(config);
 			var gameManager = new GameManager();
 			gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -337,7 +337,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		{
 			for (var i = 0; i < _testCount; i++)
 			{
-				var config = new ConfigStore();
+				var config = new ConfigStore(Platform.Windows);
 				var crew = CreateInitialCrew(config);
 				var gameManager = new GameManager();
 				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -371,7 +371,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		{
 			for (var i = 0; i < _testCount; i++)
 			{
-				var config = new ConfigStore();
+				var config = new ConfigStore(Platform.Windows);
 				var crew = CreateInitialCrew(config);
 				var gameManager = new GameManager();
 				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -418,7 +418,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		{
 			for (var i = 0; i < _testCount; i++)
 			{
-				var config = new ConfigStore();
+				var config = new ConfigStore(Platform.Windows);
 				var crew = CreateInitialCrew(config);
 				var gameManager = new GameManager();
 				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);
@@ -497,7 +497,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 		{
 			for (var i = 0; i < _testCount; i++)
 			{
-				var config = new ConfigStore();
+				var config = new ConfigStore(Platform.Windows);
 				var crew = CreateInitialCrew(config);
 				var gameManager = new GameManager();
 				gameManager.NewGame(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Testing"), "Testy McTestFace", new byte[] {0, 0, 0}, new byte[] {0, 0, 0}, "Player Manager", false, "English", crew);

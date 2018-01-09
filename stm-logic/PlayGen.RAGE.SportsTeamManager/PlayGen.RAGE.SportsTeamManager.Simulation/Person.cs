@@ -70,7 +70,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			rpc.EmotionalAppraisalAssetSource = fileName + ".ea";
 			rpc.EmotionalDecisionMakingSource = fileName + ".edm";
 			rpc.SocialImportanceAssetSource = fileName + ".si";
-			rpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
+			rpc.Save();
 			iat.AddNewCharacterSource(new CharacterSourceDTO { Source = rpc.AssetFilePath });
 			//store RPC locally
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(rpc.AssetFilePath);
@@ -80,26 +80,26 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (!string.IsNullOrEmpty(managerName))
 			{
 				SocialImportance.AddConferral(new ConferralDTO
-									{
-										ConferralSI = 1,
-										Action = "Negative",
-										Target = managerName,
-										Conditions = new Conditions.DTOs.ConditionSetDTO()
-									});
+				{
+					ConferralSI = 1,
+					Action = "Negative",
+					Target = managerName,
+					Conditions = new Conditions.DTOs.ConditionSetDTO()
+				});
 				SocialImportance.AddConferral(new ConferralDTO
-									{
-										ConferralSI = 5,
-										Action = "Mid",
-										Target = managerName,
-										Conditions = new Conditions.DTOs.ConditionSetDTO()
-									});
+				{
+					ConferralSI = 5,
+					Action = "Mid",
+					Target = managerName,
+					Conditions = new Conditions.DTOs.ConditionSetDTO()
+				});
 				SocialImportance.AddConferral(new ConferralDTO
-									{
-										ConferralSI = 10,
-										Action = "Positive",
-										Target = managerName,
-										Conditions = new Conditions.DTOs.ConditionSetDTO()
-									});
+				{
+					ConferralSI = 10,
+					Action = "Positive",
+					Target = managerName,
+					Conditions = new Conditions.DTOs.ConditionSetDTO()
+				});
 				SocialImportance.Save();
 			}
 		}
@@ -125,7 +125,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void UpdateSingleBelief(string name, string value)
 		{
-			var belief = EventHelper.PropertyChange(name, value, Name.NoSpaces());
+			var belief = (Name)string.Format("Event(Property-Change, {0}, {1}, {2})", Name.NoSpaces(), name, value);
+
 			RolePlayCharacter.Perceive(new[] { belief });
 			RolePlayCharacter.ForgetEvent(RolePlayCharacter.EventRecords.Last().Id);
 		}

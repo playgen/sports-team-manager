@@ -407,8 +407,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						continue;
 					}
-					int currentCount;
-					int.TryParse(manager.LoadBelief(string.Format("PossibleMeaning({0})", meaning)), out currentCount);
+					int.TryParse(manager.LoadBelief(string.Format("PossibleMeaning({0})", meaning)), out var currentCount);
 					manager.UpdateSingleBelief(string.Format("PossibleMeaning({0})", meaning), (currentCount + 1).ToString());
 				}
 			}
@@ -427,8 +426,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						continue;
 					}
-					int currentCount;
-					int.TryParse(manager.LoadBelief(string.Format("PossibleStyle({0})", style)), out currentCount);
+					int.TryParse(manager.LoadBelief(string.Format("PossibleStyle({0})", style)), out var currentCount);
 					manager.UpdateSingleBelief(string.Format("PossibleStyle({0})", style), (currentCount + 1).ToString());
 				}
 			}
@@ -445,8 +443,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					continue;
 				}
-				int currentCount;
-				int.TryParse(manager.LoadBelief(string.Format("Meaning({0})", meaning)), out currentCount);
+				int.TryParse(manager.LoadBelief(string.Format("Meaning({0})", meaning)), out var currentCount);
 				manager.UpdateSingleBelief(string.Format("Meaning({0})", meaning), (currentCount + 1).ToString());
 			}
 		}
@@ -462,8 +459,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					continue;
 				}
-				int currentCount;
-				int.TryParse(manager.LoadBelief(string.Format("Style({0})", style)), out currentCount);
+				int.TryParse(manager.LoadBelief(string.Format("Style({0})", style)), out var currentCount);
 				manager.UpdateSingleBelief(string.Format("Style({0})", style), (currentCount + 1).ToString());
 			}
 		}

@@ -10,9 +10,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal static AvatarGeneratorConfig Config;
 
 		public string BodyType { get; private set; }
-		public string OutfitBaseType { get; private set; }
-		public string OutfitHighlightType { get; private set; }
-		public string OutfitShadowType { get; private set; }
+		public string OutfitBaseType { get; }
+		public string OutfitHighlightType { get; }
+		public string OutfitShadowType { get; }
 		public string HairType { get; private set; }
 		public string EyeType { get; private set; }
 		public string EyebrowType { get; private set; }
@@ -21,7 +21,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string TeethType { get; private set; }
 		public float Weight { get; private set; }
 		public float Height { get; private set; }
-		public bool IsMale { get; private set; }
+		public bool IsMale { get; }
 		public CrewMemberSkill BestSkill { get; private set; }
 
 		public bool CustomOutfitColor { get; }

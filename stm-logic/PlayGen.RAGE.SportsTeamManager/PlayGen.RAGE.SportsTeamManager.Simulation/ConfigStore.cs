@@ -29,9 +29,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal static SocialImportanceAsset SocialImportance { get; set; }
 		internal static Platform Platform { get; set; }
 
-		public ConfigStore(Platform platform = Platform.Windows)
+		public ConfigStore(Platform platform = Platform.Null)
 		{
-			Platform = platform;
+			if (platform != Platform.Null)
+			{
+				Platform = platform;
+			}
+			if (Platform == Platform.Null)
+			{
+				Platform = Platform.Windows;
+			}
 			ConfigValues = new Dictionary<ConfigKeys, float>();
 			var configText = Templates.ResourceManager.GetString("config");
 			ConfigValues = JsonConvert.DeserializeObject<Dictionary<ConfigKeys, float>>(configText);
