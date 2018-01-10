@@ -33,47 +33,64 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ActionLibrary">
+    <Reference Include="ActionLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\ActionLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="AutobiographicMemory">
+    <Reference Include="AutobiographicMemory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\AutobiographicMemory.dll</HintPath>
     </Reference>
-    <Reference Include="CommeillFaut">
+    <Reference Include="CommeillFaut, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\CommeillFaut.dll</HintPath>
     </Reference>
-    <Reference Include="Conditions">
+    <Reference Include="Conditions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\Conditions.dll</HintPath>
     </Reference>
-    <Reference Include="EmotionalAppraisal">
+    <Reference Include="EmotionalAppraisal, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\EmotionalAppraisal.dll</HintPath>
     </Reference>
-    <Reference Include="EmotionalDecisionMaking">
+    <Reference Include="EmotionalDecisionMaking, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\EmotionalDecisionMaking.dll</HintPath>
     </Reference>
-    <Reference Include="GAIPS.Rage">
+    <Reference Include="GAIPS.Rage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\GAIPS.Rage.dll</HintPath>
     </Reference>
-    <Reference Include="GAIPS.Serialization">
+    <Reference Include="GAIPS.Serialization, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\GAIPS.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="IntegratedAuthoringTool">
+    <Reference Include="IntegratedAuthoringTool, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\IntegratedAuthoringTool.dll</HintPath>
     </Reference>
-    <Reference Include="KnowledgeBase">
+    <Reference Include="KnowledgeBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\KnowledgeBase.dll</HintPath>
+    </Reference>
+    <Reference Include="MCTS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RAGE Assets\MCTS.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RageAssetManager">
+    <Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\RageAssetManager.dll</HintPath>
     </Reference>
-    <Reference Include="RolePlayCharacter">
+    <Reference Include="RolePlayCharacter, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\RolePlayCharacter.dll</HintPath>
     </Reference>
-    <Reference Include="SocialImportanceAsset">
+    <Reference Include="SocialImportanceAsset, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\SocialImportanceAsset.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -82,10 +99,12 @@
       <HintPath>..\packages\Rx-Main.1.0.11226\lib\Net35\System.Reactive.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Utilities">
+    <Reference Include="Utilities, Version=1.0.0.19854, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\Utilities.dll</HintPath>
     </Reference>
-    <Reference Include="WellFormedNames">
+    <Reference Include="WellFormedNames, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\WellFormedNames.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -132,7 +151,6 @@
     <None Include="config.json" />
     <None Include="GameConfig.json" />
     <None Include="NameConfig.json" />
-    <None Include="NPC Templates\HelpDialogue.iat" />
     <None Include="NPC Templates\Template.ea" />
     <None Include="NPC Templates\Template.edm" />
     <None Include="NPC Templates\Template.iat" />

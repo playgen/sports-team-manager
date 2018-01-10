@@ -22,10 +22,10 @@ public class PostRaceEventUI : MonoBehaviour
 
 	private void OnEnable()
 	{
-        Localization.LanguageChange += OnLanguageChange;
-        BestFit.ResolutionChange += DoBestFit;
-        //reorder pop-ups and blockers
-        transform.parent.EnableBlocker();
+		Localization.LanguageChange += OnLanguageChange;
+		BestFit.ResolutionChange += DoBestFit;
+		//reorder pop-ups and blockers
+		transform.parent.EnableBlocker();
 	}
 
 	private void OnDisable()
@@ -47,18 +47,18 @@ public class PostRaceEventUI : MonoBehaviour
 		}
 	}
 
-    public void Display()
-    {
-        if (_postRacePeople == null)
-        {
-            _postRacePeople = GetComponentsInChildren<PostRacePersonUI>(true);
-        }
-        if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
-        {
-            gameObject.Active(true);
-            ResetDisplay();
-        }
-    }
+	public void Display()
+	{
+		if (_postRacePeople == null)
+		{
+			_postRacePeople = GetComponentsInChildren<PostRacePersonUI>(true);
+		}
+		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
+		{
+			gameObject.Active(true);
+			ResetDisplay();
+		}
+	}
 
 	/// <summary>
 	/// Reset and populate the pop-up for a new event
@@ -86,7 +86,7 @@ public class PostRaceEventUI : MonoBehaviour
 			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKeys.TriggerUI.ToString(), source },
-				{ TrackerContextKeys.EventID.ToString(), GameManagement.GameManager.GetPostRaceEventKeys().First(_lastStates[0].StartsWith) }
+				{ TrackerContextKeys.EventID.ToString(), GameManagement.GameManager.GetPostRaceEventKeys().First(_lastStates[0].Split('_')[1].StartsWith) }
 			}, AccessibleTracker.Accessible.Screen));
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
@@ -202,15 +202,15 @@ public class PostRaceEventUI : MonoBehaviour
 				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventDialogueSelected", TrackerVerbs.Selected, new Dictionary<string, string>
 				{
 					{ TrackerContextKeys.DialogueID.ToString(), res.Dialogue.NextState },
-					{ TrackerContextKeys.DialogueStyle.ToString(), res.Dialogue.Meaning[0] },
-					{ TrackerContextKeys.EventID.ToString(), GameManagement.GameManager.GetPostRaceEventKeys().First(res.Dialogue.NextState.StartsWith) }
+					{ TrackerContextKeys.DialogueStyle.ToString(), res.Dialogue.Meaning.Split('_').First(sp => !string.IsNullOrEmpty(sp)) },
+					{ TrackerContextKeys.EventID.ToString(), GameManagement.GameManager.GetPostRaceEventKeys().First(res.Dialogue.NextState.Split('_')[1].StartsWith) }
 				}, res.Dialogue.NextState, AlternativeTracker.Alternative.Dialog));
 				SUGARManager.GameData.Send("Post Race Event Reply", res.Dialogue.NextState);
 			}
 			var beforeValues = GameManagement.Team.AverageTeamMood() + GameManagement.Team.AverageTeamManagerOpinion() + GameManagement.Team.AverageTeamOpinion();
 			foreach (var res in _selectedResponses)
 			{
-				ReactionSoundControl.PlaySound(res.Value.Dialogue.Meaning[0], res.Key.Gender == "Male", res.Key.Avatar.Height, res.Key.Avatar.Weight);
+				ReactionSoundControl.PlaySound(res.Value.Dialogue.Meaning.Split('_').First(sp => !string.IsNullOrEmpty(sp)), res.Key.Gender == "Male", res.Key.Avatar.Height, res.Key.Avatar.Weight);
 			}
 			var replies = GameManagement.GameManager.SendPostRaceEvent(_selectedResponses.Values.ToList());
 			_selectedResponses = null;

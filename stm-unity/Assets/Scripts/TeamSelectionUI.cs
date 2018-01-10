@@ -278,10 +278,6 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("CONFLICT_QUESTIONNAIRE");
 				}
 			}
-			else
-			{
-				_feedbackButton.gameObject.Active(false);
-			}
 			foreach (Transform child in _resultContainer.transform)
 			{
 				Destroy(child.gameObject);
@@ -299,6 +295,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			_finalPlacementText.GetComponent<TextLocalization>().Set();
 
 			_endRace.gameObject.Active(true);
+			_feedbackButton.gameObject.Active(GameManagement.PlatformSettings.Rage);
 			_boatMain.gameObject.Active(false);
 		}
 		_boatMain.transform.FindText("Stage Number").text = GameManagement.IsRace || !GameManagement.SeasonOngoing ? string.Empty : GameManagement.CurrentRaceSession.ToString();
@@ -919,7 +916,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 
 	private void DoBestFit()
 	{
-		_boatMain.transform.FindObject("Position Container").BestFit();
+		_boatMain.transform.FindObject("Position Container").GetComponentsInChildren<PositionUI>().Select(p => p.transform.FindText("Text")).BestFit();
 		_ongoingResultContainer.transform.parent.BestFit();
 		UIManagement.CrewMemberUI.Select(c => c.gameObject.transform.FindText("Name")).BestFit();
 		var currentPosition = _boatContainer.transform.localPosition.y - _boatContainer.RectTransform().anchoredPosition.y;

@@ -3,14 +3,6 @@
 		{
 			"classId": 0,
 			"Description": null,
-			"KnowledgeBase":
-				{
-					"Perspective": "Nameless",
-					"Knowledge":
-						{
-
-						}
-				},
 			"AppraisalRules":
 				{
 					"AppraisalWeight": 1,
@@ -32,6 +24,132 @@
 								},
 							"Desirability": 2,
 							"Praiseworthiness": 2
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["7 = [score]"]
+								},
+							"Desirability": 8,
+							"Praiseworthiness": 8
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["6 = [score]"]
+								},
+							"Desirability": 7,
+							"Praiseworthiness": 7
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["5 = [score]"]
+								},
+							"Desirability": 6,
+							"Praiseworthiness": 6
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["4 = [score]"]
+								},
+							"Desirability": 5,
+							"Praiseworthiness": 5
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["3 = [score]"]
+								},
+							"Desirability": 4,
+							"Praiseworthiness": 4
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["2 = [score]"]
+								},
+							"Desirability": 3,
+							"Praiseworthiness": 3
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["1 = [score]"]
+								},
+							"Desirability": 2,
+							"Praiseworthiness": 2
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["-1 = [score]"]
+								},
+							"Desirability": -2,
+							"Praiseworthiness": -2
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["-2 = [score]"]
+								},
+							"Desirability": -3,
+							"Praiseworthiness": -3
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["-3 = [score]"]
+								},
+							"Desirability": -4,
+							"Praiseworthiness": -4
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["-4 = [score]"]
+								},
+							"Desirability": -5,
+							"Praiseworthiness": -5
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["-5 = [score]"]
+								},
+							"Desirability": -6,
+							"Praiseworthiness": -6
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["-6 = [score]"]
+								},
+							"Desirability": -7,
+							"Praiseworthiness": -7
+						}, 
+						{
+							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
+							"Conditions":
+								{
+									"Set": ["-7 = [score]"]
+								},
+							"Desirability": -8,
+							"Praiseworthiness": -8
 						}, 
 						{
 							"EventName": "Event(Action-Start, Player, PositionRating([score]), Self)",
@@ -60,132 +178,6 @@
 							"Desirability": -2,
 							"Praiseworthiness": -2
 						}, 
-						{
-							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
-							"Conditions":
-								{
-									"Set": ["[score] = 7"]
-								},
-							"Desirability": 8,
-							"Praiseworthiness": 8
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
-							"Conditions":
-								{
-									"Set": ["[score] = 6"]
-								},
-							"Desirability": 7,
-							"Praiseworthiness": 7
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
-							"Conditions":
-								{
-									"Set": ["[score] = 5"]
-								},
-							"Desirability": 6,
-							"Praiseworthiness": 6
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
-							"Conditions":
-								{
-									"Set": ["[score] = 4"]
-								},
-							"Desirability": 5,
-							"Praiseworthiness": 5
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
-							"Conditions":
-								{
-									"Set": ["[score] = 3"]
-								},
-							"Desirability": 4,
-							"Praiseworthiness": 4
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
-							"Conditions":
-								{
-									"Set": ["[score] = 2"]
-								},
-							"Desirability": 3,
-							"Praiseworthiness": 3
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
-							"Conditions":
-								{
-									"Set": ["[score] = 1"]
-								},
-							"Desirability": 2,
-							"Praiseworthiness": 2
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
-							"Conditions":
-								{
-									"Set": ["[score] = -1"]
-								},
-							"Desirability": -2,
-							"Praiseworthiness": -2
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
-							"Conditions":
-								{
-									"Set": ["[score] = -2"]
-								},
-							"Desirability": -3,
-							"Praiseworthiness": -3
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
-							"Conditions":
-								{
-									"Set": ["[score] = -3"]
-								},
-							"Desirability": -4,
-							"Praiseworthiness": -4
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
-							"Conditions":
-								{
-									"Set": ["[score] = -4"]
-								},
-							"Desirability": -5,
-							"Praiseworthiness": -5
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
-							"Conditions":
-								{
-									"Set": ["[score] = -5"]
-								},
-							"Desirability": -6,
-							"Praiseworthiness": -6
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
-							"Conditions":
-								{
-									"Set": ["[score] = -6"]
-								},
-							"Desirability": -7,
-							"Praiseworthiness": -7
-						}, 
-						{
-							"EventName": "Event(Action-Start, Player, MoodChange([score]), Self)",
-							"Conditions":
-								{
-									"Set": ["[score] = -7"]
-								},
-							"Desirability": -8,
-							"Praiseworthiness": -8
-						},
 						{
 							"EventName": "Event(Action-Start, Player, OpinionCheck([member], [x], [y]), Self)",
 							"Conditions":
@@ -217,13 +209,12 @@
 			"EmotionDispositions": [
 				{
 					"Emotion": "*",
-					"Decay": 1,
-					"Threshold": 0
+					"Decay": 1
 				}]
 		},
 	"types": [
 		{
 			"TypeId": 0,
-			"ClassName": "EmotionalAppraisal.EmotionalAppraisalAsset, EmotionalAppraisal, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+			"ClassName": "EmotionalAppraisal.EmotionalAppraisalAsset, EmotionalAppraisal, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

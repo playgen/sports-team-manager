@@ -175,7 +175,9 @@ public class NewGameUI : MonoBehaviour {
 		_boatName.text = _boatName.text.TrimEnd();
 		_managerName.text = _managerName.text.TrimEnd();
 		var language = string.IsNullOrEmpty(Localization.SelectedLanguage.Parent.Name) ? Localization.SelectedLanguage.EnglishName : Localization.SelectedLanguage.Parent.EnglishName;
+		Debug.Log(Time.realtimeSinceStartup);
 		GameManagement.GameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), _boatName.text, colorsPri, colorsSec, _managerName.text, _tutorialToggle.isOn, language);
+		Debug.Log(Time.realtimeSinceStartup);
 		if (GameManagement.Team != null && GameManagement.TeamName == _boatName.text)
 		{
 			var newString = GameManagement.PositionString;
@@ -185,6 +187,7 @@ public class NewGameUI : MonoBehaviour {
 				{ TrackerContextKeys.BoatLayout.ToString(), newString }
 			}, CompletableTracker.Completable.Game));
 			UIStateManager.StaticGoToGame();
+			Debug.Log(Time.realtimeSinceStartup);
 		}
 		else
 		{

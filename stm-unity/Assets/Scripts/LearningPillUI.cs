@@ -35,7 +35,7 @@ public class LearningPillUI : MonoBehaviour {
 	public void SetHelp(List<string> keys, bool further = false)
 	{
 		_currentHelp = keys[0];
-		var tip = GameManagement.GameManager.EventController.GetHelpText(keys[0]);
+		var tip = GameManagement.GameManager.EventController.GetHelpText(keys[0].Split('_')[1]);
 		keys.RemoveAt(0);
 		_furtherHelp = keys;
 		if (tip != null)

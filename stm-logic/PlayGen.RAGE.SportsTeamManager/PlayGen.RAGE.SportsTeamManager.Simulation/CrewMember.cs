@@ -301,7 +301,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var mood = 0;
 			if (RolePlayCharacter != null)
 			{
-				RolePlayCharacter.Decide();
+				//RolePlayCharacter.Decide();
 				mood = (int)Math.Round(RolePlayCharacter.Mood);
 			}
 			return mood;
@@ -424,7 +424,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					break;
 			}
 			SaveStatus();
-			var dialogueOptions = iat.GetDialogueActionsByState(IATConsts.AGENT, style).ToList();
+			var dialogueOptions = iat.GetDialogueActionsByState("NPC_" + style).ToList();
 			if (dialogueOptions.Any())
 			{
 				reply.Insert(0, dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance);
@@ -442,23 +442,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			List<DialogueStateActionDTO> dialogueOptions;
 			if (Skills[skill] >= 9)
 			{
-				dialogueOptions = iat.GetDialogueActionsByState(IATConsts.AGENT, "StrongAgree").ToList();
+				dialogueOptions = iat.GetDialogueActionsByState("NPC_StrongAgree").ToList();
 			}
 			else if (Skills[skill] >= 7)
 			{
-				dialogueOptions = iat.GetDialogueActionsByState(IATConsts.AGENT, "Agree").ToList();
+				dialogueOptions = iat.GetDialogueActionsByState("NPC_Agree").ToList();
 			}
 			else if (Skills[skill] >= 5)
 			{
-				dialogueOptions = iat.GetDialogueActionsByState(IATConsts.AGENT, "Neither").ToList();
+				dialogueOptions = iat.GetDialogueActionsByState("NPC_Neither").ToList();
 			}
 			else if (Skills[skill] >= 3)
 			{
-				dialogueOptions = iat.GetDialogueActionsByState(IATConsts.AGENT, "Disagree").ToList();
+				dialogueOptions = iat.GetDialogueActionsByState("NPC_Disagree").ToList();
 			}
 			else
 			{
-				dialogueOptions = iat.GetDialogueActionsByState(IATConsts.AGENT, "StrongDisagree").ToList();
+				dialogueOptions = iat.GetDialogueActionsByState("NPC_StrongDisagree").ToList();
 			}
 			return dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
 		}
@@ -529,16 +529,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return null;
 			}
 			var nextState = selected.NextState;
-			var dialogueOptions = iat.GetDialogueActionsByState(IATConsts.AGENT, nextState).ToList();
+			var dialogueOptions = iat.GetDialogueActionsByState(nextState).ToList();
 			//get dialogue
 			if (dialogueOptions.Any())
 			{
 				//select reply
 				var selectedReply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
 				PostRaceFeedback(selected.NextState, team, subjects);
-				if (selectedReply.Style.Any(s => s != "-"))
+				var styleSplit = selectedReply.Style.Split('_').Where(sp => !string.IsNullOrEmpty(sp)).ToList();
+				if (styleSplit.Any(s => s != "-"))
 				{
-					selectedReply.Style.ToList().ForEach(s => PostRaceFeedback(s, team, subjects));
+					styleSplit.ForEach(s => PostRaceFeedback(s, team, subjects));
 				}
 				return selectedReply;
 			}
@@ -700,7 +701,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string GetSocialImportanceRating()
 		{
-			return SocialImportance.DecideConferral("SELF") != null ? SocialImportance.DecideConferral("SELF").Key.ToString() : "MID";
+			return "MID";//SocialImportance.DecideConferral("SELF") != null ? SocialImportance.DecideConferral("SELF").Key.ToString() : "MID";
 		}
 
 		/// <summary>

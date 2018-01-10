@@ -71,7 +71,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			rpc.EmotionalDecisionMakingSource = fileName + ".edm";
 			rpc.SocialImportanceAssetSource = fileName + ".si";
 			rpc.Save();
-			iat.AddNewCharacterSource(new CharacterSourceDTO { Source = rpc.AssetFilePath });
 			//store RPC locally
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(rpc.AssetFilePath);
 			RolePlayCharacter.LoadAssociatedAssets();
@@ -79,29 +78,33 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//set up SI file
 			if (!string.IsNullOrEmpty(managerName))
 			{
-				SocialImportance.AddConferral(new ConferralDTO
+				SocialImportance.AddAttributionRule(new AttributionRuleDTO
 				{
-					ConferralSI = 1,
-					Action = "Negative",
+					Value = 1,
+					RuleName = "Negative",
 					Target = managerName,
 					Conditions = new Conditions.DTOs.ConditionSetDTO()
 				});
-				SocialImportance.AddConferral(new ConferralDTO
+				SocialImportance.AddAttributionRule(new AttributionRuleDTO
 				{
-					ConferralSI = 5,
-					Action = "Mid",
+					Value = 5,
+					RuleName = "Mid",
 					Target = managerName,
 					Conditions = new Conditions.DTOs.ConditionSetDTO()
 				});
-				SocialImportance.AddConferral(new ConferralDTO
+				SocialImportance.AddAttributionRule(new AttributionRuleDTO
 				{
-					ConferralSI = 10,
-					Action = "Positive",
+					Value = 10,
+					RuleName = "Positive",
 					Target = managerName,
 					Conditions = new Conditions.DTOs.ConditionSetDTO()
 				});
 				SocialImportance.Save();
 			}
+			iat.AddNewCharacterSource(new CharacterSourceDTO { Source = RolePlayCharacter.AssetFilePath });
+			var eventBase = "Event(Action-Start,Player,{0},{1})";
+			var eventString = "Creation(-)";
+			RolePlayCharacter.Perceive(new[] { (Name)string.Format(eventBase, eventString, noSpaceName) });
 		}
 
 		/// <summary>

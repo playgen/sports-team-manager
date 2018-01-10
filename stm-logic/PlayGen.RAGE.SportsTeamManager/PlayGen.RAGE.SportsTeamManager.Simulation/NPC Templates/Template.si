@@ -2,31 +2,12 @@
 	"root":
 		{
 			"classId": 0,
-			"AttributionRules": [
-				{
-					"RuleName": "Manager Opinion OK",
-					"Target": "[x]",
-					"Value": 5,
-					"Conditions":
-						{
-							"Set": ["Opinion([x]) = 0"]
-						}
-				}, 
-				{
-					"RuleName": "Manager Opinion Good",
-					"Target": "[x]",
-					"Value": 10,
-					"Conditions":
-						{
-							"Set": ["Opinion([x]) >= 1"]
-						}
-				}],
-			"Claims": [],
-			"Conferrals": []
+			"AttributionRules": [],
+			"Claims": []
 		},
 	"types": [
 		{
 			"TypeId": 0,
-			"ClassName": "SocialImportance.SocialImportanceAsset, SocialImportanceAsset, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+			"ClassName": "SocialImportance.SocialImportanceAsset, SocialImportanceAsset, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

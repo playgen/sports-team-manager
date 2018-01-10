@@ -44,9 +44,13 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	private void Start()
 	{
+		Debug.Log(Time.realtimeSinceStartup);
 		UIManagement.Initialize();
+		Debug.Log(Time.realtimeSinceStartup);
 		AvatarDisplay.LoadSprites();
+		Debug.Log(Time.realtimeSinceStartup);
 		BackToMenu();
+		Debug.Log(Time.realtimeSinceStartup);
 		if (GameManagement.PlatformSettings.DemoMode)
 		{
 			foreach (Transform child in _mainMenu.transform.Find("Buttons"))

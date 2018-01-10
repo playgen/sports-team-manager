@@ -4,2052 +4,2587 @@
 			"classId": 0,
 			"ScenarioName": "Template",
 			"Description": null,
-			"PlayerDialogues": [
+			"Dialogues": [
 				{
-					"CurrentState": "IPC",
-					"NextState": "IPCAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["-"],
-					"Utterance": "IPCAccommodating",
-					"UtteranceId": "D0-86-68-1D-F2-DA-B6-D8-F0-3A-F3-C8-FE-9C-97-4E"
-				}, 
-				{
-					"CurrentState": "IPC",
-					"NextState": "IPCCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCCollaborating",
-					"UtteranceId": "69-69-C9-54-8E-95-BB-38-03-71-B4-46-65-0B-64-2B"
-				}, 
-				{
-					"CurrentState": "IPCNP52",
-					"NextState": "IPCAccommodatingAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCAccommodatingAvoidingAvoiding",
-					"UtteranceId": "E9-06-7B-A9-C4-B7-07-68-90-4D-04-3A-E0-0C-A6-1B"
-				}, 
-				{
-					"CurrentState": "IPCNP52",
-					"NextState": "IPCAccommodatingAvoidingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCAccommodatingAvoidingAccommodating",
-					"UtteranceId": "C4-18-72-52-A7-B5-18-71-60-5F-3C-7B-76-F2-99-FE"
-				}, 
-				{
-					"CurrentState": "IPCNP11",
-					"NextState": "IPCAvoidingAccommodatingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCAvoidingAccommodatingAvoiding",
-					"UtteranceId": "97-7E-13-C6-77-65-20-6C-06-40-02-3E-F5-1B-F1-49"
-				}, 
-				{
-					"CurrentState": "IPCNP1",
-					"NextState": "IPCAvoidingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["-"],
-					"Utterance": "IPCAvoidingAccommodating",
-					"UtteranceId": "08-08-27-74-F8-6F-96-45-92-F4-1D-F3-3D-61-CA-CE"
-				}, 
-				{
-					"CurrentState": "IPCNP1",
-					"NextState": "IPCAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCAvoidingAvoiding",
-					"UtteranceId": "89-73-4F-AD-EC-AA-62-6A-06-68-8F-11-8A-2D-FE-3C"
-				}, 
-				{
-					"CurrentState": "IPC",
-					"NextState": "IPCAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "IPCAvoiding",
-					"UtteranceId": "E1-E6-71-F6-E2-DB-DD-FE-5C-AC-20-FB-6C-34-D5-65"
-				}, 
-				{
-					"CurrentState": "IPC",
-					"NextState": "IPCCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "IPCCompeting",
-					"UtteranceId": "C4-EE-34-DB-11-76-91-9B-18-50-95-1B-71-D6-27-58"
-				}, 
-				{
-					"CurrentState": "IPCNP11",
-					"NextState": "IPCAvoidingAccommodatingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCAvoidingAccommodatingAccommodating",
-					"UtteranceId": "32-26-E5-CC-E7-FA-1D-BB-EB-0E-67-5D-DD-5D-22-3D"
-				}, 
-				{
-					"CurrentState": "NotPickedNP4",
-					"NextState": "NotPickedCollaboratingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "NotPickedCollaboratingAccommodating",
-					"UtteranceId": "D8-51-41-E6-47-64-87-60-88-F1-B8-C3-F8-20-87-08"
-				}, 
-				{
-					"CurrentState": "NotPickedNP41",
-					"NextState": "NotPickedCollaboratingCollaboratingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "NotPickedCollaboratingCollaboratingAccommodating",
-					"UtteranceId": "0A-10-22-3E-93-48-C0-71-CF-68-05-1C-0D-67-2A-D8"
-				}, 
-				{
-					"CurrentState": "IPCNP311",
-					"NextState": "IPCCompetingCollaboratingCollaboratingCompromising",
-					"Meaning": ["Compromising"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCompetingCollaboratingCollaboratingCompromising",
-					"UtteranceId": "11-EC-0E-C4-7C-86-97-B6-9A-07-CC-93-37-B2-88-E6"
-				}, 
-				{
-					"CurrentState": "NotPickedNP4",
-					"NextState": "NotPickedCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "NotPickedCollaboratingCollaborating",
-					"UtteranceId": "FE-D6-05-58-32-14-7B-77-00-D6-4D-4C-26-50-3E-50"
-				}, 
-				{
-					"CurrentState": "NotPickedNP31",
-					"NextState": "NotPickedAccommodatingCollaboratingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "NotPickedAccommodatingCollaboratingAccommodating",
-					"UtteranceId": "60-37-94-FA-8A-34-E5-E7-25-99-E4-4C-4A-2D-07-74"
-				}, 
-				{
-					"CurrentState": "NotPickedNP11",
-					"NextState": "NotPickedAvoidingCompetingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "NotPickedAvoidingCompetingAvoiding",
-					"UtteranceId": "D5-D1-1C-DE-CF-E2-79-A0-84-AD-F6-52-BA-AA-29-29"
-				}, 
-				{
-					"CurrentState": "NotPickedNP2",
-					"NextState": "NotPickedCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "NotPickedCompetingCompeting",
-					"UtteranceId": "AE-6C-E6-B2-58-B1-59-1B-9A-77-D7-31-04-10-85-0D"
-				}, 
-				{
-					"CurrentState": "NotPickedNP21",
-					"NextState": "NotPickedCompetingAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "NotPickedCompetingAvoidingAvoiding",
-					"UtteranceId": "70-98-FE-58-25-A3-9F-B1-8A-63-1E-E8-73-12-7B-5D"
-				}, 
-				{
-					"CurrentState": "NotPickedNP3",
-					"NextState": "NotPickedAccommodatingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "NotPickedAccommodatingCollaborating",
-					"UtteranceId": "B6-1B-3E-FA-98-B1-F7-EA-99-CF-49-BB-C2-4E-D8-3D"
-				}, 
-				{
-					"CurrentState": "IPCNP81",
-					"NextState": "IPCCollaboratingCollaborating2Collaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCCollaboratingCollaborating2Collaborating",
-					"UtteranceId": "E5-26-0C-EF-B0-25-00-52-4F-B4-8B-FE-5B-4E-7F-34"
-				}, 
-				{
-					"CurrentState": "IPCNP51",
-					"NextState": "IPCAccommodatingAccommodatingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCAccommodatingAccommodatingAccommodating",
-					"UtteranceId": "02-7C-69-65-96-63-9C-79-17-88-B7-27-82-C8-35-D9"
-				}, 
-				{
-					"CurrentState": "IPCNP5",
-					"NextState": "IPCAccommodatingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCAccommodatingAccommodating",
-					"UtteranceId": "A5-F3-44-FD-4B-FD-84-EA-EE-5D-34-D7-39-6B-4D-83"
-				}, 
-				{
-					"CurrentState": "IPCNP3",
-					"NextState": "IPCCompetingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCCompetingCollaborating",
-					"UtteranceId": "8D-5A-59-16-09-1D-D2-B6-2E-3A-97-C5-4D-92-FA-05"
-				}, 
-				{
-					"CurrentState": "IPCNP5",
-					"NextState": "IPCAccommodatingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "IPCAccommodatingAvoiding",
-					"UtteranceId": "60-8D-69-8D-9E-42-BA-B7-8E-7A-3B-72-25-CB-00-3F"
-				}, 
-				{
-					"CurrentState": "IPCNP41",
-					"NextState": "IPCCompetingAvoidingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCCompetingAvoidingCompeting",
-					"UtteranceId": "AB-FF-26-6F-E1-6F-8D-4B-D3-FE-18-B8-BD-98-94-FF"
-				}, 
-				{
-					"CurrentState": "IPCNP51",
-					"NextState": "IPCAccommodatingAccommodatingCompromising",
-					"Meaning": ["Compromising"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCAccommodatingAccommodatingCompromising",
-					"UtteranceId": "C2-F6-09-86-62-B6-1A-E6-85-FE-0C-3A-B1-7A-6F-BF"
-				}, 
-				{
-					"CurrentState": "IPCNP311",
-					"NextState": "IPCCompetingCollaboratingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCompetingCollaboratingCollaboratingCollaborating",
-					"UtteranceId": "D8-0E-A2-A0-7E-F2-9A-2A-33-AB-0B-00-FD-BE-75-69"
-				}, 
-				{
-					"CurrentState": "IPCNP31",
-					"NextState": "IPCCompetingCollaboratingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCCompetingCollaboratingCompeting",
-					"UtteranceId": "E8-24-94-9D-42-C8-83-0C-42-D0-29-BC-BF-C7-78-3A"
-				}, 
-				{
-					"CurrentState": "IPCNP3",
-					"NextState": "IPCCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCCompetingCompeting",
-					"UtteranceId": "B3-CC-56-45-FA-16-08-BD-84-7C-EA-58-66-9B-45-E1"
-				}, 
-				{
-					"CurrentState": "IPCNP21",
-					"NextState": "IPCAvoidingCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCAvoidingCompetingCompeting",
-					"UtteranceId": "A8-0D-E4-E9-62-3C-67-03-B0-98-99-28-07-0E-5C-B3"
-				}, 
-				{
-					"CurrentState": "IPCNP21",
-					"NextState": "IPCAvoidingCompetingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCAvoidingCompetingAvoiding",
-					"UtteranceId": "22-A3-B3-54-02-20-A3-0A-45-14-5A-E5-92-F9-0E-81"
-				}, 
-				{
-					"CurrentState": "IPCNP4",
-					"NextState": "IPCCompetingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "IPCCompetingAvoiding",
-					"UtteranceId": "1C-23-3B-A0-11-9C-EC-92-DD-3C-90-14-51-D8-58-B7"
-				}, 
-				{
-					"CurrentState": "IPCNP4",
-					"NextState": "IPCCompetingCompeting2",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCCompetingCompeting2",
-					"UtteranceId": "9F-32-82-2F-D8-C2-99-35-AA-E2-EB-0A-51-02-4C-12"
-				}, 
-				{
-					"CurrentState": "NotPicked",
-					"NextState": "NotPickedAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "NotPickedAvoiding",
-					"UtteranceId": "3E-19-43-69-06-8A-CC-55-2A-77-8F-6A-16-D9-1A-45"
-				}, 
-				{
-					"CurrentState": "IPCNP22",
-					"NextState": "IPCAvoidingAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCAvoidingAvoidingAvoiding",
-					"UtteranceId": "AC-EA-07-65-C8-FF-D5-F5-B8-8D-8B-38-0A-B9-58-3B"
-				}, 
-				{
-					"CurrentState": "IPCNP22",
-					"NextState": "IPCAvoidingAvoidingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCAvoidingAvoidingCompeting",
-					"UtteranceId": "2C-E9-6E-0A-FF-D0-8A-65-BD-EA-ED-34-A8-40-9A-0A"
-				}, 
-				{
-					"CurrentState": "IPCNP2",
-					"NextState": "IPCAvoidingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "IPCAvoidingCompeting",
-					"UtteranceId": "EE-06-C3-DE-D8-E0-91-7E-A0-74-33-1C-C2-F8-09-7C"
-				}, 
-				{
-					"CurrentState": "IPCNP2",
-					"NextState": "IPCAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "IPCAvoidingAvoiding",
-					"UtteranceId": "89-73-4F-AD-EC-AA-62-6A-06-68-8F-11-8A-2D-FE-3C"
-				}, 
-				{
-					"CurrentState": "IPCNP41",
-					"NextState": "IPCCompetingAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCCompetingAvoidingAvoiding",
-					"UtteranceId": "3F-7C-80-98-B4-6B-0E-2F-C9-AD-40-89-C5-72-20-9D"
-				}, 
-				{
-					"CurrentState": "IPCNP31",
-					"NextState": "IPCCompetingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCCompetingCollaboratingCollaborating",
-					"UtteranceId": "37-FB-B3-9E-0F-78-D8-63-70-05-DA-E8-B5-06-81-3C"
-				}, 
-				{
-					"CurrentState": "NotPickedNP41",
-					"NextState": "NotPickedCollaboratingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "NotPickedCollaboratingCollaboratingCollaborating",
-					"UtteranceId": "12-15-11-F1-D7-CF-FF-93-90-74-77-51-DD-DC-1B-FE"
-				}, 
-				{
-					"CurrentState": "IPCNP811",
-					"NextState": "IPCCollaboratingCollaboratingCollaborating2Collaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCollaboratingCollaboratingCollaborating2Collaborating",
-					"UtteranceId": "6C-29-BB-F1-9F-C4-83-FB-2B-1A-C8-B3-80-AE-18-EF"
-				}, 
-				{
-					"CurrentState": "IPCNP8",
-					"NextState": "IPCCollaboratingCollaborating2",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCCollaboratingCollaborating2",
-					"UtteranceId": "88-9E-42-B4-6E-0C-FA-3A-4F-47-8B-E6-0B-07-0A-A9"
-				}, 
-				{
-					"CurrentState": "IPCNP71",
-					"NextState": "IPCCollaboratingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCollaboratingCollaboratingCollaborating",
-					"UtteranceId": "D4-A5-7A-39-12-18-D7-C5-14-27-EF-46-82-7B-8A-0B"
-				}, 
-				{
-					"CurrentState": "IPCNP81",
-					"NextState": "IPCCollaboratingCollaboratingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCollaboratingCollaboratingAccommodating",
-					"UtteranceId": "FA-1A-63-F0-F5-7F-9A-D7-3A-61-86-E8-EF-B5-5B-32"
-				}, 
-				{
-					"CurrentState": "IPCNP8",
-					"NextState": "IPCCollaboratingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCollaboratingAccommodating",
-					"UtteranceId": "5C-0A-11-32-EA-73-59-C6-E7-48-A0-3C-3E-61-75-8B"
-				}, 
-				{
-					"CurrentState": "IPCNP612",
-					"NextState": "IPCAccommodatingCollaboratingAccommodatingCompromising",
-					"Meaning": ["Compromising"],
-					"Style": ["Transactional"],
-					"Utterance": "IPCAccommodatingCollaboratingAccommodatingCompromising",
-					"UtteranceId": "5D-04-D8-39-C5-62-D9-1B-6A-7D-AA-2F-F3-10-08-64"
-				}, 
-				{
-					"CurrentState": "IPCNP71",
-					"NextState": "IPCCollaboratingCollaboratingCompromising",
-					"Meaning": ["Compromising"],
-					"Style": ["Transactional"],
-					"Utterance": "IPCCollaboratingCollaboratingCompromising",
-					"UtteranceId": "E9-8C-97-8D-4D-6C-F3-97-AE-29-1D-52-DC-2B-2A-4A"
-				}, 
-				{
-					"CurrentState": "IPCNP61",
-					"NextState": "IPCAccommodatingCollaboratingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["-"],
-					"Utterance": "IPCAccommodatingCollaboratingAccommodating",
-					"UtteranceId": "B7-2D-E7-64-67-9D-50-C8-D1-9A-D5-01-1F-6C-9E-CB"
-				}, 
-				{
-					"CurrentState": "IPCNP612",
-					"NextState": "IPCAccommodatingCollaboratingAccommodatingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCAccommodatingCollaboratingAccommodatingAccommodating",
-					"UtteranceId": "C8-DA-B6-F7-D4-4D-5E-09-B8-60-0B-51-68-79-55-56"
-				}, 
-				{
-					"CurrentState": "IPCNP811",
+					"CurrentState": "LearningPill",
 					"NextState": "IPCCollaboratingCollaboratingCollaboratingCompromising",
-					"Meaning": ["Compromising"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCollaboratingCollaboratingCollaboratingCompromising",
-					"UtteranceId": "56-84-7F-E1-49-8D-B2-BC-E5-DC-FB-24-18-4C-12-23"
+					"Meaning": "IPCCollaboratingCollaboratingCollaboratingCompromising",
+					"Style": "IPCCollaboratingCollaboratingCollaboratingCompromising",
+					"Utterance": "IPCCollaboratingCollaboratingCollaboratingCompromisingLP",
+					"UtteranceId": "TTS-ADEE1F6FEBB48CDF7B72268F0F035612"
 				}, 
 				{
-					"CurrentState": "IPCNP72",
-					"NextState": "IPCCollaboratingCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "IPCCollaboratingCompetingCompeting",
-					"UtteranceId": "3D-86-0E-B1-67-8D-AE-A4-0A-41-34-C8-C5-5A-FE-AD"
+					"CurrentState": "LearningPill",
+					"NextState": "IPCCollaboratingCollaboratingCollaborating2Collaborating",
+					"Meaning": "IPCCollaboratingCollaboratingCollaborating2Collaborating",
+					"Style": "IPCCollaboratingCollaboratingCollaborating2Collaborating",
+					"Utterance": "IPCCollaboratingCollaboratingCollaborating2CollaboratingLP",
+					"UtteranceId": "TTS-2FE6E2BFE4632EC00F6F932AF34481D7"
 				}, 
 				{
-					"CurrentState": "IPCNP61",
-					"NextState": "IPCAccommodatingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCAccommodatingCollaboratingCollaborating",
-					"UtteranceId": "7A-8C-18-04-E7-92-51-CF-93-85-7F-AC-02-4D-4C-15"
+					"CurrentState": "LearningPill",
+					"NextState": "IPCAccommodatingCollaboratingAccommodatingCompromising",
+					"Meaning": "IPCAccommodatingCollaboratingAccommodatingCompromising",
+					"Style": "IPCAccommodatingCollaboratingAccommodatingCompromising",
+					"Utterance": "IPCAccommodatingCollaboratingAccommodatingCompromisingLP",
+					"UtteranceId": "TTS-6FCD00B9BC1B16F58FAFD16A208040D0"
 				}, 
 				{
-					"CurrentState": "IPCNP7",
-					"NextState": "IPCCollaboratingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "IPCCollaboratingCompeting",
-					"UtteranceId": "9E-E3-9F-95-BA-92-19-3D-C8-21-E7-1E-9F-28-16-55"
+					"CurrentState": "LearningPill",
+					"NextState": "IPCAccommodatingCollaboratingAccommodatingAccommodating",
+					"Meaning": "IPCAccommodatingCollaboratingAccommodatingAccommodating",
+					"Style": "IPCAccommodatingCollaboratingAccommodatingAccommodating",
+					"Utterance": "IPCAccommodatingCollaboratingAccommodatingAccommodatingLP",
+					"UtteranceId": "TTS-39BA73F3B0B17A071392B9376633FEA9"
 				}, 
 				{
-					"CurrentState": "IPCNP72",
-					"NextState": "IPCCollaboratingCompetingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCCollaboratingCompetingCollaborating",
-					"UtteranceId": "7A-57-60-15-EE-63-0D-54-A8-7A-21-19-BF-CB-2C-DD"
-				}, 
-				{
-					"CurrentState": "IPCNP611",
-					"NextState": "IPCAccommodatingCollaboratingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCollaborating",
-					"UtteranceId": "05-18-39-B8-A7-41-E6-5C-E5-C9-E0-F3-BE-8E-3D-EA"
-				}, 
-				{
-					"CurrentState": "IPCNP7",
-					"NextState": "IPCCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCCollaboratingCollaborating",
-					"UtteranceId": "BF-83-F4-A6-39-F0-5D-63-7F-D5-5C-F4-9F-E3-DD-A6"
-				}, 
-				{
-					"CurrentState": "IPCNP611",
+					"CurrentState": "LearningPill",
 					"NextState": "IPCAccommodatingCollaboratingCollaboratingCompromising",
-					"Meaning": ["Compromising"],
-					"Style": ["Transactional"],
-					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCompromising",
-					"UtteranceId": "DC-49-12-6D-0F-BD-BE-C6-84-E9-34-20-48-35-54-36"
+					"Meaning": "IPCAccommodatingCollaboratingCollaboratingCompromising",
+					"Style": "IPCAccommodatingCollaboratingCollaboratingCompromising",
+					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCompromisingLP",
+					"UtteranceId": "TTS-9F8F7CD2E2C7BD5CE294576383963B2D"
 				}, 
 				{
-					"CurrentState": "IPCNP6",
-					"NextState": "IPCAccommodatingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "IPCAccommodatingCollaborating",
-					"UtteranceId": "CF-70-A2-49-00-D8-7D-13-B7-C2-5F-5F-C6-BC-ED-DE"
+					"CurrentState": "LearningPill",
+					"NextState": "IPCAccommodatingCollaboratingCollaboratingCollaborating",
+					"Meaning": "IPCAccommodatingCollaboratingCollaboratingCollaborating",
+					"Style": "IPCAccommodatingCollaboratingCollaboratingCollaborating",
+					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCollaboratingLP",
+					"UtteranceId": "TTS-17EF20BF930CB1050E6AB34386E03740"
 				}, 
 				{
-					"CurrentState": "IPCNP6",
+					"CurrentState": "LearningPill",
+					"NextState": "IPCCompetingCollaboratingCollaboratingCompromising",
+					"Meaning": "IPCCompetingCollaboratingCollaboratingCompromising",
+					"Style": "IPCCompetingCollaboratingCollaboratingCompromising",
+					"Utterance": "IPCCompetingCollaboratingCollaboratingCompromisingLP",
+					"UtteranceId": "TTS-918D4AC19A17691335052D0BDB176568"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCCompetingCollaboratingCollaboratingCollaborating",
+					"Meaning": "IPCCompetingCollaboratingCollaboratingCollaborating",
+					"Style": "IPCCompetingCollaboratingCollaboratingCollaborating",
+					"Utterance": "IPCCompetingCollaboratingCollaboratingCollaboratingLP",
+					"UtteranceId": "TTS-CDF7EF91A7F8978F9C162C9F03A9F4D9"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCCollaboratingCollaboratingAccommodating",
+					"Meaning": "IPCCollaboratingCollaboratingAccommodating",
+					"Style": "IPCCollaboratingCollaboratingAccommodating",
+					"Utterance": "IPCCollaboratingCollaboratingAccommodatingLP",
+					"UtteranceId": "TTS-33E2CA79FD0957FDAADE8D842E39CC21"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCCollaboratingCompetingCompeting",
+					"Meaning": "IPCCollaboratingCompetingCompeting",
+					"Style": "IPCCollaboratingCompetingCompeting",
+					"Utterance": "IPCCollaboratingCompetingCompetingLP",
+					"UtteranceId": "TTS-A225B28421FC3B8BFB3A37AE942DCC77"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCCollaboratingCompetingCollaborating",
+					"Meaning": "IPCCollaboratingCompetingCollaborating",
+					"Style": "IPCCollaboratingCompetingCollaborating",
+					"Utterance": "IPCCollaboratingCompetingCollaboratingLP",
+					"UtteranceId": "TTS-0EBF9B3FF00347300B57990F143ED871"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCCollaboratingCollaboratingCollaborating",
+					"Meaning": "IPCCollaboratingCollaboratingCollaborating",
+					"Style": "IPCCollaboratingCollaboratingCollaborating",
+					"Utterance": "IPCCollaboratingCollaboratingCollaboratingLP",
+					"UtteranceId": "TTS-C6B4AFA7362C31B2F0EE85EA31DA2F63"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCCollaboratingCollaboratingCompromising",
+					"Meaning": "IPCCollaboratingCollaboratingCompromising",
+					"Style": "IPCCollaboratingCollaboratingCompromising",
+					"Utterance": "IPCCollaboratingCollaboratingCompromisingLP",
+					"UtteranceId": "TTS-3C2B511EBDFB63FFC4AF28C2A1A5260A"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCAccommodatingAvoidingAccommodating",
+					"Meaning": "IPCAccommodatingAvoidingAccommodating",
+					"Style": "IPCAccommodatingAvoidingAccommodating",
+					"Utterance": "IPCAccommodatingAvoidingAccommodatingLP",
+					"UtteranceId": "TTS-F92F9B8C6DD18D1F18ABD14AD2D55C01"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCAccommodatingAvoidingAvoiding",
+					"Meaning": "IPCAccommodatingAvoidingAvoiding",
+					"Style": "IPCAccommodatingAvoidingAvoiding",
+					"Utterance": "IPCAccommodatingAvoidingAvoidingLP",
+					"UtteranceId": "TTS-69E13A48F1EABED53352A679D81517AD"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCAccommodatingAccommodatingCompromising",
+					"Meaning": "IPCAccommodatingAccommodatingCompromising",
+					"Style": "IPCAccommodatingAccommodatingCompromising",
+					"Utterance": "IPCAccommodatingAccommodatingCompromisingLP",
+					"UtteranceId": "TTS-9E95D2C0651006C22CF30C58F2A6B63B"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCAccommodatingAccommodatingAccommodating",
+					"Meaning": "IPCAccommodatingAccommodatingAccommodating",
+					"Style": "IPCAccommodatingAccommodatingAccommodating",
+					"Utterance": "IPCAccommodatingAccommodatingAccommodatingLP",
+					"UtteranceId": "TTS-EB3A97EED3FC4CB4FAD79B66D74C7A85"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCCompetingAvoidingCompeting",
+					"Meaning": "IPCCompetingAvoidingCompeting",
+					"Style": "IPCCompetingAvoidingCompeting",
+					"Utterance": "IPCCompetingAvoidingCompetingLP",
+					"UtteranceId": "TTS-02FF89F9FD5E98E01B99054D5C54FEE0"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCCompetingAvoidingAvoiding",
+					"Meaning": "IPCCompetingAvoidingAvoiding",
+					"Style": "IPCCompetingAvoidingAvoiding",
+					"Utterance": "IPCCompetingAvoidingAvoidingLP",
+					"UtteranceId": "TTS-307B2ADAEE4E3A3F9A643B40DE818B02"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCCompetingCollaboratingCompeting",
+					"Meaning": "IPCCompetingCollaboratingCompeting",
+					"Style": "IPCCompetingCollaboratingCompeting",
+					"Utterance": "IPCCompetingCollaboratingCompetingLP",
+					"UtteranceId": "TTS-730339FAC84FE8828F3F9A95ABAC28EB"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCAvoidingAvoidingCompeting",
+					"Meaning": "IPCAvoidingAvoidingCompeting",
+					"Style": "IPCAvoidingAvoidingCompeting",
+					"Utterance": "IPCAvoidingAvoidingCompetingLP",
+					"UtteranceId": "TTS-64430A10952C708746E911EA48FF49BE"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCAvoidingAvoidingAvoiding",
+					"Meaning": "IPCAvoidingAvoidingAvoiding",
+					"Style": "IPCAvoidingAvoidingAvoiding",
+					"Utterance": "IPCAvoidingAvoidingAvoidingLP",
+					"UtteranceId": "TTS-C7F9057C994FBDE94EB9A0260A4946DB"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCAvoidingCompetingAvoiding",
+					"Meaning": "IPCAvoidingCompetingAvoiding",
+					"Style": "IPCAvoidingCompetingAvoiding",
+					"Utterance": "IPCAvoidingCompetingAvoidingLP",
+					"UtteranceId": "TTS-7C1B97A741946E784AF949C1A611C28D"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCAvoidingCompetingCompeting",
+					"Meaning": "IPCAvoidingCompetingCompeting",
+					"Style": "IPCAvoidingCompetingCompeting",
+					"Utterance": "IPCAvoidingCompetingCompetingLP",
+					"UtteranceId": "TTS-878A61112FE722483F3D713C56B30DC9"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCAvoidingAccommodatingAvoiding",
+					"Meaning": "IPCAvoidingAccommodatingAvoiding",
+					"Style": "IPCAvoidingAccommodatingAvoiding",
+					"Utterance": "IPCAvoidingAccommodatingAvoidingLP",
+					"UtteranceId": "TTS-A95BB3C744D2E7838971C8DA8FC3FE50"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCAvoidingAccommodatingAccommodating",
+					"Meaning": "IPCAvoidingAccommodatingAccommodating",
+					"Style": "IPCAvoidingAccommodatingAccommodating",
+					"Utterance": "IPCAvoidingAccommodatingAccommodatingLP",
+					"UtteranceId": "TTS-9FCDBEDFB554295DCB05726873E85FF3"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCCollaboratingAccommodating",
+					"Meaning": "IPCCollaboratingAccommodating",
+					"Style": "IPCCollaboratingAccommodating",
+					"Utterance": "IPCCollaboratingAccommodatingLP",
+					"UtteranceId": "TTS-5F2C5B2C8E4FFFFBF9940CA21B820F86"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCCompetingCompeting2",
+					"Meaning": "IPCCompetingCompeting2",
+					"Style": "IPCCompetingCompeting2",
+					"Utterance": "IPCCompetingCompeting2LP",
+					"UtteranceId": "TTS-4F46756E982854B6A83545BEFE9BB082"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCCompetingCompeting",
+					"Meaning": "IPCCompetingCompeting",
+					"Style": "IPCCompetingCompeting",
+					"Utterance": "IPCCompetingCompetingLP",
+					"UtteranceId": "TTS-02BBC503E3AC7A4A5F21EE0B995CFEF0"
+				}, 
+				{
+					"CurrentState": "LearningPill",
 					"NextState": "IPCAccommodatingAccommodating2",
-					"Meaning": ["Accommodating"],
-					"Style": ["-"],
-					"Utterance": "IPCAccommodatingAccommodating2",
-					"UtteranceId": "68-82-53-6F-87-FF-F0-F0-2A-56-8A-72-3B-00-FD-8E"
+					"Meaning": "IPCAccommodatingAccommodating2",
+					"Style": "IPCAccommodatingAccommodating2",
+					"Utterance": "IPCAccommodatingAccommodating2LP",
+					"UtteranceId": "TTS-018221073F1FA5B5F4FCB6CBEBF139F9"
 				}, 
 				{
-					"CurrentState": "NotPickedNP1",
-					"NextState": "NotPickedAvoidingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "NotPickedAvoidingCompeting",
-					"UtteranceId": "F8-F0-B0-A3-94-84-46-20-0C-6E-4D-60-86-B7-D3-08"
-				}, 
-				{
-					"CurrentState": "NotPickedNP21",
-					"NextState": "NotPickedCompetingAvoidingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "NotPickedCompetingAvoidingCompeting",
-					"UtteranceId": "A2-81-68-01-D8-55-80-6B-B0-E7-B5-59-DE-81-DE-23"
-				}, 
-				{
-					"CurrentState": "NotPicked",
-					"NextState": "NotPickedCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "NotPickedCollaborating",
-					"UtteranceId": "FE-9C-0B-77-6C-AB-DA-ED-78-D9-24-13-F3-7F-BF-DC"
-				}, 
-				{
-					"CurrentState": "NotPickedNP3",
-					"NextState": "NotPickedAccommodatingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "NotPickedAccommodatingAccommodating",
-					"UtteranceId": "29-14-00-3E-89-DD-8E-79-0A-1F-62-E1-5C-49-93-98"
-				}, 
-				{
-					"CurrentState": "NotPickedNP2",
-					"NextState": "NotPickedCompetingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "NotPickedCompetingAvoiding",
-					"UtteranceId": "55-E0-5E-08-C9-8B-20-72-16-19-6C-7D-50-EF-CD-F9"
-				}, 
-				{
-					"CurrentState": "NotPicked",
-					"NextState": "NotPickedCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "NotPickedCompeting",
-					"UtteranceId": "38-16-37-A2-2F-2C-9A-B5-64-6D-A0-38-8C-B7-AC-2B"
-				}, 
-				{
-					"CurrentState": "NotPickedNP11",
-					"NextState": "NotPickedAvoidingCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "NotPickedAvoidingCompetingCompeting",
-					"UtteranceId": "24-C5-BF-BF-25-3D-EA-FD-F7-5D-3A-FF-7D-4A-A3-F3"
-				}, 
-				{
-					"CurrentState": "NotPickedNP1",
-					"NextState": "NotPickedAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "NotPickedAvoidingAvoiding",
-					"UtteranceId": "23-CF-0D-66-A7-4C-B4-D6-30-22-D7-34-85-C8-C7-69"
-				}, 
-				{
-					"CurrentState": "NotPickedNP31",
-					"NextState": "NotPickedAccommodatingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "NotPickedAccommodatingCollaboratingCollaborating",
-					"UtteranceId": "2E-FF-94-A7-F2-3A-40-E5-22-83-72-55-50-3B-8B-F7"
-				}, 
-				{
-					"CurrentState": "NotPicked",
-					"NextState": "NotPickedAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["-"],
-					"Utterance": "NotPickedAccommodating",
-					"UtteranceId": "69-77-73-A4-DC-AA-B7-15-C6-EC-0B-72-AC-32-0F-D1"
-				}, 
-				{
-					"CurrentState": "OO",
-					"NextState": "OOAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["-"],
-					"Utterance": "OOAccommodating",
-					"UtteranceId": "75-1B-2D-7B-D0-A5-FE-D9-7F-74-54-69-51-92-DB-B0"
-				}, 
-				{
-					"CurrentState": "OO",
-					"NextState": "OOAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "OOAvoiding",
-					"UtteranceId": "7A-30-BC-16-D0-02-03-F9-2A-E8-49-4B-36-62-21-04"
-				}, 
-				{
-					"CurrentState": "OO",
-					"NextState": "OOCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "OOCollaborating",
-					"UtteranceId": "A6-25-24-B7-F5-01-A8-66-EE-27-7F-26-EA-0B-0F-6D"
-				}, 
-				{
-					"CurrentState": "OO",
-					"NextState": "OOCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "OOCompeting",
-					"UtteranceId": "B9-76-21-83-C6-AE-8C-FD-71-DA-01-0D-DD-28-50-60"
-				}, 
-				{
-					"CurrentState": "OONP1",
-					"NextState": "OOAvoidingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["-"],
-					"Utterance": "OOAvoidingAccommodating",
-					"UtteranceId": "C5-DF-51-44-78-CA-6C-FB-1C-C4-59-25-DA-A5-3C-2A"
-				}, 
-				{
-					"CurrentState": "OONP1",
-					"NextState": "OOAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "OOAvoidingAvoiding",
-					"UtteranceId": "73-BC-3F-AC-8B-12-E6-F1-2F-F0-21-68-69-97-9C-CD"
-				}, 
-				{
-					"CurrentState": "OONP11",
-					"NextState": "OOAvoidingAccommodatingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "OOAvoidingAccommodatingAccommodating",
-					"UtteranceId": "A1-EA-69-0A-EE-26-0D-83-5E-1E-22-73-42-9E-A4-87"
-				}, 
-				{
-					"CurrentState": "OONP11",
-					"NextState": "OOAvoidingAccommodatingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "OOAvoidingAccommodatingAvoiding",
-					"UtteranceId": "96-D2-F8-E2-F8-11-DC-EC-77-79-5C-26-1F-BC-3B-07"
-				}, 
-				{
-					"CurrentState": "OONP2",
-					"NextState": "OOCompetingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "OOCompetingCollaborating",
-					"UtteranceId": "43-53-D1-CB-6E-BF-D6-02-8B-27-14-DB-9E-75-51-EB"
-				}, 
-				{
-					"CurrentState": "OONP2",
-					"NextState": "OOCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "OOCompetingCompeting",
-					"UtteranceId": "B7-18-EB-DB-AD-E8-BB-B0-52-9F-B9-6A-15-4B-18-BE"
-				}, 
-				{
-					"CurrentState": "OONP21",
-					"NextState": "OOCompetingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "OOCompetingCollaboratingCollaborating",
-					"UtteranceId": "F8-BF-2E-84-9B-A6-FD-89-CF-CA-BB-8F-F1-14-83-53"
-				}, 
-				{
-					"CurrentState": "OONP21",
-					"NextState": "OOCompetingCollaboratingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "OOCompetingCollaboratingCompeting",
-					"UtteranceId": "2C-C4-86-FE-F3-6E-6A-4D-7C-73-AF-2F-99-14-F9-7E"
-				}, 
-				{
-					"CurrentState": "OONP3",
-					"NextState": "OOAccommodatingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "OOAccommodatingAccommodating",
-					"UtteranceId": "58-ED-C1-61-7F-54-97-27-B0-94-6D-88-FB-7E-66-F8"
-				}, 
-				{
-					"CurrentState": "OONP3",
-					"NextState": "OOAccommodatingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "OOAccommodatingAvoiding",
-					"UtteranceId": "91-5D-B5-07-9A-00-56-65-19-42-68-AF-ED-48-48-7E"
-				}, 
-				{
-					"CurrentState": "OONP31",
-					"NextState": "OOAccommodatingAvoidingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "OOAccommodatingAvoidingAccommodating",
-					"UtteranceId": "05-01-31-24-97-B1-30-A3-FC-25-0C-56-5B-72-CF-68"
-				}, 
-				{
-					"CurrentState": "OONP31",
-					"NextState": "OOAccommodatingAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "OOAccommodatingAvoidingAvoiding",
-					"UtteranceId": "FE-5C-96-9B-F0-0C-A2-54-11-72-83-DA-81-58-AF-08"
-				}, 
-				{
-					"CurrentState": "OONP4",
-					"NextState": "OOCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "OOCollaboratingCollaborating",
-					"UtteranceId": "56-64-22-C5-20-9F-47-F1-14-93-7A-06-E4-9E-02-FF"
-				}, 
-				{
-					"CurrentState": "OONP4",
-					"NextState": "OOCollaboratingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "OOCollaboratingCompeting",
-					"UtteranceId": "37-8B-38-EC-62-F5-81-A6-C0-1A-C6-0D-02-9F-A3-0A"
-				}, 
-				{
-					"CurrentState": "OONP41",
-					"NextState": "OOCollaboratingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "OOCollaboratingCollaboratingCollaborating",
-					"UtteranceId": "38-69-A1-3D-DF-AB-38-50-B0-32-3E-F1-D2-97-D6-16"
-				}, 
-				{
-					"CurrentState": "OONP41",
-					"NextState": "OOCollaboratingCollaboratingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "OOCollaboratingCollaboratingCompeting",
-					"UtteranceId": "9C-8B-DF-6F-E1-F8-A6-A1-EC-37-60-68-10-7C-FA-00"
-				}, 
-				{
-					"CurrentState": "OpinionRevealNegative",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealNegative"],
-					"Style": ["OpinionRevealNegative"],
-					"Utterance": "OpinionRevealNegativeQuestion",
-					"UtteranceId": "AB-9A-7A-82-CF-57-D3-40-65-40-32-09-4D-5E-66-2E"
-				}, 
-				{
-					"CurrentState": "OpinionRevealPositive",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealPositive"],
-					"Style": ["OpinionRevealPositive"],
-					"Utterance": "OpinionRevealPositiveQuestion",
-					"UtteranceId": "67-45-F6-31-D3-4A-FF-39-F9-5B-3D-0F-A7-DF-0F-74"
-				}, 
-				{
-					"CurrentState": "PW",
-					"NextState": "PWAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["-"],
-					"Utterance": "PWAccommodating",
-					"UtteranceId": "87-28-78-E3-3D-F5-09-48-C5-8F-77-E3-CF-A8-F0-C7"
-				}, 
-				{
-					"CurrentState": "PW",
-					"NextState": "PWAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["-"],
-					"Utterance": "PWAvoiding",
-					"UtteranceId": "15-F5-34-2A-1A-10-FB-3E-4E-4D-03-2E-4E-78-37-50"
-				}, 
-				{
-					"CurrentState": "PW",
-					"NextState": "PWCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "PWCollaborating",
-					"UtteranceId": "E2-47-DF-C2-CC-31-C8-4E-2F-97-E3-B6-A8-AD-0A-66"
-				}, 
-				{
-					"CurrentState": "PW",
-					"NextState": "PWCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "PWCompeting",
-					"UtteranceId": "7F-C6-ED-03-5C-0C-FA-EC-B5-05-45-1C-AB-29-6F-C0"
-				}, 
-				{
-					"CurrentState": "PWNP1",
-					"NextState": "PWAvoidingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "PWAvoidingAvoiding",
-					"UtteranceId": "DE-28-1D-4B-6E-DD-21-BC-84-4D-AD-81-B0-71-B7-62"
-				}, 
-				{
-					"CurrentState": "PWNP1",
-					"NextState": "PWAvoidingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "PWAvoidingCollaborating",
-					"UtteranceId": "99-41-E0-70-EB-23-F4-8A-4D-E2-28-38-FE-6C-28-BC"
-				}, 
-				{
-					"CurrentState": "PWNP11",
-					"NextState": "PWAvoidingCollaboratingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "PWAvoidingCollaboratingAvoiding",
-					"UtteranceId": "56-FE-32-63-62-86-64-9B-AA-4B-B1-DA-63-B6-CE-4A"
-				}, 
-				{
-					"CurrentState": "PWNP11",
-					"NextState": "PWAvoidingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "PWAvoidingCollaboratingCollaborating",
-					"UtteranceId": "32-2D-91-4F-9D-AE-CB-F2-B8-FB-A3-67-9F-EF-DC-E4"
-				}, 
-				{
-					"CurrentState": "PWNP2",
-					"NextState": "PWCompetingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["-"],
-					"Utterance": "PWCompetingAccommodating",
-					"UtteranceId": "56-14-6A-8D-AB-36-81-D7-D3-26-A3-96-27-C9-92-4F"
-				}, 
-				{
-					"CurrentState": "PWNP2",
+					"CurrentState": "LearningPill",
 					"NextState": "PWCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "PWCompetingCompeting",
-					"UtteranceId": "BD-23-43-40-D5-5B-07-4F-D1-56-E7-FB-C6-F3-DE-51"
+					"Meaning": "PWCompetingCompeting",
+					"Style": "PWCompetingCompeting",
+					"Utterance": "PWCompetingCompetingLP",
+					"UtteranceId": "TTS-D53DF45E371EB742788C58B8AAB9FF4F"
 				}, 
 				{
-					"CurrentState": "PWNP21",
-					"NextState": "PWCompetingAccommodatingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "PWCompetingAccommodatingAccommodating",
-					"UtteranceId": "6A-C9-93-27-75-E9-B5-DA-EA-B4-A6-91-72-A6-6A-65"
+					"CurrentState": "LearningPill",
+					"NextState": "NotPickedCollaboratingCollaboratingAccommodating",
+					"Meaning": "NotPickedCollaboratingCollaboratingAccommodating",
+					"Style": "NotPickedCollaboratingCollaboratingAccommodating",
+					"Utterance": "NotPickedCollaboratingCollaboratingAccommodatingLP",
+					"UtteranceId": "TTS-DAFE60B850B24DB8A8938105FCAF6C2E"
 				}, 
 				{
-					"CurrentState": "PWNP21",
+					"CurrentState": "LearningPill",
+					"NextState": "NotPickedCollaboratingCollaboratingCollaborating",
+					"Meaning": "NotPickedCollaboratingCollaboratingCollaborating",
+					"Style": "NotPickedCollaboratingCollaboratingCollaborating",
+					"Utterance": "NotPickedCollaboratingCollaboratingCollaboratingLP",
+					"UtteranceId": "TTS-60B67BB2093280C8BF3AE69A9D6409CC"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "NotPickedAccommodatingCollaboratingAccommodating",
+					"Meaning": "NotPickedAccommodatingCollaboratingAccommodating",
+					"Style": "NotPickedAccommodatingCollaboratingAccommodating",
+					"Utterance": "NotPickedAccommodatingCollaboratingAccommodatingLP",
+					"UtteranceId": "TTS-FC2E08E88EF632A4311532184C924D90"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "NotPickedAccommodatingCollaboratingCollaborating",
+					"Meaning": "NotPickedAccommodatingCollaboratingCollaborating",
+					"Style": "NotPickedAccommodatingCollaboratingCollaborating",
+					"Utterance": "NotPickedAccommodatingCollaboratingCollaboratingLP",
+					"UtteranceId": "TTS-75AE8B8645326319A428CE34EA8D7469"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "NotPickedCompetingAvoidingCompeting",
+					"Meaning": "NotPickedCompetingAvoidingCompeting",
+					"Style": "NotPickedCompetingAvoidingCompeting",
+					"Utterance": "NotPickedCompetingAvoidingCompetingLP",
+					"UtteranceId": "TTS-33320319F032BC8D3163A41EDA0E38A5"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "NotPickedCompetingAvoidingAvoiding",
+					"Meaning": "NotPickedCompetingAvoidingAvoiding",
+					"Style": "NotPickedCompetingAvoidingAvoiding",
+					"Utterance": "NotPickedCompetingAvoidingAvoidingLP",
+					"UtteranceId": "TTS-BFCE0777D356574E52924D51E07F0255"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "NotPickedAvoidingCompetingAvoiding",
+					"Meaning": "NotPickedAvoidingCompetingAvoiding",
+					"Style": "NotPickedAvoidingCompetingAvoiding",
+					"Utterance": "NotPickedAvoidingCompetingAvoidingLP",
+					"UtteranceId": "TTS-B9134BEA88CAFE6B1FE6B00F2B80739E"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "NotPickedAvoidingCompetingCompeting",
+					"Meaning": "NotPickedAvoidingCompetingCompeting",
+					"Style": "NotPickedAvoidingCompetingCompeting",
+					"Utterance": "NotPickedAvoidingCompetingCompetingLP",
+					"UtteranceId": "TTS-4A4E26E4C1181EC7D5BE881B1E92C691"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "NotPickedCollaboratingAccommodating",
+					"Meaning": "NotPickedCollaboratingAccommodating",
+					"Style": "NotPickedCollaboratingAccommodating",
+					"Utterance": "NotPickedCollaboratingAccommodatingLP",
+					"UtteranceId": "TTS-A3B2319BF0F9C72B61FFDF812A53AB10"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "NotPickedAccommodatingAccommodating",
+					"Meaning": "NotPickedAccommodatingAccommodating",
+					"Style": "NotPickedAccommodatingAccommodating",
+					"Utterance": "NotPickedAccommodatingAccommodatingLP",
+					"UtteranceId": "TTS-19B6422B1432CC8B580DF5916FB95826"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "NotPickedCompetingCompeting",
+					"Meaning": "NotPickedCompetingCompeting",
+					"Style": "NotPickedCompetingCompeting",
+					"Utterance": "NotPickedCompetingCompetingLP",
+					"UtteranceId": "TTS-A6A0309C7BE4A5A4C8429B2B9BCAB33D"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "NotPickedAvoidingAvoiding",
+					"Meaning": "NotPickedAvoidingAvoiding",
+					"Style": "NotPickedAvoidingAvoiding",
+					"Utterance": "NotPickedAvoidingAvoidingLP",
+					"UtteranceId": "TTS-797ECF3EBC29404FD78C2EB70D2777FB"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "IPCAvoidingAvoiding",
+					"Meaning": "IPCAvoidingAvoiding",
+					"Style": "IPCAvoidingAvoiding",
+					"Utterance": "IPCAvoidingAvoidingLP",
+					"UtteranceId": "TTS-3C4D59D6605286BC8587B8A4BC1293E9"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "OOCollaboratingCollaboratingCompeting",
+					"Meaning": "OOCollaboratingCollaboratingCompeting",
+					"Style": "OOCollaboratingCollaboratingCompeting",
+					"Utterance": "OOCollaboratingCollaboratingCompetingLP",
+					"UtteranceId": "TTS-98395B2A029241203379D634241DA7C6"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "OOCollaboratingCollaboratingCollaborating",
+					"Meaning": "OOCollaboratingCollaboratingCollaborating",
+					"Style": "OOCollaboratingCollaboratingCollaborating",
+					"Utterance": "OOCollaboratingCollaboratingCollaboratingLP",
+					"UtteranceId": "TTS-56B85BD3218382A1C0ACBFAAFC1CBD6A"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "OOAccommodatingAvoidingAccommodating",
+					"Meaning": "OOAccommodatingAvoidingAccommodating",
+					"Style": "OOAccommodatingAvoidingAccommodating",
+					"Utterance": "OOAccommodatingAvoidingAccommodatingLP",
+					"UtteranceId": "TTS-0F7120628ECAAACC40341CD3F8DB15C1"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "OOAccommodatingAvoidingAvoiding",
+					"Meaning": "OOAccommodatingAvoidingAvoiding",
+					"Style": "OOAccommodatingAvoidingAvoiding",
+					"Utterance": "OOAccommodatingAvoidingAvoidingLP",
+					"UtteranceId": "TTS-87D99C3D970285E09992C1C44AFC950B"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "OOCompetingCollaboratingCompeting",
+					"Meaning": "OOCompetingCollaboratingCompeting",
+					"Style": "OOCompetingCollaboratingCompeting",
+					"Utterance": "OOCompetingCollaboratingCompetingLP",
+					"UtteranceId": "TTS-12B74939D368B134EE4BD9D94473D11D"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "OOCompetingCollaboratingCollaborating",
+					"Meaning": "OOCompetingCollaboratingCollaborating",
+					"Style": "OOCompetingCollaboratingCollaborating",
+					"Utterance": "OOCompetingCollaboratingCollaboratingLP",
+					"UtteranceId": "TTS-641F404946BB88182DE69BC1CC97052D"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "OOAvoidingAccommodatingAvoiding",
+					"Meaning": "OOAvoidingAccommodatingAvoiding",
+					"Style": "OOAvoidingAccommodatingAvoiding",
+					"Utterance": "OOAvoidingAccommodatingAvoidingLP",
+					"UtteranceId": "TTS-9BF44F3F6E0955F9867019654E1D61D7"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "OOAvoidingAccommodatingAccommodating",
+					"Meaning": "OOAvoidingAccommodatingAccommodating",
+					"Style": "OOAvoidingAccommodatingAccommodating",
+					"Utterance": "OOAvoidingAccommodatingAccommodatingLP",
+					"UtteranceId": "TTS-254726993BAB3C9AD58651A7E6896FCA"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "OOCollaboratingCompeting",
+					"Meaning": "OOCollaboratingCompeting",
+					"Style": "OOCollaboratingCompeting",
+					"Utterance": "OOCollaboratingCompetingLP",
+					"UtteranceId": "TTS-930E065E82F17063FA51C923EBF8854E"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "OOCompetingCompeting",
+					"Meaning": "OOCompetingCompeting",
+					"Style": "OOCompetingCompeting",
+					"Utterance": "OOCompetingCompetingLP",
+					"UtteranceId": "TTS-FC467A24EE223F7DEE64474A870378D8"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "OOAccommodatingAccommodating",
+					"Meaning": "OOAccommodatingAccommodating",
+					"Style": "OOAccommodatingAccommodating",
+					"Utterance": "OOAccommodatingAccommodatingLP",
+					"UtteranceId": "TTS-B3995B75D23F45D2D8D266208AAC5111"
+				}, 
+				{
+					"CurrentState": "LearningPill",
 					"NextState": "PWCompetingAccommodatingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "PWCompetingAccommodatingCompeting",
-					"UtteranceId": "70-A7-3B-EE-08-45-AA-29-2D-56-6C-18-CF-22-3F-64"
+					"Meaning": "PWCompetingAccommodatingCompeting",
+					"Style": "PWCompetingAccommodatingCompeting",
+					"Utterance": "PWCompetingAccommodatingCompetingLP",
+					"UtteranceId": "TTS-0885D2E90F2DB8AB1DB82E1B39C26130"
 				}, 
 				{
-					"CurrentState": "PWNP3",
-					"NextState": "PWAccommodatingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "PWAccommodatingAccommodating",
-					"UtteranceId": "77-36-8F-06-06-97-70-6F-79-95-F4-1B-EA-DE-C2-98"
-				}, 
-				{
-					"CurrentState": "PWNP3",
-					"NextState": "PWAccommodatingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["-"],
-					"Utterance": "PWAccommodatingCompeting",
-					"UtteranceId": "1A-E9-20-F2-63-B8-6E-DD-0C-78-19-40-F2-D5-20-50"
-				}, 
-				{
-					"CurrentState": "PWNP31",
-					"NextState": "PWAccommodatingCompetingAccommodating",
-					"Meaning": ["Accommodating"],
-					"Style": ["Transformational"],
-					"Utterance": "PWAccommodatingCompetingAccommodating",
-					"UtteranceId": "53-FE-4A-0A-DB-A3-A7-CD-D4-56-4B-F5-8A-EA-F3-7E"
-				}, 
-				{
-					"CurrentState": "PWNP31",
-					"NextState": "PWAccommodatingCompetingCompeting",
-					"Meaning": ["Competing"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "PWAccommodatingCompetingCompeting",
-					"UtteranceId": "DE-27-6E-C6-60-D3-9A-8A-94-AF-7D-5B-28-E7-08-1C"
-				}, 
-				{
-					"CurrentState": "PWNP4",
+					"CurrentState": "LearningPill",
 					"NextState": "PWCollaboratingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "PWCollaboratingAvoiding",
-					"UtteranceId": "6F-E3-25-FF-9E-61-A5-22-06-3E-10-52-46-FB-C0-30"
+					"Meaning": "PWCollaboratingAvoiding",
+					"Style": "PWCollaboratingAvoiding",
+					"Utterance": "PWCollaboratingAvoidingLP",
+					"UtteranceId": "TTS-EB225C3CBCC89DD450FE6753555CA4F9"
 				}, 
 				{
-					"CurrentState": "PWNP4",
-					"NextState": "PWCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["-"],
-					"Utterance": "PWCollaboratingCollaborating",
-					"UtteranceId": "A2-23-C5-23-ED-7E-AF-CF-DA-D3-2E-07-DD-F7-9C-96"
-				}, 
-				{
-					"CurrentState": "PWNP41",
+					"CurrentState": "LearningPill",
 					"NextState": "PWCollaboratingCollaboratingAvoiding",
-					"Meaning": ["Avoiding"],
-					"Style": ["Laissez-faire"],
-					"Utterance": "PWCollaboratingCollaboratingAvoiding",
-					"UtteranceId": "54-9B-4F-EE-29-A8-E7-C9-18-DD-08-8B-F1-C8-1E-27"
+					"Meaning": "PWCollaboratingCollaboratingAvoiding",
+					"Style": "PWCollaboratingCollaboratingAvoiding",
+					"Utterance": "PWCollaboratingCollaboratingAvoidingLP",
+					"UtteranceId": "TTS-AB2C3CD575DE8EB5721DC5C20C34CED1"
 				}, 
 				{
-					"CurrentState": "PWNP41",
+					"CurrentState": "LearningPill",
+					"NextState": "PWAccommodatingAccommodating",
+					"Meaning": "PWAccommodatingAccommodating",
+					"Style": "PWAccommodatingAccommodating",
+					"Utterance": "PWAccommodatingAccommodatingLP",
+					"UtteranceId": "TTS-EDAEA7179E56F29AD0CBBB5FBCEDF6FE"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "PWAccommodatingCompetingAccommodating",
+					"Meaning": "PWAccommodatingCompetingAccommodating",
+					"Style": "PWAccommodatingCompetingAccommodating",
+					"Utterance": "PWAccommodatingCompetingAccommodatingLP",
+					"UtteranceId": "TTS-93CC500097945B921E0FD9DBB1871E16"
+				}, 
+				{
+					"CurrentState": "LearningPill",
+					"NextState": "PWCompetingAccommodatingAccommodating",
+					"Meaning": "PWCompetingAccommodatingAccommodating",
+					"Style": "PWCompetingAccommodatingAccommodating",
+					"Utterance": "PWCompetingAccommodatingAccommodatingLP",
+					"UtteranceId": "TTS-A7E06514F1E5F40ED71A1CBA5C530907"
+				}, 
+				{
+					"CurrentState": "LearningPill",
 					"NextState": "PWCollaboratingCollaboratingCollaborating",
-					"Meaning": ["Collaborating"],
-					"Style": ["Transformational"],
-					"Utterance": "PWCollaboratingCollaboratingCollaborating",
-					"UtteranceId": "65-A3-B8-DB-9A-EF-79-92-D3-B0-75-BB-25-4E-AD-53"
+					"Meaning": "PWCollaboratingCollaboratingCollaborating",
+					"Style": "PWCollaboratingCollaboratingCollaborating",
+					"Utterance": "PWCollaboratingCollaboratingCollaboratingLP",
+					"UtteranceId": "TTS-87E36BD70623488F6C8381059DF4BB9A"
 				}, 
 				{
-					"CurrentState": "RecruitBody",
-					"NextState": "-",
-					"Meaning": ["RecruitBody"],
-					"Style": ["RecruitBody"],
-					"Utterance": "RecruitBody",
-					"UtteranceId": "7D-1E-0E-B2-D2-B6-03-4C-37-78-47-B1-07-18-9B-FA"
+					"CurrentState": "LearningPill",
+					"NextState": "PWAvoidingAvoiding",
+					"Meaning": "PWAvoidingAvoiding",
+					"Style": "PWAvoidingAvoiding",
+					"Utterance": "PWAvoidingAvoidingLP",
+					"UtteranceId": "TTS-C8A89300BF908715F56392F0E16DF212"
 				}, 
 				{
-					"CurrentState": "RecruitCharisma",
-					"NextState": "-",
-					"Meaning": ["RecruitCharisma"],
-					"Style": ["RecruitCharisma"],
-					"Utterance": "RecruitCharisma",
-					"UtteranceId": "B5-13-0A-B9-F8-6C-36-D6-77-3D-40-BA-D9-5E-32-E6"
+					"CurrentState": "LearningPill",
+					"NextState": "PWAvoidingCollaboratingAvoiding",
+					"Meaning": "PWAvoidingCollaboratingAvoiding",
+					"Style": "PWAvoidingCollaboratingAvoiding",
+					"Utterance": "PWAvoidingCollaboratingAvoidingLP",
+					"UtteranceId": "TTS-77537554C21B4E974357B2E516A8A3A0"
 				}, 
 				{
-					"CurrentState": "RecruitPerception",
-					"NextState": "-",
-					"Meaning": ["RecruitPerception"],
-					"Style": ["RecruitPerception"],
-					"Utterance": "RecruitPerception",
-					"UtteranceId": "1B-FB-D2-2B-17-43-06-80-6E-3C-1F-7B-7B-B7-8A-19"
+					"CurrentState": "LearningPill",
+					"NextState": "PWAvoidingCollaboratingCollaborating",
+					"Meaning": "PWAvoidingCollaboratingCollaborating",
+					"Style": "PWAvoidingCollaboratingCollaborating",
+					"Utterance": "PWAvoidingCollaboratingCollaboratingLP",
+					"UtteranceId": "TTS-57092087FDA5135213E377F06747A685"
 				}, 
 				{
-					"CurrentState": "RecruitQuickness",
-					"NextState": "-",
-					"Meaning": ["RecruitQuickness"],
-					"Style": ["RecruitQuickness"],
-					"Utterance": "RecruitQuickness",
-					"UtteranceId": "FB-0A-B2-83-F4-67-DF-A3-DD-2F-1E-30-1E-99-56-23"
+					"CurrentState": "LearningPill",
+					"NextState": "OOAvoidingAvoiding",
+					"Meaning": "OOAvoidingAvoiding",
+					"Style": "OOAvoidingAvoiding",
+					"Utterance": "OOAvoidingAvoidingLP",
+					"UtteranceId": "TTS-01B19932AB9A9C2564A562E28BB551B8"
 				}, 
 				{
-					"CurrentState": "StatReveal",
-					"NextState": "-",
-					"Meaning": ["StatReveal"],
-					"Style": ["StatReveal"],
-					"Utterance": "StatReveal",
-					"UtteranceId": "59-BA-30-70-A0-AD-51-86-0A-79-EB-01-37-CD-60-74"
+					"CurrentState": "LearningPill",
+					"NextState": "PWAccommodatingCompetingCompeting",
+					"Meaning": "PWAccommodatingCompetingCompeting",
+					"Style": "PWAccommodatingCompetingCompeting",
+					"Utterance": "PWAccommodatingCompetingCompetingLP",
+					"UtteranceId": "TTS-F6E13E2530EC09ACE892028BF76A5F41"
 				}, 
 				{
-					"CurrentState": "RoleReveal",
+					"CurrentState": "Player_RecruitWillpower",
 					"NextState": "-",
-					"Meaning": ["RoleReveal"],
-					"Style": ["RoleReveal"],
-					"Utterance": "RoleReveal",
-					"UtteranceId": "E7-C3-F6-16-4C-81-65-B6-8C-2C-C5-A4-83-C1-6E-03"
-				}, 
-				{
-					"CurrentState": "RecruitWisdom",
-					"NextState": "-",
-					"Meaning": ["RecruitWisdom"],
-					"Style": ["RecruitWisdom"],
-					"Utterance": "RecruitWisdom",
-					"UtteranceId": "9A-91-5E-1B-2F-20-62-09-88-4C-0C-A1-41-04-D6-F5"
-				}, 
-				{
-					"CurrentState": "RecruitWillpower",
-					"NextState": "-",
-					"Meaning": ["RecruitWillpower"],
-					"Style": ["RecruitWillpower"],
+					"Meaning": "RecruitWillpower",
+					"Style": "RecruitWillpower",
 					"Utterance": "RecruitWillpower",
-					"UtteranceId": "81-29-68-DC-37-82-92-72-0D-9E-41-C8-64-78-27-43"
-				}],
-			"AgentDialogues": [
-				{
-					"CurrentState": "IPCAccommodating",
-					"NextState": "IPCNP6",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP6",
-					"UtteranceId": "40-FE-30-A8-47-25-0D-76-A4-C1-D8-18-39-28-B2-7E"
-				}, 
-				{
-					"CurrentState": "InterviewIntro",
-					"NextState": "-",
-					"Meaning": ["InterviewIntro"],
-					"Style": ["InterviewIntro"],
-					"Utterance": "InterviewIntro",
-					"UtteranceId": "C0-59-78-C5-1C-7D-74-2B-9C-06-3E-20-8A-66-6D-5E"
-				}, 
-				{
-					"CurrentState": "IPCAccommodating",
-					"NextState": "IPCNP5",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP5",
-					"UtteranceId": "A6-CB-79-60-5F-B1-D5-17-ED-44-D3-B1-25-21-A7-2C"
-				}, 
-				{
-					"CurrentState": "IPCAccommodatingAccommodating",
-					"NextState": "IPCNP51",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP51",
-					"UtteranceId": "CC-72-1E-29-23-CE-6B-FC-19-97-11-D8-15-EB-F8-24"
-				}, 
-				{
-					"CurrentState": "NotPickedCompetingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
-					"Utterance": "NotPickedCompetingCompetingResponse",
-					"UtteranceId": "43-FD-95-6A-A4-AC-09-9A-8B-62-71-69-80-C2-7E-74"
-				}, 
-				{
-					"CurrentState": "IPCAccommodatingAccommodating2",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(2)"],
-					"Utterance": "IPCAccommodatingAccommodating2Response",
-					"UtteranceId": "9A-74-CC-2D-5C-57-AF-35-41-07-29-B2-1E-AE-20-F6"
-				}, 
-				{
-					"CurrentState": "IPCCollaborating",
-					"NextState": "IPCNP8",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP8",
-					"UtteranceId": "90-DF-7C-95-D9-AC-4F-64-58-29-FD-5E-1D-76-8E-15"
-				}, 
-				{
-					"CurrentState": "IPCCollaboratingCollaborating2",
-					"NextState": "IPCNP81",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP81",
-					"UtteranceId": "47-A1-CD-2E-C3-77-84-AA-C2-3F-EF-A0-5F-A7-97-8E"
-				}, 
-				{
-					"CurrentState": "IPCCollaborating",
-					"NextState": "IPCNP7",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP7",
-					"UtteranceId": "5E-7A-98-E1-55-46-86-40-06-90-57-22-E5-27-54-23"
-				}, 
-				{
-					"CurrentState": "IPCCollaboratingCollaborating",
-					"NextState": "IPCNP71",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP71",
-					"UtteranceId": "02-74-83-2B-D0-0F-31-AD-86-1F-2D-D3-14-04-B1-66"
-				}, 
-				{
-					"CurrentState": "IPCCollaboratingAccommodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(3)"],
-					"Utterance": "IPCCollaboratingAccommodatingResponse",
-					"UtteranceId": "5F-62-F2-4D-EC-7F-9A-B8-5F-5A-05-40-8B-B7-C3-BF"
-				}, 
-				{
-					"CurrentState": "IPCAvoidingCompeting",
-					"NextState": "IPCNP21",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP21",
-					"UtteranceId": "2D-27-4F-62-EB-2F-12-64-66-33-AA-FC-C3-C1-B8-EB"
-				}, 
-				{
-					"CurrentState": "Disagree",
-					"NextState": "-",
-					"Meaning": ["Disagree"],
-					"Style": ["Disagree"],
-					"Utterance": "Disagree",
-					"UtteranceId": "2B-52-AC-64-A5-52-E4-E5-4D-44-0F-49-FC-B5-A5-8C"
+					"UtteranceId": "TTS-812968DC378292720D9E41C864782743"
 				}, 
 				{
-					"CurrentState": "OOAccommodatingAccommodating",
+					"CurrentState": "Player_RecruitWisdom",
 					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(2)", "ImproveConflictOpinionGreatly"],
-					"Utterance": "OOAccommodatingAccommodatingResponse",
-					"UtteranceId": "0A-C5-0E-14-38-A4-42-8D-D9-C3-66-90-55-71-C9-30"
-				}, 
-				{
-					"CurrentState": "OOAccommodating",
-					"NextState": "OONP3",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP3",
-					"UtteranceId": "BE-28-F1-02-09-BF-7B-1B-A9-08-7D-47-72-97-A7-83"
+					"Meaning": "RecruitWisdom",
+					"Style": "RecruitWisdom",
+					"Utterance": "RecruitWisdom",
+					"UtteranceId": "TTS-9A915E1B2F206209884C0CA14104D6F5"
 				}, 
 				{
-					"CurrentState": "Agree",
+					"CurrentState": "Player_RoleReveal",
 					"NextState": "-",
-					"Meaning": ["Agree"],
-					"Style": ["Agree"],
-					"Utterance": "Agree",
-					"UtteranceId": "6A-63-34-B4-78-28-9B-4F-B3-06-0C-4F-80-3E-AF-D3"
+					"Meaning": "RoleReveal",
+					"Style": "RoleReveal",
+					"Utterance": "RoleReveal",
+					"UtteranceId": "TTS-E7C3F6164C8165B68C2CC5A483C16E03"
 				}, 
 				{
-					"CurrentState": "NotPickedCompetingAvoidingCompeting",
+					"CurrentState": "Player_StatReveal",
 					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-5)", "ManagerOpinionMuchWorse"],
-					"Utterance": "NotPickedCompetingAvoidingCompetingResponse",
-					"UtteranceId": "78-A4-20-1F-23-0B-47-5F-13-E4-D6-6D-81-F5-62-49"
+					"Meaning": "StatReveal",
+					"Style": "StatReveal",
+					"Utterance": "StatReveal",
+					"UtteranceId": "TTS-59BA3070A0AD51860A79EB0137CD6074"
 				}, 
 				{
-					"CurrentState": "IPCAvoidingCompetingCompeting",
+					"CurrentState": "Player_RecruitQuickness",
 					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-5)", "ManagerOpinionAllCrewWorse"],
-					"Utterance": "IPCAvoidingCompetingCompetingResponse",
-					"UtteranceId": "79-95-4E-62-9A-A7-82-BF-3D-11-03-07-81-33-2C-8C"
+					"Meaning": "RecruitQuickness",
+					"Style": "RecruitQuickness",
+					"Utterance": "RecruitQuickness",
+					"UtteranceId": "TTS-FB0AB283F467DFA3DD2F1E301E995623"
 				}, 
 				{
-					"CurrentState": "IPCAvoidingAccommodatingAvoiding",
+					"CurrentState": "Player_RecruitPerception",
 					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ManagerOpinionMuchWorse"],
-					"Utterance": "IPCAvoidingAccommodatingAvoidingResponse",
-					"UtteranceId": "6E-42-F4-65-BE-8B-4B-C6-2A-1E-6D-E2-88-D0-77-0A"
+					"Meaning": "RecruitPerception",
+					"Style": "RecruitPerception",
+					"Utterance": "RecruitPerception",
+					"UtteranceId": "TTS-1BFBD22B174306806E3C1F7B7BB78A19"
 				}, 
 				{
-					"CurrentState": "IPCAccommodatingAvoidingAccommodating",
+					"CurrentState": "Player_RecruitCharisma",
 					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(1)"],
-					"Utterance": "IPCAccommodatingAvoidingAccommodatingResponse",
-					"UtteranceId": "35-66-B1-B0-C8-3B-0E-78-EB-81-38-58-00-89-0D-E3"
+					"Meaning": "RecruitCharisma",
+					"Style": "RecruitCharisma",
+					"Utterance": "RecruitCharisma",
+					"UtteranceId": "TTS-B5130AB9F86C36D6773D40BAD95E32E6"
 				}, 
 				{
-					"CurrentState": "IPCAvoidingAvoiding",
+					"CurrentState": "Player_RecruitBody",
 					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-2)", "ManagerOpinionMuchWorse"],
-					"Utterance": "IPCAvoidingAvoidingResponse",
-					"UtteranceId": "38-43-63-95-0B-74-5C-A7-64-81-54-51-AE-72-48-8F"
-				}, 
-				{
-					"CurrentState": "IPCAvoiding",
-					"NextState": "IPCNP2",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP2",
-					"UtteranceId": "BF-32-99-61-B6-97-CF-3C-63-05-82-E5-64-33-F8-53"
+					"Meaning": "RecruitBody",
+					"Style": "RecruitBody",
+					"Utterance": "RecruitBody",
+					"UtteranceId": "TTS-7D1E0EB2D2B6034C377847B107189BFA"
 				}, 
 				{
-					"CurrentState": "IPCAccommodatingCollaboratingAccommodatingAccommodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(5)", "ManagerOpinionAllCrewBetter"],
-					"Utterance": "IPCAccommodatingCollaboratingAccommodatingAccommodatingResponse",
-					"UtteranceId": "3C-4D-7B-32-E0-7D-5A-85-98-E0-E5-FF-BA-D3-5C-E6"
+					"CurrentState": "Player_PWNP41",
+					"NextState": "NPC_PWCollaboratingCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "Transformational",
+					"Utterance": "PWCollaboratingCollaboratingCollaborating",
+					"UtteranceId": "TTS-65A3B8DB9AEF7992D3B075BB254EAD53"
 				}, 
 				{
-					"CurrentState": "IPCAvoiding",
-					"NextState": "IPCNP1",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP1",
-					"UtteranceId": "C6-84-B9-51-10-21-46-E7-13-FD-51-52-D8-A9-BF-41"
+					"CurrentState": "Player_PWNP41",
+					"NextState": "NPC_PWCollaboratingCollaboratingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "PWCollaboratingCollaboratingAvoiding",
+					"UtteranceId": "TTS-549B4FEE29A8E7C918DD088BF1C81E27"
 				}, 
 				{
-					"CurrentState": "IPCAccommodatingAccommodatingAccommodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(3)", "ManagerOpinionBetter"],
-					"Utterance": "IPCAccommodatingAccommodatingAccommodatingResponse",
-					"UtteranceId": "0D-49-29-93-0D-53-67-83-94-20-4D-53-7A-5C-82-AB"
+					"CurrentState": "Player_PWNP4",
+					"NextState": "NPC_PWCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "PWCollaboratingCollaborating",
+					"UtteranceId": "TTS-A223C523ED7EAFCFDAD32E07DDF79C96"
 				}, 
 				{
-					"CurrentState": "IPCAccommodatingAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
-					"Utterance": "IPCAccommodatingAvoidingAvoidingResponse",
-					"UtteranceId": "3B-7D-0A-C5-22-1C-C6-0E-0C-77-BE-08-C2-F7-7D-BA"
+					"CurrentState": "Player_PWNP4",
+					"NextState": "NPC_PWCollaboratingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "PWCollaboratingAvoiding",
+					"UtteranceId": "TTS-6FE325FF9E61A522063E105246FBC030"
 				}, 
 				{
-					"CurrentState": "IPCAvoidingAvoiding",
-					"NextState": "IPCNP22",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP22",
-					"UtteranceId": "B7-3A-F0-80-B2-B1-9B-E3-FA-74-E2-23-6C-B1-7D-7A"
+					"CurrentState": "Player_PWNP31",
+					"NextState": "NPC_PWAccommodatingCompetingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "PWAccommodatingCompetingCompeting",
+					"UtteranceId": "TTS-DE276EC660D39A8A94AF7D5B28E7081C"
 				}, 
 				{
-					"CurrentState": "IPCAccommodatingCollaboratingCollaborating",
-					"NextState": "IPCNP611",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP611",
-					"UtteranceId": "7E-36-1A-DB-18-EE-8C-05-3B-85-86-57-1B-9A-0F-47"
+					"CurrentState": "Player_PWNP31",
+					"NextState": "NPC_PWAccommodatingCompetingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "PWAccommodatingCompetingAccommodating",
+					"UtteranceId": "TTS-53FE4A0ADBA3A7CDD4564BF58AEAF37E"
+				}, 
+				{
+					"CurrentState": "Player_PWNP3",
+					"NextState": "NPC_PWAccommodatingCompeting",
+					"Meaning": "Competing",
+					"Style": "-",
+					"Utterance": "PWAccommodatingCompeting",
+					"UtteranceId": "TTS-1AE920F263B86EDD0C781940F2D52050"
+				}, 
+				{
+					"CurrentState": "Player_PWNP3",
+					"NextState": "NPC_PWAccommodatingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "PWAccommodatingAccommodating",
+					"UtteranceId": "TTS-77368F060697706F7995F41BEADEC298"
 				}, 
 				{
-					"CurrentState": "IPCAvoidingAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-3)", "ManagerOpinionWorse"],
-					"Utterance": "IPCAvoidingAvoidingAvoidingResponse",
-					"UtteranceId": "12-8D-6F-83-AF-80-2B-18-A3-34-F7-10-AB-C1-89-85"
+					"CurrentState": "Player_PWNP21",
+					"NextState": "NPC_PWCompetingAccommodatingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "PWCompetingAccommodatingCompeting",
+					"UtteranceId": "TTS-70A73BEE0845AA292D566C18CF223F64"
 				}, 
 				{
-					"CurrentState": "IPCAccommodatingCollaboratingAccommodating",
-					"NextState": "IPCNP612",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP612",
-					"UtteranceId": "B4-76-DF-15-73-0F-2F-B9-4E-0C-00-F1-16-DC-25-51"
+					"CurrentState": "Player_PWNP21",
+					"NextState": "NPC_PWCompetingAccommodatingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "PWCompetingAccommodatingAccommodating",
+					"UtteranceId": "TTS-6AC9932775E9B5DAEAB4A69172A66A65"
 				}, 
 				{
-					"CurrentState": "IPCAccommodatingCollaboratingAccommodatingCompromising",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(6)", "ManagerOpinionAllCrewBetter"],
-					"Utterance": "IPCAccommodatingCollaboratingAccommodatingCompromisingResponse",
-					"UtteranceId": "54-34-63-67-C8-F6-59-C9-6B-80-BE-45-D8-64-6B-61"
+					"CurrentState": "Player_PWNP2",
+					"NextState": "NPC_PWCompetingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "PWCompetingCompeting",
+					"UtteranceId": "TTS-BD234340D55B074FD156E7FBC6F3DE51"
 				}, 
 				{
-					"CurrentState": "IPCAccommodatingCollaboratingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(7)", "ManagerOpinionAllCrewBetter"],
-					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCollaboratingResponse",
-					"UtteranceId": "5D-63-60-8F-6E-BD-13-E0-1D-8A-4B-AC-4C-19-C3-57"
+					"CurrentState": "Player_PWNP2",
+					"NextState": "NPC_PWCompetingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "-",
+					"Utterance": "PWCompetingAccommodating",
+					"UtteranceId": "TTS-56146A8DAB3681D7D326A39627C9924F"
 				}, 
 				{
-					"CurrentState": "IPCAccommodatingAccommodatingCompromising",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(4)", "ManagerOpinionBetter"],
-					"Utterance": "IPCAccommodatingAccommodatingCompromisingResponse",
-					"UtteranceId": "BF-46-A6-23-D0-33-09-99-EE-65-21-AB-02-9C-F7-F3"
+					"CurrentState": "Player_PWNP11",
+					"NextState": "NPC_PWAvoidingCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "Transformational",
+					"Utterance": "PWAvoidingCollaboratingCollaborating",
+					"UtteranceId": "TTS-322D914F9DAECBF2B8FBA3679FEFDCE4"
 				}, 
 				{
-					"CurrentState": "IPCAvoidingAccommodating",
-					"NextState": "IPCNP11",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP11",
-					"UtteranceId": "05-14-1A-C5-F8-CC-9B-3F-42-56-F9-AE-46-54-D7-FF"
+					"CurrentState": "Player_PWNP11",
+					"NextState": "NPC_PWAvoidingCollaboratingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "PWAvoidingCollaboratingAvoiding",
+					"UtteranceId": "TTS-56FE32636286649BAA4BB1DA63B6CE4A"
 				}, 
 				{
-					"CurrentState": "IPCAccommodatingCollaboratingCollaboratingCompromising",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(7)", "ManagerOpinionAllCrewBetter"],
-					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCompromisingResponse",
-					"UtteranceId": "FC-9E-3D-B1-0B-17-E3-BD-D0-97-DC-2E-83-7E-F6-07"
+					"CurrentState": "Player_PWNP1",
+					"NextState": "NPC_PWAvoidingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "PWAvoidingCollaborating",
+					"UtteranceId": "TTS-9941E070EB23F48A4DE22838FE6C28BC"
 				}, 
 				{
-					"CurrentState": "IPCAvoidingAccommodatingAccommodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(1)", "ManagerOpinionBetter"],
-					"Utterance": "IPCAvoidingAccommodatingAccommodatingResponse",
-					"UtteranceId": "C3-9E-8A-14-65-86-F6-B7-F2-93-4A-79-30-AF-B5-E5"
+					"CurrentState": "Player_PWNP1",
+					"NextState": "NPC_PWAvoidingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "PWAvoidingAvoiding",
+					"UtteranceId": "TTS-DE281D4B6EDD21BC844DAD81B071B762"
 				}, 
 				{
-					"CurrentState": "IPCAccommodatingAvoiding",
-					"NextState": "IPCNP52",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP52",
-					"UtteranceId": "34-8C-E6-A8-B3-99-97-62-9B-42-12-BF-A3-3B-54-49"
+					"CurrentState": "Player_PW",
+					"NextState": "NPC_PWCompeting",
+					"Meaning": "Competing",
+					"Style": "-",
+					"Utterance": "PWCompeting",
+					"UtteranceId": "TTS-7FC6ED035C0CFAECB505451CAB296FC0"
 				}, 
 				{
-					"CurrentState": "IPCAccommodatingCollaborating",
-					"NextState": "IPCNP61",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP61",
-					"UtteranceId": "BC-2E-89-6C-BD-BE-48-D4-2D-EF-A7-9F-D7-9B-DE-29"
+					"CurrentState": "Player_PW",
+					"NextState": "NPC_PWCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "PWCollaborating",
+					"UtteranceId": "TTS-E247DFC2CC31C84E2F97E3B6A8AD0A66"
 				}, 
 				{
-					"CurrentState": "IPCCompetingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
-					"Utterance": "IPCCompetingCompetingResponse",
-					"UtteranceId": "B7-D7-F8-DC-AC-1E-0D-35-9C-B5-E6-64-3B-48-2E-CF"
+					"CurrentState": "Player_PW",
+					"NextState": "NPC_PWAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "-",
+					"Utterance": "PWAvoiding",
+					"UtteranceId": "TTS-15F5342A1A10FB3E4E4D032E4E783750"
 				}, 
 				{
-					"CurrentState": "IPCCompetingAvoidingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-5)"],
-					"Utterance": "IPCCompetingAvoidingCompetingResponse",
-					"UtteranceId": "52-6C-10-15-83-20-6E-19-7E-73-F3-71-7E-03-F2-D1"
+					"CurrentState": "Player_PW",
+					"NextState": "NPC_PWAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "-",
+					"Utterance": "PWAccommodating",
+					"UtteranceId": "TTS-872878E33DF50948C58F77E3CFA8F0C7"
 				}, 
 				{
-					"CurrentState": "IPCCompetingCollaboratingCollaboratingCompromising",
+					"CurrentState": "Player_OpinionRevealPositive",
 					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(6)", "ManagerOpinionBetter"],
-					"Utterance": "IPCCompetingCollaboratingCollaboratingCompromisingResponse",
-					"UtteranceId": "12-6A-38-35-E5-97-D0-4A-3D-78-51-2A-B4-86-47-98"
+					"Meaning": "OpinionRevealPositive",
+					"Style": "OpinionRevealPositive",
+					"Utterance": "OpinionRevealPositiveQuestion",
+					"UtteranceId": "TTS-6745F631D34AFF39F95B3D0FA7DF0F74"
 				}, 
 				{
-					"CurrentState": "IPCCollaboratingCollaboratingCollaborating2Collaborating",
+					"CurrentState": "Player_OpinionRevealNegative",
 					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(7)", "ManagerOpinionAllCrewBetter"],
-					"Utterance": "IPCCollaboratingCollaboratingCollaborating2CollaboratingResponse",
-					"UtteranceId": "71-8D-38-28-1C-95-42-6A-AB-A9-AD-16-4E-83-2E-5B"
-				}, 
-				{
-					"CurrentState": "IPCCompeting",
-					"NextState": "IPCNP4",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP4",
-					"UtteranceId": "DA-D9-B7-75-D6-99-8D-3A-8D-E0-8C-70-43-0B-AE-48"
+					"Meaning": "OpinionRevealNegative",
+					"Style": "OpinionRevealNegative",
+					"Utterance": "OpinionRevealNegativeQuestion",
+					"UtteranceId": "TTS-AB9A7A82CF57D340654032094D5E662E"
 				}, 
 				{
-					"CurrentState": "IPCCollaboratingCompetingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-2)", "ManagerOpinionMuchWorse"],
-					"Utterance": "IPCCollaboratingCompetingCompetingResponse",
-					"UtteranceId": "DD-A1-30-99-0D-A3-2B-4E-56-CC-08-A5-2B-15-3C-E8"
+					"CurrentState": "Player_OONP41",
+					"NextState": "NPC_OOCollaboratingCollaboratingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "OOCollaboratingCollaboratingCompeting",
+					"UtteranceId": "TTS-9C8BDF6FE1F8A6A1EC376068107CFA00"
 				}, 
 				{
-					"CurrentState": "IPCCompeting",
-					"NextState": "IPCNP3",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP3",
-					"UtteranceId": "8A-EA-ED-BD-04-7B-B5-DE-73-B7-09-6B-EC-51-59-B9"
+					"CurrentState": "Player_OONP41",
+					"NextState": "NPC_OOCollaboratingCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "Transformational",
+					"Utterance": "OOCollaboratingCollaboratingCollaborating",
+					"UtteranceId": "TTS-3869A13DDFAB3850B0323EF1D297D616"
 				}, 
 				{
-					"CurrentState": "IPCCompetingCollaborating",
-					"NextState": "IPCNP31",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP31",
-					"UtteranceId": "F0-BC-F5-30-41-00-ED-F2-02-4D-BB-CC-88-FE-36-9B"
+					"CurrentState": "Player_OONP4",
+					"NextState": "NPC_OOCollaboratingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "OOCollaboratingCompeting",
+					"UtteranceId": "TTS-378B38EC62F581A6C01AC60D029FA30A"
 				}, 
 				{
-					"CurrentState": "IPCCompetingCollaboratingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-2)"],
-					"Utterance": "IPCCompetingCollaboratingCompetingResponse",
-					"UtteranceId": "4B-7B-8C-19-D0-6F-4E-62-1F-FA-25-8F-3B-CC-8B-6B"
+					"CurrentState": "Player_OONP4",
+					"NextState": "NPC_OOCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "OOCollaboratingCollaborating",
+					"UtteranceId": "TTS-566422C5209F47F114937A06E49E02FF"
 				}, 
 				{
-					"CurrentState": "IPCCollaboratingCollaboratingCollaboratingCompromising",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(7)", "ManagerOpinionBetter"],
-					"Utterance": "IPCCollaboratingCollaboratingCollaboratingCompromisingResponse",
-					"UtteranceId": "64-94-22-E2-9F-1D-79-A6-06-88-9C-F2-63-BB-00-B0"
+					"CurrentState": "Player_OONP31",
+					"NextState": "NPC_OOAccommodatingAvoidingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "OOAccommodatingAvoidingAvoiding",
+					"UtteranceId": "TTS-FE5C969BF00CA254117283DA8158AF08"
 				}, 
 				{
-					"CurrentState": "IPCCollaboratingCollaborating2Collaborating",
-					"NextState": "IPCNP811",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP811",
-					"UtteranceId": "F8-89-D8-C7-21-3A-13-81-BC-F7-27-8F-DD-47-86-5D"
+					"CurrentState": "Player_OONP31",
+					"NextState": "NPC_OOAccommodatingAvoidingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "OOAccommodatingAvoidingAccommodating",
+					"UtteranceId": "TTS-0501312497B130A3FC250C565B72CF68"
 				}, 
 				{
-					"CurrentState": "IPCCollaboratingCollaboratingCompromising",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(6)"],
-					"Utterance": "IPCCollaboratingCollaboratingCompromisingResponse",
-					"UtteranceId": "26-97-F7-AC-F4-70-05-3D-FF-00-7A-FF-B3-FA-09-7F"
+					"CurrentState": "Player_OONP3",
+					"NextState": "NPC_OOAccommodatingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "-",
+					"Utterance": "OOAccommodatingAvoiding",
+					"UtteranceId": "TTS-915DB5079A005665194268AFED48487E"
 				}, 
 				{
-					"CurrentState": "IPCCompetingAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)", "ManagerOpinionWorse"],
-					"Utterance": "IPCCompetingAvoidingAvoidingResponse",
-					"UtteranceId": "75-A4-6D-75-96-23-58-38-A7-E1-C9-A4-94-8B-59-69"
+					"CurrentState": "Player_OONP3",
+					"NextState": "NPC_OOAccommodatingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "OOAccommodatingAccommodating",
+					"UtteranceId": "TTS-58EDC1617F549727B0946D88FB7E66F8"
 				}, 
 				{
-					"CurrentState": "IPCCompetingAvoiding",
-					"NextState": "IPCNP41",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP41",
-					"UtteranceId": "51-07-6D-B8-E6-4A-70-35-C7-C2-CA-AC-48-62-FE-C5"
+					"CurrentState": "Player_OONP21",
+					"NextState": "NPC_OOCompetingCollaboratingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "OOCompetingCollaboratingCompeting",
+					"UtteranceId": "TTS-2CC486FEF36E6A4D7C73AF2F9914F97E"
 				}, 
 				{
-					"CurrentState": "IPCCollaboratingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(6)", "ManagerOpinionMuchBetter"],
-					"Utterance": "IPCCollaboratingCollaboratingCollaboratingResponse",
-					"UtteranceId": "35-5A-73-78-08-FC-73-77-8A-E3-85-35-D9-6F-6C-36"
+					"CurrentState": "Player_OONP21",
+					"NextState": "NPC_OOCompetingCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "Transformational",
+					"Utterance": "OOCompetingCollaboratingCollaborating",
+					"UtteranceId": "TTS-F8BF2E849BA6FD89CFCABB8FF1148353"
 				}, 
 				{
-					"CurrentState": "IPCCollaboratingCollaboratingAccommodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(5)", "ManagerOpinionAlCrewBetter"],
-					"Utterance": "IPCCollaboratingCollaboratingAccommodatingResponse",
-					"UtteranceId": "8C-B0-D9-DB-BC-C8-0B-0D-5C-6B-A8-F9-EE-44-1C-A8"
+					"CurrentState": "Player_OONP2",
+					"NextState": "NPC_OOCompetingCompeting",
+					"Meaning": "Competing",
+					"Style": "-",
+					"Utterance": "OOCompetingCompeting",
+					"UtteranceId": "TTS-B718EBDBADE8BBB0529FB96A154B18BE"
 				}, 
 				{
-					"CurrentState": "IPCCompetingCollaboratingCollaborating",
-					"NextState": "IPCNP311",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP311",
-					"UtteranceId": "90-93-D7-C1-54-24-7A-A7-92-05-11-3B-67-25-17-46"
+					"CurrentState": "Player_OONP2",
+					"NextState": "NPC_OOCompetingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "Laissez-faire",
+					"Utterance": "OOCompetingCollaborating",
+					"UtteranceId": "TTS-4353D1CB6EBFD6028B2714DB9E7551EB"
 				}, 
 				{
-					"CurrentState": "IPCCompetingCollaboratingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(4)"],
-					"Utterance": "IPCCompetingCollaboratingCollaboratingCollaboratingResponse",
-					"UtteranceId": "44-86-97-17-AA-F2-13-5F-14-70-95-FE-FF-2D-C2-FB"
+					"CurrentState": "Player_OONP11",
+					"NextState": "NPC_OOAvoidingAccommodatingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "OOAvoidingAccommodatingAvoiding",
+					"UtteranceId": "TTS-96D2F8E2F811DCEC77795C261FBC3B07"
 				}, 
 				{
-					"CurrentState": "IPCCollaboratingCompetingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(2)", "ManagerOpinionBetter"],
-					"Utterance": "IPCCollaboratingCompetingCollaboratingResponse",
-					"UtteranceId": "0D-16-B0-78-8B-40-A9-8B-FA-D5-59-0A-E6-6B-DD-4B"
+					"CurrentState": "Player_OONP11",
+					"NextState": "NPC_OOAvoidingAccommodatingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "OOAvoidingAccommodatingAccommodating",
+					"UtteranceId": "TTS-A1EA690AEE260D835E1E2273429EA487"
 				}, 
 				{
-					"CurrentState": "IPCCollaboratingCompeting",
-					"NextState": "IPCNP72",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "IPCNP72",
-					"UtteranceId": "9F-8D-20-7A-13-83-40-E8-2B-D0-CD-71-B9-32-B8-2E"
+					"CurrentState": "Player_OONP1",
+					"NextState": "NPC_OOAvoidingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "OOAvoidingAvoiding",
+					"UtteranceId": "TTS-73BC3FAC8B12E6F12FF0216869979CCD"
 				}, 
 				{
-					"CurrentState": "NotPickedCollaboratingCollaborating",
-					"NextState": "NotPickedNP41",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "NotPickedNP41",
-					"UtteranceId": "11-7D-D4-CB-AC-25-7D-FD-8F-AB-68-D2-E6-17-6E-43"
+					"CurrentState": "Player_OONP1",
+					"NextState": "NPC_OOAvoidingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "-",
+					"Utterance": "OOAvoidingAccommodating",
+					"UtteranceId": "TTS-C5DF514478CA6CFB1CC45925DAA53C2A"
 				}, 
 				{
-					"CurrentState": "IPCAvoidingCompetingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
-					"Utterance": "IPCAvoidingCompetingAvoidingResponse",
-					"UtteranceId": "A7-04-C0-FF-57-D9-1A-94-F4-41-69-D6-11-EA-BB-7C"
+					"CurrentState": "Player_OO",
+					"NextState": "NPC_OOCompeting",
+					"Meaning": "Competing",
+					"Style": "-",
+					"Utterance": "OOCompeting",
+					"UtteranceId": "TTS-B9762183C6AE8CFD71DA010DDD285060"
 				}, 
 				{
-					"CurrentState": "IPCAvoidingAvoidingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
-					"Utterance": "IPCAvoidingAvoidingCompetingResponse",
-					"UtteranceId": "CF-A9-C4-91-15-09-5F-95-96-64-EA-29-D5-C0-2B-5D"
+					"CurrentState": "Player_OO",
+					"NextState": "NPC_OOCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "OOCollaborating",
+					"UtteranceId": "TTS-A62524B7F501A866EE277F26EA0B0F6D"
 				}, 
 				{
-					"CurrentState": "NotPickedAccommodatingCollaborating",
-					"NextState": "NotPickedNP31",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "NotPickedNP31",
-					"UtteranceId": "7C-20-FE-75-84-99-23-90-C3-CB-E8-10-C8-44-AB-3D"
+					"CurrentState": "Player_OO",
+					"NextState": "NPC_OOAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "-",
+					"Utterance": "OOAvoiding",
+					"UtteranceId": "TTS-7A30BC16D00203F92AE8494B36622104"
 				}, 
 				{
-					"CurrentState": "NotPickedCompetingAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
-					"Utterance": "NotPickedCompetingAvoidingAvoidingResponse",
-					"UtteranceId": "4D-EB-80-1D-70-86-C5-70-93-17-4A-31-51-43-65-06"
+					"CurrentState": "Player_OO",
+					"NextState": "NPC_OOAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "-",
+					"Utterance": "OOAccommodating",
+					"UtteranceId": "TTS-751B2D7BD0A5FED97F7454695192DBB0"
 				}, 
 				{
-					"CurrentState": "NotPickedAvoidingCompeting",
-					"NextState": "NotPickedNP11",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "NotPickedNP11",
-					"UtteranceId": "38-41-D1-7A-7E-72-EE-52-44-25-04-B9-DB-6C-21-7A"
+					"CurrentState": "Player_NotPicked",
+					"NextState": "NPC_NotPickedAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "-",
+					"Utterance": "NotPickedAccommodating",
+					"UtteranceId": "TTS-697773A4DCAAB715C6EC0B72AC320FD1"
 				}, 
 				{
-					"CurrentState": "NotPickedCollaboratingAccommodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(3)", "CausesSelectionAfter"],
-					"Utterance": "NotPickedCollaboratingAccommodatingResponse",
-					"UtteranceId": "F4-D9-5A-07-00-AD-30-87-BE-59-EB-29-A9-70-91-68"
+					"CurrentState": "Player_NotPickedNP31",
+					"NextState": "NPC_NotPickedAccommodatingCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "Transformational",
+					"Utterance": "NotPickedAccommodatingCollaboratingCollaborating",
+					"UtteranceId": "TTS-2EFF94A7F23A40E522837255503B8BF7"
 				}, 
 				{
-					"CurrentState": "NotPickedCollaborating",
-					"NextState": "NotPickedNP4",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "NotPickedNP4",
-					"UtteranceId": "67-C6-6A-E2-97-F9-CD-A3-AB-23-16-87-94-6F-D9-84"
+					"CurrentState": "Player_NotPickedNP1",
+					"NextState": "NPC_NotPickedAvoidingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "NotPickedAvoidingAvoiding",
+					"UtteranceId": "TTS-23CF0D66A74CB4D63022D73485C8C769"
 				}, 
 				{
-					"CurrentState": "IPCCompetingCompeting2",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)"],
-					"Utterance": "IPCCompetingCompeting2Response",
-					"UtteranceId": "A0-03-97-D4-B8-61-3E-89-BF-F9-02-CA-71-CA-A8-EB"
+					"CurrentState": "Player_NotPickedNP11",
+					"NextState": "NPC_NotPickedAvoidingCompetingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "NotPickedAvoidingCompetingCompeting",
+					"UtteranceId": "TTS-24C5BFBF253DEAFDF75D3AFF7D4AA3F3"
 				}, 
 				{
-					"CurrentState": "NotPickedAccommodatingAccommodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(2)", "ExpectedPosition"],
-					"Utterance": "NotPickedAccommodatingAccommodatingResponse",
-					"UtteranceId": "99-26-55-C3-70-4B-C1-4E-B9-1D-88-AF-7C-7F-9D-D8"
+					"CurrentState": "Player_NotPicked",
+					"NextState": "NPC_NotPickedCompeting",
+					"Meaning": "Competing",
+					"Style": "-",
+					"Utterance": "NotPickedCompeting",
+					"UtteranceId": "TTS-381637A22F2C9AB5646DA0388CB7AC2B"
 				}, 
 				{
-					"CurrentState": "NotPickedCompetingAvoiding",
-					"NextState": "NotPickedNP21",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "NotPickedNP21",
-					"UtteranceId": "BA-89-81-89-80-A0-A6-E3-8D-42-E5-8C-14-89-15-DF"
+					"CurrentState": "Player_NotPickedNP2",
+					"NextState": "NPC_NotPickedCompetingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "-",
+					"Utterance": "NotPickedCompetingAvoiding",
+					"UtteranceId": "TTS-55E05E08C98B207216196C7D50EFCDF9"
 				}, 
 				{
-					"CurrentState": "NotPickedCompeting",
-					"NextState": "NotPickedNP2",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "NotPickedNP2",
-					"UtteranceId": "CD-D2-DC-DA-7C-6C-A1-81-A9-3B-D4-A6-69-1F-A4-C2"
+					"CurrentState": "Player_NotPickedNP3",
+					"NextState": "NPC_NotPickedAccommodatingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "NotPickedAccommodatingAccommodating",
+					"UtteranceId": "TTS-2914003E89DD8E790A1F62E15C499398"
 				}, 
 				{
-					"CurrentState": "NotPickedAvoiding",
-					"NextState": "NotPickedNP1",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "NotPickedNP1",
-					"UtteranceId": "BB-A9-75-6D-31-FE-D1-F1-A3-30-6B-93-E9-F9-D8-F6"
+					"CurrentState": "Player_NotPicked",
+					"NextState": "NPC_NotPickedCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "NotPickedCollaborating",
+					"UtteranceId": "TTS-FE9C0B776CABDAED78D92413F37FBFDC"
 				}, 
 				{
-					"CurrentState": "NotPickedAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-2)", "ManagerOpinionWorse"],
-					"Utterance": "NotPickedAvoidingAvoidingResponse",
-					"UtteranceId": "2B-C6-04-44-80-EE-A4-04-C1-1F-3D-40-CF-68-77-C0"
+					"CurrentState": "Player_NotPickedNP21",
+					"NextState": "NPC_NotPickedCompetingAvoidingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "NotPickedCompetingAvoidingCompeting",
+					"UtteranceId": "TTS-A2816801D855806BB0E7B559DE81DE23"
 				}, 
 				{
-					"CurrentState": "NotPickedAvoidingCompetingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)", "ManagerOpinionWorse"],
-					"Utterance": "NotPickedAvoidingCompetingAvoidingResponse",
-					"UtteranceId": "71-97-7A-B4-D6-07-6B-75-26-9C-D9-A4-4C-89-6E-E3"
+					"CurrentState": "Player_NotPickedNP1",
+					"NextState": "NPC_NotPickedAvoidingCompeting",
+					"Meaning": "Competing",
+					"Style": "-",
+					"Utterance": "NotPickedAvoidingCompeting",
+					"UtteranceId": "TTS-F8F0B0A3948446200C6E4D6086B7D308"
 				}, 
 				{
-					"CurrentState": "NotPickedAvoidingCompetingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-5)", "ManagerOpinionMuchWorse"],
-					"Utterance": "NotPickedAvoidingCompetingCompetingResponse",
-					"UtteranceId": "0D-47-BC-DD-E5-90-7C-65-02-EC-97-84-D4-4A-04-A6"
+					"CurrentState": "Player_IPCNP6",
+					"NextState": "NPC_IPCAccommodatingAccommodating2",
+					"Meaning": "Accommodating",
+					"Style": "-",
+					"Utterance": "IPCAccommodatingAccommodating2",
+					"UtteranceId": "TTS-6882536F87FFF0F02A568A723B00FD8E"
 				}, 
 				{
-					"CurrentState": "NotPickedAccommodating",
-					"NextState": "NotPickedNP3",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "NotPickedNP3",
-					"UtteranceId": "57-C4-D1-2E-83-EC-B7-9C-BC-EF-03-F0-3D-C9-D6-51"
+					"CurrentState": "Player_IPCNP6",
+					"NextState": "NPC_IPCAccommodatingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "IPCAccommodatingCollaborating",
+					"UtteranceId": "TTS-CF70A24900D87D13B7C25F5FC6BCEDDE"
 				}, 
 				{
-					"CurrentState": "Neither",
-					"NextState": "-",
-					"Meaning": ["Neither"],
-					"Style": ["Neither"],
-					"Utterance": "Neither",
-					"UtteranceId": "ED-AB-64-96-46-A4-C3-EB-D9-77-0B-DF-C2-95-34-B5"
+					"CurrentState": "Player_IPCNP611",
+					"NextState": "NPC_IPCAccommodatingCollaboratingCollaboratingCompromising",
+					"Meaning": "Compromising",
+					"Style": "Transactional",
+					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCompromising",
+					"UtteranceId": "TTS-DC49126D0FBDBEC684E9342048355436"
 				}, 
 				{
-					"CurrentState": "NotPickedCollaboratingCollaboratingAccommodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(5)", "CausesSelectionAfter"],
-					"Utterance": "NotPickedCollaboratingCollaboratingAccommodatingResponse",
-					"UtteranceId": "2C-02-43-47-78-C9-05-D8-C8-5D-0E-8D-4D-B5-76-CF"
+					"CurrentState": "Player_IPCNP7",
+					"NextState": "NPC_IPCCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "IPCCollaboratingCollaborating",
+					"UtteranceId": "TTS-BF83F4A639F05D637FD55CF49FE3DDA6"
 				}, 
 				{
-					"CurrentState": "NotPickedCollaboratingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(6)", "WholeTeamChange"],
-					"Utterance": "NotPickedCollaboratingCollaboratingCollaboratingResponse",
-					"UtteranceId": "0E-3E-8C-AF-36-0C-9D-76-46-C4-E0-3E-6C-39-F4-B9"
+					"CurrentState": "Player_IPCNP611",
+					"NextState": "NPC_IPCAccommodatingCollaboratingCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "Transformational",
+					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCollaborating",
+					"UtteranceId": "TTS-051839B8A741E65CE5C9E0F3BE8E3DEA"
 				}, 
 				{
-					"CurrentState": "NotPickedAccommodatingCollaboratingAccommodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(4)", "ManagerOpinionBetter"],
-					"Utterance": "NotPickedAccommodatingCollaboratingAccommodatingResponse",
-					"UtteranceId": "DD-51-B8-57-3D-C7-12-1F-36-64-32-6C-A0-BF-FE-4A"
+					"CurrentState": "Player_IPCNP72",
+					"NextState": "NPC_IPCCollaboratingCompetingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "Transformational",
+					"Utterance": "IPCCollaboratingCompetingCollaborating",
+					"UtteranceId": "TTS-7A576015EE630D54A87A2119BFCB2CDD"
 				}, 
 				{
-					"CurrentState": "NotPickedAccommodatingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(5)", "ManagerOpinionMuchBetter"],
-					"Utterance": "NotPickedAccommodatingCollaboratingCollaboratingResponse",
-					"UtteranceId": "AB-7A-AB-22-82-F4-85-BC-3D-90-42-5A-ED-CF-3A-48"
+					"CurrentState": "Player_IPCNP7",
+					"NextState": "NPC_IPCCollaboratingCompeting",
+					"Meaning": "Competing",
+					"Style": "-",
+					"Utterance": "IPCCollaboratingCompeting",
+					"UtteranceId": "TTS-9EE39F95BA92193DC821E71E9F281655"
 				}, 
 				{
-					"CurrentState": "OOAccommodatingAvoiding",
-					"NextState": "OONP31",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP31",
-					"UtteranceId": "6B-E2-FE-03-1E-47-54-F8-6B-DA-D0-46-10-00-71-29"
+					"CurrentState": "Player_IPCNP61",
+					"NextState": "NPC_IPCAccommodatingCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "IPCAccommodatingCollaboratingCollaborating",
+					"UtteranceId": "TTS-7A8C1804E79251CF93857FAC024D4C15"
 				}, 
 				{
-					"CurrentState": "OOAccommodatingAvoidingAccommodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(1)", "ImproveConflictTeamOpinion"],
-					"Utterance": "OOAccommodatingAvoidingAccommodatingResponse",
-					"UtteranceId": "5A-7E-AB-32-97-44-22-64-E5-53-0B-12-B6-D1-D8-E2"
+					"CurrentState": "Player_IPCNP72",
+					"NextState": "NPC_IPCCollaboratingCompetingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "IPCCollaboratingCompetingCompeting",
+					"UtteranceId": "TTS-3D860EB1678DAEA40A4134C8C55AFEAD"
 				}, 
 				{
-					"CurrentState": "OOAccommodatingAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ManagerOpinionMuchWorse"],
-					"Utterance": "OOAccommodatingAvoidingAvoidingResponse",
-					"UtteranceId": "0B-37-DD-71-EC-E6-36-77-41-DA-C2-48-85-57-2F-97"
+					"CurrentState": "Player_IPCNP811",
+					"NextState": "NPC_IPCCollaboratingCollaboratingCollaboratingCompromising",
+					"Meaning": "Compromising",
+					"Style": "Transformational",
+					"Utterance": "IPCCollaboratingCollaboratingCollaboratingCompromising",
+					"UtteranceId": "TTS-56847FE1498DB2BCE5DCFB24184C1223"
 				}, 
 				{
-					"CurrentState": "OOAvoiding",
-					"NextState": "OONP1",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP1",
-					"UtteranceId": "B7-47-30-80-46-8E-31-B2-9E-B5-0E-23-E2-A1-31-5D"
+					"CurrentState": "Player_IPCNP612",
+					"NextState": "NPC_IPCAccommodatingCollaboratingAccommodatingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "IPCAccommodatingCollaboratingAccommodatingAccommodating",
+					"UtteranceId": "TTS-C8DAB6F7D44D5E09B8600B5168795556"
 				}, 
 				{
-					"CurrentState": "OOAvoidingAccommodating",
-					"NextState": "OONP11",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP11",
-					"UtteranceId": "D8-B4-43-62-6C-E0-1A-3D-8A-BB-18-52-12-39-69-62"
+					"CurrentState": "Player_IPCNP61",
+					"NextState": "NPC_IPCAccommodatingCollaboratingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "-",
+					"Utterance": "IPCAccommodatingCollaboratingAccommodating",
+					"UtteranceId": "TTS-B72DE764679D50C8D19AD5011F6C9ECB"
 				}, 
 				{
-					"CurrentState": "OOAvoidingAccommodatingAccommodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(1)"],
-					"Utterance": "OOAvoidingAccommodatingAccommodatingResponse",
-					"UtteranceId": "70-67-64-D2-80-7E-BB-AB-2C-06-B6-CE-64-A5-42-99"
+					"CurrentState": "Player_IPCNP71",
+					"NextState": "NPC_IPCCollaboratingCollaboratingCompromising",
+					"Meaning": "Compromising",
+					"Style": "Transactional",
+					"Utterance": "IPCCollaboratingCollaboratingCompromising",
+					"UtteranceId": "TTS-E98C978D4D6CF397AE291D52DC2B2A4A"
 				}, 
 				{
-					"CurrentState": "OOAvoidingAccommodatingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ImproveConflictTeamOpinion"],
-					"Utterance": "OOAvoidingAccommodatingAvoidingResponse",
-					"UtteranceId": "B2-AA-79-2D-0B-00-50-71-00-AD-A8-E8-2F-57-9A-9E"
+					"CurrentState": "Player_IPCNP612",
+					"NextState": "NPC_IPCAccommodatingCollaboratingAccommodatingCompromising",
+					"Meaning": "Compromising",
+					"Style": "Transactional",
+					"Utterance": "IPCAccommodatingCollaboratingAccommodatingCompromising",
+					"UtteranceId": "TTS-5D04D839C562D91B6A7DAA2FF3100864"
 				}, 
 				{
-					"CurrentState": "OOAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-2)", "ManagerOpinionWorse"],
-					"Utterance": "OOAvoidingAvoidingResponse",
-					"UtteranceId": "69-96-20-C4-CA-93-E0-63-0A-84-58-C6-F6-4F-EB-33"
+					"CurrentState": "Player_IPCNP8",
+					"NextState": "NPC_IPCCollaboratingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "IPCCollaboratingAccommodating",
+					"UtteranceId": "TTS-5C0A1132EA7359C6E748A03C3E61758B"
 				}, 
 				{
-					"CurrentState": "OOCollaborating",
-					"NextState": "OONP4",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP4",
-					"UtteranceId": "26-6D-B8-AD-E4-12-C0-B1-67-5A-FF-43-37-65-C0-0B"
+					"CurrentState": "Player_IPCNP81",
+					"NextState": "NPC_IPCCollaboratingCollaboratingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "IPCCollaboratingCollaboratingAccommodating",
+					"UtteranceId": "TTS-FA1A63F0F57F9AD73A6186E8EFB55B32"
 				}, 
 				{
-					"CurrentState": "OOCollaboratingCollaborating",
-					"NextState": "OONP41",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP41",
-					"UtteranceId": "BA-ED-A0-20-27-10-32-E7-B7-B7-B0-9B-82-41-26-0C"
+					"CurrentState": "Player_IPCNP71",
+					"NextState": "NPC_IPCCollaboratingCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "Transformational",
+					"Utterance": "IPCCollaboratingCollaboratingCollaborating",
+					"UtteranceId": "TTS-D4A57A391218D7C51427EF46827B8A0B"
 				}, 
 				{
-					"CurrentState": "OOCollaboratingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(6)", "ImproveConflictKnowledge"],
-					"Utterance": "OOCollaboratingCollaboratingCollaboratingResponse",
-					"UtteranceId": "A5-74-9E-38-A4-E4-EC-35-B2-1F-F0-96-85-46-7F-19"
+					"CurrentState": "Player_IPCNP8",
+					"NextState": "NPC_IPCCollaboratingCollaborating2",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "IPCCollaboratingCollaborating2",
+					"UtteranceId": "TTS-889E42B46E0CFA3A4F478BE60B070AA9"
 				}, 
 				{
-					"CurrentState": "OOCollaboratingCollaboratingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
-					"Utterance": "OOCollaboratingCollaboratingCompetingResponse",
-					"UtteranceId": "50-3A-7F-FB-6D-57-82-A0-BF-E0-4E-AF-BE-40-37-D5"
+					"CurrentState": "Player_IPCNP811",
+					"NextState": "NPC_IPCCollaboratingCollaboratingCollaborating2Collaborating",
+					"Meaning": "Collaborating",
+					"Style": "Transformational",
+					"Utterance": "IPCCollaboratingCollaboratingCollaborating2Collaborating",
+					"UtteranceId": "TTS-6C29BBF19FC483FB2B1AC8B380AE18EF"
 				}, 
 				{
-					"CurrentState": "OOCollaboratingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
-					"Utterance": "OOCollaboratingCompetingResponse",
-					"UtteranceId": "52-C6-BE-37-2B-A7-0C-A5-96-2D-0A-D8-D7-41-CD-B6"
+					"CurrentState": "Player_NotPickedNP41",
+					"NextState": "NPC_NotPickedCollaboratingCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "Transformational",
+					"Utterance": "NotPickedCollaboratingCollaboratingCollaborating",
+					"UtteranceId": "TTS-121511F1D7CFFF9390747751DDDC1BFE"
 				}, 
 				{
-					"CurrentState": "OOCompeting",
-					"NextState": "OONP2",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP2",
-					"UtteranceId": "D2-05-78-57-57-8F-66-65-06-D3-00-C2-6C-CE-F6-DB"
+					"CurrentState": "Player_IPCNP31",
+					"NextState": "NPC_IPCCompetingCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "IPCCompetingCollaboratingCollaborating",
+					"UtteranceId": "TTS-37FBB39E0F78D8637005DAE8B506813C"
 				}, 
 				{
-					"CurrentState": "OOCompetingCollaborating",
-					"NextState": "OONP21",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "OONP21",
-					"UtteranceId": "17-CE-7E-92-9F-29-F1-C5-71-CF-4E-24-BC-59-DB-7D"
+					"CurrentState": "Player_IPCNP41",
+					"NextState": "NPC_IPCCompetingAvoidingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "IPCCompetingAvoidingAvoiding",
+					"UtteranceId": "TTS-3F7C8098B46B0E2FC9AD4089C572209D"
 				}, 
 				{
-					"CurrentState": "OOCompetingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(2)", "ImproveConflictKnowledge"],
-					"Utterance": "OOCompetingCollaboratingCollaboratingResponse",
-					"UtteranceId": "8B-3E-B7-45-23-61-12-88-91-C0-DD-97-97-07-25-89"
+					"CurrentState": "Player_IPCNP2",
+					"NextState": "NPC_IPCAvoidingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "-",
+					"Utterance": "IPCAvoidingAvoiding",
+					"UtteranceId": "TTS-89734FADECAA626A06688F118A2DFE3C"
 				}, 
 				{
-					"CurrentState": "OOCompetingCollaboratingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-2)", "ManagerOpinionWorse"],
-					"Utterance": "OOCompetingCollaboratingCompetingResponse",
-					"UtteranceId": "46-39-40-CD-98-42-44-9B-1A-E5-A5-7E-93-6C-54-DA"
+					"CurrentState": "Player_IPCNP2",
+					"NextState": "NPC_IPCAvoidingCompeting",
+					"Meaning": "Competing",
+					"Style": "-",
+					"Utterance": "IPCAvoidingCompeting",
+					"UtteranceId": "TTS-EE06C3DED8E0917EA074331CC2F8097C"
 				}, 
 				{
-					"CurrentState": "OOCompetingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
-					"Utterance": "OOCompetingCompetingResponse",
-					"UtteranceId": "05-47-49-08-9E-88-CC-ED-C4-85-97-63-4B-F0-D0-52"
+					"CurrentState": "Player_IPCNP22",
+					"NextState": "NPC_IPCAvoidingAvoidingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "IPCAvoidingAvoidingCompeting",
+					"UtteranceId": "TTS-2CE96E0AFFD08A65BDEAED34A8409A0A"
 				}, 
 				{
-					"CurrentState": "OpinionRevealNegative",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealNegative"],
-					"Style": ["OpinionRevealNegative"],
-					"Utterance": "OpinionRevealNegativeAnswer",
-					"UtteranceId": "61-77-34-2F-D2-FE-B7-44-91-4C-77-91-E7-DD-4C-41"
+					"CurrentState": "Player_IPCNP22",
+					"NextState": "NPC_IPCAvoidingAvoidingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "IPCAvoidingAvoidingAvoiding",
+					"UtteranceId": "TTS-ACEA0765C8FFD5F5B88D8B380AB9583B"
 				}, 
 				{
-					"CurrentState": "OpinionRevealNegativeHigh",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealNegativeHigh"],
-					"Style": ["OpinionRevealNegativeHigh"],
-					"Utterance": "OpinionRevealNegativeHigh",
-					"UtteranceId": "AF-36-E8-CF-F5-C6-39-B3-F0-DE-8A-0B-BD-F8-A0-41"
+					"CurrentState": "Player_NotPicked",
+					"NextState": "NPC_NotPickedAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "-",
+					"Utterance": "NotPickedAvoiding",
+					"UtteranceId": "TTS-3E194369068ACC552A778F6A16D91A45"
 				}, 
 				{
-					"CurrentState": "OpinionRevealNegativeNone",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealNegativeNone"],
-					"Style": ["OpinionRevealNegativeNone"],
-					"Utterance": "OpinionRevealNegativeNone",
-					"UtteranceId": "AE-79-E8-75-FF-FB-01-4C-43-4C-09-5A-47-24-11-39"
+					"CurrentState": "Player_IPCNP4",
+					"NextState": "NPC_IPCCompetingCompeting2",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "IPCCompetingCompeting2",
+					"UtteranceId": "TTS-9F32822FD8C29935AAE2EB0A51024C12"
 				}, 
 				{
-					"CurrentState": "OpinionRevealPositive",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealPositive"],
-					"Style": ["OpinionRevealPositive"],
-					"Utterance": "OpinionRevealPositiveAnswer",
-					"UtteranceId": "F8-67-3F-16-B1-2C-AD-F2-E9-26-84-95-C6-C4-01-1E"
+					"CurrentState": "Player_IPCNP4",
+					"NextState": "NPC_IPCCompetingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "-",
+					"Utterance": "IPCCompetingAvoiding",
+					"UtteranceId": "TTS-1C233BA0119CEC92DD3C901451D858B7"
 				}, 
 				{
-					"CurrentState": "OpinionRevealPositiveHigh",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealPositiveHigh"],
-					"Style": ["OpinionRevealPositiveHigh"],
-					"Utterance": "OpinionRevealPositiveHigh",
-					"UtteranceId": "F9-A4-A8-3C-01-54-E8-E3-0C-34-D3-FE-C4-D2-9B-90"
+					"CurrentState": "Player_IPCNP21",
+					"NextState": "NPC_IPCAvoidingCompetingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "IPCAvoidingCompetingAvoiding",
+					"UtteranceId": "TTS-22A3B3540220A30A45145AE592F90E81"
 				}, 
 				{
-					"CurrentState": "OpinionRevealPositiveNone",
-					"NextState": "-",
-					"Meaning": ["OpinionRevealPositiveNone"],
-					"Style": ["OpinionRevealPositiveNone"],
-					"Utterance": "OpinionRevealPositiveNone",
-					"UtteranceId": "25-9F-E3-AF-02-5F-D3-47-B6-F0-61-54-09-9A-A4-54"
+					"CurrentState": "Player_IPCNP21",
+					"NextState": "NPC_IPCAvoidingCompetingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "IPCAvoidingCompetingCompeting",
+					"UtteranceId": "TTS-A80DE4E9623C6703B0989928070E5CB3"
 				}, 
 				{
-					"CurrentState": "PostRaceEventStart",
-					"NextState": "PW",
-					"Meaning": ["PW"],
-					"Style": ["Race", "Practice"],
-					"Utterance": "PW",
-					"UtteranceId": "8F-E4-C1-14-51-28-1C-09-4A-65-78-E6-DD-BF-5E-ED"
+					"CurrentState": "Player_IPCNP3",
+					"NextState": "NPC_IPCCompetingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "IPCCompetingCompeting",
+					"UtteranceId": "TTS-B3CC5645FA1608BD847CEA58669B45E1"
 				}, 
 				{
-					"CurrentState": "PostRaceEventStart",
-					"NextState": "IPC",
-					"Meaning": ["IPC"],
-					"Style": ["Race", "Practice"],
-					"Utterance": "IPC",
-					"UtteranceId": "5A-C8-BF-6F-C7-65-27-45-57-3F-0E-F2-4A-8A-B5-13"
+					"CurrentState": "Player_IPCNP31",
+					"NextState": "NPC_IPCCompetingCollaboratingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "IPCCompetingCollaboratingCompeting",
+					"UtteranceId": "TTS-E824949D42C8830C42D029BCBFC7783A"
 				}, 
 				{
-					"CurrentState": "PostRaceEventStart",
-					"NextState": "NotPicked",
-					"Meaning": ["NotPicked"],
-					"Style": ["Race", "Practice"],
-					"Utterance": "NotPicked",
-					"UtteranceId": "0E-37-62-36-F8-BB-6C-65-CB-A6-B5-C0-3E-5B-E3-2E"
+					"CurrentState": "Player_IPCNP311",
+					"NextState": "NPC_IPCCompetingCollaboratingCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "Transformational",
+					"Utterance": "IPCCompetingCollaboratingCollaboratingCollaborating",
+					"UtteranceId": "TTS-D80EA2A07EF29A2A33AB0B00FDBE7569"
 				}, 
 				{
-					"CurrentState": "PWAccommodating",
-					"NextState": "PWNP3",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "PWNP3",
-					"UtteranceId": "37-E9-A8-AA-18-6D-E9-D3-96-5C-C4-2A-F0-B6-48-2A"
+					"CurrentState": "Player_IPCNP51",
+					"NextState": "NPC_IPCAccommodatingAccommodatingCompromising",
+					"Meaning": "Compromising",
+					"Style": "Transformational",
+					"Utterance": "IPCAccommodatingAccommodatingCompromising",
+					"UtteranceId": "TTS-C2F6098662B61AE685FE0C3AB17A6FBF"
 				}, 
 				{
-					"CurrentState": "PWAccommodatingAccommodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(2)", "ExpectedPosition"],
-					"Utterance": "PWAccommodatingAccommodatingResponse",
-					"UtteranceId": "11-0C-41-89-64-07-11-B9-F2-60-1D-6C-49-12-81-1D"
+					"CurrentState": "Player_IPCNP41",
+					"NextState": "NPC_IPCCompetingAvoidingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "IPCCompetingAvoidingCompeting",
+					"UtteranceId": "TTS-ABFF266FE16F8D4BD3FE18B8BD9894FF"
 				}, 
 				{
-					"CurrentState": "PWAccommodatingCompeting",
-					"NextState": "PWNP31",
-					"Meaning": ["-"],
-					"Style": ["ManagerOpinionWorse"],
-					"Utterance": "PWNP31",
-					"UtteranceId": "74-85-DC-6A-06-91-61-76-EC-A0-59-F3-3D-04-C5-42"
+					"CurrentState": "Player_IPCNP5",
+					"NextState": "NPC_IPCAccommodatingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "-",
+					"Utterance": "IPCAccommodatingAvoiding",
+					"UtteranceId": "TTS-608D698D9E42BAB78E7A3B7225CB003F"
 				}, 
 				{
-					"CurrentState": "PWAccommodatingCompetingAccommodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(1)", "ExpectedPositionAfter"],
-					"Utterance": "PWAccommodatingCompetingAccommodatingResponse",
-					"UtteranceId": "A8-E3-C0-9A-F0-1A-6C-90-EB-9D-A1-D7-58-82-80-5A"
+					"CurrentState": "Player_IPCNP3",
+					"NextState": "NPC_IPCCompetingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "IPCCompetingCollaborating",
+					"UtteranceId": "TTS-8D5A5916091DD2B62E3A97C54D92FA05"
 				}, 
 				{
-					"CurrentState": "PWAccommodatingCompetingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-3)", "ManagerOpinionMuchWorse"],
-					"Utterance": "PWAccommodatingCompetingCompetingResponse",
-					"UtteranceId": "16-0A-A9-11-61-0E-41-E3-F5-52-DC-67-95-E5-44-8F"
+					"CurrentState": "Player_IPCNP5",
+					"NextState": "NPC_IPCAccommodatingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "IPCAccommodatingAccommodating",
+					"UtteranceId": "TTS-A5F344FD4BFD84EAEE5D34D7396B4D83"
 				}, 
 				{
-					"CurrentState": "PWAvoiding",
-					"NextState": "PWNP1",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "PWNP1",
-					"UtteranceId": "2E-61-43-9B-F4-04-B2-52-53-11-1E-CA-0C-19-2D-4D"
+					"CurrentState": "Player_IPCNP51",
+					"NextState": "NPC_IPCAccommodatingAccommodatingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "IPCAccommodatingAccommodatingAccommodating",
+					"UtteranceId": "TTS-027C696596639C791788B72782C835D9"
 				}, 
 				{
-					"CurrentState": "PWAvoidingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-2)", "ManagerOpinionWorse"],
-					"Utterance": "PWAvoidingAvoidingResponse",
-					"UtteranceId": "76-0F-D6-A1-65-9D-94-8B-9D-2D-F6-42-77-69-4E-83"
+					"CurrentState": "Player_IPCNP81",
+					"NextState": "NPC_IPCCollaboratingCollaborating2Collaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "IPCCollaboratingCollaborating2Collaborating",
+					"UtteranceId": "TTS-E5260CEFB02500524FB48BFE5B4E7F34"
 				}, 
 				{
-					"CurrentState": "PWAvoidingCollaborating",
-					"NextState": "PWNP11",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "PWNP11",
-					"UtteranceId": "A3-29-9B-36-3B-74-2C-71-69-D6-83-3A-32-7F-3E-75"
+					"CurrentState": "Player_NotPickedNP3",
+					"NextState": "NPC_NotPickedAccommodatingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "NotPickedAccommodatingCollaborating",
+					"UtteranceId": "TTS-B61B3EFA98B1F7EA99CF49BBC24ED83D"
 				}, 
 				{
-					"CurrentState": "PWAvoidingCollaboratingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)"],
-					"Utterance": "PWAvoidingCollaboratingAvoidingResponse",
-					"UtteranceId": "C5-25-24-2F-3F-7A-14-DD-62-97-65-52-56-39-8D-C0"
+					"CurrentState": "Player_NotPickedNP21",
+					"NextState": "NPC_NotPickedCompetingAvoidingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "NotPickedCompetingAvoidingAvoiding",
+					"UtteranceId": "TTS-7098FE5825A39FB18A631EE873127B5D"
 				}, 
 				{
-					"CurrentState": "PWAvoidingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(3)", "RevealTwoSkills"],
-					"Utterance": "PWAvoidingCollaboratingCollaboratingResponse",
-					"UtteranceId": "C2-9C-ED-B3-B1-02-47-C6-32-05-36-F3-E5-B1-AE-27"
+					"CurrentState": "Player_NotPickedNP2",
+					"NextState": "NPC_NotPickedCompetingCompeting",
+					"Meaning": "Competing",
+					"Style": "Laissez-faire",
+					"Utterance": "NotPickedCompetingCompeting",
+					"UtteranceId": "TTS-AE6CE6B258B1591B9A77D7310410850D"
 				}, 
 				{
-					"CurrentState": "PWCollaborating",
-					"NextState": "PWNP4",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "PWNP4",
-					"UtteranceId": "80-56-FD-CD-73-B3-EB-44-6A-44-FA-E7-D2-2F-3A-A9"
+					"CurrentState": "Player_NotPickedNP11",
+					"NextState": "NPC_NotPickedAvoidingCompetingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "NotPickedAvoidingCompetingAvoiding",
+					"UtteranceId": "TTS-D5D11CDECFE279A084ADF652BAAA2929"
 				}, 
 				{
-					"CurrentState": "PWCollaboratingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
-					"Utterance": "PWCollaboratingAvoidingResponse",
-					"UtteranceId": "C0-3E-84-A7-16-94-6A-9B-0D-9D-15-8B-76-CD-BB-CF"
+					"CurrentState": "Player_NotPickedNP31",
+					"NextState": "NPC_NotPickedAccommodatingCollaboratingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "NotPickedAccommodatingCollaboratingAccommodating",
+					"UtteranceId": "TTS-603794FA8A34E5E72599E44C4A2D0774"
 				}, 
 				{
-					"CurrentState": "PWCollaboratingCollaborating",
-					"NextState": "PWNP41",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "PWNP41",
-					"UtteranceId": "C1-7D-4D-45-BA-3A-A8-D9-D5-29-87-42-08-D4-2A-B0"
+					"CurrentState": "Player_NotPickedNP4",
+					"NextState": "NPC_NotPickedCollaboratingCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "NotPickedCollaboratingCollaborating",
+					"UtteranceId": "TTS-FED6055832147B7700D64D4C26503E50"
 				}, 
 				{
-					"CurrentState": "PWCollaboratingCollaboratingAvoiding",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-1)", "ManagerOpinionWorse"],
-					"Utterance": "PWCollaboratingCollaboratingAvoidingResponse",
-					"UtteranceId": "4E-F3-FD-A4-74-89-40-E5-94-4E-00-9A-3C-7B-B9-6D"
+					"CurrentState": "Player_IPCNP311",
+					"NextState": "NPC_IPCCompetingCollaboratingCollaboratingCompromising",
+					"Meaning": "Compromising",
+					"Style": "Transformational",
+					"Utterance": "IPCCompetingCollaboratingCollaboratingCompromising",
+					"UtteranceId": "TTS-11EC0EC47C8697B69A07CC9337B288E6"
 				}, 
 				{
-					"CurrentState": "PWCollaboratingCollaboratingCollaborating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(6)", "RevealFourSkills"],
-					"Utterance": "PWCollaboratingCollaboratingCollaboratingResponse",
-					"UtteranceId": "31-A4-3B-23-E5-8C-FE-BF-FD-2E-A0-AE-79-0A-B8-02"
+					"CurrentState": "Player_NotPickedNP41",
+					"NextState": "NPC_NotPickedCollaboratingCollaboratingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "NotPickedCollaboratingCollaboratingAccommodating",
+					"UtteranceId": "TTS-0A10223E9348C071CF68051C0D672AD8"
 				}, 
 				{
-					"CurrentState": "PWCompeting",
-					"NextState": "PWNP2",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "PWNP2",
-					"UtteranceId": "36-BA-08-D4-68-2D-BF-BA-0C-5B-98-30-2F-2B-DC-C7"
+					"CurrentState": "Player_NotPickedNP4",
+					"NextState": "NPC_NotPickedCollaboratingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "NotPickedCollaboratingAccommodating",
+					"UtteranceId": "TTS-D85141E64764876088F1B8C3F8208708"
 				}, 
 				{
-					"CurrentState": "PWCompetingAccommodating",
-					"NextState": "PWNP21",
-					"Meaning": ["-"],
-					"Style": ["-"],
-					"Utterance": "PWNP21",
-					"UtteranceId": "2F-CF-5F-96-C9-C8-5E-78-36-F5-09-88-A2-D5-5D-6B"
+					"CurrentState": "Player_IPCNP11",
+					"NextState": "NPC_IPCAvoidingAccommodatingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "IPCAvoidingAccommodatingAccommodating",
+					"UtteranceId": "TTS-3226E5CCE7FA1DBBEB0E675DDD5D223D"
 				}, 
 				{
-					"CurrentState": "PWCompetingAccommodatingAccommodating",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(1)", "ExpectedPosition"],
-					"Utterance": "PWCompetingAccommodatingAccommodatingResponse",
-					"UtteranceId": "DE-C7-0C-C4-5B-BD-2F-90-73-4A-50-DB-C8-F3-19-41"
+					"CurrentState": "Player_IPC",
+					"NextState": "NPC_IPCCompeting",
+					"Meaning": "Competing",
+					"Style": "-",
+					"Utterance": "IPCCompeting",
+					"UtteranceId": "TTS-C4EE34DB1176919B1850951B71D62758"
 				}, 
 				{
-					"CurrentState": "PWCompetingAccommodatingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-3)", "ManagerOpinionMuchWorse"],
-					"Utterance": "PWCompetingAccommodatingCompetingResponse",
-					"UtteranceId": "62-AE-7B-D6-07-F3-07-74-BA-6C-70-88-B9-F3-1C-8B"
+					"CurrentState": "Player_IPC",
+					"NextState": "NPC_IPCAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "-",
+					"Utterance": "IPCAvoiding",
+					"UtteranceId": "TTS-E1E671F6E2DBDDFE5CAC20FB6C34D565"
 				}, 
 				{
-					"CurrentState": "PWCompetingCompeting",
-					"NextState": "-",
-					"Meaning": ["-"],
-					"Style": ["MoodChange(-4)", "ManagerOpinionMuchWorse"],
-					"Utterance": "PWCompetingCompetingResponse",
-					"UtteranceId": "E7-4B-32-F4-C0-02-E4-5C-A7-D8-EF-D0-BA-7C-09-65"
+					"CurrentState": "Player_IPCNP1",
+					"NextState": "NPC_IPCAvoidingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "IPCAvoidingAvoiding",
+					"UtteranceId": "TTS-89734FADECAA626A06688F118A2DFE3C"
 				}, 
 				{
-					"CurrentState": "RoleRevealBad",
-					"NextState": "-",
-					"Meaning": ["RoleRevealBad"],
-					"Style": ["RoleRevealBad"],
-					"Utterance": "RoleRevealBad",
-					"UtteranceId": "9F-DC-D9-69-FB-66-4A-82-7E-2D-95-C4-B2-1E-44-6E"
+					"CurrentState": "Player_IPCNP1",
+					"NextState": "NPC_IPCAvoidingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "-",
+					"Utterance": "IPCAvoidingAccommodating",
+					"UtteranceId": "TTS-08082774F86F964592F41DF33D61CACE"
 				}, 
 				{
-					"CurrentState": "RoleRevealGood",
-					"NextState": "-",
-					"Meaning": ["RoleRevealGood"],
-					"Style": ["RoleRevealGood"],
-					"Utterance": "RoleRevealGood",
-					"UtteranceId": "72-0E-BF-6F-D4-1E-94-8E-55-C9-34-27-83-17-73-60"
+					"CurrentState": "Player_IPCNP11",
+					"NextState": "NPC_IPCAvoidingAccommodatingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "IPCAvoidingAccommodatingAvoiding",
+					"UtteranceId": "TTS-977E13C67765206C0640023EF51BF149"
 				}, 
 				{
-					"CurrentState": "StatRevealBad",
-					"NextState": "-",
-					"Meaning": ["StatRevealBad"],
-					"Style": ["StatRevealBad"],
-					"Utterance": "StatRevealBad",
-					"UtteranceId": "CA-11-C3-73-08-04-20-65-CC-06-28-50-4A-CF-3B-D7"
+					"CurrentState": "Player_IPCNP52",
+					"NextState": "NPC_IPCAccommodatingAvoidingAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "Transformational",
+					"Utterance": "IPCAccommodatingAvoidingAccommodating",
+					"UtteranceId": "TTS-C4187252A7B51871605F3C7B76F299FE"
 				}, 
 				{
-					"CurrentState": "StatRevealGood",
-					"NextState": "-",
-					"Meaning": ["StatRevealGood"],
-					"Style": ["StatRevealGood"],
-					"Utterance": "StatRevealGood",
-					"UtteranceId": "28-13-7C-07-C4-82-B7-17-BA-26-B0-97-57-55-53-3F"
+					"CurrentState": "Player_IPCNP52",
+					"NextState": "NPC_IPCAccommodatingAvoidingAvoiding",
+					"Meaning": "Avoiding",
+					"Style": "Laissez-faire",
+					"Utterance": "IPCAccommodatingAvoidingAvoiding",
+					"UtteranceId": "TTS-E9067BA9C4B70768904D043AE00CA61B"
 				}, 
 				{
-					"CurrentState": "StatRevealMiddle",
-					"NextState": "-",
-					"Meaning": ["StatRevealMiddle"],
-					"Style": ["StatRevealMiddle"],
-					"Utterance": "StatRevealMiddle",
-					"UtteranceId": "85-6E-87-C5-05-98-85-30-F7-DD-EA-CB-46-F5-EA-0D"
+					"CurrentState": "Player_IPC",
+					"NextState": "NPC_IPCCollaborating",
+					"Meaning": "Collaborating",
+					"Style": "-",
+					"Utterance": "IPCCollaborating",
+					"UtteranceId": "TTS-6969C9548E95BB380371B446650B642B"
 				}, 
 				{
-					"CurrentState": "StrongAgree",
-					"NextState": "-",
-					"Meaning": ["StrongAgree"],
-					"Style": ["StrongAgree"],
-					"Utterance": "StrongAgree",
-					"UtteranceId": "D5-E2-13-04-25-6B-86-37-80-63-BC-A9-D4-58-F7-E7"
+					"CurrentState": "Player_IPC",
+					"NextState": "NPC_IPCAccommodating",
+					"Meaning": "Accommodating",
+					"Style": "-",
+					"Utterance": "IPCAccommodating",
+					"UtteranceId": "TTS-D086681DF2DAB6D8F03AF3C8FE9C974E"
 				}, 
 				{
-					"CurrentState": "StrongDisagree",
-					"NextState": "-",
-					"Meaning": ["StrongDisagree"],
-					"Style": ["StrongDisagree"],
-					"Utterance": "StrongDisagree",
-					"UtteranceId": "D3-9E-20-FA-85-E7-7F-C2-15-CF-0C-B0-46-0D-4F-CD"
-				}, 
-				{
-					"CurrentState": "PostRaceEventStart",
-					"NextState": "OO",
-					"Meaning": ["OO"],
-					"Style": ["Race", "Practice"],
+					"CurrentState": "NPC_PostRaceEventStart",
+					"NextState": "Player_OO",
+					"Meaning": "OO",
+					"Style": "Race_Practice",
 					"Utterance": "OO",
-					"UtteranceId": "E4-7C-A7-A0-9C-F6-78-1E-29-63-45-02-34-59-30-A7"
+					"UtteranceId": "TTS-E47CA7A09CF6781E29634502345930A7"
+				}, 
+				{
+					"CurrentState": "NPC_StrongDisagree",
+					"NextState": "-",
+					"Meaning": "StrongDisagree",
+					"Style": "StrongDisagree",
+					"Utterance": "StrongDisagree",
+					"UtteranceId": "TTS-D39E20FA85E77FC215CF0CB0460D4FCD"
+				}, 
+				{
+					"CurrentState": "NPC_StrongAgree",
+					"NextState": "-",
+					"Meaning": "StrongAgree",
+					"Style": "StrongAgree",
+					"Utterance": "StrongAgree",
+					"UtteranceId": "TTS-D5E21304256B86378063BCA9D458F7E7"
+				}, 
+				{
+					"CurrentState": "NPC_StatRevealMiddle",
+					"NextState": "-",
+					"Meaning": "StatRevealMiddle",
+					"Style": "StatRevealMiddle",
+					"Utterance": "StatRevealMiddle",
+					"UtteranceId": "TTS-856E87C505988530F7DDEACB46F5EA0D"
+				}, 
+				{
+					"CurrentState": "NPC_StatRevealGood",
+					"NextState": "-",
+					"Meaning": "StatRevealGood",
+					"Style": "StatRevealGood",
+					"Utterance": "StatRevealGood",
+					"UtteranceId": "TTS-28137C07C482B717BA26B0975755533F"
+				}, 
+				{
+					"CurrentState": "NPC_StatRevealBad",
+					"NextState": "-",
+					"Meaning": "StatRevealBad",
+					"Style": "StatRevealBad",
+					"Utterance": "StatRevealBad",
+					"UtteranceId": "TTS-CA11C37308042065CC0628504ACF3BD7"
+				}, 
+				{
+					"CurrentState": "NPC_RoleRevealGood",
+					"NextState": "-",
+					"Meaning": "RoleRevealGood",
+					"Style": "RoleRevealGood",
+					"Utterance": "RoleRevealGood",
+					"UtteranceId": "TTS-720EBF6FD41E948E55C9342783177360"
+				}, 
+				{
+					"CurrentState": "NPC_RoleRevealBad",
+					"NextState": "-",
+					"Meaning": "RoleRevealBad",
+					"Style": "RoleRevealBad",
+					"Utterance": "RoleRevealBad",
+					"UtteranceId": "TTS-9FDCD969FB664A827E2D95C4B21E446E"
+				}, 
+				{
+					"CurrentState": "NPC_PWCompetingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-4)",
+					"Utterance": "PWCompetingCompetingResponse",
+					"UtteranceId": "TTS-E74B32F4C002E45CA7D8EFD0BA7C0965"
+				}, 
+				{
+					"CurrentState": "NPC_PWCompetingAccommodatingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-3)",
+					"Utterance": "PWCompetingAccommodatingCompetingResponse",
+					"UtteranceId": "TTS-62AE7BD607F30774BA6C7088B9F31C8B"
+				}, 
+				{
+					"CurrentState": "NPC_PWCompetingAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ExpectedPosition_MoodChange(1)",
+					"Utterance": "PWCompetingAccommodatingAccommodatingResponse",
+					"UtteranceId": "TTS-DEC70CC45BBD2F90734A50DBC8F31941"
+				}, 
+				{
+					"CurrentState": "NPC_PWCompetingAccommodating",
+					"NextState": "Player_PWNP21",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "PWNP21",
+					"UtteranceId": "TTS-2FCF5F96C9C85E7836F50988A2D55D6B"
+				}, 
+				{
+					"CurrentState": "NPC_PWCompeting",
+					"NextState": "Player_PWNP2",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "PWNP2",
+					"UtteranceId": "TTS-36BA08D4682DBFBA0C5B98302F2BDCC7"
+				}, 
+				{
+					"CurrentState": "NPC_PWCollaboratingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "RevealFourSkills_MoodChange(6)",
+					"Utterance": "PWCollaboratingCollaboratingCollaboratingResponse",
+					"UtteranceId": "TTS-31A43B23E58CFEBFFD2EA0AE790AB802"
+				}, 
+				{
+					"CurrentState": "NPC_PWCollaboratingCollaboratingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionWorse_MoodChange(-1)",
+					"Utterance": "PWCollaboratingCollaboratingAvoidingResponse",
+					"UtteranceId": "TTS-4EF3FDA4748940E5944E009A3C7BB96D"
+				}, 
+				{
+					"CurrentState": "NPC_PWCollaboratingCollaborating",
+					"NextState": "Player_PWNP41",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "PWNP41",
+					"UtteranceId": "TTS-C17D4D45BA3AA8D9D529874208D42AB0"
+				}, 
+				{
+					"CurrentState": "NPC_PWCollaboratingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionWorse_MoodChange(-1)",
+					"Utterance": "PWCollaboratingAvoidingResponse",
+					"UtteranceId": "TTS-C03E84A716946A9B0D9D158B76CDBBCF"
+				}, 
+				{
+					"CurrentState": "NPC_PWCollaborating",
+					"NextState": "Player_PWNP4",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "PWNP4",
+					"UtteranceId": "TTS-8056FDCD73B3EB446A44FAE7D22F3AA9"
+				}, 
+				{
+					"CurrentState": "NPC_PWAvoidingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "RevealTwoSkills_MoodChange(3)",
+					"Utterance": "PWAvoidingCollaboratingCollaboratingResponse",
+					"UtteranceId": "TTS-C29CEDB3B10247C6320536F3E5B1AE27"
+				}, 
+				{
+					"CurrentState": "NPC_PWAvoidingCollaboratingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "MoodChange(-1)",
+					"Utterance": "PWAvoidingCollaboratingAvoidingResponse",
+					"UtteranceId": "TTS-C525242F3F7A14DD6297655256398DC0"
+				}, 
+				{
+					"CurrentState": "NPC_PWAvoidingCollaborating",
+					"NextState": "Player_PWNP11",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "PWNP11",
+					"UtteranceId": "TTS-A3299B363B742C7169D6833A327F3E75"
+				}, 
+				{
+					"CurrentState": "NPC_PWAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionWorse_MoodChange(-2)",
+					"Utterance": "PWAvoidingAvoidingResponse",
+					"UtteranceId": "TTS-760FD6A1659D948B9D2DF64277694E83"
+				}, 
+				{
+					"CurrentState": "NPC_PWAvoiding",
+					"NextState": "Player_PWNP1",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "PWNP1",
+					"UtteranceId": "TTS-2E61439BF404B25253111ECA0C192D4D"
+				}, 
+				{
+					"CurrentState": "NPC_PWAccommodatingCompetingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-3)",
+					"Utterance": "PWAccommodatingCompetingCompetingResponse",
+					"UtteranceId": "TTS-160AA911610E41E3F552DC6795E5448F"
+				}, 
+				{
+					"CurrentState": "NPC_PWAccommodatingCompetingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ExpectedPositionAfter_MoodChange(1)",
+					"Utterance": "PWAccommodatingCompetingAccommodatingResponse",
+					"UtteranceId": "TTS-A8E3C09AF01A6C90EB9DA1D75882805A"
+				}, 
+				{
+					"CurrentState": "NPC_PWAccommodatingCompeting",
+					"NextState": "Player_PWNP31",
+					"Meaning": "-",
+					"Style": "ManagerOpinionWorse",
+					"Utterance": "PWNP31",
+					"UtteranceId": "TTS-7485DC6A06916176ECA059F33D04C542"
+				}, 
+				{
+					"CurrentState": "NPC_PWAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ExpectedPosition_MoodChange(2)",
+					"Utterance": "PWAccommodatingAccommodatingResponse",
+					"UtteranceId": "TTS-110C4189640711B9F2601D6C4912811D"
+				}, 
+				{
+					"CurrentState": "NPC_PWAccommodating",
+					"NextState": "Player_PWNP3",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "PWNP3",
+					"UtteranceId": "TTS-37E9A8AA186DE9D3965CC42AF0B6482A"
+				}, 
+				{
+					"CurrentState": "NPC_PostRaceEventStart",
+					"NextState": "Player_NotPicked",
+					"Meaning": "NotPicked",
+					"Style": "Race_Practice",
+					"Utterance": "NotPicked",
+					"UtteranceId": "TTS-0E376236F8BB6C65CBA6B5C03E5BE32E"
+				}, 
+				{
+					"CurrentState": "NPC_PostRaceEventStart",
+					"NextState": "Player_IPC",
+					"Meaning": "IPC",
+					"Style": "Race_Practice",
+					"Utterance": "IPC",
+					"UtteranceId": "TTS-5AC8BF6FC7652745573F0EF24A8AB513"
+				}, 
+				{
+					"CurrentState": "NPC_PostRaceEventStart",
+					"NextState": "Player_PW",
+					"Meaning": "PW",
+					"Style": "Race_Practice",
+					"Utterance": "PW",
+					"UtteranceId": "TTS-8FE4C11451281C094A6578E6DDBF5EED"
+				}, 
+				{
+					"CurrentState": "NPC_OpinionRevealPositiveNone",
+					"NextState": "-",
+					"Meaning": "OpinionRevealPositiveNone",
+					"Style": "OpinionRevealPositiveNone",
+					"Utterance": "OpinionRevealPositiveNone",
+					"UtteranceId": "TTS-259FE3AF025FD347B6F06154099AA454"
+				}, 
+				{
+					"CurrentState": "NPC_OpinionRevealPositiveHigh",
+					"NextState": "-",
+					"Meaning": "OpinionRevealPositiveHigh",
+					"Style": "OpinionRevealPositiveHigh",
+					"Utterance": "OpinionRevealPositiveHigh",
+					"UtteranceId": "TTS-F9A4A83C0154E8E30C34D3FEC4D29B90"
+				}, 
+				{
+					"CurrentState": "NPC_OpinionRevealPositive",
+					"NextState": "-",
+					"Meaning": "OpinionRevealPositive",
+					"Style": "OpinionRevealPositive",
+					"Utterance": "OpinionRevealPositiveAnswer",
+					"UtteranceId": "TTS-F8673F16B12CADF2E9268495C6C4011E"
+				}, 
+				{
+					"CurrentState": "NPC_OpinionRevealNegativeNone",
+					"NextState": "-",
+					"Meaning": "OpinionRevealNegativeNone",
+					"Style": "OpinionRevealNegativeNone",
+					"Utterance": "OpinionRevealNegativeNone",
+					"UtteranceId": "TTS-AE79E875FFFB014C434C095A47241139"
+				}, 
+				{
+					"CurrentState": "NPC_OpinionRevealNegativeHigh",
+					"NextState": "-",
+					"Meaning": "OpinionRevealNegativeHigh",
+					"Style": "OpinionRevealNegativeHigh",
+					"Utterance": "OpinionRevealNegativeHigh",
+					"UtteranceId": "TTS-AF36E8CFF5C639B3F0DE8A0BBDF8A041"
+				}, 
+				{
+					"CurrentState": "NPC_OpinionRevealNegative",
+					"NextState": "-",
+					"Meaning": "OpinionRevealNegative",
+					"Style": "OpinionRevealNegative",
+					"Utterance": "OpinionRevealNegativeAnswer",
+					"UtteranceId": "TTS-6177342FD2FEB744914C7791E7DD4C41"
+				}, 
+				{
+					"CurrentState": "NPC_OOCompetingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-4)",
+					"Utterance": "OOCompetingCompetingResponse",
+					"UtteranceId": "TTS-054749089E88CCEDC48597634BF0D052"
+				}, 
+				{
+					"CurrentState": "NPC_OOCompetingCollaboratingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionWorse_MoodChange(-2)",
+					"Utterance": "OOCompetingCollaboratingCompetingResponse",
+					"UtteranceId": "TTS-463940CD9842449B1AE5A57E936C54DA"
+				}, 
+				{
+					"CurrentState": "NPC_OOCompetingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ImproveConflictKnowledge_MoodChange(2)",
+					"Utterance": "OOCompetingCollaboratingCollaboratingResponse",
+					"UtteranceId": "TTS-8B3EB7452361128891C0DD9797072589"
+				}, 
+				{
+					"CurrentState": "NPC_OOCompetingCollaborating",
+					"NextState": "Player_OONP21",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "OONP21",
+					"UtteranceId": "TTS-17CE7E929F29F1C571CF4E24BC59DB7D"
+				}, 
+				{
+					"CurrentState": "NPC_OOCompeting",
+					"NextState": "Player_OONP2",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "OONP2",
+					"UtteranceId": "TTS-D2057857578F666506D300C26CCEF6DB"
+				}, 
+				{
+					"CurrentState": "NPC_OOCollaboratingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionWorse_MoodChange(-1)",
+					"Utterance": "OOCollaboratingCompetingResponse",
+					"UtteranceId": "TTS-52C6BE372BA70CA5962D0AD8D741CDB6"
+				}, 
+				{
+					"CurrentState": "NPC_OOCollaboratingCollaboratingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionWorse_MoodChange(-1)",
+					"Utterance": "OOCollaboratingCollaboratingCompetingResponse",
+					"UtteranceId": "TTS-503A7FFB6D5782A0BFE04EAFBE4037D5"
+				}, 
+				{
+					"CurrentState": "NPC_OOCollaboratingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ImproveConflictKnowledge_MoodChange(6)",
+					"Utterance": "OOCollaboratingCollaboratingCollaboratingResponse",
+					"UtteranceId": "TTS-A5749E38A4E4EC35B21FF09685467F19"
+				}, 
+				{
+					"CurrentState": "NPC_OOCollaboratingCollaborating",
+					"NextState": "Player_OONP41",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "OONP41",
+					"UtteranceId": "TTS-BAEDA020271032E7B7B7B09B8241260C"
+				}, 
+				{
+					"CurrentState": "NPC_OOCollaborating",
+					"NextState": "Player_OONP4",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "OONP4",
+					"UtteranceId": "TTS-266DB8ADE412C0B1675AFF433765C00B"
+				}, 
+				{
+					"CurrentState": "NPC_OOAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionWorse_MoodChange(-2)",
+					"Utterance": "OOAvoidingAvoidingResponse",
+					"UtteranceId": "TTS-699620C4CA93E0630A8458C6F64FEB33"
+				}, 
+				{
+					"CurrentState": "NPC_OOAvoidingAccommodatingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ImproveConflictTeamOpinion_MoodChange(-1)",
+					"Utterance": "OOAvoidingAccommodatingAvoidingResponse",
+					"UtteranceId": "TTS-B2AA792D0B00507100ADA8E82F579A9E"
+				}, 
+				{
+					"CurrentState": "NPC_OOAvoidingAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "MoodChange(1)",
+					"Utterance": "OOAvoidingAccommodatingAccommodatingResponse",
+					"UtteranceId": "TTS-706764D2807EBBAB2C06B6CE64A54299"
+				}, 
+				{
+					"CurrentState": "NPC_OOAvoidingAccommodating",
+					"NextState": "Player_OONP11",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "OONP11",
+					"UtteranceId": "TTS-D8B443626CE01A3D8ABB185212396962"
+				}, 
+				{
+					"CurrentState": "NPC_OOAvoiding",
+					"NextState": "Player_OONP1",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "OONP1",
+					"UtteranceId": "TTS-B7473080468E31B29EB50E23E2A1315D"
+				}, 
+				{
+					"CurrentState": "NPC_OOAccommodatingAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-1)",
+					"Utterance": "OOAccommodatingAvoidingAvoidingResponse",
+					"UtteranceId": "TTS-0B37DD71ECE6367741DAC24885572F97"
+				}, 
+				{
+					"CurrentState": "NPC_OOAccommodatingAvoidingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ImproveConflictTeamOpinion_MoodChange(1)",
+					"Utterance": "OOAccommodatingAvoidingAccommodatingResponse",
+					"UtteranceId": "TTS-5A7EAB3297442264E5530B12B6D1D8E2"
+				}, 
+				{
+					"CurrentState": "NPC_OOAccommodatingAvoiding",
+					"NextState": "Player_OONP31",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "OONP31",
+					"UtteranceId": "TTS-6BE2FE031E4754F86BDAD04610007129"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedAccommodatingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchBetter_MoodChange(5)",
+					"Utterance": "NotPickedAccommodatingCollaboratingCollaboratingResponse",
+					"UtteranceId": "TTS-AB7AAB2282F485BC3D90425AEDCF3A48"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedAccommodatingCollaboratingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionBetter_MoodChange(4)",
+					"Utterance": "NotPickedAccommodatingCollaboratingAccommodatingResponse",
+					"UtteranceId": "TTS-DD51B8573DC7121F3664326CA0BFFE4A"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedCollaboratingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "WholeTeamChange_MoodChange(6)",
+					"Utterance": "NotPickedCollaboratingCollaboratingCollaboratingResponse",
+					"UtteranceId": "TTS-0E3E8CAF360C9D7646C4E03E6C39F4B9"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedCollaboratingCollaboratingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "CausesSelectionAfter_MoodChange(5)",
+					"Utterance": "NotPickedCollaboratingCollaboratingAccommodatingResponse",
+					"UtteranceId": "TTS-2C02434778C905D8C85D0E8D4DB576CF"
+				}, 
+				{
+					"CurrentState": "NPC_Neither",
+					"NextState": "-",
+					"Meaning": "Neither",
+					"Style": "Neither",
+					"Utterance": "Neither",
+					"UtteranceId": "TTS-EDAB649646A4C3EBD9770BDFC29534B5"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedAccommodating",
+					"NextState": "Player_NotPickedNP3",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "NotPickedNP3",
+					"UtteranceId": "TTS-57C4D12E83ECB79CBCEF03F03DC9D651"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedAvoidingCompetingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-5)",
+					"Utterance": "NotPickedAvoidingCompetingCompetingResponse",
+					"UtteranceId": "TTS-0D47BCDDE5907C6502EC9784D44A04A6"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedAvoidingCompetingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionWorse_MoodChange(-4)",
+					"Utterance": "NotPickedAvoidingCompetingAvoidingResponse",
+					"UtteranceId": "TTS-71977AB4D6076B75269CD9A44C896EE3"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionWorse_MoodChange(-2)",
+					"Utterance": "NotPickedAvoidingAvoidingResponse",
+					"UtteranceId": "TTS-2BC6044480EEA404C11F3D40CF6877C0"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedAvoiding",
+					"NextState": "Player_NotPickedNP1",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "NotPickedNP1",
+					"UtteranceId": "TTS-BBA9756D31FED1F1A3306B93E9F9D8F6"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedCompeting",
+					"NextState": "Player_NotPickedNP2",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "NotPickedNP2",
+					"UtteranceId": "TTS-CDD2DCDA7C6CA181A93BD4A6691FA4C2"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedCompetingAvoiding",
+					"NextState": "Player_NotPickedNP21",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "NotPickedNP21",
+					"UtteranceId": "TTS-BA89818980A0A6E38D42E58C148915DF"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ExpectedPosition_MoodChange(2)",
+					"Utterance": "NotPickedAccommodatingAccommodatingResponse",
+					"UtteranceId": "TTS-992655C3704BC14EB91D88AF7C7F9DD8"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCompetingCompeting2",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "MoodChange(-4)",
+					"Utterance": "IPCCompetingCompeting2Response",
+					"UtteranceId": "TTS-A00397D4B8613E89BFF902CA71CAA8EB"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedCollaborating",
+					"NextState": "Player_NotPickedNP4",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "NotPickedNP4",
+					"UtteranceId": "TTS-67C66AE297F9CDA3AB231687946FD984"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedCollaboratingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "CausesSelectionAfter_MoodChange(3)",
+					"Utterance": "NotPickedCollaboratingAccommodatingResponse",
+					"UtteranceId": "TTS-F4D95A0700AD3087BE59EB29A9709168"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedAvoidingCompeting",
+					"NextState": "Player_NotPickedNP11",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "NotPickedNP11",
+					"UtteranceId": "TTS-3841D17A7E72EE52442504B9DB6C217A"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedCompetingAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-4)",
+					"Utterance": "NotPickedCompetingAvoidingAvoidingResponse",
+					"UtteranceId": "TTS-4DEB801D7086C57093174A3151436506"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedAccommodatingCollaborating",
+					"NextState": "Player_NotPickedNP31",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "NotPickedNP31",
+					"UtteranceId": "TTS-7C20FE7584992390C3CBE810C844AB3D"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAvoidingAvoidingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-4)",
+					"Utterance": "IPCAvoidingAvoidingCompetingResponse",
+					"UtteranceId": "TTS-CFA9C49115095F959664EA29D5C02B5D"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAvoidingCompetingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-4)",
+					"Utterance": "IPCAvoidingCompetingAvoidingResponse",
+					"UtteranceId": "TTS-A704C0FF57D91A94F44169D611EABB7C"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedCollaboratingCollaborating",
+					"NextState": "Player_NotPickedNP41",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "NotPickedNP41",
+					"UtteranceId": "TTS-117DD4CBAC257DFD8FAB68D2E6176E43"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCollaboratingCompeting",
+					"NextState": "Player_IPCNP72",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP72",
+					"UtteranceId": "TTS-9F8D207A138340E82BD0CD71B932B82E"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCollaboratingCompetingCollaborating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionBetter_MoodChange(2)",
+					"Utterance": "IPCCollaboratingCompetingCollaboratingResponse",
+					"UtteranceId": "TTS-0D16B0788B40A98BFAD5590AE66BDD4B"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCompetingCollaboratingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "MoodChange(4)",
+					"Utterance": "IPCCompetingCollaboratingCollaboratingCollaboratingResponse",
+					"UtteranceId": "TTS-44869717AAF2135F147095FEFF2DC2FB"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCompetingCollaboratingCollaborating",
+					"NextState": "Player_IPCNP311",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP311",
+					"UtteranceId": "TTS-9093D7C154247AA79205113B67251746"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCollaboratingCollaboratingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionAlCrewBetter_MoodChange(5)",
+					"Utterance": "IPCCollaboratingCollaboratingAccommodatingResponse",
+					"UtteranceId": "TTS-8CB0D9DBBCC80B0D5C6BA8F9EE441CA8"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCollaboratingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchBetter_MoodChange(6)",
+					"Utterance": "IPCCollaboratingCollaboratingCollaboratingResponse",
+					"UtteranceId": "TTS-355A737808FC73778AE38535D96F6C36"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCompetingAvoiding",
+					"NextState": "Player_IPCNP41",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP41",
+					"UtteranceId": "TTS-51076DB8E64A7035C7C2CAAC4862FEC5"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCompetingAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionWorse_MoodChange(-4)",
+					"Utterance": "IPCCompetingAvoidingAvoidingResponse",
+					"UtteranceId": "TTS-75A46D7596235838A7E1C9A4948B5969"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCollaboratingCollaboratingCompromising",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "MoodChange(6)",
+					"Utterance": "IPCCollaboratingCollaboratingCompromisingResponse",
+					"UtteranceId": "TTS-2697F7ACF470053DFF007AFFB3FA097F"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCollaboratingCollaborating2Collaborating",
+					"NextState": "Player_IPCNP811",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP811",
+					"UtteranceId": "TTS-F889D8C7213A1381BCF7278FDD47865D"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCollaboratingCollaboratingCollaboratingCompromising",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionBetter_MoodChange(7)",
+					"Utterance": "IPCCollaboratingCollaboratingCollaboratingCompromisingResponse",
+					"UtteranceId": "TTS-649422E29F1D79A606889CF263BB00B0"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCompetingCollaboratingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "MoodChange(-2)",
+					"Utterance": "IPCCompetingCollaboratingCompetingResponse",
+					"UtteranceId": "TTS-4B7B8C19D06F4E621FFA258F3BCC8B6B"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCompetingCollaborating",
+					"NextState": "Player_IPCNP31",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP31",
+					"UtteranceId": "TTS-F0BCF5304100EDF2024DBBCC88FE369B"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCompeting",
+					"NextState": "Player_IPCNP3",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP3",
+					"UtteranceId": "TTS-8AEAEDBD047BB5DE73B7096BEC5159B9"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCollaboratingCompetingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-2)",
+					"Utterance": "IPCCollaboratingCompetingCompetingResponse",
+					"UtteranceId": "TTS-DDA130990DA32B4E56CC08A52B153CE8"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCompeting",
+					"NextState": "Player_IPCNP4",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP4",
+					"UtteranceId": "TTS-DAD9B775D6998D3A8DE08C70430BAE48"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCollaboratingCollaboratingCollaborating2Collaborating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionAllCrewBetter_MoodChange(7)",
+					"Utterance": "IPCCollaboratingCollaboratingCollaborating2CollaboratingResponse",
+					"UtteranceId": "TTS-718D38281C95426AABA9AD164E832E5B"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCompetingCollaboratingCollaboratingCompromising",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionBetter_MoodChange(6)",
+					"Utterance": "IPCCompetingCollaboratingCollaboratingCompromisingResponse",
+					"UtteranceId": "TTS-126A3835E597D04A3D78512AB4864798"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCompetingAvoidingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "MoodChange(-5)",
+					"Utterance": "IPCCompetingAvoidingCompetingResponse",
+					"UtteranceId": "TTS-526C101583206E197E73F3717E03F2D1"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCompetingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-4)",
+					"Utterance": "IPCCompetingCompetingResponse",
+					"UtteranceId": "TTS-B7D7F8DCAC1E0D359CB5E6643B482ECF"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodatingCollaborating",
+					"NextState": "Player_IPCNP61",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP61",
+					"UtteranceId": "TTS-BC2E896CBDBE48D42DEFA79FD79BDE29"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodatingAvoiding",
+					"NextState": "Player_IPCNP52",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP52",
+					"UtteranceId": "TTS-348CE6A8B39997629B4212BFA33B5449"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAvoidingAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionBetter_MoodChange(1)",
+					"Utterance": "IPCAvoidingAccommodatingAccommodatingResponse",
+					"UtteranceId": "TTS-C39E8A146586F6B7F2934A7930AFB5E5"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodatingCollaboratingCollaboratingCompromising",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionAllCrewBetter_MoodChange(7)",
+					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCompromisingResponse",
+					"UtteranceId": "TTS-FC9E3DB10B17E3BDD097DC2E837EF607"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAvoidingAccommodating",
+					"NextState": "Player_IPCNP11",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP11",
+					"UtteranceId": "TTS-05141AC5F8CC9B3F4256F9AE4654D7FF"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodatingAccommodatingCompromising",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionBetter_MoodChange(4)",
+					"Utterance": "IPCAccommodatingAccommodatingCompromisingResponse",
+					"UtteranceId": "TTS-BF46A623D0330999EE6521AB029CF7F3"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodatingCollaboratingCollaboratingCollaborating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionAllCrewBetter_MoodChange(7)",
+					"Utterance": "IPCAccommodatingCollaboratingCollaboratingCollaboratingResponse",
+					"UtteranceId": "TTS-5D63608F6EBD13E01D8A4BAC4C19C357"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodatingCollaboratingAccommodatingCompromising",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionAllCrewBetter_MoodChange(6)",
+					"Utterance": "IPCAccommodatingCollaboratingAccommodatingCompromisingResponse",
+					"UtteranceId": "TTS-54346367C8F659C96B80BE45D8646B61"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodatingCollaboratingAccommodating",
+					"NextState": "Player_IPCNP612",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP612",
+					"UtteranceId": "TTS-B476DF15730F2FB94E0C00F116DC2551"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAvoidingAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionWorse_MoodChange(-3)",
+					"Utterance": "IPCAvoidingAvoidingAvoidingResponse",
+					"UtteranceId": "TTS-128D6F83AF802B18A334F710ABC18985"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodatingCollaboratingCollaborating",
+					"NextState": "Player_IPCNP611",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP611",
+					"UtteranceId": "TTS-7E361ADB18EE8C053B8586571B9A0F47"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAvoidingAvoiding",
+					"NextState": "Player_IPCNP22",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP22",
+					"UtteranceId": "TTS-B73AF080B2B19BE3FA74E2236CB17D7A"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodatingAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionWorse_MoodChange(-1)",
+					"Utterance": "IPCAccommodatingAvoidingAvoidingResponse",
+					"UtteranceId": "TTS-3B7D0AC5221CC60E0C77BE08C2F77DBA"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodatingAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionBetter_MoodChange(3)",
+					"Utterance": "IPCAccommodatingAccommodatingAccommodatingResponse",
+					"UtteranceId": "TTS-0D4929930D53678394204D537A5C82AB"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAvoiding",
+					"NextState": "Player_IPCNP1",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP1",
+					"UtteranceId": "TTS-C684B951102146E713FD5152D8A9BF41"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodatingCollaboratingAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionAllCrewBetter_MoodChange(5)",
+					"Utterance": "IPCAccommodatingCollaboratingAccommodatingAccommodatingResponse",
+					"UtteranceId": "TTS-3C4D7B32E07D5A8598E0E5FFBAD35CE6"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAvoiding",
+					"NextState": "Player_IPCNP2",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP2",
+					"UtteranceId": "TTS-BF329961B697CF3C630582E56433F853"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAvoidingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-2)",
+					"Utterance": "IPCAvoidingAvoidingResponse",
+					"UtteranceId": "TTS-384363950B745CA764815451AE72488F"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodatingAvoidingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "MoodChange(1)",
+					"Utterance": "IPCAccommodatingAvoidingAccommodatingResponse",
+					"UtteranceId": "TTS-3566B1B0C83B0E78EB81385800890DE3"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAvoidingAccommodatingAvoiding",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-1)",
+					"Utterance": "IPCAvoidingAccommodatingAvoidingResponse",
+					"UtteranceId": "TTS-6E42F465BE8B4BC62A1E6DE288D0770A"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAvoidingCompetingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionAllCrewWorse_MoodChange(-5)",
+					"Utterance": "IPCAvoidingCompetingCompetingResponse",
+					"UtteranceId": "TTS-79954E629AA782BF3D11030781332C8C"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedCompetingAvoidingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-5)",
+					"Utterance": "NotPickedCompetingAvoidingCompetingResponse",
+					"UtteranceId": "TTS-78A4201F230B475F13E4D66D81F56249"
+				}, 
+				{
+					"CurrentState": "NPC_Agree",
+					"NextState": "-",
+					"Meaning": "Agree",
+					"Style": "Agree",
+					"Utterance": "Agree",
+					"UtteranceId": "TTS-6A6334B478289B4FB3060C4F803EAFD3"
+				}, 
+				{
+					"CurrentState": "NPC_OOAccommodating",
+					"NextState": "Player_OONP3",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "OONP3",
+					"UtteranceId": "TTS-BE28F10209BF7B1BA9087D477297A783"
+				}, 
+				{
+					"CurrentState": "NPC_OOAccommodatingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ImproveConflictOpinionGreatly_MoodChange(2)",
+					"Utterance": "OOAccommodatingAccommodatingResponse",
+					"UtteranceId": "TTS-0AC50E1438A4428DD9C366905571C930"
+				}, 
+				{
+					"CurrentState": "NPC_Disagree",
+					"NextState": "-",
+					"Meaning": "Disagree",
+					"Style": "Disagree",
+					"Utterance": "Disagree",
+					"UtteranceId": "TTS-2B52AC64A552E4E54D440F49FCB5A58C"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAvoidingCompeting",
+					"NextState": "Player_IPCNP21",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP21",
+					"UtteranceId": "TTS-2D274F62EB2F12646633AAFCC3C1B8EB"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCollaboratingAccommodating",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "MoodChange(3)",
+					"Utterance": "IPCCollaboratingAccommodatingResponse",
+					"UtteranceId": "TTS-5F62F24DEC7F9AB85F5A05408BB7C3BF"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCollaboratingCollaborating",
+					"NextState": "Player_IPCNP71",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP71",
+					"UtteranceId": "TTS-0274832BD00F31AD861F2DD31404B166"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCollaborating",
+					"NextState": "Player_IPCNP7",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP7",
+					"UtteranceId": "TTS-5E7A98E15546864006905722E5275423"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCollaboratingCollaborating2",
+					"NextState": "Player_IPCNP81",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP81",
+					"UtteranceId": "TTS-47A1CD2EC37784AAC23FEFA05FA7978E"
+				}, 
+				{
+					"CurrentState": "NPC_IPCCollaborating",
+					"NextState": "Player_IPCNP8",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP8",
+					"UtteranceId": "TTS-90DF7C95D9AC4F645829FD5E1D768E15"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodatingAccommodating2",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "MoodChange(2)",
+					"Utterance": "IPCAccommodatingAccommodating2Response",
+					"UtteranceId": "TTS-9A74CC2D5C57AF35410729B21EAE20F6"
+				}, 
+				{
+					"CurrentState": "NPC_NotPickedCompetingCompeting",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "ManagerOpinionMuchWorse_MoodChange(-4)",
+					"Utterance": "NotPickedCompetingCompetingResponse",
+					"UtteranceId": "TTS-43FD956AA4AC099A8B62716980C27E74"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodatingAccommodating",
+					"NextState": "Player_IPCNP51",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP51",
+					"UtteranceId": "TTS-CC721E2923CE6BFC199711D815EBF824"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodating",
+					"NextState": "Player_IPCNP5",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP5",
+					"UtteranceId": "TTS-A6CB79605FB1D517ED44D3B12521A72C"
+				}, 
+				{
+					"CurrentState": "NPC_InterviewIntro",
+					"NextState": "-",
+					"Meaning": "InterviewIntro",
+					"Style": "InterviewIntro",
+					"Utterance": "InterviewIntro",
+					"UtteranceId": "TTS-C05978C51C7D742B9C063E208A666D5E"
+				}, 
+				{
+					"CurrentState": "NPC_IPCAccommodating",
+					"NextState": "Player_IPCNP6",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "IPCNP6",
+					"UtteranceId": "TTS-40FE30A847250D76A4C1D8183928B27E"
 				}]
 		},
 	"types": [
 		{
 			"TypeId": 0,
-			"ClassName": "IntegratedAuthoringTool.IntegratedAuthoringToolAsset, IntegratedAuthoringTool, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+			"ClassName": "IntegratedAuthoringTool.IntegratedAuthoringToolAsset, IntegratedAuthoringTool, Version=1.7.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

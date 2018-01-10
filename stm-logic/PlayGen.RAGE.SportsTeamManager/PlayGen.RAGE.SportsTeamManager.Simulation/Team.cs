@@ -148,7 +148,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//remove recruits from iat and randomly select to remove them from pool of available recruits
 			foreach (var member in Recruits)
 			{
-				iat.RemoveCharacters(new List<int> { iat.GetAllCharacterSources().First(c => c.Source == member.Value.RolePlayCharacter.AssetFilePath).Id });
+				iat.RemoveCharacters(new List<int> { iat.GetAllCharacterSources().First(c => c.Source == member.Value.RolePlayCharacter.EmotionalAppraisalAssetSource.Replace(".ea", ".rpc")).Id });
 				if (StaticRandom.Int(0, 100) % (int)config.ConfigValues[ConfigKeys.RecruitChangeChance] != 0)
 				{
 					recuritsToRemove.Add(member.Key);
@@ -186,7 +186,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal void AddRecruit(CrewMember member)
 		{
 			//remove recruit from the current list of characters in the game
-			iat.RemoveCharacters(new List<int> { iat.GetAllCharacterSources().First(c => c.Source == member.RolePlayCharacter.AssetFilePath).Id });
+			iat.RemoveCharacters(new List<int> { iat.GetAllCharacterSources().First(c => c.Source == member.RolePlayCharacter.EmotionalAppraisalAssetSource.Replace(".ea", ".rpc")).Id });
 			//set up recruit as a 'proper' character in the game
 			member.CreateFile(iat, storageLocation, Manager.Name.NoSpaces());
 			member.Avatar.UpdateAvatarBeliefs(member);

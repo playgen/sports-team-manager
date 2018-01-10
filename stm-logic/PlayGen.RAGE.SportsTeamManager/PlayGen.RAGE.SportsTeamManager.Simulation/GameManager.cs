@@ -87,7 +87,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			foreach (var ev in eventTriggers)
 			{
 				//is there a post race event trigger that is not a valid name for an event?
-				if (postRaceNames.All(prn => prn != ev.EventName))
+				if (postRaceNames.All(prn => prn != "Player_" + ev.EventName))
 				{
 					invalidString += string.Format("{0} is not an existing event name.\n", ev.EventName);
 				}
@@ -127,8 +127,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var combinedStorageLocation = Path.Combine(storageLocation, name);
 			Directory.CreateDirectory(combinedStorageLocation);
 			var iat = ConfigStore.IntegratedAuthoringTool;
-			var help = ConfigStore.HelpIntegratedAuthoringTool.GetDialogueActionsByState(IATConsts.AGENT, "LearningPill").ToList();
-			EventController = new EventController(iat, help);
+			EventController = new EventController(iat);
 			ValidateGameConfig();
 			//set up boat and team
 			var initialType = _config.GameConfig.PromotionTriggers.First(pt => pt.StartType == "Start").NewType;
@@ -138,6 +137,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Team.TeamColorsPrimary = new Color(teamColorsPrimary[0], teamColorsPrimary[1], teamColorsPrimary[2], 255);
 			Team.TeamColorsSecondary = new Color(teamColorsSecondary[0], teamColorsSecondary[1], teamColorsSecondary[2], 255);
 			iat.ScenarioName = name;
+			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
 			//create manager
 			var manager = new Person(null)
 			{
@@ -271,11 +271,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				_config = new ConfigStore();
 			}
 			UnloadGame();
-			var help = ConfigStore.HelpIntegratedAuthoringTool.GetDialogueActionsByState(IATConsts.AGENT, "LearningPill").ToList();
 			//get the iat file and all characters for this game
 			var combinedStorageLocation = Path.Combine(storageLocation, boatName);
 			var iat = IntegratedAuthoringToolAsset.LoadFromFile(Path.Combine(combinedStorageLocation, boatName + ".iat"));
-			EventController = new EventController(iat, help);
+			EventController = new EventController(iat);
 			ValidateGameConfig();
 			var characterList = iat.GetAllCharacterSources();
 

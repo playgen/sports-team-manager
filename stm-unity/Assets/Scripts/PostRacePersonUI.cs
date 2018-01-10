@@ -100,7 +100,7 @@ public class PostRacePersonUI : MonoBehaviour
 			LastState = response.CurrentState;
 			if (response.Style.Length > 0)
 			{
-				foreach (var style in response.Style)
+				foreach (var style in response.Style.Split('_').Where(sp => !string.IsNullOrEmpty(sp)).ToArray())
 				{
 					var impactSubjects = new List<string>(subjects);
 					impactSubjects.Insert(0, CurrentCrewMember.Name);

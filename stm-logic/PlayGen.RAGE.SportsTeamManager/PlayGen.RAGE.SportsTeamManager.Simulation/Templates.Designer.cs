@@ -19,7 +19,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Templates {
@@ -99,8 +99,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///		204,
         ///		108,
         ///		6
-        ///	]
-        ///}.
+        ///	],
+        ///	&quot;BlueEyeColorValues&quot;: [
+        ///		30,
+        ///		51,
+        ///		90
+        ///	],        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string avatar_config {
             get {
@@ -160,10 +164,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///	&quot;OpinionRatingWeighting&quot;: 1,
         ///	&quot;ManagerOpinionRatingWeighting&quot;: 1,
         ///	&quot;MoodRatingWeighting&quot;: 0.5,
-        ///	&quot;DefaultOpinionMin&quot;: 0,
-        ///	&quot;DefaultOpinionMax&quot;: 0,
+        ///	&quot;DefaultOpinionMin&quot;: -2,
+        ///	&quot;DefaultOpinionMax&quot;: 2,
         ///	&quot;DefaultMoodMin&quot;: 0,
-        ///	&quot;DefaultMoodMax&quot;: [rest of string was truncated]&quot;;.
+        ///	&quot;DefaultMoodMax&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string config {
             get {
@@ -186,21 +190,22 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///		{
         ///			&quot;StartType&quot;: &quot;AltDinghy&quot;,
         ///			&quot;NewType&quot;: &quot;BiggerDinghy&quot;,
-        ///			&quot;ScoreMetSinceLast&quot;: 2
+        ///			&quot;ScoreMetSinceLast&quot;: 1
         ///		},
         ///		{
         ///			&quot;StartType&quot;: &quot;BiggerDinghy&quot;,
         ///			&quot;NewType&quot;: &quot;BiggestDinghy&quot;,
         ///			&quot;ScoreMetSinceLast&quot;: 2
+        ///		},
+        ///		{
+        ///			&quot;StartType&quot;: &quot;BiggestDinghy&quot;,
+        ///			&quot;NewType&quot;: &quot;Finish&quot;,
+        ///			&quot;ScoreMetSinceLast&quot;: 2
+        ///
         ///		}
         ///	],
         ///	&quot;EventTriggers&quot;: [
-        ///		{
-        ///			&quot;EventName&quot;: &quot;NotPicked&quot;,
-        ///			&quot;RaceTrigger&quot;: 1,
-        ///			&quot;Random&quot;: true,
-        ///			&quot;RepeatEvery&quot;: 5
-        ///		},        /// [rest of string was truncated]&quot;;.
+        ///		{        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string game_config {
             get {
@@ -210,40 +215,43 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///	&quot;root&quot;:
-        ///		{
-        ///			&quot;classId&quot;: 0,
-        ///			&quot;ScenarioName&quot;: null,
-        ///			&quot;AgentDialogues&quot;: [
-        ///				{
-        ///					&quot;CurrentState&quot;: &quot;LearningPill&quot;,
-        ///					&quot;NextState&quot;: &quot;Retirement&quot;,
-        ///					&quot;Meaning&quot;: [&quot;Retirement&quot;],
-        ///					&quot;Style&quot;: [&quot;Retirement&quot;],
-        ///					&quot;Utterance&quot;: &quot;&quot;
-        ///				}, 
-        ///				{
-        ///					&quot;CurrentState&quot;: &quot;LearningPill&quot;,
-        ///					&quot;NextState&quot;: &quot;NotPickedAfterSorry&quot;,
-        ///					&quot;Meaning&quot;: [&quot;NotPickedAfterSorry&quot;],
-        ///					&quot;Style&quot;: [&quot;NotPickedAfterSorry&quot;],
-        ///					&quot;Utterance&quot;: &quot;&quot;
-        ///				}, 
-        ///				{
-        ///					&quot;CurrentState&quot;: &quot;LearningPill&quot;,
-        ///					&quot;Ne [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string help_dialogue {
-            get {
-                return ResourceManager.GetString("help_dialogue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {
-        ///
-        ///}
-        ///.
+        ///	&quot;MaleForename&quot;: {
+        ///		&quot;English&quot;: [
+        ///			&quot;Oliver&quot;,
+        ///			&quot;Jack&quot;,
+        ///			&quot;Harry&quot;,
+        ///			&quot;Jacob&quot;,
+        ///			&quot;Charlie&quot;,
+        ///			&quot;Thomas&quot;,
+        ///			&quot;George&quot;,
+        ///			&quot;Oscar&quot;,
+        ///			&quot;James&quot;,
+        ///			&quot;William&quot;,
+        ///			&quot;Noah&quot;,
+        ///			&quot;Alfie&quot;,
+        ///			&quot;Joshua&quot;,
+        ///			&quot;Muhammad&quot;,
+        ///			&quot;Henry&quot;,
+        ///			&quot;Leo&quot;,
+        ///			&quot;Archie&quot;,
+        ///			&quot;Ethan&quot;,
+        ///			&quot;Joseph&quot;,
+        ///			&quot;Freddie&quot;,
+        ///			&quot;Samuel&quot;,
+        ///			&quot;Alexander&quot;,
+        ///			&quot;Logan&quot;,
+        ///			&quot;Daniel&quot;,
+        ///			&quot;Isaac&quot;,
+        ///			&quot;Max&quot;,
+        ///			&quot;Mohammed&quot;,
+        ///			&quot;Benjamin&quot;,
+        ///			&quot;Mason&quot;,
+        ///			&quot;Lucas&quot;,
+        ///			&quot;Edward&quot;,
+        ///			&quot;Harrison&quot;,
+        ///			&quot;Jake&quot;,
+        ///			&quot;Dylan&quot;,
+        ///			&quot;Ril [rest of string was truncated]&quot;;.
         /// </summary>
         public static string name_config {
             get {
@@ -253,30 +261,26 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///	&quot;root&quot;: &quot;refId@0&quot;,
-        ///	&quot;references&quot;: [
+        ///	&quot;root&quot;:
         ///		{
-        ///			&quot;refId&quot;: 0,
         ///			&quot;classId&quot;: 0,
         ///			&quot;Description&quot;: null,
-        ///			&quot;EmotionalHalfLifeDecayTime&quot;: 15,
-        ///			&quot;MoodHalfLifeDecayTime&quot;: 60,
-        ///			&quot;HalfLifeDecayConstant&quot;: 0.5,
-        ///			&quot;EmotionInfluenceOnMoodFactor&quot;: 0.3,
-        ///			&quot;MoodInfluenceOnEmotionFactor&quot;: 0.3,
-        ///			&quot;MinimumMoodValueForInfluencingEmotions&quot;: 0.5,
-        ///			&quot;KnowledgeBase&quot;:
+        ///			&quot;AppraisalRules&quot;:
         ///				{
-        ///					&quot;Perspective&quot;: &quot;Nameless&quot;,
-        ///					&quot;Knowledge&quot;:
+        ///					&quot;AppraisalWeight&quot;: 1,
+        ///					&quot;Rules&quot;: [
         ///						{
-        ///
-        ///						}
-        ///				},
-        ///			&quot;AutobiographicMemory&quot;:
-        ///				{
-        ///					&quot;Tick&quot;: 1,
-        ///					&quot;re [rest of string was truncated]&quot;;.
+        ///							&quot;EventName&quot;: &quot;Event(Action-Start, Player, ManagerOpinionCheck([manager]), Self)&quot;,
+        ///							&quot;Conditions&quot;:
+        ///								{
+        ///									&quot;Set&quot;: [&quot;Opinion([manager]) &lt; -2&quot;]
+        ///								},
+        ///							&quot;Desirability&quot;: -2,
+        ///							&quot;Praiseworthiness&quot;: -2
+        ///						}, 
+        ///						{
+        ///							&quot;EventName&quot;: &quot;Event(Action-Start, Player, ManagerOpinionCheck([manager]), Self)&quot;,
+        ///							&quot;Conditions&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string template_ea {
             get {
@@ -293,6 +297,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///			&quot;ActionTendencies&quot;: [
         ///				{
         ///					&quot;Action&quot;: &quot;RatingFeedback(Good)&quot;,
+        ///					&quot;Target&quot;: &quot;-&quot;,
+        ///					&quot;Type&quot;: &quot;-&quot;,
         ///					&quot;Conditions&quot;:
         ///						{
         ///							&quot;Set&quot;: [&quot;LastEventId(Action-Start, *, PositionRating([x]), SELF) = [id]&quot;, &quot;[x] &gt; 6&quot;]
@@ -301,12 +307,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///				}, 
         ///				{
         ///					&quot;Action&quot;: &quot;RatingFeedback(Bad)&quot;,
+        ///					&quot;Target&quot;: &quot;-&quot;,
+        ///					&quot;Type&quot;: &quot;-&quot;,
         ///					&quot;Conditions&quot;:
         ///						{
-        ///							&quot;Set&quot;: [&quot;LastEventId(Action-Start, *, PositionRating([x]), SELF) = [id]&quot;, &quot;[x] &lt; 5&quot;, &quot;[x] != 0&quot;]
-        ///						},
-        ///					&quot;Priority&quot;: 0
-        /// [rest of string was truncated]&quot;;.
+        ///							&quot;Set&quot;: [&quot;LastEventId(Action-Start, *, PositionRa [rest of string was truncated]&quot;;.
         /// </summary>
         public static string template_edm {
             get {
@@ -320,23 +325,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///		{
         ///			&quot;classId&quot;: 0,
         ///			&quot;ScenarioName&quot;: &quot;Template&quot;,
-        ///			&quot;PlayerDialogues&quot;: [
+        ///			&quot;Description&quot;: null,
+        ///			&quot;Dialogues&quot;: [
         ///				{
-        ///					&quot;CurrentState&quot;: &quot;RoleReveal&quot;,
-        ///					&quot;NextState&quot;: &quot;-&quot;,
-        ///					&quot;Meaning&quot;: [&quot;RoleReveal&quot;],
-        ///					&quot;Style&quot;: [&quot;RoleReveal&quot;],
-        ///					&quot;Utterance&quot;: &quot;What role do you think you can do well in?&quot;
-        ///				}, 
-        ///				{
-        ///					&quot;CurrentState&quot;: &quot;StatReveal&quot;,
-        ///					&quot;NextState&quot;: &quot;-&quot;,
-        ///					&quot;Meaning&quot;: [&quot;StatReveal&quot;],
-        ///					&quot;Style&quot;: [&quot;StatReveal&quot;],
-        ///					&quot;Utterance&quot;: &quot;Tell me more about your skillset&quot;
-        ///				}, 
-        ///				{
-        ///					&quot;CurrentS [rest of string was truncated]&quot;;.
+        ///					&quot;CurrentState&quot;: &quot;LearningPill&quot;,
+        ///					&quot;NextState&quot;: &quot;IPCCollaboratingCollaboratingCollaboratingCompromising&quot;,
+        ///					&quot;Meaning&quot;: &quot;IPCCollaboratingCollaboratingCollaboratingCompromising&quot;,
+        ///					&quot;Style&quot;: &quot;IPCCollaboratingCollaboratingCollaboratingCompromising&quot;,
+        ///					&quot;Utterance&quot;: &quot;IPCCollaboratingCollaboratingCollaboratingCompromisingLP&quot;,
+        ///					&quot;UtteranceId&quot;: &quot;TTS-ADEE1F6FEBB48CDF7B72268F0F [rest of string was truncated]&quot;;.
         /// </summary>
         public static string template_iat {
             get {
@@ -349,18 +346,26 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///	&quot;root&quot;:
         ///		{
         ///			&quot;classId&quot;: 0,
-        ///			&quot;_emotionalAppraisalAssetSource&quot;: &quot;Template.ea&quot;,
-        ///			&quot;_emotionalDecisionMakingAssetSource&quot;: &quot;Template.edm&quot;,
-        ///			&quot;_socialImportanceAssetSource&quot;: &quot;Template.si&quot;,
-        ///			&quot;BodyName&quot;: &quot;Template&quot;,
-        ///			&quot;CharacterName&quot;: &quot;Template&quot;
-        ///		},
-        ///	&quot;types&quot;: [
-        ///		{
-        ///			&quot;TypeId&quot;: 0,
-        ///			&quot;ClassName&quot;: &quot;RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;
-        ///		}]
-        ///}.
+        ///			&quot;KnowledgeBase&quot;:
+        ///				{
+        ///					&quot;Perspective&quot;: &quot;Nameless&quot;,
+        ///					&quot;Knowledge&quot;:
+        ///						{
+        ///
+        ///						}
+        ///				},
+        ///			&quot;BodyName&quot;: &quot;Nameless&quot;,
+        ///			&quot;VoiceName&quot;: null,
+        ///			&quot;EmotionalAppraisalAssetSource&quot;: &quot;Template.ea&quot;,
+        ///			&quot;EmotionalDecisionMakingSource&quot;: &quot;Template.edm&quot;,
+        ///			&quot;SocialImportanceAssetSource&quot;: &quot;Template.si&quot;,
+        ///			&quot;CommeillFautAssetSource&quot;: null,
+        ///			&quot;EmotionalState&quot;:
+        ///				{
+        ///					&quot;Mood&quot;: 0,
+        ///					&quot;initialTick&quot;: 0,
+        ///					&quot;EmotionalPool&quot;: [],
+        ///					&quot;AppraisalConfiguration [rest of string was truncated]&quot;;.
         /// </summary>
         public static string template_rpc {
             get {
@@ -374,13 +379,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation {
         ///		{
         ///			&quot;classId&quot;: 0,
         ///			&quot;AttributionRules&quot;: [],
-        ///			&quot;Claims&quot;: [],
-        ///			&quot;Conferrals&quot;: []
+        ///			&quot;Claims&quot;: []
         ///		},
         ///	&quot;types&quot;: [
         ///		{
         ///			&quot;TypeId&quot;: 0,
-        ///			&quot;ClassName&quot;: &quot;SocialImportance.SocialImportanceAsset, SocialImportanceAsset, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;
+        ///			&quot;ClassName&quot;: &quot;SocialImportance.SocialImportanceAsset, SocialImportanceAsset, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null&quot;
         ///		}]
         ///}.
         /// </summary>

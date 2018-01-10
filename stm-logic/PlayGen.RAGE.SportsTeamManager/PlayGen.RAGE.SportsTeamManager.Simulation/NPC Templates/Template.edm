@@ -6,6 +6,8 @@
 			"ActionTendencies": [
 				{
 					"Action": "RatingFeedback(Good)",
+					"Target": "-",
+					"Type": "-",
 					"Conditions":
 						{
 							"Set": ["LastEventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "[x] > 6"]
@@ -14,6 +16,8 @@
 				}, 
 				{
 					"Action": "RatingFeedback(Bad)",
+					"Target": "-",
+					"Type": "-",
 					"Conditions":
 						{
 							"Set": ["LastEventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "[x] < 5", "[x] != 0"]
@@ -22,6 +26,8 @@
 				}, 
 				{
 					"Action": "RatingFeedback(VeryBad)",
+					"Target": "-",
+					"Type": "-",
 					"Conditions":
 						{
 							"Set": ["LastEventId(Action-Start, *, PositionRating([x]), SELF) = [id]", "0 = [x]", "Race(Rest) < 1"]
@@ -30,6 +36,8 @@
 				}, 
 				{
 					"Action": "OpinionFeedback(DislikedInBetter)",
+					"Target": "-",
+					"Type": "-",
 					"Conditions":
 						{
 							"Set": ["LastEventId(Action-Start, *, OpinionCheck([x], [y], [z]), SELF) = [id]", "[z] < [y]", "Opinion([x]) < -2"]
@@ -40,6 +48,6 @@
 	"types": [
 		{
 			"TypeId": 0,
-			"ClassName": "EmotionalDecisionMaking.EmotionalDecisionMakingAsset, EmotionalDecisionMaking, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+			"ClassName": "EmotionalDecisionMaking.EmotionalDecisionMakingAsset, EmotionalDecisionMaking, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }
