@@ -8,7 +8,6 @@ using IntegratedAuthoringTool.DTOs;
 using RolePlayCharacter;
 
 using SocialImportance;
-using SocialImportance.DTOs;
 
 using WellFormedNames;
 
@@ -26,6 +25,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal RolePlayCharacterAsset RolePlayCharacter { get; private set; }
 		protected SocialImportanceAsset SocialImportance { get; private set; }
 
+		private static Name _baseBelief = "Event(Property-Change, NPC, DefaultName, DefaultValue)".ToName();
+		private static Name _beliefNpc = "NPC".ToName();
+		private static Name _beliefName = "DefaultName".ToName();
+		private static Name _beliefValue = "DefaultValue".ToName();
+		private Name _belief { get; set; }
+		
+
 		/// <summary>
 		/// Constructor for creating a Person
 		/// </summary>
@@ -34,7 +40,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (rpc != null)
 			{
 				RolePlayCharacter = rpc;
-				SocialImportance = SocialImportanceAsset.LoadFromFile(RolePlayCharacter.SocialImportanceAssetSource);
+				SetRelations();
 				SocialImportance.RegisterKnowledgeBase(RolePlayCharacter.m_kb);
 				Name = RolePlayCharacter.BodyName;
 				Age = Convert.ToInt32(LoadBelief(NPCBeliefs.Age.GetDescription()));
@@ -45,66 +51,31 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create the required files for this Person
 		/// </summary>
-		internal void CreateFile(IntegratedAuthoringToolAsset iat, string storageLocation, string managerName = "", string fileName = "")
+		internal void CreateFile(IntegratedAuthoringToolAsset iat, string storageLocation, string fileName = "")
 		{
 			//Get Storytelling Framework files
-			var rpc = ConfigStore.RolePlayCharacter;
-			var ea = ConfigStore.EmotionalAppraisal;
-			var edm = ConfigStore.EmotionalDecisionMaking;
-			var si = ConfigStore.SocialImportance;
-			//set values
-			rpc.BodyName = Name;
-			var noSpaceName = rpc.BodyName.Replace(" ", string.Empty);
-			rpc.CharacterName = (Name)noSpaceName;
+			RolePlayCharacter = ConfigStore.RolePlayCharacter.Copy();
+			SetRelations();
+			RolePlayCharacter.BodyName = Name;
+			var noSpaceName = RolePlayCharacter.BodyName.Replace(" ", string.Empty);
+			RolePlayCharacter.CharacterName = noSpaceName.ToName();
 			if (string.IsNullOrEmpty(fileName))
 			{
 				fileName = noSpaceName;
 			}
-			//save files
-			ea.SaveToFile(Path.Combine(storageLocation, fileName + ".ea"));
-			edm.SaveToFile(Path.Combine(storageLocation, fileName + ".edm"));
-			si.SaveToFile(Path.Combine(storageLocation, fileName + ".si"));
-			//add character to iat asset
-			rpc.SaveToFile(Path.Combine(storageLocation, fileName + ".rpc"));
-			//assign asset files to RPC
-			rpc.EmotionalAppraisalAssetSource = fileName + ".ea";
-			rpc.EmotionalDecisionMakingSource = fileName + ".edm";
-			rpc.SocialImportanceAssetSource = fileName + ".si";
-			rpc.Save();
-			//store RPC locally
-			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile(rpc.AssetFilePath);
-			RolePlayCharacter.LoadAssociatedAssets();
-			SocialImportance = SocialImportanceAsset.LoadFromFile(RolePlayCharacter.SocialImportanceAssetSource);
+			RolePlayCharacter.VoiceName = fileName;
+			RolePlayCharacter.SetFutureFilePath(Path.Combine(storageLocation, fileName + ".rpc"));
+			RolePlayCharacter.Save();
 			//set up SI file
-			if (!string.IsNullOrEmpty(managerName))
-			{
-				SocialImportance.AddAttributionRule(new AttributionRuleDTO
-				{
-					Value = 1,
-					RuleName = "Negative",
-					Target = managerName,
-					Conditions = new Conditions.DTOs.ConditionSetDTO()
-				});
-				SocialImportance.AddAttributionRule(new AttributionRuleDTO
-				{
-					Value = 5,
-					RuleName = "Mid",
-					Target = managerName,
-					Conditions = new Conditions.DTOs.ConditionSetDTO()
-				});
-				SocialImportance.AddAttributionRule(new AttributionRuleDTO
-				{
-					Value = 10,
-					RuleName = "Positive",
-					Target = managerName,
-					Conditions = new Conditions.DTOs.ConditionSetDTO()
-				});
-				SocialImportance.Save();
-			}
 			iat.AddNewCharacterSource(new CharacterSourceDTO { Source = RolePlayCharacter.AssetFilePath });
-			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			var eventString = "Creation(-)";
-			RolePlayCharacter.Perceive(new[] { (Name)string.Format(eventBase, eventString, noSpaceName) });
+		}
+
+		internal void SetRelations()
+		{
+			SocialImportance = ConfigStore.SocialImportance.Copy();
+			RolePlayCharacter.SetEmotionalAppraisalAsset(ConfigStore.EmotionalAppraisal.Copy());
+			RolePlayCharacter.SetEmotionalDecisionMakingAsset(ConfigStore.EmotionalDecisionMaking.Copy());
+			RolePlayCharacter.SetSocialImportanceAsset(SocialImportance);
 		}
 
 		/// <summary>
@@ -128,9 +99,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void UpdateSingleBelief(string name, string value)
 		{
-			var belief = (Name)string.Format("Event(Property-Change, {0}, {1}, {2})", Name.NoSpaces(), name, value);
-
-			RolePlayCharacter.Perceive(new[] { belief });
+			if (_belief == null)
+			{
+				_belief = _baseBelief.SwapTerms(_beliefNpc, Name.NoSpaces().ToName());
+			}
+			var belief = _belief.SwapTerms(_beliefName, name.ToName());
+			belief = belief.SwapTerms(_beliefValue, value.ToName());
+			RolePlayCharacter.Perceive(belief);
 			RolePlayCharacter.ForgetEvent(RolePlayCharacter.EventRecords.Last().Id);
 		}
 

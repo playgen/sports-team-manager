@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 using RolePlayCharacter;
 using SocialImportance;
 using System.Diagnostics;
+using System.Linq;
+
+using SocialImportance.DTOs;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
@@ -30,16 +33,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal static SocialImportanceAsset SocialImportance { get; set; }
 		internal static Platform Platform { get; set; }
 
-		public ConfigStore(Platform platform = Platform.Null)
+		public ConfigStore(Platform platform = Platform.Windows)
 		{
-			if (platform != Platform.Null)
-			{
-				Platform = platform;
-			}
-			if (Platform == Platform.Null)
-			{
-				Platform = Platform.Windows;
-			}
+			Platform = platform;
 			ConfigValues = new Dictionary<ConfigKeys, float>();
 			var configText = Templates.ResourceManager.GetString("config");
 			ConfigValues = JsonConvert.DeserializeObject<Dictionary<ConfigKeys, float>>(configText);
@@ -62,21 +58,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal void LoadAssets()
 		{
 			AssetManager.Instance.Bridge = new TemplateBridge();
-			var timeList = new List<long>();
-			var sw = new Stopwatch();
-			sw.Start();
-			timeList.Add(sw.ElapsedMilliseconds);
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile("template_rpc");
-			timeList.Add(sw.ElapsedMilliseconds);
 			EmotionalAppraisal = EmotionalAppraisalAsset.LoadFromFile("template_ea");
-			timeList.Add(sw.ElapsedMilliseconds);
 			EmotionalDecisionMaking = EmotionalDecisionMakingAsset.LoadFromFile("template_edm");
-			timeList.Add(sw.ElapsedMilliseconds);
 			SocialImportance = SocialImportanceAsset.LoadFromFile("template_si");
-			timeList.Add(sw.ElapsedMilliseconds);
 			IntegratedAuthoringTool = IntegratedAuthoringToolAsset.LoadFromFile("template_iat");
-			timeList.Add(sw.ElapsedMilliseconds);
-			sw.Stop();
+
 			switch (Platform)
 			{
 				case Platform.Android:

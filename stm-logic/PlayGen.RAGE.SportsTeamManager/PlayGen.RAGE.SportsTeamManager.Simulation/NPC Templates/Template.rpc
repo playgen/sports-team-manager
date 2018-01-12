@@ -12,9 +12,9 @@
 				},
 			"BodyName": "Nameless",
 			"VoiceName": null,
-			"EmotionalAppraisalAssetSource": "Template.ea",
-			"EmotionalDecisionMakingSource": "Template.edm",
-			"SocialImportanceAssetSource": "Template.si",
+			"EmotionalAppraisalAssetSource": null,
+			"EmotionalDecisionMakingSource": null,
+			"SocialImportanceAssetSource": null,
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{

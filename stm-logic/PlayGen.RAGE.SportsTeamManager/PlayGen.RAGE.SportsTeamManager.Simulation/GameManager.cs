@@ -32,7 +32,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public GameManager(Platform platform = Platform.Windows)
 		{
-			ConfigStore.Platform = platform;
+			_config = new ConfigStore(platform);
 		}
 
 		/// <summary>
@@ -118,10 +118,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void NewGame(string storageLocation, string name, byte[] teamColorsPrimary, byte[] teamColorsSecondary, string managerName, bool showTutorial, string nation, List<CrewMember> crew = null)
 		{
-			if (_config == null)
-			{
-				_config = new ConfigStore();
-			}
 			UnloadGame();
 			//create folder and iat file for game
 			var combinedStorageLocation = Path.Combine(storageLocation, name);
@@ -137,7 +133,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Team.TeamColorsPrimary = new Color(teamColorsPrimary[0], teamColorsPrimary[1], teamColorsPrimary[2], 255);
 			Team.TeamColorsSecondary = new Color(teamColorsSecondary[0], teamColorsSecondary[1], teamColorsSecondary[2], 255);
 			iat.ScenarioName = name;
-			iat.SaveToFile(Path.Combine(combinedStorageLocation, name + ".iat"));
+			iat.SetFutureFilePath(Path.Combine(combinedStorageLocation, name + ".iat"));
 			//create manager
 			var manager = new Person(null)
 			{
@@ -193,7 +189,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//set up files and details for each CrewMember
 			foreach (var member in Team.CrewMembers.Values)
 			{
-				member.CreateFile(iat, combinedStorageLocation, manager.Name.NoSpaces());
+				member.CreateFile(iat, combinedStorageLocation);
 				member.Avatar = new Avatar(member);
 				Team.SetCrewColors(member.Avatar);
 				if (!initialCrew)
@@ -266,10 +262,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void LoadGame(string storageLocation, string boatName)
 		{
-			if (_config == null)
-			{
-				_config = new ConfigStore();
-			}
 			UnloadGame();
 			//get the iat file and all characters for this game
 			var combinedStorageLocation = Path.Combine(storageLocation, boatName);
@@ -283,7 +275,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			foreach (var character in characterList)
 			{
 				var rpc = RolePlayCharacterAsset.LoadFromFile(character.Source);
-				rpc.LoadAssociatedAssets();
 				var position = rpc.GetBeliefValue(NPCBeliefs.Position.GetDescription());
 				//if this character is the manager, load the game details from this file and set this character as the manager
 				if (position == "Manager")
@@ -508,7 +499,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crew += "," + CurrentRaceSession;
 			//send event with string of information within
 			var eventString = string.Format(eventStringUnformatted, boatType, crew);
-			manager.RolePlayCharacter.Perceive(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
+			manager.RolePlayCharacter.Perceive((Name)string.Format(eventBase, eventString, spacelessName));
 			manager.SaveStatus();
 			//store saved details in new local boat copy
 			var lastBoat = new Boat(_config, boat.Type);

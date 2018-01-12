@@ -480,7 +480,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					AddOrUpdateOpinion(team.Manager.Name, -3);
 					//send event on record that this happened
 					var eventString = "PostRace(NotPickedNotDone)";
-					RolePlayCharacter.Perceive(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
+					RolePlayCharacter.Perceive((Name)string.Format(eventBase, eventString, spacelessName));
 				}
 				//set their belief to 'null'
 				UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "null");
@@ -499,7 +499,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						AddOrUpdateOpinion(team.Manager.Name, -3);
 						//send event on record that this happened
 						var eventString = "PostRace(PWNotDone)";
-						RolePlayCharacter.Perceive(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
+						RolePlayCharacter.Perceive((Name)string.Format(eventBase, eventString, spacelessName));
 					}
 					//set their belief to 'null'
 					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), "null");
@@ -560,7 +560,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				eventString = string.Format(ev);
 			}
-			RolePlayCharacter.Perceive(new[] { (Name)string.Format(eventBase, eventString, spacelessName) });
+			RolePlayCharacter.Perceive((Name)string.Format(eventBase, eventString, spacelessName));
 			if (Enum.IsDefined(typeof(PostRaceEventImpact), ev))
 			{
 				//trigger different changes based off of what dialogue the player last picked
@@ -691,7 +691,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "Retired");
 			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,Status(Retired),{0})";
-			RolePlayCharacter.Perceive(new[] { (Name)string.Format(eventBase, spacelessName) });
+			RolePlayCharacter.Perceive((Name)string.Format(eventBase, spacelessName));
 			Avatar = new Avatar(this, false, true);
 			SaveStatus();
 		}
@@ -699,9 +699,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the current social importance rating fir this crew member
 		/// </summary>
-		public string GetSocialImportanceRating()
+		public string GetSocialImportanceRating(string name)
 		{
-			return "MID";//SocialImportance.DecideConferral("SELF") != null ? SocialImportance.DecideConferral("SELF").Key.ToString() : "MID";
+			var siValue = SocialImportance.GetSocialImportance(name.NoSpaces());
+			return siValue < 5 ? "Negative" : siValue > 5 ? "Positive" : "Mid";
 		}
 
 		/// <summary>
