@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
@@ -8,8 +7,6 @@ using IntegratedAuthoringTool.DTOs;
 using RolePlayCharacter;
 
 using SocialImportance;
-
-using WellFormedNames;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
@@ -24,13 +21,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string Nationality { get; set; }
 		internal RolePlayCharacterAsset RolePlayCharacter { get; private set; }
 		protected SocialImportanceAsset SocialImportance { get; private set; }
-
-		private static Name _baseBelief = "Event(Property-Change, NPC, DefaultName, DefaultValue)".ToName();
-		private static Name _beliefNpc = "NPC".ToName();
-		private static Name _beliefName = "DefaultName".ToName();
-		private static Name _beliefValue = "DefaultValue".ToName();
-		private Name _belief { get; set; }
-		
 
 		/// <summary>
 		/// Constructor for creating a Person
@@ -67,7 +57,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RolePlayCharacter.SetFutureFilePath(Path.Combine(storageLocation, fileName + ".rpc"));
 			RolePlayCharacter.Save();
 			//set up SI file
-			iat.AddNewCharacterSource(new CharacterSourceDTO { Source = RolePlayCharacter.AssetFilePath });
+			iat.AddNewCharacterSourceWithoutCheck(new CharacterSourceDTO { Source = RolePlayCharacter.AssetFilePath });
 		}
 
 		internal void SetRelations()
@@ -99,14 +89,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void UpdateSingleBelief(string name, string value)
 		{
-			if (_belief == null)
-			{
-				_belief = _baseBelief.SwapTerms(_beliefNpc, Name.NoSpaces().ToName());
-			}
-			var belief = _belief.SwapTerms(_beliefName, name.ToName());
-			belief = belief.SwapTerms(_beliefValue, value.ToName());
-			RolePlayCharacter.Perceive(belief);
-			RolePlayCharacter.ForgetEvent(RolePlayCharacter.EventRecords.Last().Id);
+			RolePlayCharacter.UpdateBelief(name, value);
 		}
 
 		/// <summary>
@@ -129,13 +112,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Tick RolePlayCharacter asset amount passed through
 		/// </summary>
-		internal void TickUpdate(int amount = 1)
+		internal void TickUpdate(int amount = 1, bool save = true)
 		{
-			for (var i = 0; i < amount; i++)
+			if (amount == 0)
 			{
-				RolePlayCharacter.Update();
+				RolePlayCharacter.UpdateWithoutTick();
 			}
-			SaveStatus();
+			else
+			{
+				for (var i = 0; i < amount; i++)
+				{
+					RolePlayCharacter.Update();
+				}
+			}
+			if (save)
+			{
+				SaveStatus();
+			}
 		}
 	}
 }

@@ -199,7 +199,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						if (member.Name != otherMember)
 						{
 							member.AddOrUpdateOpinion(otherMember, 0);
-							member.AddOrUpdateRevealedOpinion(otherMember, 0);
+							member.AddOrUpdateRevealedOpinion(otherMember, 0, false);
 						}
 					}
 				}
@@ -517,12 +517,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Team.LineUpHistory.Add(lastBoat);
 			Team.HistoricTimeOffset.Add(offset);
 			Team.HistoricSessionNumber.Add(CurrentRaceSession);
-			Team.TickCrewMembers(0);
 			if (CurrentRaceSession == 0)
 			{
-				Team.TickCrewMembers((int)_config.ConfigValues[ConfigKeys.TicksPerSession]);
+				Team.TickCrewMembers((int)_config.ConfigValues[ConfigKeys.TicksPerSession], false);
 				SelectPostRaceEvents();
 				ConfirmLineUp();
+			}
+			else
+			{
+				Team.TickCrewMembers();
 			}
 		}
 
@@ -531,10 +534,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void ConfirmLineUp()
 		{
-			Team.ConfirmChanges(ActionAllowance);
+			Team.ConfirmChanges();
 			//reset the limits on actions and hiring/firing
-			ResetActionAllowance();
-			ResetCrewEditAllowance();
+			ResetAllowances();
 		}
 
 		/// <summary>
@@ -573,16 +575,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			ActionAllowance -= cost;
 			Team.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
-			Team.Manager.SaveStatus();
 		}
 
 		/// <summary>
-		/// Reset the amount of allowance actions
+		/// Reset the allowances
 		/// </summary>
-		private void ResetActionAllowance()
+		private void ResetAllowances()
 		{
 			ActionAllowance = GetStartingActionAllowance();
+			CrewEditAllowance = GetStartingCrewEditAllowance();
 			Team.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance.GetDescription(), ActionAllowance.ToString());
+			Team.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString());
 			Team.Manager.SaveStatus();
 		}
 
@@ -605,17 +608,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			CrewEditAllowance--;
 			Team.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString());
-			Team.Manager.SaveStatus();
-		}
-
-		/// <summary>
-		/// Reset the amount of hiring/firing actions allowed
-		/// </summary>
-		private void ResetCrewEditAllowance()
-		{
-			CrewEditAllowance = GetStartingCrewEditAllowance();
-			Team.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance.GetDescription(), CrewEditAllowance.ToString());
-			Team.Manager.SaveStatus();
 		}
 
 		/// <summary>
@@ -640,8 +632,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (cost <= ActionAllowance && CrewEditAllowance > 0 && Team.CanAddToCrew())
 			{
 				Team.AddRecruit(member);
-				DeductCost(cost);
 				DeductCrewEditAllowance();
+				DeductCost(cost);
+				Team.Manager.SaveStatus();
 			}
 		}
 
@@ -654,8 +647,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (cost <= ActionAllowance && CrewEditAllowance > 0 && Team.CanRemoveFromCrew())
 			{
 				Team.RetireCrew(crewMember);
-				DeductCost(cost);
 				DeductCrewEditAllowance();
+				DeductCost(cost);
+				Team.Manager.SaveStatus();
 			}
 		}
 
@@ -669,6 +663,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				var reply = EventController.SendMeetingEvent(eventName, member, Team);
 				DeductCost(cost);
+				Team.Manager.SaveStatus();
 				return reply;
 			}
 			return new List<string>();
@@ -695,6 +690,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (cost <= ActionAllowance)
 			{
 				DeductCost(cost);
+				Team.Manager.SaveStatus();
 				return EventController.SendRecruitEvent(skill, members);
 			}
 			var replies = new Dictionary<CrewMember, string>();

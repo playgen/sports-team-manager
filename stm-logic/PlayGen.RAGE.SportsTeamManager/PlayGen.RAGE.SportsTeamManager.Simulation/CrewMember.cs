@@ -23,7 +23,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Dictionary<CrewMemberSkill, int> RevealedSkills { get; }
 		public Dictionary<string, int> CrewOpinions { get; }
 		public Dictionary<string, int> RevealedCrewOpinions { get; }
-		public Dictionary<string, int> RevealedCrewOpinionAges { get; }
 		public int RestCount { get; private set; }
 		public Avatar Avatar { get; set; }
 
@@ -40,7 +39,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			CrewOpinions = new Dictionary<string, int>();
 			RevealedCrewOpinions = new Dictionary<string, int>();
-			RevealedCrewOpinionAges = new Dictionary<string, int>();
 		}
 
 		/// <summary>
@@ -171,31 +169,26 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Create opinions for everyone included in the list for this CrewMember
 		/// </summary>
-		internal void CreateInitialOpinions(List<string> people)
+		internal void CreateInitialOpinions(List<string> people, bool save = false)
 		{
 			foreach (var person in people)
 			{
-				CreateInitialOpinion(person);
+				if (person == Name)
+				{
+					continue;
+				}
+				AddOrUpdateOpinion(person, StaticRandom.Int((int)config.ConfigValues[ConfigKeys.DefaultOpinionMin], (int)config.ConfigValues[ConfigKeys.DefaultOpinionMax] + 1));
+				//if the two people share the same last name, give the bonus stated in the config to their opinion
+				if (person.GetType() == typeof(CrewMember) && Name.Split(new[] { ' ' }, 2).Last() == person.Split(new[] { ' ' }, 2).Last())
+				{
+					AddOrUpdateOpinion(person, (int)config.ConfigValues[ConfigKeys.LastNameBonusOpinion]);
+				}
+				AddOrUpdateRevealedOpinion(person, 0, false);
 			}
-		}
-
-		/// <summary>
-		/// Create an initial opinion on this person based on the given allowed range from the config
-		/// </summary>
-		internal void CreateInitialOpinion(string person)
-		{
-			if (person == Name)
+			if (save)
 			{
-				return;
+				SaveStatus();
 			}
-			AddOrUpdateOpinion(person, StaticRandom.Int((int)config.ConfigValues[ConfigKeys.DefaultOpinionMin], (int)config.ConfigValues[ConfigKeys.DefaultOpinionMax] + 1));
-			//if the two people share the same last name, give the bonus stated in the config to their opinion
-			if (person.GetType() == typeof(CrewMember) && Name.Split(' ').Last() == person.Split(' ').Last())
-			{
-				AddOrUpdateOpinion(person, (int)config.ConfigValues[ConfigKeys.LastNameBonusOpinion]);
-			}
-			AddOrUpdateRevealedOpinion(person, 0);
-			SaveStatus();
 		}
 
 		/// <summary>
@@ -232,19 +225,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Update the known opinion on this Person
 		/// </summary>
-		internal void AddOrUpdateRevealedOpinion(string person, int change, bool load = false)
+		internal void AddOrUpdateRevealedOpinion(string person, int change, bool save = true)
 		{
 			if (!RevealedCrewOpinions.ContainsKey(person))
 			{
 				RevealedCrewOpinions.Add(person, 0);
-				RevealedCrewOpinionAges.Add(person, 0);
 			}
 			RevealedCrewOpinions[person] = change;
-			RevealedCrewOpinionAges[person] = 0;
-			if (!load)
+			if (save)
 			{
 				UpdateSingleBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), person.NoSpaces()), RevealedCrewOpinions[person].ToString());
-				UpdateSingleBelief(string.Format(NPCBeliefs.RevealedOpinionAge.GetDescription(), person.NoSpaces()), RevealedCrewOpinionAges[person].ToString());
 			}
 		}
 
@@ -275,8 +265,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			foreach (var person in people)
 			{
 				AddOrUpdateOpinion(person, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), person.NoSpaces()))), true, true);
-				AddOrUpdateRevealedOpinion(person, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), person.NoSpaces()))), true);
-				RevealedCrewOpinionAges[person] = Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.RevealedOpinionAge.GetDescription(), person.NoSpaces())));
+				AddOrUpdateRevealedOpinion(person, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), person.NoSpaces())) ?? "0"), false);
 			}
 			RestCount = Convert.ToInt32(LoadBelief(NPCBeliefs.Rest.GetDescription()));
 		}
@@ -326,18 +315,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				RestCount = (int)config.ConfigValues[ConfigKeys.PostRaceRest];
 			}
 			UpdateSingleBelief(NPCBeliefs.Rest.GetDescription(), RestCount.ToString());
-		}
-
-		/// <summary>
-		/// Decrease the value of time since each opinion has been revealed
-		/// </summary>
-		internal void TickRevealedOpinionAge()
-		{
-			foreach (var opinion in RevealedCrewOpinionAges.Keys.ToList())
-			{
-				RevealedCrewOpinionAges[opinion]--;
-				UpdateSingleBelief(string.Format(NPCBeliefs.RevealedOpinionAge.GetDescription(), opinion.NoSpaces()), RevealedCrewOpinionAges[opinion].ToString());
-			}
 		}
 
 		/// <summary>

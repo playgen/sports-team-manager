@@ -15,8 +15,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		RevealedSkill,
 		[Description("RevealedOpinion({0})")]
 		RevealedOpinion,
-		[Description("RevealedOpinionAge({0})")]
-		RevealedOpinionAge,
 		[Description("Value(Age)")]
 		Age,
 		[Description("Value(Gender)")]

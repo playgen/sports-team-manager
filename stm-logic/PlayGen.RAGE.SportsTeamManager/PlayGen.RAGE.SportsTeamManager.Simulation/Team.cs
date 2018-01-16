@@ -177,6 +177,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				storeNum++;
 				recruit.Value.UpdateBeliefs("Recruit");
 				recruit.Value.Avatar = new Avatar(recruit.Value, false);
+				recruit.Value.SaveStatus();
 			}
 			iat.Save();
 		}
@@ -199,7 +200,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			member.CreateInitialOpinions(currentNames);
 			foreach (var cm in crewMembers.Values)
 			{
-				cm.CreateInitialOpinion(member.Name);
+				cm.CreateInitialOpinions(new List<string> { member.Name }, true);
 			}
 			AddCrewMember(member);
 			member.UpdateBeliefs("null");
@@ -237,37 +238,32 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				cm.CrewOpinions.Remove(crewMember.Name);
 				cm.RevealedCrewOpinions.Remove(crewMember.Name);
-				cm.RevealedCrewOpinionAges.Remove(crewMember.Name);
 			}
 		}
 
 		//Tick all CrewMembers in crewMembers and Retired
-		internal void TickCrewMembers(int amount)
+		internal void TickCrewMembers(int amount = 0, bool save = true)
 		{
 			foreach (var cm in crewMembers.Values)
 			{
-				cm.TickUpdate(amount);
+				cm.TickUpdate(amount, save);
 			}
 			foreach (var cm in RetiredCrew.Values)
 			{
-				cm.TickUpdate(amount);
+				cm.TickUpdate(amount, save);
 			}
 		}
 
 		/// <summary>
 		/// Save the current status of each CrewMember for this Team
 		/// </summary>
-		internal void ConfirmChanges(int actionAllowance)
+		internal void ConfirmChanges()
 		{
-			foreach (var crewMember in crewMembers.Values)
-			{
-				crewMember.TickRevealedOpinionAge();
-			}
 			PostRaceRest();
-			TickCrewMembers(0);
 			PromoteBoat();
 			//update available recruits for the next race
 			CreateRecruits();
+			TickCrewMembers();
 			Manager.SaveStatus();
 		}
 
@@ -307,10 +303,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					newMember.CreateInitialOpinions(currentNames);
 					foreach (var cm in crewMembers.Values)
 					{
-						cm.CreateInitialOpinion(newMember.Name);
+						cm.CreateInitialOpinions(new List<string> { newMember.Name });
 					}
 					newMember.UpdateBeliefs("null");
-					newMember.SaveStatus();
 					//if the boat is under-staffed for the current boat size, this new CrewMember is not counted
 					if (!CanRemoveFromCrew())
 					{
