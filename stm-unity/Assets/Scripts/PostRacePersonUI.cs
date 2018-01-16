@@ -80,7 +80,7 @@ public class PostRacePersonUI : MonoBehaviour
 			}
 			foreach (var crewMember in UIManagement.CrewMemberUI)
 			{
-				if (crewMember.Current)
+				if (crewMember.Usable || crewMember.transform.parent.parent.name == "Viewport")
 				{
 					crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(crewMember.CrewMember.Avatar, crewMember.CrewMember.GetMood());
 				}

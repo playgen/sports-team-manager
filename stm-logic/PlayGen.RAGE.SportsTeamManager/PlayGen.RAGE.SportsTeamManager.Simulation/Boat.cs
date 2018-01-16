@@ -289,13 +289,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			//get every crewmember combination (unordered)
-			var crewCombos = GetPermutations(availableCrew.Keys.ToList(), Positions.Count - 1);
+			var crewCombos = GetPermutations(availableCrew.Keys.ToList(), Positions.Count - 1).ToList();
 			//get the combined average opinion for every combination
 			var crewOpinions = new Dictionary<string, int>(crewCombos.Count);
 			foreach (var possibleCrew in crewCombos)
 			{
 				var crewComboKey = string.Concat(possibleCrew.ToArray());
-				crewOpinions.Add(crewComboKey, 0);
+				var opinionTotal = 0;
 				foreach (var crewMember in possibleCrew)
 				{
 					var opinion = 0;
@@ -310,8 +310,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					}
 					// ReSharper disable once PossibleLossOfFraction
 					opinion = (int)(Math.Round((float)opinion / opinionCount) * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
-					crewOpinions[crewComboKey] += opinion;
+					opinionTotal += opinion;
 				}
+				crewOpinions.Add(crewComboKey, opinionTotal);
 			}
 			var opinionMax = crewOpinions.Values.Max();
 			var positionNames = Positions.Select(position => position.ToString()).ToList();
@@ -549,31 +550,31 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get every possible combination of CrewMembers in every order
 		/// </summary>
-		private List<List<T>>GetOrderedPermutations<T>(List<T> list, int length)
+		private IEnumerable<List<T>>GetOrderedPermutations<T>(List<T> list, int length)
 		{
-		   if (length == 0)
+			if (length == 0)
 			{
-				return list.Select(t => new [] { t }.ToList()).ToList();
-				
+				return list.Select(t => new List<T> { t });
 			}
+
 			return GetOrderedPermutations(list, length - 1)
 				.SelectMany(t => list.Where(o => !t.Contains(o)),
-					(t1, t2) => t1.Concat(new [] { t2 }).ToList()).ToList();
+					(t1, t2) => t1.Concat(new List<T> { t2 }).ToList());
 		}
 
 		/// <summary>
 		/// Get every possible combination of CrewMembers in no order
 		/// </summary>
-		private List<List<T>> GetPermutations<T>(List<T> list, int length) where T : IComparable<T>
+		private IEnumerable<List<T>> GetPermutations<T>(List<T> list, int length) where T : IComparable<T>
 		{
 			if (length == 0)
 			{
-				return list.Select(t => new[] { t }.ToList()).ToList();
-
+				return list.Select(t => new List<T> { t });
 			}
+
 			return GetPermutations(list, length - 1)
 				.SelectMany(t => list.Where(o => o.CompareTo(t.Last()) > 0),
-					(t1, t2) => t1.Concat(new[] { t2 }).ToList()).ToList();
+					(t1, t2) => t1.Concat(new List<T> { t2 }).ToList());
 		}
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Diagnostics;
 
 namespace System
 {
@@ -8,7 +7,12 @@ namespace System
 	{
 		private static readonly MethodInfo CloneMethod = typeof(object).GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance);
 		private static readonly ReferenceEqualityComparer ReferenceEqualityComparer = new ReferenceEqualityComparer();
-		public static List<long> TimingList = new List<long>();
+
+		public static bool IsPrimitive(this Type type)
+		{
+			if (type == typeof(string)) return true;
+			return (type.IsValueType & type.IsPrimitive);
+		}
 
 		public static object Copy(this object originalObject)
 		{
@@ -16,15 +20,9 @@ namespace System
 		}
 		private static object InternalCopy(object originalObject, IDictionary<object, object> visited)
 		{
-			if (TimingList.Count == 0)
-			{
-				for (int i = 0; i < 10; i++)
-				{
-					TimingList.Add(0);
-				}
-			}
 			if (originalObject == null) return null;
 			var typeToReflect = originalObject.GetType();
+			if (IsPrimitive(typeToReflect)) return originalObject;
 			if (visited.ContainsKey(originalObject)) return visited[originalObject];
 			if (typeof(Delegate).IsAssignableFrom(typeToReflect)) return originalObject;
 			var cloneObject = CloneMethod.Invoke(originalObject, null);
@@ -41,15 +39,16 @@ namespace System
 				RecursiveCopyBaseTypePrivateFields(originalObject, visited, cloneObject, typeToReflect.BaseType);
 				if (typeToReflect.BaseType.BaseType != null)
 				{
-					CopyFields(originalObject, visited, cloneObject, typeToReflect.BaseType);
+					CopyFields(originalObject, visited, cloneObject, typeToReflect.BaseType, BindingFlags.Instance | BindingFlags.NonPublic);
 				}
 			}
 		}
 
-		private static void CopyFields(object originalObject, IDictionary<object, object> visited, object cloneObject, Type typeToReflect, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public)
+		private static void CopyFields(object originalObject, IDictionary<object, object> visited, object cloneObject, Type typeToReflect, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
 		{
 			foreach (var fieldInfo in typeToReflect.GetFields(bindingFlags))
 			{
+				if (IsPrimitive(fieldInfo.FieldType)) continue;
 				var originalFieldValue = fieldInfo.GetValue(originalObject);
 				var clonedFieldValue = InternalCopy(originalFieldValue, visited);
 				fieldInfo.SetValue(cloneObject, clonedFieldValue);

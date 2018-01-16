@@ -537,7 +537,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			mistakeList.Add("Hidden");
 		}
 		SetMistakeIcons(mistakeList, oldBoat, idealScore, boat.Positions.Count);
-		var scoreDiff = GetResult(isRace, boat, offset, oldBoat.transform.FindText("Score"));
+		GetResult(isRace, boat, offset, oldBoat.transform.FindText("Score"));
 		var crewContainer = oldBoat.transform.Find("Crew Container");
 		var crewCount = 0;
 		//for each position, create a new CrewMember UI object and place accordingly
@@ -548,7 +548,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			crewMember.Active(true);
 			var current = GameManagement.CrewMembers.ContainsKey(pair.Value.Name);
 			crewMember.transform.FindText("Name").text = SplitName(pair.Value.Name, true);
-			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, scoreDiff * (2f / boat.Positions.Count) + 3, true);
+			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, -(GameManagement.GetRacePosition(boat.Score, boat.Positions.Count) - 3) * 2, true);
 			crewMember.GetComponent<CrewMemberUI>().SetUp(false, current, pair.Value, crewContainer);
 
 			var positionImage = crewMember.transform.FindObject("Position");
