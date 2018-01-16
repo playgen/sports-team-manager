@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using System.Linq;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Loading;
 
 /// <summary>
 /// Controls switching between different game state panels
@@ -44,13 +45,9 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	private void Start()
 	{
-		Debug.Log(Time.realtimeSinceStartup);
 		UIManagement.Initialize();
-		Debug.Log(Time.realtimeSinceStartup);
 		AvatarDisplay.LoadSprites();
-		Debug.Log(Time.realtimeSinceStartup);
 		BackToMenu();
-		Debug.Log(Time.realtimeSinceStartup);
 		if (GameManagement.PlatformSettings.DemoMode)
 		{
 			foreach (Transform child in _mainMenu.transform.Find("Buttons"))
@@ -91,9 +88,16 @@ public class UIStateManager : MonoBehaviour {
 		}
 		if (_reload)
 		{
-			GameManagement.GameManager.LoadGame(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.Team.Name);
-			GoToGame();
-			_reload = false;
+			Loading.Start();
+			GameManagement.GameManager.LoadGame(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.Team.Name, success =>
+			{
+				if (success)
+				{
+					GoToGame();
+					_reload = false;
+				}
+				Loading.Stop();
+			});
 		}
 	}
 

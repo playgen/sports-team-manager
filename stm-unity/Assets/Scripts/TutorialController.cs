@@ -6,6 +6,7 @@ using SimpleJSON;
 using UnityEngine;
 using System.Linq;
 using PlayGen.SUGAR.Unity;
+using PlayGen.Unity.Utilities.Loading;
 using PlayGen.Unity.Utilities.Localization;
 
 using RAGE.Analytics.Formats;
@@ -140,10 +141,18 @@ public class TutorialController : MonoBehaviour
 			GameManagement.Team.TeamColorsSecondary.G,
 			GameManagement.Team.TeamColorsSecondary.B
 		};
-		GameManagement.GameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.Team.Name, colorsPri, colorsSec, GameManagement.Manager.Name, false, language);
-		SUGARManager.GameData.Send("Tutorial Finished", true);
-		QuitTutorial();
-		UIStateManager.ReloadGame();
+		Loading.Start();
+		GameManagement.GameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.Team.Name, colorsPri, colorsSec, GameManagement.Manager.Name, false, language, success =>
+		{
+			Loading.Stop();
+			if (success)
+			{
+				SUGARManager.GameData.Send("Tutorial Finished", true);
+				QuitTutorial();
+				UIStateManager.ReloadGame();
+			}
+		});
+
 	}
 
 	/// <summary>

@@ -11,6 +11,8 @@ using UnityEngine.UI;
 using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Loading;
+
 using RAGE.Analytics.Formats;
 
 /// <summary>
@@ -38,6 +40,8 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	private int _previousScrollValue;
 	[SerializeField]
 	private GameObject _crewContainer;
+	[SerializeField]
+	private GameObject[] _pagingButtons;
 	[SerializeField]
 	private Dropdown _crewSort;
 	[SerializeField]
@@ -390,6 +394,7 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			_recruitButtons.Add(recruit.GetComponent<Button>());
 		}
 		SortCrew();
+		Invoke("CrewContainerPaging", 0f);
 	}
 
 	/// <summary>
@@ -496,6 +501,36 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		if (playerTriggered)
 		{
 			TrackerEventSender.SendEvent(new TraceEvent("CrewSortChanged", TrackerVerbs.Selected, new Dictionary<string, string>(), sortType, AlternativeTracker.Alternative.Dialog));
+		}
+	}
+
+	private void CrewContainerPaging()
+	{
+		CrewContainerPaging(0);
+	}
+
+	public void CrewContainerPaging(int page)
+	{
+		if (_crewContainer.transform.RectTransform().rect.width > _crewContainer.transform.parent.RectTransform().rect.width)
+		{
+			_crewContainer.GetComponentInParent<ScrollRect>().horizontalNormalizedPosition = page;
+			_crewContainer.transform.parent.RectTransform().anchorMin = new Vector2(page * 0.05f, 0);
+			_crewContainer.transform.parent.RectTransform().anchorMax = new Vector2(0.95f + (page * 0.05f), 1);
+			foreach (var button in _pagingButtons)
+			{
+				button.Active(true);
+			}
+			_pagingButtons[page].Active(false);
+		}
+		else
+		{
+			_crewContainer.GetComponentInParent<ScrollRect>().horizontalNormalizedPosition = 0;
+			_crewContainer.transform.parent.RectTransform().anchorMin = new Vector2(0, 0);
+			_crewContainer.transform.parent.RectTransform().anchorMax = new Vector2(1, 1);
+			foreach (var button in _pagingButtons)
+			{
+				button.Active(false);
+			}
 		}
 	}
 
@@ -704,12 +739,19 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		var offset = UnityEngine.Random.Range(0, 10);
 		//confirm the line-up with the simulation 
 		SUGARManager.GameData.Send("Current Crew Size", GameManagement.CrewCount);
-		GameManagement.GameManager.SaveLineUp(offset);
-		ResetScrollbar();
-		GetResult(GameManagement.CurrentRaceSession - 1 == 0, GameManagement.LineUpHistory.Last(), offset, _raceButton.GetComponentInChildren<Text>(), true);
-		//set-up next boat
-		CreateNewBoat();
-		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+		Loading.Start();
+		GameManagement.GameManager.SaveLineUp(offset, success =>
+		{
+			if (success)
+			{
+				ResetScrollbar();
+				GetResult(GameManagement.CurrentRaceSession - 1 == 0, GameManagement.LineUpHistory.Last(), offset, _raceButton.GetComponentInChildren<Text>(), true);
+				//set-up next boat
+				CreateNewBoat();
+				UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+			}
+			Loading.Stop();
+		});
 	}
 
 	/// <summary>

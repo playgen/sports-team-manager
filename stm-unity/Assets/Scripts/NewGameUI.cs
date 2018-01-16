@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Loading;
 using PlayGen.Unity.Utilities.Localization;
 using RAGE.Analytics.Formats;
 
@@ -175,24 +176,32 @@ public class NewGameUI : MonoBehaviour {
 		_boatName.text = _boatName.text.TrimEnd();
 		_managerName.text = _managerName.text.TrimEnd();
 		var language = string.IsNullOrEmpty(Localization.SelectedLanguage.Parent.Name) ? Localization.SelectedLanguage.EnglishName : Localization.SelectedLanguage.Parent.EnglishName;
-		Debug.Log(Time.realtimeSinceStartup);
-		GameManagement.GameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), _boatName.text, colorsPri, colorsSec, _managerName.text, _tutorialToggle.isOn, language);
-		Debug.Log(Time.realtimeSinceStartup);
-		if (GameManagement.Team != null && GameManagement.TeamName == _boatName.text)
+		Loading.Start();
+		GameManagement.GameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), _boatName.text, colorsPri, colorsSec, _managerName.text, _tutorialToggle.isOn, language, success =>
 		{
-			var newString = GameManagement.PositionString;
-			TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
+			if (success)
 			{
-				{ TrackerContextKeys.GameName.ToString(), GameManagement.TeamName },
-				{ TrackerContextKeys.BoatLayout.ToString(), newString }
-			}, CompletableTracker.Completable.Game));
-			UIStateManager.StaticGoToGame();
-			Debug.Log(Time.realtimeSinceStartup);
-		}
-		else
-		{
-			_errorText.text = Localization.Get("NEW_GAME_CREATION_ERROR");
-		}
+				if (GameManagement.Team != null && GameManagement.TeamName == _boatName.text)
+				{
+					var newString = GameManagement.PositionString;
+					TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
+					{
+						{ TrackerContextKeys.GameName.ToString(), GameManagement.TeamName },
+						{ TrackerContextKeys.BoatLayout.ToString(), newString }
+					}, CompletableTracker.Completable.Game));
+					UIStateManager.StaticGoToGame();
+				}
+				else
+				{
+					_errorText.text = Localization.Get("NEW_GAME_CREATION_ERROR");
+				}
+			}
+			else
+			{
+				_errorText.text = Localization.Get("NEW_GAME_CREATION_ERROR");
+			}
+			Loading.Stop();
+		});
 	}
 
 	private void DoBestFit()

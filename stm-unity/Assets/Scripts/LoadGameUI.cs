@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Loading;
 using PlayGen.Unity.Utilities.Localization;
 using RAGE.Analytics.Formats;
 
@@ -100,17 +102,24 @@ public class LoadGameUI : MonoBehaviour
 			//check if the game exists
 			if (GameManagement.GameManager.CheckIfGameExists(Path.Combine(Application.persistentDataPath, "GameSaves"), _selectedName))
 			{
-				GameManagement.GameManager.LoadGame(Path.Combine(Application.persistentDataPath, "GameSaves"), _selectedName);
-				if (GameManagement.Team != null && GameManagement.TeamName.ToLower() == _selectedName.ToLower())
+				Loading.Start();
+				GameManagement.GameManager.LoadGame(Path.Combine(Application.persistentDataPath, "GameSaves"), _selectedName, success =>
 				{
-					var newString = GameManagement.PositionString;
-					TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
+					if (success)
 					{
-						{ TrackerContextKeys.GameName.ToString(), GameManagement.TeamName },
-						{ TrackerContextKeys.BoatLayout.ToString(), string.IsNullOrEmpty(newString) ? "NullAsGameFinished" : newString }
-					}, CompletableTracker.Completable.Game));
-					UIStateManager.StaticGoToGame();
-				}
+						if (GameManagement.Team != null && String.Equals(GameManagement.TeamName, _selectedName, StringComparison.CurrentCultureIgnoreCase))
+						{
+							var newString = GameManagement.PositionString;
+							TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
+							{
+								{ TrackerContextKeys.GameName.ToString(), GameManagement.TeamName },
+								{ TrackerContextKeys.BoatLayout.ToString(), string.IsNullOrEmpty(newString) ? "NullAsGameFinished" : newString }
+							}, CompletableTracker.Completable.Game));
+							UIStateManager.StaticGoToGame();
+						}
+					}
+					Loading.Stop();
+				});
 			}
 			//display error and remove game from the list if the game could not be found
 			else
