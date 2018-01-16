@@ -28,20 +28,20 @@ public class Icon
 /// <summary>
 /// Contains all UI logic related to the Team Management screen
 /// </summary>
-public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
+public class TeamSelectionUI : MonoBehaviour {
 	[SerializeField]
 	private GameObject _boatContainer;
+	[SerializeField]
+	private GameObject[] _boatPagingButtons;
 	[SerializeField]
 	private GameObject _boatMain;
 	[SerializeField]
 	private List<GameObject> _boatPool;
-	[SerializeField]
-	private Scrollbar _boatContainerScroll;
 	private int _previousScrollValue;
 	[SerializeField]
 	private GameObject _crewContainer;
 	[SerializeField]
-	private GameObject[] _pagingButtons;
+	private GameObject[] _crewPagingButtons;
 	[SerializeField]
 	private Dropdown _crewSort;
 	[SerializeField]
@@ -516,18 +516,18 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 			_crewContainer.GetComponentInParent<ScrollRect>().horizontalNormalizedPosition = page;
 			_crewContainer.transform.parent.RectTransform().anchorMin = new Vector2(page * 0.05f, 0);
 			_crewContainer.transform.parent.RectTransform().anchorMax = new Vector2(0.95f + (page * 0.05f), 1);
-			foreach (var button in _pagingButtons)
+			foreach (var button in _crewPagingButtons)
 			{
 				button.Active(true);
 			}
-			_pagingButtons[page].Active(false);
+			_crewPagingButtons[page].Active(false);
 		}
 		else
 		{
 			_crewContainer.GetComponentInParent<ScrollRect>().horizontalNormalizedPosition = 0;
 			_crewContainer.transform.parent.RectTransform().anchorMin = new Vector2(0, 0);
 			_crewContainer.transform.parent.RectTransform().anchorMax = new Vector2(1, 1);
-			foreach (var button in _pagingButtons)
+			foreach (var button in _crewPagingButtons)
 			{
 				button.Active(false);
 			}
@@ -663,52 +663,24 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 	}
 
 	/// <summary>
-	/// Use Unity Event System OnScroll to change displayed results
-	/// </summary>
-	public void OnScroll(PointerEventData eventData)
-	{
-		if (!UIManagement.SmallBlocker.gameObject.activeInHierarchy && !UIManagement.Blocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy)
-		{
-			_boatContainerScroll.value += Mathf.Clamp(eventData.scrollDelta.y, -1, 1) * _boatContainerScroll.size;
-		}
-	}
-
-	/// <summary>
-	/// Use Unity Event System OnDrag to change displayed results
-	/// </summary>
-	public void OnDrag(PointerEventData eventData)
-	{
-		if (!UIManagement.SmallBlocker.gameObject.activeInHierarchy && !UIManagement.Blocker.gameObject.activeInHierarchy && !_quitBlocker.gameObject.activeInHierarchy)
-		{
-			_boatContainerScroll.value -= Mathf.Clamp(eventData.delta.y * 0.25f, -1, 1) * _boatContainerScroll.size;
-		}
-	}
-
-	/// <summary>
 	/// Reset the scrollbar position
 	/// </summary>
 	public void ResetScrollbar()
 	{
-		_boatContainerScroll.numberOfSteps = GameManagement.LineUpHistory.Count - 3;
-		_boatContainerScroll.size = 1f / _boatContainerScroll.numberOfSteps;
-		_boatContainerScroll.value = 0;
-		_previousScrollValue = 1;
-		_boatContainerScroll.gameObject.Active(_boatContainerScroll.numberOfSteps >= 2);
-		ChangeVisibleBoats();
+		_previousScrollValue = 0;
+		ChangeVisibleBoats(0);
 	}
 
 	/// <summary>
 	/// Redraw the displayed historical results
 	/// </summary>
-	public void ChangeVisibleBoats(bool forceOverwrite = false)
+	public void ChangeVisibleBoats(int amount)
 	{
-		if (!forceOverwrite && _previousScrollValue == Mathf.RoundToInt(_boatContainerScroll.value * (_boatContainerScroll.numberOfSteps - 1)))
-		{
-			return;
-		}
-		var skipAmount = _boatContainerScroll.size > 0 ? Mathf.RoundToInt(_boatContainerScroll.value * (_boatContainerScroll.numberOfSteps - 1)) : 0;
+		_previousScrollValue += amount;
+		_previousScrollValue = _previousScrollValue > GameManagement.LineUpHistory.Count - 4 ? GameManagement.LineUpHistory.Count - 4 : _previousScrollValue;
+		_previousScrollValue = _previousScrollValue < 0 ? 0 : _previousScrollValue;
 		var setUpCount = 0;
-		foreach (var boat in GetLineUpHistory(skipAmount, 4))
+		foreach (var boat in GetLineUpHistory(_previousScrollValue, 4))
 		{
 			var boatObject = _boatPool[setUpCount];
 			boatObject.Active(true);
@@ -719,7 +691,18 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		{
 			_boatPool[i].Active(false);
 		}
-		_previousScrollValue = skipAmount;
+		foreach (var button in _boatPagingButtons)
+		{
+			button.Active(false);
+		}
+		if (_previousScrollValue > 0)
+		{
+			_boatPagingButtons[1].Active(true);
+		}
+		if (_previousScrollValue < GameManagement.LineUpHistory.Count - 4)
+		{
+			_boatPagingButtons[0].Active(true);
+		}
 	}
 
 	/// <summary>
@@ -948,7 +931,6 @@ public class TeamSelectionUI : MonoBehaviour, IScrollHandler, IDragHandler {
 		}
 		_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat(GameManagement.IsRace ? "RACE_BUTTON_RACE" : "RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
 		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE");
-		ChangeVisibleBoats(true);
 		if (_endRace.gameObject.activeSelf && GameManagement.PlatformSettings.Rage)
 		{
 			_feedbackButton.GetComponentInChildren<Text>(true).text = Localization.Get(GameManagement.GameManager.QuestionnaireCompleted ? "FEEDBACK_BUTTON" : "CONFLICT_QUESTIONNAIRE");
