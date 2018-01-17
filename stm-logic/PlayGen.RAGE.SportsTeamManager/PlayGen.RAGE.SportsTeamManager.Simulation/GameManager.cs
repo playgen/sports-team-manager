@@ -218,6 +218,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			catch
 			{
 				completed(false);
+				throw;
 			}
 		}
 
@@ -357,6 +358,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			catch
 			{
 				completed(false);
+				throw;
 			}
 		}
 
@@ -550,6 +552,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			catch
 			{
 				completed(false);
+				throw;
 			}
 		}
 

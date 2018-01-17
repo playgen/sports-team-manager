@@ -288,10 +288,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					positionCrewCombos.Add(string.Concat(position.ToString(), cm.Key), position.GetPositionRating(cm.Value) + (int)(cm.Value.GetMood() * config.ConfigValues[ConfigKeys.MoodRatingWeighting]) + (int)(cm.Value.CrewOpinions[managerName] * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]));
 				}
 			}
+			var positionNames = Positions.Select(position => position.ToString()).ToList();
 			//get every crewmember combination (unordered)
 			var crewCombos = GetPermutations(availableCrew.Keys.ToList(), Positions.Count - 1).ToList();
 			//get the combined average opinion for every combination
-			var crewOpinions = new Dictionary<string, int>(crewCombos.Count);
+			var crewOpinions = new Dictionary<string, int>();
+			var crewMaxScores = new Dictionary<List<string>, int>();
+			var crewPositionScores = new Dictionary<string, int>();
 			foreach (var possibleCrew in crewCombos)
 			{
 				var crewComboKey = string.Concat(possibleCrew.ToArray());
@@ -313,37 +316,39 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					opinionTotal += opinion;
 				}
 				crewOpinions.Add(crewComboKey, opinionTotal);
-			}
-			var opinionMax = crewOpinions.Values.Max();
-			var positionNames = Positions.Select(position => position.ToString()).ToList();
-			var bestScore = 0;
-			var bestCrew = new List<List<string>>();
-			var crewPositionScores = new Dictionary<string, int>();
-			//for each possible combination
-			foreach (var possibleCrew in crewCombos)
-			{
-				crewPositionScores.Clear();
 				//get every position rating for every crewmember in this combination in every position
+				crewPositionScores.Clear();
 				positionNames.ForEach(pn => possibleCrew.ForEach(pc => crewPositionScores.Add(string.Concat(pn, pc), positionCrewCombos[string.Concat(pn, pc)])));
-				//sort these position ratings from highest to lowest
-				crewPositionScores = crewPositionScores.OrderByDescending(cps => cps.Value).ToDictionary(cps => cps.Key, cps => cps.Value);
+				crewMaxScores.Add(possibleCrew, crewPositionScores.Values.OrderByDescending(v => v).Take(positionNames.Count).Sum() + opinionTotal);
+			}
+			var bestScore = 0;
+			var bestCrew = new List<List<string>>(crewCombos.Count);
+			var crewMaxSorted = crewMaxScores.OrderByDescending(m => m.Value).ToList();
+			//for each possible combination
+			foreach (var possibleCrew in crewMaxSorted)
+			{
 				//if the combined total of the top scores and highest possible opinion could beat the current top score, continue. Otherwise, this combination can never have the best combination, so stop
-				if (crewPositionScores.Values.Take(positionNames.Count).Sum() + opinionMax >= bestScore)
+				if (possibleCrew.Value >= bestScore)
 				{
+					//get every position rating for every crewmember in this combination in every position
+					crewPositionScores.Clear();
+					positionNames.ForEach(pn => possibleCrew.Key.ForEach(pc => crewPositionScores.Add(string.Concat(pn, pc), positionCrewCombos[string.Concat(pn, pc)])));
+					//sort these position ratings from highest to lowest
+					crewPositionScores = crewPositionScores.OrderByDescending(cps => cps.Value).ToDictionary(cps => cps.Key, cps => cps.Value);
 					//find the combined average opinion for this combination
-					var opinionScore = crewOpinions[string.Concat(possibleCrew.ToArray())];
+					var opinionScore = crewOpinions[string.Concat(possibleCrew.Key.ToArray())];
 					//if the highest score in each position plus the highest possible opinion is lower than the best score so far, stop this loop
 					if (positionNames.Select(pn => crewPositionScores.First(cps => cps.Key.Contains(pn)).Value).Sum() + opinionScore < bestScore)
 					{
 						continue;
 					}
 					//if the highest score for each crewmember plus the highest possible opinion is lower than the best score so far, stop this loop
-					if (possibleCrew.Select(pc => crewPositionScores.First(cps => cps.Key.Contains(pc)).Value).Sum() + opinionScore < bestScore)
+					if (possibleCrew.Key.Select(pc => crewPositionScores.First(cps => cps.Key.Contains(pc)).Value).Sum() + opinionScore < bestScore)
 					{
 						continue;
 					}
 					//get every combination in every order for these crewmembers
-					var combos = GetOrderedPermutations(possibleCrew, positionNames.Count - 1);
+					var combos = GetOrderedPermutations(possibleCrew.Key, positionNames.Count - 1);
 					//for each combination
 					foreach (var combo in combos)
 					{
@@ -467,7 +472,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//for each required skill for this position, get the difference between the rating of the ideal and the current and add to mistakeScores
 				foreach (var skill in Positions[i].RequiredSkills())
 				{
-					mistakeScores[skill.ToString()] += (nearestIdealMatch[i].Key.Skills[skill] - PositionCrew[Positions[i]].Skills[skill])/(float)Positions[i].RequiredSkills().Count();
+					mistakeScores[skill.ToString()] += (nearestIdealMatch[i].Key.Skills[skill] - PositionCrew[Positions[i]].Skills[skill]) / (float)Positions[i].RequiredSkills().Count();
 					//if the rating of the current positioned CrewMember is not known to the player, add to hiddenScores
 					if (PositionCrew[Positions[i]].RevealedSkills[skill] == 0)
 					{
@@ -550,31 +555,62 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get every possible combination of CrewMembers in every order
 		/// </summary>
-		private IEnumerable<List<T>>GetOrderedPermutations<T>(List<T> list, int length)
+		private List<List<string>> GetOrderedPermutations(List<string> list, int length)
 		{
 			if (length == 0)
 			{
-				return list.Select(t => new List<T> { t });
+				return list.Select(t => new List<string> { t }).ToList();
 			}
 
-			return GetOrderedPermutations(list, length - 1)
-				.SelectMany(t => list.Where(o => !t.Contains(o)),
-					(t1, t2) => t1.Concat(new List<T> { t2 }).ToList());
+			var newList = new List<List<string>>();
+			var perms = GetOrderedPermutations(list, length - 1);
+			foreach (var t in perms)
+			{
+				foreach (var o in list)
+				{
+					if (!t.Contains(o))
+					{
+						var permCopy = CopyPermList(t);
+						permCopy.Add(o);
+						newList.Add(permCopy);
+					}
+				}
+			}
+
+			return newList;
 		}
 
 		/// <summary>
 		/// Get every possible combination of CrewMembers in no order
 		/// </summary>
-		private IEnumerable<List<T>> GetPermutations<T>(List<T> list, int length) where T : IComparable<T>
+		private List<List<string>> GetPermutations(List<string> list, int length)
 		{
 			if (length == 0)
 			{
-				return list.Select(t => new List<T> { t });
+				return list.Select(t => new List<string> { t }).ToList();
 			}
 
-			return GetPermutations(list, length - 1)
-				.SelectMany(t => list.Where(o => o.CompareTo(t.Last()) > 0),
-					(t1, t2) => t1.Concat(new List<T> { t2 }).ToList());
+			var newList = new List<List<string>>();
+			var perms = GetPermutations(list, length - 1);
+			foreach (var t in perms)
+			{
+				foreach (var o in list)
+				{
+					if (o.CompareTo(t.Last()) > 0)
+					{
+						var permCopy = CopyPermList(t);
+						permCopy.Add(o);
+						newList.Add(permCopy);
+					}
+				}
+			}
+
+			return newList;
+		}
+
+		private List<string> CopyPermList(List<string> list)
+		{
+			return new List<string>(list);
 		}
 	}
 }
