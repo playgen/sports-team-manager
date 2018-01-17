@@ -11,6 +11,7 @@ using RAGE.Analytics.Formats;
 public class HoverPopUpUI : MonoBehaviour {
 
 	private Vector2 _currentHovered;
+	private bool _mobileReadyToHide;
 	private string _currentText;
 	private Vector2 _canvasSize;
 
@@ -52,6 +53,7 @@ public class HoverPopUpUI : MonoBehaviour {
 		}
 		if (_currentHovered != Vector2.zero)
 		{
+			_mobileReadyToHide = false;
 			_canvasSize = GetComponentInParent<CanvasScaler>().RectTransform().rect.size;
 			gameObject.Active(true);
 			transform.SetAsLastSibling();
@@ -103,8 +105,24 @@ public class HoverPopUpUI : MonoBehaviour {
 	/// </summary>
 	public void HideHover()
 	{
+		if (Application.isMobilePlatform && !_mobileReadyToHide)
+		{
+			_mobileReadyToHide = true;
+			return;
+		}
 		gameObject.Active(false);
 		_currentHovered = Vector2.zero;
 	    UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+	}
+
+	private void Update()
+	{
+		if (Application.isMobilePlatform && _mobileReadyToHide)
+		{
+			if (Input.GetMouseButton(0))
+			{
+				HideHover();
+			}
+		}
 	}
 }

@@ -37,7 +37,14 @@ public class HoverObject : MonoBehaviour, IPointerEnterHandler, IPointerClickHan
 		if (Enabled)
 		{
 		    UIManagement.Hover.SetHoverObject(transform);
-		    UIManagement.Hover.DisplayHover(_hoverText);
+			if (Application.isMobilePlatform)
+			{
+				UIManagement.Hover.DisplayHoverNoDelay(_hoverText);
+			}
+			else
+			{
+				UIManagement.Hover.DisplayHover(_hoverText);
+			}
 		}
 	}
 
