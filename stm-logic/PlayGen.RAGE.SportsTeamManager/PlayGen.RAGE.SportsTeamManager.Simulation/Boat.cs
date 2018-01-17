@@ -267,34 +267,50 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return opinion;
 		}
 
+
+		internal int GetPositionRating(CrewMember member, Position pos, string managerName)
+		{
+			return (int)(pos.GetPositionRating(member) + (member.GetMood() * config.ConfigValues[ConfigKeys.MoodRatingWeighting]) + (member.CrewOpinions[managerName] * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]));
+		}
+
 		/// <summary>
 		/// Get the crew set-up(s) that would be worth the highest Score
 		/// </summary>
 		internal void GetIdealCrew(Dictionary<string, CrewMember> crewMembers, string managerName)
 		{
+			if (Positions.Count == 0)
+				return;
+
 			//remove CrewMembers that are currently resting
 			var availableCrew = crewMembers.Where(cm => cm.Value.RestCount <= 0).ToDictionary(ac => ac.Key, ac => ac.Value);
 			//if there are not enough active CrewMembers to race,do not perform the rest of the method
-			if (Positions.Count == 0 || availableCrew.Count < Positions.Count)
+			if (availableCrew.Count < Positions.Count)
 			{
 				return;
 			}
+
+			var positionKey = new PositionKey();
+
 			//get the combined score of mood, manager opinion and position rating for every crewmember in every position
-			var positionCrewCombos = new Dictionary<string, int>(availableCrew.Count * Positions.Count);
+			var positionCrewCombos = new Dictionary<PositionKey, int>();
+			
+			var positionNames = new List<string>();
 			foreach (var position in Positions)
 			{
+				positionNames.Add(position.ToString());
 				foreach (var cm in availableCrew)
 				{
-					positionCrewCombos.Add(string.Concat(position.ToString(), cm.Key), position.GetPositionRating(cm.Value) + (int)(cm.Value.GetMood() * config.ConfigValues[ConfigKeys.MoodRatingWeighting]) + (int)(cm.Value.CrewOpinions[managerName] * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]));
+					positionKey.Position = position.ToString();
+					positionKey.Crew = cm.Key;
+					positionCrewCombos.Add(positionKey, GetPositionRating(cm.Value, position, managerName));
 				}
 			}
-			var positionNames = Positions.Select(position => position.ToString()).ToList();
 			//get every crewmember combination (unordered)
 			var crewCombos = GetPermutations(availableCrew.Keys.ToList(), Positions.Count - 1).ToList();
 			//get the combined average opinion for every combination
 			var crewOpinions = new Dictionary<string, int>();
 			var crewMaxScores = new Dictionary<List<string>, int>();
-			var crewPositionScores = new Dictionary<string, int>();
+			var crewPositionScores = new Dictionary<PositionKey, int>();
 			foreach (var possibleCrew in crewCombos)
 			{
 				var crewComboKey = string.Concat(possibleCrew.ToArray());
@@ -312,13 +328,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 					// ReSharper disable once PossibleLossOfFraction
-					opinion = (int)(Math.Round((float)opinion / opinionCount) * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
+					opinion = (int)(Math.Round(opinion  * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]) / opinionCount);
 					opinionTotal += opinion;
 				}
 				crewOpinions.Add(crewComboKey, opinionTotal);
 				//get every position rating for every crewmember in this combination in every position
 				crewPositionScores.Clear();
-				positionNames.ForEach(pn => possibleCrew.ForEach(pc => crewPositionScores.Add(string.Concat(pn, pc), positionCrewCombos[string.Concat(pn, pc)])));
+				positionNames.ForEach(pn => possibleCrew.ForEach(pc =>
+				{
+					positionKey.Position = pn;
+					positionKey.Crew = pc;
+					crewPositionScores.Add(positionKey, positionCrewCombos[positionKey]);
+				}));
 				crewMaxScores.Add(possibleCrew, crewPositionScores.Values.OrderByDescending(v => v).Take(positionNames.Count).Sum() + opinionTotal);
 			}
 			var bestScore = 0;
@@ -332,18 +353,23 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					//get every position rating for every crewmember in this combination in every position
 					crewPositionScores.Clear();
-					positionNames.ForEach(pn => possibleCrew.Key.ForEach(pc => crewPositionScores.Add(string.Concat(pn, pc), positionCrewCombos[string.Concat(pn, pc)])));
+					positionNames.ForEach(pn => possibleCrew.Key.ForEach(pc =>
+					{
+						positionKey.Position = pn;
+						positionKey.Crew = pc;
+						crewPositionScores.Add(positionKey, positionCrewCombos[positionKey]);
+					}));
 					//sort these position ratings from highest to lowest
 					crewPositionScores = crewPositionScores.OrderByDescending(cps => cps.Value).ToDictionary(cps => cps.Key, cps => cps.Value);
 					//find the combined average opinion for this combination
 					var opinionScore = crewOpinions[string.Concat(possibleCrew.Key.ToArray())];
 					//if the highest score in each position plus the highest possible opinion is lower than the best score so far, stop this loop
-					if (positionNames.Select(pn => crewPositionScores.First(cps => cps.Key.Contains(pn)).Value).Sum() + opinionScore < bestScore)
+					if (positionNames.Select(pn => crewPositionScores.First(cps => cps.Key.Position == pn).Value).Sum() + opinionScore < bestScore)
 					{
 						continue;
 					}
 					//if the highest score for each crewmember plus the highest possible opinion is lower than the best score so far, stop this loop
-					if (possibleCrew.Key.Select(pc => crewPositionScores.First(cps => cps.Key.Contains(pc)).Value).Sum() + opinionScore < bestScore)
+					if (possibleCrew.Key.Select(pc => crewPositionScores.First(cps => cps.Key.Crew == pc).Value).Sum() + opinionScore < bestScore)
 					{
 						continue;
 					}
@@ -356,7 +382,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						//assign crew members to their positions and get the score for this set-up
 						for (var i = 0; i < combo.Count; i++)
 						{
-							score += crewPositionScores[string.Concat(positionNames[i], combo[i])];
+							positionKey.Position = positionNames[i];
+							positionKey.Crew = combo[i];
+							score += crewPositionScores[positionKey];
 						}
 						//add the combined average opinion for this combination
 						score += opinionScore;
@@ -382,7 +410,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				var positionedCrew = new List<KeyValuePair<CrewMember, int>>();
 				for (var i = 0; i < crew.Count; i++)
 				{
-					positionedCrew.Add(new KeyValuePair<CrewMember, int>(availableCrew[crew[i]], positionCrewCombos[string.Concat(positionNames[i], crew[i])]));
+					positionKey.Position = positionNames[i];
+					positionKey.Crew = crew[i];
+					positionedCrew.Add(new KeyValuePair<CrewMember, int>(availableCrew[crew[i]], positionCrewCombos[positionKey]));
 				}
 				idealCrew.Add(positionedCrew);
 			}
@@ -612,5 +642,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			return new List<string>(list);
 		}
+
+		private struct PositionKey
+		{
+			public string Position;
+			public string Crew;
+
+			public PositionKey(string p, string c)
+			{
+				Position = p;
+				Crew = c;
+
+			}
+		}
+
 	}
 }
