@@ -142,7 +142,7 @@ public class TutorialController : MonoBehaviour
 			GameManagement.Team.TeamColorsSecondary.B
 		};
 		Loading.Start();
-		GameManagement.GameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.Team.Name, colorsPri, colorsSec, GameManagement.Manager.Name, false, language, success =>
+		GameManagement.GameManager.NewGameTask(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.Team.Name, colorsPri, colorsSec, GameManagement.Manager.Name, false, language, success =>
 		{
 			Loading.Stop();
 			if (success)

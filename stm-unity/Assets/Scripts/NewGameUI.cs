@@ -143,15 +143,21 @@ public class NewGameUI : MonoBehaviour {
 		}
 		if (valid)
 		{
-			if (GameManagement.GameManager.CheckIfGameExists(Path.Combine(Application.persistentDataPath, "GameSaves"), _boatName.text))
+			GameManagement.GameManager.CheckIfGameExistsTask(Path.Combine(Application.persistentDataPath, "GameSaves"), _boatName.text, (completed, exists) =>
 			{
-				_overwritePopUp.Active(true);
-				DoBestFit();
-			}
-			else
-			{
-				NewGame();
-			}
+				if (completed)
+				{
+					if (exists)
+					{
+						_overwritePopUp.Active(true);
+						DoBestFit();
+					}
+					else
+					{
+						NewGame();
+					}
+				}
+			});
 		}
 	}
 
@@ -177,7 +183,7 @@ public class NewGameUI : MonoBehaviour {
 		_managerName.text = _managerName.text.TrimEnd();
 		var language = string.IsNullOrEmpty(Localization.SelectedLanguage.Parent.Name) ? Localization.SelectedLanguage.EnglishName : Localization.SelectedLanguage.Parent.EnglishName;
 		Loading.Start();
-		GameManagement.GameManager.NewGame(Path.Combine(Application.persistentDataPath, "GameSaves"), _boatName.text, colorsPri, colorsSec, _managerName.text, _tutorialToggle.isOn, language, success =>
+		GameManagement.GameManager.NewGameTask(Path.Combine(Application.persistentDataPath, "GameSaves"), _boatName.text, colorsPri, colorsSec, _managerName.text, _tutorialToggle.isOn, language, success =>
 		{
 			if (success)
 			{

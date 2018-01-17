@@ -306,7 +306,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			//get every crewmember combination (unordered)
-			var crewCombos = GetPermutations(availableCrew.Keys.ToList(), Positions.Count - 1).ToList();
+			var sortedCrew = availableCrew.Keys.OrderBy(c => c).ToList();
+			var crewCombos = GetPermutations(sortedCrew, Positions.Count - 1).ToList();
 			//get the combined average opinion for every combination
 			var crewOpinions = new Dictionary<string, int>();
 			var crewMaxScores = new Dictionary<List<string>, int>();
@@ -626,7 +627,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				foreach (var o in list)
 				{
-					if (o.CompareTo(t.Last()) > 0)
+					if (String.Compare(o, t.Last(), StringComparison.Ordinal) > 0)
 					{
 						var permCopy = CopyPermList(t);
 						permCopy.Add(o);

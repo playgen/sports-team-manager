@@ -723,7 +723,8 @@ public class TeamSelectionUI : MonoBehaviour {
 		//confirm the line-up with the simulation 
 		SUGARManager.GameData.Send("Current Crew Size", GameManagement.CrewCount);
 		Loading.Start();
-		GameManagement.GameManager.SaveLineUp(offset, success =>
+		var beforeTime = Time.realtimeSinceStartup;
+		GameManagement.GameManager.SaveLineUpTask(offset, success =>
 		{
 			if (success)
 			{
@@ -735,6 +736,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			}
 			Loading.Stop();
 		});
+		Debug.Log(Time.realtimeSinceStartup - beforeTime);
 	}
 
 	/// <summary>

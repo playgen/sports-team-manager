@@ -89,7 +89,7 @@ public class UIStateManager : MonoBehaviour {
 		if (_reload)
 		{
 			Loading.Start();
-			GameManagement.GameManager.LoadGame(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.Team.Name, success =>
+			GameManagement.GameManager.LoadGameTask(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.Team.Name, success =>
 			{
 				if (success)
 				{

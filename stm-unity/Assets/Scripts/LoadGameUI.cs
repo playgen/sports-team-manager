@@ -100,39 +100,35 @@ public class LoadGameUI : MonoBehaviour
 		{
 			_errorText.text = string.Empty;
 			//check if the game exists
-			if (GameManagement.GameManager.CheckIfGameExists(Path.Combine(Application.persistentDataPath, "GameSaves"), _selectedName))
+			Loading.Start();
+			GameManagement.GameManager.LoadGameTask(Path.Combine(Application.persistentDataPath, "GameSaves"), _selectedName, success =>
 			{
-				Loading.Start();
-				GameManagement.GameManager.LoadGame(Path.Combine(Application.persistentDataPath, "GameSaves"), _selectedName, success =>
+				if (success)
 				{
-					if (success)
+					if (GameManagement.Team != null && String.Equals(GameManagement.TeamName, _selectedName, StringComparison.CurrentCultureIgnoreCase))
 					{
-						if (GameManagement.Team != null && String.Equals(GameManagement.TeamName, _selectedName, StringComparison.CurrentCultureIgnoreCase))
-						{
-							var newString = GameManagement.PositionString;
-							TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
+						var newString = GameManagement.PositionString;
+						TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
 							{
 								{ TrackerContextKeys.GameName.ToString(), GameManagement.TeamName },
 								{ TrackerContextKeys.BoatLayout.ToString(), string.IsNullOrEmpty(newString) ? "NullAsGameFinished" : newString }
 							}, CompletableTracker.Completable.Game));
-							UIStateManager.StaticGoToGame();
-						}
+						UIStateManager.StaticGoToGame();
 					}
-					Loading.Stop();
-				});
-			}
-			//display error and remove game from the list if the game could not be found
-			else
-			{
-				_errorText.text = Localization.Get("LOAD_GAME_MISSING_FILES");
-				_selectedIcon.transform.SetParent(_gameContainer.transform, true);
-				_selectedIcon.Active(false);
-				Destroy(_gameContainer.transform.FindObject(_selectedName));
-				_selectedName = string.Empty;
-				_loadButton.interactable = false;
-			}
+					else
+					{
+						//display error and remove game from the list if the game could not be found
+						_errorText.text = Localization.Get("LOAD_GAME_MISSING_FILES");
+						_selectedIcon.transform.SetParent(_gameContainer.transform, true);
+						_selectedIcon.Active(false);
+						Destroy(_gameContainer.transform.FindObject(_selectedName));
+						_selectedName = string.Empty;
+						_loadButton.interactable = false;
+					}
+				}
+				Loading.Stop();
+			});
 		}
-		_errorText.text = Localization.Get("LOAD_GAME_NOT_LOADED");
 	}
 
 	private void DoBestFit()
