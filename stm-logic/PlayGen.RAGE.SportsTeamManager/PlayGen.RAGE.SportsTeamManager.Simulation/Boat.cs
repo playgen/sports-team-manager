@@ -270,7 +270,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		internal int GetPositionRating(CrewMember member, Position pos, string managerName)
 		{
-			return (int)(pos.GetPositionRating(member) + (member.GetMood() * config.ConfigValues[ConfigKeys.MoodRatingWeighting]) + (member.CrewOpinions[managerName] * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]));
+			return pos.GetPositionRating(member) + (int)(member.GetMood() * config.ConfigValues[ConfigKeys.MoodRatingWeighting]) + (int)(member.CrewOpinions[managerName] * config.ConfigValues[ConfigKeys.ManagerOpinionRatingWeighting]);
 		}
 
 		/// <summary>
@@ -328,7 +328,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 					// ReSharper disable once PossibleLossOfFraction
-					opinion = (int)(Math.Round(opinion  * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]) / opinionCount);
+					opinion = (int)(Math.Round((float)opinion / opinionCount) * config.ConfigValues[ConfigKeys.OpinionRatingWeighting]);
 					opinionTotal += opinion;
 				}
 				crewOpinions.Add(crewComboKey, opinionTotal);
