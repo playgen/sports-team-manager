@@ -104,6 +104,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		transform.position = (Vector2)Input.mousePosition - _dragPosition;
 		//set as last sibling so this always appears in front of other UI objects (except pop-ups)
 		transform.SetAsLastSibling();
+		transform.FindImage("AvatarIcon").color = new Color(0, 0.25f, 0.25f);
 	}
 
 	/// <summary>
@@ -208,6 +209,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			ShowPopUp();
 		}
 		_beingClicked = false;
+		transform.FindImage("AvatarIcon").color = new Color(0, 1, 1);
 	}
 
 	/// <summary>

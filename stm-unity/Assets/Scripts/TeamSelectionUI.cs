@@ -686,18 +686,8 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			_boatPool[i].Active(false);
 		}
-		foreach (var button in _boatPagingButtons)
-		{
-			button.Active(false);
-		}
-		if (_previousScrollValue > 0)
-		{
-			_boatPagingButtons[1].Active(true);
-		}
-		if (_previousScrollValue < GameManagement.LineUpHistory.Count - 4)
-		{
-			_boatPagingButtons[0].Active(true);
-		}
+		_boatPagingButtons[1].Active(_previousScrollValue > 0);
+		_boatPagingButtons[0].Active(_previousScrollValue < GameManagement.LineUpHistory.Count - 4);
 	}
 
 	/// <summary>

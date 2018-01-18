@@ -9,6 +9,8 @@ using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Loading;
 
+using UnityEngine.EventSystems;
+
 /// <summary>
 /// Controls switching between different game state panels
 /// </summary>
@@ -118,6 +120,10 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	private void Update()
 	{
+		if (EventSystem.current.currentSelectedGameObject)
+		{
+			EventSystem.current.SetSelectedGameObject(null);
+		}
 		if (_mainMenu.activeInHierarchy)
 		{
 			if (Input.GetKeyDown(KeyCode.Escape))

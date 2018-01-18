@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 22202822}
   - component: {fileID: 11479634}
   - component: {fileID: 114632338581858692}
+  - component: {fileID: 95218656580700418}
   m_Layer: 5
   m_Name: Recruit Member
   m_TagString: Untagged
@@ -39,6 +40,7 @@ MonoBehaviour:
   m_PreferredHeight: -1
   m_FlexibleWidth: 1
   m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!114 &11422680
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -56,7 +58,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.7529412, g: 0.7529412, b: 0.7529412, a: 1}
@@ -155,6 +157,23 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 121942}
   m_IsPrefabParent: 1
+--- !u!95 &95218656580700418
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 121942}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 607f8d6005cd7ce46bc9481933300b84, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114632338581858692
 MonoBehaviour:
   m_ObjectHideFlags: 1
