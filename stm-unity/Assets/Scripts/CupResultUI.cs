@@ -27,7 +27,14 @@ public class CupResultUI : MonoBehaviour
 	{
 		_cupPosition = 0;
 		gameObject.Active(true);
-		transform.EnableBlocker();
+		if (GameManagement.PlatformSettings.Rage)
+		{
+			transform.EnableBlocker();
+		}
+		else
+		{
+			transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
+		}
 
 		foreach (Transform child in transform.Find("Crew"))
 		{
@@ -56,7 +63,10 @@ public class CupResultUI : MonoBehaviour
 		{
 			{ TrackerContextKeys.CupFinishingPosition.ToString(), _cupPosition.ToString() }
 		}, AccessibleTracker.Accessible.Screen));
-		transform.FindObject("Outro").Active(GameManagement.PlatformSettings.Rage);
+		if (!GameManagement.PlatformSettings.Rage)
+		{
+			transform.FindText("Outro").text = "Thanks for playing!";
+		}
 		transform.FindObject("Questionnaire").Active(GameManagement.PlatformSettings.Rage);
 		transform.FindObject("OK").Active(!GameManagement.PlatformSettings.Rage);
 	}

@@ -627,7 +627,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				foreach (var o in list)
 				{
-					if (String.Compare(o, t.Last(), StringComparison.Ordinal) > 0)
+					if (string.Compare(o, t.Last(), StringComparison.Ordinal) > 0)
 					{
 						var permCopy = CopyPermList(t);
 						permCopy.Add(o);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,7 +33,7 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	public static void LoadSprites()
 	{
-		avatarSprites = Resources.LoadAll(string.Empty, typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name.ToLower(), a => a);
+		avatarSprites = Resources.LoadAll(string.Empty, typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name, a => a, StringComparer.OrdinalIgnoreCase);
 	}
 
 	public static Color MoodColor(float value)
@@ -78,19 +79,19 @@ public class AvatarDisplay : MonoBehaviour
 			_outfitShadow = transform.FindImage("IconMask/AvatarSprites/OutfitShadow") ?? transform.FindImage("AvatarSprites/OutfitShadow");
 			_spriteParent = transform.FindRect("IconMask/AvatarSprites") ?? transform.FindRect("AvatarSprites");
 		}
-		_body.sprite = avatarSprites[avatar.BodyType.ToLower()];
-		_outfit.sprite = avatarSprites[avatar.OutfitBaseType.ToLower()];
-		if (avatarSprites.ContainsKey(avatar.OutfitHighlightType.ToLower()))
+		_body.sprite = avatarSprites[avatar.BodyType];
+		_outfit.sprite = avatarSprites[avatar.OutfitBaseType];
+		if (avatarSprites.ContainsKey(avatar.OutfitHighlightType))
 		{
-			_outfitHighlight.sprite = avatarSprites[avatar.OutfitHighlightType.ToLower()];
+			_outfitHighlight.sprite = avatarSprites[avatar.OutfitHighlightType];
 		}
-		if (avatarSprites.ContainsKey(avatar.OutfitShadowType.ToLower()))
+		if (avatarSprites.ContainsKey(avatar.OutfitShadowType))
 		{
-			_outfitShadow.sprite = avatarSprites[avatar.OutfitShadowType.ToLower()];
+			_outfitShadow.sprite = avatarSprites[avatar.OutfitShadowType];
 		}
-		_nose.sprite = avatarSprites[avatar.NoseType.ToLower()];
-		_hairBack.sprite = avatarSprites[string.Format("{0}_Back", avatar.HairType).ToLower()];
-		_hairFront.sprite = avatarSprites[string.Format("{0}_Front", avatar.HairType).ToLower()];
+		_nose.sprite = avatarSprites[avatar.NoseType];
+		_hairBack.sprite = avatarSprites[$"{avatar.HairType}_Back"];
+		_hairFront.sprite = avatarSprites[$"{avatar.HairType}_Front"];
 
 		// Set colors
 		_body.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
@@ -186,22 +187,22 @@ public class AvatarDisplay : MonoBehaviour
 		{
 			moodStr = "Disagree";
 		}
-		if (avatarSprites.ContainsKey(string.Format("{0}_{1}_{2}", avatar.EyeType, "Brown", moodStr).ToLower()))
+		if (avatarSprites.ContainsKey($"{avatar.EyeType}_Brown_{moodStr}"))
 		{
-			_eyes.sprite = avatarSprites[string.Format("{0}_{1}_{2}", avatar.EyeType, "Brown", moodStr).ToLower()];
+			_eyes.sprite = avatarSprites[$"{avatar.EyeType}_Brown_{moodStr}"];
 		}
-		else if (avatarSprites.ContainsKey(string.Format("{0}_{1}", avatar.EyeType, moodStr).ToLower()))
+		else if (avatarSprites.ContainsKey($"{avatar.EyeType}_{moodStr}"))
 		{
-			_eyes.sprite = avatarSprites[string.Format("{0}_{1}", avatar.EyeType, moodStr).ToLower()];
+			_eyes.sprite = avatarSprites[$"{avatar.EyeType}_{moodStr}"];
 		}
 		else
 		{
-			_eyes.sprite = avatarSprites[string.Format("{0}_{1}_Neutral", avatar.EyeType, "Brown").ToLower()];
+			_eyes.sprite = avatarSprites[$"{avatar.EyeType}_Brown_Neutral"];
 		}
-		_eyePupils.sprite = _eyes.sprite.name.Contains("Brown") ? avatarSprites.ContainsKey(_eyes.sprite.name.Replace("Brown", "Pupil").ToLower()) ? avatarSprites[_eyes.sprite.name.Replace("Brown", "Pupil").ToLower()] : null : null;
-		_eyebrow.sprite = avatarSprites[string.Format("{0}_{1}", avatar.EyebrowType, moodStr).ToLower()];
-		_mouth.sprite = avatarSprites[string.Format("{0}_{1}", avatar.MouthType, moodStr).ToLower()];
-		_teeth.sprite = avatarSprites.ContainsKey(string.Format("{0}_{1}", avatar.TeethType, moodStr).ToLower()) ? avatarSprites[string.Format("{0}_{1}", avatar.TeethType, moodStr).ToLower()] : null;
+		_eyePupils.sprite = _eyes.sprite.name.Contains("Brown") ? avatarSprites.ContainsKey(_eyes.sprite.name.Replace("Brown", "Pupil")) ? avatarSprites[_eyes.sprite.name.Replace("Brown", "Pupil")] : null : null;
+		_eyebrow.sprite = avatarSprites[$"{avatar.EyebrowType}_{moodStr}"];
+		_mouth.sprite = avatarSprites[$"{avatar.MouthType}_{moodStr}"];
+		_teeth.sprite = avatarSprites.ContainsKey($"{avatar.TeethType}_{moodStr}") ? avatarSprites[$"{avatar.TeethType}_{moodStr}"] : null;
 		_eyePupils.enabled = _eyePupils.sprite != null;
 		_teeth.enabled = _teeth.sprite != null;
 		_lastMood = mood;
@@ -212,7 +213,7 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	private void SetIconProperties(Avatar a)
 	{
-		if (_spriteParent == null)
+		if (!_spriteParent)
 		{
 			return;
 		}

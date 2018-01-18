@@ -253,7 +253,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			try
 			{
-				var task = await Task.Factory.StartNew(() => CheckIfGameExists(storageLocation, boatName, out var iat));
+				var task = await Task.Factory.StartNew(() => CheckIfGameExists(storageLocation, boatName, out var _));
 				completed(true, task);
 			}
 			catch
@@ -320,7 +320,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return;
 			}
 			//get the iat file and all characters for this game
-			var combinedStorageLocation = Path.Combine(storageLocation, boatName);
 			EventController = new EventController(iat);
 			ValidateGameConfig();
 			var characterList = iat.GetAllCharacterSources();

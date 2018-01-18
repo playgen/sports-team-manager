@@ -9,10 +9,6 @@ using IntegratedAuthoringTool;
 using Newtonsoft.Json;
 using RolePlayCharacter;
 using SocialImportance;
-using System.Diagnostics;
-using System.Linq;
-
-using SocialImportance.DTOs;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {

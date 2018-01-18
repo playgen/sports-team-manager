@@ -5292,6 +5292,10 @@ Prefab:
       propertyPath: m_AnchorMax.x
       value: 0.25
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013642196750, guid: e9a999fedf35dd040bc3db2fa31245f2, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -8516,6 +8520,10 @@ Prefab:
         type: 2}
       propertyPath: m_AnchorMax.x
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013642196750, guid: e9a999fedf35dd040bc3db2fa31245f2, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e9a999fedf35dd040bc3db2fa31245f2, type: 2}
@@ -12341,7 +12349,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &249682161
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17701,7 +17709,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &420131003
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18454,7 +18462,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &460854540
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20193,6 +20201,10 @@ Prefab:
     - target: {fileID: 224000012272427044, guid: e9a999fedf35dd040bc3db2fa31245f2,
         type: 2}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013642196750, guid: e9a999fedf35dd040bc3db2fa31245f2, type: 2}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -33596,6 +33608,10 @@ Prefab:
       propertyPath: m_AnchorMin.y
       value: 0.8
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013642196750, guid: e9a999fedf35dd040bc3db2fa31245f2, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e9a999fedf35dd040bc3db2fa31245f2, type: 2}
   m_IsPrefabParent: 0
@@ -34810,7 +34826,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a108d9087971745bebd909116429f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _demoStartTime: 120
+  _demoStartTime: 40
+  _checkObj: {fileID: 1940736440}
 --- !u!328 &974941101
 VideoPlayer:
   m_ObjectHideFlags: 0
@@ -54025,7 +54042,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1726410166
 RectTransform:
   m_ObjectHideFlags: 0
@@ -57865,7 +57882,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1860366586
 RectTransform:
   m_ObjectHideFlags: 0
@@ -61849,7 +61866,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2010558238
 RectTransform:
   m_ObjectHideFlags: 0

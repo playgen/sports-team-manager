@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.Localization;
@@ -370,10 +369,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			//create the static CrewMember UI (aka, the one that remains greyed out within the container at all times)
 			var crewMember = CreateCrewMember(cm, _crewContainer.transform, false, true);
-			//set anchoring, pivot and anchoredPosition so that they are positioned correctly within the container at the bottom of the screen
-			crewMember.RectTransform().anchorMin = new Vector2(0.5f, 0.5f);
-			crewMember.RectTransform().anchorMax = new Vector2(0.5f, 0.5f);
-			crewMember.RectTransform().pivot = new Vector2(0, 0.5f);
+			//set anchoredPosition so that they are positioned correctly within the container at the bottom of the screen
 			crewMember.RectTransform().anchoredPosition = Vector2.zero;
 			_currentCrewButtons.Add(crewMember);
 			//create the draggable copy of the above
@@ -394,7 +390,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			_recruitButtons.Add(recruit.GetComponent<Button>());
 		}
 		SortCrew();
-		Invoke("CrewContainerPaging", 0f);
+		Invoke("CrewContainerPaging", Time.smoothDeltaTime * 2);
 	}
 
 	/// <summary>
@@ -402,9 +398,8 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// </summary>
 	private GameObject CreateCrewMember(CrewMember cm, Transform parent, bool usable, bool current)
 	{
-		var crewMember = Instantiate(_crewPrefab);
-		crewMember.transform.SetParent(parent, false);
-		crewMember.transform.Find("Name").GetComponent<Text>().text = SplitName(cm.Name, true);
+		var crewMember = Instantiate(_crewPrefab, parent, false);
+		crewMember.transform.FindText("Name").text = SplitName(cm.Name, true);
 		crewMember.name = SplitName(cm.Name);
 		crewMember.GetComponent<CrewMemberUI>().SetUp(usable, current, cm, parent);
 		crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(cm.Avatar, cm.GetMood(), true);
@@ -723,7 +718,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		//confirm the line-up with the simulation 
 		SUGARManager.GameData.Send("Current Crew Size", GameManagement.CrewCount);
 		Loading.Start();
-		var beforeTime = Time.realtimeSinceStartup;
 		GameManagement.GameManager.SaveLineUpTask(offset, success =>
 		{
 			if (success)
@@ -736,7 +730,6 @@ public class TeamSelectionUI : MonoBehaviour {
 			}
 			Loading.Stop();
 		});
-		Debug.Log(Time.realtimeSinceStartup - beforeTime);
 	}
 
 	/// <summary>
@@ -828,11 +821,10 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Get and display the result of the previous race session
 	/// </summary>
-	private float GetResult(bool isRace, Boat boat, int offset, Text scoreText, bool current = false)
+	private void GetResult(bool isRace, Boat boat, int offset, Text scoreText, bool current = false)
 	{
 		var timeTaken = TimeSpan.FromSeconds(1800 - ((boat.Score - 22) * 10) + offset);
 		var finishPosition = 1;
-		var scoreDiff = boat.Score - GameManagement.GetExpectedScore(boat.Positions.Count);
 		if (!isRace)
 		{
 			scoreText.text = string.Format("{0:D2}:{1:D2}", timeTaken.Minutes, timeTaken.Seconds);
@@ -890,7 +882,6 @@ public class TeamSelectionUI : MonoBehaviour {
 				SUGARManager.GameData.Send("Time Taken", GameManagement.StartingActionAllowance - GameManagement.ActionAllowance);
 			}
 		}
-		return scoreDiff;
 	}
 
 	private void UpdateSeasonProgress(int result = 0)

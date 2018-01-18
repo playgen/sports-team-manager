@@ -105,7 +105,7 @@ public class LoadGameUI : MonoBehaviour
 			{
 				if (success)
 				{
-					if (GameManagement.Team != null && String.Equals(GameManagement.TeamName, _selectedName, StringComparison.CurrentCultureIgnoreCase))
+					if (GameManagement.Team != null && string.Equals(GameManagement.TeamName, _selectedName, StringComparison.CurrentCultureIgnoreCase))
 					{
 						var newString = GameManagement.PositionString;
 						TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>

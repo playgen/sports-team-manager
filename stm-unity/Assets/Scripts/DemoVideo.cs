@@ -10,12 +10,14 @@ public class DemoVideo : MonoBehaviour
 	private float _lastAction;
 	private Vector2 _lastMousePosition;
 	private bool _playing;
+	[SerializeField]
+	private GameObject _checkObj;
 
 	private void Update()
 	{
 		if (GameManagement.PlatformSettings.DemoMode)
 		{
-			if (Input.anyKeyDown || Vector2.Distance(Input.mousePosition, _lastMousePosition) > 25)
+			if (Input.anyKeyDown || Vector2.Distance(Input.mousePosition, _lastMousePosition) > 25 || !_checkObj.activeInHierarchy)
 			{
 				_lastAction = 0;
 			}
