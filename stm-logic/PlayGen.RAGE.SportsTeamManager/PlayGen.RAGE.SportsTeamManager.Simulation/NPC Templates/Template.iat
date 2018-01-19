@@ -167,18 +167,18 @@
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCAvoidingAvoidingCompeting",
-					"Meaning": "IPCAvoidingAvoidingCompeting",
-					"Style": "IPCAvoidingAvoidingCompeting",
-					"Utterance": "IPCAvoidingAvoidingCompetingLP",
+					"NextState": "IPCAvoidingAvoiding2Competing",
+					"Meaning": "IPCAvoidingAvoiding2Competing",
+					"Style": "IPCAvoidingAvoiding2Competing",
+					"Utterance": "IPCAvoidingAvoiding2CompetingLP",
 					"UtteranceId": "TTS-64430A10952C708746E911EA48FF49BE"
 				}, 
 				{
 					"CurrentState": "LearningPill",
-					"NextState": "IPCAvoidingAvoidingAvoiding",
-					"Meaning": "IPCAvoidingAvoidingAvoiding",
-					"Style": "IPCAvoidingAvoidingAvoiding",
-					"Utterance": "IPCAvoidingAvoidingAvoidingLP",
+					"NextState": "IPCAvoidingAvoiding2Avoiding",
+					"Meaning": "IPCAvoidingAvoiding2Avoiding",
+					"Style": "IPCAvoidingAvoiding2Avoiding",
+					"Utterance": "IPCAvoidingAvoiding2AvoidingLP",
 					"UtteranceId": "TTS-C7F9057C994FBDE94EB9A0260A4946DB"
 				}, 
 				{
@@ -1199,10 +1199,10 @@
 				}, 
 				{
 					"CurrentState": "Player_IPCNP2",
-					"NextState": "NPC_IPCAvoidingAvoiding",
+					"NextState": "NPC_IPCAvoidingAvoiding2",
 					"Meaning": "Avoiding",
 					"Style": "-",
-					"Utterance": "IPCAvoidingAvoiding",
+					"Utterance": "IPCAvoidingAvoiding2",
 					"UtteranceId": "TTS-89734FADECAA626A06688F118A2DFE3C"
 				}, 
 				{
@@ -1215,18 +1215,18 @@
 				}, 
 				{
 					"CurrentState": "Player_IPCNP22",
-					"NextState": "NPC_IPCAvoidingAvoidingCompeting",
+					"NextState": "NPC_IPCAvoidingAvoiding2Competing",
 					"Meaning": "Competing",
 					"Style": "Laissez-faire",
-					"Utterance": "IPCAvoidingAvoidingCompeting",
+					"Utterance": "IPCAvoidingAvoiding2Competing",
 					"UtteranceId": "TTS-2CE96E0AFFD08A65BDEAED34A8409A0A"
 				}, 
 				{
 					"CurrentState": "Player_IPCNP22",
-					"NextState": "NPC_IPCAvoidingAvoidingAvoiding",
+					"NextState": "NPC_IPCAvoidingAvoiding2Avoiding",
 					"Meaning": "Avoiding",
 					"Style": "Laissez-faire",
-					"Utterance": "IPCAvoidingAvoidingAvoiding",
+					"Utterance": "IPCAvoidingAvoiding2Avoiding",
 					"UtteranceId": "TTS-ACEA0765C8FFD5F5B88D8B380AB9583B"
 				}, 
 				{
@@ -2094,11 +2094,11 @@
 					"UtteranceId": "TTS-7C20FE7584992390C3CBE810C844AB3D"
 				}, 
 				{
-					"CurrentState": "NPC_IPCAvoidingAvoidingCompeting",
+					"CurrentState": "NPC_IPCAvoidingAvoiding2Competing",
 					"NextState": "-",
 					"Meaning": "-",
 					"Style": "ManagerOpinionMuchWorse_MoodChange(-4)",
-					"Utterance": "IPCAvoidingAvoidingCompetingResponse",
+					"Utterance": "IPCAvoidingAvoiding2CompetingResponse",
 					"UtteranceId": "TTS-CFA9C49115095F959664EA29D5C02B5D"
 				}, 
 				{
@@ -2350,11 +2350,11 @@
 					"UtteranceId": "TTS-B476DF15730F2FB94E0C00F116DC2551"
 				}, 
 				{
-					"CurrentState": "NPC_IPCAvoidingAvoidingAvoiding",
+					"CurrentState": "NPC_IPCAvoidingAvoiding2Avoiding",
 					"NextState": "-",
 					"Meaning": "-",
 					"Style": "ManagerOpinionWorse_MoodChange(-3)",
-					"Utterance": "IPCAvoidingAvoidingAvoidingResponse",
+					"Utterance": "IPCAvoidingAvoiding2AvoidingResponse",
 					"UtteranceId": "TTS-128D6F83AF802B18A334F710ABC18985"
 				}, 
 				{
@@ -2366,7 +2366,7 @@
 					"UtteranceId": "TTS-7E361ADB18EE8C053B8586571B9A0F47"
 				}, 
 				{
-					"CurrentState": "NPC_IPCAvoidingAvoiding",
+					"CurrentState": "NPC_IPCAvoidingAvoiding2",
 					"NextState": "Player_IPCNP22",
 					"Meaning": "-",
 					"Style": "-",

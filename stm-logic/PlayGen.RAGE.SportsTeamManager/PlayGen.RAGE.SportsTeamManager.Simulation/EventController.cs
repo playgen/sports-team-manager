@@ -264,7 +264,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal List<DialogueStateActionDTO> GetPossiblePostRaceDialogue()
 		{
-			var dialogueOptions = GetPossibleAgentDialogue("NPC_PostRaceEventStart");
+			var dialogueOptions = iat.GetDialogueActionsByState("NPC_PostRaceEventStart").OrderBy(c => Guid.NewGuid()).ToList();
 			dialogueOptions = dialogueOptions.Where(dia => dia.Style.Contains("Race")).ToList();
 			return dialogueOptions;
 		}
@@ -274,7 +274,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal List<DialogueStateActionDTO> GetPossibleAgentDialogue(string eventName)
 		{
-			return iat.GetDialogueActionsByState(eventName).OrderBy(c => Guid.NewGuid()).ToList();
+			return iat.GetAllDialogueActions().Where(d => d.NextState.ToString() == eventName).OrderBy(c => Guid.NewGuid()).Select(d => d.ToDTO()).ToList();
 		}
 
 		/// <summary>
@@ -363,7 +363,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					var newPre = new PostRaceEventState(response.CrewMember, reply, response.Subjects);
 					replies.Add(newPre);
-					manager.UpdateSingleBelief(string.Format("PREEvent0({0})", replyCount), reply.CurrentState);
+					manager.UpdateSingleBelief(string.Format("PREEvent0({0})", replyCount), reply.NextState);
 					PostRaceEvents[0][replyCount] = newPre;
 				}
 				else

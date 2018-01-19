@@ -95,7 +95,7 @@ public class LearningPillUI : MonoBehaviour {
 		var endFrame = new WaitForEndOfFrame();
 		var start = upward ? keep ? 1 : 0 : 2;
 		var limit = keep ? 1 : 2;
-		_popUpAnim["LearningPill"].speed = 1;
+		_popUpAnim["LearningPill"].speed = 2;
 		_popUpAnim["LearningPill"].time = start;
 		_popUpAnim.Play();
 		while (_popUpAnim["LearningPill"].time <= start + limit)
