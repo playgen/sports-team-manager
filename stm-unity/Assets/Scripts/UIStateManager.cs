@@ -47,6 +47,7 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	private void Start()
 	{
+		Localization.UpdateLanguage("en");
 		UIManagement.Initialize();
 		AvatarDisplay.LoadSprites();
 		BackToMenu();
@@ -120,7 +121,7 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	private void Update()
 	{
-		if (EventSystem.current.currentSelectedGameObject)
+		if (EventSystem.current.currentSelectedGameObject && !EventSystem.current.currentSelectedGameObject.GetComponent<InputField>())
 		{
 			EventSystem.current.SetSelectedGameObject(null);
 		}
