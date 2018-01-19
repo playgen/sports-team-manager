@@ -431,6 +431,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			//reset current values
 			IdealMatchScore = 0;
+			var idealMatchScoreCount = 0;
 			var nearestIdealMatch = new List<KeyValuePair<CrewMember, int>>();
 			//if not enough crewmembers are currently positioned, do not perform the rest of this method
 			if (PositionCrew.Count < Positions.Count)
@@ -441,12 +442,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			foreach (var crew in idealCrew)
 			{
 				float currentIdealMatch = 0;
+				int currentIdealMatchCount = 0;
 				for (var i = 0; i < crew.Count; i++)
 				{
 					//if the CrewMembers match in both the current and the ideal, add 1 to the currentIdealMatch score
 					if (crew[i].Key == PositionCrew[Positions[i]])
 					{
 						currentIdealMatch++;
+						currentIdealMatchCount++;
 					}
 					//otherwise, check if this CrewMember is meant to be positioned elsewhere in an ideal set-up. If so, add 0.1f to the currentIdealMatch score
 					else
@@ -456,15 +459,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							if (ideal.Key == PositionCrew[Positions[i]])
 							{
 								currentIdealMatch += 0.1f;
+								currentIdealMatchCount++;
 							}
 						}
 					}
 				}
 				//if the final currentIdealMatch score is higher than the current IdealMatchScore, or nearestIdealMatch is null (meaning no other ideals have been checked), set this ideal crew to the nearest match
-				if (currentIdealMatch > IdealMatchScore || nearestIdealMatch.Count == 0)
+				if (currentIdealMatchCount >= idealMatchScoreCount || nearestIdealMatch.Count == 0)
 				{
-					IdealMatchScore = currentIdealMatch;
-					nearestIdealMatch = crew;
+					if (currentIdealMatchCount > idealMatchScoreCount || currentIdealMatch > IdealMatchScore || nearestIdealMatch.Count == 0)
+					{
+						IdealMatchScore = currentIdealMatch;
+						idealMatchScoreCount = currentIdealMatchCount;
+						nearestIdealMatch = crew;
+					}
 				}
 			}
 			return nearestIdealMatch;
