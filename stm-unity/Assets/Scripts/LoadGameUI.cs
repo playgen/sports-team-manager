@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Loading;
 using PlayGen.Unity.Utilities.Localization;
-using RAGE.Analytics.Formats;
 
 /// <summary>
 /// Contains all UI logic related to loading saved games

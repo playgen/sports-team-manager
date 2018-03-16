@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using PlayGen.SUGAR.Unity;
 using RAGE.Analytics;
-using RAGE.Analytics.Formats;
 using UnityEngine;
 
 public class TraceEvent
@@ -57,95 +56,95 @@ public class TrackerEventSender {
 			case TrackerVerbs.Accessed:
 				if (trace.Params.Length > 0 && trace.Params[0].GetType() == typeof(AccessibleTracker.Accessible))
 				{
-					Tracker.T.accessible.Accessed(trace.Key, (AccessibleTracker.Accessible)Enum.Parse(typeof(AccessibleTracker.Accessible), trace.Params[0].ToString()));
+					Tracker.T.Accessible.Accessed(trace.Key, (AccessibleTracker.Accessible)Enum.Parse(typeof(AccessibleTracker.Accessible), trace.Params[0].ToString()));
 					break;
 				}
-				Tracker.T.accessible.Accessed(trace.Key);
+				Tracker.T.Accessible.Accessed(trace.Key);
 				break;
 			case TrackerVerbs.Skipped:
 				if (trace.Params.Length > 0 && trace.Params[0].GetType() == typeof(AccessibleTracker.Accessible))
 				{
-					Tracker.T.accessible.Skipped(trace.Key, (AccessibleTracker.Accessible)Enum.Parse(typeof(AccessibleTracker.Accessible), trace.Params[0].ToString()));
+					Tracker.T.Accessible.Skipped(trace.Key, (AccessibleTracker.Accessible)Enum.Parse(typeof(AccessibleTracker.Accessible), trace.Params[0].ToString()));
 					break;
 				}
-				Tracker.T.accessible.Skipped(trace.Key);
+				Tracker.T.Accessible.Skipped(trace.Key);
 				break;
 			case TrackerVerbs.Selected:
 				if (trace.Params.Length > 1 && trace.Params[1].GetType() == typeof(AlternativeTracker.Alternative) && trace.Params[0] is string)
 				{
-					Tracker.T.alternative.Selected(trace.Key, trace.Params[0].ToString(), (AlternativeTracker.Alternative)Enum.Parse(typeof(AlternativeTracker.Alternative), trace.Params[1].ToString()));
+					Tracker.T.Alternative.Selected(trace.Key, trace.Params[0].ToString(), (AlternativeTracker.Alternative)Enum.Parse(typeof(AlternativeTracker.Alternative), trace.Params[1].ToString()));
 					break;
 				}
 				if (trace.Params.Length > 0 && trace.Params[0] is string)
 				{
-					Tracker.T.alternative.Selected(trace.Key, trace.Params[0].ToString());
+					Tracker.T.Alternative.Selected(trace.Key, trace.Params[0].ToString());
 					break;
 				}
-				Tracker.T.trackedGameObject.Interacted(trace.Key);
+				Tracker.T.GameObject.Interacted(trace.Key);
 				break;
 			case TrackerVerbs.Unlocked:
 				if (trace.Params.Length > 1 && trace.Params[1].GetType() == typeof(AlternativeTracker.Alternative) && trace.Params[0] is string)
 				{
-					Tracker.T.alternative.Unlocked(trace.Key, trace.Params[0].ToString(), (AlternativeTracker.Alternative)Enum.Parse(typeof(AlternativeTracker.Alternative), trace.Params[1].ToString()));
+					Tracker.T.Alternative.Unlocked(trace.Key, trace.Params[0].ToString(), (AlternativeTracker.Alternative)Enum.Parse(typeof(AlternativeTracker.Alternative), trace.Params[1].ToString()));
 					break;
 				}
 				if (trace.Params.Length > 0 && trace.Params[0] is string)
 				{
-					Tracker.T.alternative.Unlocked(trace.Key, trace.Params[0].ToString());
+					Tracker.T.Alternative.Unlocked(trace.Key, trace.Params[0].ToString());
 					break;
 				}
-				Tracker.T.trackedGameObject.Interacted(trace.Key);
+				Tracker.T.GameObject.Interacted(trace.Key);
 				break;
 			case TrackerVerbs.Initialized:
 				if (trace.Params.Length > 0 && trace.Params[0].GetType() == typeof(CompletableTracker.Completable))
 				{
-					Tracker.T.completable.Initialized(trace.Key, (CompletableTracker.Completable)Enum.Parse(typeof(CompletableTracker.Completable), trace.Params[0].ToString()));
+					Tracker.T.Completable.Initialized(trace.Key, (CompletableTracker.Completable)Enum.Parse(typeof(CompletableTracker.Completable), trace.Params[0].ToString()));
 					break;
 				}
-				Tracker.T.completable.Initialized(trace.Key);
+				Tracker.T.Completable.Initialized(trace.Key);
 				break;
 			case TrackerVerbs.Progressed:
 				if (trace.Params.Length > 1 && trace.Params[0].GetType() == typeof(CompletableTracker.Completable) && trace.Params[1] is float)
 				{
-					Tracker.T.completable.Progressed(trace.Key, (CompletableTracker.Completable)Enum.Parse(typeof(CompletableTracker.Completable), trace.Params[0].ToString()), float.Parse(trace.Params[1].ToString()));
+					Tracker.T.Completable.Progressed(trace.Key, (CompletableTracker.Completable)Enum.Parse(typeof(CompletableTracker.Completable), trace.Params[0].ToString()), float.Parse(trace.Params[1].ToString()));
 					break;
 				}
 				if (trace.Params.Length > 0 && trace.Params[0] is float)
 				{
-					Tracker.T.completable.Progressed(trace.Key, float.Parse(trace.Params[0].ToString()));
+					Tracker.T.Completable.Progressed(trace.Key, float.Parse(trace.Params[0].ToString()));
 					break;
 				}
-				Tracker.T.trackedGameObject.Interacted(trace.Key);
+				Tracker.T.GameObject.Interacted(trace.Key);
 				break;
 			case TrackerVerbs.Completed:
 				if (trace.Params.Length > 0 && trace.Params[0].GetType() == typeof(CompletableTracker.Completable))
 				{
-					Tracker.T.completable.Completed(trace.Key, (CompletableTracker.Completable)Enum.Parse(typeof(CompletableTracker.Completable), trace.Params[0].ToString()));
+					Tracker.T.Completable.Completed(trace.Key, (CompletableTracker.Completable)Enum.Parse(typeof(CompletableTracker.Completable), trace.Params[0].ToString()));
 					break;
 				}
-				Tracker.T.completable.Completed(trace.Key);
+				Tracker.T.Completable.Completed(trace.Key);
 				break;
 			case TrackerVerbs.Interacted:
 				if (trace.Params.Length > 0 && trace.Params[0].GetType() == typeof(GameObjectTracker.TrackedGameObject))
 				{
-					Tracker.T.trackedGameObject.Interacted(trace.Key, (GameObjectTracker.TrackedGameObject)Enum.Parse(typeof(GameObjectTracker.TrackedGameObject), trace.Params[0].ToString()));
+					Tracker.T.GameObject.Interacted(trace.Key, (GameObjectTracker.TrackedGameObject)Enum.Parse(typeof(GameObjectTracker.TrackedGameObject), trace.Params[0].ToString()));
 					break;
 				}
-				Tracker.T.trackedGameObject.Interacted(trace.Key);
+				Tracker.T.GameObject.Interacted(trace.Key);
 				break;
 			case TrackerVerbs.Used:
 				if (trace.Params.Length > 0 && trace.Params[0].GetType() == typeof(GameObjectTracker.TrackedGameObject))
 				{
-					Tracker.T.trackedGameObject.Used(trace.Key, (GameObjectTracker.TrackedGameObject)Enum.Parse(typeof(GameObjectTracker.TrackedGameObject), trace.Params[0].ToString()));
+					Tracker.T.GameObject.Used(trace.Key, (GameObjectTracker.TrackedGameObject)Enum.Parse(typeof(GameObjectTracker.TrackedGameObject), trace.Params[0].ToString()));
 					break;
 				}
-				Tracker.T.trackedGameObject.Used(trace.Key);
+				Tracker.T.GameObject.Used(trace.Key);
 				break;
 			default:
-				Tracker.T.trackedGameObject.Interacted(trace.Key);
+				Tracker.T.GameObject.Interacted(trace.Key);
 				break;
 		}
 		
-		Tracker.T.RequestFlush();
+		Tracker.T.Flush();
 	}
 }

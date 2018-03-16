@@ -9,8 +9,6 @@ using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.Loading;
 using PlayGen.Unity.Utilities.Localization;
 
-using RAGE.Analytics.Formats;
-
 /// <summary>
 /// Connecting class between GameManager in logic and the Tutorial Section UIs
 /// </summary>

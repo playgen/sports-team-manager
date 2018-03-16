@@ -12,8 +12,6 @@ using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Loading;
 
-using RAGE.Analytics.Formats;
-
 /// <summary>
 /// A class for grouping together a sprite with a name
 /// </summary>

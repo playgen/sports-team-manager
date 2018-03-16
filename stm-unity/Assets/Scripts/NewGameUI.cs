@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Loading;
 using PlayGen.Unity.Utilities.Localization;
-using RAGE.Analytics.Formats;
 
 using UnityEngine.UI.Extensions.ColorPicker;
 

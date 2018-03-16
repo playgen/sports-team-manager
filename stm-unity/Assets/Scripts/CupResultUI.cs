@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PlayGen.Unity.Utilities.Localization;
-using RAGE.Analytics.Formats;
 using UnityEngine;
 
 public class CupResultUI : MonoBehaviour

@@ -4,8 +4,6 @@ using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using System.Linq;
 
-using RAGE.Analytics.Formats;
-
 using UnityEngine.UI;
 using System;
 using System.Text.RegularExpressions;

@@ -4,7 +4,6 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
-using RAGE.Analytics.Formats;
 
 /// <summary>
 /// Contains all logic relating to displaying post-race event 'learning pills'

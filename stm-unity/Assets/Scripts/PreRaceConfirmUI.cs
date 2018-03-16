@@ -3,7 +3,6 @@ using System.Linq;
 using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
-using RAGE.Analytics.Formats;
 using UnityEngine;
 using UnityEngine.UI;
 
