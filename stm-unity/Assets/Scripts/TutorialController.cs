@@ -116,6 +116,7 @@ public class TutorialController : MonoBehaviour
 		if (GameManagement.ShowTutorial)
 		{
 			_tutorialDisplay.Construct(_tutorialSections[GameManagement.TutorialStage]);
+			TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvents.Support, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, "tutorialcontinued" } });
 		}
 		else
 		{

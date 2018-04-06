@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using PlayGen.SUGAR.Common.Shared;
@@ -59,6 +61,7 @@ public class LeaderboardListInterface : BaseLeaderboardListInterface
 		DoBestFit();
 		BestFit.ResolutionChange += DoBestFit;
 		Localization.LanguageChange += OnLanguageChange;
+		TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvents.Gamification, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, "displayleaderboardlist" } });
 	}
 
 	/// <summary>

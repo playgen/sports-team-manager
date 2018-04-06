@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using PlayGen.SUGAR.Common.Shared;
 using PlayGen.SUGAR.Unity;
@@ -62,6 +63,7 @@ public class LeaderboardInterface : BaseLeaderboardInterface
 		DoBestFit();
 		BestFit.ResolutionChange += DoBestFit;
 		Localization.LanguageChange += OnLanguageChange;
+		TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvents.Gamification, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, "displayleaderboard" } });
 	}
 
 	/// <summary>

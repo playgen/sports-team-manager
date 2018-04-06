@@ -26,7 +26,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4557006852247018
 Transform:
   m_ObjectHideFlags: 1
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1625496142389676}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e819759e353538248ab599eee0e9835f, type: 3}
   m_Name: 
@@ -59,3 +59,5 @@ MonoBehaviour:
   host: https://tracker.playgen.com/api/proxy/gleaner/collector/
   trackingCode: 5a15a3e254021b006cc26f6fhf12gg2icf9cz0k9
   debug: 1
+  username: 
+  password: 

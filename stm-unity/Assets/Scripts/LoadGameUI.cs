@@ -112,6 +112,7 @@ public class LoadGameUI : MonoBehaviour
 								{ TrackerContextKeys.GameName.ToString(), GameManagement.TeamName },
 								{ TrackerContextKeys.BoatLayout.ToString(), string.IsNullOrEmpty(newString) ? "NullAsGameFinished" : newString }
 							}, CompletableTracker.Completable.Game));
+						TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvents.UserProfile, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, "loadedoldteam" } });
 						UIStateManager.StaticGoToGame();
 					}
 					else

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+
+using UnityEngine;
 using UnityEngine.UI;
 
 public class AchievementItemInterface : MonoBehaviour
@@ -25,6 +27,7 @@ public class AchievementItemInterface : MonoBehaviour
 		gameObject.Active(true);
 		_achieveName.text = achieveName;
 		_achieveImage.enabled = completed;
+		TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvents.Gamification, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, "displayachievementpopup" } });
 	}
 
 	/// <summary>

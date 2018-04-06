@@ -194,6 +194,7 @@ public class NewGameUI : MonoBehaviour {
 						{ TrackerContextKeys.GameName.ToString(), GameManagement.TeamName },
 						{ TrackerContextKeys.BoatLayout.ToString(), newString }
 					}, CompletableTracker.Completable.Game));
+					TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvents.UserProfile, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, "setupnewteam" } });
 					UIStateManager.StaticGoToGame();
 				}
 				else
