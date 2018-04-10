@@ -52,11 +52,11 @@ namespace RAGE.EvaluationAsset
         {
             // Set Default values here.
             PostUrl = "http://css-kti.tugraz.at/evaluationasset/rest/sensordatapost";
-            GameId = "Sports Team Manager";
-            GameVersion = "default";
-            PlayerId = SUGARManager.CurrentUser != null ? SUGARManager.CurrentUser.Name : "unknown";
-            Language = Localization.SelectedLanguage.ToString();
-        }
+			GameId = "SportsTeamManager";
+            GameVersion = "1.0";
+            PlayerId = "unknown";
+            Language = Localization.SelectedLanguage.TwoLetterISOLanguageName;
+		}
 
         #endregion Constructors
 

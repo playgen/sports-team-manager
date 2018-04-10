@@ -1,10 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Net;
+using System.Text;
+
 using AssetPackage;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-    internal class BaseBridge : IBridge, IDataStorage
+    internal class BaseBridge : IBridge, IDataStorage, IWebServiceRequest
     {
         public bool Delete(string fileId)
         {
@@ -36,5 +39,29 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
                 writer.Write(fileData);
             }
         }
-    }
+
+		public void WebServiceRequest(RequestSetttings requestSettings, out RequestResponse requestResponse)
+		{
+			var request = (HttpWebRequest)WebRequest.Create(requestSettings.uri);
+
+			var postData = requestSettings.body;
+			var data = Encoding.ASCII.GetBytes(postData);
+
+			request.Method = "POST";
+			foreach (var header in requestSettings.requestHeaders)
+			{
+				request.Headers.Add(header.Key, header.Value);
+			}
+			request.ContentLength = data.Length;
+
+			using (var stream = request.GetRequestStream())
+			{
+				stream.Write(data, 0, data.Length);
+			}
+
+			var response = (HttpWebResponse)request.GetResponse();
+
+			requestResponse = new RequestResponse { responseCode = (int)response.StatusCode };
+		}
+	}
 }

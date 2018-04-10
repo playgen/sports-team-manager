@@ -10,6 +10,8 @@ using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Loading;
 
+using RAGE.EvaluationAsset;
+
 using UnityEngine.EventSystems;
 
 /// <summary>
@@ -246,6 +248,9 @@ public class UIStateManager : MonoBehaviour {
 				_userSignedInText.gameObject.Active(true);
 				_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;
 				DoBestFit();
+				var settings = new EvaluationAssetSettings();
+				settings.PlayerId = SUGARManager.CurrentUser.Name;
+				EvaluationAsset.Instance.Settings = settings;
 				TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvents.UserProfile, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, "sugarsignin" } });
 			}
 			else
