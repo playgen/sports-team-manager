@@ -4,7 +4,7 @@ Sports Team Manager is a sailboat racing game where the player has to manage cre
 It is part of the [RAGE project](http://rageproject.eu/).
 
 # Licensing
-See the LICENSE file included in this project.
+See the [LICENCE](LICENCE.md) file included in this project.
 
 # Key Project Structure
 - **stm-logic**
