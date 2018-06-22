@@ -42,26 +42,71 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public void WebServiceRequest(RequestSetttings requestSettings, out RequestResponse requestResponse)
 		{
-			var request = (HttpWebRequest)WebRequest.Create(requestSettings.uri);
+			var result = new RequestResponse(requestSettings);
 
-			var postData = requestSettings.body;
-			var data = Encoding.ASCII.GetBytes(postData);
-
-			request.Method = "POST";
-			foreach (var header in requestSettings.requestHeaders)
+			try
 			{
-				request.Headers.Add(header.Key, header.Value);
-			}
-			request.ContentLength = data.Length;
+				var request = (HttpWebRequest)WebRequest.Create(requestSettings.uri);
+				request.Method = requestSettings.method;
+				if (requestSettings.requestHeaders.ContainsKey("Accept"))
+				{
+					request.Accept = requestSettings.requestHeaders["Accept"];
+				}
+				if (!string.IsNullOrEmpty(requestSettings.body))
+				{
+					var data = Encoding.UTF8.GetBytes(requestSettings.body);
+					if (requestSettings.requestHeaders.ContainsKey("Content-Type"))
+					{
+						request.ContentType = requestSettings.requestHeaders["Content-Type"];
+					}
+					foreach (var kvp in requestSettings.requestHeaders)
+					{
+						if (kvp.Key.Equals("Accept") || kvp.Key.Equals("Content-Type"))
+						{
+							continue;
+						}
+						request.Headers.Add(kvp.Key, kvp.Value);
+					}
+					request.ContentLength = data.Length;
+					request.ServicePoint.Expect100Continue = false;
+					var stream = request.GetRequestStream();
+					stream.Write(data, 0, data.Length);
+					stream.Close();
+				}
+				else
+				{
+					foreach (var kvp in requestSettings.requestHeaders)
+					{
+						if (kvp.Key.Equals("Accept") || kvp.Key.Equals("Content-Type"))
+						{
+							continue;
+						}
+						request.Headers.Add(kvp.Key, kvp.Value);
+					}
+				}
 
-			using (var stream = request.GetRequestStream())
+				var response = request.GetResponse();
+				if (response.Headers.HasKeys())
+				{
+					foreach (var key in response.Headers.AllKeys)
+					{
+						result.responseHeaders.Add(key, response.Headers.Get(key));
+					}
+				}
+				result.responseCode = (int)((HttpWebResponse)response).StatusCode;
+				using (var reader = new StreamReader(response.GetResponseStream()))
+				{
+					result.body = reader.ReadToEnd();
+				}
+			}
+			catch (Exception e)
 			{
-				stream.Write(data, 0, data.Length);
+				result.responsMessage = e.Message;
+
+				throw new Exception(string.Format("{0} - {1}", e.GetType().Name, e.Message));
 			}
 
-			var response = (HttpWebResponse)request.GetResponse();
-
-			requestResponse = new RequestResponse { responseCode = (int)response.StatusCode };
+			requestResponse = result;
 		}
 	}
 }

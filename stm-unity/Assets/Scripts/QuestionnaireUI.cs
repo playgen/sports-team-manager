@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using SimpleJSON;
+using PlayGen.Unity.Utilities.Extensions;
 
 /// <summary>
 /// Contains all logic relating to displaying post-game questionnaire

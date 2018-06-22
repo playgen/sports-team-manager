@@ -4,9 +4,13 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using PlayGen.SUGAR.Unity;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using UnityEngine;
 using UnityEngine.UI;
+
+using PlayGen.Unity.Utilities.Extensions;
+using PlayGen.Unity.Utilities.Video;
+
 using UnityEngine.Video;
 
 /// <summary>
@@ -75,7 +79,7 @@ public class FeedbackUI : MonoBehaviour {
 	{
 		_descriptionPopUp.transform.FindComponent<TextLocalization>("Description Pop-Up/Header").Key = descriptionType;
 		_descriptionPopUp.transform.FindComponent<TextLocalization>("Description Pop-Up/Text").Key = descriptionType + "_Description";
-		_descriptionPopUp.transform.FindComponent<VideoPlayer>("Description Pop-Up/Video Display").clip = _videos.First(v => string.Equals(v.name, descriptionType, StringComparison.CurrentCultureIgnoreCase));
+		_descriptionPopUp.transform.FindComponent<VideoPlayerUI>("Description Pop-Up/Video Display").SetClip(_videos.First(v => string.Equals(v.name, descriptionType, StringComparison.CurrentCultureIgnoreCase)));
 		_descriptionPopUp.Active(true);
 		_descriptionPopUp.transform.FindObject("Description Pop-Up/Video Display").Active(false);
 	}
@@ -190,8 +194,8 @@ public class FeedbackUI : MonoBehaviour {
 		if (_selectionGraph.activeSelf) {
 			LayoutRebuilder.ForceRebuildLayoutImmediate(_selectionGraph.RectTransform());
 			var text = _selectionGraph.GetComponentsInChildren<Text>().ToList();
-			text.Where(t => t.name == "Style" || t.name == "Percentage").ToList().BestFit();
-			text.Where(t => t.name == "Questions").ToList().BestFit();
+			text.Where(t => t.name == "Style" || t.name == "Percentage").BestFit();
+			text.Where(t => t.name == "Questions").BestFit();
 		}
 	}
 }

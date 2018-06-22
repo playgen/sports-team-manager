@@ -7,7 +7,8 @@ using PlayGen.SUGAR.Unity;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
+using PlayGen.Unity.Utilities.Extensions;
 
 /// <summary>
 /// Contains all logic related to the CrewMember Meeting pop-up
@@ -419,8 +420,8 @@ public class MemberMeetingUI : MonoBehaviour
 	private void DoBestFit()
 	{
 		_textList.BestFit();
-		new[] { _dialogueText, _statQuestion, _roleQuestion, _opinionPositiveQuestion, _opinionNegativeQuestion, _closeText }.BestFit();
-		_barForegrounds.Select(b => b.transform.parent.gameObject).BestFit();
-		_fireWarningPopUp.GetComponentsInChildren<Button>().Select(b => b.gameObject).BestFit();
+		new Component[] { _dialogueText, _statQuestion, _roleQuestion, _opinionPositiveQuestion, _opinionNegativeQuestion, _closeText }.BestFit();
+		_barForegrounds.Select(b => b.transform.Parent()).BestFit();
+		_fireWarningPopUp.GetComponentsInChildren<Button>().ToList().BestFit();
 	}
 }

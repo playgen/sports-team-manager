@@ -8,7 +8,8 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using PlayGen.SUGAR.Unity;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
+using PlayGen.Unity.Utilities.Extensions;
 
 /// <summary>
 /// Contains all UI logic related to the Recruitment pop-up
@@ -380,6 +381,6 @@ public class RecruitMemberUI : MonoBehaviour
 		var questionList = _questionButtons.Select(q => q.gameObject).ToList();
 		questionList.Add(transform.FindObject("Close"));
 		questionList.BestFit();
-		new[] { _hireWarningAccept.gameObject, _hireWarningReject.gameObject }.BestFit();
+		new Component[] { _hireWarningAccept, _hireWarningReject }.BestFit();
 	}
 }

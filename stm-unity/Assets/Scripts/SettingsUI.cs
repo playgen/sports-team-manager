@@ -1,4 +1,4 @@
-﻿using PlayGen.Unity.Utilities.BestFit;
+﻿using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Localization;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,6 +59,6 @@ public class SettingsUI : MonoBehaviour {
 	private void DoBestFit()
 	{
 		gameObject.GetComponentsInChildren<Text>().Where(t => t.transform.parent == transform).BestFit();
-		_languageDropdown.GetComponentsInChildren<Text>(true).BestFit();
+		_languageDropdown.BestFit();
 	}
 }

@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+
+using PlayGen.Unity.Utilities.Extensions;
+
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;

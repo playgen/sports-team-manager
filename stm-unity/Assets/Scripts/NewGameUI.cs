@@ -3,11 +3,12 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Loading;
 using PlayGen.Unity.Utilities.Localization;
 
 using UnityEngine.UI.Extensions.ColorPicker;
+using PlayGen.Unity.Utilities.Extensions;
 
 /// <summary>
 /// Contains all UI logic related to creating new games
@@ -60,7 +61,7 @@ public class NewGameUI : MonoBehaviour {
 	{
 		if (GameManagement.PlatformSettings.DemoMode)
 		{
-			_tutorialToggle.transform.parent.gameObject.Active(false);
+			_tutorialToggle.transform.Parent().Active(false);
 			_tutorialToggle.isOn = false;
 			if (string.IsNullOrEmpty(_boatName.text))
 			{
@@ -212,7 +213,7 @@ public class NewGameUI : MonoBehaviour {
 
 	private void DoBestFit()
 	{
-		GetComponentsInChildren<Text>().Where(t => t.gameObject.activeInHierarchy && (t.text.Length > 0 || t.GetComponentInParent<InputField>())).BestFit();
-		_overwritePopUp.GetComponentsInChildren<Button>().Where(t => t.gameObject != _overwritePopUp).Select(t => t.gameObject).BestFit();
+		GetComponentsInChildren<Text>().Where(t => t.text.Length > 0 || t.GetComponentInParent<InputField>()).BestFit(false);
+		_overwritePopUp.GetComponentsInChildren<Button>().Where(t => t.gameObject != _overwritePopUp).ToList().BestFit();
 	}
 }

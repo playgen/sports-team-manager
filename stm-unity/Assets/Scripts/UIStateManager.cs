@@ -7,12 +7,13 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Linq;
 using PlayGen.Unity.Utilities.Localization;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Loading;
 
 using RAGE.EvaluationAsset;
 
 using UnityEngine.EventSystems;
+using PlayGen.Unity.Utilities.Extensions;
 
 /// <summary>
 /// Controls switching between different game state panels
@@ -50,7 +51,6 @@ public class UIStateManager : MonoBehaviour {
 	/// </summary>
 	private void Start()
 	{
-		Localization.UpdateLanguage("en");
 		UIManagement.Initialize();
 		AvatarDisplay.LoadSprites();
 		BackToMenu();

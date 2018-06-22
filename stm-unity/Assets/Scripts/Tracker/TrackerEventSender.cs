@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+
 using PlayGen.SUGAR.Unity;
 using RAGE.Analytics;
 using RAGE.EvaluationAsset;
@@ -219,11 +221,19 @@ public class TrackerEventSender {
 				paraString += "=";
 				paraString += para.Value.ToLower();
 			}
-			EvaluationAsset.Instance.sensorData(ev.ToString().ToLower(), paraString);
+			if (!Application.isEditor)
+			{
+				SendEvaluationEventAsync(ev.ToString().ToLower(), paraString);
+			}
 		}
 		catch (Exception ex)
 		{
 			Debug.LogError(ex);
 		}
+	}
+
+	private static async void SendEvaluationEventAsync(string gameEvent, string parameter)
+	{
+		await Task.Factory.StartNew(() => EvaluationAsset.Instance.sensorData(gameEvent, parameter));
 	}
 }

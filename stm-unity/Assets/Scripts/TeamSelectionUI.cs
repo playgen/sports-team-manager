@@ -9,8 +9,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.Localization;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Loading;
+using PlayGen.Unity.Utilities.Extensions;
 
 /// <summary>
 /// A class for grouping together a sprite with a name
@@ -290,7 +291,7 @@ public class TeamSelectionUI : MonoBehaviour {
 				resultObj.GetComponent<Image>().fillAmount = 0;
 				resultObj.GetComponentInChildren<Text>().text = position.ToString();
 			}
-			_ongoingResultContainer.transform.parent.gameObject.Active(false);
+			_ongoingResultContainer.Parent().Active(false);
 			var finalPosition = GameManagement.GetCupPosition();
 			_finalPlacementText.GetComponent<TextLocalization>().Key = "POSITION_" + finalPosition;
 			_finalPlacementText.GetComponent<TextLocalization>().Set();
@@ -932,7 +933,7 @@ public class TeamSelectionUI : MonoBehaviour {
 				boat.GetComponent<LayoutElement>().preferredHeight = Mathf.Abs(currentPosition) * 0.2f;
 			}
 		}
-		_crewSort.GetComponentsInChildren<Text>(true).BestFit();
+		_crewSort.GetComponentsInChildren<Text>(true).ToList().BestFit();
 	}
 
 	/// <summary>

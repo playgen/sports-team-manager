@@ -3,7 +3,7 @@ using System.Linq;
 
 using PlayGen.SUGAR.Common.Shared;
 using PlayGen.SUGAR.Unity;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -93,7 +93,7 @@ public class LeaderboardInterface : BaseLeaderboardInterface
 			UpdatePageNumber(-1);
 			return;
 		}
-		if ((!SUGARManager.Leaderboard.CurrentStandings.Any() && _pageNumber < 0))
+		if (!SUGARManager.Leaderboard.CurrentStandings.Any() && _pageNumber < 0)
 		{
 			UpdatePageNumber(1);
 			return;
@@ -113,7 +113,9 @@ public class LeaderboardInterface : BaseLeaderboardInterface
 		_leaderboardType.text = Localization.Get(SUGARManager.Leaderboard.CurrentFilter.ToString());
 		_pageNumberText.text = Localization.GetAndFormat("PAGE", false, _pageNumber + 1);
 		_previousButton.interactable = false;
+		_previousButton.gameObject.SetActive(SUGARManager.Leaderboard.CurrentLeaderboard != null);
 		_nextButton.interactable = false;
+		_nextButton.gameObject.SetActive(SUGARManager.Leaderboard.CurrentLeaderboard != null);
 		SUGARManager.Leaderboard.GetLeaderboardStandings(_pageNumber - 1, success => { }, resultDown =>
 		{
 			_previousButton.interactable = resultDown.ToList().Count > 0 && resultDown.First().ActorName != SUGARManager.Leaderboard.CurrentStandings.First().ActorName;
@@ -127,7 +129,7 @@ public class LeaderboardInterface : BaseLeaderboardInterface
 			_nearButton.interactable = SUGARManager.CurrentUser != null && SUGARManager.Leaderboard.CurrentLeaderboard.ActorType == ActorType.User;
 			_friendsButton.interactable = SUGARManager.CurrentUser != null && SUGARManager.Leaderboard.CurrentLeaderboard.ActorType == ActorType.User;
 		}
-		_leaderboardPositions.Select(t => t.gameObject).BestFit();
+		_leaderboardPositions.ToList().BestFit();
 	}
 
 	/// <summary>
@@ -152,8 +154,8 @@ public class LeaderboardInterface : BaseLeaderboardInterface
 	/// </summary>
 	private void DoBestFit()
 	{
-		_leaderboardPositions.Select(t => t.gameObject).BestFit();
-		GetComponentsInChildren<Button>(true).Select(t => t.gameObject).BestFit();
+		_leaderboardPositions.ToList().BestFit();
+		GetComponentsInChildren<Button>(true).ToList().BestFit();
 	}
 
 	/// <summary>

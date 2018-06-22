@@ -6,7 +6,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.Localization;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
+using PlayGen.Unity.Utilities.Extensions;
 
 /// <summary>
 /// Contains UI logic related to the Post Race pop-up
