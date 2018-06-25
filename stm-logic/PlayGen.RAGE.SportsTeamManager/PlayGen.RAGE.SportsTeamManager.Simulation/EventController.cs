@@ -120,7 +120,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var expectsPos = crewMember.LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
 					var expectsPosAfter = crewMember.LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
 					var expectsSelection = crewMember.LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription());
-					if (!(expectsPos != null && expectsPos != "null") && !(expectsPosAfter != null && expectsPosAfter != "null") && !(expectsSelection != null && expectsSelection != "null"))
+					if (!(expectsPos != null && expectsPos != WellFormedNames.Name.NIL_STRING) && !(expectsPosAfter != null && expectsPosAfter != WellFormedNames.Name.NIL_STRING) && !(expectsSelection != null && expectsSelection != WellFormedNames.Name.NIL_STRING))
 					{
 						allCrew.Add(crewMember.Name, crewMember);
 					}
@@ -274,7 +274,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal List<DialogueStateActionDTO> GetPossibleAgentDialogue(string eventName)
 		{
-			return iat.GetAllDialogueActions().Where(d => d.NextState.ToString() == eventName).OrderBy(c => Guid.NewGuid()).Select(d => d.ToDTO()).ToList();
+			return iat.GetAllDialogueActions().Where(d => d.NextState.ToString() == eventName).OrderBy(c => Guid.NewGuid()).ToList();
 		}
 
 		/// <summary>
@@ -355,7 +355,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				var replyCount = PostRaceEvents[0].FindIndex(pre => pre.CrewMember == response.CrewMember);
 				var reply = response.CrewMember.SendPostRaceEvent(iat, response.Dialogue, team, response.Subjects);
 				manager.UpdateSingleBelief(string.Format("PRECrew0({0})", replyCount), response.CrewMember.Name.NoSpaces());
-				var subjects = response.Subjects.Count > 0 ? string.Join("_", response.Subjects.ToArray()) : "null";
+				var subjects = response.Subjects.Count > 0 ? string.Join("_", response.Subjects.ToArray()) : WellFormedNames.Name.NIL_STRING;
 				manager.UpdateSingleBelief(string.Format("PRESubject0({0})", replyCount), subjects);
 				SaveMeaningSelected(manager, response.Dialogue.Meaning.Split('_').Where(sp => !string.IsNullOrEmpty(sp)).ToArray());
 				SaveStyleSelected(manager, response.Dialogue.Style.Split('_').Where(sp => !string.IsNullOrEmpty(sp)).ToArray());
@@ -384,9 +384,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				for (var j = 0; j < PostRaceEvents[i].Count; j++)
 				{
-					manager.UpdateSingleBelief(string.Format("PRECrew{0}({1})", i, j), "null");
-					manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), "null");
-					manager.UpdateSingleBelief(string.Format("PRESubject{0}({1})", i, j), "null");
+					manager.UpdateSingleBelief(string.Format("PRECrew{0}({1})", i, j), WellFormedNames.Name.NIL_STRING);
+					manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), WellFormedNames.Name.NIL_STRING);
+					manager.UpdateSingleBelief(string.Format("PRESubject{0}({1})", i, j), WellFormedNames.Name.NIL_STRING);
 				}
 			}
 			manager.SaveStatus();
@@ -474,7 +474,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					manager.UpdateSingleBelief(string.Format("PRECrew{0}({1})", i, j), PostRaceEvents[i][j].CrewMember.Name.NoSpaces());
 					manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), PostRaceEvents[i][j].Dialogue.NextState != "-" ?
 												PostRaceEvents[i][j].Dialogue.NextState : PostRaceEvents[i][j].Dialogue.CurrentState);
-					var subjects = PostRaceEvents[i][j].Subjects.Count > 0 ? string.Join("_", PostRaceEvents[i][j].Subjects.ToArray()) : "null";
+					var subjects = PostRaceEvents[i][j].Subjects.Count > 0 ? string.Join("_", PostRaceEvents[i][j].Subjects.ToArray()) : WellFormedNames.Name.NIL_STRING;
 					manager.UpdateSingleBelief(string.Format("PRESubject{0}({1})", i, j), subjects);
 				}
 			}
