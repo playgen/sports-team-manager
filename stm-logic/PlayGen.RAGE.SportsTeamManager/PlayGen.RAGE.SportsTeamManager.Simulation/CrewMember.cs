@@ -17,7 +17,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class CrewMember : Person, IComparable<CrewMember>
 	{
-		private readonly ConfigStore config;
+		private readonly ConfigStore _config;
 
 		public Dictionary<CrewMemberSkill, int> Skills { get; set; }
 		public Dictionary<CrewMemberSkill, int> RevealedSkills { get; }
@@ -31,7 +31,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public CrewMember(ConfigStore con, RolePlayCharacterAsset rpc) : base(rpc)
 		{
-			config = con;
+			_config = con;
 			RevealedSkills = new Dictionary<CrewMemberSkill, int>();
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
 			{
@@ -77,12 +77,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (position != Position.Null)
 				{
 					Skills.Add(skill, position.RequiresSkill(skill) ?
-								StaticRandom.Int((int)config.ConfigValues[ConfigKeys.GoodPositionRating], 11) :
-								StaticRandom.Int(1, (int)config.ConfigValues[ConfigKeys.BadPositionRating] + 1));
+								StaticRandom.Int((int)_config.ConfigValues[ConfigKeys.GoodPositionRating], 11) :
+								StaticRandom.Int(1, (int)_config.ConfigValues[ConfigKeys.BadPositionRating] + 1));
 				}
 				else
 				{
-					Skills.Add(skill, StaticRandom.Int((int)config.ConfigValues[ConfigKeys.RandomSkillLow], (int)config.ConfigValues[ConfigKeys.RandomSkillHigh] + 1));
+					Skills.Add(skill, StaticRandom.Int((int)_config.ConfigValues[ConfigKeys.RandomSkillLow], (int)_config.ConfigValues[ConfigKeys.RandomSkillHigh] + 1));
 				}
 			}
 		}
@@ -92,7 +92,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private string SelectGender()
 		{
-			return StaticRandom.Int(0, 1000) % 2 == 0 ? "Male" : "Female";
+			return StaticRandom.Int(0, 1000) % 2 == 0 ? "M" : "F";
 		}
 
 		/// <summary>
@@ -109,48 +109,42 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private string SelectRandomName()
 		{
 			var name = string.Empty;
-			switch (Gender)
+			List<string> names;
+			if (Gender == "M")
 			{
-				case "Male":
-					{
-						if (Nationality != null && config.NameConfig.MaleForename.ContainsKey(Nationality))
-						{
-							var names = config.NameConfig.MaleForename[Nationality];
-							name += names[StaticRandom.Int(0, names.Count)];
-						}
-						else
-						{
-							var names = config.NameConfig.MaleForename.Values.ToList().SelectMany(n => n).ToList();
-							name += names[StaticRandom.Int(0, names.Count)];
-						}
-					}
-					break;
-				case "Female":
-					{
-						if (Nationality != null && config.NameConfig.FemaleForename.ContainsKey(Nationality))
-						{
-							var names = config.NameConfig.FemaleForename[Nationality];
-							name += names[StaticRandom.Int(0, names.Count)];
-						}
-						else
-						{
-							var names = config.NameConfig.FemaleForename.Values.ToList().SelectMany(n => n).ToList();
-							name += names[StaticRandom.Int(0, names.Count)];
-						}
-					}
-					break;
-			}
-			name += " ";
-			if (Nationality != null && config.NameConfig.Surname.ContainsKey(Nationality))
-			{
-				var names = config.NameConfig.Surname[Nationality];
-				name += names[StaticRandom.Int(0, names.Count)];
+				if (Nationality != null && _config.NameConfig.MaleForename.ContainsKey(Nationality))
+				{
+					names = _config.NameConfig.MaleForename[Nationality];
+				}
+				else
+				{
+					names = _config.NameConfig.MaleForename.Values.ToList().SelectMany(n => n).ToList();
+				}
 			}
 			else
 			{
-				var names = config.NameConfig.Surname.Values.ToList().SelectMany(n => n).ToList();
-				name += names[StaticRandom.Int(0, names.Count)];
+				if (Nationality != null && _config.NameConfig.FemaleForename.ContainsKey(Nationality))
+				{
+					names = _config.NameConfig.FemaleForename[Nationality];
+				}
+				else
+				{
+					names = _config.NameConfig.FemaleForename.Values.ToList().SelectMany(n => n).ToList();
+				}
 			}
+			name += names[StaticRandom.Int(0, names.Count)] + " ";
+
+			if (Nationality != null && _config.NameConfig.Surname.ContainsKey(Nationality))
+			{
+				names = _config.NameConfig.Surname[Nationality];
+			}
+			else
+			{
+				names = _config.NameConfig.Surname.Values.ToList().SelectMany(n => n).ToList();
+			}
+
+			name += names[StaticRandom.Int(0, names.Count)];
+
 			return name;
 		}
 
@@ -177,11 +171,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					continue;
 				}
-				AddOrUpdateOpinion(person, StaticRandom.Int((int)config.ConfigValues[ConfigKeys.DefaultOpinionMin], (int)config.ConfigValues[ConfigKeys.DefaultOpinionMax] + 1));
+				AddOrUpdateOpinion(person, StaticRandom.Int((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax] + 1));
 				//if the two people share the same last name, give the bonus stated in the config to their opinion
 				if (person.GetType() == typeof(CrewMember) && Name.Split(new[] { ' ' }, 2).Last() == person.Split(new[] { ' ' }, 2).Last())
 				{
-					AddOrUpdateOpinion(person, (int)config.ConfigValues[ConfigKeys.LastNameBonusOpinion]);
+					AddOrUpdateOpinion(person, (int)_config.ConfigValues[ConfigKeys.LastNameBonusOpinion]);
 				}
 				AddOrUpdateRevealedOpinion(person, 0, false);
 			}
@@ -208,19 +202,27 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				CrewOpinions[person] += change;
 			}
-			if (CrewOpinions[person] < -5)
-			{
-				CrewOpinions[person] = -5;
-			}
-			if (CrewOpinions[person] > 5)
-			{
-				CrewOpinions[person] = 5;
-			}
+			CrewOpinions[person] = LimitOpinionToRange(CrewOpinions[person]);
 			if (!load)
 			{
 				UpdateSingleBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), person.NoSpaces()), CrewOpinions[person].ToString());
 			}
 		}
+
+		/// <summary>
+		/// Limit crew opinions to a certain range
+		/// </summary>
+		/// <param name="value"></param>
+		/// <param name="inclusiveMinimum">default: -5</param>
+		/// <param name="inclusiveMaximum">default: 5</param>
+		/// <returns></returns>
+		private int LimitOpinionToRange(int value, int inclusiveMinimum = -5, int inclusiveMaximum = 5)
+		{
+			if (value < inclusiveMinimum) { return inclusiveMinimum; }
+			if (value > inclusiveMaximum) { return inclusiveMaximum; }
+			return value;
+		}
+
 
 		/// <summary>
 		/// Update the known opinion on this Person
@@ -312,7 +314,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RestCount--;
 			if (assigned)
 			{
-				RestCount = (int)config.ConfigValues[ConfigKeys.PostRaceRest];
+				RestCount = (int)_config.ConfigValues[ConfigKeys.PostRaceRest];
 			}
 			UpdateSingleBelief(NPCBeliefs.Rest.GetDescription(), RestCount.ToString());
 		}
@@ -343,8 +345,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					//add this skill rating to the dictionary to revealed skills
 					RevealedSkills[selectedStat] = statValue;
 					//get available dialogue based off of the rating in the skill
-					style += statValue <= (int)config.ConfigValues[ConfigKeys.BadSkillRating] ? "Bad" :
-								statValue >= (int)config.ConfigValues[ConfigKeys.GoodSkillRating] ? "Good" : "Middle";
+					style += statValue <= (int)_config.ConfigValues[ConfigKeys.BadSkillRating] ? "Bad" :
+								statValue >= (int)_config.ConfigValues[ConfigKeys.GoodSkillRating] ? "Good" : "Middle";
 					reply.Add(statName.ToLower());
 					//save that this skill has been revealed
 					UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
@@ -361,13 +363,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var crewOpinionsPositive = CrewOpinions.Where(c => team.CrewMembers.ContainsKey(c.Key)).ToDictionary(p => p.Key, p => p.Value);
 					crewOpinionsPositive.Add(team.Manager.Name, CrewOpinions[team.Manager.Name]);
 					//get all opinions where the value is equal/greater than the OpinionLike value in the config
-					var opinionsPositive = crewOpinionsPositive.Where(co => co.Value >= (int)config.ConfigValues[ConfigKeys.OpinionLike]).ToDictionary(o => o.Key, o => o.Value);
+					var opinionsPositive = crewOpinionsPositive.Where(co => co.Value >= (int)_config.ConfigValues[ConfigKeys.OpinionLike]).ToDictionary(o => o.Key, o => o.Value);
 					//if there are any positive opinions
 					if (opinionsPositive.Any())
 					{
 						//select an opinion at random
 						var pickedOpinionPositive = opinionsPositive.OrderBy(o => Guid.NewGuid()).First();
-						if (pickedOpinionPositive.Value >= (int)config.ConfigValues[ConfigKeys.OpinionStrongLike])
+						if (pickedOpinionPositive.Value >= (int)_config.ConfigValues[ConfigKeys.OpinionStrongLike])
 						{
 							style += "High";
 						}
@@ -383,11 +385,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				case "OpinionRevealNegative":
 					var crewOpinionsNegative = CrewOpinions.Where(c => team.CrewMembers.ContainsKey(c.Key)).ToDictionary(p => p.Key, p => p.Value);
 					crewOpinionsNegative.Add(team.Manager.Name, CrewOpinions[team.Manager.Name]);
-					var opinionsNegative = crewOpinionsNegative.Where(co => co.Value <= (int)config.ConfigValues[ConfigKeys.OpinionDislike]).ToDictionary(o => o.Key, o => o.Value);
+					var opinionsNegative = crewOpinionsNegative.Where(co => co.Value <= (int)_config.ConfigValues[ConfigKeys.OpinionDislike]).ToDictionary(o => o.Key, o => o.Value);
 					if (opinionsNegative.Any())
 					{
 						var pickedOpinionNegative = opinionsNegative.OrderBy(o => Guid.NewGuid()).First();
-						if (pickedOpinionNegative.Value >= (int)config.ConfigValues[ConfigKeys.OpinionStrongDislike])
+						if (pickedOpinionNegative.Value >= (int)_config.ConfigValues[ConfigKeys.OpinionStrongDislike])
 						{
 							style += "High";
 						}
@@ -417,26 +419,29 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal string SendRecruitEvent(IntegratedAuthoringToolAsset iat, CrewMemberSkill skill)
 		{
 			List<DialogueStateActionDTO> dialogueOptions;
+			string state;
 			if (Skills[skill] >= 9)
 			{
-				dialogueOptions = iat.GetDialogueActionsByState("NPC_StrongAgree").ToList();
+				state = "NPC_StrongAgree";
 			}
 			else if (Skills[skill] >= 7)
 			{
-				dialogueOptions = iat.GetDialogueActionsByState("NPC_Agree").ToList();
+				state = "NPC_Agree";
 			}
 			else if (Skills[skill] >= 5)
 			{
-				dialogueOptions = iat.GetDialogueActionsByState("NPC_Neither").ToList();
+				state = "NPC_Neither";
 			}
 			else if (Skills[skill] >= 3)
 			{
-				dialogueOptions = iat.GetDialogueActionsByState("NPC_Disagree").ToList();
+				state = "NPC_Disagree";
 			}
 			else
 			{
-				dialogueOptions = iat.GetDialogueActionsByState("NPC_StrongDisagree").ToList();
+				state = "NPC_StrongDisagree";
 			}
+			dialogueOptions = iat.GetDialogueActionsByState(state).ToList();
+
 			return dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
 		}
 
@@ -532,7 +537,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var spacelessName = RolePlayCharacter.CharacterName;
 
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			var eventString = string.Format("PostRace({0})", ev);
+			var eventString = $"PostRace({ev})";
 			if (ev.Contains("("))
 			{
 				eventString = string.Format(ev);
@@ -668,7 +673,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "Retired");
 			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,Status(Retired),{0})";
-			RolePlayCharacter.Perceive((Name)string.Format(eventBase, spacelessName));
+			RolePlayCharacter.Perceive((Name)$"Event(Action-Start,Player,Status(Retired),{spacelessName})");
 			Avatar = new Avatar(this, false, true);
 			SaveStatus();
 		}
@@ -679,7 +684,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string GetSocialImportanceRating(string name)
 		{
 			var siValue = SocialImportance.GetSocialImportance(name.NoSpaces());
-			return siValue < 5 ? "Negative" : siValue > 5 ? "Positive" : "Mid";
+			return siValue < 5 
+				? "Negative" 
+				: siValue > 5 
+					? "Positive" 
+					: "Mid";
 		}
 
 		/// <summary>

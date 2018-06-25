@@ -66,6 +66,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					AssetManager.Instance.Bridge = new AndroidBaseBridge();
 					break;
 				case Platform.iOS:
+					// TODO, check if this should be 'Android'
 					AssetManager.Instance.Bridge = new AndroidBaseBridge();
 					break;
 				case Platform.Windows:
