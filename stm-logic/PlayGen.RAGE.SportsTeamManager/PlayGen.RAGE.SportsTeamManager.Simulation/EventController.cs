@@ -354,16 +354,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				var replyCount = PostRaceEvents[0].FindIndex(pre => pre.CrewMember == response.CrewMember);
 				var reply = response.CrewMember.SendPostRaceEvent(iat, response.Dialogue, team, response.Subjects);
-				manager.UpdateSingleBelief(string.Format("PRECrew0({0})", replyCount), response.CrewMember.Name.NoSpaces());
+				manager.UpdateSingleBelief($"PRECrew0({replyCount})", response.CrewMember.Name.NoSpaces());
 				var subjects = response.Subjects.Count > 0 ? string.Join("_", response.Subjects.ToArray()) : "null";
-				manager.UpdateSingleBelief(string.Format("PRESubject0({0})", replyCount), subjects);
+				manager.UpdateSingleBelief($"PRESubject0({replyCount})", subjects);
 				SaveMeaningSelected(manager, response.Dialogue.Meaning.Split('_').Where(sp => !string.IsNullOrEmpty(sp)).ToArray());
 				SaveStyleSelected(manager, response.Dialogue.Style.Split('_').Where(sp => !string.IsNullOrEmpty(sp)).ToArray());
 				if (reply != null)
 				{
 					var newPre = new PostRaceEventState(response.CrewMember, reply, response.Subjects);
 					replies.Add(newPre);
-					manager.UpdateSingleBelief(string.Format("PREEvent0({0})", replyCount), reply.NextState);
+					manager.UpdateSingleBelief($"PREEvent0({replyCount})", reply.NextState);
 					PostRaceEvents[0][replyCount] = newPre;
 				}
 				else
@@ -384,9 +384,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				for (var j = 0; j < PostRaceEvents[i].Count; j++)
 				{
-					manager.UpdateSingleBelief(string.Format("PRECrew{0}({1})", i, j), "null");
-					manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), "null");
-					manager.UpdateSingleBelief(string.Format("PRESubject{0}({1})", i, j), "null");
+					manager.UpdateSingleBelief($"PRECrew{i}({j})", "null");
+					manager.UpdateSingleBelief($"PREEvent{i}({j})", "null");
+					manager.UpdateSingleBelief($"PRESubject{i}({j})", "null");
 				}
 			}
 			manager.SaveStatus();
@@ -405,8 +405,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						continue;
 					}
-					int.TryParse(manager.LoadBelief(string.Format("PossibleMeaning({0})", meaning)), out var currentCount);
-					manager.UpdateSingleBelief(string.Format("PossibleMeaning({0})", meaning), (currentCount + 1).ToString());
+					int.TryParse(manager.LoadBelief($"PossibleMeaning({meaning})"), out var currentCount);
+					manager.UpdateSingleBelief($"PossibleMeaning({meaning})", (currentCount + 1).ToString());
 				}
 			}
 		}
@@ -424,8 +424,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						continue;
 					}
-					int.TryParse(manager.LoadBelief(string.Format("PossibleStyle({0})", style)), out var currentCount);
-					manager.UpdateSingleBelief(string.Format("PossibleStyle({0})", style), (currentCount + 1).ToString());
+					int.TryParse(manager.LoadBelief($"PossibleStyle({style})"), out var currentCount);
+					manager.UpdateSingleBelief($"PossibleStyle({style})", (currentCount + 1).ToString());
 				}
 			}
 		}
@@ -441,8 +441,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					continue;
 				}
-				int.TryParse(manager.LoadBelief(string.Format("Meaning({0})", meaning)), out var currentCount);
-				manager.UpdateSingleBelief(string.Format("Meaning({0})", meaning), (currentCount + 1).ToString());
+				int.TryParse(manager.LoadBelief($"Meaning({meaning})"), out var currentCount);
+				manager.UpdateSingleBelief($"Meaning({meaning})", (currentCount + 1).ToString());
 			}
 		}
 
@@ -457,8 +457,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					continue;
 				}
-				int.TryParse(manager.LoadBelief(string.Format("Style({0})", style)), out var currentCount);
-				manager.UpdateSingleBelief(string.Format("Style({0})", style), (currentCount + 1).ToString());
+				int.TryParse(manager.LoadBelief($"Style({style})"), out var currentCount);
+				manager.UpdateSingleBelief($"Style({style})", (currentCount + 1).ToString());
 			}
 		}
 
@@ -471,11 +471,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				for (var j = 0; j < PostRaceEvents[i].Count; j++)
 				{
-					manager.UpdateSingleBelief(string.Format("PRECrew{0}({1})", i, j), PostRaceEvents[i][j].CrewMember.Name.NoSpaces());
-					manager.UpdateSingleBelief(string.Format("PREEvent{0}({1})", i, j), PostRaceEvents[i][j].Dialogue.NextState != "-" ?
+					manager.UpdateSingleBelief($"PRECrew{i}({j})", PostRaceEvents[i][j].CrewMember.Name.NoSpaces());
+					manager.UpdateSingleBelief($"PREEvent{i}({j})", PostRaceEvents[i][j].Dialogue.NextState != "-" ?
 												PostRaceEvents[i][j].Dialogue.NextState : PostRaceEvents[i][j].Dialogue.CurrentState);
 					var subjects = PostRaceEvents[i][j].Subjects.Count > 0 ? string.Join("_", PostRaceEvents[i][j].Subjects.ToArray()) : "null";
-					manager.UpdateSingleBelief(string.Format("PRESubject{0}({1})", i, j), subjects);
+					manager.UpdateSingleBelief($"PRESubject{i}({j})", subjects);
 				}
 			}
 			manager.SaveStatus();

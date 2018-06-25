@@ -103,7 +103,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				result.responsMessage = e.Message;
 
-				throw new Exception(string.Format("{0} - {1}", e.GetType().Name, e.Message));
+				throw new Exception($"{e.GetType().Name} - {e.Message}");
 			}
 
 			requestResponse = result;

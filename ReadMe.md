@@ -24,7 +24,7 @@ See the [LICENCE](LICENCE.md) file included in this project.
 - [SUGAR](http://www.sugarengine.org/) is a Social Gamification Backend.
 - [Evaluation Asset](https://gamecomponents.eu/content/338) asset that evaluates the pedagogical efficiency of the game.  
 - [RAGE Analytics](https://gamecomponents.eu/content/232) asset to log to the RAGE analytics server.
-- ExcelToJsonConverter: is used to convert Excel Localization files to jSON.
+- [ExcelToJsonConverter](https://github.com/Benzino/ExcelToJsonConverter): is used to convert Excel Localization files to jSON.
 - [GameWork](https://github.com/Game-Work/GameWork.Unity) is a game development framework. 
 - [Integrated Authoring Tool](https://gamecomponents.eu/content/201): is used in by the emotional decisionmaking component.
 
@@ -50,7 +50,13 @@ Note: Each argument should be separated with a `;`
   - level 2: End game and conversation review  
   - Level 3: End game, conversation review and in game feedback
 - `forcelaunch` If the game should ignore time stamp
-- `round`: which round of scenarios to play
+- `round`: which round of scenarios to playgi
+
+## Getting Started
+- Rebuild the stm-logic project at stm-logic/PlayGen.RAGE.SportsTeamManager/Playgen.RAGE.SportsTeamManager.sln
+- Open stm-unity in Unity Editor, this can take a while to transcode the included video files.
+- Set up the game for SUGAR, for more information see the [SUGAR Quick Start Guide](http://api.sugarengine.org/v1/unity-client/tutorials/quick-start.html)
+- Optionally, set up credentials for logging in to SUGAR on game start at SUGAR -> Set Auto Log-in Values
 
 ## Updating:
 ### FAtiMA-Toolkit 
