@@ -228,10 +228,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private Color RandomizeColor(Color original)
 		{
 			var change = StaticRandom.Int(-50, 50);
-			var eyeColorRed = original.R + change;
-			var eyeColorGreen = original.G + change;
-			var eyeColorBlue = original.B + change;
-			return new Color((byte)LimitToRange(eyeColorRed), (byte)LimitToRange(eyeColorGreen), (byte)LimitToRange(eyeColorBlue), 255);
+			var colorRed = original.R + change;
+			var colorGreen = original.G + change;
+			var colorBlue = original.B + change;
+			return new Color((byte)LimitToRange(colorRed), (byte)LimitToRange(colorGreen), (byte)LimitToRange(colorBlue), 255);
 		}
 
 		/// <summary>
