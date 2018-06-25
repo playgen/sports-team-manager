@@ -56,38 +56,35 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			
 			foreach (var promotion in promotionTriggers)
 			{
-				if (promotion.StartType != "Start")
+				//is there a promotion trigger that has a StartType of 'Start' and has a values less than 0 for ScoreMetSinceLast?
+				if (promotion.StartType != "Start" && promotion.ScoreMetSinceLast <= 0)
 				{
-					//is there a promotion trigger that has a StartType of 'Start' and has a values less than 0 for ScoreMetSinceLast?
-					if (promotion.ScoreMetSinceLast <= 0)
-					{
-						invalidString += $"ScoreMetSinceLast for StartType {promotion.StartType} and NewType {promotion.NewType} should be greater than 0.\n";
-					}
-					//is there a promotion trigger that does not have a StartType of 'Start' and has a StartType that isn't provided in BoatConfig.json?
-					if (_config.BoatTypes.All(bt => bt.Key != promotion.StartType))
-					{
-						invalidString += $"StartType {promotion.StartType} is not an existing BoatType.\n";
-					}
+					invalidString += string.Format("ScoreMetSinceLast for StartType {0} and NewType {1} should be greater than 0.\n", promotion.StartType, promotion.NewType);
 				}
 				//is there a promotion trigger that has a StartType that is the same as it's NewType?
 				if (promotion.StartType == promotion.NewType)
 				{
-					invalidString += $"Invalid PromotionTrigger in Game Config for {promotion.StartType}, will result in changing to same boat type.\n";
+					invalidString += string.Format("Invalid PromotionTrigger in Game Config for {0}, will result in changing to same boat type.\n", promotion.StartType);
+				}
+				//is there a promotion trigger that does not have a StartType of 'Start' and has a StartType that isn't provided in BoatConfig.json?
+				if (promotion.StartType != "Start" && _config.BoatTypes.All(bt => bt.Key != promotion.StartType))
+				{
+					invalidString += string.Format("StartType {0} is not an existing BoatType.\n", promotion.StartType);
 				}
 				//is there a promotion trigger that does not have a NewType of 'Finish' and has a NewType that isn't provided in BoatConfig.json?
 				if (promotion.NewType != "Finish" && _config.BoatTypes.All(bt => bt.Key != promotion.NewType))
 				{
-					invalidString += $"NewType {promotion.NewType} is not an existing BoatType.\n";
+					invalidString += string.Format("NewType {0} is not an existing BoatType.\n", promotion.NewType);
 				}
 				//is there a promotion trigger that is impossible to trigger?
 				if (promotionTriggers.Any(pt => pt != promotion && pt.StartType == promotion.StartType && pt.ScoreMetSinceLast <= promotion.ScoreMetSinceLast && pt.ScoreRequired <= promotion.ScoreRequired))
 				{
-					invalidString += $"PromotionTrigger with StartType {promotion.StartType}, NewType {promotion.NewType} will never be triggered.\n";
+					invalidString += string.Format("PromotionTrigger with StartType {0}, NewType {1} will never be triggered.\n", promotion.StartType, promotion.NewType);
 				}
 				//is there a promotion trigger that is impossible to trigger?
 				if (promotion.StartType != "Start" && promotionTriggers.All(pt => pt.NewType != promotion.StartType))
 				{
-					invalidString += $"PromotionTrigger with StartType {promotion.StartType}, NewType {promotion.NewType} will never be triggered.\n";
+					invalidString += string.Format("PromotionTrigger with StartType {0}, NewType {1} will never be triggered.\n", promotion.StartType, promotion.NewType);
 				}
 			}
 			var eventTriggers = _config.GameConfig.EventTriggers;
@@ -98,17 +95,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//is there a post race event trigger that is not a valid name for an event?
 				if (postRaceNames.All(prn => prn != "Player_" + ev.EventName))
 				{
-					invalidString += $"{ev.EventName} is not an existing event name.\n";
+					invalidString += string.Format("{0} is not an existing event name.\n", ev.EventName);
 				}
 				//is there a post race event trigger that contains an invalid boat type?
 				if (ev.StartBoatType != null && _config.BoatTypes.All(bt => bt.Key != ev.StartBoatType))
 				{
-					invalidString += $"StartBoatType {ev.StartBoatType} is not an existing BoatType.\n";
+					invalidString += string.Format("StartBoatType {0} is not an existing BoatType.\n", ev.StartBoatType);
 				}
 				//is there a post race event trigger that contains an invalid boat type?
 				if (ev.EndBoatType != null && _config.BoatTypes.All(bt => bt.Key != ev.EndBoatType))
 				{
-					invalidString += $"EndBoatType {ev.EndBoatType} is not an existing BoatType.\n";
+					invalidString += string.Format("EndBoatType {0} is not an existing BoatType.\n", ev.EndBoatType);
 				}
 				//is there a post race event trigger that has a RaceTrigger value less than 0?
 				if (ev.RaceTrigger < 0)
@@ -230,7 +227,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					member.CreateInitialOpinions(names);
 				}
-				member.UpdateBeliefs("null");
+				member.UpdateBeliefs(Name.NIL_STRING);
 				member.SaveStatus();
 			}
 			Team.CreateRecruits();
@@ -434,7 +431,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//position crew members and gather set-up information using details from split string
 				for (var i = 0; i < boat.Positions.Count; i++)
 				{
-					if (subjectSplit[((i + 1) * 2) - 1].NoSpaces() != "null")
+					if (subjectSplit[((i + 1) * 2) - 1].NoSpaces() != Name.NIL_STRING)
 					{
 						boat.PositionCrew.Add(boat.Positions[i], crewMembers.Single(c => c.Name.NoSpaces() == subjectSplit[((i + 1) * 2) - 1].NoSpaces()));
 						boat.PositionScores.Add(boat.Positions[i], Convert.ToInt32(subjectSplit[(i + 1) * 2]));
@@ -464,15 +461,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var eventSectionsFound = 0;
 			while (!noEventFound)
 			{
-				var crewMemberName = Team.Manager.LoadBelief($"PRECrew{eventsFound}({eventSectionsFound})");
-				if (crewMemberName != "null")
+				var crewMemberName = Team.Manager.LoadBelief(string.Format("PRECrew{0}({1})", eventsFound, eventSectionsFound));
+				if (crewMemberName != Name.NIL_STRING)
 				{
 					var crewMember = Team.CrewMembers.FirstOrDefault(cm => cm.Key.NoSpaces() == crewMemberName).Value
 									?? Team.RetiredCrew.FirstOrDefault(cm => cm.Key.NoSpaces() == crewMemberName).Value;
 					if (crewMember != null)
 					{
-						var evName = Team.Manager.LoadBelief($"PREEvent{eventsFound}({eventSectionsFound})");
-						if (evName != "null")
+						var evName = Team.Manager.LoadBelief(string.Format("PREEvent{0}({1})", eventsFound, eventSectionsFound));
+						if (evName != Name.NIL_STRING)
 						{
 							var ev = EventController.GetPossibleAgentDialogue(evName).FirstOrDefault()
 								?? EventController.GetPossibleAgentDialogue("PostRaceEventStart").FirstOrDefault(e => e.NextState == evName);
@@ -480,8 +477,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							{
 								EventController.PostRaceEvents.Add(new List<PostRaceEventState>());
 							}
-							var subjectString = Team.Manager.LoadBelief($"PRESubject{eventsFound}({eventSectionsFound})");
-							var subjects = subjectString != "null" ? subjectString.Split('_').ToList() : new List<string>();
+							var subjectString = Team.Manager.LoadBelief(string.Format("PRESubject{0}({1})", eventsFound, eventSectionsFound));
+							var subjects = subjectString != Name.NIL_STRING ? subjectString.Split('_').ToList() : new List<string>();
 							EventController.PostRaceEvents[eventsFound].Add(new PostRaceEventState(crewMember, ev, subjects));
 							eventSectionsFound++;
 							continue;
@@ -816,7 +813,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			foreach (var result in results)
 			{
-				Team.Manager.UpdateSingleBelief($"QuestionnaireMeaning({result.Key})", result.Value.ToString());
+				Team.Manager.UpdateSingleBelief(string.Format("QuestionnaireMeaning({0})", result.Key), result.Value.ToString());
 			}
 			QuestionnaireCompleted = true;
 			Team.Manager.UpdateSingleBelief(NPCBeliefs.QuestionnaireCompleted.GetDescription(), QuestionnaireCompleted.ToString());
