@@ -123,6 +123,7 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void Display()
 	{
+		//TODO clean
 		if (!gameObject.activeInHierarchy)
 		{
 			return;
@@ -135,9 +136,9 @@ public class MemberMeetingUI : MonoBehaviour
 		_avatarDisplay.GetComponent<Image>().color = new UnityEngine.Color(0, 1, 1);
 		_avatarDisplay.transform.parent.GetComponent<Image>().color = AvatarDisplay.MoodColor(_currentMember.GetMood());
 		//CrewMember information
+		var currentRole = _currentMember.BoatPosition();
 		_textList[0].text = _currentMember.Name;
 		_textList[1].text = _currentMember.Age.ToString();
-		var currentRole = _currentMember.BoatPosition();
 		_textList[2].text = currentRole == Position.Null ? Localization.Get("NO_ROLE") : string.Empty;
 		_textList[3].text = Localization.Get("NAME") + ":";
 		_textList[4].text = Localization.Get("AGE") + ":";

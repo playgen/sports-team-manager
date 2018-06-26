@@ -36,8 +36,20 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		_defaultParent = parent;
 		Usable = usable;
 		Current = current;
-		transform.FindImage("AvatarIcon").color = Usable ? new Color(0, 1, 1) : Current ? new Color(0, 0.5f, 0.5f) : Color.white;
-		GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(CrewMember.GetMood()) : Current ? Color.grey : Color.black;
+		transform.FindImage("AvatarIcon").color = 
+			Usable ? 
+				new Color(0, 1, 1) 
+				: Current ? 
+					new Color(0, 0.5f, 0.5f) 
+					: Color.white;
+
+		GetComponent<Image>().color = 
+			Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ?
+				AvatarDisplay.MoodColor(CrewMember.GetMood()) 
+				: Current ? 
+					Color.grey 
+					: Color.black;
+
 		GetComponent<Button>().enabled = Current;
 		if (!GameManagement.SeasonOngoing)
 		{
@@ -51,12 +63,13 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	public void SetSortValue(string value)
 	{
 		_sortValue = value;
-		transform.FindImage("Sort").enabled = !string.IsNullOrEmpty(_sortValue) && transform.parent == _defaultParent;
-		transform.FindText("Sort/Sort Text").enabled = !string.IsNullOrEmpty(_sortValue) && transform.parent == _defaultParent;
-		if (transform.FindImage("Sort").enabled)
-		{
-			transform.FindText("Sort/Sort Text").text = _sortValue;
-		}
+		var isEnabled = !string.IsNullOrEmpty(_sortValue) && transform.parent == _defaultParent;
+		var sortImage = transform.FindImage("Sort");
+		var sortText = transform.FindText("Sort/Sort Text");
+
+		sortImage.enabled = isEnabled;
+		sortText.enabled = isEnabled;
+		sortText.text = _sortValue;
 	}
 
 	public void NotCurrent()
@@ -151,6 +164,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		}
 		if (_beingClicked)
 		{
+			// TODO why 15?
 			if (Vector2.Distance(Input.mousePosition, _currentPositon + _dragPosition) > 15)
 			{
 				_beingClicked = false;
@@ -160,41 +174,31 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 
 	public void ForcedMoodChange(string moodChange)
 	{
+		var usable  = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport");
+		int mood;
+
 		switch (moodChange)
 		{
 			case "negative":
-				if (CrewMember.Name.Length % 2 == 0)
-				{
-					GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "StrongDisagree");
-					GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(-3) : Current ? Color.grey : Color.black;
-				}
-				else
-				{
-					GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Disagree");
-					GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(-1) : Current ? Color.grey : Color.black;
-				}
+				mood = CrewMember.Name.Length % 2 == 0 ? -3 : -1;
 				break;
 			case "positive":
-				if (CrewMember.Name.Length % 2 == 0)
-				{
-					GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "StrongAgree");
-					GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(3) : Current ? Color.grey : Color.black;
-				}
-				else
-				{
-					GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Agree");
-					GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(1) : Current ? Color.grey : Color.black;
-				}
+				mood = CrewMember.Name.Length % 2 == 0 ? -1 : 1;
 				break;
 			case "accurate":
-				GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, CrewMember.GetMood());
-				GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(CrewMember.GetMood()) : Current ? Color.grey : Color.black;
+				mood = CrewMember.GetMood();
 				break;
 			default:
-				GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, "Neutral");
-				GetComponent<Image>().color = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ? AvatarDisplay.MoodColor(0) : Current ? Color.grey : Color.black;
+				mood = 0;
 				break;
 		}
+
+		GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, mood);
+		GetComponent<Image>().color = Usable || usable ? 
+			AvatarDisplay.MoodColor(mood) 
+			: Current ? 
+				Color.grey 
+				: Color.black;
 	}
 
 	/// <summary>

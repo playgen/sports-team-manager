@@ -62,6 +62,10 @@ public class HoverPopUpUI : MonoBehaviour {
 			GetComponentInChildren<Text>().text = Localization.Get(_currentText);
 			transform.position = Input.mousePosition;
 			//reposition accordingly if pop-up would display partially off screen
+			var positionMultiplier = _currentHovered.x < transform.position.x ? 1 : -1;
+			transform.RectTransform().anchoredPosition += new Vector2(transform.RectTransform().rect.width * 0.5f, 0) * positionMultiplier;
+
+
 			if (_currentHovered.x < transform.position.x)
 			{
 				transform.RectTransform().anchoredPosition += new Vector2(transform.RectTransform().rect.width * 0.5f, 0);

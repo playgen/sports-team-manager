@@ -31,6 +31,14 @@ public class AvatarDisplay : MonoBehaviour
 	private Image _outfitShadow;
 	private RectTransform _spriteParent;
 
+	private static readonly Color _veryGood = Color.green;
+	private static readonly Color _good = new Color(0, 1, 0.5f);
+	private static readonly Color _neutral = Color.cyan;
+	private static readonly Color _bad = new Color(1, 0.5f, 0);
+	private static readonly Color _veryBad = Color.red;
+
+	private readonly string _avatarImagePrefix = "AvatarSprites";
+	private string _avatarPrefix => "IconMask/" + _avatarImagePrefix;
 	/// <summary>
 	/// Load all avatar sprites from resources.
 	/// </summary>
@@ -41,22 +49,22 @@ public class AvatarDisplay : MonoBehaviour
 
 	public static Color MoodColor(float value)
 	{
-		var moodColor = Color.cyan;
+		var moodColor = _neutral;
 		if (value > 2)
 		{
-			moodColor = Color.green;
+			moodColor = _veryGood;
 		}
 		else if (value > 0)
 		{
-			moodColor = new Color(0, 1, 0.5f);
+			moodColor = _good;
 		}
 		else if (value < -2)
 		{
-			moodColor = Color.red;
+			moodColor = _veryBad;
 		}
 		else if (value < 0)
 		{
-			moodColor = new Color(1, 0.5f, 0);
+			moodColor = _bad;
 		}
 		return moodColor;
 	}
@@ -68,19 +76,20 @@ public class AvatarDisplay : MonoBehaviour
 	{
 		if (!_body)
 		{
-			_body = transform.FindImage("IconMask/AvatarSprites/Body") ?? transform.FindImage("AvatarSprites/Body");
-			_hairBack = transform.FindImage("IconMask/AvatarSprites/HairBack") ?? transform.FindImage("AvatarSprites/HairBack");
-			_hairFront = transform.FindImage("IconMask/AvatarSprites/HairFront") ?? transform.FindImage("AvatarSprites/HairFront");
-			_eyebrow = transform.FindImage("IconMask/AvatarSprites/Eyebrows") ?? transform.FindImage("AvatarSprites/Eyebrows");
-			_nose = transform.FindImage("IconMask/AvatarSprites/Nose") ?? transform.FindImage("AvatarSprites/Nose");
-			_mouth = transform.FindImage("IconMask/AvatarSprites/Mouth") ?? transform.FindImage("AvatarSprites/Mouth");
-			_teeth = transform.FindImage("IconMask/AvatarSprites/Teeth") ?? transform.FindImage("AvatarSprites/Teeth");
-			_eyes = transform.FindImage("IconMask/AvatarSprites/Eyes") ?? transform.FindImage("AvatarSprites/Eyes");
-			_eyePupils = transform.FindImage("IconMask/AvatarSprites/Eye Pupils") ?? transform.FindImage("AvatarSprites/Eye Pupils");
-			_outfit = transform.FindImage("IconMask/AvatarSprites/Outfit") ?? transform.FindImage("AvatarSprites/Outfit");
-			_outfitHighlight = transform.FindImage("IconMask/AvatarSprites/OutfitHighlight") ?? transform.FindImage("AvatarSprites/OutfitHighlight");
-			_outfitShadow = transform.FindImage("IconMask/AvatarSprites/OutfitShadow") ?? transform.FindImage("AvatarSprites/OutfitShadow");
-			_spriteParent = transform.FindRect("IconMask/AvatarSprites") ?? transform.FindRect("AvatarSprites");
+			_spriteParent = transform.FindRect(_avatarPrefix) ?? transform.FindRect(_avatarImagePrefix);
+
+			_body = GetAvatarImage("Body");
+			_hairBack = GetAvatarImage("HairBack");
+			_hairFront = GetAvatarImage("HairFront");
+			_eyebrow = GetAvatarImage("Eyebrows");
+			_nose = GetAvatarImage("Nose");
+			_mouth = GetAvatarImage("Mouth");
+			_teeth = GetAvatarImage("Teeth");
+			_eyes = GetAvatarImage("Eyes");
+			_eyePupils = GetAvatarImage("Eye Pupils");
+			_outfit = GetAvatarImage("Outfit");
+			_outfitHighlight = GetAvatarImage("OutfitHighlight");
+			_outfitShadow = GetAvatarImage("OutfitShadow");
 		}
 		_body.sprite = avatarSprites[avatar.BodyType];
 		_outfit.sprite = avatarSprites[avatar.OutfitBaseType];
@@ -97,16 +106,23 @@ public class AvatarDisplay : MonoBehaviour
 		_hairFront.sprite = avatarSprites[$"{avatar.HairType}_Front"];
 
 		// Set colors
-		_body.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
-		_nose.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
-		_mouth.color = avatar.IsMale ? new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255) : (Color32)Color.white;
-		_eyePupils.color = new Color32(avatar.EyeColor.R, avatar.EyeColor.G, avatar.EyeColor.B, 255);
-		_hairFront.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
-		_hairBack.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
-		_eyebrow.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, _eyebrowAlpha);
+		var skinColor = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
+		var eyeColor = new Color32(avatar.EyeColor.R, avatar.EyeColor.G, avatar.EyeColor.B, 255);
+		var hairColor = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
+		var eyebrowColor = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, _eyebrowAlpha);
 
 		var primary = new Color32(avatar.PrimaryOutfitColor.R, avatar.PrimaryOutfitColor.G, avatar.PrimaryOutfitColor.B, avatar.PrimaryOutfitColor.A);
 		var secondary = new Color32(avatar.SecondaryOutfitColor.R, avatar.SecondaryOutfitColor.G, avatar.SecondaryOutfitColor.B, avatar.SecondaryOutfitColor.A);
+
+		_body.color = skinColor;
+		_nose.color = skinColor;
+
+		_mouth.color = avatar.IsMale ? hairColor : (Color32)Color.white;
+		_eyePupils.color = eyeColor;
+		_hairFront.color = hairColor;
+		_hairBack.color = hairColor;
+		_eyebrow.color = eyebrowColor;
+
 
 		// Check the current outfit is not the casual one, we should not be changing the color of casual
 		if (avatar.CustomOutfitColor)
@@ -144,8 +160,17 @@ public class AvatarDisplay : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Get the an image from the avatar, checks which version is currently shown, masked or normal
+	/// </summary>
+	private Image GetAvatarImage(string image)
+	{
+		return transform.FindImage(_avatarPrefix + "/" + image) ?? transform.FindImage(_avatarImagePrefix + "/" + image);
+	}
+
+	/// <summary>
 	/// update the avatar's facial expression based on their agreement with the statement passed to them
 	/// </summary>
+	/// //TODO move the mapping to a config
 	public void UpdateMood(Avatar avatar, string reaction)
 	{
 		switch (reaction.Replace(" ", string.Empty))

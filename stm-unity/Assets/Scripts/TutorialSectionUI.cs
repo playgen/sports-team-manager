@@ -93,6 +93,7 @@ public class TutorialSectionUI : MonoBehaviour
 				UIManagement.MemberMeeting.ForcedOpinionChange(_attributeDict["part" + _currentText].Replace("opinion-", string.Empty));
 			}
 		}
+		//TODO clean
 		var reverseRaycast = GetComponentInChildren<ReverseRaycastTarget>();
 		reverseRaycast.MaskRect.Clear();
 		reverseRaycast.MaskRect.Add(_menuHighlighted);
