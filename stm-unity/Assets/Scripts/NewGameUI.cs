@@ -10,6 +10,8 @@ using PlayGen.Unity.Utilities.Localization;
 using UnityEngine.UI.Extensions.ColorPicker;
 using PlayGen.Unity.Utilities.Extensions;
 
+using TrackerAssetPackage;
+
 /// <summary>
 /// Contains all UI logic related to creating new games
 /// </summary>
@@ -190,12 +192,12 @@ public class NewGameUI : MonoBehaviour {
 				if (GameManagement.Team != null && GameManagement.TeamName == _boatName.text)
 				{
 					var newString = GameManagement.PositionString;
-					TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
+					TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerAsset.Verb.Initialized, new Dictionary<string, string>
 					{
-						{ TrackerContextKeys.GameName.ToString(), GameManagement.TeamName },
-						{ TrackerContextKeys.BoatLayout.ToString(), newString }
+						{ TrackerContextKey.GameName.ToString(), GameManagement.TeamName },
+						{ TrackerContextKey.BoatLayout.ToString(), newString }
 					}, CompletableTracker.Completable.Game));
-					TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvents.UserProfile, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, "setupnewteam" } });
+					TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvent.UserProfile, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, "setupnewteam" } });
 					UIStateManager.StaticGoToGame();
 				}
 				else

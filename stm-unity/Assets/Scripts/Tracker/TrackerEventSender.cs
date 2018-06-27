@@ -4,19 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using PlayGen.SUGAR.Unity;
-using RAGE.Analytics;
+
 using RAGE.EvaluationAsset;
 
+using TrackerAssetPackage;
+
 using UnityEngine;
+
+using Tracker = RAGE.Analytics.Tracker;
 
 public class TraceEvent
 {
 	public string Key;
-	public TrackerVerbs ActionType;
+	public TrackerAsset.Verb ActionType;
 	public object[] Params;
 	public Dictionary<string, string> Values;
 
-	public TraceEvent(string key, TrackerVerbs verb, Dictionary<string, string> values, params object[] param)
+	public TraceEvent(string key, TrackerAsset.Verb verb, Dictionary<string, string> values, params object[] param)
 	{
 		Key = key;
 		ActionType = verb;
@@ -39,16 +43,16 @@ public class TrackerEventSender {
 			}
 			foreach (var v in trace.Values.OrderBy(v => v.Key))
 			{
-				if (v.Key == TrackerContextKeys.TriggerUI.ToString())
+				if (v.Key == TrackerContextKey.TriggerUI.ToString())
 				{
 					if (string.IsNullOrEmpty(v.Value))
 					{
 						Debug.LogWarning(trace.Key + " event not tracked due to null TriggerUI value. If not caused by internal game event, this is a bug!");
 						return;
 					}
-					if (!Enum.IsDefined(typeof(TrackerTriggerSources), v.Value))
+					if (!Enum.IsDefined(typeof(TrackerTriggerSource), v.Value))
 					{
-						Debug.LogWarning("TrackerTriggerSources does not contain key " + v.Value + ". This is likely due to a typo in the inspector.");
+						Debug.LogWarning("TrackerTriggerSource does not contain key " + v.Value + ". This is likely due to a typo in the inspector.");
 					}
 				}
 				Tracker.T.setVar(v.Key, v.Value);
@@ -59,36 +63,36 @@ public class TrackerEventSender {
 			}
 			switch (trace.ActionType)
 			{
-				case TrackerVerbs.Accessed:
+				case TrackerAsset.Verb.Accessed:
 					if (trace.Params.Length > 0 && trace.Params[0].GetType() == typeof(AccessibleTracker.Accessible))
 					{
 						Tracker.T.Accessible.Accessed(trace.Key, (AccessibleTracker.Accessible)Enum.Parse(typeof(AccessibleTracker.Accessible), trace.Params[0].ToString()));
 						if ((AccessibleTracker.Accessible)Enum.Parse(typeof(AccessibleTracker.Accessible), trace.Params[0].ToString()) == AccessibleTracker.Accessible.Accessible)
 						{
-							SendEvaluationEvent(TrackerEvalautionEvents.Support, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, trace.Key } });
+							SendEvaluationEvent(TrackerEvalautionEvent.Support, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, trace.Key } });
 						}
 						else
 						{
-							SendEvaluationEvent(TrackerEvalautionEvents.GameActivity, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, trace.Key }, { TrackerEvaluationKeys.GoalOrientation, "neutral" }, { TrackerEvaluationKeys.Tool, "tool" } });
+							SendEvaluationEvent(TrackerEvalautionEvent.GameActivity, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, trace.Key }, { TrackerEvaluationKey.GoalOrientation, "neutral" }, { TrackerEvaluationKey.Tool, "tool" } });
 						}
 						break;
 					}
 					Tracker.T.Accessible.Accessed(trace.Key);
 					break;
-				case TrackerVerbs.Skipped:
+				case TrackerAsset.Verb.Skipped:
 					if (trace.Params.Length > 0 && trace.Params[0].GetType() == typeof(AccessibleTracker.Accessible))
 					{
 						Tracker.T.Accessible.Skipped(trace.Key, (AccessibleTracker.Accessible)Enum.Parse(typeof(AccessibleTracker.Accessible), trace.Params[0].ToString()));
-						SendEvaluationEvent(TrackerEvalautionEvents.GameActivity, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, trace.Key }, { TrackerEvaluationKeys.GoalOrientation, "neutral" }, { TrackerEvaluationKeys.Tool, "tool" } });
+						SendEvaluationEvent(TrackerEvalautionEvent.GameActivity, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, trace.Key }, { TrackerEvaluationKey.GoalOrientation, "neutral" }, { TrackerEvaluationKey.Tool, "tool" } });
 						break;
 					}
 					Tracker.T.Accessible.Skipped(trace.Key);
 					break;
-				case TrackerVerbs.Selected:
+				case TrackerAsset.Verb.Selected:
 					if (trace.Params.Length > 1 && trace.Params[1].GetType() == typeof(AlternativeTracker.Alternative) && trace.Params[0] is string)
 					{
 						Tracker.T.Alternative.Selected(trace.Key, trace.Params[0].ToString(), (AlternativeTracker.Alternative)Enum.Parse(typeof(AlternativeTracker.Alternative), trace.Params[1].ToString()));
-						SendEvaluationEvent(TrackerEvalautionEvents.GameActivity, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, trace.Key }, { TrackerEvaluationKeys.GoalOrientation, "neutral" }, { TrackerEvaluationKeys.Tool, "tool" } });
+						SendEvaluationEvent(TrackerEvalautionEvent.GameActivity, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, trace.Key }, { TrackerEvaluationKey.GoalOrientation, "neutral" }, { TrackerEvaluationKey.Tool, "tool" } });
 						break;
 					}
 					if (trace.Params.Length > 0 && trace.Params[0] is string)
@@ -98,7 +102,7 @@ public class TrackerEventSender {
 					}
 					Tracker.T.GameObject.Interacted(trace.Key);
 					break;
-				case TrackerVerbs.Unlocked:
+				case TrackerAsset.Verb.Unlocked:
 					if (trace.Params.Length > 1 && trace.Params[1].GetType() == typeof(AlternativeTracker.Alternative) && trace.Params[0] is string)
 					{
 						Tracker.T.Alternative.Unlocked(trace.Key, trace.Params[0].ToString(), (AlternativeTracker.Alternative)Enum.Parse(typeof(AlternativeTracker.Alternative), trace.Params[1].ToString()));
@@ -111,16 +115,16 @@ public class TrackerEventSender {
 					}
 					Tracker.T.GameObject.Interacted(trace.Key);
 					break;
-				case TrackerVerbs.Initialized:
+				case TrackerAsset.Verb.Initialized:
 					if (trace.Params.Length > 0 && trace.Params[0].GetType() == typeof(CompletableTracker.Completable))
 					{
 						Tracker.T.Completable.Initialized(trace.Key, (CompletableTracker.Completable)Enum.Parse(typeof(CompletableTracker.Completable), trace.Params[0].ToString()));
-						SendEvaluationEvent(TrackerEvalautionEvents.GameUsage, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, trace.Key } });
+						SendEvaluationEvent(TrackerEvalautionEvent.GameUsage, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, trace.Key } });
 					break;
 					}
 					Tracker.T.Completable.Initialized(trace.Key);
 					break;
-				case TrackerVerbs.Progressed:
+				case TrackerAsset.Verb.Progressed:
 					if (trace.Params.Length > 1 && trace.Params[0].GetType() == typeof(CompletableTracker.Completable) && trace.Params[1] is float)
 					{
 						Tracker.T.Completable.Progressed(trace.Key, (CompletableTracker.Completable)Enum.Parse(typeof(CompletableTracker.Completable), trace.Params[0].ToString()), float.Parse(trace.Params[1].ToString()));
@@ -133,25 +137,25 @@ public class TrackerEventSender {
 					}
 					Tracker.T.GameObject.Interacted(trace.Key);
 					break;
-				case TrackerVerbs.Completed:
+				case TrackerAsset.Verb.Completed:
 					if (trace.Params.Length > 0 && trace.Params[0].GetType() == typeof(CompletableTracker.Completable))
 					{
 						Tracker.T.Completable.Completed(trace.Key, (CompletableTracker.Completable)Enum.Parse(typeof(CompletableTracker.Completable), trace.Params[0].ToString()));
-						SendEvaluationEvent(TrackerEvalautionEvents.GameFlow, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Type, trace.Key }, { TrackerEvaluationKeys.Id, GameManagement.LineUpHistory.Count.ToString() }, { TrackerEvaluationKeys.Completed, "success" } });
+						SendEvaluationEvent(TrackerEvalautionEvent.GameFlow, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.PieceType, trace.Key }, { TrackerEvaluationKey.PieceId, GameManagement.LineUpHistory.Count.ToString() }, { TrackerEvaluationKey.PieceCompleted, "success" } });
 						break;
 					}
 					Tracker.T.Completable.Completed(trace.Key);
 					break;
-				case TrackerVerbs.Interacted:
+				case TrackerAsset.Verb.Interacted:
 					if (trace.Params.Length > 0 && trace.Params[0].GetType() == typeof(GameObjectTracker.TrackedGameObject))
 					{
 						Tracker.T.GameObject.Interacted(trace.Key, (GameObjectTracker.TrackedGameObject)Enum.Parse(typeof(GameObjectTracker.TrackedGameObject), trace.Params[0].ToString()));
-						SendEvaluationEvent(TrackerEvalautionEvents.GameActivity, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, trace.Key }, { TrackerEvaluationKeys.GoalOrientation, "neutral" }, { TrackerEvaluationKeys.Tool, "tool" } });
+						SendEvaluationEvent(TrackerEvalautionEvent.GameActivity, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, trace.Key }, { TrackerEvaluationKey.GoalOrientation, "neutral" }, { TrackerEvaluationKey.Tool, "tool" } });
 						break;
 					}
 					Tracker.T.GameObject.Interacted(trace.Key);
 					break;
-				case TrackerVerbs.Used:
+				case TrackerAsset.Verb.Used:
 					if (trace.Params.Length > 0 && trace.Params[0].GetType() == typeof(GameObjectTracker.TrackedGameObject))
 					{
 						Tracker.T.GameObject.Used(trace.Key, (GameObjectTracker.TrackedGameObject)Enum.Parse(typeof(GameObjectTracker.TrackedGameObject), trace.Params[0].ToString()));
@@ -172,7 +176,7 @@ public class TrackerEventSender {
 		}
 	}
 
-	public static void SendEvaluationEvent(TrackerEvalautionEvents ev, Dictionary<TrackerEvaluationKeys, string> parameters)
+	public static void SendEvaluationEvent(TrackerEvalautionEvent ev, Dictionary<TrackerEvaluationKey, string> parameters)
 	{
 		try
 		{
@@ -183,26 +187,20 @@ public class TrackerEventSender {
 			var valid = false;
 			switch (ev)
 			{
-				case TrackerEvalautionEvents.GameUsage:
-					valid = (parameters.Count == 1 && parameters.Keys.Contains(TrackerEvaluationKeys.Event));
+				case TrackerEvalautionEvent.GameUsage:
+				case TrackerEvalautionEvent.UserProfile:
+				case TrackerEvalautionEvent.Gamification:
+				case TrackerEvalautionEvent.Support:
+					valid = (parameters.Count == 1 && parameters.Keys.Contains(TrackerEvaluationKey.Event));
 					break;
-				case TrackerEvalautionEvents.UserProfile:
-					valid = (parameters.Count == 1 && parameters.Keys.Contains(TrackerEvaluationKeys.Event));
+				case TrackerEvalautionEvent.GameActivity:
+					valid = (parameters.Count == 3 && parameters.Keys.Contains(TrackerEvaluationKey.Event) && parameters.Keys.Contains(TrackerEvaluationKey.GoalOrientation) && parameters.Keys.Contains(TrackerEvaluationKey.Tool));
 					break;
-				case TrackerEvalautionEvents.GameActivity:
-					valid = (parameters.Count == 3 && parameters.Keys.Contains(TrackerEvaluationKeys.Event) && parameters.Keys.Contains(TrackerEvaluationKeys.GoalOrientation) && parameters.Keys.Contains(TrackerEvaluationKeys.Tool));
+				case TrackerEvalautionEvent.GameFlow:
+					valid = (parameters.Count == 3 && parameters.Keys.Contains(TrackerEvaluationKey.PieceType) && parameters.Keys.Contains(TrackerEvaluationKey.PieceId) && parameters.Keys.Contains(TrackerEvaluationKey.PieceCompleted));
 					break;
-				case TrackerEvalautionEvents.Gamification:
-					valid = (parameters.Count == 1 && parameters.Keys.Contains(TrackerEvaluationKeys.Event));
-					break;
-				case TrackerEvalautionEvents.GameFlow:
-					valid = (parameters.Count == 3 && parameters.Keys.Contains(TrackerEvaluationKeys.Type) && parameters.Keys.Contains(TrackerEvaluationKeys.Id) && parameters.Keys.Contains(TrackerEvaluationKeys.Completed));
-					break;
-				case TrackerEvalautionEvents.Support:
-					valid = (parameters.Count == 1 && parameters.Keys.Contains(TrackerEvaluationKeys.Event));
-					break;
-				case TrackerEvalautionEvents.AssetActivity:
-					valid = (parameters.Count == 2 && parameters.Keys.Contains(TrackerEvaluationKeys.Asset) && parameters.Keys.Contains(TrackerEvaluationKeys.Done));
+				case TrackerEvalautionEvent.AssetActivity:
+					valid = (parameters.Count == 2 && parameters.Keys.Contains(TrackerEvaluationKey.AssetId) && parameters.Keys.Contains(TrackerEvaluationKey.Action));
 					break;
 			}
 			if (!valid)

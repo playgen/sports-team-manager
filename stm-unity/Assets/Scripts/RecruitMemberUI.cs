@@ -11,6 +11,8 @@ using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Extensions;
 
+using TrackerAssetPackage;
+
 /// <summary>
 /// Contains all UI logic related to the Recruitment pop-up
 /// </summary>
@@ -46,17 +48,17 @@ public class RecruitMemberUI : MonoBehaviour
 		var history = GameManagement.LineUpHistory.AsEnumerable().Reverse().ToList();
 		var firstMismatch = history.FirstOrDefault(b => b.Type != GameManagement.Boat.Type);
 		var sessionsSinceLastChange = firstMismatch != null ? history.IndexOf(firstMismatch) : 0;
-		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKeys.CurrentSession.ToString(), GameManagement.CurrentSessionString },
-			{ TrackerContextKeys.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
-			{ TrackerContextKeys.SessionsSinceBoatLayoutChange.ToString(), sessionsSinceLastChange.ToString() }
+			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
+			{ TrackerContextKey.CurrentSession.ToString(), GameManagement.CurrentSessionString },
+			{ TrackerContextKey.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
+			{ TrackerContextKey.SessionsSinceBoatLayoutChange.ToString(), sessionsSinceLastChange.ToString() }
 		}, AccessibleTracker.Accessible.Screen));
 		_lastQuestion = null;
 		_lastAnswers = null;
 		ResetDisplay();
-		transform.EnableBlocker(() => CloseRecruitmentPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+		transform.EnableBlocker(() => CloseRecruitmentPopUp(TrackerTriggerSource.PopUpBlocker.ToString()));
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
 	}
@@ -196,13 +198,13 @@ public class RecruitMemberUI : MonoBehaviour
 		}
 		DoBestFit();
 		CostCheck();
-		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentQuestionAsked", TrackerVerbs.Selected, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentQuestionAsked", TrackerAsset.Verb.Selected, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKeys.CurrentSession.ToString(), GameManagement.CurrentSessionString },
-			{ TrackerContextKeys.QuestionAsked.ToString(), skill.ToString() },
-			{ TrackerContextKeys.QuestionCost.ToString(), ConfigKeys.SendRecruitmentQuestionCost.Value().ToString(CultureInfo.InvariantCulture) },
-			{ TrackerContextKeys.RaceStartTalkTime.ToString(), GameManagement.StartingActionAllowance.ToString() }
+			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
+			{ TrackerContextKey.CurrentSession.ToString(), GameManagement.CurrentSessionString },
+			{ TrackerContextKey.QuestionAsked.ToString(), skill.ToString() },
+			{ TrackerContextKey.QuestionCost.ToString(), ConfigKeys.SendRecruitmentQuestionCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKey.RaceStartTalkTime.ToString(), GameManagement.StartingActionAllowance.ToString() }
 		}, skill.ToString(), AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill.ToString());
@@ -224,7 +226,7 @@ public class RecruitMemberUI : MonoBehaviour
 		_currentSelected = recruit.Name;
 		//pop-up and blocker reordering
 		_hireWarningPopUp.Active(true);
-		_hireWarningPopUp.transform.EnableBlocker(() => CloseHireCrewWarning(TrackerTriggerSources.PopUpBlocker.ToString()));
+		_hireWarningPopUp.transform.EnableBlocker(() => CloseHireCrewWarning(TrackerTriggerSource.PopUpBlocker.ToString()));
 		//adjust text, button text and button positioning based on context
 		if (!ConfigKeys.RecruitmentCost.Affordable())
 		{
@@ -235,12 +237,12 @@ public class RecruitMemberUI : MonoBehaviour
 			_hireWarningReject.RectTransform().anchoredPosition = Vector2.zero;
 			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("OK");
 			_hireWarningReject.onClick.RemoveAllListeners();
-			_hireWarningReject.onClick.AddListener(() => CloseHireCrewWarning( TrackerTriggerSources.OKButtonSelected.ToString()));
+			_hireWarningReject.onClick.AddListener(() => CloseHireCrewWarning( TrackerTriggerSource.OKButtonSelected.ToString()));
 		}
 		else
 		{
 			_hireWarningAccept.onClick.RemoveAllListeners();
-			_hireWarningAccept.onClick.AddListener(() => Recruit(recruit, TrackerTriggerSources.YesButtonSelected.ToString()));
+			_hireWarningAccept.onClick.AddListener(() => Recruit(recruit, TrackerTriggerSource.YesButtonSelected.ToString()));
 			_hireWarningAccept.gameObject.Active(true);
 			_hireWarningText.text = Localization.GetAndFormat("HIRE_WARNING_POSSIBLE", false, recruit.Name);
 			_hireWarningReject.RectTransform().anchorMin = new Vector2(0.525f, 0.02f);
@@ -248,14 +250,14 @@ public class RecruitMemberUI : MonoBehaviour
 			_hireWarningReject.RectTransform().anchoredPosition = Vector2.zero;
 			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("NO");
 			_hireWarningReject.onClick.RemoveAllListeners();
-			_hireWarningReject.onClick.AddListener(() => CloseHireCrewWarning(TrackerTriggerSources.NoButtonSelected.ToString()));
+			_hireWarningReject.onClick.AddListener(() => CloseHireCrewWarning(TrackerTriggerSource.NoButtonSelected.ToString()));
 		}
 		DoBestFit();
-		TrackerEventSender.SendEvent(new TraceEvent("HirePopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("HirePopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.CrewMemberName.ToString(), recruit.Name },
-			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKeys.HiringCost.ToString(), ConfigKeys.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) }
+			{ TrackerContextKey.CrewMemberName.ToString(), recruit.Name },
+			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
+			{ TrackerContextKey.HiringCost.ToString(), ConfigKeys.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) }
 		}, AccessibleTracker.Accessible.Screen));
 	}
 
@@ -267,18 +269,18 @@ public class RecruitMemberUI : MonoBehaviour
 		_hireWarningPopUp.Active(false);
 		if (gameObject.activeInHierarchy)
 		{
-			transform.EnableBlocker(() => CloseRecruitmentPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+			transform.EnableBlocker(() => CloseRecruitmentPopUp(TrackerTriggerSource.PopUpBlocker.ToString()));
 		}
 		else
 		{
 			UIManagement.DisableBlocker();
 		}
-		TrackerEventSender.SendEvent(new TraceEvent("HirePopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("HirePopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.CrewMemberName.ToString(), _currentSelected },
-			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKeys.HiringCost.ToString(), ConfigKeys.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
-			{ TrackerContextKeys.TriggerUI.ToString(), source }
+			{ TrackerContextKey.CrewMemberName.ToString(), _currentSelected },
+			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
+			{ TrackerContextKey.HiringCost.ToString(), ConfigKeys.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKey.TriggerUI.ToString(), source }
 		}, AccessibleTracker.Accessible.Screen));
 		_currentSelected = string.Empty;
 	}
@@ -292,12 +294,12 @@ public class RecruitMemberUI : MonoBehaviour
 		UIManagement.TeamSelection.ResetCrew();
 		CloseRecruitmentPopUp(string.Empty);
 		CloseHireCrewWarning(string.Empty);
-		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberHired", TrackerVerbs.Interacted, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberHired", TrackerAsset.Verb.Interacted, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.CrewMemberName.ToString(), crewMember.Name },
-			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKeys.HiringCost.ToString(), ConfigKeys.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
-			{ TrackerContextKeys.TriggerUI.ToString(), source }
+			{ TrackerContextKey.CrewMemberName.ToString(), crewMember.Name },
+			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
+			{ TrackerContextKey.HiringCost.ToString(), ConfigKeys.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKey.TriggerUI.ToString(), source }
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Hired", true);
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
@@ -308,10 +310,10 @@ public class RecruitMemberUI : MonoBehaviour
 	/// </summary>
 	public void CloseRecruitmentPopUp(string source)
 	{
-		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKeys.TriggerUI.ToString(), source }
+			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
+			{ TrackerContextKey.TriggerUI.ToString(), source }
 		}, AccessibleTracker.Accessible.Screen));
 		UIManagement.MemberMeeting.Display();
 		gameObject.Active(false);
@@ -324,11 +326,11 @@ public class RecruitMemberUI : MonoBehaviour
 	{
 		if (transform.GetSiblingIndex() == transform.parent.childCount - 1)
 		{
-			CloseRecruitmentPopUp(TrackerTriggerSources.EscapeKey.ToString());
+			CloseRecruitmentPopUp(TrackerTriggerSource.EscapeKey.ToString());
 		}
 		else if (_hireWarningPopUp.activeInHierarchy)
 		{
-			CloseHireCrewWarning(TrackerTriggerSources.EscapeKey.ToString());
+			CloseHireCrewWarning(TrackerTriggerSource.EscapeKey.ToString());
 		}
 	}
 

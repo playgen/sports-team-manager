@@ -11,6 +11,8 @@ using PlayGen.SUGAR.Unity;
 using Color = UnityEngine.Color;
 using PlayGen.Unity.Utilities.Extensions;
 
+using TrackerAssetPackage;
+
 /// <summary>
 /// Contains all logic related to CrewMember prefabs
 /// </summary>
@@ -223,7 +225,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// </summary>
 	private void ShowPopUp()
 	{
-		UIManagement.MemberMeeting.SetUpDisplay(CrewMember, TrackerTriggerSources.TeamManagementScreen.ToString());
+		UIManagement.MemberMeeting.SetUpDisplay(CrewMember, TrackerTriggerSource.TeamManagementScreen.ToString());
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, CrewMember.Name);
 	}
 
@@ -238,12 +240,12 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			{
 				var pos = result.gameObject.GetComponent<PositionUI>().Position;
 				var crewMember = result.gameObject.GetComponent<PositionUI>().CrewMemberUI;
-				TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPositioned", TrackerVerbs.Interacted, new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPositioned", TrackerAsset.Verb.Interacted, new Dictionary<string, string>
 				{
-					{ TrackerContextKeys.CrewMemberName.ToString(), CrewMember.Name },
-					{ TrackerContextKeys.PositionName.ToString(), pos.ToString()},
-					{ TrackerContextKeys.PreviousCrewMemberInPosition.ToString(), crewMember != null ? crewMember.CrewMember.Name : "Null"},
-					{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()}
+					{ TrackerContextKey.CrewMemberName.ToString(), CrewMember.Name },
+					{ TrackerContextKey.PositionName.ToString(), pos.ToString()},
+					{ TrackerContextKey.PreviousCrewMemberInPosition.ToString(), crewMember != null ? crewMember.CrewMember.Name : "Null"},
+					{ TrackerContextKey.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()}
 				}, GameObjectTracker.TrackedGameObject.Npc));
 				SUGARManager.GameData.Send("Place Crew Member", CrewMember.Name);
 				SUGARManager.GameData.Send("Fill Position", pos.ToString());
@@ -308,7 +310,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		positionImage.GetComponent<Image>().sprite = UIManagement.TeamSelection.RoleIcons.First(mo => mo.Name == currentPosition.ToString()).Image;
 		UIManagement.PositionDisplay.UpdateDisplay();
 		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
-		positionImage.GetComponent<Button>().onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentPosition, TrackerTriggerSources.CrewMemberPopUp.ToString()));
+		positionImage.GetComponent<Button>().onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentPosition, TrackerTriggerSource.CrewMemberPopUp.ToString()));
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, CrewMember.Name);
 		SetSortValue(_sortValue);
 	}
@@ -324,10 +326,10 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		transform.SetAsLastSibling();
 		if (_currentPositon != (Vector2)transform.position)
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("CrewMemberUnpositioned", TrackerVerbs.Interacted, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("CrewMemberUnpositioned", TrackerAsset.Verb.Interacted, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.CrewMemberName.ToString(), CrewMember.Name },
-				{ TrackerContextKeys.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()}
+				{ TrackerContextKey.CrewMemberName.ToString(), CrewMember.Name },
+				{ TrackerContextKey.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()}
 			}, GameObjectTracker.TrackedGameObject.Npc));
 		}
 		if (_currentPlacement != null)

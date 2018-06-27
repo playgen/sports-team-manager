@@ -27,7 +27,7 @@ public class AchievementItemInterface : MonoBehaviour
 		gameObject.Active(true);
 		_achieveName.text = achieveName;
 		_achieveImage.enabled = completed;
-		TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvents.Gamification, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, "displayachievementpopup" } });
+		TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvent.Gamification, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, "displayachievementpopup" } });
 	}
 
 	/// <summary>

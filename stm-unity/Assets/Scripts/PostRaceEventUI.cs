@@ -9,6 +9,8 @@ using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Extensions;
 
+using TrackerAssetPackage;
+
 /// <summary>
 /// Contains UI logic related to the Post Race pop-up
 /// </summary>
@@ -83,10 +85,10 @@ public class PostRaceEventUI : MonoBehaviour
 		gameObject.Active(false);
 		if (!string.IsNullOrEmpty(source))
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.TriggerUI.ToString(), source },
-				{ TrackerContextKeys.EventID.ToString(), GameManagement.GameManager.GetPostRaceEventKeys().First(_lastStates[0].Split('_')[1].StartsWith) }
+				{ TrackerContextKey.TriggerUI.ToString(), source },
+				{ TrackerContextKey.EventID.ToString(), GameManagement.GameManager.GetPostRaceEventKeys().First(_lastStates[0].Split('_')[1].StartsWith) }
 			}, AccessibleTracker.Accessible.Screen));
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
@@ -199,11 +201,11 @@ public class PostRaceEventUI : MonoBehaviour
 		{
 			foreach (var res in _selectedResponses.Values)
 			{
-				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventDialogueSelected", TrackerVerbs.Selected, new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventDialogueSelected", TrackerAsset.Verb.Selected, new Dictionary<string, string>
 				{
-					{ TrackerContextKeys.DialogueID.ToString(), res.Dialogue.NextState },
-					{ TrackerContextKeys.DialogueStyle.ToString(), res.Dialogue.Meaning.Split('_').First(sp => !string.IsNullOrEmpty(sp)) },
-					{ TrackerContextKeys.EventID.ToString(), GameManagement.GameManager.GetPostRaceEventKeys().First(res.Dialogue.NextState.Split('_')[1].StartsWith) }
+					{ TrackerContextKey.DialogueID.ToString(), res.Dialogue.NextState },
+					{ TrackerContextKey.DialogueStyle.ToString(), res.Dialogue.Meaning.Split('_').First(sp => !string.IsNullOrEmpty(sp)) },
+					{ TrackerContextKey.EventID.ToString(), GameManagement.GameManager.GetPostRaceEventKeys().First(res.Dialogue.NextState.Split('_')[1].StartsWith) }
 				}, res.Dialogue.NextState, AlternativeTracker.Alternative.Dialog));
 				SUGARManager.GameData.Send("Post Race Event Reply", res.Dialogue.NextState);
 			}
@@ -248,7 +250,7 @@ public class PostRaceEventUI : MonoBehaviour
 		if (_postRacePeople.All(prp => prp.ActiveQuestions() == false))
 		{
 			_closeButton.Active(true);
-			transform.parent.EnableBlocker(GetLearningPill, () => Close(TrackerTriggerSources.PopUpBlocker.ToString()), UIManagement.TeamSelection.ResetCrew, SendLearningPill);
+			transform.parent.EnableBlocker(GetLearningPill, () => Close(TrackerTriggerSource.PopUpBlocker.ToString()), UIManagement.TeamSelection.ResetCrew, SendLearningPill);
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
 	}

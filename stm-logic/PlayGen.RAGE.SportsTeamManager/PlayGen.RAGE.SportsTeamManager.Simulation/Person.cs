@@ -97,7 +97,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal string LoadBelief(string belief)
 		{
-			return RolePlayCharacter.GetBeliefValue(belief);
+			var value = RolePlayCharacter.GetBeliefValue(belief);
+			return value == WellFormedNames.Name.NIL_STRING ? null : value;
 		}
 
 		/// <summary>

@@ -54,7 +54,7 @@ namespace RAGE.EvaluationAsset
             PostUrl = "http://css-kti.tugraz.at/evaluationasset/rest/sensordatapost";
 			GameId = "SportsTeamManager";
             GameVersion = "1.0";
-            PlayerId = "unknown";
+            PlayerId = SUGARManager.CurrentUser?.Name;
             Language = Localization.SelectedLanguage.TwoLetterISOLanguageName;
 		}
 
