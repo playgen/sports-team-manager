@@ -623,7 +623,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			{
 				Name = "Skippy Skip",
 				Age = 35,
-				Gender = "Male",
+				Gender = "M",
 				Skills = new Dictionary<CrewMemberSkill, int>()
 				{
 					{CrewMemberSkill.Body, 2},
@@ -638,7 +638,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			{
 				Name = "Wise Nav",
 				Age = 28,
-				Gender = "Male",
+				Gender = "M",
 				Skills = new Dictionary<CrewMemberSkill, int>()
 				{
 					{CrewMemberSkill.Body, 2},
@@ -653,7 +653,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			{
 				Name = "Dim Wobnam",
 				Age = 19,
-				Gender = "Male",
+				Gender = "M",
 				Skills = new Dictionary<CrewMemberSkill, int>()
 				{
 					{CrewMemberSkill.Body, 10},
@@ -668,7 +668,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			{
 				Name = "Rav Age",
 				Age = 25,
-				Gender = "Male",
+				Gender = "M",
 				Skills = new Dictionary<CrewMemberSkill, int>()
 				{
 					{CrewMemberSkill.Body, 5},
@@ -683,7 +683,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			{
 				Name = "Nick Pony",
 				Age = 32,
-				Gender = "Male",
+				Gender = "M",
 				Skills = new Dictionary<CrewMemberSkill, int>()
 				{
 					{CrewMemberSkill.Body, 7},

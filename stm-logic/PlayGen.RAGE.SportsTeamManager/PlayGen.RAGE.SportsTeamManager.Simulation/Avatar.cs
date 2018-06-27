@@ -22,7 +22,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string TeethType { get; private set; }
 		public float Weight { get; private set; }
 		public float Height { get; private set; }
-		public bool IsMale { get; }
+
+		public bool IsMale => _gender == "M";
+
 		public CrewMemberSkill BestSkill { get; private set; }
 
 		public bool CustomOutfitColor { get; }
@@ -34,12 +36,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Color PrimaryOutfitColor { get; set; }
 		public Color SecondaryOutfitColor { get; set; }
 
+		private readonly string _gender;
+
 		internal Avatar (CrewMember crewMember, bool isActive = true, bool canLoad = false)
 		{
 			//set outfit type
 			var outfit = !isActive ? "01" : "0" + ((StaticRandom.Int(0, 100) % 2) + 2);
-			var gender = crewMember.Gender == "Male" ? "M" : "F";
-			IsMale = crewMember.Gender == "Male";
+			_gender = crewMember.Gender;
+			var bodyType = GetBodyType(BestSkill);
 			CustomOutfitColor = outfit != "01";
 			//recreate pre-existing avatar if one already exists
 			if (canLoad)
@@ -49,12 +53,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//otherwise, create new avatar
 			else
 			{
-				CreateAvatar(crewMember, gender);
+				CreateAvatar(crewMember, _gender);
 			}
 			//set outfit according to type, best skill and gender
-			OutfitBaseType = string.Format("Outfit{0}_Base_{1}_{2}", gender, GetBodyType(BestSkill), outfit);
-			OutfitHighlightType = string.Format("Outfit{0}_Highlight_{1}_{2}", gender, GetBodyType(BestSkill), outfit);
-			OutfitShadowType = string.Format("Outfit{0}_Shadow_{1}_{2}", gender, GetBodyType(BestSkill), outfit);
+			OutfitBaseType = $"Outfit{_gender}_Base_{bodyType}_{outfit}";
+			OutfitHighlightType = $"Outfit{_gender}_Highlight_{bodyType}_{outfit}";
+			OutfitShadowType = $"Outfit{_gender}_Shadow_{bodyType}_{outfit}";
 		}
 
 		private void CreateAvatar(CrewMember crewMember, string gender)
@@ -67,11 +71,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 			//Set Hair Color
 			HairColor = Config.RandomHairColor ? GetRandomHairColor() : GetHairColorForSkin(SkinColor);
-			var hairChange = StaticRandom.Int(-50, 50);
-			var hairColorRed = HairColor.R + hairChange;
-			var hairColorGreen = HairColor.G + hairChange;
-			var hairColorBlue = HairColor.B + hairChange;
-			HairColor = new Color((byte)(hairColorRed < 0 ? 0 : hairColorRed > 255 ? 255 : hairColorRed), (byte)(hairColorGreen < 0 ? 0 : hairColorGreen > 255 ? 255 : hairColorGreen), (byte)(hairColorBlue < 0 ? 0 : hairColorBlue > 255 ? 255 : hairColorBlue), 255);
 
 			//Set Primary Color
 			PrimaryOutfitColor = CustomOutfitColor ? StaticRandom.Color() : new Color(255, 255, 255, 255);
@@ -80,34 +79,29 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			SecondaryOutfitColor = CustomOutfitColor ? StaticRandom.Color() : new Color(0, 0, 0, 0);
 
 			//Set Body Type
-			BodyType = string.Format("Body{0}_{1}", gender, GetBodyType(BestSkill));
+			BodyType = $"Body{gender}_{GetBodyType(BestSkill)}";
 
 			//Set Hair Type
-			HairType = string.Format("Hair{0:00}{1}", StaticRandom.Int(1, Config.HairTypesCount + 1), gender);
+			HairType = $"Hair{StaticRandom.Int(1, Config.HairTypesCount + 1):00}{gender}";
 
 			//Set Eye Type
-			EyeType = string.Format("Eye{0}_{1}", gender, BestSkill);
+			EyeType = $"Eye{gender}_{BestSkill}";
 
 			//Set Eye Color
 			EyeColor = GetRandomEyeColor();
-			var eyeChange = StaticRandom.Int(-50, 50);
-			var eyeColorRed = EyeColor.R + eyeChange;
-			var eyeColorGreen = EyeColor.G + eyeChange;
-			var eyeColorBlue = EyeColor.B + eyeChange;
-			EyeColor = new Color((byte)(eyeColorRed < 0 ? 0 : eyeColorRed > 255 ? 255 : eyeColorRed), (byte)(eyeColorGreen < 0 ? 0 : eyeColorGreen > 255 ? 255 : eyeColorGreen), (byte)(eyeColorBlue < 0 ? 0 : eyeColorBlue > 255 ? 255 : eyeColorBlue), 255);
 
 			//Set Face type
-			EyebrowType = string.Format("Face{0}_{1}_Eyebrows", gender, BestSkill);
-			NoseType = string.Format("Face{0}_{1}_Nose", gender, BestSkill);
+			EyebrowType = $"Face{gender}_{BestSkill}_Eyebrows";
+			NoseType = $"Face{gender}_{BestSkill}_Nose";
 
 			//Specify the teeth for male avatars
 			if (gender == "M")
 			{
-				TeethType = string.Format("Face{0}_{1}_Teeth", gender, BestSkill);
+				TeethType = $"Face{gender}_{BestSkill}_Teeth";
 			}
 
 			//Set Mouth Type
-			MouthType = string.Format("Face{0}_{1}_Mouth", gender, BestSkill);
+			MouthType = $"Face{gender}_{BestSkill}_Mouth";
 
 			// Set Height and Width
 			Height = 1 + StaticRandom.Float(-0.075f, 0.075f);
@@ -115,6 +109,21 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 			//Save attributes
 			UpdateAvatarBeliefs(crewMember);
+		}
+
+
+		/// <summary>
+		/// Method to help limit an integer between 2 values
+		/// </summary>
+		/// <param name="value"></param>
+		/// <param name="inclusiveMinimum">Assuming default 0, for colour usage</param>
+		/// <param name="inclusiveMaximum">Assuming default 255, for colour usage</param>
+		/// <returns></returns>
+		public int LimitToRange(int value, int inclusiveMinimum = 0, int inclusiveMaximum = 255) 
+		{
+			if (value < inclusiveMinimum) { return inclusiveMinimum; }
+			if (value > inclusiveMaximum) { return inclusiveMaximum; }
+			return value;
 		}
 
 		/// <summary>
@@ -151,6 +160,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return bestSkill;
 		}
 
+		/// <summary>
+		/// Get a random skil colour, from config values
+		/// </summary>
+		/// <returns></returns>
 		private Color GetRandomSkinColor()
 		{
 			switch (StaticRandom.Int(0, 3))
@@ -167,6 +180,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Get a suitable hair colour for the skin colour, prevents returning hair which is unusual for certain skin colours
+		/// </summary>
+		/// <param name="skin"></param>
+		/// <returns></returns>
 		private Color GetHairColorForSkin(Color skin)
 		{
 			// We want to limit the hair colors that are available, so dark skin does not give bright colored hair
@@ -178,27 +196,50 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			switch (StaticRandom.Int(0, 2))
 			{
 				case 0:
-					return Config.BlackHairColor;
+					return RandomizeColor(Config.BlackHairColor);
 				default:
-					return Config.BrownHairColor;
+					return RandomizeColor(Config.BrownHairColor);
 			}
 		}
 
+		/// <summary>
+		/// Get a random hair colour from all the available colours specified in config
+		/// </summary>
+		/// <returns></returns>
 		private Color GetRandomHairColor()
 		{
 			switch (StaticRandom.Int(0, 4))
 			{
 				case 0:
-					return Config.BlondeHairColor;
+					return RandomizeColor(Config.BlondeHairColor);
 				case 1:
-					return Config.BlackHairColor;
+					return RandomizeColor(Config.BlackHairColor);
 				case 2:
-					return Config.GingerHairColor;
+					return RandomizeColor(Config.GingerHairColor);
 				default:
-					return Config.BrownHairColor;
+					return RandomizeColor(Config.BrownHairColor);
 			}
 		}
 
+		/// <summary>
+		/// Randomize a color to add more variation to avatars
+		/// </summary>
+		/// <param name="original"></param>
+		/// <returns></returns>
+		private Color RandomizeColor(Color original)
+		{
+			var change = StaticRandom.Int(-50, 50);
+			var colorRed = original.R + change;
+			var colorGreen = original.G + change;
+			var colorBlue = original.B + change;
+			return new Color((byte)LimitToRange(colorRed), (byte)LimitToRange(colorGreen), (byte)LimitToRange(colorBlue), 255);
+		}
+
+		/// <summary>
+		/// Get a body type by skill
+		/// </summary>
+		/// <param name="skill">The most prominent skill for the avatar</param>
+		/// <returns></returns>
 		private string GetBodyType(CrewMemberSkill skill)
 		{
 			switch (skill)
@@ -212,19 +253,28 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Gets a random eye color from those specified in the config
+		/// </summary>
+		/// <returns></returns>
 		private Color GetRandomEyeColor()
 		{
 			switch (StaticRandom.Int(0, 3))
 			{
 				case 0:
-					return Config.BlueEyeColor;
+					return RandomizeColor(Config.BlueEyeColor);
 				case 1:
-					return Config.GreenEyeColor;
+					return RandomizeColor(Config.GreenEyeColor);
 				default:
-					return Config.BrownEyeColor;
+					return RandomizeColor(Config.BrownEyeColor);
 			}
-		}
+		} 
 
+		/// <summary>
+		/// Get a saved eye color
+		/// </summary>
+		/// <param name="color"></param>
+		/// <returns></returns>
 		private Color GetEyeColorFromText(string color)
 		{
 			switch (color)
