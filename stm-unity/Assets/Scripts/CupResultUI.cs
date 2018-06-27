@@ -3,6 +3,9 @@ using System.Linq;
 
 using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
+
+using TrackerAssetPackage;
+
 using UnityEngine;
 
 public class CupResultUI : MonoBehaviour
@@ -34,7 +37,7 @@ public class CupResultUI : MonoBehaviour
 		}
 		else
 		{
-			transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
+			transform.EnableBlocker(() => Close(TrackerTriggerSource.PopUpBlocker.ToString()));
 		}
 
 		foreach (Transform child in transform.Find("Crew"))
@@ -60,9 +63,9 @@ public class CupResultUI : MonoBehaviour
 			memberObject.transform.SetAsLastSibling();
 		}
 		transform.FindText("Result").text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, GameManagement.TeamName, finalPositionText);
-		TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.CupFinishingPosition.ToString(), _cupPosition.ToString() }
+			{ TrackerContextKey.CupFinishingPosition.ToString(), _cupPosition.ToString() }
 		}, AccessibleTracker.Accessible.Screen));
 		if (!GameManagement.PlatformSettings.Rage)
 		{
@@ -81,10 +84,10 @@ public class CupResultUI : MonoBehaviour
 		{
 			gameObject.Active(false);
 			UIManagement.DisableBlocker();
-			TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.CupFinishingPosition.ToString(), _cupPosition.ToString() },
-				{ TrackerContextKeys.TriggerUI.ToString(), source }
+				{ TrackerContextKey.CupFinishingPosition.ToString(), _cupPosition.ToString() },
+				{ TrackerContextKey.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
 			if (GameManagement.PlatformSettings.Rage)
 			{

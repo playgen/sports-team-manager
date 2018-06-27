@@ -1,4 +1,5 @@
 ﻿using System;
+using WellFormedNames;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
@@ -42,9 +43,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//set outfit type
 			var outfit = !isActive ? "01" : "0" + ((StaticRandom.Int(0, 100) % 2) + 2);
 			_gender = crewMember.Gender;
-			var bodyType = GetBodyType(BestSkill);
 			CustomOutfitColor = outfit != "01";
 			//recreate pre-existing avatar if one already exists
+			BestSkill = GetBestSkill(crewMember);
+
 			if (canLoad)
 			{
 				LoadAvatar(crewMember);
@@ -55,9 +57,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				CreateAvatar(crewMember, _gender);
 			}
 			//set outfit according to type, best skill and gender
-			OutfitBaseType = $"Outfit{_gender}_Base_{bodyType}_{outfit}";
-			OutfitHighlightType = $"Outfit{_gender}_Highlight_{bodyType}_{outfit}";
-			OutfitShadowType = $"Outfit{_gender}_Shadow_{bodyType}_{outfit}";
+			OutfitBaseType = $"Outfit{_gender}_Base_{ GetBodyType(BestSkill)}_{outfit}";
+			OutfitHighlightType = $"Outfit{_gender}_Highlight_{ GetBodyType(BestSkill)}_{outfit}";
+			OutfitShadowType = $"Outfit{_gender}_Shadow_{GetBodyType(BestSkill)}_{outfit}";
 		}
 
 		private void CreateAvatar(CrewMember crewMember, string gender)
@@ -343,7 +345,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHeight.GetDescription(), Height.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-GB")));
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarMouthType.GetDescription(), MouthType);
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarMouthColor.GetDescription(), MouthColor);
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarTeethType.GetDescription(), TeethType ?? WellFormedNames.Name.NIL_STRING);
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarTeethType.GetDescription(), TeethType ?? Name.NIL_STRING);
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarNoseType.GetDescription(), NoseType);
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorRed.GetDescription(), SkinColor.R.ToString());
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorGreen.GetDescription(), SkinColor.G.ToString());

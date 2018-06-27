@@ -33,7 +33,7 @@ todo
 # Development:
 ## Requirements:
 - Windows OS
-- Unity Editor
+- Unity Editor *(Version 2017.2.3f1) - Known bug in later versions of Unity with UI Anchoring*
 
 ## Process
 1. Build stm-logic solution (stm-logic\PlayGen.RAGE.SportsTeamManager\PlayGen.RAGE.SportsTeamManager.sln).

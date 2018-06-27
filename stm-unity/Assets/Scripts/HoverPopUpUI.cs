@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
 
+using TrackerAssetPackage;
+
 /// <summary>
 /// Used on hover text object to set text and reposition when needed
 /// </summary>
@@ -62,6 +64,10 @@ public class HoverPopUpUI : MonoBehaviour {
 			GetComponentInChildren<Text>().text = Localization.Get(_currentText);
 			transform.position = Input.mousePosition;
 			//reposition accordingly if pop-up would display partially off screen
+			var positionMultiplier = _currentHovered.x < transform.position.x ? 1 : -1;
+			transform.RectTransform().anchoredPosition += new Vector2(transform.RectTransform().rect.width * 0.5f, 0) * positionMultiplier;
+
+
 			if (_currentHovered.x < transform.position.x)
 			{
 				transform.RectTransform().anchoredPosition += new Vector2(transform.RectTransform().rect.width * 0.5f, 0);
@@ -94,9 +100,9 @@ public class HoverPopUpUI : MonoBehaviour {
 					transform.RectTransform().anchoredPosition -= new Vector2(0, -transform.RectTransform().rect.height);
 				}
 			}
-			TrackerEventSender.SendEvent(new TraceEvent("HoveredOver", TrackerVerbs.Accessed, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("HoveredOver", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.HoverKey.ToString(), _currentText }
+				{ TrackerContextKey.HoverKey.ToString(), _currentText }
 			}, AccessibleTracker.Accessible.Accessible));
 		    UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, _currentText);
 		}

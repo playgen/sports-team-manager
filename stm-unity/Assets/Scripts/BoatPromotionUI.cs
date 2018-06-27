@@ -4,6 +4,9 @@ using System.Linq;
 using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Localization;
+
+using TrackerAssetPackage;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,7 +34,7 @@ public class BoatPromotionUI : MonoBehaviour
 			var oldPos = GameManagement.LineUpHistory.Last().Positions;
 			var newPos = GameManagement.Positions;
 			gameObject.Active(true);
-			transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
+			transform.EnableBlocker(() => Close(TrackerTriggerSource.PopUpBlocker.ToString()));
 			var addedText = transform.FindText("Added List");
 			var removedText = transform.FindText("Removed List");
 			var newPositions = newPos.Where(n => !oldPos.Contains(n)).Select(n => Localization.Get(n.ToString())).ToArray();
@@ -41,9 +44,9 @@ public class BoatPromotionUI : MonoBehaviour
 			addedText.text = newList;
 			removedText.text = oldList;
 			var newString = string.Join(",", newPos.Select(pos => pos.ToString()).ToArray());
-			TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.BoatLayout.ToString(), newString }
+				{ TrackerContextKey.BoatLayout.ToString(), newString }
 			}, AccessibleTracker.Accessible.Screen));
 		}
 		else
@@ -64,10 +67,10 @@ public class BoatPromotionUI : MonoBehaviour
 			if (!string.IsNullOrEmpty(source))
 			{
 				var newString = GameManagement.PositionString;
-				TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.BoatLayout.ToString(), newString },
-				{ TrackerContextKeys.TriggerUI.ToString(), source }
+				{ TrackerContextKey.BoatLayout.ToString(), newString },
+				{ TrackerContextKey.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
 			}
 		}

@@ -13,6 +13,8 @@ using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Loading;
 using PlayGen.Unity.Utilities.Extensions;
 
+using TrackerAssetPackage;
+
 /// <summary>
 /// A class for grouping together a sprite with a name
 /// </summary>
@@ -494,7 +496,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 		if (playerTriggered)
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("CrewSortChanged", TrackerVerbs.Selected, new Dictionary<string, string>(), sortType, AlternativeTracker.Alternative.Dialog));
+			TrackerEventSender.SendEvent(new TraceEvent("CrewSortChanged", TrackerAsset.Verb.Selected, new Dictionary<string, string>(), sortType, AlternativeTracker.Alternative.Dialog));
 		}
 	}
 
@@ -586,7 +588,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == pair.Key.ToString()).Image;
 			positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 			var currentPosition = pair.Key;
-			positionImage.GetComponent<Button>().onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentPosition, TrackerTriggerSources.TeamManagementScreen.ToString()));
+			positionImage.GetComponent<Button>().onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentPosition, TrackerTriggerSource.TeamManagementScreen.ToString()));
 			crewCount++;
 		}
 		for (var i = crewCount; i < crewContainer.childCount; i++)
@@ -836,17 +838,17 @@ public class TeamSelectionUI : MonoBehaviour {
 		if (current)
 		{
 			var newString = string.Join(",", boat.Positions.Select(pos => pos.ToString()).ToArray());
-			TrackerEventSender.SendEvent(new TraceEvent("RaceResult", TrackerVerbs.Completed, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("RaceResult", TrackerAsset.Verb.Completed, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.RaceNumber.ToString(), (GameManagement.Team.RaceHistory.Count + 1).ToString() },
-				{ TrackerContextKeys.CurrentSession.ToString(), (isRace ? GameManagement.RaceSessionLength : GameManagement.CurrentRaceSession - 1) + "/" + GameManagement.RaceSessionLength },
-				{ TrackerContextKeys.SessionType.ToString(), isRace ? "Race" : "Practice" },
-				{ TrackerContextKeys.BoatLayout.ToString(), newString },
-				{ TrackerContextKeys.Score.ToString(), boat.Score.ToString() },
-				{ TrackerContextKeys.ScoreAverage.ToString(), ((float)boat.Score / boat.Positions.Count).ToString(CultureInfo.InvariantCulture) },
-				{ TrackerContextKeys.IdealCorrectPlacement.ToString(), ((int)boat.IdealMatchScore).ToString() },
-				{ TrackerContextKeys.IdealCorrectMemberWrongPosition.ToString(), Mathf.RoundToInt(((boat.IdealMatchScore % 1) * 10)).ToString() },
-				{ TrackerContextKeys.IdealIncorrectPlacement.ToString(), Mathf.RoundToInt(boat.Positions.Count - (int)boat.IdealMatchScore - ((boat.IdealMatchScore % 1) * 10)).ToString() }
+				{ TrackerContextKey.RaceNumber.ToString(), (GameManagement.Team.RaceHistory.Count + 1).ToString() },
+				{ TrackerContextKey.CurrentSession.ToString(), (isRace ? GameManagement.RaceSessionLength : GameManagement.CurrentRaceSession - 1) + "/" + GameManagement.RaceSessionLength },
+				{ TrackerContextKey.SessionType.ToString(), isRace ? "Race" : "Practice" },
+				{ TrackerContextKey.BoatLayout.ToString(), newString },
+				{ TrackerContextKey.Score.ToString(), boat.Score.ToString() },
+				{ TrackerContextKey.ScoreAverage.ToString(), ((float)boat.Score / boat.Positions.Count).ToString(CultureInfo.InvariantCulture) },
+				{ TrackerContextKey.IdealCorrectPlacement.ToString(), ((int)boat.IdealMatchScore).ToString() },
+				{ TrackerContextKey.IdealCorrectMemberWrongPosition.ToString(), Mathf.RoundToInt(((boat.IdealMatchScore % 1) * 10)).ToString() },
+				{ TrackerContextKey.IdealIncorrectPlacement.ToString(), Mathf.RoundToInt(boat.Positions.Count - (int)boat.IdealMatchScore - ((boat.IdealMatchScore % 1) * 10)).ToString() }
 			}, CompletableTracker.Completable.Race));
 
 			SUGARManager.GameData.Send("Race Session Score", boat.Score);
@@ -877,10 +879,11 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		if (result > 0)
 		{
-			_ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1).GetComponent<Image>().fillAmount = 1;
-			_ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1).GetComponentInChildren<Text>().gameObject.AddComponent<TextLocalization>();
-			_ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1).GetComponentInChildren<TextLocalization>().Key = "POSITION_" + result;
-			_ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1).GetComponentInChildren<TextLocalization>().Set();
+			var progressBar = _ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1);
+			progressBar.GetComponent<Image>().fillAmount = 1;
+			var positionText = progressBar.GetComponentInChildren<Text>().gameObject.AddComponent<TextLocalization>();
+			positionText.Key = "POSITION_" + result;
+			positionText.Set();
 		}
 		else
 		{

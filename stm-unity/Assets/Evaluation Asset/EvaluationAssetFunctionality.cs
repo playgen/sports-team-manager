@@ -166,21 +166,21 @@ namespace RAGE.EvaluationAsset
 
             switch (gameEvent)
             {
-                case "gameusage":
-                    return (keys.Count == 1 && keys.Contains("event"));
-                case "userprofile":
-                    return (keys.Count == 1 && keys.Contains("event"));
-                case "gameactivity":
-                    return (keys.Count == 3 && keys.Contains("event") && keys.Contains("goalorientation") && keys.Contains("tool"));
-                case "gamification":
-                    return (keys.Count == 1 && keys.Contains("event"));
-                case "gameflow":
-                    return (keys.Count == 3 && keys.Contains("type") && keys.Contains("id") && keys.Contains("completed"));
-                case "support":
-                    return (keys.Count == 1 && keys.Contains("event"));
-                case "assetactivity":
-                    return (keys.Count == 2 && keys.Contains("asset") && keys.Contains("done"));
-            }
+				case "gameusage":
+					return (keys.Count == 1 && keys.Contains("event"));
+				case "userprofile":
+					return (keys.Count == 1 && keys.Contains("event"));
+				case "gameactivity":
+					return (keys.Count == 3 && keys.Contains("event") && keys.Contains("goalorientation") && keys.Contains("tool"));
+				case "gamification":
+					return (keys.Count == 1 && keys.Contains("event"));
+				case "gameflow":
+					return (keys.Count == 3 && keys.Contains("piecetype") && keys.Contains("pieceid") && keys.Contains("piececompleted"));
+				case "support":
+					return (keys.Count == 1 && keys.Contains("event"));
+				case "assetactivity":
+					return (keys.Count == 2 && keys.Contains("assetid") && keys.Contains("action"));
+			}
 
             return (false);
         }

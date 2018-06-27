@@ -8,6 +8,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Extensions;
 
+using TrackerAssetPackage;
+
 public class RaceResultUI : MonoBehaviour
 {
 	[SerializeField]
@@ -40,7 +42,7 @@ public class RaceResultUI : MonoBehaviour
 		UIManagement.MemberMeeting.CloseCrewMemberPopUp(string.Empty);
 		UIManagement.DisableSmallBlocker();
 		gameObject.Active(true);
-		transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
+		transform.EnableBlocker(() => Close(TrackerTriggerSource.PopUpBlocker.ToString()));
 		_lastRacePositions = new Dictionary<Position, CrewMember>(currentPositions);
 		_lastRaceFinishPosition = finishPosition;
 		_lastRaceFinishPositionText = finishPositionText;
@@ -68,9 +70,9 @@ public class RaceResultUI : MonoBehaviour
 		}
 		transform.FindText("Result").text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, GameManagement.TeamName, finishPositionText);
 		DoBestFit();
-		TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.FinishingPosition.ToString(), finishPosition.ToString() }
+			{ TrackerContextKey.FinishingPosition.ToString(), finishPosition.ToString() }
 		}, AccessibleTracker.Accessible.Screen));
 	}
 
@@ -83,10 +85,10 @@ public class RaceResultUI : MonoBehaviour
 		{
 			gameObject.Active(false);
 			UIManagement.DisableBlocker();
-			TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.FinishingPosition.ToString(), _lastRaceFinishPosition.ToString() },
-				{ TrackerContextKeys.TriggerUI.ToString(), source }
+				{ TrackerContextKey.FinishingPosition.ToString(), _lastRaceFinishPosition.ToString() },
+				{ TrackerContextKey.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
 			if (!GameManagement.SeasonOngoing)
 			{

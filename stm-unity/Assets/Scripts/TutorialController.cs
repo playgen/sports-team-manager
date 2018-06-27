@@ -9,6 +9,8 @@ using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.Loading;
 using PlayGen.Unity.Utilities.Localization;
 
+using TrackerAssetPackage;
+
 /// <summary>
 /// Connecting class between GameManager in logic and the Tutorial Section UIs
 /// </summary>
@@ -116,7 +118,7 @@ public class TutorialController : MonoBehaviour
 		if (GameManagement.ShowTutorial)
 		{
 			_tutorialDisplay.Construct(_tutorialSections[GameManagement.TutorialStage]);
-			TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvents.Support, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, "tutorialcontinued" } });
+			TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvent.Support, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, "tutorialcontinued" } });
 		}
 		else
 		{
@@ -161,13 +163,13 @@ public class TutorialController : MonoBehaviour
 	{
 		if (SectionCount <= GameManagement.TutorialStage + 1)
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("TutorialFinished", TrackerVerbs.Completed, new Dictionary<string, string>(), CompletableTracker.Completable.Completable));
+			TrackerEventSender.SendEvent(new TraceEvent("TutorialFinished", TrackerAsset.Verb.Completed, new Dictionary<string, string>(), CompletableTracker.Completable.Completable));
 		}
 		else
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("TutorialExited", TrackerVerbs.Skipped, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("TutorialExited", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.TutorialStage.ToString(), (GameManagement.TutorialStage + 1).ToString() }
+				{ TrackerContextKey.TutorialStage.ToString(), (GameManagement.TutorialStage + 1).ToString() }
 			}, CompletableTracker.Completable.Completable));
 		}
 		GameManagement.GameManager.SaveTutorialProgress(0, true);

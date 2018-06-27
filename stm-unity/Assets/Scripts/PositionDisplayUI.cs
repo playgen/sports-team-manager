@@ -9,6 +9,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
 
+using TrackerAssetPackage;
+
 /// <summary>
 /// Contains all UI logic related to the Position pop-up
 /// </summary>
@@ -105,17 +107,17 @@ public class PositionDisplayUI : MonoBehaviour
 		}
 		var currentCrew = GameManagement.PositionCrew.ContainsKey(position) ? GameManagement.PositionCrew[position] : null;
 		var boatPos = GameManagement.PositionString;
-		TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpOpened", TrackerVerbs.Accessed, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.PositionName.ToString(), position.ToString() },
-			{ TrackerContextKeys.PositionCrewMember.ToString(), currentCrew != null ? currentCrew.Name : "None" },
-			{ TrackerContextKeys.BoatLayout.ToString(), boatPos },
-			{ TrackerContextKeys.TriggerUI.ToString(), source },
-			{ TrackerContextKeys.SessionsIncludedCount.ToString(), (GameManagement.LineUpHistory.Sum(boat => boat.Positions.Count(pos => pos == position)) + 1).ToString() }
+			{ TrackerContextKey.PositionName.ToString(), position.ToString() },
+			{ TrackerContextKey.PositionCrewMember.ToString(), currentCrew != null ? currentCrew.Name : "None" },
+			{ TrackerContextKey.BoatLayout.ToString(), boatPos },
+			{ TrackerContextKey.TriggerUI.ToString(), source },
+			{ TrackerContextKey.SessionsIncludedCount.ToString(), (GameManagement.LineUpHistory.Sum(boat => boat.Positions.Count(pos => pos == position)) + 1).ToString() }
 		}, AccessibleTracker.Accessible.Screen));
 		SUGARManager.GameData.Send("View Position Screen", position.ToString());
 		gameObject.Active(true);
-		transform.EnableSmallBlocker(() => ClosePositionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+		transform.EnableSmallBlocker(() => ClosePositionPopUp(TrackerTriggerSource.PopUpBlocker.ToString()));
 		Display(position);
 	}
 
@@ -147,7 +149,7 @@ public class PositionDisplayUI : MonoBehaviour
 		{
 			_currentAvatar.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), true);
 			_currentName.text = currentCrew.Name;
-			_currentButton.onClick.AddListener(() => UIManagement.MemberMeeting.SetUpDisplay(currentCrew, TrackerTriggerSources.PositionPopUp.ToString()));
+			_currentButton.onClick.AddListener(() => UIManagement.MemberMeeting.SetUpDisplay(currentCrew, TrackerTriggerSource.PositionPopUp.ToString()));
 		}
 		//wipe previous position history objects
 		foreach (Transform child in _historyContainer.transform)
@@ -194,7 +196,7 @@ public class PositionDisplayUI : MonoBehaviour
 			if (GameManagement.CrewMembers.ContainsKey(member.Key.Name))
 			{
 				var current = member.Key;
-				positionHistory.GetComponentInChildren<Button>().onClick.AddListener(() => UIManagement.MemberMeeting.SetUpDisplay(current, TrackerTriggerSources.PositionPopUp.ToString()));
+				positionHistory.GetComponentInChildren<Button>().onClick.AddListener(() => UIManagement.MemberMeeting.SetUpDisplay(current, TrackerTriggerSource.PositionPopUp.ToString()));
 				positionHistory.transform.FindImage("AvatarIcon").color = new UnityEngine.Color(0, 0.5f, 0.5f);
 			}
 			else
@@ -214,15 +216,15 @@ public class PositionDisplayUI : MonoBehaviour
 	{
 		if (gameObject.activeInHierarchy)
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpClosed", TrackerVerbs.Accessed, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpClosed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.PositionName.ToString(), _current.ToString() },
-				{ TrackerContextKeys.TriggerUI.ToString(), source }
+				{ TrackerContextKey.PositionName.ToString(), _current.ToString() },
+				{ TrackerContextKey.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
 			gameObject.Active(false);
 			if (UIManagement.MemberMeeting.gameObject.activeInHierarchy)
 			{
-				UIManagement.MemberMeeting.gameObject.transform.EnableSmallBlocker(() => UIManagement.MemberMeeting.CloseCrewMemberPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+				UIManagement.MemberMeeting.gameObject.transform.EnableSmallBlocker(() => UIManagement.MemberMeeting.CloseCrewMemberPopUp(TrackerTriggerSource.PopUpBlocker.ToString()));
 			}
 			else
 			{
@@ -239,7 +241,7 @@ public class PositionDisplayUI : MonoBehaviour
 	{
 		if (gameObject.activeInHierarchy)
 		{
-			transform.EnableSmallBlocker(() => ClosePositionPopUp(TrackerTriggerSources.PopUpBlocker.ToString()));
+			transform.EnableSmallBlocker(() => ClosePositionPopUp(TrackerTriggerSource.PopUpBlocker.ToString()));
 		}
 		else if (!transform.parent.GetChild(transform.parent.childCount - 1).gameObject.activeInHierarchy)
 		{

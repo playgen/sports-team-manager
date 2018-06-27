@@ -251,7 +251,7 @@ public class UIStateManager : MonoBehaviour {
 				var settings = new EvaluationAssetSettings();
 				settings.PlayerId = SUGARManager.CurrentUser.Name;
 				EvaluationAsset.Instance.Settings = settings;
-				TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvents.UserProfile, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, "sugarsignin" } });
+				TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvent.UserProfile, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, "sugarsignin" } });
 			}
 			else
 			{

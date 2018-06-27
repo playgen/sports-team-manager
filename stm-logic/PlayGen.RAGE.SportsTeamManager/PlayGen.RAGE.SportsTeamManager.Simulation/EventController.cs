@@ -120,7 +120,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var expectsPos = crewMember.LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
 					var expectsPosAfter = crewMember.LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
 					var expectsSelection = crewMember.LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription());
-					if (!(expectsPos != null && expectsPos != WellFormedNames.Name.NIL_STRING) && !(expectsPosAfter != null && expectsPosAfter != WellFormedNames.Name.NIL_STRING) && !(expectsSelection != null && expectsSelection != WellFormedNames.Name.NIL_STRING))
+					if (expectsPos == null && expectsPosAfter == null && expectsSelection == null)
 					{
 						allCrew.Add(crewMember.Name, crewMember);
 					}

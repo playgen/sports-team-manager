@@ -40,7 +40,7 @@ public class EscapeAction : MonoBehaviour {
 			{
 				if (UIManagement.PositionDisplay.transform.GetSiblingIndex() == UIManagement.PositionDisplay.transform.parent.childCount - 1)
 				{
-				    UIManagement.PositionDisplay.ClosePositionPopUp(TrackerTriggerSources.EscapeKey.ToString());
+				    UIManagement.PositionDisplay.ClosePositionPopUp(TrackerTriggerSource.EscapeKey.ToString());
 					return;
 				}
 			}
@@ -58,7 +58,7 @@ public class EscapeAction : MonoBehaviour {
 			{
 				if (UIManagement.RaceResult.transform.GetSiblingIndex() == UIManagement.RaceResult.transform.parent.childCount - 1)
 				{
-				    UIManagement.RaceResult.Close(TrackerTriggerSources.EscapeKey.ToString());
+				    UIManagement.RaceResult.Close(TrackerTriggerSource.EscapeKey.ToString());
 					return;
 				}
 			}
@@ -67,7 +67,7 @@ public class EscapeAction : MonoBehaviour {
 			{
 				if (UIManagement.Promotion.transform.GetSiblingIndex() == UIManagement.Promotion.transform.parent.childCount - 1)
 				{
-				    UIManagement.Promotion.Close(TrackerTriggerSources.EscapeKey.ToString());
+				    UIManagement.Promotion.Close(TrackerTriggerSource.EscapeKey.ToString());
 					return;
 				}
 			}
@@ -76,11 +76,11 @@ public class EscapeAction : MonoBehaviour {
 			{
 				if (UIManagement.PreRace.GetComponentInChildren<Text>().text == Localization.Get("REPEAT_CONFIRM"))
 				{
-				    UIManagement.PreRace.CloseRepeatWarning(TrackerTriggerSources.EscapeKey.ToString());
+				    UIManagement.PreRace.CloseRepeatWarning(TrackerTriggerSource.EscapeKey.ToString());
 				}
 				else
 				{
-				    UIManagement.PreRace.CloseConfirmPopUp(TrackerTriggerSources.EscapeKey.ToString());
+				    UIManagement.PreRace.CloseConfirmPopUp(TrackerTriggerSource.EscapeKey.ToString());
 				}
 				return;
 			}
