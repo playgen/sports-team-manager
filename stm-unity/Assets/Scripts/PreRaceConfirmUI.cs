@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PlayGen.SUGAR.Unity;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Extensions;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -167,6 +168,6 @@ public class PreRaceConfirmUI : MonoBehaviour
 
 	private void DoBestFit()
 	{
-		GetComponentsInChildren<Button>().Select(b => b.gameObject).BestFit();
+		GetComponentsInChildren<Button>().ToList().BestFit();
 	}
 }

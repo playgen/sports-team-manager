@@ -2,10 +2,11 @@
 using System.Linq;
 using System.Reflection;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayGen.Unity.Utilities.Extensions;
 
 public class RaceResultUI : MonoBehaviour
 {

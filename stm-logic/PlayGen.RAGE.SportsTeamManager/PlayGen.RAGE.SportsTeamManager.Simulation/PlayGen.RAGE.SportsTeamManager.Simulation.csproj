@@ -65,7 +65,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\GAIPS.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="IntegratedAuthoringTool, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="IntegratedAuthoringTool, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\IntegratedAuthoringTool.dll</HintPath>
     </Reference>
@@ -95,10 +95,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rx-Main.1.0.11226\lib\Net35\System.Reactive.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Utilities, Version=1.0.0.19854, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\Utilities.dll</HintPath>
@@ -106,6 +102,9 @@
     <Reference Include="WellFormedNames, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\WellFormedNames.dll</HintPath>
+    </Reference>
+    <Reference Include="World_Model">
+      <HintPath>..\..\RAGE Assets\World_Model.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using PlayGen.SUGAR.Unity;
 using UnityEngine.UI;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 
 public class AccountInterface : BaseAccountInterface
 {
@@ -27,6 +27,6 @@ public class AccountInterface : BaseAccountInterface
 	/// </summary>
 	private void DoBestFit()
 	{
-		GetComponentsInChildren<Button>(true).Select(t => t.gameObject).Where(t => t.activeSelf).BestFit();
+		GetComponentsInChildren<Button>(true).ToList().BestFit(false);
 	}
 }

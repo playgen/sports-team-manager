@@ -12,7 +12,7 @@
 		{
 			"StartType": "AltDinghy",
 			"NewType": "BiggerDinghy",
-			"ScoreMetSinceLast": 1
+			"ScoreMetSinceLast": 2
 		},
 		{
 			"StartType": "BiggerDinghy",
@@ -22,7 +22,7 @@
 		{
 			"StartType": "BiggestDinghy",
 			"NewType": "Finish",
-			"ScoreMetSinceLast": 2
+			"ScoreMetSinceLast": 4
 
 		}
 	],
@@ -34,17 +34,17 @@
 		},
 		{
 			"EventName": "OO",
-			"RaceTrigger": 3,
-			"RepeatEvery": 8
-		},
-		{
-			"EventName": "NotPicked",
 			"RaceTrigger": 4,
 			"RepeatEvery": 8
 		},
 		{
+			"EventName": "NotPicked",
+			"RaceTrigger": 6,
+			"RepeatEvery": 8
+		},
+		{
 			"EventName": "IPC",
-			"RaceTrigger": 5,
+			"RaceTrigger": 8,
 			"RepeatEvery": 8
 		}
 	]

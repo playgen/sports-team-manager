@@ -117,7 +117,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void UnassignCrewMember(Position position)
 		{
-			PositionCrew[position].UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "null");
+			PositionCrew[position].UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), WellFormedNames.Name.NIL_STRING);
 			PositionCrew.Remove(position);
 			PositionScores.Remove(position);
 		}

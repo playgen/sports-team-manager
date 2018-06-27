@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-using PlayGen.Unity.Utilities.BestFit;
+
+using PlayGen.Unity.Utilities.Extensions;
+using PlayGen.Unity.Utilities.Text;
 
 /// <summary>
 /// Controls the UI displayed at the top of the screen
@@ -39,7 +41,7 @@ public class ScreenSideUI : MonoBehaviour {
 	public void DisplayQuitWarning()
 	{
 		_popUpBlocker.gameObject.Active(true);
-		_quitWarningPopUp.GetComponentsInChildren<Button>().Select(b => b.gameObject).BestFit();
+		_quitWarningPopUp.GetComponentsInChildren<Button>().ToList().BestFit();
 	}
 
 	/// <summary>

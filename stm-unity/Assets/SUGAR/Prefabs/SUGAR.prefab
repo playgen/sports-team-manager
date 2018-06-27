@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 223000012450321626}
   - component: {fileID: 114000012885612516}
   - component: {fileID: 114000011156416006}
-  - component: {fileID: 114191728624768906}
+  - component: {fileID: 114277216329375592}
   m_Layer: 5
   m_Name: SUGAR Canvas
   m_TagString: Untagged
@@ -213,7 +213,7 @@ MonoBehaviour:
   _resourceCheckRate: 2.5
   _checkGlobalGameResources: 0
   _checkGlobalUserResources: 0
---- !u!114 &114191728624768906
+--- !u!114 &114277216329375592
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -221,7 +221,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011383437524}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1169801823, guid: 972f28a244dec36429ae1e412a6fb34a, type: 3}
+  m_Script: {fileID: -1375533202, guid: 74c1819f65111734d9ed671d76754503, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MinFontSize: 1

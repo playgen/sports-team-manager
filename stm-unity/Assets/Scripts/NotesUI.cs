@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Localization;
 
 using UnityEngine;
 using UnityEngine.UI;
+using PlayGen.Unity.Utilities.Extensions;
 
 public class NotesUI : MonoBehaviour {
 
@@ -77,7 +78,7 @@ public class NotesUI : MonoBehaviour {
 
 	private void DoBestFit()
 	{
-		_title.gameObject.BestFit();
+		_title.BestFit();
 		_notesField.GetComponent<LayoutElement>().preferredHeight = _notesField.GetComponentInParent<ScrollRect>().RectTransform().rect.height;
 	}
 }

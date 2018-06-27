@@ -8,6 +8,7 @@ using System.Reflection;
 using PlayGen.SUGAR.Unity;
 
 using Color = UnityEngine.Color;
+using PlayGen.Unity.Utilities.Extensions;
 
 /// <summary>
 /// Contains all logic related to CrewMember prefabs

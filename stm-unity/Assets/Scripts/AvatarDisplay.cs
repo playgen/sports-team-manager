@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using PlayGen.Unity.Utilities.Extensions;
+
 using UnityEngine;
 using UnityEngine.UI;
 using Avatar = PlayGen.RAGE.SportsTeamManager.Simulation.Avatar;

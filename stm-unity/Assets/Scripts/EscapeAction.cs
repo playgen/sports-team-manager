@@ -1,4 +1,5 @@
-﻿using PlayGen.Unity.Utilities.Localization;
+﻿using PlayGen.Unity.Utilities.Extensions;
+using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ public class EscapeAction : MonoBehaviour {
 			//if settings panel is open, close settings panel
 			if (UIManagement.Settings.gameObject.activeInHierarchy)
 			{
-			    UIManagement.Settings.transform.parent.gameObject.Active(false);
+			    UIManagement.Settings.transform.Parent().Active(false);
 				return;
 			}
 			//if tutorial quitting pop-up is open, close this pop-up

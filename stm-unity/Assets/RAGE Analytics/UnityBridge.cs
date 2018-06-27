@@ -142,7 +142,10 @@ namespace RAGE.Analytics
                 }
                 else
                 {
-					UnityEngine.Debug.Log(String.Format("{0}: {1}", severity, msg));
+					if (severity < Severity.Information)
+					{
+						UnityEngine.Debug.Log(String.Format("{0}: {1}", severity, msg));
+					}
                 }
             }
         }

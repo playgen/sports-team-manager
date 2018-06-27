@@ -203,7 +203,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				cm.CreateInitialOpinions(new List<string> { member.Name }, true);
 			}
 			AddCrewMember(member);
-			member.UpdateBeliefs("null");
+			member.UpdateBeliefs(WellFormedNames.Name.NIL_STRING);
 			member.SaveStatus();
 			Recruits.Remove(member.Name);
 			iat.Save();
@@ -305,7 +305,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					{
 						cm.CreateInitialOpinions(new List<string> { newMember.Name });
 					}
-					newMember.UpdateBeliefs("null");
+					newMember.UpdateBeliefs(WellFormedNames.Name.NIL_STRING);
 					//if the boat is under-staffed for the current boat size, this new CrewMember is not counted
 					if (!CanRemoveFromCrew())
 					{

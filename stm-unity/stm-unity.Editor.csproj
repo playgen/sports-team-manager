@@ -367,9 +367,6 @@
     <Reference Include="TrackerAsset">
       <HintPath>Assets/RAGE Analytics/TrackerAsset.dll</HintPath>
     </Reference>
-    <Reference Include="TrackerRageAssetManager">
-      <HintPath>Assets/RAGE Analytics/TrackerRageAssetManager.dll</HintPath>
-    </Reference>
     <Reference Include="CommandLine">
       <HintPath>Assets/SUGAR/bin/CommandLine.dll</HintPath>
     </Reference>
@@ -384,9 +381,6 @@
     </Reference>
     <Reference Include="PlayGen.SUGAR.Unity.Editor">
       <HintPath>Assets/SUGAR/bin/PlayGen.SUGAR.Unity.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="PlayGen.Unity.Utilities.BestFit">
-      <HintPath>Assets/SUGAR/bin/PlayGen.Unity.Utilities.BestFit.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.Unity.Utilities.Editor.FontReplace">
       <HintPath>Assets/SUGAR/bin/PlayGen.Unity.Utilities.Editor.FontReplace.dll</HintPath>
@@ -424,6 +418,33 @@
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>C:/Users/Ellis/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.purchasing@1.0.1/Editor/UnityEditor.Purchasing.dll</HintPath>
     </Reference>
+    <Reference Include="PlayGen.Unity.Utilities.Video">
+      <HintPath>Assets/SUGAR/bin/PlayGen.Unity.Utilities.Video.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Unity.Utilities.Text">
+      <HintPath>Assets/SUGAR/bin/PlayGen.Unity.Utilities.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Unity.Utilities.Editor.UI">
+      <HintPath>Assets/SUGAR/bin/PlayGen.Unity.Utilities.Editor.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Unity.Utilities.UI">
+      <HintPath>Assets/SUGAR/bin/PlayGen.Unity.Utilities.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Unity.Utilities.Extensions">
+      <HintPath>Assets/SUGAR/bin/PlayGen.Unity.Utilities.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader.DataSet">
+      <HintPath>Assets/Editor/ExcelToJson/ExcelDataReader/ExcelDataReader.DataSet.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data">
+      <HintPath>Assets/Editor/ExcelToJson/ExcelDataReader/System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader">
+      <HintPath>Assets/Editor/ExcelToJson/ExcelDataReader/ExcelDataReader.dll</HintPath>
+    </Reference>
+    <Reference Include="TrackerRageAssetManager">
+      <HintPath>Assets/RAGE Analytics/TrackerRageAssetManager.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>C:/Program Files/Unity2017/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
@@ -443,6 +464,8 @@
   <ItemGroup>
     <Compile Include="Assets\Editor\BuildExe.cs" />
     <Compile Include="Assets\Editor\CharacterCheck.cs" />
+    <Compile Include="Assets\Editor\ExcelToJson\ExcelToJsonConverter.cs" />
+    <Compile Include="Assets\Editor\ExcelToJson\ExcelToJsonConverterWindow.cs" />
     <Compile Include="Assets\Editor\ExitPlayModeOnScriptCompile.cs" />
     <Compile Include="Assets\Editor\SetPlatformPositioning.cs" />
   </ItemGroup>

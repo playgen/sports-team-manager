@@ -3,6 +3,8 @@ using System.Linq;
 using System.Reflection;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using PlayGen.SUGAR.Unity;
+using PlayGen.Unity.Utilities.Extensions;
+
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
