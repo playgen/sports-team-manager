@@ -28,6 +28,8 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	public bool Usable { get; private set; }
 	public bool Current { get; private set; }
 
+	private const float _clickedDistance = 15;
+
 	/// <summary>
 	/// Bring in elements that need to be known to this object
 	/// </summary>
@@ -165,8 +167,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		}
 		if (_beingClicked)
 		{
-			// TODO why 15?
-			if (Vector2.Distance(Input.mousePosition, _currentPositon + _dragPosition) > 15)
+			if (Vector2.Distance(Input.mousePosition, _currentPositon + _dragPosition) > _clickedDistance)
 			{
 				_beingClicked = false;
 			}

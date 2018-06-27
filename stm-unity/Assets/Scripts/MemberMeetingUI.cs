@@ -124,7 +124,7 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void Display()
 	{
-		//TODO clean
+		//TODO try to simplify this as much as possible
 		if (!gameObject.activeInHierarchy)
 		{
 			return;

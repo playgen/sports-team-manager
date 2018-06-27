@@ -44,6 +44,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			_gender = crewMember.Gender;
 			CustomOutfitColor = outfit != "01";
 			//recreate pre-existing avatar if one already exists
+			BestSkill = GetBestSkill(crewMember);
+
 			if (canLoad)
 			{
 				LoadAvatar(crewMember);
@@ -54,7 +56,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				CreateAvatar(crewMember, _gender);
 			}
 			//set outfit according to type, best skill and gender
-			BestSkill = GetBestSkill(crewMember);
 			OutfitBaseType = $"Outfit{_gender}_Base_{ GetBodyType(BestSkill)}_{outfit}";
 			OutfitHighlightType = $"Outfit{_gender}_Highlight_{ GetBodyType(BestSkill)}_{outfit}";
 			OutfitShadowType = $"Outfit{_gender}_Shadow_{GetBodyType(BestSkill)}_{outfit}";
