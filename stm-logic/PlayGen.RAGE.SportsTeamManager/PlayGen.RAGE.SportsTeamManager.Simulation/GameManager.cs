@@ -142,7 +142,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//create folder and iat file for game
 			var combinedStorageLocation = Path.Combine(storageLocation, name);
 			Directory.CreateDirectory(combinedStorageLocation);
-			var iat = ConfigStore.IntegratedAuthoringTool;
+			var iat = ConfigStore.IntegratedAuthoringTool.Copy();
 			EventController = new EventController(iat);
 			ValidateGameConfig();
 			//set up boat and team
