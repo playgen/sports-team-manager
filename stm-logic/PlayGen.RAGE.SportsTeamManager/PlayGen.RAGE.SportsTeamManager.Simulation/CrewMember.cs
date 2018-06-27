@@ -422,7 +422,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			string state;
 			if (Skills[skill] >= 9)
 			{
-				state = "NPC_StrongAgree";
+				state = "NPC_StronglyAgree";
 			}
 			else if (Skills[skill] >= 7)
 			{
@@ -430,7 +430,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			else if (Skills[skill] >= 5)
 			{
-				state = "NPC_Neither";
+				state = "NPC_Neutral";
 			}
 			else if (Skills[skill] >= 3)
 			{
@@ -438,7 +438,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			else
 			{
-				state = "NPC_StrongDisagree";
+				state = "NPC_StronglyDisagree";
 			}
 			dialogueOptions = iat.GetDialogueActionsByState(state).ToList();
 

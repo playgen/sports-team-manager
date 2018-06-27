@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Assets.Scripts;
 using PlayGen.SUGAR.Unity;
 
 using Color = UnityEngine.Color;
@@ -45,7 +46,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 
 		GetComponent<Image>().color = 
 			Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ?
-				AvatarDisplay.MoodColor(CrewMember.GetMood()) 
+				AvatarDisplay.MoodColor(AvatarMoodConfig.GetMood(CrewMember.GetMood())) 
 				: Current ? 
 					Color.grey 
 					: Color.black;
@@ -175,24 +176,24 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	public void ForcedMoodChange(string moodChange)
 	{
 		var usable  = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport");
-		int mood;
+		string mood;
+
 
 		switch (moodChange)
 		{
 			case "negative":
-				mood = CrewMember.Name.Length % 2 == 0 ? -3 : -1;
+				mood = CrewMember.Name.Length % 2 == 0 ? "StronglyDisagree" : "Disagree";
 				break;
 			case "positive":
-				mood = CrewMember.Name.Length % 2 == 0 ? -1 : 1;
+				mood = CrewMember.Name.Length % 2 == 0 ? "StronglyAgree" : "Agree";
 				break;
 			case "accurate":
-				mood = CrewMember.GetMood();
+				mood = AvatarMoodConfig.GetMood(CrewMember.GetMood());
 				break;
 			default:
-				mood = 0;
+				mood = "Neutral";
 				break;
 		}
-
 		GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, mood);
 		GetComponent<Image>().color = Usable || usable ? 
 			AvatarDisplay.MoodColor(mood) 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Assets.Scripts;
 using PlayGen.Unity.Utilities.Extensions;
 
 using UnityEngine;
@@ -47,26 +47,22 @@ public class AvatarDisplay : MonoBehaviour
 		avatarSprites = Resources.LoadAll(string.Empty, typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name, a => a, StringComparer.OrdinalIgnoreCase);
 	}
 
-	public static Color MoodColor(float value)
+	public static Color MoodColor(string value)
 	{
-		var moodColor = _neutral;
-		if (value > 2)
+		var avatarMood = (AvatarMoodConfig.AvatarMood)Enum.Parse(typeof(AvatarMoodConfig.AvatarMood), value);
+		switch (avatarMood)
 		{
-			moodColor = _veryGood;
+			case AvatarMoodConfig.AvatarMood.StronglyAgree:
+				return _veryGood;
+			case AvatarMoodConfig.AvatarMood.Agree:
+				return _good;
+			case AvatarMoodConfig.AvatarMood.Disagree:
+				return _bad;
+			case AvatarMoodConfig.AvatarMood.StronglyDisagree:
+				return _veryBad;
+			default:
+				return _neutral;
 		}
-		else if (value > 0)
-		{
-			moodColor = _good;
-		}
-		else if (value < -2)
-		{
-			moodColor = _veryBad;
-		}
-		else if (value < 0)
-		{
-			moodColor = _bad;
-		}
-		return moodColor;
 	}
 
 	/// <summary>
@@ -170,27 +166,12 @@ public class AvatarDisplay : MonoBehaviour
 	/// <summary>
 	/// update the avatar's facial expression based on their agreement with the statement passed to them
 	/// </summary>
-	/// //TODO move the mapping to a config
 	public void UpdateMood(Avatar avatar, string reaction)
 	{
-		switch (reaction.Replace(" ", string.Empty))
-		{
-			case "StrongAgree":
-				UpdateMood(avatar, 3);
-				return;
-			case "Agree":
-				UpdateMood(avatar, 1);
-				return;
-			case "Disagree":
-				UpdateMood(avatar, -1);
-				return;
-			case "StrongDisagree":
-				UpdateMood(avatar, -3);
-				return;
-			default:
-				UpdateMood(avatar, 0);
-				break;
-		}
+		reaction = reaction.Replace(" ", string.Empty);
+
+		var mood = AvatarMoodConfig.GetMood(reaction);
+		UpdateMood(avatar, mood);
 	}
 
 	/// <summary>
@@ -198,35 +179,9 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	public void UpdateMood(Avatar avatar, float mood)
 	{
-		var moodStr = "Neutral";
-		if (mood > 2)
-		{
-			moodStr = "StronglyAgree";
-		}
-		else if (mood > 0)
-		{
-			moodStr = "Agree";
-		}
-		else if (mood < -2)
-		{
-			moodStr = "StronglyDisagree";
-		}
-		else if (mood < 0)
-		{
-			moodStr = "Disagree";
-		}
-		if (avatarSprites.ContainsKey($"{avatar.EyeType}_Brown_{moodStr}"))
-		{
-			_eyes.sprite = avatarSprites[$"{avatar.EyeType}_Brown_{moodStr}"];
-		}
-		else if (avatarSprites.ContainsKey($"{avatar.EyeType}_{moodStr}"))
-		{
-			_eyes.sprite = avatarSprites[$"{avatar.EyeType}_{moodStr}"];
-		}
-		else
-		{
-			_eyes.sprite = avatarSprites[$"{avatar.EyeType}_Brown_Neutral"];
-		}
+		var moodStr = AvatarMoodConfig.GetMood(mood);
+
+		_eyes.sprite = avatarSprites.ContainsKey($"{avatar.EyeType}_{moodStr}") ? avatarSprites[$"{avatar.EyeType}_{moodStr}"] : avatarSprites[$"{avatar.EyeType}_Brown_{moodStr}"];
 		_eyePupils.sprite = _eyes.sprite.name.Contains("Brown") ? avatarSprites.ContainsKey(_eyes.sprite.name.Replace("Brown", "Pupil")) ? avatarSprites[_eyes.sprite.name.Replace("Brown", "Pupil")] : null : null;
 		_eyebrow.sprite = avatarSprites[$"{avatar.EyebrowType}_{moodStr}"];
 		_mouth.sprite = avatarSprites[$"{avatar.MouthType}_{moodStr}"];
