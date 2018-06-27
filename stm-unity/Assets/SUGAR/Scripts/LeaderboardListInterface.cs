@@ -61,7 +61,7 @@ public class LeaderboardListInterface : BaseLeaderboardListInterface
 		DoBestFit();
 		BestFit.ResolutionChange += DoBestFit;
 		Localization.LanguageChange += OnLanguageChange;
-		TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvents.Gamification, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, "displayleaderboardlist" } });
+		TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvent.Gamification, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, "displayleaderboardlist" } });
 	}
 
 	/// <summary>

@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
 
+using TrackerAssetPackage;
+
 /// <summary>
 /// Contains all logic relating to displaying post-race event 'learning pills'
 /// </summary>
@@ -77,10 +79,10 @@ public class LearningPillUI : MonoBehaviour {
 		{
 			UIManagement.EventImpact.Display();
 		}
-		TrackerEventSender.SendEvent(new TraceEvent("LearningPillClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("LearningPillClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.LearningPillID.ToString(), _currentHelp },
-			{ TrackerContextKeys.TriggerUI.ToString(), source }
+			{ TrackerContextKey.LearningPillID.ToString(), _currentHelp },
+			{ TrackerContextKey.TriggerUI.ToString(), source }
 		}, AccessibleTracker.Accessible.Accessible));
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
@@ -107,11 +109,11 @@ public class LearningPillUI : MonoBehaviour {
 		if (upward)
 		{
 			_helpText.text = tip;
-			TrackerEventSender.SendEvent(new TraceEvent("LearningPillDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("LearningPillDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
 			{
-				{ TrackerContextKeys.LearningPillID.ToString(), _currentHelp }
+				{ TrackerContextKey.LearningPillID.ToString(), _currentHelp }
 			}, AccessibleTracker.Accessible.Accessible));
-			transform.EnableBlocker(() => ClosePill(TrackerTriggerSources.PopUpBlocker.ToString()));
+			transform.EnableBlocker(() => ClosePill(TrackerTriggerSource.PopUpBlocker.ToString()));
 		}
 	}
 

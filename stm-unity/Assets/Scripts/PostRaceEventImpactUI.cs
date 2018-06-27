@@ -11,6 +11,8 @@ using System.Text.RegularExpressions;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Reflection;
 
+using TrackerAssetPackage;
+
 public class PostRaceEventImpactUI : MonoBehaviour
 {
 	private readonly List<KeyValuePair<string, List<string>>> _impacts = new List<KeyValuePair<string, List<string>>>();
@@ -70,9 +72,9 @@ public class PostRaceEventImpactUI : MonoBehaviour
 					}
 				}
 				gameObject.Active(true);
-				transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
+				transform.EnableBlocker(() => Close(TrackerTriggerSource.PopUpBlocker.ToString()));
 			}
-			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventImpactPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>(), AccessibleTracker.Accessible.Screen));
+			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventImpactPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>(), AccessibleTracker.Accessible.Screen));
 		}
 		if (string.IsNullOrEmpty(_impactText.text))
 		{
@@ -92,9 +94,9 @@ public class PostRaceEventImpactUI : MonoBehaviour
 			UIManagement.DisableBlocker();
 			if (!string.IsNullOrEmpty(source))
 			{
-				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventImpactPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventImpactPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
 				{
-					{ TrackerContextKeys.TriggerUI.ToString(), source }
+					{ TrackerContextKey.TriggerUI.ToString(), source }
 				}, AccessibleTracker.Accessible.Screen));
 				UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 			}

@@ -431,7 +431,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//position crew members and gather set-up information using details from split string
 				for (var i = 0; i < boat.Positions.Count; i++)
 				{
-					if (subjectSplit[((i + 1) * 2) - 1].NoSpaces() != Name.NIL_STRING)
+					if (subjectSplit[((i + 1) * 2) - 1].NoSpaces() != null)
 					{
 						boat.PositionCrew.Add(boat.Positions[i], crewMembers.Single(c => c.Name.NoSpaces() == subjectSplit[((i + 1) * 2) - 1].NoSpaces()));
 						boat.PositionScores.Add(boat.Positions[i], Convert.ToInt32(subjectSplit[(i + 1) * 2]));
@@ -462,14 +462,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			while (!noEventFound)
 			{
 				var crewMemberName = Team.Manager.LoadBelief(string.Format("PRECrew{0}({1})", eventsFound, eventSectionsFound));
-				if (crewMemberName != Name.NIL_STRING)
+				if (crewMemberName != null)
 				{
 					var crewMember = Team.CrewMembers.FirstOrDefault(cm => cm.Key.NoSpaces() == crewMemberName).Value
 									?? Team.RetiredCrew.FirstOrDefault(cm => cm.Key.NoSpaces() == crewMemberName).Value;
 					if (crewMember != null)
 					{
 						var evName = Team.Manager.LoadBelief(string.Format("PREEvent{0}({1})", eventsFound, eventSectionsFound));
-						if (evName != Name.NIL_STRING)
+						if (evName != null)
 						{
 							var ev = EventController.GetPossibleAgentDialogue(evName).FirstOrDefault()
 								?? EventController.GetPossibleAgentDialogue("PostRaceEventStart").FirstOrDefault(e => e.NextState == evName);
@@ -478,7 +478,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 								EventController.PostRaceEvents.Add(new List<PostRaceEventState>());
 							}
 							var subjectString = Team.Manager.LoadBelief(string.Format("PRESubject{0}({1})", eventsFound, eventSectionsFound));
-							var subjects = subjectString != Name.NIL_STRING ? subjectString.Split('_').ToList() : new List<string>();
+							var subjects = subjectString?.Split('_').ToList() ?? new List<string>();
 							EventController.PostRaceEvents[eventsFound].Add(new PostRaceEventState(crewMember, ev, subjects));
 							eventSectionsFound++;
 							continue;

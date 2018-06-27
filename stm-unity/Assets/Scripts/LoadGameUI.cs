@@ -10,6 +10,8 @@ using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Loading;
 using PlayGen.Unity.Utilities.Localization;
 
+using TrackerAssetPackage;
+
 /// <summary>
 /// Contains all UI logic related to loading saved games
 /// </summary>
@@ -110,12 +112,12 @@ public class LoadGameUI : MonoBehaviour
 					if (GameManagement.Team != null && string.Equals(GameManagement.TeamName, _selectedName, StringComparison.CurrentCultureIgnoreCase))
 					{
 						var newString = GameManagement.PositionString;
-						TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerVerbs.Initialized, new Dictionary<string, string>
+						TrackerEventSender.SendEvent(new TraceEvent("GameStarted", TrackerAsset.Verb.Initialized, new Dictionary<string, string>
 							{
-								{ TrackerContextKeys.GameName.ToString(), GameManagement.TeamName },
-								{ TrackerContextKeys.BoatLayout.ToString(), string.IsNullOrEmpty(newString) ? "NullAsGameFinished" : newString }
+								{ TrackerContextKey.GameName.ToString(), GameManagement.TeamName },
+								{ TrackerContextKey.BoatLayout.ToString(), string.IsNullOrEmpty(newString) ? "NullAsGameFinished" : newString }
 							}, CompletableTracker.Completable.Game));
-						TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvents.UserProfile, new Dictionary<TrackerEvaluationKeys, string> { { TrackerEvaluationKeys.Event, "loadedoldteam" } });
+						TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvent.UserProfile, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, "loadedoldteam" } });
 						UIStateManager.StaticGoToGame();
 					}
 					else

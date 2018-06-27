@@ -1,4 +1,4 @@
-﻿public enum TrackerEvalautionEvents
+﻿public enum TrackerEvalautionEvent
 {
 	GameUsage,
 	UserProfile,

@@ -8,6 +8,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Extensions;
 
+using TrackerAssetPackage;
+
 public class NotesUI : MonoBehaviour {
 
 	[SerializeField]
@@ -37,11 +39,11 @@ public class NotesUI : MonoBehaviour {
 		_notesSubject = subject;
 		OnLanguageChange();
 		_notesField.text = GameManagement.GameManager.EventController.GetNotes(_notesSubject);
-		transform.EnableBlocker(() => Close(TrackerTriggerSources.PopUpBlocker.ToString()));
+		transform.EnableBlocker(() => Close(TrackerTriggerSource.PopUpBlocker.ToString()));
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
-		TrackerEventSender.SendEvent(new TraceEvent("NotesPopUpDisplayed", TrackerVerbs.Accessed, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("NotesPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
 		{
-			{ TrackerContextKeys.TriggerUI.ToString(), _notesSubject }
+			{ TrackerContextKey.TriggerUI.ToString(), _notesSubject }
 		}, AccessibleTracker.Accessible.Screen));
 	}
 
@@ -59,9 +61,9 @@ public class NotesUI : MonoBehaviour {
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 			if (!string.IsNullOrEmpty(source))
 			{
-				TrackerEventSender.SendEvent(new TraceEvent("NotesPopUpClosed", TrackerVerbs.Skipped, new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("NotesPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
 				{
-					{ TrackerContextKeys.TriggerUI.ToString(), source }
+					{ TrackerContextKey.TriggerUI.ToString(), source }
 				}, AccessibleTracker.Accessible.Screen));
 			}
 		}

@@ -448,7 +448,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,{0},{1})";
 			//if the crew member is expecting to be selected
-			if (LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != null && LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != WellFormedNames.Name.NIL_STRING)
+			if (LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != null)
 			{
 				//if the crew member is not in a position
 				if (GetBoatPosition(team.Boat.PositionCrew) == Position.Null)
@@ -467,7 +467,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription()) != null)
 			{
 				var expected = LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
-				if (expected != WellFormedNames.Name.NIL_STRING && team.Boat.Positions.Any(p => p.ToString() == expected))
+				if (expected != null && team.Boat.Positions.Any(p => p.ToString() == expected))
 				{
 					//if they are currently not in the position they expected to be in
 					if (GetBoatPosition(team.Boat.PositionCrew).ToString() != expected)
@@ -487,7 +487,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription()) != null)
 			{
 				var expected = LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription());
-				if (expected != WellFormedNames.Name.NIL_STRING)
+				if (expected != null)
 				{
 					UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), WellFormedNames.Name.NIL_STRING);
 					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), expected);

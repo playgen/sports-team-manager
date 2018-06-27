@@ -23,7 +23,7 @@ public class PositionUI : MonoBehaviour
 	/// </summary>
 	public void ShowPopUp()
 	{
-	    UIManagement.PositionDisplay.SetUpDisplay(Position, TrackerTriggerSources.TeamManagementScreen.ToString());
+	    UIManagement.PositionDisplay.SetUpDisplay(Position, TrackerTriggerSource.TeamManagementScreen.ToString());
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, Position.ToString());
 	}
 

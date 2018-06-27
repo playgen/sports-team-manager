@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using WellFormedNames;
+
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	/// <summary>
@@ -117,7 +119,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void UnassignCrewMember(Position position)
 		{
-			PositionCrew[position].UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), WellFormedNames.Name.NIL_STRING);
+			PositionCrew[position].UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), Name.NIL_STRING);
 			PositionCrew.Remove(position);
 			PositionScores.Remove(position);
 		}
