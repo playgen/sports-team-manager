@@ -181,7 +181,20 @@ public class AvatarDisplay : MonoBehaviour
 	{
 		var moodStr = AvatarMoodConfig.GetMood(mood);
 
-		_eyes.sprite = avatarSprites.ContainsKey($"{avatar.EyeType}_{moodStr}") ? avatarSprites[$"{avatar.EyeType}_{moodStr}"] : avatarSprites[$"{avatar.EyeType}_Brown_{moodStr}"];
+		if (avatarSprites.ContainsKey($"{avatar.EyeType}_Brown_{moodStr}"))
+		{
+			_eyes.sprite = avatarSprites[$"{avatar.EyeType}_Brown_{moodStr}"];
+		}
+		else if (avatarSprites.ContainsKey($"{avatar.EyeType}_{moodStr}"))
+		{
+			_eyes.sprite = avatarSprites[$"{avatar.EyeType}_{moodStr}"];
+		}
+		else
+		{
+			// No disagree eyes, so default to neutral
+			_eyes.sprite = avatarSprites[$"{avatar.EyeType}_Brown_Neutral"];
+		}
+
 		_eyePupils.sprite = _eyes.sprite.name.Contains("Brown") ? avatarSprites.ContainsKey(_eyes.sprite.name.Replace("Brown", "Pupil")) ? avatarSprites[_eyes.sprite.name.Replace("Brown", "Pupil")] : null : null;
 		_eyebrow.sprite = avatarSprites[$"{avatar.EyebrowType}_{moodStr}"];
 		_mouth.sprite = avatarSprites[$"{avatar.MouthType}_{moodStr}"];
@@ -196,11 +209,16 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	private void SetIconProperties(Avatar a)
 	{
+		Debug.Log(_spriteParent != null);
 		if (!_spriteParent)
 		{
 			return;
 		}
-		_spriteParent.offsetMax = a.IsMale ? new Vector2(_spriteParent.offsetMax.x, -1f * (_spriteParent.rect.height / _maleOffsetPercent)) : new Vector2(_spriteParent.offsetMax.x, 0);
+		Debug.Log(a.IsMale);
+		Debug.Log(_spriteParent.offsetMax.x + " " +  -1f * (_spriteParent.rect.height / _maleOffsetPercent));
+		_spriteParent.offsetMax = a.IsMale ? 
+			new Vector2(_spriteParent.offsetMax.x, -1f * (_spriteParent.rect.height / _maleOffsetPercent)) 
+			: new Vector2(_spriteParent.offsetMax.x, 0);
 	}
 
 	/// <summary>
