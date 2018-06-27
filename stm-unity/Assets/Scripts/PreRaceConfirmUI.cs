@@ -58,7 +58,7 @@ public class PreRaceConfirmUI : MonoBehaviour
 				{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() }
 			}, AccessibleTracker.Accessible.Screen));
 			yesButton.onClick.AddListener(() =>
-				TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmApproved", TrackerVerb.Selected, new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmApproved", TrackerAsset.Verb.Selected, new Dictionary<string, string>
 				{
 					{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() }
 				}, "RaceConfirm", AlternativeTracker.Alternative.Menu))
