@@ -66,7 +66,7 @@ Note: Each argument should be separated with a `;`
 ### FAtiMA-Toolkit 
 Build solution and place new DLLs (found in FAtiMA-Toolkit\Assets\IntegratedAuthoringTool\bin\Debug) into lib\IntegratedAuthoringTool folder. Note that code changes could be needed as a result of updates to this asset.
 
-### GameWork.Unity ha
+### GameWork.Unity
 Build solution and place new DLLs (found in GameWork.Unity/bin) into lib\GameWork folder. Note that code changes could be needed as a result of updates to this asset.
 
 ### PlayGen Unity Utilities 
