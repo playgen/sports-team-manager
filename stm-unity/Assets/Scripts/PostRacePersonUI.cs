@@ -5,6 +5,7 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.UI;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Assets.Scripts;
 using PlayGen.Unity.Utilities.Localization;
 
 /// <summary>
@@ -40,7 +41,7 @@ public class PostRacePersonUI : MonoBehaviour
 			_dialogueText.text = Localization.GetAndFormat(current.Dialogue.Utterance, false, subjects);
 		}
 		_avatarDisplay.SetAvatar(current.CrewMember.Avatar, current.CrewMember.GetMood());
-		_avatarDisplay.transform.parent.GetComponent<Image>().color = AvatarDisplay.MoodColor(current.CrewMember.GetMood());
+		_avatarDisplay.transform.parent.GetComponent<Image>().color = AvatarDisplay.MoodColor(AvatarMoodConfig.GetMood(current.CrewMember.GetMood()));
 		CurrentCrewMember = current.CrewMember;
 		_nameText.text = current.CrewMember.Name;
 	}
@@ -66,9 +67,10 @@ public class PostRacePersonUI : MonoBehaviour
 			var currentReply = replies[i];
 			var postRaceEvent = GetComponentInParent<PostRaceEventUI>();
 			var question = _questions[i];
-			_questions[i].GetComponent<Button>().onClick.RemoveAllListeners();
-			_questions[i].GetComponent<Button>().onClick.AddListener(() => UpdateSelected(question));
-			_questions[i].GetComponent<Button>().onClick.AddListener(() => postRaceEvent.SendReply(currentReply));
+			var button = _questions[i].GetComponent<Button>();
+			button.onClick.RemoveAllListeners();
+			button.onClick.AddListener(() => UpdateSelected(question));
+			button.onClick.AddListener(() => postRaceEvent.SendReply(currentReply));
 		}
 		//display the button for closing the pop-up and update the displayed character mood if there are no more dialogue options
 		if (replies.Count == 0)

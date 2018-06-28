@@ -121,9 +121,10 @@ public class RecruitMemberUI : MonoBehaviour
 				_recruitUI[i].transform.Find("Image").localScale = new Vector3(-1, 1, 1);
 			}
 			//set-up button onclick handler
-			_recruitUI[i].transform.FindButton("Button").interactable = true;
-			_recruitUI[i].transform.FindButton("Button").onClick.RemoveAllListeners();
-			_recruitUI[i].transform.FindButton("Button").onClick.AddListener(() => HireCrewWarning(thisRecruit));
+			var button = _recruitUI[i].transform.FindButton("Button");
+			button.interactable = true;
+			button.onClick.RemoveAllListeners();
+			button.onClick.AddListener(() => HireCrewWarning(thisRecruit));
 			var rand = UnityEngine.Random.Range(0, 8);
 			//set initial greeting dialogue
 			_recruitUI[i].transform.FindText("Dialogue Box/Dialogue").text = Localization.Get("RECRUIT_GREETING_" + (rand % 4));

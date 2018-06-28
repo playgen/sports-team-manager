@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using Assets.Scripts;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using PlayGen.SUGAR.Unity;
 using UnityEngine;
@@ -125,6 +126,7 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void Display()
 	{
+		//TODO try to simplify this as much as possible
 		if (!gameObject.activeInHierarchy)
 		{
 			return;
@@ -135,11 +137,11 @@ public class MemberMeetingUI : MonoBehaviour
 		//CrewMember avatar
 		_avatarDisplay.SetAvatar(_currentMember.Avatar, _currentMember.GetMood());
 		_avatarDisplay.GetComponent<Image>().color = new UnityEngine.Color(0, 1, 1);
-		_avatarDisplay.transform.parent.GetComponent<Image>().color = AvatarDisplay.MoodColor(_currentMember.GetMood());
+		_avatarDisplay.transform.parent.GetComponent<Image>().color = AvatarDisplay.MoodColor(AvatarMoodConfig.GetMood(_currentMember.GetMood()));
 		//CrewMember information
+		var currentRole = _currentMember.BoatPosition();
 		_textList[0].text = _currentMember.Name;
 		_textList[1].text = _currentMember.Age.ToString();
-		var currentRole = _currentMember.BoatPosition();
 		_textList[2].text = currentRole == Position.Null ? Localization.Get("NO_ROLE") : string.Empty;
 		_textList[3].text = Localization.Get("NAME") + ":";
 		_textList[4].text = Localization.Get("AGE") + ":";

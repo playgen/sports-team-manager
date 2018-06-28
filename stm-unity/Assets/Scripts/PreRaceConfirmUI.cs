@@ -31,6 +31,7 @@ public class PreRaceConfirmUI : MonoBehaviour
 	{
 		gameObject.Active(true);
 		var yesButton = transform.FindButton("Yes");
+		var noButton = transform.FindButton("No");
 		yesButton.onClick.RemoveAllListeners();
 		if (!GameManagement.IsRace)
 		{
@@ -66,7 +67,6 @@ public class PreRaceConfirmUI : MonoBehaviour
 		yesButton.onClick.AddListener(() => CloseConfirmPopUp(string.Empty));
 		yesButton.onClick.AddListener(UIManagement.TeamSelection.SkipToRace);
 		yesButton.onClick.AddListener(UIManagement.TeamSelection.ConfirmLineUp);
-		var noButton = transform.FindButton("No");
 		noButton.onClick.RemoveAllListeners();
 		noButton.onClick.AddListener(() => CloseConfirmPopUp(TrackerTriggerSource.NoButtonSelected.ToString()));
 		DoBestFit();
@@ -132,12 +132,12 @@ public class PreRaceConfirmUI : MonoBehaviour
 		GetComponentInChildren<Text>().text = Localization.Get("REPEAT_CONFIRM");
 		TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpConfirmPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>(), AccessibleTracker.Accessible.Screen));
 		var yesButton = transform.FindButton("Yes");
+		var noButton = transform.FindButton("No");
 		yesButton.onClick.RemoveAllListeners();
 		yesButton.onClick.AddListener(UIManagement.TeamSelection.ConfirmLineUp);
 		yesButton.onClick.AddListener(() => CloseConfirmPopUp(string.Empty));
 		yesButton.onClick.AddListener(() => TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpApproved", TrackerAsset.Verb.Selected, new Dictionary<string, string>(), "RepeatLineUp", AlternativeTracker.Alternative.Menu)));
 
-		var noButton = transform.FindButton("No");
 		noButton.onClick.RemoveAllListeners();
 		noButton.onClick.AddListener(() => CloseRepeatWarning(TrackerTriggerSource.NoButtonSelected.ToString()));
 		DoBestFit();

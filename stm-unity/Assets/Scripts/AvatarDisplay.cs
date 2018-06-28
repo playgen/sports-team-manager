@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Assets.Scripts;
 using PlayGen.Unity.Utilities.Extensions;
 
 using UnityEngine;
@@ -31,6 +31,14 @@ public class AvatarDisplay : MonoBehaviour
 	private Image _outfitShadow;
 	private RectTransform _spriteParent;
 
+	private static readonly Color _veryGood = Color.green;
+	private static readonly Color _good = new Color(0, 1, 0.5f);
+	private static readonly Color _neutral = Color.cyan;
+	private static readonly Color _bad = new Color(1, 0.5f, 0);
+	private static readonly Color _veryBad = Color.red;
+
+	private readonly string _avatarImagePrefix = "AvatarSprites";
+	private string _avatarPrefix => "IconMask/" + _avatarImagePrefix;
 	/// <summary>
 	/// Load all avatar sprites from resources.
 	/// </summary>
@@ -39,26 +47,22 @@ public class AvatarDisplay : MonoBehaviour
 		avatarSprites = Resources.LoadAll(string.Empty, typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name, a => a, StringComparer.OrdinalIgnoreCase);
 	}
 
-	public static Color MoodColor(float value)
+	public static Color MoodColor(string value)
 	{
-		var moodColor = Color.cyan;
-		if (value > 2)
+		var avatarMood = (AvatarMoodConfig.AvatarMood)Enum.Parse(typeof(AvatarMoodConfig.AvatarMood), value);
+		switch (avatarMood)
 		{
-			moodColor = Color.green;
+			case AvatarMoodConfig.AvatarMood.StronglyAgree:
+				return _veryGood;
+			case AvatarMoodConfig.AvatarMood.Agree:
+				return _good;
+			case AvatarMoodConfig.AvatarMood.Disagree:
+				return _bad;
+			case AvatarMoodConfig.AvatarMood.StronglyDisagree:
+				return _veryBad;
+			default:
+				return _neutral;
 		}
-		else if (value > 0)
-		{
-			moodColor = new Color(0, 1, 0.5f);
-		}
-		else if (value < -2)
-		{
-			moodColor = Color.red;
-		}
-		else if (value < 0)
-		{
-			moodColor = new Color(1, 0.5f, 0);
-		}
-		return moodColor;
 	}
 
 	/// <summary>
@@ -68,19 +72,20 @@ public class AvatarDisplay : MonoBehaviour
 	{
 		if (!_body)
 		{
-			_body = transform.FindImage("IconMask/AvatarSprites/Body") ?? transform.FindImage("AvatarSprites/Body");
-			_hairBack = transform.FindImage("IconMask/AvatarSprites/HairBack") ?? transform.FindImage("AvatarSprites/HairBack");
-			_hairFront = transform.FindImage("IconMask/AvatarSprites/HairFront") ?? transform.FindImage("AvatarSprites/HairFront");
-			_eyebrow = transform.FindImage("IconMask/AvatarSprites/Eyebrows") ?? transform.FindImage("AvatarSprites/Eyebrows");
-			_nose = transform.FindImage("IconMask/AvatarSprites/Nose") ?? transform.FindImage("AvatarSprites/Nose");
-			_mouth = transform.FindImage("IconMask/AvatarSprites/Mouth") ?? transform.FindImage("AvatarSprites/Mouth");
-			_teeth = transform.FindImage("IconMask/AvatarSprites/Teeth") ?? transform.FindImage("AvatarSprites/Teeth");
-			_eyes = transform.FindImage("IconMask/AvatarSprites/Eyes") ?? transform.FindImage("AvatarSprites/Eyes");
-			_eyePupils = transform.FindImage("IconMask/AvatarSprites/Eye Pupils") ?? transform.FindImage("AvatarSprites/Eye Pupils");
-			_outfit = transform.FindImage("IconMask/AvatarSprites/Outfit") ?? transform.FindImage("AvatarSprites/Outfit");
-			_outfitHighlight = transform.FindImage("IconMask/AvatarSprites/OutfitHighlight") ?? transform.FindImage("AvatarSprites/OutfitHighlight");
-			_outfitShadow = transform.FindImage("IconMask/AvatarSprites/OutfitShadow") ?? transform.FindImage("AvatarSprites/OutfitShadow");
-			_spriteParent = transform.FindRect("IconMask/AvatarSprites") ?? transform.FindRect("AvatarSprites");
+			_spriteParent = transform.FindRect(_avatarPrefix) ?? transform.FindRect(_avatarImagePrefix);
+
+			_body = GetAvatarImage("Body");
+			_hairBack = GetAvatarImage("HairBack");
+			_hairFront = GetAvatarImage("HairFront");
+			_eyebrow = GetAvatarImage("Eyebrows");
+			_nose = GetAvatarImage("Nose");
+			_mouth = GetAvatarImage("Mouth");
+			_teeth = GetAvatarImage("Teeth");
+			_eyes = GetAvatarImage("Eyes");
+			_eyePupils = GetAvatarImage("Eye Pupils");
+			_outfit = GetAvatarImage("Outfit");
+			_outfitHighlight = GetAvatarImage("OutfitHighlight");
+			_outfitShadow = GetAvatarImage("OutfitShadow");
 		}
 		_body.sprite = avatarSprites[avatar.BodyType];
 		_outfit.sprite = avatarSprites[avatar.OutfitBaseType];
@@ -97,16 +102,23 @@ public class AvatarDisplay : MonoBehaviour
 		_hairFront.sprite = avatarSprites[$"{avatar.HairType}_Front"];
 
 		// Set colors
-		_body.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
-		_nose.color = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
-		_mouth.color = avatar.IsMale ? new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255) : (Color32)Color.white;
-		_eyePupils.color = new Color32(avatar.EyeColor.R, avatar.EyeColor.G, avatar.EyeColor.B, 255);
-		_hairFront.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
-		_hairBack.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
-		_eyebrow.color = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, _eyebrowAlpha);
+		var skinColor = new Color32(avatar.SkinColor.R, avatar.SkinColor.G, avatar.SkinColor.B, 255);
+		var eyeColor = new Color32(avatar.EyeColor.R, avatar.EyeColor.G, avatar.EyeColor.B, 255);
+		var hairColor = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, 255);
+		var eyebrowColor = new Color32(avatar.HairColor.R, avatar.HairColor.G, avatar.HairColor.B, _eyebrowAlpha);
 
 		var primary = new Color32(avatar.PrimaryOutfitColor.R, avatar.PrimaryOutfitColor.G, avatar.PrimaryOutfitColor.B, avatar.PrimaryOutfitColor.A);
 		var secondary = new Color32(avatar.SecondaryOutfitColor.R, avatar.SecondaryOutfitColor.G, avatar.SecondaryOutfitColor.B, avatar.SecondaryOutfitColor.A);
+
+		_body.color = skinColor;
+		_nose.color = skinColor;
+
+		_mouth.color = avatar.IsMale ? hairColor : (Color32)Color.white;
+		_eyePupils.color = eyeColor;
+		_hairFront.color = hairColor;
+		_hairBack.color = hairColor;
+		_eyebrow.color = eyebrowColor;
+
 
 		// Check the current outfit is not the casual one, we should not be changing the color of casual
 		if (avatar.CustomOutfitColor)
@@ -144,28 +156,22 @@ public class AvatarDisplay : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Get the an image from the avatar, checks which version is currently shown, masked or normal
+	/// </summary>
+	private Image GetAvatarImage(string image)
+	{
+		return transform.FindImage(_avatarPrefix + "/" + image) ?? transform.FindImage(_avatarImagePrefix + "/" + image);
+	}
+
+	/// <summary>
 	/// update the avatar's facial expression based on their agreement with the statement passed to them
 	/// </summary>
 	public void UpdateMood(Avatar avatar, string reaction)
 	{
-		switch (reaction.Replace(" ", string.Empty))
-		{
-			case "StrongAgree":
-				UpdateMood(avatar, 3);
-				return;
-			case "Agree":
-				UpdateMood(avatar, 1);
-				return;
-			case "Disagree":
-				UpdateMood(avatar, -1);
-				return;
-			case "StrongDisagree":
-				UpdateMood(avatar, -3);
-				return;
-			default:
-				UpdateMood(avatar, 0);
-				break;
-		}
+		reaction = reaction.Replace(" ", string.Empty);
+
+		var mood = AvatarMoodConfig.GetMood(reaction);
+		UpdateMood(avatar, mood);
 	}
 
 	/// <summary>
@@ -173,23 +179,8 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	public void UpdateMood(Avatar avatar, float mood)
 	{
-		var moodStr = "Neutral";
-		if (mood > 2)
-		{
-			moodStr = "StronglyAgree";
-		}
-		else if (mood > 0)
-		{
-			moodStr = "Agree";
-		}
-		else if (mood < -2)
-		{
-			moodStr = "StronglyDisagree";
-		}
-		else if (mood < 0)
-		{
-			moodStr = "Disagree";
-		}
+		var moodStr = AvatarMoodConfig.GetMood(mood);
+
 		if (avatarSprites.ContainsKey($"{avatar.EyeType}_Brown_{moodStr}"))
 		{
 			_eyes.sprite = avatarSprites[$"{avatar.EyeType}_Brown_{moodStr}"];
@@ -200,8 +191,10 @@ public class AvatarDisplay : MonoBehaviour
 		}
 		else
 		{
+			// No disagree eyes, so default to neutral
 			_eyes.sprite = avatarSprites[$"{avatar.EyeType}_Brown_Neutral"];
 		}
+
 		_eyePupils.sprite = _eyes.sprite.name.Contains("Brown") ? avatarSprites.ContainsKey(_eyes.sprite.name.Replace("Brown", "Pupil")) ? avatarSprites[_eyes.sprite.name.Replace("Brown", "Pupil")] : null : null;
 		_eyebrow.sprite = avatarSprites[$"{avatar.EyebrowType}_{moodStr}"];
 		_mouth.sprite = avatarSprites[$"{avatar.MouthType}_{moodStr}"];
@@ -216,11 +209,16 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	private void SetIconProperties(Avatar a)
 	{
+		Debug.Log(_spriteParent != null);
 		if (!_spriteParent)
 		{
 			return;
 		}
-		_spriteParent.offsetMax = a.IsMale ? new Vector2(_spriteParent.offsetMax.x, -1f * (_spriteParent.rect.height / _maleOffsetPercent)) : new Vector2(_spriteParent.offsetMax.x, 0);
+		Debug.Log(a.IsMale);
+		Debug.Log(_spriteParent.offsetMax.x + " " +  -1f * (_spriteParent.rect.height / _maleOffsetPercent));
+		_spriteParent.offsetMax = a.IsMale ? 
+			new Vector2(_spriteParent.offsetMax.x, -1f * (_spriteParent.rect.height / _maleOffsetPercent)) 
+			: new Vector2(_spriteParent.offsetMax.x, 0);
 	}
 
 	/// <summary>

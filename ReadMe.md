@@ -25,7 +25,7 @@ See the [LICENCE](LICENCE.md) file included in this project.
 - [Evaluation Asset](https://gamecomponents.eu/content/338) asset that evaluates the pedagogical efficiency of the game.  
 - [RAGE Analytics](https://gamecomponents.eu/content/232) asset to log to the RAGE analytics server.
 - [ExcelToJsonConverter](https://github.com/Benzino/ExcelToJsonConverter): is used to convert Excel Localization files to jSON.
-- [GameWork](https://github.com/Game-Work/GameWork.Unity) is a game development framework. 
+- [GameWork](https://github.com/JaredGG/GameWork.Unity) is a game development framework. 
 - [Integrated Authoring Tool](https://gamecomponents.eu/content/201): is used in by the emotional decisionmaking component.
 
 todo
@@ -33,7 +33,7 @@ todo
 # Development:
 ## Requirements:
 - Windows OS
-- Unity Editor
+- Unity Editor *(Version 2017.2.3f1) - Known bug in later versions of Unity with UI Anchoring*
 
 ## Process
 1. Build stm-logic solution (stm-logic\PlayGen.RAGE.SportsTeamManager\PlayGen.RAGE.SportsTeamManager.sln).

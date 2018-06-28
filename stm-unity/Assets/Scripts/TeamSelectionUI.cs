@@ -879,10 +879,11 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		if (result > 0)
 		{
-			_ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1).GetComponent<Image>().fillAmount = 1;
-			_ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1).GetComponentInChildren<Text>().gameObject.AddComponent<TextLocalization>();
-			_ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1).GetComponentInChildren<TextLocalization>().Key = "POSITION_" + result;
-			_ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1).GetComponentInChildren<TextLocalization>().Set();
+			var progressBar = _ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1);
+			progressBar.GetComponent<Image>().fillAmount = 1;
+			var positionText = progressBar.GetComponentInChildren<Text>().gameObject.AddComponent<TextLocalization>();
+			positionText.Key = "POSITION_" + result;
+			positionText.Set();
 		}
 		else
 		{

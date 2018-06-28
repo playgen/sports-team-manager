@@ -97,20 +97,22 @@ public class TutorialSectionUI : MonoBehaviour
 		reverseRaycast.MaskRect.Clear();
 		reverseRaycast.MaskRect.Add(_menuHighlighted);
 		var anchorObject = transform.root.RectTransform();
+		var softMaskScript = GetComponentInChildren <SoftMaskScript>();
+
 		if (_tutorialObj.HighlightedObjects[_currentText].List.Count > 0)
 		{
-			GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = false;
+			softMaskScript.FlipAlphaMask = false;
 			foreach (var obj in _tutorialObj.HighlightedObjects[_currentText].List)
 			{
 				anchorObject = anchorObject.FindInactive(obj).RectTransform() ?? anchorObject;
 			}
-			GetComponentInChildren<SoftMaskScript>().maskScalingRect = anchorObject;
+			softMaskScript.maskScalingRect = anchorObject;
 			reverseRaycast.MaskRect.Add(anchorObject);
 		}
 		else
 		{
-			GetComponentInChildren<SoftMaskScript>().FlipAlphaMask = true;
-			GetComponentInChildren<SoftMaskScript>().maskScalingRect = null;
+			softMaskScript.FlipAlphaMask = true;
+			softMaskScript.maskScalingRect = null;
 		}
 
 		if (_tutorialObj.BlacklistButtons[_currentText] != null)
@@ -142,6 +144,7 @@ public class TutorialSectionUI : MonoBehaviour
 				transform.localScale = new Vector2(-1, 1);
 				_tutorialText.transform.localScale = new Vector2(-1, 1);
 				_buttons.transform.localScale = new Vector2(-1, 1);
+
 				var mhMin = _menuHighlighted.anchorMin.x;
 				if (mhMin < 0)
 				{
@@ -156,6 +159,7 @@ public class TutorialSectionUI : MonoBehaviour
 				transform.localScale = Vector2.one;
 				_tutorialText.transform.localScale = Vector2.one;
 				_buttons.transform.localScale = Vector2.one;
+
 				var mhMin = _menuHighlighted.anchorMin.x;
 				if (mhMin > 0)
 				{
