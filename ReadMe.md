@@ -21,14 +21,18 @@ See the [LICENCE](LICENCE.md) file included in this project.
   - **stm-installer**: *installer project*  
 
 # Included Assets:
-- [SUGAR](http://www.sugarengine.org/) is a Social Gamification Backend.
-- [Evaluation Asset](https://gamecomponents.eu/content/338) asset that evaluates the pedagogical efficiency of the game.  
-- [RAGE Analytics](https://gamecomponents.eu/content/232) asset to log to the RAGE analytics server.
-- [ExcelToJsonConverter](https://github.com/Benzino/ExcelToJsonConverter): is used to convert Excel Localization files to jSON.
-- [GameWork](https://github.com/JaredGG/GameWork.Unity) is a game development framework. 
+- [Server-Side Dashboard and Analysis](https://www.gamecomponents.eu/content/195)
+- [Role-Play Character](https://www.gamecomponents.eu/content/196)
+- [SUGAR](https://gamecomponents.eu/content/200)
 - [Integrated Authoring Tool](https://gamecomponents.eu/content/201): is used in by the emotional decisionmaking component.
-
-todo
+- [Social Importance Dynamics](https://www.gamecomponents.eu/content/207)
+- [Emotional Decision Making Asset](https://www.gamecomponents.eu/content/218)
+- [Server-Side Interaction Storage and Analytics](https://www.gamecomponents.eu/content/220)
+- [Emotional Appraisal Asset](https://www.gamecomponents.eu/content/224)
+- [Client-Side Tracker](https://gamecomponents.eu/content/232)
+- [Evaluation Component](https://gamecomponents.eu/content/338)
+- [ExcelToJsonConverter](https://github.com/Benzino/ExcelToJsonConverter): is used to convert Excel Localization files to jSON.
+- [PlayGen Unity Utilities](git@gitlab.com:playgen/unity-utilities.git): is a collection of simple game utilities.
 
 # Development:
 ## Requirements:
