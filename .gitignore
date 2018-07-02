@@ -255,7 +255,7 @@ Assets/AssetStoreTools*
 sysinfo.txt
 
 # Builds
-#.keystore
+*.keystore
 *.apk
 *.exe
 *.unitypackage
