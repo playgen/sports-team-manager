@@ -7149,7 +7149,6 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 0
-  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -9376,7 +9375,8 @@ MonoBehaviour:
   _tutorialQuitButton: {fileID: 1941228535}
   _tutorialExitBlocker: {fileID: 515993620}
   _tutorialSections:
-  - SectionTextHolder:
+  - SectionName: Welcome and Position Pop up
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Welcome! Here is where you\u2019ll be dealing with your crew and assigning
@@ -9409,7 +9409,8 @@ MonoBehaviour:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Position Pop up (Skills)
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - This pop-up lists all the skills required for the position you just selected
@@ -9444,7 +9445,8 @@ MonoBehaviour:
       - Close
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Crew, mood and crew pop up
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Now that you know how to review a position, it\u2019s time to take a look
@@ -9510,7 +9512,8 @@ MonoBehaviour:
     - part2=mood-positive
     - part3=mood-negative
     - part4=mood-accurate
-  - SectionTextHolder:
+  - SectionName: Crew pop up, talk to
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "This pop-up displays all the known skills and opinions for this person, but
@@ -9603,7 +9606,8 @@ MonoBehaviour:
     - part0=opinion-accurate
     - part1=opinion-inaccurate
     - part2=opinion-accurate
-  - SectionTextHolder:
+  - SectionName: Crew Notes
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "OK, looks like you\u2019ve got the hang of talking to your team members.
@@ -9645,7 +9649,8 @@ MonoBehaviour:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Inputting Notes
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - You can make notes by selecting the black input field and typing whatever
@@ -9678,7 +9683,8 @@ MonoBehaviour:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Crew Pop up (exit)
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - Exit the crew member meeting pop-up using the highlighted button.
@@ -9702,7 +9708,8 @@ MonoBehaviour:
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Placing crew in positions
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Now you know how to question your crew, it\u2019s time to place them into
@@ -9733,7 +9740,8 @@ MonoBehaviour:
     - List:
       - zz Recruit
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Removing crew from positions
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - If you want to remove a crew member from a position, just drag and drop them
@@ -9758,7 +9766,8 @@ MonoBehaviour:
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Ready for first practice
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - Once you've filled all of the positions wth crew members, the boat will be
@@ -9781,7 +9790,8 @@ MonoBehaviour:
     - List:
       - zz Recruit
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Crew performance, start session
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Don\u2019t worry if you haven't gotten the perfect line-up, as you'll get
@@ -9823,7 +9833,8 @@ MonoBehaviour:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Post session feedback
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - After every session, you'll be given feedback on how your selected crew performed.
@@ -9864,7 +9875,8 @@ MonoBehaviour:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Hover over crew position feedback
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - Hover over or click each box to see what they represent.
@@ -9889,7 +9901,8 @@ MonoBehaviour:
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Feedback icons
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - You'll also be given feedback after every session on which areas your team
@@ -9948,7 +9961,8 @@ MonoBehaviour:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Hover over icons
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - By hovering over each of these icons, you can see what each icon represents.
@@ -9973,7 +9987,8 @@ MonoBehaviour:
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Use knowledge for practice 2
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - Also keep in mind that selecting the best possible crew won't always mean
@@ -10003,7 +10018,8 @@ MonoBehaviour:
     - List:
       - zz Recruit
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Prepare for race
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - OK, practice is over and it's now time for the race itself! Once you're happy
@@ -10028,7 +10044,8 @@ MonoBehaviour:
     - List:
       - zz Recruit
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Race results
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - This result pop-up will apear after every race. Did this race go as well as
@@ -10052,7 +10069,8 @@ MonoBehaviour:
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: New boat, new roles, new crew
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Now you\u2019ve completed your first race, it\u2019s time to change things
@@ -10099,7 +10117,8 @@ MonoBehaviour:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Close new position popup
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Once you\u2019re happy you know what skills will be needed in this position,
@@ -10123,7 +10142,8 @@ MonoBehaviour:
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Recruitment Screen
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - To go to the recruitment screen, click one of the black buttons on the right
@@ -10147,7 +10167,8 @@ MonoBehaviour:
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Recruitment Process
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - When you click a skill statement at the bottom of the screen, these four possible
@@ -10187,7 +10208,8 @@ MonoBehaviour:
       - Button
     CustomAttributes:
     - cost=false
-  - SectionTextHolder:
+  - SectionName: Hiring New Crew
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Once you\u2019re happy that you know who you want to hire, click on them
@@ -10221,7 +10243,8 @@ MonoBehaviour:
       - Question 6
     CustomAttributes:
     - cost=false
-  - SectionTextHolder:
+  - SectionName: New Set of Sessions
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Now we\u2019ve got someone that you feel fits the new position, it\u2019s
@@ -10243,7 +10266,8 @@ MonoBehaviour:
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Post Practice 2
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - That's the first practice session completed. This'll be your last chance to
@@ -10267,7 +10291,8 @@ MonoBehaviour:
     - List:
       - zz Recruit
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Pre Race 2
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - Two practice sessions have come and gone, so now it's time to race for the
@@ -10289,7 +10314,8 @@ MonoBehaviour:
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Post Race Feeback 2
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - Did practice make perfect this time round?
@@ -10311,7 +10337,8 @@ MonoBehaviour:
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Crew Request meeting
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Seems that one of your crew members wants to speak with you. Every so often,
@@ -10348,7 +10375,8 @@ MonoBehaviour:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Exit Conversation
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "OK, that\u2019s the conversation finished. Click the highlighted button to
@@ -10374,7 +10402,8 @@ MonoBehaviour:
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Situation Feedback
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - This dashing fellow (no relation, I assure you...) will pop up after every
@@ -10401,7 +10430,8 @@ MonoBehaviour:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Conversation Impact
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - After every conversation, you'll also be given a list which details the impact
@@ -10425,7 +10455,8 @@ MonoBehaviour:
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Your on your own now!
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - From here on out, you're mostly on your own, but I'll pop up from time to
@@ -20602,7 +20633,6 @@ VideoPlayer:
   m_Enabled: 1
   m_VideoClip: {fileID: 0}
   m_TargetCameraAlpha: 1
-  m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
   m_TargetTexture: {fileID: 0}
   m_TimeReference: 0
@@ -28644,7 +28674,6 @@ VideoPlayer:
   m_Enabled: 1
   m_VideoClip: {fileID: 32900000, guid: daed1930a5f014641940b02034400292, type: 3}
   m_TargetCameraAlpha: 1
-  m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
   m_TargetTexture: {fileID: 0}
   m_TimeReference: 0

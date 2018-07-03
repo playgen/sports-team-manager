@@ -64,9 +64,10 @@ public class TutorialController : MonoBehaviour
 			var uniqueTriggers = parsedAsset[i]["Unique Triggers"].Value.Length > 0 && bool.Parse(parsedAsset[i]["Unique Triggers"].RemoveJSONNodeChars());
 			var saveToSection = parsedAsset[i]["Save Progress"].Value.Length > 0 ? int.Parse(parsedAsset[i]["Save Progress"].RemoveJSONNodeChars()) : 0;
 			var customAttributes = parsedAsset[i]["Custom Attributes"].RemoveJSONNodeChars().Split('\n').Where(s => !string.IsNullOrEmpty(s)).ToList();
+			var sectionName = parsedAsset[i]["Section Name"].RemoveJSONNodeChars();
 			if (i + 1 < parsedAsset.Count && parsedAsset[i + 1][0].Value.RemoveJSONNodeChars() == "BREAK")
 			{
-				_tutorialSections.Add(new TutorialObject(textDict, objectNames, reversed, triggers, triggerCount, uniqueTriggers, saveToSection, blacklistNames, customAttributes));
+				_tutorialSections.Add(new TutorialObject(textDict, objectNames, reversed, triggers, triggerCount, uniqueTriggers, saveToSection, blacklistNames, customAttributes, sectionName));
 				foreach (var langName in Localization.Languages)
 				{
 					textDict[langName.Name] = new List<string>();

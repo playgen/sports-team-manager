@@ -48,6 +48,10 @@ public class StringList
 [Serializable]
 public class TutorialObject
 {
+	/// <summary>
+	/// Section Name is only used in inspector to identify each step easily
+	/// </summary>
+	public string SectionName; 
     public List<LanguageKeyValuePair> SectionTextHolder;
     public bool Reversed;
     public List<StringList> HighlightedObjects;
@@ -58,8 +62,9 @@ public class TutorialObject
     public List<StringList> BlacklistButtons;
     public List<string> CustomAttributes;
 
-    public TutorialObject(Dictionary<string, List<string>> text, List<string[]> highlightObjs, bool reversed, KeyValuePair<string, string>[] triggers, int triggerCount, bool uniqueTriggers, int saveSection, List<List<string>> blacklist, List<string> attributes)
+    public TutorialObject(Dictionary<string, List<string>> text, List<string[]> highlightObjs, bool reversed, KeyValuePair<string, string>[] triggers, int triggerCount, bool uniqueTriggers, int saveSection, List<List<string>> blacklist, List<string> attributes, string sectionName)
     {
+	    SectionName = sectionName;
         SectionTextHolder = new List<LanguageKeyValuePair>();
         foreach (var kvp in text)
         {
