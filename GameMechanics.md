@@ -47,12 +47,3 @@ The current tutorial steps are defined in the [SportsTeamManagerTutorial Excel F
 
 ### <span style="color:red">**TODO**</span> Inter-team and Manager Relationships
 Brief overview of the way in which crew memebers relationships with other crew and the manager affect their performance and how this is calculated, link to FAtiMA
-
-
-### <span style="color:red">**TODO**</span>
-
-
-### <span style="color:red">**TODO**</span>
-
-
-### <span style="color:red">**TODO**</span>
