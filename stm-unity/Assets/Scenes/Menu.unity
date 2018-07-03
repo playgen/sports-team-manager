@@ -9389,16 +9389,9 @@ MonoBehaviour:
         ruolo.'
       - Prima di tutto dai un'occhiata ai tre ruoli che devi ricoprire. Clicca su
         ciascuno ruolo per averne una descrizione.
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List: []
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Boat
-      - Position Container
+    - Team Management/Boat Container Bounds/Viewport/Content/Boat/Position Container
     Triggers:
     - Key: PositionUI
       Value: ShowPopUp
@@ -9423,17 +9416,9 @@ MonoBehaviour:
         che hai appena selezionato. In questo riquadro, troverai sia la persona che
         attualmente occupa la posizione, sia chi l'ha ricoperta in passato.
       - Per chiudere la finestra, usa la x in alto a destra del riquadro.
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Position Pop-Up
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Position Pop-Up
-      - Close
+    - Team Management/Pop-up Bounds/Position Pop-Up/Close
     Triggers:
     - Key: PositionDisplayUI
       Value: ClosePositionPopUp
@@ -9476,23 +9461,9 @@ MonoBehaviour:
         bordo arancione o rosso \xE8 di cattivo umore e avr\xE0 prestazioni peggiori."
       - "Clicca sul personaggio per conoscere di pi\xF9 su di lui/lei e avviare una
         conversazione."
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Crew Container
-    - List:
-      - Team Management
-      - Crew Container
-    - List:
-      - Team Management
-      - Crew Container
-    - List:
-      - Team Management
-      - Crew Container
-    - List:
-      - Team Management
-      - Crew Container
+    - Team Management/Crew Container
     Triggers:
     - Key: CrewMemberUI
       Value: ShowPopUp
@@ -9559,33 +9530,9 @@ MonoBehaviour:
       - "Fare domande, cos\xEC come altre azioni nel gioco, richiede una certa quantit\xE0
         di tempo che \xE8 limitato per ciascuna gara. Nel tutorial il limite \xE8
         stato rimosso, pertanto sentiti libero di fare tutte le domande che vuoi."
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Meeting Pop-Up
-      - Details
-    - List:
-      - Team Management
-      - Crew Container
-    - List:
-      - Team Management
-      - Crew Container
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Meeting Pop-Up
-      - Manager Opinion
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Meeting Pop-Up
-      - Conversation
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Meeting Pop-Up
+    - Team Management/Pop-up Bounds/Meeting Pop-Up
     Triggers:
     - Key: MemberMeetingUI
       Value: AskQuestion
@@ -9625,19 +9572,9 @@ MonoBehaviour:
         di registrare e salvare informazioni che ti saranno sicuramente utili in seguito.
       - Per aprire la finestra e prendere note su questo membro dell'equipaggio clicca
         il pulsante evidenziato.
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List: []
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Meeting Pop-Up
-      - Notes
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Meeting Pop-Up
-      - Notes
+    - Team Management/Pop-up Bounds/Meeting Pop-Up/Notes
     Triggers:
     - Key: NotesUI
       Value: Display
@@ -9663,16 +9600,9 @@ MonoBehaviour:
         informazione desideri salvare per dopo.
       - Prendi quante note desideri su questo membro dell'equipaggio, poi esci usando
         il pulsante Chiudi collocato dietro il campo di testo nero.
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Notes Pop-Up
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Notes Pop-Up
+    - Team Management/Pop-up Bounds/Notes Pop-Up
     Triggers:
     - Key: NotesUI
       Value: Close
@@ -9692,13 +9622,9 @@ MonoBehaviour:
       Value:
       - "Ora hai qualche informazione in pi\xF9 su di lui. Esci da questa finestra
         usando il pulsante evidenziato."
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Meeting Pop-Up
-      - Close
+    - Team Management/Pop-up Bounds/Meeting Pop-Up/Close
     Triggers:
     - Key: MemberMeetingUI
       Value: OnDisable
@@ -9724,11 +9650,9 @@ MonoBehaviour:
       - Dopo aver raccolto ancora qualche informazione sul tuo team e sulle posizioni
         da ricoprire trascina i candidati nei ruoli che ritieni possano interpretare
         meglio.
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List: []
-    - List:
-      - Team Management
+    - Team Management
     Triggers:
     - Key: CrewMemberUI
       Value: Place
@@ -9749,14 +9673,9 @@ MonoBehaviour:
     - Key: it
       Value:
       - Se vuoi rimuovere un membro da una posizione, puoi trascinarlo fuori.
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Boat
+    - Team Management/Boat Container Bounds/Viewport/Content/Boat
     Triggers:
     - Key: CrewMemberUI
       Value: OnReset
@@ -9776,10 +9695,9 @@ MonoBehaviour:
       Value:
       - "Quando hai coperto tutte le posizioni, l'equipaggio \xE8 pronto per affrontare
         la prima sessione di prova."
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List:
-      - Team Management
+    - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: EnableRacing
@@ -9811,17 +9729,9 @@ MonoBehaviour:
         di ciascuno rispetto agli altri membri selezionati."
       - "Clicca il pulsante evidenziato e la tua squadra parteciper\xE0 alla prima
         prova."
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List: []
-    - List: []
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Boat
-      - Race
+    - Team Management/Boat Container Bounds/Viewport/Content/Boat/Race
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
@@ -9847,23 +9757,10 @@ MonoBehaviour:
         che hai selezionato.
       - I quadrati colorati indicano quanto ti sei avvicinato alla formazione ideale.
       - "Clicca, o passa sopra ciascuno, per leggere ci\xF2 che rappresenta."
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List: []
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Historic Boat 0
-      - Light Container
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Historic Boat 0
-      - Light Container
+    - Team Management/Boat Container Bounds/Viewport/Content/Historic Boat 0/Light
+      Container
     Triggers:
     - Key: HoverPopUpUI
       Value: HoverCheck
@@ -9883,15 +9780,10 @@ MonoBehaviour:
     - Key: it
       Value:
       - "Clicca, o passa sopra ciascuno, per leggere ci\xF2 che rappresenta."
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Historic Boat 0
-      - Light Container
+    - Team Management/Boat Container Bounds/Viewport/Content/Historic Boat 0/Light
+      Container
     Triggers:
     - Key: HoverPopUpUI
       Value: HideHover
@@ -9923,31 +9815,10 @@ MonoBehaviour:
       - "I punti di domanda in grigio indicano che il tuo equipaggio deve essere intervistato
         ulteriormente per scoprire cosa \xE8 necessario migliorare."
       - "Passando su ciascuna icona puoi leggere ci\xF2 che rappresenta."
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List: []
-    - List: []
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Historic Boat 0
-      - Icon Container
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Historic Boat 0
-      - Icon Container
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Historic Boat 0
-      - Icon Container
+    - Team Management/Boat Container Bounds/Viewport/Content/Historic Boat 0/Icon
+      Container
     Triggers:
     - Key: HoverPopUpUI
       Value: HoverCheck
@@ -9969,15 +9840,10 @@ MonoBehaviour:
     - Key: it
       Value:
       - "Passando su ciascuna icona puoi leggere ci\xF2 che rappresenta."
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Historic Boat 0
-      - Icon Container
+    - Team Management/Boat Container Bounds/Viewport/Content/Historic Boat 0/Icon
+      Container
     Triggers:
     - Key: HoverPopUpUI
       Value: HideHover
@@ -10002,11 +9868,9 @@ MonoBehaviour:
         la gara.
       - "Ora che hai completato la prima sessione di prova, usa ci\xF2 che hai imparato
         per prender parte alla seconda."
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List: []
-    - List:
-      - Team Management
+    - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
@@ -10030,10 +9894,9 @@ MonoBehaviour:
       - "Ok, la pratica \xE8 finita; \xE8 arrivato il momento di gareggiare! Quando
         sarai soddisfatto della formazione selezionata, clicca sul pulsante Gara!
         per prender parte alla prima gara."
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List:
-      - Team Management
+    - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
@@ -10054,12 +9917,9 @@ MonoBehaviour:
       Value:
       - "Questa finestra con i risultati apparir\xE0 al termine di ciascuna gara.
         La gara \xE8 andata come ti aspettavi?"
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Post-Race Pop-Up
+    - Team Management/Pop-up Bounds/Post-Race Pop-Up
     Triggers:
     - Key: RaceResultUI
       Value: Close
@@ -10087,25 +9947,10 @@ MonoBehaviour:
         e nessuno del tuo equipaggio attuale ricopre questa posizione molto bene."
       - "Di conseguenza, sar\xE0 necessario reclutare un nuovo membro per la squadra.
         Ma prima, diamo un'occhiata ai dettagli di questa posizione da ricoprire."
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List: []
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Boat
-      - Position Container
-      - Position 1
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Boat
-      - Position Container
-      - Position 1
+    - Team Management/Boat Container Bounds/Viewport/Content/Boat/Position Container/Position
+      1
     Triggers:
     - Key: PositionUI
       Value: ShowPopUp
@@ -10127,12 +9972,9 @@ MonoBehaviour:
       Value:
       - Una volta comprese quali siano le competenze necessarie in questa posizione,
         chiudi la finestra.
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Position Pop-Up
+    - Team Management/Pop-up Bounds/Position Pop-Up
     Triggers:
     - Key: PositionDisplayUI
       Value: ClosePositionPopUp
@@ -10152,12 +9994,9 @@ MonoBehaviour:
       Value:
       - Per poter procedere con il reclutamento della squadra, clicca uno dei pulsanti
         neri sulla destra dell'area evidenziata.
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Crew Container
-      - zz Recruit
+    - Team Management/Crew Container/zz Recruit
     Triggers:
     - Key: RecruitMemberUI
       Value: ResetDisplay
@@ -10183,17 +10022,9 @@ MonoBehaviour:
         dovresti farti un'idea di chi reclutare.
       - "Nota che solitamente ciascuna di queste domande ha un costo, cos\xEC come
         il reclutamento. Questo costo \xE8 stato rimosso per il momento."
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Recruit Pop-Up
-      - Questions
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Recruit Pop-Up
+    - Team Management/Pop-up Bounds/Recruit Pop-Up
     Triggers:
     - Key: RecruitMemberUI
       Value: AskQuestion
@@ -10218,13 +10049,9 @@ MonoBehaviour:
       Value:
       - "Una volta che sei convinto chi vuoi reclutare, \xE8 sufficiente cliccare
         sull'immagine per inserire il giocatore nella tua squadra."
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Recruit Pop-Up
-      - Recruits
+    - Team Management/Pop-up Bounds/Recruit Pop-Up/Recruits
     Triggers:
     - Key: RecruitMemberUI
       Value: Recruit
@@ -10253,10 +10080,9 @@ MonoBehaviour:
       Value:
       - "Ora hai qualcuno che ritieni possa ricoprire la nuova posizione, \xE8 tempo
         di passare alle prossime sessioni di gara."
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List:
-      - Team Management
+    - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
@@ -10277,10 +10103,9 @@ MonoBehaviour:
       - "Hai appena completato la tua prima sessione di pratica. Questa sar\xE0 la
         tua ultima possibilit\xE0 di sperimentare senza rischi, in modo da poter poi
         scegliere con maggior consapevolezza."
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List:
-      - Team Management
+    - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
@@ -10301,10 +10126,9 @@ MonoBehaviour:
       Value:
       - "Hai completato due sessioni di prova; \xE8 arrivato il momento di gareggiare
         per la prima volta con questa formazione. Buona fortuna!"
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List:
-      - Team Management
+    - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
@@ -10322,12 +10146,9 @@ MonoBehaviour:
     - Key: it
       Value:
       - Pensi che la pratica che hai fatto ti aiuti ad affrontare il prossimo round?
-    Reversed: 1
+    ShowOnLeft: 1
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Post-Race Pop-Up
+    - Team Management/Pop-up Bounds/Post-Race Pop-Up
     Triggers:
     - Key: RaceResultUI
       Value: Close
@@ -10353,18 +10174,9 @@ MonoBehaviour:
         a gestire la situazione.
       - "Fai clic su una delle opzioni disponibili per selezionare ci\xF2 che vuoi
         dire a questa persona."
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Event Pop-Up
-      - Solo
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Event Pop-Up
-      - Solo
+    - Team Management/Pop-up Bounds/Event Pop-Up/Solo
     Triggers:
     - Key: PostRaceEventUI
       Value: SetBlockerOnClick
@@ -10385,14 +10197,9 @@ MonoBehaviour:
       Value:
       - "OK, questa conversazione \xE8 finita. Per uscire dalla conversazione fai
         clic sul pulsante evidenziato."
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Event Pop-Up
-      - Solo
-      - Close
+    - Team Management/Pop-up Bounds/Event Pop-Up/Solo/Close
     Triggers:
     - Key: PostRaceEventUI
       Value: Close
@@ -10414,12 +10221,9 @@ MonoBehaviour:
       - "Al termine di ciascun evento comparir\xF2 per darti un feedback su come hai
         gestito la situazione."
       - Per chiudere questo feedback, clicca in qualunque punto dello schermo.
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List:
-      - Team Management
-    - List:
-      - Team Management
+    - Team Management
     Triggers:
     - Key: LearningPillUI
       Value: ClosePill
@@ -10440,12 +10244,9 @@ MonoBehaviour:
       Value:
       - "Dopo ciascuna conversazione, ti verr\xE0 data una lista che specifica l'impatto
         delle tue risposte."
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Event Impact Pop-Up
+    - Team Management/Pop-up Bounds/Event Impact Pop-Up
     Triggers:
     - Key: PostRaceEventImpactUI
       Value: Close
@@ -10465,9 +10266,9 @@ MonoBehaviour:
       Value:
       - "Da qui in avanti giocherai per conto tuo, ma comparir\xF2 di tanto in tanto
         dopo gli eventi per darti ulteriori suggerimenti. In bocca al lupo!"
-    Reversed: 0
+    ShowOnLeft: 0
     HighlightedObjects:
-    - List: []
+    - 
     Triggers: []
     UniqueEvents: 0
     EventTriggerCountRequired: 1
