@@ -63,8 +63,11 @@ Below are more details about getting started with making changes in Sports Team 
 - All of the default assets used by the FAtiMA-Toolkit can be found in the NPC Templates folder in stm-logic\PlayGen.RAGE.SportsTeamManager\PlayGen.RAGE.SportsTeamManager.Simulation
 - The tutorial is managed by the tutorial.json file in stm-unity\Assets\Resources\Tutorial. To recreate the tutorial, use the option available on the Canvas\Team Management\Tutorial\Tutorial Collection object.
 
-### Setting up your game with SUGAR
+# Setting up your game with SUGAR
 For information on Setting up Space Modules Inc. using SUGAR, see [SUGAR Quick Start Guide](http://api.sugarengine.org/v1/unity-client/tutorials/quick-start.html). *make sure that Assets\StreamingAssets\SUGAR.config.json exists and the BaseUri value matches the Base Address in the SUGAR Prefab.* 
 
-### Running SUGAR Locally
+## Running SUGAR Locally
 Using Space Modules inc. with a local version of SUGAR is as simple as changing the Base Address in the SUGAR Prefab, and the BaseUri value in *Assets\StreamingAssets\SUGAR.config.json*
+
+# Game Mechanics
+See [Key Game Mechanics](GameMechanics.md) for details about game mechanics, how they work and how to make changes to the core game system. 
