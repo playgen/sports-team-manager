@@ -91,7 +91,7 @@ public class TutorialObject
 	/// </summary>
 	public List<string> CustomAttributes;
 
-    public TutorialObject(Dictionary<string, List<string>> text, string highlightObjs, bool showOnLeft, KeyValuePair<string, string>[] triggers, int triggerCount, bool uniqueTriggers, bool safeToSave, List<List<string>> blacklist, List<string> attributes, string sectionName)
+    public TutorialObject(Dictionary<string, List<string>> text, List<string> highlightObjs, bool showOnLeft, KeyValuePair<string, string>[] triggers, int triggerCount, bool uniqueTriggers, bool safeToSave, List<List<string>> blacklist, List<string> attributes, string sectionName)
     {
 	    SectionName = sectionName;
         SectionTextHolder = new List<LanguageKeyValuePair>();
@@ -104,7 +104,7 @@ public class TutorialObject
         {
             Triggers.Add(new TriggerKeyValuePair(kvp.Key, kvp.Value));
         }
-	    HighlightedObject = new List<string> {highlightObjs};
+	    HighlightedObject = highlightObjs;
         ShowOnLeft = showOnLeft;
         EventTriggerCountRequired = triggerCount;
         UniqueEvents = uniqueTriggers;

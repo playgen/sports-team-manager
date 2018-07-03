@@ -38,7 +38,7 @@ ShowOnLeft | bool | If the popup should be shown on the left side of the screen
 HighlightedObject | List\<string> | Path to the object that will be highlighted to guide the player (from Canvas level)
 Triggers | List\<TriggerKeyValuePair> | The events that must happen for the player to complete this step of the tutorial
 UniqueEvents | bool | Whether the events that happen before must be unique and in the correct order
-EventTRiggerCountRequired | int | The number of times players must complete activate the trigger event to continue to the next step
+EventTriggerCountRequired | int | The number of times players must complete activate the trigger event to continue to the next step
 SafeToSave | bool | If the current step in the tutorial can be saved, sometimes UI must be open for the current step to activate/finish properly
 BlacklistButtons | List\<StringList> | Buttons which cannot be interacted with at this stage in the tutorial
 CustomAttributes | List\<string> | Additional attributes to help set up the stage in the tutorial

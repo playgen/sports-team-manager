@@ -41,7 +41,7 @@ public class TutorialController : MonoBehaviour
 		{
 			textDict.Add(langName.Name, new List<string>());
 		}
-		var objectNames = string.Empty;
+		var objectNames = new List<string>();
 		var blacklistNames = new List<List<string>>();
 		for (var i = 0; i < parsedAsset.Count; i++)
 		{
@@ -54,7 +54,7 @@ public class TutorialController : MonoBehaviour
 				var lang = langName.EnglishName;
 				textDict[langName.Name].Add((parsedAsset[i]["Section Text " + lang] != null ? parsedAsset[i]["Section Text " + lang] : parsedAsset[i][0]).Value.RemoveJSONNodeChars());
 			}
-			objectNames = parsedAsset[i]["Highlighted Object"].RemoveJSONNodeChars();
+			objectNames.Add(parsedAsset[i]["Highlighted Object"].RemoveJSONNodeChars());
 			var blacklistObjectNames = parsedAsset[i]["Button Blacklist"].RemoveJSONNodeChars().Split('\n').Where(s => !string.IsNullOrEmpty(s)).ToList();
 			blacklistNames.Add(blacklistObjectNames.Where(blon => blon.Length > 0).ToList());
 			var showOnLeft = parsedAsset[i]["Show Popup On Left"].Value.Length > 0 && bool.Parse(parsedAsset[i]["Show Popup On Left"].RemoveJSONNodeChars());
@@ -72,6 +72,7 @@ public class TutorialController : MonoBehaviour
 				{
 					textDict[langName.Name] = new List<string>();
 				}
+				objectNames= new List<string>();
 				blacklistNames = new List<List<string>>();
 			}
 		}
