@@ -43,7 +43,7 @@ SafeToSave | bool | If the current step in the tutorial can be saved, sometimes 
 BlacklistButtons | List\<StringList> | Buttons which cannot be interacted with at this stage in the tutorial
 CustomAttributes | List\<string> | Additional attributes to help set up the stage in the tutorial
 
-The current tutorial steps are defined in the [SportsTeamManagerTutorial Excel File](stm-unity\Assets\Resources\Tutorial\SportsTeamManagerTutorial.xlsx), which is converted to JSON and converted to a list of TutorialObjects using the [Context Menu](https://unity3d.com/sites/default/files/styles/original/public/learn/MenuItems06.png?itok=NZTNMINK) for TutorialController. 
+The current tutorial steps are defined in the [SportsTeamManagerTutorial Excel File](stm-unity/Assets/Resources/Tutorial/SportsTeamManagerTutorial.xlsx), which is converted to JSON and converted to a list of TutorialObjects using the [Context Menu](https://unity3d.com/sites/default/files/styles/original/public/learn/MenuItems06.png?itok=NZTNMINK) for TutorialController. 
 
 ### <span style="color:red">**TODO**</span> Inter-team and Manager Relationships
 Brief overview of the way in which crew memebers relationships with other crew and the manager affect their performance and how this is calculated, link to FAtiMA
