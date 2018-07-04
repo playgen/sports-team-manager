@@ -1,23 +1,24 @@
 # Developer Guide
-Below are more details about getting started with making changes in Sports Team Manager.
+Below are more details about getting started when making changes in Sports Team Manager.
 
 # Unity Game
 ## Key Scene Structure
 - **Main Camera**
-- **Canvas**: contains UI State Manager (manages UI state) and Best Fit (used to keep font sizing consistent)
-  - **Main Menu**
-  - **New Game**: contains New Game, New Game UI and Form Keyboard Controls (allowing tabbing between input fields).
-  - **Load Game**: contains Load Game and Load Game UI.
-  - **Team Management**: main gameplay screen. Contains Team Selection, Team Selection UI and Escape Action.
-    - **Top Details**: UI displayed at the top section of the screen. Contains Screen Side UI.
-    - **Boat Container Bounds**: contains Boat Prefabs, used to display results and allow for managing of current line-up.
-    - **Crew Container**: used to contain crew member icons.
+- **Canvas**: Camera used by the Canvas, meaning all UI and thus all gameplay is displayed on this camera. Contains [UIStateManager](stm-unity/Assets/Scripts/UIStateManager.cs), which manages the UI state, and BestFit, which helps ensure text sizing remains consistent.
+  - **Main Menu**: Main hub UI to access starting a new game, loading saved games, signing into SUGAR and changing language settings.
+  - **New Game**: UI for creating a New Game. Contains [NewGameUI](stm-unity/Assets/Scripts/NewGameUI.cs), which manages this UI, and FormKeyboardControls, which allows for tabbing between input fields.
+  - **Load Game**: UI for loading a previously started game. Contains [LoadGameUI](stm-unity/Assets/Scripts/LoadGameUI.cs), which manages this UI.
+  - **Team Management**: Main gameplay UI is contained within this GameObject. Contains [TeamSelectionUI](stm-unity/Assets/Scripts/TeamSelectionUI.cs), which manages displaying historical line-ups and submitting line-ups, and [EscapeAction](stm-unity/Assets/Scripts/EscapeAction.cs), which controls what logic should be performed when the Escape/Back key is pressed depending on what UI is currently visible.
+    - **Top Details**: UI displayed at the top section of the screen. Contains ScreenSideUI.
+    - **Boat Container Bounds**: Contains Boat Prefabs, used to display results and allow for managing of current line-up.
+    - **Crew Container**: Used to contain crew member icons.
     - **Pop-up Bounds**
-      - **Position Pop-Up**: managed by and contains Position Display and Position Display UI.
-      - **Meeting Pop-Up**: managed by and contains Member Meeting and Member Meeting UI.
-      - **Recruit Pop-Up**: managed by and contains Recruit Member and Recruit Member UI.
-      - **Event Pop-Up**: managed by and contains Post Race Event, Post Race Event UI and Post Race Person UI for ‘solo’ and ‘pair’ events.
-      - **Fire Warning Pop-Up**: managed by Member Meeting UI.
+      - **Position Pop-Up**: Managed by and contains PositionDisplayUI.
+      - **Meeting Pop-Up**: Managed by and contains MemberMeetingUI.
+      - **Recruit Pop-Up**: Managed by and contains RecruitMemberUI.
+      - **Event Pop-Up**: Managed by and contains PostRaceEventUI and PostRacePersonUI for ‘solo’ and ‘pair’ events.
+      - **Event Impact Pop-Up**: Managed by and contains PostRaceEventImpactUI.
+      - **Fire Warning Pop-Up**: Managed by Member Meeting UI.
       - **Hire Warning Pop-Up**: managed by Recruit Member UI.
       - **Pre-Race Pop-Up**: managed by Team Selection UI.
       - **Post-Race Pop-Up**: managed by Team Selection UI.

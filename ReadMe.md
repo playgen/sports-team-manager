@@ -1,105 +1,109 @@
 # Overview
-Sports Team Manager is a sailboat racing game where the player has to manage crew conflicts, goals and moods while identifying and assigning the best possible team lineup.
+Sports Team Manager is a sailing team management simulator that tasks players with managing crew conflicts, goals and moods while identifying and assigning the best possible team line-up.
 
 It is part of the [RAGE project](http://rageproject.eu/).
 
 # Licensing
 See the [LICENCE](LICENCE.md) file included in this project.
 
+# Cloning
+- When the project is cloned you will need to rebuild the stm-logic solution so that the Unity project has the complied files required to run the game simulation.
+
 # Key Project Structure
 - **stm-logic**
   - **PlayGen.RAGE.SportsTeamManager**
-    - **PlayGen.RAGE.SportsTeamManager.sln**: *Simulation Logic*  
-  - **RAGE Assets**: *precompiled [Included-Assets](#Included-Assets) libraries that make up the Integrated Authoring Tool*      
+    - **PlayGen.RAGE.SportsTeamManager.sln**: *Solution for simulation logic.*  
+  - **RAGE Assets**: *[Included Assets](#included-assets) - Precompiled files that make up the various components included in the FAtiMA Toolkit.*      
 - **stm-unity**
   - **Assets**
-    - **Evaluation Asset**: *[Included-Assets](#Included-Assets) asset that evaluates the pedagogical efficiency of the game*  
-    - **RAGE Analytics**: *[Included-Assets](#Included-Assets) asset to log to the RAGE analytics server*  
-    - **SUGAR**: *[Included-Assets](#Included-Assets) Social Gamification Backend*    
+    - **Evaluation Asset**: *[Included Assets](#included-assets) - An asset which helps evaluate the pedagogical efficiency of a game.*    
+    - **RAGE Analytics**: *[Included Assets](#included-assets) - An asset to log to the RAGE analytics server.*  
+    - **SUGAR**: *[Included Assets](#included-assets) - An asset which adds social gamification features, including account management, achievements and leaderboards.*
     - **StreamingAssets**
-      - **SUGAR.config.json**: *[Included-Assets](#Included-Assets) SUGAR configuration*
-  - **stm-installer**: *installer project*  
+      - **SUGAR.config.json**: *SUGAR configuration.*
+  - **stm-installer**: *Installer project.*  
 
 # Included Assets
-- [Server-Side Dashboard and Analysis](https://www.gamecomponents.eu/content/195)
+- [Integrated Authoring Tool](https://gamecomponents.eu/content/201)
 - [Role-Play Character](https://www.gamecomponents.eu/content/196)
-- [SUGAR](https://gamecomponents.eu/content/200)
-- [Integrated Authoring Tool](https://gamecomponents.eu/content/201): is used in by the emotional decisionmaking component.
-- [Social Importance Dynamics](https://www.gamecomponents.eu/content/207)
-- [Emotional Decision Making Asset](https://www.gamecomponents.eu/content/218)
-- [Server-Side Interaction Storage and Analytics](https://www.gamecomponents.eu/content/220)
 - [Emotional Appraisal Asset](https://www.gamecomponents.eu/content/224)
+- [Emotional Decision Making Asset](https://www.gamecomponents.eu/content/218)
+- [Social Importance Dynamics](https://www.gamecomponents.eu/content/207)
 - [Client-Side Tracker](https://gamecomponents.eu/content/232)
+- [Server-Side Interaction Storage and Analytics](https://www.gamecomponents.eu/content/220)
+- [Server-Side Dashboard and Analysis](https://www.gamecomponents.eu/content/195)
 - [Evaluation Component](https://gamecomponents.eu/content/338)
-- [ExcelToJsonConverter](https://github.com/Benzino/ExcelToJsonConverter): is used to convert Excel Localization files to jSON.
-- [PlayGen Unity Utilities](git@gitlab.com:playgen/unity-utilities.git): is a collection of simple game utilities.
+- [SUGAR](https://gamecomponents.eu/content/200)
+- [PlayGen FAtiMA Toolkit Fork](https://gitlab.com/playgen/FAtiMA-Toolkit)
+- [PlayGen Unity Utilities](https://github.com/playgen/unity-utilities) - a collection of simple Unity utilities.
+- [ExcelToJsonConverter](https://github.com/Benzino/ExcelToJsonConverter) - used to convert Excel Localization files to JSON.
 
 # Development
 ## Requirements
 - Windows OS
-- Unity Editor *(Version 2017.2.3f1) - Known bug in later versions of Unity with UI Anchoring*
+- Unity Editor *(Version 2017.2.3f1) - Known bug in later versions of Unity with UI Anchoring.*
 
 ## Process
-1. Build stm-logic solution (stm-logic\PlayGen.RAGE.SportsTeamManager\PlayGen.RAGE.SportsTeamManager.sln).
+1. Build the [stm-logic solution](stm-logic\PlayGen.RAGE.SportsTeamManager\PlayGen.RAGE.SportsTeamManager.sln).
 
-2. To get the game running in editor, Navigate to Tools/SUGAR/Set Auto Log-in Values and add the following [Custom Args](#Custom-Args):
-`ingameq=true;lockafterq=true;feedback=2;forcelaunch=true`    
-Note: Each argument should be separated with a `;`  
+2. Open stm-unity in the Unity Editor. Note that this may take a while due to the included videos being transcoded.
 
-### Custom Args
-- `ingameq`: Should the in game questionnaire be shown
-- `lockafterq`: Should the game be locked after the questions have been complete
-- `feedback`: The feedback level:  
-  - level 1: End game only  
-  - level 2: End game and conversation review  
-  - Level 3: End game, conversation review and in game feedback
-- `forcelaunch` If the game should ignore time stamp
-- `round`: which round of scenarios to playgi
+3. To run the game with SUGAR functionality, please refer to the [SUGAR Unity Documentation](http://api.sugarengine.org/v1/unity-client/tutorials/index.html).
 
-## Getting Started
-- Rebuild the stm-logic project at stm-logic/PlayGen.RAGE.SportsTeamManager/Playgen.RAGE.SportsTeamManager.sln
-- Open stm-unity in Unity Editor, this can take a while to transcode the included video files.
-- Set up the game for SUGAR, for more information see the [SUGAR Quick Start Guide](http://api.sugarengine.org/v1/unity-client/tutorials/quick-start.html)
-- Optionally, set up credentials for logging in to SUGAR on game start at SUGAR -> Set Auto Log-in Values
+4. To run the game with RAGE Analytics functionality, please refer to the [RAGE Analytics Documentation](Assets/RAGE%20Analytics/ReadMe.md).
+
+5. To run the game with Evaluation Asset functionality, please refer to the [Evaluation Asset Documentation](Assets/Evaluation%20Asset/ReadMe.md).
 
 ## Updating
-### FAtiMA-Toolkit 
-Build solution and place new DLLs (found in FAtiMA-Toolkit\Assets\IntegratedAuthoringTool\bin\Debug) into lib\IntegratedAuthoringTool folder. Note that code changes could be needed as a result of updates to this asset.
+### FAtiMA Toolkit 
+Using PlayGen's forked version of the FAtiMA Toolkit, build solution and place new DLLs (found in FAtiMA-Toolkit\Assets\IntegratedAuthoringTool\bin\Debug) into lib\IntegratedAuthoringTool folder. Note that code changes could be needed as a result of updates to this asset.
 
-### GameWork.Unity
-Build solution and place new DLLs (found in GameWork.Unity/bin) into lib\GameWork folder. Note that code changes could be needed as a result of updates to this asset.
+**Commit hash: 66bc9cfba528f8cbdeee2bb4c67b4ee77afc4b6a**
 
 ### PlayGen Unity Utilities 
 Build solution and place new DLLs (found in various folders in this project) into lib\PlayGenUtilities folder. Note that code changes could be needed as a result of updates to this asset. New prefabs may also need copying, although take care not to overwrite customised versions of previous prefabs.  
 
-New DLLs should also be copied into the lib\PlayGen Utilities folders in the PlayGen Unity Settings and SUGAR Unity projects. 
+New DLLs should also be copied into the lib\PlayGen Utilities folder in the SUGAR Unity project.
 
-### RAGE Analytics Unity Tracker
-Update the files found in the unity-tracker-master folder in stm-unity. Note that code changes could be needed as a result of updates to this asset.
+**Commit hash: 99d0daaa429430b36807bc5c28e567a61fc75e7d**
 
 ### SUGAR Unity Asset
-Update the DLLs found in the lib\SUGAR folder in stm-unity  
+Build solution and place new DLLs (found in SUGAR-Unity\Assets\SUGAR\Plugins) into Assets\SUGAR\Plugins folder. Note that code changes could be needed as a result of updates to this asset. It is advised that you do not remove the prefabs for SUGAR, as these have been edited to match the styling of Space Modules Inc. Only replace these assets if they are no longer compatible with the latest version of the SUGAR Unity asset, and even then be aware that you will need to recreate the previous styling.
 
-Note: It is advised that you do not remove the Prefabs for SUGAR, as these have been edited to match the styling of Space Modules Inc. Only replace these assets if they are no longer compatible with the latest version of the SUGAR Unity asset, and even then be aware that you will need to recreate the previous styling if this is done.
+**Commit hash: cffef4ea25af213e80c0a01c55d4045da4152a81**
+
+### RAGE Analytics
+Follow the instructions provided in the [RAGE Analytics Documentation](Assets/RAGE%20Analytics/ReadMe.md).
+
+**Commit hash: 652a562c11d3b2ddb85bae509a719d30ed6ecd0c**
+
+### Evaluation Asset
+Follow the instructions provided in the [Evaluation Asset Documentation](Assets/Evaluation%20Asset/ReadMe.md).
+
+**Commit hash: 6c4551df61ac1a1829ed0cbf7b9788362ee1342a**
 
 # Build
 ## Process
-Standalone, Android and iOS are currently supported using the default Unity build system.
+Standalone and Android are currently supported using the default Unity build system. iOS may also be supported but is currently untested.
 
 # Installer
 [Wix](http://wixtoolset.org/) is used to create the Windows installer.
 
-## Requirements
+Using the game-launcher repository, games can be launched using a url.
+
+## Requirements:
 - Wix Toolset
 - Visual Studio 2017
 - Wix Visual Studio Extension
+- [Game Launcher](https://gitlab.com/playgen/game-launcher) project
 
 ## Process
-1. Create a Unity PC Build at stm-unity\Build\Sports Team Manager called “SportsTeamManager”.
+The process for setting up a game installer is detailed within the [Game Launcher documentation](https://gitlab.com/playgen/game-launcher/blob/master/ReadMe.md#game-installer).
 
-2. Once built, go to the stm-unity solution (stm-unity\stm-unity.sln) and build the stm-setup project.
-
-3. The resulting windows installer can be found at stm-unity\stm-installer\bin\Debug\Sports_Team_Manager_Setup.msi.
+Note that the current stm-installer structure, rather than that in Game Launcher, should be used until the project is updated to Unity 2018.
 
 ## Developer Guide
 See the [Developer Guide](DeveloperGuide.md) for further details about the game.
+
+## Game Mechanics
+See the [Game Mechanics](GameMechanics.md) documentation for further details about the core game mechanics.
