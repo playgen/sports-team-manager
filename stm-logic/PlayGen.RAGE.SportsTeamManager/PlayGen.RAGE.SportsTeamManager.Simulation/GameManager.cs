@@ -791,9 +791,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Save the player's current progress through the tutorial for this game
 		/// </summary>
-		public void SaveTutorialProgress(int saveAmount, bool finished = false)
+		public void SaveTutorialProgress(int saveIndex, bool finished = false)
 		{
-			var stageToSave = TutorialStage + saveAmount;
+			var stageToSave = saveIndex;
 			Team.Manager.UpdateSingleBelief(NPCBeliefs.TutorialStage.GetDescription(), stageToSave.ToString());
 			TutorialStage++;
 			if (finished)

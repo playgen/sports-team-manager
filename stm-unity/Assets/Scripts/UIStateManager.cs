@@ -21,6 +21,7 @@ using PlayGen.Unity.Utilities.Extensions;
 public class UIStateManager : MonoBehaviour {
 	public static bool MusicOn = true;
 	public static bool SoundOn = true;
+	// TODO simplify states to make more generic so that we can add/remove more easily in future.
 	[SerializeField]
 	private GameObject _mainMenu;
 	[SerializeField]

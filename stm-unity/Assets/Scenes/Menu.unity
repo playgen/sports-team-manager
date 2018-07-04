@@ -7149,7 +7149,6 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 0
-  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -9376,7 +9375,8 @@ MonoBehaviour:
   _tutorialQuitButton: {fileID: 1941228535}
   _tutorialExitBlocker: {fileID: 515993620}
   _tutorialSections:
-  - SectionTextHolder:
+  - SectionName: Welcome and Position Pop up
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Welcome! Here is where you\u2019ll be dealing with your crew and assigning
@@ -9389,27 +9389,22 @@ MonoBehaviour:
         ruolo.'
       - Prima di tutto dai un'occhiata ai tre ruoli che devi ricoprire. Clicca su
         ciascuno ruolo per averne una descrizione.
-    Reversed: 0
-    HighlightedObjects:
-    - List: []
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Boat
-      - Position Container
+    ShowOnLeft: 0
+    HighlightedObject:
+    - 
+    - Team Management/Boat Container Bounds/Viewport/Content/Boat/Position Container
     Triggers:
     - Key: PositionUI
       Value: ShowPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 2
+    SafeToSave: 0
     BlacklistButtons:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Position Pop up (Skills)
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - This pop-up lists all the skills required for the position you just selected
@@ -9422,29 +9417,23 @@ MonoBehaviour:
         che hai appena selezionato. In questo riquadro, troverai sia la persona che
         attualmente occupa la posizione, sia chi l'ha ricoperta in passato.
       - Per chiudere la finestra, usa la x in alto a destra del riquadro.
-    Reversed: 0
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Position Pop-Up
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Position Pop-Up
-      - Close
+    ShowOnLeft: 0
+    HighlightedObject:
+    - Team Management/Pop-up Bounds/Position Pop-Up
+    - Team Management/Pop-up Bounds/Position Pop-Up/Close
     Triggers:
     - Key: PositionDisplayUI
       Value: ClosePositionPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 1
+    SafeToSave: 0
     BlacklistButtons:
     - List:
       - Close
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Crew, mood and crew pop up
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Now that you know how to review a position, it\u2019s time to take a look
@@ -9474,29 +9463,19 @@ MonoBehaviour:
         bordo arancione o rosso \xE8 di cattivo umore e avr\xE0 prestazioni peggiori."
       - "Clicca sul personaggio per conoscere di pi\xF9 su di lui/lei e avviare una
         conversazione."
-    Reversed: 0
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Crew Container
-    - List:
-      - Team Management
-      - Crew Container
-    - List:
-      - Team Management
-      - Crew Container
-    - List:
-      - Team Management
-      - Crew Container
-    - List:
-      - Team Management
-      - Crew Container
+    ShowOnLeft: 0
+    HighlightedObject:
+    - Team Management/Crew Container
+    - Team Management/Crew Container
+    - Team Management/Crew Container
+    - Team Management/Crew Container
+    - Team Management/Crew Container
     Triggers:
     - Key: CrewMemberUI
       Value: ShowPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 5
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     - List: []
@@ -9510,7 +9489,8 @@ MonoBehaviour:
     - part2=mood-positive
     - part3=mood-negative
     - part4=mood-accurate
-  - SectionTextHolder:
+  - SectionName: Crew pop up, talk to
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "This pop-up displays all the known skills and opinions for this person, but
@@ -9556,39 +9536,20 @@ MonoBehaviour:
       - "Fare domande, cos\xEC come altre azioni nel gioco, richiede una certa quantit\xE0
         di tempo che \xE8 limitato per ciascuna gara. Nel tutorial il limite \xE8
         stato rimosso, pertanto sentiti libero di fare tutte le domande che vuoi."
-    Reversed: 0
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Meeting Pop-Up
-      - Details
-    - List:
-      - Team Management
-      - Crew Container
-    - List:
-      - Team Management
-      - Crew Container
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Meeting Pop-Up
-      - Manager Opinion
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Meeting Pop-Up
-      - Conversation
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Meeting Pop-Up
+    ShowOnLeft: 0
+    HighlightedObject:
+    - Team Management/Pop-up Bounds/Meeting Pop-Up/Details
+    - Team Management/Crew Container
+    - Team Management/Crew Container
+    - Team Management/Pop-up Bounds/Meeting Pop-Up/Manager Opinion
+    - Team Management/Pop-up Bounds/Meeting Pop-Up/Conversation
+    - Team Management/Pop-up Bounds/Meeting Pop-Up
     Triggers:
     - Key: MemberMeetingUI
       Value: AskQuestion
     UniqueEvents: 0
     EventTriggerCountRequired: 6
-    SaveNextSection: 4
+    SafeToSave: 0
     BlacklistButtons:
     - List: []
     - List: []
@@ -9603,7 +9564,8 @@ MonoBehaviour:
     - part0=opinion-accurate
     - part1=opinion-inaccurate
     - part2=opinion-accurate
-  - SectionTextHolder:
+  - SectionName: Crew Notes
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "OK, looks like you\u2019ve got the hang of talking to your team members.
@@ -9621,31 +9583,24 @@ MonoBehaviour:
         di registrare e salvare informazioni che ti saranno sicuramente utili in seguito.
       - Per aprire la finestra e prendere note su questo membro dell'equipaggio clicca
         il pulsante evidenziato.
-    Reversed: 0
-    HighlightedObjects:
-    - List: []
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Meeting Pop-Up
-      - Notes
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Meeting Pop-Up
-      - Notes
+    ShowOnLeft: 0
+    HighlightedObject:
+    - 
+    - Team Management/Pop-up Bounds/Meeting Pop-Up/Notes
+    - Team Management/Pop-up Bounds/Meeting Pop-Up/Notes
     Triggers:
     - Key: NotesUI
       Value: Display
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 3
+    SafeToSave: 0
     BlacklistButtons:
     - List: []
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Inputting Notes
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - You can make notes by selecting the black input field and typing whatever
@@ -9658,27 +9613,22 @@ MonoBehaviour:
         informazione desideri salvare per dopo.
       - Prendi quante note desideri su questo membro dell'equipaggio, poi esci usando
         il pulsante Chiudi collocato dietro il campo di testo nero.
-    Reversed: 0
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Notes Pop-Up
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Notes Pop-Up
+    ShowOnLeft: 0
+    HighlightedObject:
+    - Team Management/Pop-up Bounds/Notes Pop-Up
+    - Team Management/Pop-up Bounds/Notes Pop-Up
     Triggers:
     - Key: NotesUI
       Value: Close
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 2
+    SafeToSave: 0
     BlacklistButtons:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Crew Pop up (exit)
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - Exit the crew member meeting pop-up using the highlighted button.
@@ -9686,23 +9636,20 @@ MonoBehaviour:
       Value:
       - "Ora hai qualche informazione in pi\xF9 su di lui. Esci da questa finestra
         usando il pulsante evidenziato."
-    Reversed: 0
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Meeting Pop-Up
-      - Close
+    ShowOnLeft: 0
+    HighlightedObject:
+    - Team Management/Pop-up Bounds/Meeting Pop-Up/Close
     Triggers:
     - Key: MemberMeetingUI
       Value: OnDisable
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 1
+    SafeToSave: 0
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Placing crew in positions
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Now you know how to question your crew, it\u2019s time to place them into
@@ -9717,23 +9664,23 @@ MonoBehaviour:
       - Dopo aver raccolto ancora qualche informazione sul tuo team e sulle posizioni
         da ricoprire trascina i candidati nei ruoli che ritieni possano interpretare
         meglio.
-    Reversed: 0
-    HighlightedObjects:
-    - List: []
-    - List:
-      - Team Management
+    ShowOnLeft: 0
+    HighlightedObject:
+    - 
+    - Team Management
     Triggers:
     - Key: CrewMemberUI
       Value: Place
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 0
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     - List:
       - zz Recruit
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Removing crew from positions
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - If you want to remove a crew member from a position, just drag and drop them
@@ -9741,24 +9688,20 @@ MonoBehaviour:
     - Key: it
       Value:
       - Se vuoi rimuovere un membro da una posizione, puoi trascinarlo fuori.
-    Reversed: 0
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Boat
+    ShowOnLeft: 0
+    HighlightedObject:
+    - Team Management/Boat Container Bounds/Viewport/Content/Boat
     Triggers:
     - Key: CrewMemberUI
       Value: OnReset
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: -1
+    SafeToSave: 0
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Ready for first practice
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - Once you've filled all of the positions wth crew members, the boat will be
@@ -9767,21 +9710,21 @@ MonoBehaviour:
       Value:
       - "Quando hai coperto tutte le posizioni, l'equipaggio \xE8 pronto per affrontare
         la prima sessione di prova."
-    Reversed: 0
-    HighlightedObjects:
-    - List:
-      - Team Management
+    ShowOnLeft: 0
+    HighlightedObject:
+    - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: EnableRacing
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: -2
+    SafeToSave: 0
     BlacklistButtons:
     - List:
       - zz Recruit
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Crew performance, start session
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Don\u2019t worry if you haven't gotten the perfect line-up, as you'll get
@@ -9801,29 +9744,24 @@ MonoBehaviour:
         di ciascuno rispetto agli altri membri selezionati."
       - "Clicca il pulsante evidenziato e la tua squadra parteciper\xE0 alla prima
         prova."
-    Reversed: 1
-    HighlightedObjects:
-    - List: []
-    - List: []
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Boat
-      - Race
+    ShowOnLeft: 1
+    HighlightedObject:
+    - 
+    - 
+    - Team Management/Boat Container Bounds/Viewport/Content/Boat/Race
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 1
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Post session feedback
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - After every session, you'll be given feedback on how your selected crew performed.
@@ -9836,60 +9774,47 @@ MonoBehaviour:
         che hai selezionato.
       - I quadrati colorati indicano quanto ti sei avvicinato alla formazione ideale.
       - "Clicca, o passa sopra ciascuno, per leggere ci\xF2 che rappresenta."
-    Reversed: 1
-    HighlightedObjects:
-    - List: []
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Historic Boat 0
-      - Light Container
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Historic Boat 0
-      - Light Container
+    ShowOnLeft: 1
+    HighlightedObject:
+    - 
+    - Team Management/Boat Container Bounds/Viewport/Content/Historic Boat 0/Light
+      Container
+    - Team Management/Boat Container Bounds/Viewport/Content/Historic Boat 0/Light
+      Container
     Triggers:
     - Key: HoverPopUpUI
       Value: HoverCheck
     UniqueEvents: 1
     EventTriggerCountRequired: 3
-    SaveNextSection: 2
+    SafeToSave: 0
     BlacklistButtons:
     - List: []
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Hover over crew position feedback
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - Hover over or click each box to see what they represent.
     - Key: it
       Value:
       - "Clicca, o passa sopra ciascuno, per leggere ci\xF2 che rappresenta."
-    Reversed: 1
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Historic Boat 0
-      - Light Container
+    ShowOnLeft: 1
+    HighlightedObject:
+    - Team Management/Boat Container Bounds/Viewport/Content/Historic Boat 0/Light
+      Container
     Triggers:
     - Key: HoverPopUpUI
       Value: HideHover
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 1
+    SafeToSave: 0
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Feedback icons
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - You'll also be given feedback after every session on which areas your team
@@ -9910,37 +9835,22 @@ MonoBehaviour:
       - "I punti di domanda in grigio indicano che il tuo equipaggio deve essere intervistato
         ulteriormente per scoprire cosa \xE8 necessario migliorare."
       - "Passando su ciascuna icona puoi leggere ci\xF2 che rappresenta."
-    Reversed: 1
-    HighlightedObjects:
-    - List: []
-    - List: []
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Historic Boat 0
-      - Icon Container
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Historic Boat 0
-      - Icon Container
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Historic Boat 0
-      - Icon Container
+    ShowOnLeft: 1
+    HighlightedObject:
+    - 
+    - 
+    - Team Management/Boat Container Bounds/Viewport/Content/Historic Boat 0/Icon
+      Container
+    - Team Management/Boat Container Bounds/Viewport/Content/Historic Boat 0/Icon
+      Container
+    - Team Management/Boat Container Bounds/Viewport/Content/Historic Boat 0/Icon
+      Container
     Triggers:
     - Key: HoverPopUpUI
       Value: HoverCheck
     UniqueEvents: 1
     EventTriggerCountRequired: 3
-    SaveNextSection: 2
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     - List: []
@@ -9948,37 +9858,34 @@ MonoBehaviour:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Hover over icons
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - By hovering over each of these icons, you can see what each icon represents.
     - Key: it
       Value:
       - "Passando su ciascuna icona puoi leggere ci\xF2 che rappresenta."
-    Reversed: 1
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Historic Boat 0
-      - Icon Container
+    ShowOnLeft: 1
+    HighlightedObject:
+    - Team Management/Boat Container Bounds/Viewport/Content/Historic Boat 0/Icon
+      Container
     Triggers:
     - Key: HoverPopUpUI
       Value: HideHover
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 1
+    SafeToSave: 0
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Use knowledge for practice 2
+    SectionTextHolder:
     - Key: en-GB
       Value:
-      - Also keep in mind that selecting the best possible crew won't always mean
-        you'll win the race. After all, the best of a poor crew is still going to
-        be fairly bad.
+      - Keep in mind that selecting the best possible crew won't always mean you'll
+        win the race. After all, the best of a poor crew is still going to be fairly
+        bad.
       - Now that you've completed the first practice session, use what you've learned
         to take part in the second practice session.
     - Key: it
@@ -9987,23 +9894,23 @@ MonoBehaviour:
         la gara.
       - "Ora che hai completato la prima sessione di prova, usa ci\xF2 che hai imparato
         per prender parte alla seconda."
-    Reversed: 1
-    HighlightedObjects:
-    - List: []
-    - List:
-      - Team Management
+    ShowOnLeft: 1
+    HighlightedObject:
+    - 
+    - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 1
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     - List:
       - zz Recruit
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Prepare for race
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - OK, practice is over and it's now time for the race itself! Once you're happy
@@ -10014,21 +9921,21 @@ MonoBehaviour:
       - "Ok, la pratica \xE8 finita; \xE8 arrivato il momento di gareggiare! Quando
         sarai soddisfatto della formazione selezionata, clicca sul pulsante Gara!
         per prender parte alla prima gara."
-    Reversed: 1
-    HighlightedObjects:
-    - List:
-      - Team Management
+    ShowOnLeft: 1
+    HighlightedObject:
+    - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 2
+    SafeToSave: 0
     BlacklistButtons:
     - List:
       - zz Recruit
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Race results
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - This result pop-up will apear after every race. Did this race go as well as
@@ -10037,22 +9944,20 @@ MonoBehaviour:
       Value:
       - "Questa finestra con i risultati apparir\xE0 al termine di ciascuna gara.
         La gara \xE8 andata come ti aspettavi?"
-    Reversed: 1
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Post-Race Pop-Up
+    ShowOnLeft: 1
+    HighlightedObject:
+    - Team Management/Pop-up Bounds/Post-Race Pop-Up
     Triggers:
     - Key: RaceResultUI
       Value: Close
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 1
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: New boat, new roles, new crew
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Now you\u2019ve completed your first race, it\u2019s time to change things
@@ -10069,37 +9974,26 @@ MonoBehaviour:
         e nessuno del tuo equipaggio attuale ricopre questa posizione molto bene."
       - "Di conseguenza, sar\xE0 necessario reclutare un nuovo membro per la squadra.
         Ma prima, diamo un'occhiata ai dettagli di questa posizione da ricoprire."
-    Reversed: 1
-    HighlightedObjects:
-    - List: []
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Boat
-      - Position Container
-      - Position 1
-    - List:
-      - Team Management
-      - Boat Container Bounds
-      - Viewport
-      - Content
-      - Boat
-      - Position Container
-      - Position 1
+    ShowOnLeft: 1
+    HighlightedObject:
+    - 
+    - Team Management/Boat Container Bounds/Viewport/Content/Boat/Position Container/Position
+      1
+    - Team Management/Boat Container Bounds/Viewport/Content/Boat/Position Container/Position
+      1
     Triggers:
     - Key: PositionUI
       Value: ShowPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 2
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Close new position popup
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Once you\u2019re happy you know what skills will be needed in this position,
@@ -10108,22 +10002,20 @@ MonoBehaviour:
       Value:
       - Una volta comprese quali siano le competenze necessarie in questa posizione,
         chiudi la finestra.
-    Reversed: 1
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Position Pop-Up
+    ShowOnLeft: 1
+    HighlightedObject:
+    - Team Management/Pop-up Bounds/Position Pop-Up
     Triggers:
     - Key: PositionDisplayUI
       Value: ClosePositionPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 1
+    SafeToSave: 0
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Recruitment Screen
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - To go to the recruitment screen, click one of the black buttons on the right
@@ -10132,22 +10024,20 @@ MonoBehaviour:
       Value:
       - Per poter procedere con il reclutamento della squadra, clicca uno dei pulsanti
         neri sulla destra dell'area evidenziata.
-    Reversed: 1
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Crew Container
-      - zz Recruit
+    ShowOnLeft: 1
+    HighlightedObject:
+    - Team Management/Crew Container/zz Recruit
     Triggers:
     - Key: RecruitMemberUI
       Value: ResetDisplay
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 0
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Recruitment Process
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - When you click a skill statement at the bottom of the screen, these four possible
@@ -10162,23 +10052,16 @@ MonoBehaviour:
         dovresti farti un'idea di chi reclutare.
       - "Nota che solitamente ciascuna di queste domande ha un costo, cos\xEC come
         il reclutamento. Questo costo \xE8 stato rimosso per il momento."
-    Reversed: 1
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Recruit Pop-Up
-      - Questions
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Recruit Pop-Up
+    ShowOnLeft: 1
+    HighlightedObject:
+    - Team Management/Pop-up Bounds/Recruit Pop-Up/Questions
+    - Team Management/Pop-up Bounds/Recruit Pop-Up
     Triggers:
     - Key: RecruitMemberUI
       Value: AskQuestion
     UniqueEvents: 1
     EventTriggerCountRequired: 2
-    SaveNextSection: -1
+    SafeToSave: 0
     BlacklistButtons:
     - List: []
     - List:
@@ -10187,7 +10070,8 @@ MonoBehaviour:
       - Button
     CustomAttributes:
     - cost=false
-  - SectionTextHolder:
+  - SectionName: Hiring New Crew
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Once you\u2019re happy that you know who you want to hire, click on them
@@ -10196,19 +10080,15 @@ MonoBehaviour:
       Value:
       - "Una volta che sei convinto chi vuoi reclutare, \xE8 sufficiente cliccare
         sull'immagine per inserire il giocatore nella tua squadra."
-    Reversed: 1
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Recruit Pop-Up
-      - Recruits
+    ShowOnLeft: 1
+    HighlightedObject:
+    - Team Management/Pop-up Bounds/Recruit Pop-Up/Recruits
     Triggers:
     - Key: RecruitMemberUI
       Value: Recruit
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 1
+    SafeToSave: 0
     BlacklistButtons:
     - List:
       - Close
@@ -10221,7 +10101,8 @@ MonoBehaviour:
       - Question 6
     CustomAttributes:
     - cost=false
-  - SectionTextHolder:
+  - SectionName: New Set of Sessions
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Now we\u2019ve got someone that you feel fits the new position, it\u2019s
@@ -10230,20 +10111,20 @@ MonoBehaviour:
       Value:
       - "Ora hai qualcuno che ritieni possa ricoprire la nuova posizione, \xE8 tempo
         di passare alle prossime sessioni di gara."
-    Reversed: 1
-    HighlightedObjects:
-    - List:
-      - Team Management
+    ShowOnLeft: 1
+    HighlightedObject:
+    - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 1
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Post Practice 2
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - That's the first practice session completed. This'll be your last chance to
@@ -10253,21 +10134,21 @@ MonoBehaviour:
       - "Hai appena completato la tua prima sessione di pratica. Questa sar\xE0 la
         tua ultima possibilit\xE0 di sperimentare senza rischi, in modo da poter poi
         scegliere con maggior consapevolezza."
-    Reversed: 1
-    HighlightedObjects:
-    - List:
-      - Team Management
+    ShowOnLeft: 1
+    HighlightedObject:
+    - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 1
+    SafeToSave: 1
     BlacklistButtons:
     - List:
       - zz Recruit
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Pre Race 2
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - Two practice sessions have come and gone, so now it's time to race for the
@@ -10276,42 +10157,40 @@ MonoBehaviour:
       Value:
       - "Hai completato due sessioni di prova; \xE8 arrivato il momento di gareggiare
         per la prima volta con questa formazione. Buona fortuna!"
-    Reversed: 1
-    HighlightedObjects:
-    - List:
-      - Team Management
+    ShowOnLeft: 1
+    HighlightedObject:
+    - Team Management
     Triggers:
     - Key: TeamSelectionUI
       Value: ConfirmLineUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 2
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Post Race Feeback 2
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - Did practice make perfect this time round?
     - Key: it
       Value:
       - Pensi che la pratica che hai fatto ti aiuti ad affrontare il prossimo round?
-    Reversed: 1
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Post-Race Pop-Up
+    ShowOnLeft: 1
+    HighlightedObject:
+    - Team Management/Pop-up Bounds/Post-Race Pop-Up
     Triggers:
     - Key: RaceResultUI
       Value: Close
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 1
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Crew Request meeting
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "Seems that one of your crew members wants to speak with you. Every so often,
@@ -10326,29 +10205,22 @@ MonoBehaviour:
         a gestire la situazione.
       - "Fai clic su una delle opzioni disponibili per selezionare ci\xF2 che vuoi
         dire a questa persona."
-    Reversed: 0
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Event Pop-Up
-      - Solo
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Event Pop-Up
-      - Solo
+    ShowOnLeft: 0
+    HighlightedObject:
+    - Team Management/Pop-up Bounds/Event Pop-Up/Solo
+    - Team Management/Pop-up Bounds/Event Pop-Up/Solo
     Triggers:
     - Key: PostRaceEventUI
       Value: SetBlockerOnClick
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 4
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Exit Conversation
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - "OK, that\u2019s the conversation finished. Click the highlighted button to
@@ -10357,24 +10229,20 @@ MonoBehaviour:
       Value:
       - "OK, questa conversazione \xE8 finita. Per uscire dalla conversazione fai
         clic sul pulsante evidenziato."
-    Reversed: 0
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Event Pop-Up
-      - Solo
-      - Close
+    ShowOnLeft: 0
+    HighlightedObject:
+    - Team Management/Pop-up Bounds/Event Pop-Up/Solo/Close
     Triggers:
     - Key: PostRaceEventUI
       Value: Close
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 3
+    SafeToSave: 0
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Situation Feedback
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - This dashing fellow (no relation, I assure you...) will pop up after every
@@ -10385,23 +10253,22 @@ MonoBehaviour:
       - "Al termine di ciascun evento comparir\xF2 per darti un feedback su come hai
         gestito la situazione."
       - Per chiudere questo feedback, clicca in qualunque punto dello schermo.
-    Reversed: 0
-    HighlightedObjects:
-    - List:
-      - Team Management
-    - List:
-      - Team Management
+    ShowOnLeft: 0
+    HighlightedObject:
+    - Team Management
+    - Team Management
     Triggers:
     - Key: LearningPillUI
       Value: ClosePill
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 2
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Conversation Impact
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - After every conversation, you'll also be given a list which details the impact
@@ -10410,22 +10277,20 @@ MonoBehaviour:
       Value:
       - "Dopo ciascuna conversazione, ti verr\xE0 data una lista che specifica l'impatto
         delle tue risposte."
-    Reversed: 0
-    HighlightedObjects:
-    - List:
-      - Team Management
-      - Pop-up Bounds
-      - Event Impact Pop-Up
+    ShowOnLeft: 0
+    HighlightedObject:
+    - Team Management/Pop-up Bounds/Event Impact Pop-Up
     Triggers:
     - Key: PostRaceEventImpactUI
       Value: Close
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 1
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionTextHolder:
+  - SectionName: Your on your own now!
+    SectionTextHolder:
     - Key: en-GB
       Value:
       - From here on out, you're mostly on your own, but I'll pop up from time to
@@ -10434,13 +10299,13 @@ MonoBehaviour:
       Value:
       - "Da qui in avanti giocherai per conto tuo, ma comparir\xF2 di tanto in tanto
         dopo gli eventi per darti ulteriori suggerimenti. In bocca al lupo!"
-    Reversed: 0
-    HighlightedObjects:
-    - List: []
+    ShowOnLeft: 0
+    HighlightedObject:
+    - 
     Triggers: []
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SaveNextSection: 1
+    SafeToSave: 1
     BlacklistButtons:
     - List: []
     CustomAttributes: []
@@ -20602,7 +20467,6 @@ VideoPlayer:
   m_Enabled: 1
   m_VideoClip: {fileID: 0}
   m_TargetCameraAlpha: 1
-  m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
   m_TargetTexture: {fileID: 0}
   m_TimeReference: 0
@@ -28644,7 +28508,6 @@ VideoPlayer:
   m_Enabled: 1
   m_VideoClip: {fileID: 32900000, guid: daed1930a5f014641940b02034400292, type: 3}
   m_TargetCameraAlpha: 1
-  m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
   m_TargetTexture: {fileID: 0}
   m_TimeReference: 0

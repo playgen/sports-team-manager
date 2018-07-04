@@ -41,7 +41,7 @@ public class TutorialController : MonoBehaviour
 		{
 			textDict.Add(langName.Name, new List<string>());
 		}
-		var objectNames = new List<string[]>();
+		var objectNames = new List<string>();
 		var blacklistNames = new List<List<string>>();
 		for (var i = 0; i < parsedAsset.Count; i++)
 		{
@@ -54,24 +54,25 @@ public class TutorialController : MonoBehaviour
 				var lang = langName.EnglishName;
 				textDict[langName.Name].Add((parsedAsset[i]["Section Text " + lang] != null ? parsedAsset[i]["Section Text " + lang] : parsedAsset[i][0]).Value.RemoveJSONNodeChars());
 			}
-			objectNames.Add(parsedAsset[i]["Highlighted Object"].RemoveJSONNodeChars().Split('/').Where(s => !string.IsNullOrEmpty(s)).ToArray());
+			objectNames.Add(parsedAsset[i]["Highlighted Object"].RemoveJSONNodeChars());
 			var blacklistObjectNames = parsedAsset[i]["Button Blacklist"].RemoveJSONNodeChars().Split('\n').Where(s => !string.IsNullOrEmpty(s)).ToList();
 			blacklistNames.Add(blacklistObjectNames.Where(blon => blon.Length > 0).ToList());
-			var reversed = parsedAsset[i]["Reversed UI"].Value.Length > 0 && bool.Parse(parsedAsset[i]["Reversed UI"].RemoveJSONNodeChars());
+			var showOnLeft = parsedAsset[i]["Show Popup On Left"].Value.Length > 0 && bool.Parse(parsedAsset[i]["Show Popup On Left"].RemoveJSONNodeChars());
 			var triggerSplit = parsedAsset[i]["Triggers"].RemoveJSONNodeChars().Split('\n').ToList().Select(te => te.RemoveJSONNodeChars()).Where(s => !string.IsNullOrEmpty(s)).ToList();
 			var triggers = triggerSplit.Count > 0 ? triggerSplit.Select(ts => ts.NoSpaces().Split(',')).Select(ts => new KeyValuePair<string, string>(ts[0], ts[1])).ToArray() : new KeyValuePair<string, string>[0];
 			var triggerCount = parsedAsset[i]["Trigger Count Required"].Value.Length > 0 ? int.Parse(parsedAsset[i]["Trigger Count Required"].RemoveJSONNodeChars()) : 0;
 			var uniqueTriggers = parsedAsset[i]["Unique Triggers"].Value.Length > 0 && bool.Parse(parsedAsset[i]["Unique Triggers"].RemoveJSONNodeChars());
-			var saveToSection = parsedAsset[i]["Save Progress"].Value.Length > 0 ? int.Parse(parsedAsset[i]["Save Progress"].RemoveJSONNodeChars()) : 0;
+			var safeToSave = parsedAsset[i]["Safe To Save"].Value.Length > 0 && bool.Parse(parsedAsset[i]["Safe To Save"].RemoveJSONNodeChars());
 			var customAttributes = parsedAsset[i]["Custom Attributes"].RemoveJSONNodeChars().Split('\n').Where(s => !string.IsNullOrEmpty(s)).ToList();
+			var sectionName = parsedAsset[i]["Section Name"].RemoveJSONNodeChars();
 			if (i + 1 < parsedAsset.Count && parsedAsset[i + 1][0].Value.RemoveJSONNodeChars() == "BREAK")
 			{
-				_tutorialSections.Add(new TutorialObject(textDict, objectNames, reversed, triggers, triggerCount, uniqueTriggers, saveToSection, blacklistNames, customAttributes));
+				_tutorialSections.Add(new TutorialObject(textDict, objectNames, showOnLeft, triggers, triggerCount, uniqueTriggers, safeToSave, blacklistNames, customAttributes, sectionName));
 				foreach (var langName in Localization.Languages)
 				{
 					textDict[langName.Name] = new List<string>();
 				}
-				objectNames = new List<string[]>();
+				objectNames= new List<string>();
 				blacklistNames = new List<List<string>>();
 			}
 		}
@@ -112,8 +113,8 @@ public class TutorialController : MonoBehaviour
 	public void AdvanceStage()
 	{
 		var stage = GameManagement.TutorialStage;
-		var saveAmount = _tutorialSections[stage].SaveNextSection;
-		GameManagement.GameManager.SaveTutorialProgress(saveAmount, SectionCount <= stage + 1);
+		var saveIndex = GetLastSafeStage(stage);
+		GameManagement.GameManager.SaveTutorialProgress(saveIndex, SectionCount <= stage + 1);
 		_tutorialExitBlocker.Active(SectionCount == stage + 2);
 		if (GameManagement.ShowTutorial)
 		{
@@ -125,6 +126,20 @@ public class TutorialController : MonoBehaviour
 			SUGARManager.GameData.Send("Tutorial Finished", true);
 			QuitTutorial();
 		}
+	}
+
+	private int GetLastSafeStage(int currentStage)
+	{
+		// fall back to the last stage that is safe to save from
+		for (var i = currentStage; i > 0; i--)
+		{
+			if (_tutorialSections[i].SafeToSave)
+			{
+				return i;
+			}
+		}
+		return 0;
+		
 	}
 
 	public void RestartGame()

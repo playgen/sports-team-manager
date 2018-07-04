@@ -66,8 +66,9 @@ public class TrackerEventSender {
 				case TrackerAsset.Verb.Accessed:
 					if (trace.Params.Length > 0 && trace.Params[0].GetType() == typeof(AccessibleTracker.Accessible))
 					{
-						Tracker.T.Accessible.Accessed(trace.Key, (AccessibleTracker.Accessible)Enum.Parse(typeof(AccessibleTracker.Accessible), trace.Params[0].ToString()));
-						if ((AccessibleTracker.Accessible)Enum.Parse(typeof(AccessibleTracker.Accessible), trace.Params[0].ToString()) == AccessibleTracker.Accessible.Accessible)
+						var parsedValue = (AccessibleTracker.Accessible) Enum.Parse(typeof(AccessibleTracker.Accessible), trace.Params[0].ToString());
+						Tracker.T.Accessible.Accessed(trace.Key, parsedValue);
+						if (parsedValue == AccessibleTracker.Accessible.Accessible)
 						{
 							SendEvaluationEvent(TrackerEvalautionEvent.Support, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, trace.Key } });
 						}

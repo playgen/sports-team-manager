@@ -717,7 +717,7 @@ public class TeamSelectionUI : MonoBehaviour {
 				GetResult(GameManagement.CurrentRaceSession - 1 == 0, GameManagement.LineUpHistory.Last(), offset, _raceButton.GetComponentInChildren<Text>(), true);
 				//set-up next boat
 				CreateNewBoat();
-				UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
+				UIManagement.Tutorial.ShareEvent(GetType().Name, "ConfirmLineUp");
 			}
 			Loading.Stop();
 		});

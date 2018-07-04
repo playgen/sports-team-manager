@@ -99,13 +99,10 @@ public class TutorialSectionUI : MonoBehaviour
 		var anchorObject = transform.root.RectTransform();
 		var softMaskScript = GetComponentInChildren <SoftMaskScript>();
 
-		if (_tutorialObj.HighlightedObjects[_currentText].List.Count > 0)
+		if (_tutorialObj.HighlightedObject[_currentText].Length > 0)
 		{
 			softMaskScript.FlipAlphaMask = false;
-			foreach (var obj in _tutorialObj.HighlightedObjects[_currentText].List)
-			{
-				anchorObject = anchorObject.FindInactive(obj).RectTransform() ?? anchorObject;
-			}
+			anchorObject = anchorObject.Find(_tutorialObj.HighlightedObject[_currentText]).RectTransform() ?? anchorObject;
 			softMaskScript.maskScalingRect = anchorObject;
 			reverseRaycast.MaskRect.Add(anchorObject);
 		}
@@ -139,7 +136,7 @@ public class TutorialSectionUI : MonoBehaviour
 		else
 		{
 			//draw UI differently according to if the side displaying the helper is reversed
-			if (_tutorialObj.Reversed)
+			if (_tutorialObj.ShowOnLeft)
 			{
 				transform.localScale = new Vector2(-1, 1);
 				_tutorialText.transform.localScale = new Vector2(-1, 1);
