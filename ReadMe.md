@@ -1,5 +1,5 @@
 # Overview
-Sports Team Manager is a sailing team management simulator that tasks players with managing crew conflicts, goals and moods while identifying and assigning the best possible team line-up.
+Sports Team Manager is a sailing team management simulator that tasks players with managing crew conflicts, goals and emotions while identifying and assigning the best possible team line-up in order to lead their team to victory.
 
 It is part of the [RAGE project](http://rageproject.eu/).
 
@@ -12,12 +12,18 @@ See the [LICENCE](LICENCE.md) file included in this project.
 # Key Project Structure
 - **stm-logic**
   - **PlayGen.RAGE.SportsTeamManager**
+    - **PlayGen.RAGE.SportsTeamManager.Simulation**
+      - **NPC Templates**: *Base files used to create characters and provide dialogue using the [FAtiMA Toolkit](https://gitlab.com/playgen/FAtiMA-Toolkit).*
     - **PlayGen.RAGE.SportsTeamManager.sln**: *Solution for simulation logic.*  
   - **RAGE Assets**: *[Included Assets](#included-assets) - Precompiled files that make up the various components included in the FAtiMA Toolkit.*      
-- **stm-unity**
+- **stm-unity**: *Project to be opened in the Unity Editor.*
   - **Assets**
+    - **Editor**
+      - **ExcelToJson**: *[Included Assets](#included-assets)*.
     - **Evaluation Asset**: *[Included Assets](#included-assets) - An asset which helps evaluate the pedagogical efficiency of a game.*    
-    - **RAGE Analytics**: *[Included Assets](#included-assets) - An asset to log to the RAGE analytics server.*  
+    - **RAGE Analytics**: *[Included Assets](#included-assets) - An asset to log to the RAGE Analytics server.*  
+    - **Resources**
+      - **PlatformSettings**: *A ScriptableObject used as a config for how the game should play. 'RAGE' mode will, among other things, instantiate the prefabs provided in the 'RAGE Objects' list, while 'Demo Mode' will limit/provide default options to players and plays a 'Demo Video' after a set period of inactivity.*
     - **SUGAR**: *[Included Assets](#included-assets) - An asset which adds social gamification features, including account management, achievements and leaderboards.*
     - **StreamingAssets**
       - **SUGAR.config.json**: *SUGAR configuration.*
@@ -44,7 +50,7 @@ See the [LICENCE](LICENCE.md) file included in this project.
 - Unity Editor *(Version 2017.2.3f1) - Known bug in later versions of Unity with UI Anchoring.*
 
 ## Process
-1. Build the [stm-logic solution](stm-logic\PlayGen.RAGE.SportsTeamManager\PlayGen.RAGE.SportsTeamManager.sln).
+1. Build the [stm-logic solution](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.sln).
 
 2. Open stm-unity in the Unity Editor. Note that this may take a while due to the included videos being transcoded.
 
@@ -56,19 +62,19 @@ See the [LICENCE](LICENCE.md) file included in this project.
 
 ## Updating
 ### FAtiMA Toolkit 
-Using PlayGen's forked version of the FAtiMA Toolkit, build solution and place new DLLs (found in FAtiMA-Toolkit\Assets\IntegratedAuthoringTool\bin\Debug) into lib\IntegratedAuthoringTool folder. Note that code changes could be needed as a result of updates to this asset.
+Using PlayGen's forked version of the FAtiMA Toolkit, build solution and place new DLLs (found in FAtiMA-Toolkit\Assets\IntegratedAuthoringTool\bin\Debug) into stm-logic\RAGE Assets folder. Note that code changes could be needed as a result of updates to this asset.
 
 **Commit hash: 66bc9cfba528f8cbdeee2bb4c67b4ee77afc4b6a**
 
 ### PlayGen Unity Utilities 
-Build solution and place new DLLs (found in various folders in this project) into lib\PlayGenUtilities folder. Note that code changes could be needed as a result of updates to this asset. New prefabs may also need copying, although take care not to overwrite customised versions of previous prefabs.  
+Build solution and place new DLLs (found in various folders in this project) into stm-unity\Assets\SUGAR\bin folder. Note that code changes could be needed as a result of updates to this asset. New prefabs may also need copying, although take care not to overwrite customised versions of previous prefabs.  
 
 New DLLs should also be copied into the lib\PlayGen Utilities folder in the SUGAR Unity project.
 
 **Commit hash: 99d0daaa429430b36807bc5c28e567a61fc75e7d**
 
 ### SUGAR Unity Asset
-Build solution and place new DLLs (found in SUGAR-Unity\Assets\SUGAR\Plugins) into Assets\SUGAR\Plugins folder. Note that code changes could be needed as a result of updates to this asset. It is advised that you do not remove the prefabs for SUGAR, as these have been edited to match the styling of Space Modules Inc. Only replace these assets if they are no longer compatible with the latest version of the SUGAR Unity asset, and even then be aware that you will need to recreate the previous styling.
+Build solution and place new DLLs (found in SUGAR-Unity\Assets\SUGAR\Plugins) into stm-unity\Assets\SUGAR\bin folder. Note that code changes could be needed as a result of updates to this asset. It is advised that you do not remove the prefabs for SUGAR, as these have been edited to match the styling of Space Modules Inc. Only replace these assets if they are no longer compatible with the latest version of the SUGAR Unity asset, and even then be aware that you will need to recreate the previous styling.
 
 **Commit hash: cffef4ea25af213e80c0a01c55d4045da4152a81**
 
@@ -106,4 +112,4 @@ Note that the current stm-installer structure, rather than that in Game Launcher
 See the [Developer Guide](DeveloperGuide.md) for further details about the game.
 
 ## Game Mechanics
-See the [Game Mechanics](GameMechanics.md) documentation for further details about the core game mechanics.
+See the [Key Game Mechanics](GameMechanics.md) documentation for details about game mechanics, how they work and how to make changes to the core game system. 
