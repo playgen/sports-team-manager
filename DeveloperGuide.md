@@ -3,8 +3,7 @@ Below are more details about getting started when making changes in Sports Team 
 
 # Unity Game
 ## Key Scene Structure
-- **Main Camera**: Camera used by the Canvas, meaning all UI and thus all gameplay is displayed on this camera.
-- **Canvas**: Contains [UIStateManager](stm-unity/Assets/Scripts/UIStateManager.cs), which manages the UI state, and BestFit from the Text Unity Utility, which helps ensure text sizing remains consistent.
+- **Canvas**: Main gameplay canvas. Contains [UIStateManager](stm-unity/Assets/Scripts/UIStateManager.cs), which manages the UI state, and BestFit from the Text Unity Utility, which helps ensure text sizing remains consistent.
   - **Main Menu**: Main hub interface to access starting a new game, loading saved games, signing into SUGAR and changing language settings.
   - **New Game**: Interface for creating a New Game. Contains [NewGameUI](stm-unity/Assets/Scripts/NewGameUI.cs), which manages this interface, and FormKeyboardControls, which allows for tabbing between input fields.
   - **Load Game**: Interface for loading a previously started game. Managed by [LoadGameUI](stm-unity/Assets/Scripts/LoadGameUI.cs).
@@ -60,7 +59,7 @@ Below are more details about getting started when making changes in Sports Team 
 - [**Team**](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/Team.cs): Handles all logic related to the management of the team, including adding and removing crew members, updating the boat type to be used and storing the history of all race results for this team.
 
 ## Key Unity Classes
-- [**AvatarDisplay**](stm-unity/Assets/Scripts/AvatarDisplay.cs): Using the information from an Avatar objects, creates the NPC avatar displayed in Unity. Functionality includes setting the facial expression to be updated according to current NPC mood or a passed string or int value.
+- [**AvatarDisplay**](stm-unity/Assets/Scripts/AvatarDisplay.cs): Using the information from an Avatar object, creates the NPC avatar displayed in Unity. Functionality includes setting the facial expression to be updated according to current NPC mood or a passed string or int value.
 - [**CrewMemberUI**](stm-unity/Assets/Scripts/CrewMemberUI.cs): Placed on each crew member icon. Handles displaying the meeting pop-up when clicked and dragging the crew member into/out of positions.
 - [**GameManagement**](stm-unity/Assets/Scripts/GameManagement.cs): Static class that makes commonly used information, such as the number of crew members or line-up history for the team, or common functionality, such as if an action is affordable, more easily accessible.
 - [**MemberMeetingUI**](stm-unity/Assets/Scripts/MemberMeetingUI.cs): Class which manages the crew member meeting interface.
@@ -76,8 +75,8 @@ Below are more details about getting started when making changes in Sports Team 
 - [**UIStateManager**](stm-unity/Assets/Scripts/UIStateManager.cs): Handles signing into SUGAR, moving between UI states and the buttons made available on the main menu.
 
 ## Other Key Details
-- All of the default assets used by the FAtiMA Toolkit can be found in the NPC Templates folder in [stm-logic\PlayGen.RAGE.SportsTeamManager\PlayGen.RAGE.SportsTeamManager.Simulation](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation).
-- The tutorial is managed by the tutorial.json file in stm-unity\Assets\Resources\Tutorial. To recreate the tutorial, use the option available on the Canvas\Team Management\Tutorial\Tutorial Collection object.
+- All of the default assets used by the FAtiMA Toolkit can be found in the [NPC Templates folder](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation).
+- The tutorial is managed by the [Tutorial.json file](stm-unity\Assets\Resources\Tutorial\Tutorial.json). To recreate the tutorial, use the option available on the Canvas\Team Management\Tutorial\Tutorial Collection object.
 
 ## Setting up your game with SUGAR
 For information on setting up Sports Team Manager to use SUGAR, see the [SUGAR Quick Start Guide](http://api.sugarengine.org/v1/unity-client/tutorials/quick-start.html). **Make sure that [*Assets\StreamingAssets\SUGAR.config.json*](Assets/StreamingAssets/SUGAR.config.json) exists and the BaseUri value matches the Base Address in the SUGAR Prefab.** 

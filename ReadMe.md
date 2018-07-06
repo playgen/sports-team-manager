@@ -74,7 +74,7 @@ New DLLs should also be copied into the lib\PlayGen Utilities folder in the SUGA
 **Commit hash: 99d0daaa429430b36807bc5c28e567a61fc75e7d**
 
 ### SUGAR Unity Asset
-Build solution and place new DLLs (found in SUGAR-Unity\Assets\SUGAR\Plugins) into stm-unity\Assets\SUGAR\bin folder. Note that code changes could be needed as a result of updates to this asset. It is advised that you do not remove the prefabs for SUGAR, as these have been edited to match the styling of Space Modules Inc. Only replace these assets if they are no longer compatible with the latest version of the SUGAR Unity asset, and even then be aware that you will need to recreate the previous styling.
+Build solution and place new DLLs (found in SUGAR-Unity\Assets\SUGAR\Plugins) into stm-unity\Assets\SUGAR\bin folder. Note that code changes could be needed as a result of updates to this asset. It is advised that you do not remove the prefabs for SUGAR, as these have been edited to match the styling of Sports Team Manager. Only replace these assets if they are no longer compatible with the latest version of the SUGAR Unity asset, and even then be aware that you will need to recreate the previous styling.
 
 **Commit hash: cffef4ea25af213e80c0a01c55d4045da4152a81**
 
@@ -95,7 +95,7 @@ Standalone and Android are currently supported using the default Unity build sys
 # Installer
 [Wix](http://wixtoolset.org/) is used to create the Windows installer.
 
-Using the game-launcher repository, games can be launched using a url.
+Using the [Game Launcher](https://gitlab.com/playgen/game-launcher) repository, games can be launched using a URL.
 
 ## Requirements:
 - Wix Toolset
@@ -106,7 +106,7 @@ Using the game-launcher repository, games can be launched using a url.
 ## Process
 The process for setting up a game installer is detailed within the [Game Launcher documentation](https://gitlab.com/playgen/game-launcher/blob/master/ReadMe.md#game-installer).
 
-Note that the current stm-installer structure, rather than that in Game Launcher, should be used until the project is updated to Unity 2018.
+Note that the current stm-installer structure, rather than that found within the Game Launcher project, should be used until the project is updated to Unity 2018.
 
 ## Developer Guide
 See the [Developer Guide](DeveloperGuide.md) for further details about the game.
