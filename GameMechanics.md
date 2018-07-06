@@ -26,7 +26,7 @@ In order to manage effectively, players must understand the dynamics between cre
 There are six skills characters can have in the game: Charisma, Perception, Quickness, Strength, Willpower and Wisdom. When a character is created, they are given random values for each of the skills, with possible values defined using the *RandomSkillHigh* and *RandomSkillLow* values set in the [config](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json). When a team is lower in potential good choices for a position, new characters will be created to be better off for the required skills for that position, but their other skills will also be worse. If a character is generated with no position in mind, their skills fall between *RandomSkillHigh* and *RandomSkillLow* rather than above and below.
 
 ### Character Generation
-After new characters have been generated, they are given an avatar based on their skill set (for example, stronger characters are designed to be more bulky than quick characters). The [Avatar Generation](stm-unity\Assets\Scripts\AvatarDisplay.cs) system handles the creation of the character UI for both icons and full body view.
+After new characters have been generated, they are given an avatar based on their skill set (for example, stronger characters are designed to be more bulky than quick characters). The [Avatar Generation](stm-unity/Assets/Scripts/AvatarDisplay.cs) system handles the creation of the character UI for both icons and full body view.
 
 ### Character Dialogue
 During the game, there are 3 times that you can interact with your crew:
@@ -44,11 +44,11 @@ The following values are set within code or config files and as such determine h
 Restriction | Variable   | Location
 --- | --- | ---
 Max team size | (Boat.Positions.Count + 1) * 2 | [Team.cs](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/Team.cs) 
-Talk time allowance | DefaultActionAllowance + (ActionAllowancePerPosition * Boat.Positions.Count) | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) [GameManager.cs](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)
-Crew edit allowance | CrewEditAllowancePerPosition * Boat.Positions.Count | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) [GameManager.cs](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)
-Race sessions | isTutorial ? TutorialRaceSessionLength : RaceSessionLength | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) [GameManager.cs](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) 
+Talk time allowance | DefaultActionAllowance + (ActionAllowancePerPosition * Boat.Positions.Count) | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)</br>[GameManager.cs](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)
+Crew edit allowance | CrewEditAllowancePerPosition * Boat.Positions.Count | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)</br>[GameManager.cs](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)
+Race sessions | isTutorial ? TutorialRaceSessionLength : RaceSessionLength | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)</br>[GameManager.cs](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) 
 Season length | Sum(PromotionTriggers.ScoreMetSinceLast) | [GameConfig.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/GameConfig.json)
-Time to reveal skill value | ((int)(RevealedSkills.Count(!= 0) * StatRevealCost)) + (RevealedSkills.All(!= 0) ? 0 : 1) | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) [GameManager.cs](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) 
+Time to reveal skill value | ((int)(RevealedSkills.Count(!= 0) * StatRevealCost)) + (RevealedSkills.All(!= 0) ? 0 : 1) | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)</br>[GameManager.cs](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) 
 Time to reveal role rating | RoleRevealCost | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) 
 Time to reveal positive opinion | OpinionRevealPositiveCost | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) 
 Time to reveal negative opinion | OpinionRevealNegativeCost | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) 
@@ -56,7 +56,7 @@ Time to ask recruitment question | SendRecruitmentQuestionCost | [Config.json](s
 Time needed to recruit | RecruitmentCost | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) 
 Time needed to fire | FiringCost | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)
 Races until crew members can race again | PostRaceRest | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)
-Ticks per session | if (CurrentRaceSession == 0) Team.TickCrewMembers(TicksPerSession, false) | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) [GameManager.cs](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)
+Ticks per session | if (CurrentRaceSession == 0) Team.TickCrewMembers(TicksPerSession, false) | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)</br>[GameManager.cs](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)
 Recruit count | RecruitCount | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)
 Chance of recruits being replaced | RecruitChangeChance | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)
 
@@ -115,7 +115,7 @@ SafeToSave | bool | If the current step in the tutorial can be saved, as sometim
 BlacklistButtons | List\<StringList> | Buttons which cannot be interacted with at this stage in the tutorial.
 CustomAttributes | List\<string> | Additional attributes to help set up the stage in the tutorial.
 
-The current tutorial steps are defined in the [SportsTeamManagerTutorial File](stm-unity/Assets/Resources/Tutorial/SportsTeamManagerTutorial.xlsxExcel), which is converted to JSON using ExcelToJSON and serialized to a list of TutorialObjects using the [Context Menu](https://unity3d.com/sites/default/files/styles/original/public/learn/MenuItems06.png?itok=NZTNMINK) for TutorialController. 
+The current tutorial steps are defined in the [SportsTeamManagerTutorial File](stm-unity/Assets/Resources/Tutorial/SportsTeamManagerTutorial.xlsx), which is converted to JSON using ExcelToJSON and serialized to a list of TutorialObjects using the [Context Menu](https://unity3d.com/sites/default/files/styles/original/public/learn/MenuItems06.png?itok=NZTNMINK) for TutorialController. 
 
 ### Inter-team and Manager Relationships
 Characters mood and opinions of each other and the manager can change throughout the game based on interactions through conversations and promises made in those conversations later being broken. Each opinion is saved as an NPC belief.
