@@ -299,6 +299,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
+		/// Set the avatar outfit colors to match the team colors
+		/// </summary>
+		internal void SetCrewColors(Color primary, Color secondary)
+		{
+			PrimaryOutfitColor = primary;
+			SecondaryOutfitColor = secondary;
+		}
+
+		/// <summary>
 		/// save the current attributes of the CrewMember to their EmotionalAppraisal Asset
 		/// </summary>
 		internal void UpdateAvatarBeliefs(CrewMember crewMember)
@@ -317,7 +326,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarHeight.GetDescription(), Height.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-GB")));
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarMouthType.GetDescription(), MouthType);
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarMouthColor.GetDescription(), MouthColor);
-			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarTeethType.GetDescription(), TeethType ?? Name.NIL_STRING);
+			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarTeethType.GetDescription(), TeethType);
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarNoseType.GetDescription(), NoseType);
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorRed.GetDescription(), SkinColor.R.ToString());
 			crewMember.UpdateSingleBelief(NPCBeliefs.AvatarSkinColorGreen.GetDescription(), SkinColor.G.ToString());

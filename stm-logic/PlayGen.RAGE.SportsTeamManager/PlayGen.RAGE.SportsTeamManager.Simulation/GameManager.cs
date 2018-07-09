@@ -156,9 +156,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			iat.SetFutureFilePath(Path.Combine(combinedStorageLocation, name + ".iat"));
 			//create manager
 			var manager = new Person(null)
-							{
-								Name = managerName
-							};
+			{
+				Name = managerName
+			};
 			Team.Manager = manager;
 			//create the initial crew members
 			var initialCrew = false;
@@ -167,7 +167,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				initialCrew = true;
 				for (var i = 0; i < positionCount * 2; i++)
 				{
-					var newMember = new CrewMember(boat.GetWeakestPosition(Team.CrewMembers.Values.Concat(Team.Recruits.Values).ToList()), Team.Nationality, _config);
+					var newMember = new CrewMember(boat.GetWeakestPosition(Team.CrewMembers.Values.ToList()), Team.Nationality, _config);
 					Team.UniqueNameCheck(newMember);
 					Team.AddCrewMember(newMember);
 				}
@@ -187,7 +187,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			QuestionnaireCompleted = false;
 			//create manager files and store game attribute details
 			manager.CreateFile(iat, combinedStorageLocation);
-			manager.UpdateBeliefs("Manager");
+			manager.UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "Manager");
 			manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), boat.Type);
 			manager.UpdateSingleBelief(NPCBeliefs.ShowTutorial.GetDescription(), ShowTutorial.ToString());
 			manager.UpdateSingleBelief(NPCBeliefs.QuestionnaireCompleted.GetDescription(), QuestionnaireCompleted.ToString());
@@ -209,26 +209,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//set up files and details for each CrewMember
 			foreach (var member in Team.CrewMembers.Values)
 			{
-				member.CreateFile(iat, combinedStorageLocation);
-				member.Avatar = new Avatar(member);
-				Team.SetCrewColors(member.Avatar);
-				if (!initialCrew)
-				{
-					foreach (var otherMember in names)
-					{
-						if (member.Name != otherMember)
-						{
-							member.AddOrUpdateOpinion(otherMember, 0);
-							member.AddOrUpdateRevealedOpinion(otherMember, 0, false);
-						}
-					}
-				}
-				else
-				{
-					member.CreateInitialOpinions(names);
-				}
-				member.UpdateBeliefs(Name.NIL_STRING);
-				member.SaveStatus();
+				member.CreateTeamMemberFile(iat, combinedStorageLocation, names, Team.TeamColorsPrimary, Team.TeamColorsSecondary, initialCrew);
 			}
 			Team.CreateRecruits();
 		}
@@ -363,7 +344,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					continue;
 				}
 				//set up every other character as a CrewManager, making sure to separate retired and recruits
-				var crewMember = new CrewMember(rpc, _config);
+				var crewMember = new CrewMember(_config, rpc);
 				nameList.Add(crewMember.Name);
 				switch (position)
 				{
@@ -387,7 +368,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			crewList.ForEach(cm => cm.LoadPosition(Team.Boat));
 			//set up crew avatars
 			crewList.ForEach(cm => cm.Avatar = new Avatar(cm));
-			crewList.ForEach(cm => Team.SetCrewColors(cm.Avatar));
+			crewList.ForEach(cm => cm.Avatar.SetCrewColors(Team.TeamColorsPrimary, Team.TeamColorsSecondary));
 			LoadLineUpHistory();
 			LoadCurrentEvents();
 		}

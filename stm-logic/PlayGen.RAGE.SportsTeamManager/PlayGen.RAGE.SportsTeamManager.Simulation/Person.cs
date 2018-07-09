@@ -69,26 +69,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Update the base information for this Person
-		/// </summary>
-		internal virtual void UpdateBeliefs(string position = null)
-		{
-			if (Age != 0)
-			{
-				UpdateSingleBelief(NPCBeliefs.Age.GetDescription(), Age.ToString());
-			}
-			if (Gender != null)
-			{
-				UpdateSingleBelief(NPCBeliefs.Gender.GetDescription(), Gender);
-			}
-			UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), position);
-		}
-
-		/// <summary>
 		/// Update the stored information to match what is passed here or add if it doesn't already exist
 		/// </summary>
 		internal void UpdateSingleBelief(string name, string value)
 		{
+			if (string.IsNullOrEmpty(value))
+			{
+				value = WellFormedNames.Name.NIL_STRING;
+			}
 			RolePlayCharacter.UpdateBelief(name, value);
 		}
 

@@ -349,7 +349,7 @@ public class TeamSelectionUI : MonoBehaviour {
 				{
 					break;
 				}
-				if (Mathf.Approximately(session.Key.IdealMatchScore, session.Key.Positions.Count))
+				if (session.Key.PerfectSelections == session.Key.Positions.Count)
 				{
 					_skipToRaceButton.gameObject.Active(true);
 					break;
@@ -559,7 +559,6 @@ public class TeamSelectionUI : MonoBehaviour {
 		var isRace = stageNumber == 0;
 		stageIcon.sprite = isRace ? _raceIcon : _practiceIcon;
 		oldBoat.transform.FindText("Stage Number").text = isRace ? string.Empty : stageNumber.ToString();
-		var idealScore = boat.IdealMatchScore;
 		//get selection mistakes for this line-up and set-up feedback UI
 		var mistakeList = boat.GetAssignmentMistakes(3);
 		if (GameManagement.ShowTutorial && GameManagement.LineUpHistory.Count == 1)
@@ -567,7 +566,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			mistakeList = _mistakeIcons.Select(m => m.Name).Where(m => m != "Correct" && m != "Hidden").OrderBy(m => Guid.NewGuid()).Take(2).ToList();
 			mistakeList.Add("Hidden");
 		}
-		SetMistakeIcons(mistakeList, oldBoat, idealScore, boat.Positions.Count);
+		SetMistakeIcons(mistakeList, oldBoat, boat.PerfectSelections, boat.ImperfectSelections, boat.IncorrectSelections);
 		GetResult(isRace, boat, offset, oldBoat.transform.FindText("Score"));
 		var crewContainer = oldBoat.transform.Find("Crew Container");
 		var crewCount = 0;
@@ -602,7 +601,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Create mistake icons and set values for each feedback 'light'
 	/// </summary>
-	private void SetMistakeIcons(List<string> mistakes, GameObject boat, float idealScore, int positionCount)
+	private void SetMistakeIcons(List<string> mistakes, GameObject boat, int perfect, int imperfect, int incorrect)
 	{
 		var mistakeParent = boat.transform.Find("Icon Container");
 		for (var i = 0; i < mistakeParent.childCount; i++)
@@ -622,13 +621,12 @@ public class TeamSelectionUI : MonoBehaviour {
 			FeedbackHoverOver(mistakeObject.transform, Regex.Replace(mistakes[i], "([a-z])([A-Z])", "$1_$2") + "_FEEDBACK");
 		}
 		//set numbers for each 'light'
-		var unideal = positionCount - (int)idealScore - ((idealScore % 1) * 10);
 		boat.transform.FindObject("Light Container").Active(true);
-		boat.transform.FindComponentInChildren<Text>("Light Container/Green").text = ((int)idealScore).ToString();
+		boat.transform.FindComponentInChildren<Text>("Light Container/Green").text = perfect.ToString();
 		FeedbackHoverOver(boat.transform.Find("Light Container/Green"), "GREEN_PLACEMENT");
-		boat.transform.FindComponentInChildren<Text>("Light Container/Yellow").text = Mathf.RoundToInt(((idealScore % 1) * 10)).ToString();
+		boat.transform.FindComponentInChildren<Text>("Light Container/Yellow").text = imperfect.ToString();
 		FeedbackHoverOver(boat.transform.Find("Light Container/Yellow"), "YELLOW_PLACEMENT");
-		boat.transform.FindComponentInChildren<Text>("Light Container/Red").text = Mathf.RoundToInt(unideal).ToString();
+		boat.transform.FindComponentInChildren<Text>("Light Container/Red").text = incorrect.ToString();
 		FeedbackHoverOver(boat.transform.Find("Light Container/Red"), "RED_PLACEMENT");
 	}
 
@@ -846,15 +844,15 @@ public class TeamSelectionUI : MonoBehaviour {
 				{ TrackerContextKey.BoatLayout.ToString(), newString },
 				{ TrackerContextKey.Score.ToString(), boat.Score.ToString() },
 				{ TrackerContextKey.ScoreAverage.ToString(), ((float)boat.Score / boat.Positions.Count).ToString(CultureInfo.InvariantCulture) },
-				{ TrackerContextKey.IdealCorrectPlacement.ToString(), ((int)boat.IdealMatchScore).ToString() },
-				{ TrackerContextKey.IdealCorrectMemberWrongPosition.ToString(), Mathf.RoundToInt(((boat.IdealMatchScore % 1) * 10)).ToString() },
-				{ TrackerContextKey.IdealIncorrectPlacement.ToString(), Mathf.RoundToInt(boat.Positions.Count - (int)boat.IdealMatchScore - ((boat.IdealMatchScore % 1) * 10)).ToString() }
+				{ TrackerContextKey.IdealCorrectPlacement.ToString(), boat.PerfectSelections.ToString() },
+				{ TrackerContextKey.IdealCorrectMemberWrongPosition.ToString(), boat.ImperfectSelections.ToString() },
+				{ TrackerContextKey.IdealIncorrectPlacement.ToString(), boat.IncorrectSelections.ToString() }
 			}, CompletableTracker.Completable.Race));
 
 			SUGARManager.GameData.Send("Race Session Score", boat.Score);
 			SUGARManager.GameData.Send("Current Boat Size", boat.Positions.Count);
 			SUGARManager.GameData.Send("Race Session Score Average", (float)boat.Score / boat.Positions.Count);
-			SUGARManager.GameData.Send("Race Session Ideal Score Average", boat.IdealMatchScore / boat.Positions.Count);
+			SUGARManager.GameData.Send("Race Session Perfect Selection Average", boat.PerfectSelections / boat.Positions.Count);
 			SUGARManager.GameData.Send("Race Time", (long)timeTaken.TotalSeconds);
 			SUGARManager.GameData.Send("Post Race Crew Average Mood", GameManagement.Team.AverageTeamMood());
 			SUGARManager.GameData.Send("Post Race Crew Average Manager Opinion", GameManagement.Team.AverageTeamManagerOpinion());

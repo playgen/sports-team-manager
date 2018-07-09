@@ -43,6 +43,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RAGE Assets\IntegratedAuthoringTool.dll</HintPath>
     </Reference>
+    <Reference Include="RolePlayCharacter">
+      <HintPath>..\..\RAGE Assets\RolePlayCharacter.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-Main.1.0.11226\lib\Net4\System.Reactive.dll</HintPath>

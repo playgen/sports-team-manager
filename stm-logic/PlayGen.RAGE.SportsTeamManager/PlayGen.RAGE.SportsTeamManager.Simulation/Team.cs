@@ -67,15 +67,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Set the avatar outfit colors to match the team colors
-		/// </summary>
-		internal void SetCrewColors(Avatar avatar)
-		{
-			avatar.PrimaryOutfitColor = TeamColorsPrimary;
-			avatar.SecondaryOutfitColor = TeamColorsSecondary;
-		}
-
-		/// <summary>
 		/// Check that a CrewMember name is unique within this Team
 		/// </summary>
 		internal void UniqueNameCheck(CrewMember cm)
@@ -94,7 +85,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var lastNames = currentNames.Select(c => c.Split(new[] { ' ' }, 2)[1]).ToList();
 					if (firstNames.Contains(splitName[0]) || lastNames.Contains(splitName[1]) || cm.Name == Manager.Name)
 					{
-						cm.Name = cm.SelectNewName();
+						cm.Name = cm.SelectRandomName();
 					}
 					else
 					{
@@ -105,7 +96,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					if (crewMembers.ContainsKey(cm.Name) || RetiredCrew.ContainsKey(cm.Name) || Recruits.ContainsKey(cm.Name) || cm.Name == Manager.Name)
 					{
-						cm.Name = cm.SelectNewName();
+						cm.Name = cm.SelectRandomName();
 					}
 					else
 					{
@@ -173,11 +164,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//set up the files for each recruit and their avatar
 			foreach (var recruit in Recruits)
 			{
-				recruit.Value.CreateFile(iat, storageLocation, "Recruit" + storeNum);
+				recruit.Value.CreateRecruitFile(iat, storageLocation, storeNum);
 				storeNum++;
-				recruit.Value.UpdateBeliefs("Recruit");
-				recruit.Value.Avatar = new Avatar(recruit.Value, false);
-				recruit.Value.SaveStatus();
 			}
 			iat.Save();
 		}
@@ -191,20 +179,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var path = Path.Combine(storageLocation, member.RolePlayCharacter.VoiceName + ".rpc").Replace("\\", "/");
 			iat.RemoveCharacters(new List<int> { iat.GetAllCharacterSources().First(c => c.Source.Replace("\\", "/") == path).Id });
 			//set up recruit as a 'proper' character in the game
-			member.CreateFile(iat, storageLocation);
-			member.Avatar.UpdateAvatarBeliefs(member);
-			member.Avatar = new Avatar(member);
-			SetCrewColors(member.Avatar);
 			var currentNames = crewMembers.Keys.ToList();
 			currentNames.Add(Manager.Name);
-			member.CreateInitialOpinions(currentNames);
+			member.CreateTeamMemberFile(iat, storageLocation, currentNames, TeamColorsPrimary, TeamColorsSecondary);
 			foreach (var cm in crewMembers.Values)
 			{
 				cm.CreateInitialOpinions(new List<string> { member.Name }, true);
 			}
 			AddCrewMember(member);
-			member.UpdateBeliefs(WellFormedNames.Name.NIL_STRING);
-			member.SaveStatus();
 			Recruits.Remove(member.Name);
 			iat.Save();
 		}
@@ -300,14 +282,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var newMember = new CrewMember(position, Nationality, config);
 					UniqueNameCheck(newMember);
 					newMember.CreateFile(iat, storageLocation);
-					newMember.Avatar = new Avatar(newMember);
-					SetCrewColors(newMember.Avatar);
-					newMember.CreateInitialOpinions(currentNames);
 					foreach (var cm in crewMembers.Values)
 					{
 						cm.CreateInitialOpinions(new List<string> { newMember.Name });
 					}
-					newMember.UpdateBeliefs(WellFormedNames.Name.NIL_STRING);
 					//if the boat is under-staffed for the current boat size, this new CrewMember is not counted
 					if (!CanRemoveFromCrew())
 					{

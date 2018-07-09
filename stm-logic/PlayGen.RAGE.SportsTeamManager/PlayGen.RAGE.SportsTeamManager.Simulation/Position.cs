@@ -10,20 +10,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	{
 		Null = 0,
 		[RequiredSkills(CrewMemberSkill.Charisma | CrewMemberSkill.Willpower | CrewMemberSkill.Wisdom)]
-		Skipper,
+		Skipper = 1,
 		[RequiredSkills(CrewMemberSkill.Perception | CrewMemberSkill.Quickness)]
-		Helmsman,
+		Helmsman = 2,
 		[RequiredSkills(CrewMemberSkill.Body | CrewMemberSkill.Quickness | CrewMemberSkill.Willpower)]
-		MidBowman,
+		MidBowman = 4,
 		[RequiredSkills(CrewMemberSkill.Perception | CrewMemberSkill.Wisdom)]
-		Navigator,
+		Navigator = 8,
 		[RequiredSkills(CrewMemberSkill.Body | CrewMemberSkill.Charisma | CrewMemberSkill.Perception)]
-		Pitman,
+		Pitman = 16,
 		[RequiredSkills(CrewMemberSkill.Body | CrewMemberSkill.Perception)]
-		Trimmer,
+		Trimmer = 32,
 		[RequiredSkills(CrewMemberSkill.Body)]
-		Grinder,
+		Grinder = 64,
 		[RequiredSkills(CrewMemberSkill.Perception | CrewMemberSkill.Quickness | CrewMemberSkill.Willpower)]
-		Bowman
+		Bowman = 128
 	}
 }

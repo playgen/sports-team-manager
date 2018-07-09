@@ -48,11 +48,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			GameConfig = new GameConfig().GetConfig();
 			NameConfig = new NameConfig().GetConfig();
 			Avatar.Config = new AvatarGeneratorConfig().GetConfig();
-			LoadAssets();
-		}
 
-		internal void LoadAssets()
-		{
 			AssetManager.Instance.Bridge = new TemplateBridge();
 			RolePlayCharacter = RolePlayCharacterAsset.LoadFromFile("template_rpc");
 			EmotionalAppraisal = EmotionalAppraisalAsset.LoadFromFile("template_ea");
@@ -66,8 +62,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					AssetManager.Instance.Bridge = new AndroidBaseBridge();
 					break;
 				case Platform.iOS:
-					// TODO, check if this should be 'Android'
-					AssetManager.Instance.Bridge = new AndroidBaseBridge();
+					AssetManager.Instance.Bridge = new IOSBaseBridge();
 					break;
 				case Platform.Windows:
 					AssetManager.Instance.Bridge = new BaseBridge();

@@ -121,6 +121,7 @@
     <Compile Include="CrewMemberSkill.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="EventController.cs" />
+    <Compile Include="IOSBaseBridge.cs" />
     <Compile Include="NameConfig.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Platform.cs" />

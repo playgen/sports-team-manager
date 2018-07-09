@@ -107,7 +107,7 @@ public static class GameManagement
 
 	public static Position BoatPosition(this CrewMember member)
 	{
-		return member.GetBoatPosition(PositionCrew);
+		return Boat.GetCrewMemberPosition(member);
 	}
 
 	/// <summary>

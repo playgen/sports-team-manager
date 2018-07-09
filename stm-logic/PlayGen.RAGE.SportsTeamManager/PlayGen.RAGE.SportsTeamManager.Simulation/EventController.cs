@@ -355,7 +355,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				var replyCount = PostRaceEvents[0].FindIndex(pre => pre.CrewMember == response.CrewMember);
 				var reply = response.CrewMember.SendPostRaceEvent(iat, response.Dialogue, team, response.Subjects);
 				manager.UpdateSingleBelief($"PRECrew0({replyCount})", response.CrewMember.Name.NoSpaces());
-				var subjects = response.Subjects.Count > 0 ? string.Join("_", response.Subjects.ToArray()) : WellFormedNames.Name.NIL_STRING;
+				var subjects = response.Subjects.Count > 0 ? string.Join("_", response.Subjects.ToArray()) : null;
 				manager.UpdateSingleBelief($"PRESubject0({replyCount})", subjects);
 				SaveMeaningSelected(manager, response.Dialogue.Meaning.Split('_').Where(sp => !string.IsNullOrEmpty(sp)).ToArray());
 				SaveStyleSelected(manager, response.Dialogue.Style.Split('_').Where(sp => !string.IsNullOrEmpty(sp)).ToArray());
@@ -384,9 +384,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				for (var j = 0; j < PostRaceEvents[i].Count; j++)
 				{
-					manager.UpdateSingleBelief($"PRECrew{i}({j})", WellFormedNames.Name.NIL_STRING);
-					manager.UpdateSingleBelief($"PREEvent{i}({j})", WellFormedNames.Name.NIL_STRING);
-					manager.UpdateSingleBelief($"PRESubject{i}({j})", WellFormedNames.Name.NIL_STRING);
+					manager.UpdateSingleBelief($"PRECrew{i}({j})", null);
+					manager.UpdateSingleBelief($"PREEvent{i}({j})", null);
+					manager.UpdateSingleBelief($"PRESubject{i}({j})", null);
 				}
 			}
 			manager.SaveStatus();
@@ -474,7 +474,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					manager.UpdateSingleBelief($"PRECrew{i}({j})", PostRaceEvents[i][j].CrewMember.Name.NoSpaces());
 					manager.UpdateSingleBelief($"PREEvent{i}({j})", PostRaceEvents[i][j].Dialogue.NextState != "-" ?
 												PostRaceEvents[i][j].Dialogue.NextState : PostRaceEvents[i][j].Dialogue.CurrentState);
-					var subjects = PostRaceEvents[i][j].Subjects.Count > 0 ? string.Join("_", PostRaceEvents[i][j].Subjects.ToArray()) : WellFormedNames.Name.NIL_STRING;
+					var subjects = PostRaceEvents[i][j].Subjects.Count > 0 ? string.Join("_", PostRaceEvents[i][j].Subjects.ToArray()) : null;
 					manager.UpdateSingleBelief($"PRESubject{i}({j})", subjects);
 				}
 			}
