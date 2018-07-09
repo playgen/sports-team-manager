@@ -167,7 +167,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				initialCrew = true;
 				for (var i = 0; i < positionCount * 2; i++)
 				{
-					var newMember = new CrewMember(boat.GetWeakPosition(Team.CrewMembers.Values.Concat(Team.Recruits.Values).ToList()), Team.Nationality, _config);
+					var newMember = new CrewMember(boat.GetWeakestPosition(Team.CrewMembers.Values.Concat(Team.Recruits.Values).ToList()), Team.Nationality, _config);
 					Team.UniqueNameCheck(newMember);
 					Team.AddCrewMember(newMember);
 				}
@@ -431,10 +431,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						boat.PositionScores.Add(boat.Positions[i], Convert.ToInt32(subjectSplit[(i + 1) * 2]));
 					}
 				}
-				boat.IdealMatchScore = float.Parse(subjectSplit[(boat.Positions.Count * 2) + 1]);
+				boat.PerfectSelections = int.Parse(subjectSplit[(boat.Positions.Count * 2) + 1]);
+				boat.ImperfectSelections = int.Parse(subjectSplit[(boat.Positions.Count * 2) + 2]);
 				boat.Score = boat.PositionScores.Values.Sum();
 				boat.SelectionMistakes = new List<string>();
-				for (var i = (boat.Positions.Count + 1) * 2; i < subjectSplit.Length - 2; i++)
+				for (var i = (boat.Positions.Count * 2) + 3; i < subjectSplit.Length - 2; i++)
 				{
 					boat.SelectionMistakes.Add(subjectSplit[i].NoSpaces());
 				}
@@ -548,7 +549,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			//add idealmatchscore to the string
-			crew += "," + boat.IdealMatchScore;
+			crew += "," + boat.PerfectSelections + "," + boat.ImperfectSelections;
 			//add every selection mistake to the string 
 			boat.SelectionMistakes.ForEach(sm => crew += "," + sm);
 			//add time offset to the string 
@@ -574,7 +575,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 			}
 			lastBoat.SelectionMistakes = boat.SelectionMistakes;
-			lastBoat.IdealMatchScore = boat.IdealMatchScore;
+			lastBoat.PerfectSelections = boat.PerfectSelections;
+			lastBoat.ImperfectSelections = boat.ImperfectSelections;
 			lastBoat.Score = lastBoat.PositionScores.Values.Sum();
 			Team.LineUpHistory.Add(lastBoat);
 			Team.HistoricTimeOffset.Add(offset);

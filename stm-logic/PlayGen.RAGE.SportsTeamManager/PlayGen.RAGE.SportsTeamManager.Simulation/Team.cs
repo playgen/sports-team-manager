@@ -164,7 +164,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var amount = (int)config.ConfigValues[ConfigKeys.RecruitCount] - Recruits.Count;
 			for (var i = 0; i < amount; i++)
 			{
-				var position = Boat.GetWeakPosition(CrewMembers.Values.Concat(Recruits.Values).ToList());
+				var position = Boat.GetWeakestPosition(CrewMembers.Values.Concat(Recruits.Values).ToList());
 				var newMember = new CrewMember(position, Nationality, config);
 				UniqueNameCheck(newMember);
 				Recruits.Add(newMember.Name, newMember);
@@ -226,10 +226,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void RetireCrew(CrewMember crewMember)
 		{
-			var current = crewMember.GetBoatPosition(Boat.PositionCrew);
+			var current = Boat.GetCrewMemberPosition(crewMember);
 			if (current != Position.Null)
 			{
-				Boat.UnassignCrewMember(current);
+				Boat.AssignCrewMember(current, null);
 			}
 			crewMembers.Remove(crewMember.Name);
 			RetiredCrew.Add(crewMember.Name, crewMember);
@@ -273,10 +273,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void PromoteBoat()
 		{
 			var extraMembers = Boat.Positions.Count;
-			if (!Boat.PromoteBoat(RaceHistory))
+			var newType = PromotionTriggerCheck();
+			if (string.IsNullOrEmpty(newType))
 			{
 				return;
 			}
+			Boat.Promote(newType);
 			if (Boat.Type == "Finished")
 			{
 				Finished = true;
@@ -294,7 +296,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//only create a new CrewMember if the crew limit can support it
 				if (CanAddToCrew())
 				{
-					var position = Boat.GetWeakPosition(CrewMembers.Values.Concat(Recruits.Values).ToList());
+					var position = Boat.GetWeakestPosition(CrewMembers.Values.Concat(Recruits.Values).ToList());
 					var newMember = new CrewMember(position, Nationality, config);
 					UniqueNameCheck(newMember);
 					newMember.CreateFile(iat, storageLocation);
@@ -314,6 +316,32 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					AddCrewMember(newMember);
 				}
 			}
+		}
+
+		private string PromotionTriggerCheck()
+		{
+			var possibleTypes = config.GameConfig.PromotionTriggers.Where(pt => pt.StartType == Boat.Type);
+			var validRaces = RaceHistory.Where(pb => pb.Type == Boat.Type).ToList();
+			foreach (var type in possibleTypes)
+			{
+				var consecutiveMatches = 0;
+				foreach (var boat in validRaces)
+				{
+					if (boat.Score >= type.ScoreRequired)
+					{
+						consecutiveMatches++;
+						if (consecutiveMatches >= type.ScoreMetSinceLast)
+						{
+							return type.NewType;
+						}
+					}
+					else
+					{
+						consecutiveMatches = 0;
+					}
+				}
+			}
+			return string.Empty;
 		}
 
 		/// <summary>

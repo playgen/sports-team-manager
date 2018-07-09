@@ -298,12 +298,30 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return mood;
 		}
 
-		/// <summary>
-		/// Get the current position (if any) for this CrewMember
-		/// </summary>
-		public Position GetBoatPosition(Dictionary<Position, CrewMember> currentPositioned)
+		internal int GetOpinionRating(List<string> names)
 		{
-			return currentPositioned.SingleOrDefault(pair => pair.Value == this).Key;
+			var opinion = 0f;
+			var opinionCount = 0f;
+
+			//get the average opinion of every other positioned crew member and the manager
+			if (CrewOpinions != null && CrewOpinions.Count > 0)
+			{
+				foreach (var name in names)
+				{
+					if (name != Name)
+					{
+						opinion += CrewOpinions[name];
+						opinionCount++;
+					}
+				}
+			}
+
+			if (opinionCount > 0)
+			{
+				opinion = (float)Math.Round(opinion / opinionCount);
+				opinion = opinion * _config.ConfigValues[ConfigKeys.OpinionRatingWeighting];
+			}
+			return (int)opinion;
 		}
 
 		/// <summary>
@@ -456,7 +474,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != null)
 			{
 				//if the crew member is not in a position
-				if (GetBoatPosition(team.Boat.PositionCrew) == Position.Null)
+				if (team.Boat.GetCrewMemberPosition(this) == Position.Null)
 				{
 					//reduce opinion of the manager
 					AddOrUpdateOpinion(team.Manager.Name, -3);
@@ -475,7 +493,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (expected != null && team.Boat.Positions.Any(p => p.ToString() == expected))
 				{
 					//if they are currently not in the position they expected to be in
-					if (GetBoatPosition(team.Boat.PositionCrew).ToString() != expected)
+					if (team.Boat.GetCrewMemberPosition(this).ToString() != expected)
 					{
 						//reduce opinion of the manager
 						AddOrUpdateOpinion(team.Manager.Name, -3);

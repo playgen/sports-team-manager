@@ -2,54 +2,64 @@
 	"RandomHairColor": true,
 	"HairTypesCount": 5,
 	"OutfitTypesCount": 3,
-	"LightSkinColorValues": [
-		255,
-		255,
-		255
-	],
-	"MediumSkinColorValues": [
-		195,
-		186,
-		135
-	],
-	"DarkSkinColorValues": [
-		127,
-		109,
-		77
-	],
-	"BlondeHairColorValues": [
-		231,
-		231,
-		115
-	],
-	"BrownHairColorValues": [
-		86,
-		57,
-		13
-	],
-	"BlackHairColorValues": [
-		39,
-		24,
-		2
-	],
-	"GingerHairColorValues": [
-		204,
-		108,
-		6
-	],
-	"BlueEyeColorValues": [
-		30,
-		51,
-		90
-	],
-	"BrownEyeColorValues": [
-		90,
-		51,
-		30
-	],
-	"GreenEyeColorValues": [
-		30,
-		91,
-		33
-	]
+	"LightSkinColor": {
+		"R": 255,
+		"G": 255,
+		"B": 255,
+		"A": 255
+	},
+	"MediumSkinColor": {
+		"R": 195,
+		"G": 186,
+		"B": 135,
+		"A": 255
+	},
+	"DarkSkinColor": {
+		"R": 127,
+		"G": 109,
+		"B": 77,
+		"A": 255
+	},
+	"BlondeHairColor": {
+		"R": 231,
+		"G": 231,
+		"B": 115,
+		"A": 255
+	},
+	"BrownHairColor": {
+		"R": 86,
+		"G": 57,
+		"B": 13,
+		"A": 255
+	},
+	"BlackHairColor": {
+		"R": 39,
+		"G": 24,
+		"B": 2,
+		"A": 255
+	},
+	"GingerHairColor": {
+		"R": 204,
+		"G": 108,
+		"B": 6,
+		"A": 255
+	},
+	"BlueEyeColor": {
+		"R": 30,
+		"G": 51,
+		"B": 90,
+		"A": 255
+	},
+	"BrownEyeColor": {
+		"R": 90,
+		"G": 51,
+		"B": 30,
+		"A": 255
+	},
+	"GreenEyeColor": {
+		"R": 30,
+		"G": 91,
+		"B": 33,
+		"A": 255
+	}
 }
