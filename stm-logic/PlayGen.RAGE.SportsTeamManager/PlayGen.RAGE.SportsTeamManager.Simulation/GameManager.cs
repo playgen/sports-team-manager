@@ -150,8 +150,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var boat = new Boat(_config, initialType);
 			Team = new Team(iat, storageLocation, _config, name, nation, boat);
 			var positionCount = boat.Positions.Count;
-			Team.TeamColorsPrimary = new Color(teamColorsPrimary[0], teamColorsPrimary[1], teamColorsPrimary[2], 255);
-			Team.TeamColorsSecondary = new Color(teamColorsSecondary[0], teamColorsSecondary[1], teamColorsSecondary[2], 255);
+			Team.TeamColorsPrimary = new Color(teamColorsPrimary[0], teamColorsPrimary[1], teamColorsPrimary[2]);
+			Team.TeamColorsSecondary = new Color(teamColorsSecondary[0], teamColorsSecondary[1], teamColorsSecondary[2]);
 			iat.ScenarioName = name;
 			iat.SetFutureFilePath(Path.Combine(combinedStorageLocation, name + ".iat"));
 			//create manager
@@ -353,13 +353,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					primary[0] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorRedPrimary.GetDescription()));
 					primary[1] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorGreenPrimary.GetDescription()));
 					primary[2] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorBluePrimary.GetDescription()));
-					Team.TeamColorsPrimary = new Color(primary[0], primary[1], primary[2], 255);
+					Team.TeamColorsPrimary = new Color(primary[0], primary[1], primary[2]);
 					var secondary = new byte[3];
 					secondary[0] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorRedSecondary.GetDescription()));
 					secondary[1] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorGreenSecondary.GetDescription()));
 					secondary[2] = Convert.ToByte(person.LoadBelief(NPCBeliefs.TeamColorBlueSecondary.GetDescription()));
 					Team.Manager = person;
-					Team.TeamColorsSecondary = new Color(secondary[0], secondary[1], secondary[2], 255);
+					Team.TeamColorsSecondary = new Color(secondary[0], secondary[1], secondary[2]);
 					continue;
 				}
 				//set up every other character as a CrewManager, making sure to separate retired and recruits
@@ -368,11 +368,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				switch (position)
 				{
 					case "Retired":
-						crewMember.Avatar = new Avatar(crewMember, false, true);
 						Team.RetiredCrew.Add(crewMember.Name, crewMember);
 						continue;
 					case "Recruit":
-						crewMember.Avatar = new Avatar(crewMember, false, true);
 						Team.Recruits.Add(crewMember.Name, crewMember);
 						continue;
 				}
@@ -381,18 +379,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//add all non-retired and non-recruits to the list of crew
 			crewList.ForEach(cm => Team.AddCrewMember(cm));
 			//load the 'beliefs' (aka, stats and opinions) of all crew members
-			foreach (var cm in Team.Recruits.Values)
-			{
-				cm.LoadBeliefs(nameList);
-			}
-			foreach (var cm in Team.RetiredCrew.Values)
-			{
-				cm.LoadBeliefs(nameList);
-			}
+			Team.Recruits.Values.ToList().ForEach(cm => cm.LoadBeliefs(nameList));
+			Team.Recruits.Values.ToList().ForEach(cm => cm.Avatar = new Avatar(cm, false));
+			Team.RetiredCrew.Values.ToList().ForEach(cm => cm.LoadBeliefs(nameList));
+			Team.RetiredCrew.Values.ToList().ForEach(cm => cm.Avatar = new Avatar(cm, false));
 			crewList.ForEach(cm => cm.LoadBeliefs(nameList));
 			crewList.ForEach(cm => cm.LoadPosition(Team.Boat));
 			//set up crew avatars
-			crewList.ForEach(cm => cm.Avatar = new Avatar(cm, true, true));
+			crewList.ForEach(cm => cm.Avatar = new Avatar(cm));
 			crewList.ForEach(cm => Team.SetCrewColors(cm.Avatar));
 			LoadLineUpHistory();
 			LoadCurrentEvents();

@@ -32,7 +32,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			var bytes = new byte[3];
 			Random.NextBytes(bytes);
-			return new Color(bytes[0], bytes[1], bytes[2], 255);
+			return new Color(bytes[0], bytes[1], bytes[2]);
 		}
 	}
 }

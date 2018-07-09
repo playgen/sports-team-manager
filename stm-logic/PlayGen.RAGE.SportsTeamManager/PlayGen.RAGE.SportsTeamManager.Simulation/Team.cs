@@ -193,7 +193,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//set up recruit as a 'proper' character in the game
 			member.CreateFile(iat, storageLocation);
 			member.Avatar.UpdateAvatarBeliefs(member);
-			member.Avatar = new Avatar(member, true, true);
+			member.Avatar = new Avatar(member);
 			SetCrewColors(member.Avatar);
 			var currentNames = crewMembers.Keys.ToList();
 			currentNames.Add(Manager.Name);

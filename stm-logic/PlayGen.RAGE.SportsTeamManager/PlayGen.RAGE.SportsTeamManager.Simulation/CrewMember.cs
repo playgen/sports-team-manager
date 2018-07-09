@@ -674,7 +674,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var spacelessName = RolePlayCharacter.CharacterName;
 			var eventBase = "Event(Action-Start,Player,Status(Retired),{0})";
 			RolePlayCharacter.Perceive((Name)$"Event(Action-Start,Player,Status(Retired),{spacelessName})");
-			Avatar = new Avatar(this, false, true);
+			Avatar = new Avatar(this, false);
 			SaveStatus();
 		}
 

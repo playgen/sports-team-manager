@@ -42,16 +42,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				ContractResolver = contractResolver
 			};
 			var config = JsonConvert.DeserializeObject<AvatarGeneratorConfig>(configText, settings);
-			config.LightSkinColor = new Color(config.LightSkinColorValues[0], config.LightSkinColorValues[1], config.LightSkinColorValues[2], 255);
-			config.MediumSkinColor = new Color(config.MediumSkinColorValues[0], config.MediumSkinColorValues[1], config.MediumSkinColorValues[2], 255);
-			config.DarkSkinColor = new Color(config.DarkSkinColorValues[0], config.DarkSkinColorValues[1], config.DarkSkinColorValues[2], 255);
-			config.BlondeHairColor = new Color(config.BlondeHairColorValues[0], config.BlondeHairColorValues[1], config.BlondeHairColorValues[2], 255);
-			config.BrownHairColor = new Color(config.BrownHairColorValues[0], config.BrownHairColorValues[1], config.BrownHairColorValues[2], 255);
-			config.BlackHairColor = new Color(config.BlackHairColorValues[0], config.BlackHairColorValues[1], config.BlackHairColorValues[2], 255);
-			config.GingerHairColor = new Color(config.GingerHairColorValues[0], config.GingerHairColorValues[1], config.GingerHairColorValues[2], 255);
-			config.BlueEyeColor = new Color(config.BlueEyeColorValues[0], config.BlueEyeColorValues[1], config.BlueEyeColorValues[2], 255);
-			config.BrownEyeColor = new Color(config.BrownEyeColorValues[0], config.BrownEyeColorValues[1], config.BrownEyeColorValues[2], 255);
-			config.GreenEyeColor = new Color(config.GreenEyeColorValues[0], config.GreenEyeColorValues[1], config.GreenEyeColorValues[2], 255);
+			config.LightSkinColor = new Color(config.LightSkinColorValues[0], config.LightSkinColorValues[1], config.LightSkinColorValues[2]);
+			config.MediumSkinColor = new Color(config.MediumSkinColorValues[0], config.MediumSkinColorValues[1], config.MediumSkinColorValues[2]);
+			config.DarkSkinColor = new Color(config.DarkSkinColorValues[0], config.DarkSkinColorValues[1], config.DarkSkinColorValues[2]);
+			config.BlondeHairColor = new Color(config.BlondeHairColorValues[0], config.BlondeHairColorValues[1], config.BlondeHairColorValues[2]);
+			config.BrownHairColor = new Color(config.BrownHairColorValues[0], config.BrownHairColorValues[1], config.BrownHairColorValues[2]);
+			config.BlackHairColor = new Color(config.BlackHairColorValues[0], config.BlackHairColorValues[1], config.BlackHairColorValues[2]);
+			config.GingerHairColor = new Color(config.GingerHairColorValues[0], config.GingerHairColorValues[1], config.GingerHairColorValues[2]);
+			config.BlueEyeColor = new Color(config.BlueEyeColorValues[0], config.BlueEyeColorValues[1], config.BlueEyeColorValues[2]);
+			config.BrownEyeColor = new Color(config.BrownEyeColorValues[0], config.BrownEyeColorValues[1], config.BrownEyeColorValues[2]);
+			config.GreenEyeColor = new Color(config.GreenEyeColorValues[0], config.GreenEyeColorValues[1], config.GreenEyeColorValues[2]);
 			return config;
 		}
 	}

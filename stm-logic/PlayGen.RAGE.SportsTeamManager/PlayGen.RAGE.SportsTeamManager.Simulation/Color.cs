@@ -9,12 +9,36 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	{
 		public byte R, G, B, A;
 
+		public Color(byte red, byte green, byte blue)
+		{
+			R = red;
+			G = green;
+			B = blue;
+			A = byte.MaxValue;
+		}
+
 		public Color(byte red, byte green, byte blue, byte alpha)
 		{
 			R = red;
 			G = green;
 			B = blue;
 			A = alpha;
+		}
+
+		public Color(int red, int green, int blue)
+		{
+			R = LimitToByteRange(red);
+			G = LimitToByteRange(green);
+			B = LimitToByteRange(blue);
+			A = byte.MaxValue;
+		}
+
+		public Color(int red, int green, int blue, int alpha)
+		{
+			R = LimitToByteRange(red);
+			G = LimitToByteRange(green);
+			B = LimitToByteRange(blue);
+			A = LimitToByteRange(alpha);
 		}
 
 		public bool Equals(Color other)
@@ -48,6 +72,36 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public static bool operator !=(Color c1, Color c2)
 		{
 			return !c1.Equals(c2);
+		}
+
+		/// <summary>
+		/// Method to help limit an integer between 2 values
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		private static byte LimitToByteRange(int value)
+		{
+			if (value < byte.MinValue)
+			{
+				return byte.MinValue;
+			}
+			if (value > byte.MaxValue)
+			{
+				return byte.MaxValue;
+			}
+			return (byte)value;
+		}
+	}
+
+	public static class ColorExtensions
+	{
+		public static Color RandomVariation(this Color original, int min, int max)
+		{
+			var change = StaticRandom.Int(-50, 50);
+			var colorRed = original.R + change;
+			var colorGreen = original.G + change;
+			var colorBlue = original.B + change;
+			return new Color(colorRed, colorGreen, colorBlue, 255);
 		}
 	}
 }
