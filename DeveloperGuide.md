@@ -7,7 +7,7 @@ Below are more details about getting started when making changes in Sports Team 
   - **Main Menu**: Main hub interface to access starting a new game, loading saved games, signing into SUGAR and changing language settings.
   - **New Game**: Interface for creating a New Game. Contains [NewGameUI](stm-unity/Assets/Scripts/NewGameUI.cs), which manages this interface, and FormKeyboardControls, which allows for tabbing between input fields.
   - **Load Game**: Interface for loading a previously started game. Managed by [LoadGameUI](stm-unity/Assets/Scripts/LoadGameUI.cs).
-  - **Team Management**: Majority of the gameplay interface is contained within this GameObject. Contains [TeamSelectionUI](stm-unity/Assets/Scripts/TeamSelectionUI.cs), which among other things manages displaying historical line-ups and submitting line-ups, and [EscapeAction](stm-unity/Assets/Scripts/EscapeAction.cs), which controls what logic should be performed when the Escape/Back key is pressed depending on what UI is currently active.
+  - **Team Management**: Majority of the gameplay interface is contained within this GameObject. Contains [TeamSelectionUI](stm-unity/Assets/Scripts/TeamSelectionUI.cs), which among other things manages displaying historical line-ups and submitting line-ups, and [EscapeAction](stm-unity/Assets/Scripts/EscapeAction.cs), which controls behaviour when the Escape key is pressed
     - **Top Details**: Interface displayed at the top section of the screen, including Team Name and progress through the season. Managed by [ScreenSideUI](stm-unity/Assets/Scripts/ScreenSideUI.cs).
     - **Boat Container Bounds**
       - **Viewport**

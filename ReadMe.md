@@ -51,14 +51,10 @@ See the [LICENCE](LICENCE.md) file included in this project.
 
 ## Process
 1. Build the [stm-logic solution](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.sln).
-
 2. Open stm-unity in the Unity Editor. Note that this may take a while due to the included videos being transcoded.
-
 3. To run the game with SUGAR functionality, please refer to the [SUGAR Unity Documentation](http://api.sugarengine.org/v1/unity-client/tutorials/index.html).
-
-4. To run the game with RAGE Analytics functionality, please refer to the [RAGE Analytics Documentation](Assets/RAGE%20Analytics/ReadMe.md).
-
-5. To run the game with Evaluation Asset functionality, please refer to the [Evaluation Asset Documentation](Assets/Evaluation%20Asset/ReadMe.md).
+4. To run the game with RAGE Analytics functionality, please refer to the [RAGE Analytics Documentation](stm-unity/Assets/RAGE%20Analytics/ReadMe.md).
+5. To run the game with Evaluation Asset functionality, please refer to the [Evaluation Asset Documentation](stm-unity/Assets/Evaluation%20Asset/ReadMe.md).
 
 ## Updating
 ### FAtiMA Toolkit 
@@ -79,12 +75,12 @@ Build solution and place new DLLs (found in SUGAR-Unity\Assets\SUGAR\Plugins) in
 **Commit hash: cffef4ea25af213e80c0a01c55d4045da4152a81**
 
 ### RAGE Analytics
-Follow the instructions provided in the [RAGE Analytics Documentation](Assets/RAGE%20Analytics/ReadMe.md).
+Follow the instructions provided in the [RAGE Analytics Documentation](stm-unity/Assets/RAGE%20Analytics/ReadMe.md).
 
 **Commit hash: 652a562c11d3b2ddb85bae509a719d30ed6ecd0c**
 
 ### Evaluation Asset
-Follow the instructions provided in the [Evaluation Asset Documentation](Assets/Evaluation%20Asset/ReadMe.md).
+Follow the instructions provided in the [Evaluation Asset Documentation](stm-unity/Assets/Evaluation%20Asset/ReadMe.md).
 
 **Commit hash: 6c4551df61ac1a1829ed0cbf7b9788362ee1342a**
 

@@ -2,12 +2,12 @@
 Below are details of the key game mechanics that are present in Sports Team Manager, how they work and how to make changes.
 
 ## Saving and Loading
-Game saves are saved to the [PersistentDataPath](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html) which can be found at Users\[Name]\AppData\LocalLow\PlayGen\Sports Team Manager_ Sailing Edition\GameSaves. 
+Game saves are saved to the [PersistentDataPath](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html) which can be found at Users\\[Name]\AppData\LocalLow\PlayGen\Sports Team Manager_ Sailing Edition\GameSaves. 
 
 Each save file must have the following data to be able to continue from the right point:
 - IntegratedAuthoringToolAsset (.iat) data for the current game, which contains the file path for all of the characters and all of the dialogue for the player and the NPCs.
 - RolePlayCharacterAsset (.rpc) data for each member of the crew, which stores all of their 'beliefs', such as skills, opinions, age and appearence, and knowledge of events involving them.
-- The manager RolePlayCharacterAsset data, which contains information relating to the team in its 'beliefs' and stores a record of all session results.
+- The manager RolePlayCharacterAsset data, which contains information relating to the team 'beliefs' and stores a record of all session results.
 
 ## State Manager
 The [UIStateManager](stm-unity/Assets/Scripts/UIStateManager.cs) contains reference to all the states that are present in the game, and contains explicit calls to move between states. In order to create a new state, and follow the current design, the UIStateManager must be edited to include the new state and its transitions specified using the GoToState() and StaticGoToState() format. Then the menu should be added in the inspector. 
@@ -23,7 +23,7 @@ When a configuration should be used is defined in the [GameConfig](stm-logic/Pla
 In order to manage effectively, players must understand the dynamics between crew members, their skillsets and their opinion of the manager and how that will affect their performance.
 
 ### Character Skills
-There are six skills characters can have in the game: Charisma, Perception, Quickness, Strength, Willpower and Wisdom. When a character is created, they are given random values for each of the skills, with possible values defined using the *RandomSkillHigh* and *RandomSkillLow* values set in the [config](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json). When a team is lower in potential good choices for a position, new characters will be created to be better off for the required skills for that position, but their other skills will also be worse. If a character is generated with no position in mind, their skills fall between *RandomSkillHigh* and *RandomSkillLow* rather than above and below.
+There are six skills characters have in the game: Charisma, Perception, Quickness, Strength, Willpower and Wisdom. When a character is created, they are given random values for each of the skills, with possible values defined using the *RandomSkillHigh* and *RandomSkillLow* values set in the [config](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json). When a team is lower in potential good choices for a position, new characters will be created to be better off for the required skills for that position, but their other skills will also be worse. 
 
 ### Character Generation
 After new characters have been generated, they are given an avatar based on their skill set (for example, stronger characters are designed to be more bulky than quick characters). The [Avatar Generation](stm-unity/Assets/Scripts/AvatarDisplay.cs) system handles the creation of the character UI for both icons and full body view.
@@ -61,14 +61,14 @@ Recruit count | RecruitCount | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamMa
 Chance of recruits being replaced | RecruitChangeChance | [Config.json](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json)
 
 ### Scoring and Post-Race Standings
-Once a line-up has been selected and submitted, a score is calculated for each crew member selected, with all of these scores combined to make a 'boat score'. A crew member's score is calculated by adding together their average rating for all the skills required for the position, their current mood value, their average opinion of the other crew members selected and their opinion of the manager. All of these values also have a weighting set in the [Config](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) that they are multipled by before they are combined into one score. 
+Once a line-up has been selected and submitted, a score is calculated for each crew member selected, with all of these scores combined to make a team score, for sailing edition, this is referred to as a 'boat score'. A crew member's score is calculated by adding together their average rating for all the skills required for the position, their current mood value, their average opinion of the other crew members selected and their opinion of the manager. All of these values also have a weighting set in the [Config](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) that they are multipled by before they are combined into one score. 
 
 - [Calculate Boat Score](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/Boat.cs) - UpdateBoatScore()
 - [Calculate Crew Member Score](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/Boat.cs) - UpdateCrewMemberScore()
 - [Calculate Crew Member Position Score](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/Position.cs) - GetPositionRating()
 - [Get Crew Member Mood](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/CrewMember.cs) - GetMood()
 
-The time shown in practice sessions is calculated by subtracting the boat score multipled by 10 from 1800. A random 'offset' value is then added, in order to create slight variations in times shown. This value is then converted into minutes and seconds.
+The time shown in practice sessions is calculated by: 1800 - (score x 10). A random 'offset' value is then added, in order to create slight variations in times shown. This value is then converted into minutes and seconds.
 
 - [Calculate Practice Time](stm-unity/Assets/Scripts/TeamSelectionUI.cs) - GetResult()
 
@@ -157,7 +157,7 @@ EventName | Description | Impact
 OO | Two crew members in the line-up aren't getting along | -10 to 'selectedFor' opinion of 'selectedAgainst'</br>Between 0 and -3 change in every other crew member's opinion of 'selectedAgainst'
 
 ## Post-Season Questionnaire
-Once all races are completed in the season, if the game is in 'RAGE' mode the player is forwarded to the post-season questionnaire. The questions are defined in the [Sports Team Manager Questionnaire](stm-unity/Assets/Resources/Questionnaire/SportsTeamManagerQuestionnaireLocalization.xlsx) spreadsheet. This is compiled to JSON and read at runtime. The spreadsheet contains 2 sheets; Questions, which provides localized text for each question, and Answer Styles, which maps the question choices to management styles in order to help calculate the players management style.
+Once all races are completed in the season, if the game is in 'RAGE' mode the player is forwarded to the post-season questionnaire. The questions are defined in the [Sports Team Manager Questionnaire](stm-unity/Assets/Resources/Questionnaire/SportsTeamManagerQuestionnaireLocalization.xlsx) spreadsheet. This is compiled to JSON and read at runtime. The spreadsheet contains 2 sheets; Questions, which provides localized text for each question, and Answer Styles, which maps the question choices to management styles in order to calculate the players management style.
 
 Questions are read from file and populated in game in [QuestionnaireUI.cs](stm-unity/Assets/Scripts/QuestionnaireUI.cs). Upon completion of the questionnaire, the count for each style type is saved and the prominent management style calculated.
 
