@@ -7,8 +7,6 @@ using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 using RolePlayCharacter;
 
-using WellFormedNames;
-
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	//Decision Feedback functionality to adjust opinions/mood based on placement currently commented out
@@ -373,11 +371,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal string SendRecruitEvent(IntegratedAuthoringToolAsset iat, CrewMemberSkill skill)
 		{
-			List<DialogueStateActionDTO> dialogueOptions;
 			string state;
 			if (Skills[skill] >= 9)
 			{
-				state = "NPC_StronglyAgree";
+				state = "NPC_StrongAgree";
 			}
 			else if (Skills[skill] >= 7)
 			{
@@ -393,9 +390,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			else
 			{
-				state = "NPC_StronglyDisagree";
+				state = "NPC_StrongDisagree";
 			}
-			dialogueOptions = iat.GetDialogueActionsByState(state).ToList();
+			var dialogueOptions = iat.GetDialogueActionsByState(state).ToList();
 
 			return dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
 		}
@@ -405,8 +402,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void CurrentEventCheck(Team team, IntegratedAuthoringToolAsset iat)
 		{
-			var spacelessName = RolePlayCharacter.CharacterName;
-			var eventBase = "Event(Action-Start,Player,{0},{1})";
+			var spacelessName = Name.NoSpaces();
 			//if the crew member is expecting to be selected
 			if (LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != null)
 			{
@@ -416,8 +412,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					//reduce opinion of the manager
 					AddOrUpdateOpinion(team.Manager.Name, -3);
 					//send event on record that this happened
-					var eventString = "PostRace(NotPickedNotDone)";
-					RolePlayCharacter.Perceive((Name)string.Format(eventBase, eventString, spacelessName));
+					var eventString = EventHelper.ActionStart("Player", "PostRace(NotPickedNotDone)", spacelessName);
+					RolePlayCharacter.Perceive(eventString);
+					eventString = EventHelper.ActionStart("Player", "MoodChange(-3)", spacelessName);
+					RolePlayCharacter.Perceive(eventString);
 				}
 				//set their belief to 'null'
 				UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), null);
@@ -435,8 +433,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						//reduce opinion of the manager
 						AddOrUpdateOpinion(team.Manager.Name, -3);
 						//send event on record that this happened
-						var eventString = "PostRace(PWNotDone)";
-						RolePlayCharacter.Perceive((Name)string.Format(eventBase, eventString, spacelessName));
+						var eventString = EventHelper.ActionStart("Player", "PostRace(PWNotDone)", spacelessName);
+						RolePlayCharacter.Perceive(eventString);
+						eventString = EventHelper.ActionStart("Player", "MoodChange(-3)", spacelessName);
+						RolePlayCharacter.Perceive(eventString);
 					}
 					//set their belief to 'null'
 					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), null);
@@ -474,7 +474,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				var selectedReply = dialogueOptions.OrderBy(o => Guid.NewGuid()).First();
 				PostRaceFeedback(selected.NextState, team, subjects);
 				var styleSplit = selectedReply.Style.Split('_').Where(sp => !string.IsNullOrEmpty(sp)).ToList();
-				if (styleSplit.Any(s => s != "-"))
+				if (styleSplit.Any(s => s != WellFormedNames.Name.NIL_STRING))
 				{
 					styleSplit.ForEach(s => PostRaceFeedback(s, team, subjects));
 				}
@@ -489,15 +489,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void PostRaceFeedback(string ev, Team team, List<string> subjects)
 		{
-			var spacelessName = RolePlayCharacter.CharacterName;
-
-			var eventBase = "Event(Action-Start,Player,{0},{1})";
-			var eventString = $"PostRace({ev})";
+			var spacelessName = Name.NoSpaces();
+			var eventString = EventHelper.ActionStart("Player", $"PostRace({ev})", spacelessName);
 			if (ev.Contains("("))
 			{
-				eventString = string.Format(ev);
+				eventString = EventHelper.ActionStart("Player", ev, spacelessName);
 			}
-			RolePlayCharacter.Perceive((Name)string.Format(eventBase, eventString, spacelessName));
+			RolePlayCharacter.Perceive(eventString);
 			if (Enum.IsDefined(typeof(PostRaceEventImpact), ev))
 			{
 				//trigger different changes based off of what dialogue the player last picked
@@ -626,9 +624,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal void Retire()
 		{
 			UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "Retired");
-			var spacelessName = RolePlayCharacter.CharacterName;
-			var eventBase = "Event(Action-Start,Player,Status(Retired),{0})";
-			RolePlayCharacter.Perceive((Name)$"Event(Action-Start,Player,Status(Retired),{spacelessName})");
+			var spacelessName = Name.NoSpaces();
+			var eventString = EventHelper.ActionStart("Player", "Status(Retired)", spacelessName);
+			RolePlayCharacter.Perceive(eventString);
 			Avatar = new Avatar(this, false);
 			SaveStatus();
 		}
@@ -639,11 +637,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public string GetSocialImportanceRating(string name)
 		{
 			var siValue = SocialImportance.GetSocialImportance(name.NoSpaces());
-			return siValue < 5 
-				? "Negative" 
-				: siValue > 5 
-					? "Positive" 
-					: "Mid";
+			return siValue < 5 ? "Negative" : siValue > 5 ? "Positive" : "Mid";
 		}
 
 		/// <summary>

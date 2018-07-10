@@ -281,7 +281,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var position = Boat.GetWeakestPosition(CrewMembers.Values.Concat(Recruits.Values).ToList());
 					var newMember = new CrewMember(position, Nationality, config);
 					UniqueNameCheck(newMember);
-					newMember.CreateFile(iat, storageLocation);
+					newMember.CreateTeamMemberFile(iat, storageLocation, currentNames, TeamColorsPrimary, TeamColorsSecondary);
 					foreach (var cm in crewMembers.Values)
 					{
 						cm.CreateInitialOpinions(new List<string> { newMember.Name });

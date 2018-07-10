@@ -11,7 +11,7 @@
 {"Key":"GROUP_LIST","en-gb":"Group List","it":"Lista di gruppo"},
 {"Key":"GROUPS","en-gb":"Groups","it":"Gruppi"},
 {"Key":"GROUPS_LOAD_ERROR","en-gb":"Error: Unable to gather list of groups.","it":"Errore: Impossibile recuperare la lista dei gruppi"},
-{"Key":"GROUPS_LOAD_ERROR","en-gb":"Error: Unable to gather list of group members.","it":"Errore: Impossibile recuperare la lista dei membri del gruppo"},
+{"Key":"GROUP_MEMBERS_LOAD_ERROR","en-gb":"Error: Unable to gather list of group members.","it":"Errore: Impossibile recuperare la lista dei membri del gruppo"},
 {"Key":"GROUPS_PENDING_REQUESTS","en-gb":"Group Requests","it":"Richieste di gruppo"},
 {"Key":"LEADERBOARD_LIST_LOAD_ERROR","en-gb":"Error: Unable to gather leaderboards for this game.","it":"Errore: Impossibile recuperare le classifiche per questo gioco"},
 {"Key":"LEADERBOARD_LOAD_ERROR","en-gb":"Error: Unable to gather standings for this leaderboard.","it":"Errore: Impossibile recuperare i risultati comparativi per questa classifica"},
