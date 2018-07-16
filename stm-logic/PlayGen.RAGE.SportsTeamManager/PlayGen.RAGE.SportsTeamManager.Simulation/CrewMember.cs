@@ -15,8 +15,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	public class CrewMember : Person, IComparable<CrewMember>
 	{
-		private readonly ConfigStore _config;
-
 		public Dictionary<CrewMemberSkill, int> Skills { get; set; }
 		public Dictionary<CrewMemberSkill, int> RevealedSkills { get; }
 		public Dictionary<string, int> CrewOpinions { get; }
@@ -27,9 +25,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Base constructor for creating a CrewMember
 		/// </summary>
-		public CrewMember(ConfigStore con, RolePlayCharacterAsset rpc = null) : base(rpc)
+		internal CrewMember(RolePlayCharacterAsset rpc = null) : base(rpc)
 		{
-			_config = con;
 			Skills = new Dictionary<CrewMemberSkill, int>();
 			RevealedSkills = new Dictionary<CrewMemberSkill, int>();
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
@@ -44,7 +41,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Constructor for creating a CrewMember with a random age/gender/name
 		/// </summary>
-		public CrewMember(Position position, string nationality, ConfigStore con) : this(con)
+		internal CrewMember(Position position, string nationality) : this()
 		{
 			Gender = SelectGender();
 			Age = StaticRandom.Int(18, 45);
@@ -54,11 +51,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				if (position != Position.Null)
 				{
-					Skills[skill] = position.RequiresSkill(skill) ? StaticRandom.Int((int)_config.ConfigValues[ConfigKeys.GoodPositionRating], 11) : StaticRandom.Int(1, (int)_config.ConfigValues[ConfigKeys.BadPositionRating] + 1);
+					Skills[skill] = position.RequiresSkill(skill) ? StaticRandom.Int(ConfigKeys.GoodPositionRating.GetIntValue(), 11) : StaticRandom.Int(1, ConfigKeys.BadPositionRating.GetIntValue() + 1);
 				}
 				else
 				{
-					Skills[skill] = StaticRandom.Int((int)_config.ConfigValues[ConfigKeys.RandomSkillLow], (int)_config.ConfigValues[ConfigKeys.RandomSkillHigh] + 1);
+					Skills[skill] = StaticRandom.Int(ConfigKeys.RandomSkillLow.GetIntValue(), ConfigKeys.RandomSkillHigh.GetIntValue() + 1);
 				}
 			}
 		}
@@ -76,10 +73,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal string SelectRandomName()
 		{
-			var names = Gender == "M" ? _config.NameConfig.MaleForename.ContainsKey(Nationality) ? _config.NameConfig.MaleForename[Nationality] : _config.NameConfig.MaleForename.Values.ToList().SelectMany(n => n).ToList() :
-						_config.NameConfig.FemaleForename.ContainsKey(Nationality) ? _config.NameConfig.FemaleForename[Nationality] : _config.NameConfig.FemaleForename.Values.ToList().SelectMany(n => n).ToList();
+			var names = Gender == "M" ? ConfigStore.NameConfig.MaleForename.ContainsKey(Nationality) ? ConfigStore.NameConfig.MaleForename[Nationality] : ConfigStore.NameConfig.MaleForename.Values.ToList().SelectMany(n => n).ToList() :
+						ConfigStore.NameConfig.FemaleForename.ContainsKey(Nationality) ? ConfigStore.NameConfig.FemaleForename[Nationality] : ConfigStore.NameConfig.FemaleForename.Values.ToList().SelectMany(n => n).ToList();
 			var name = names[StaticRandom.Int(0, names.Count)] + " ";
-			names = _config.NameConfig.Surname.ContainsKey(Nationality) ? _config.NameConfig.Surname[Nationality] : _config.NameConfig.Surname.Values.ToList().SelectMany(n => n).ToList();
+			names = ConfigStore.NameConfig.Surname.ContainsKey(Nationality) ? ConfigStore.NameConfig.Surname[Nationality] : ConfigStore.NameConfig.Surname.Values.ToList().SelectMany(n => n).ToList();
 			name += names[StaticRandom.Int(0, names.Count)];
 			return name;
 		}
@@ -87,12 +84,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private void CreateFile(IntegratedAuthoringToolAsset iat, string storageLocation, string fileName = "", bool recruit = false)
 		{
 			base.CreateFile(iat, storageLocation, fileName);
-			UpdateSingleBelief(NPCBeliefs.Age.GetDescription(), Age.ToString());
-			UpdateSingleBelief(NPCBeliefs.Gender.GetDescription(), Gender);
-			UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), recruit ? "Recruit" : null);
+			UpdateSingleBelief(NPCBeliefs.Age, Age);
+			UpdateSingleBelief(NPCBeliefs.Gender, Gender);
+			UpdateSingleBelief(NPCBeliefs.Nationality, Nationality);
+			UpdateSingleBelief(NPCBeliefs.Position, recruit ? "Recruit" : null);
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
 			{
-				UpdateSingleBelief(string.Format(NPCBeliefs.Skill.GetDescription(), skill), Skills[skill].ToString());
+				UpdateSingleBelief(NPCBeliefs.Skill, Skills[skill], skill);
 			}
 			if (Avatar == null)
 			{
@@ -144,11 +142,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					continue;
 				}
-				AddOrUpdateOpinion(person, StaticRandom.Int((int)_config.ConfigValues[ConfigKeys.DefaultOpinionMin], (int)_config.ConfigValues[ConfigKeys.DefaultOpinionMax] + 1));
+				AddOrUpdateOpinion(person, StaticRandom.Int(ConfigKeys.DefaultOpinionMin.GetIntValue(), ConfigKeys.DefaultOpinionMax.GetIntValue() + 1));
 				//if the two people share the same last name, give the bonus stated in the config to their opinion
 				if (person.GetType() == typeof(CrewMember) && Name.Split(new[] { ' ' }, 2).Last() == person.Split(new[] { ' ' }, 2).Last())
 				{
-					AddOrUpdateOpinion(person, (int)_config.ConfigValues[ConfigKeys.LastNameBonusOpinion]);
+					AddOrUpdateOpinion(person, ConfigKeys.LastNameBonusOpinion.GetIntValue());
 				}
 				AddOrUpdateRevealedOpinion(person, 0, false);
 			}
@@ -161,7 +159,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Adjust or overwrite an opinion on another Person
 		/// </summary>
-		public void AddOrUpdateOpinion(string person, int change, bool save = true)
+		internal void AddOrUpdateOpinion(string person, int change, bool save = true)
 		{
 			if (!CrewOpinions.ContainsKey(person))
 			{
@@ -170,7 +168,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			CrewOpinions[person] = LimitOpinionToRange(CrewOpinions[person] + change, -5, 5);
 			if (!save)
 			{
-				UpdateSingleBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), person.NoSpaces()), CrewOpinions[person].ToString());
+				UpdateSingleBelief(NPCBeliefs.Opinion, CrewOpinions[person], person.NoSpaces());
 			}
 		}
 
@@ -186,37 +184,35 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RevealedCrewOpinions[person] = change;
 			if (save)
 			{
-				UpdateSingleBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), person.NoSpaces()), RevealedCrewOpinions[person].ToString());
+				UpdateSingleBelief(NPCBeliefs.RevealedOpinion, RevealedCrewOpinions[person], person.NoSpaces());
 			}
 		}
 
 		/// <summary>
 		/// Get the saved stats and opinions for this CrewMember
 		/// </summary>
-		internal void LoadBeliefs(List<string> people)
+		internal void LoadBeliefs(List<string> people, Team team = null)
 		{
 			foreach (CrewMemberSkill skill in Enum.GetValues(typeof(CrewMemberSkill)))
 			{
-				Skills[skill] = Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.Skill.GetDescription(), skill)));
-				RevealedSkills[skill] = Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), skill)));
+				Skills[skill] = Convert.ToInt32(LoadBelief(NPCBeliefs.Skill, skill));
+				RevealedSkills[skill] = Convert.ToInt32(LoadBelief(NPCBeliefs.RevealedSkill, skill));
 			}
 			foreach (var person in people)
 			{
-				AddOrUpdateOpinion(person, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.Opinion.GetDescription(), person.NoSpaces())) ?? "0"), false);
-				AddOrUpdateRevealedOpinion(person, Convert.ToInt32(LoadBelief(string.Format(NPCBeliefs.RevealedOpinion.GetDescription(), person.NoSpaces())) ?? "0"), false);
+				AddOrUpdateOpinion(person, Convert.ToInt32(LoadBelief(NPCBeliefs.Opinion, person.NoSpaces()) ?? "0"), false);
+				AddOrUpdateRevealedOpinion(person, Convert.ToInt32(LoadBelief(NPCBeliefs.RevealedOpinion, person.NoSpaces()) ?? "0"), false);
 			}
-			RestCount = Convert.ToInt32(LoadBelief(NPCBeliefs.Rest.GetDescription()));
-		}
-
-		/// <summary>
-		/// Get the saved last position for this CrewMember
-		/// </summary>
-		internal void LoadPosition(Boat boat)
-		{
-			var pos = boat.Positions.FirstOrDefault(position => position.ToString() == LoadBelief(NPCBeliefs.Position.GetDescription()));
-			if (pos != Position.Null)
+			RestCount = Convert.ToInt32(LoadBelief(NPCBeliefs.Rest));
+			Avatar = new Avatar(this, team != null);
+			if (team != null)
 			{
-				boat.AssignCrewMember(pos, this);
+				Avatar.SetCrewColors(team.TeamColorsPrimary, team.TeamColorsSecondary);
+				var pos = team.Boat.Positions.FirstOrDefault(position => position.ToString() == LoadBelief(NPCBeliefs.Position));
+				if (pos != Position.Null)
+				{
+					team.Boat.AssignCrewMember(pos, this);
+				}
 			}
 		}
 
@@ -254,7 +250,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			if (opinionCount > 0)
 			{
 				opinion = (float)Math.Round(opinion / opinionCount);
-				opinion = opinion * _config.ConfigValues[ConfigKeys.OpinionRatingWeighting];
+				opinion = opinion * ConfigKeys.OpinionRatingWeighting.GetValue();
 			}
 			return (int)opinion;
 		}
@@ -267,9 +263,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RestCount--;
 			if (assigned)
 			{
-				RestCount = (int)_config.ConfigValues[ConfigKeys.PostRaceRest];
+				RestCount = ConfigKeys.PostRaceRest.GetIntValue();
 			}
-			UpdateSingleBelief(NPCBeliefs.Rest.GetDescription(), RestCount.ToString());
+			UpdateSingleBelief(NPCBeliefs.Rest, RestCount);
 		}
 
 		/// <summary>
@@ -298,11 +294,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					//add this skill rating to the dictionary to revealed skills
 					RevealedSkills[selectedStat] = statValue;
 					//get available dialogue based off of the rating in the skill
-					style += statValue <= (int)_config.ConfigValues[ConfigKeys.BadSkillRating] ? "Bad" :
-								statValue >= (int)_config.ConfigValues[ConfigKeys.GoodSkillRating] ? "Good" : "Middle";
+					style += statValue <= ConfigKeys.BadSkillRating.GetIntValue() ? "Bad" : statValue >= ConfigKeys.GoodSkillRating.GetIntValue() ? "Good" : "Middle";
 					reply.Add(statName.ToLower());
 					//save that this skill has been revealed
-					UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
+					UpdateSingleBelief(NPCBeliefs.RevealedSkill, statValue, statName);
 					break;
 				case "RoleReveal":
 					//select a random position
@@ -316,13 +311,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var crewOpinionsPositive = CrewOpinions.Where(c => team.CrewMembers.ContainsKey(c.Key)).ToDictionary(p => p.Key, p => p.Value);
 					crewOpinionsPositive.Add(team.Manager.Name, CrewOpinions[team.Manager.Name]);
 					//get all opinions where the value is equal/greater than the OpinionLike value in the config
-					var opinionsPositive = crewOpinionsPositive.Where(co => co.Value >= (int)_config.ConfigValues[ConfigKeys.OpinionLike]).ToDictionary(o => o.Key, o => o.Value);
+					var opinionsPositive = crewOpinionsPositive.Where(co => co.Value >= ConfigKeys.OpinionLike.GetIntValue()).ToDictionary(o => o.Key, o => o.Value);
 					//if there are any positive opinions
 					if (opinionsPositive.Any())
 					{
 						//select an opinion at random
 						var pickedOpinionPositive = opinionsPositive.OrderBy(o => Guid.NewGuid()).First();
-						if (pickedOpinionPositive.Value >= (int)_config.ConfigValues[ConfigKeys.OpinionStrongLike])
+						if (pickedOpinionPositive.Value >= ConfigKeys.OpinionStrongLike.GetIntValue())
 						{
 							style += "High";
 						}
@@ -338,11 +333,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				case "OpinionRevealNegative":
 					var crewOpinionsNegative = CrewOpinions.Where(c => team.CrewMembers.ContainsKey(c.Key)).ToDictionary(p => p.Key, p => p.Value);
 					crewOpinionsNegative.Add(team.Manager.Name, CrewOpinions[team.Manager.Name]);
-					var opinionsNegative = crewOpinionsNegative.Where(co => co.Value <= (int)_config.ConfigValues[ConfigKeys.OpinionDislike]).ToDictionary(o => o.Key, o => o.Value);
+					var opinionsNegative = crewOpinionsNegative.Where(co => co.Value <= ConfigKeys.OpinionDislike.GetIntValue()).ToDictionary(o => o.Key, o => o.Value);
 					if (opinionsNegative.Any())
 					{
 						var pickedOpinionNegative = opinionsNegative.OrderBy(o => Guid.NewGuid()).First();
-						if (pickedOpinionNegative.Value >= (int)_config.ConfigValues[ConfigKeys.OpinionStrongDislike])
+						if (pickedOpinionNegative.Value >= ConfigKeys.OpinionStrongDislike.GetIntValue())
 						{
 							style += "High";
 						}
@@ -374,7 +369,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			string state;
 			if (Skills[skill] >= 9)
 			{
-				state = "NPC_StrongAgree";
+				state = "NPC_StronglyAgree";
 			}
 			else if (Skills[skill] >= 7)
 			{
@@ -390,10 +385,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			else
 			{
-				state = "NPC_StrongDisagree";
+				state = "NPC_StronglyDisagree";
 			}
 			var dialogueOptions = iat.GetDialogueActionsByState(state).ToList();
-
 			return dialogueOptions.OrderBy(o => Guid.NewGuid()).First().Utterance;
 		}
 
@@ -404,7 +398,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			var spacelessName = Name.NoSpaces();
 			//if the crew member is expecting to be selected
-			if (LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription()) != null)
+			if (LoadBelief(NPCBeliefs.ExpectedSelection) != null)
 			{
 				//if the crew member is not in a position
 				if (team.Boat.GetCrewMemberPosition(this) == Position.Null)
@@ -418,13 +412,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					RolePlayCharacter.Perceive(eventString);
 				}
 				//set their belief to 'null'
-				UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), null);
+				UpdateSingleBelief(NPCBeliefs.ExpectedSelection);
 				TickUpdate(0);
 			}
 			//if the crew member is expecting to be selecting in a particular position
-			if (LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription()) != null)
+			if (LoadBelief(NPCBeliefs.ExpectedPosition) != null)
 			{
-				var expected = LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
+				var expected = LoadBelief(NPCBeliefs.ExpectedPosition);
 				if (expected != null && team.Boat.Positions.Any(p => p.ToString() == expected))
 				{
 					//if they are currently not in the position they expected to be in
@@ -439,18 +433,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						RolePlayCharacter.Perceive(eventString);
 					}
 					//set their belief to 'null'
-					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), null);
+					UpdateSingleBelief(NPCBeliefs.ExpectedPosition);
 					TickUpdate(0);
 				}
 			}
 			//if the crew member expects to be selected in a position after this current race, set them to instead be expecting to be selected for the current race
-			if (LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription()) != null)
+			if (LoadBelief(NPCBeliefs.ExpectedPositionAfter) != null)
 			{
-				var expected = LoadBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription());
+				var expected = LoadBelief(NPCBeliefs.ExpectedPositionAfter);
 				if (expected != null)
 				{
-					UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), null);
-					UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), expected);
+					UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter);
+					UpdateSingleBelief(NPCBeliefs.ExpectedPosition, expected);
 					TickUpdate(0);
 				}
 			}
@@ -503,11 +497,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					case PostRaceEventImpact.ExpectedPosition:
 						AddOrUpdateOpinion(team.Manager.Name, 1);
-						UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), subjects[0]);
+						UpdateSingleBelief(NPCBeliefs.ExpectedPosition, subjects[0]);
 						break;
 					case PostRaceEventImpact.ExpectedPositionAfter:
 						AddOrUpdateOpinion(team.Manager.Name, 1);
-						UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), subjects[0]);
+						UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter, subjects[0]);
 						break;
 					case PostRaceEventImpact.ManagerOpinionWorse:
 						AddOrUpdateOpinion(team.Manager.Name, -1);
@@ -543,7 +537,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							var statName = ((CrewMemberSkill)randomStat).ToString();
 							var statValue = Skills[(CrewMemberSkill)randomStat];
 							RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
-							UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
+							UpdateSingleBelief(NPCBeliefs.RevealedSkill, statValue, statName);
 						}
 						break;
 					case PostRaceEventImpact.RevealFourSkills:
@@ -554,7 +548,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							var statName = ((CrewMemberSkill)randomStat).ToString();
 							var statValue = Skills[(CrewMemberSkill)randomStat];
 							RevealedSkills[(CrewMemberSkill)randomStat] = statValue;
-							UpdateSingleBelief(string.Format(NPCBeliefs.RevealedSkill.GetDescription(), statName), statValue.ToString());
+							UpdateSingleBelief(NPCBeliefs.RevealedSkill, statValue, statName);
 						}
 						break;
 					case PostRaceEventImpact.ImproveConflictOpinionGreatly:
@@ -595,10 +589,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						break;
 					case PostRaceEventImpact.CausesSelectionAfter:
 						AddOrUpdateOpinion(team.Manager.Name, 1);
-						UpdateSingleBelief(NPCBeliefs.ExpectedPosition.GetDescription(), subjects[0]);
+						UpdateSingleBelief(NPCBeliefs.ExpectedPosition, subjects[0]);
 						var otherPlayer = Regex.Replace(subjects[1], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
 						team.CrewMembers[otherPlayer].AddOrUpdateOpinion(team.Manager.Name, 1);
-						team.CrewMembers[otherPlayer].UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter.GetDescription(), subjects[0]);
+						team.CrewMembers[otherPlayer].UpdateSingleBelief(NPCBeliefs.ExpectedPositionAfter, subjects[0]);
 						team.CrewMembers[otherPlayer].SaveStatus();
 						break;
 					case PostRaceEventImpact.WholeTeamChange:
@@ -608,7 +602,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							if (!team.LineUpHistory.Last().PositionCrew.Values.Select(v => v.Name).Contains(cm.Key))
 							{
 								cm.Value.AddOrUpdateOpinion(team.Manager.Name, 1);
-								cm.Value.UpdateSingleBelief(NPCBeliefs.ExpectedSelection.GetDescription(), "true");
+								cm.Value.UpdateSingleBelief(NPCBeliefs.ExpectedSelection, "true");
 								cm.Value.SaveStatus();
 							}
 						}
@@ -623,7 +617,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void Retire()
 		{
-			UpdateSingleBelief(NPCBeliefs.Position.GetDescription(), "Retired");
+			UpdateSingleBelief(NPCBeliefs.Position, "Retired");
 			var spacelessName = Name.NoSpaces();
 			var eventString = EventHelper.ActionStart("Player", "Status(Retired)", spacelessName);
 			RolePlayCharacter.Perceive(eventString);
@@ -653,11 +647,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				return inclusiveMinimum;
 			}
-			if (value > inclusiveMaximum)
-			{
-				return inclusiveMaximum;
-			}
-			return value;
+			return value > inclusiveMaximum ? inclusiveMaximum : value;
 		}
 
 		/// <summary>

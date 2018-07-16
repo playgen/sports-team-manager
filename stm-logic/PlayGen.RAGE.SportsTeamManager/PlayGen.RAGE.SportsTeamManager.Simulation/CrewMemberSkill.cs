@@ -16,12 +16,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		Wisdom = 32
 	}
 
-	public static class CrewMemberSkillsExtensions
+	internal static class CrewMemberSkillsExtensions
 	{
 		/// <summary>
 		/// Extension method that gets the skills required for a position
 		/// </summary>
-		public static bool RequiresSkills(this CrewMemberSkill stateLevel, CrewMemberSkill flag)
+		internal static bool RequiresSkills(this CrewMemberSkill stateLevel, CrewMemberSkill flag)
 		{
 			return (stateLevel & flag) == flag;
 		}

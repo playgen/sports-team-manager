@@ -33878,7 +33878,7 @@ MonoBehaviour:
   _allowanceBar: {fileID: 2138683502}
   _allowanceText: {fileID: 744466604}
   _opinionSprites:
-  - Name: StrongAgree
+  - Name: StronglyAgree
     Image: {fileID: 21300000, guid: d22ae8e885193a041870539d83670af8, type: 3}
   - Name: Agree
     Image: {fileID: 21300000, guid: f5a40741df3e0d24b82e16265523ad6c, type: 3}
@@ -33886,7 +33886,7 @@ MonoBehaviour:
     Image: {fileID: 21300000, guid: b3d09fe088950c14cac26ef0b66c7559, type: 3}
   - Name: Disagree
     Image: {fileID: 21300000, guid: bf9adac3c7c394f41b0f8c2493685fde, type: 3}
-  - Name: StrongDisagree
+  - Name: StronglyDisagree
     Image: {fileID: 21300000, guid: 8e77eaa08606eda4d84ff95be8ae5559, type: 3}
 --- !u!114 &1197854540
 MonoBehaviour:

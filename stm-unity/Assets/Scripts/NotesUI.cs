@@ -38,7 +38,7 @@ public class NotesUI : MonoBehaviour {
 		gameObject.Active(true);
 		_notesSubject = subject;
 		OnLanguageChange();
-		_notesField.text = GameManagement.GameManager.EventController.GetNotes(_notesSubject);
+		_notesField.text = GameManagement.EventController.GetNotes(_notesSubject);
 		transform.EnableBlocker(() => Close(TrackerTriggerSource.PopUpBlocker.ToString()));
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		TrackerEventSender.SendEvent(new TraceEvent("NotesPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
@@ -54,7 +54,7 @@ public class NotesUI : MonoBehaviour {
 	{
 		if (gameObject.activeInHierarchy)
 		{
-			GameManagement.GameManager.EventController.SaveNote(_notesSubject, _notesField.text);
+			GameManagement.EventController.SaveNote(_notesSubject, _notesField.text);
 			gameObject.Active(false);
 			UIManagement.DisableBlocker();
 			_notesSubject = null;

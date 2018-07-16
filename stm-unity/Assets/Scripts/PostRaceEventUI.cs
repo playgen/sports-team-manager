@@ -88,7 +88,7 @@ public class PostRaceEventUI : MonoBehaviour
 			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKey.TriggerUI.ToString(), source },
-				{ TrackerContextKey.EventID.ToString(), GameManagement.GameManager.GetPostRaceEventKeys().First(_lastStates[0].Split('_')[1].StartsWith) }
+				{ TrackerContextKey.EventID.ToString(), GameManagement.EventController.GetEventKeys().First(_lastStates[0].Split('_')[1].StartsWith) }
 			}, AccessibleTracker.Accessible.Screen));
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
@@ -101,7 +101,7 @@ public class PostRaceEventUI : MonoBehaviour
 	{
 		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
 		{
-			var replies = GameManagement.GameManager.EventController.GetEventDialogues(GameManagement.Manager);
+			var replies = GameManagement.EventController.GetEventDialogues(GameManagement.Manager);
 			var replyDict = new Dictionary<CrewMember, List<PostRaceEventState>>();
 			if (GameManagement.CurrentEvent != null)
 			{
@@ -205,7 +205,7 @@ public class PostRaceEventUI : MonoBehaviour
 				{
 					{ TrackerContextKey.DialogueID.ToString(), res.Dialogue.NextState },
 					{ TrackerContextKey.DialogueStyle.ToString(), res.Dialogue.Meaning.Split('_').First(sp => !string.IsNullOrEmpty(sp)) },
-					{ TrackerContextKey.EventID.ToString(), GameManagement.GameManager.GetPostRaceEventKeys().First(res.Dialogue.NextState.Split('_')[1].StartsWith) }
+					{ TrackerContextKey.EventID.ToString(), GameManagement.EventController.GetEventKeys().First(res.Dialogue.NextState.Split('_')[1].StartsWith) }
 				}, res.Dialogue.NextState, AlternativeTracker.Alternative.Dialog));
 				SUGARManager.GameData.Send("Post Race Event Reply", res.Dialogue.NextState);
 			}

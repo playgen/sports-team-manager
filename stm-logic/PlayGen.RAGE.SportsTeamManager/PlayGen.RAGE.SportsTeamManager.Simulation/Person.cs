@@ -25,7 +25,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Constructor for creating a Person
 		/// </summary>
-		internal Person(RolePlayCharacterAsset rpc)
+		internal Person(RolePlayCharacterAsset rpc = null)
 		{
 			if (rpc != null)
 			{
@@ -33,8 +33,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				SetRelations();
 				SocialImportance.RegisterKnowledgeBase(RolePlayCharacter.m_kb);
 				Name = RolePlayCharacter.BodyName;
-				Age = Convert.ToInt32(LoadBelief(NPCBeliefs.Age.GetDescription()));
-				Gender = LoadBelief(NPCBeliefs.Gender.GetDescription());
+				Age = Convert.ToInt32(LoadBelief(NPCBeliefs.Age));
+				Gender = LoadBelief(NPCBeliefs.Gender);
 			}
 		}
 
@@ -71,13 +71,36 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Update the stored information to match what is passed here or add if it doesn't already exist
 		/// </summary>
-		internal void UpdateSingleBelief(string name, string value)
+		internal void UpdateSingleBelief(NPCBeliefs name, object value = null, params object[] param)
 		{
-			if (string.IsNullOrEmpty(value))
+			UpdateSingleBelief(string.Format(name.GetDescription(), param), value);
+		}
+
+		/// <summary>
+		/// Update the stored information to match what is passed here or add if it doesn't already exist
+		/// </summary>
+		internal void UpdateSingleBelief(string name, object value = null)
+		{
+			if (string.IsNullOrEmpty(value?.ToString()))
 			{
 				value = WellFormedNames.Name.NIL_STRING;
 			}
-			RolePlayCharacter.UpdateBelief(name, value);
+			if (value is float f)
+			{
+				RolePlayCharacter.UpdateBelief(name, f.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-GB")));
+			}
+			else
+			{
+				RolePlayCharacter.UpdateBelief(name, value.ToString().NoSpaces());
+			}
+		}
+
+		/// <summary>
+		/// Loaded stored information
+		/// </summary>
+		internal string LoadBelief(NPCBeliefs belief, params object[] param)
+		{
+			return LoadBelief(string.Format(belief.GetDescription(), param));
 		}
 
 		/// <summary>

@@ -31,6 +31,8 @@ public static class GameManagement
 
 	public static GameManager GameManager { get; } = new GameManager(_platform);
 
+	public static EventController EventController => GameManager.EventController;
+
 	public static PlatformSettings PlatformSettings { get; } = (PlatformSettings)Resources.Load("PlatformSettings", typeof(PlatformSettings));
 
 	public static List<string> GameNames => GameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves"));
@@ -61,7 +63,7 @@ public static class GameManagement
 
 	public static bool SeasonOngoing => PositionCount > 0;
 
-	public static List<PostRaceEventState> CurrentEvent => GameManager.EventController.PostRaceEvents.FirstOrDefault();
+	public static List<PostRaceEventState> CurrentEvent => EventController.PostRaceEvents.FirstOrDefault();
 
 	public static bool ShowTutorial => GameManager.ShowTutorial;
 
@@ -101,7 +103,7 @@ public static class GameManagement
 
 	public static string EventString(this string key, bool localize = true)
 	{
-		var eventString = GameManager.EventController.GetEventStrings(key).OrderBy(s => Guid.NewGuid()).First();
+		var eventString = EventController.GetEventStrings(key).OrderBy(s => Guid.NewGuid()).First();
 		return localize ? Localization.Get(eventString) : eventString;
 	}
 

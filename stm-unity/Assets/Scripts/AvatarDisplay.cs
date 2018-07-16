@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts;
 using PlayGen.Unity.Utilities.Extensions;
 
 using UnityEngine;

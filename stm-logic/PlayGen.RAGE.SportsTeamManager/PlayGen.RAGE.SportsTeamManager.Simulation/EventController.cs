@@ -4,6 +4,8 @@ using System.Linq;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 
+using WellFormedNames;
+
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	/// <summary>
@@ -36,16 +38,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var dialogueOptions = new List<PostRaceEventState>();
 			foreach (var current in PostRaceEvents.First())
 			{
-				var dialogues = iat.GetDialogueActionsByState(current.Dialogue.NextState).ToList();
-				dialogues = dialogues.OrderBy(c => Guid.NewGuid()).ToList();
-				var events = dialogues.Select(d => new PostRaceEventState(current.CrewMember, d, current.Subjects)).ToList();
-				dialogueOptions.AddRange(events);
+				var dialogues = iat.GetDialogueActionsByState(current.Dialogue.NextState).OrderBy(c => Guid.NewGuid()).ToList();
+				dialogueOptions.AddRange(dialogues.Select(d => new PostRaceEventState(current.CrewMember, d, current.Subjects)).ToList());
 			}
 			if (dialogueOptions.Count == 0)
 			{
 				RemoveEvents(manager);
-				PostRaceEvents.RemoveAt(0);
-				SaveEvents(manager);
 			}
 			return dialogueOptions;
 		}
@@ -55,8 +53,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string[] GetEventStrings(string eventKey)
 		{
-			var dialogueOptions = iat.GetDialogueActionsByState("Player_" + eventKey);
-			return dialogueOptions.Select(dia => dia.Utterance).ToArray();
+			return iat.GetDialogueActionsByState("Player_" + eventKey).Select(dia => dia.Utterance).ToArray();
 		}
 
 		/// <summary>
@@ -64,7 +61,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string[] GetPlayerEventStyles()
 		{
-			return iat.GetAllDialogueActions().Where(s => s.CurrentState.ToString().StartsWith("Player_") && s.NextState.ToString() != "-").SelectMany(s => s.Meaning.ToString().Split('_').Where(sp => !string.IsNullOrEmpty(sp))).Distinct().ToArray();
+			return iat.GetAllDialogueActions().Where(s => s.CurrentState.StartsWith("Player_") && s.NextState != Name.NIL_STRING).SelectMany(s => s.Meaning.Split('_').Where(sp => !string.IsNullOrEmpty(sp))).Distinct().ToArray();
 		}
 
 		/// <summary>
@@ -72,8 +69,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public string GetHelpText(string key)
 		{
-			var dialogueOptions = iat.GetDialogueActionsByState("LearningPill").Where(hd => hd.NextState == key).OrderBy(o => Guid.NewGuid()).ToList();
-			return dialogueOptions.Count != 0 ? dialogueOptions.First().Utterance : null;
+			return iat.GetDialogueActionsByState("LearningPill").Where(hd => hd.NextState == key).OrderBy(o => Guid.NewGuid()).FirstOrDefault()?.Utterance ?? string.Empty;
 		}
 
 		/// <summary>
@@ -89,27 +85,24 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal Dictionary<CrewMember, string> SendRecruitEvent(CrewMemberSkill skill, List<CrewMember> members)
 		{
-			var replies = new Dictionary<CrewMember, string>();
-			foreach (var member in members)
-			{
-				var reply = member.SendRecruitEvent(iat, skill);
-				replies.Add(member, reply ?? string.Empty);
-			}
-			return replies;
+			return members.ToDictionary(m => m, m => m.SendRecruitEvent(iat, skill) ?? string.Empty);
 		}
 
 		/// <summary>
 		/// Select event(s) to trigger post race
 		/// </summary>
-		internal void SelectPostRaceEvents(ConfigStore config, Team team, int chance)
+		internal void SelectPostRaceEvents(Team team, int chance)
 		{
 			//get the state of currently running events
-			CheckLastingEvents(team);
+			foreach (var crewMember in team.CrewMembers.Values)
+			{
+				crewMember.CurrentEventCheck(team, iat);
+			}
 			var selectedEvents = new List<List<PostRaceEventState>>();
 			//get all possible post-race event starting dialogue
 			var dialogueOptions = GetPossiblePostRaceDialogue();
 			//get events that can be fired according to the game config
-			var events = GetEvents(dialogueOptions, config.GameConfig.EventTriggers.ToList(), team);
+			var events = GetEvents(dialogueOptions, ConfigStore.GameConfig.EventTriggers.ToList(), team);
 			if (events.Any())
 			{
 				var allCrewInitial = team.CrewMembers;
@@ -117,9 +110,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//remove those already involved in a running event to not be selected
 				foreach (var crewMember in allCrewInitial.Values)
 				{
-					var expectsPos = crewMember.LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
-					var expectsPosAfter = crewMember.LoadBelief(NPCBeliefs.ExpectedPosition.GetDescription());
-					var expectsSelection = crewMember.LoadBelief(NPCBeliefs.ExpectedSelection.GetDescription());
+					var expectsPos = crewMember.LoadBelief(NPCBeliefs.ExpectedPosition);
+					var expectsPosAfter = crewMember.LoadBelief(NPCBeliefs.ExpectedPosition);
+					var expectsSelection = crewMember.LoadBelief(NPCBeliefs.ExpectedSelection);
 					if (expectsPos == null && expectsPosAfter == null && expectsSelection == null)
 					{
 						allCrew.Add(crewMember.Name, crewMember);
@@ -127,12 +120,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				foreach (var ev in events)
 				{
+					var eventCrew = new Dictionary<string, CrewMember>(allCrew);
 					//if there is no-one to select for an event, stop looking
-					if (allCrew.Count == 0)
+					if (eventCrew.Count == 0)
 					{
 						continue;
 					}
-					var selected = dialogueOptions.Where(a => a.NextState.Replace("Player_", string.Empty) == ev.EventName).OrderBy(o => Guid.NewGuid()).First();
+					var selected = dialogueOptions.Where(a => a.NextState == "Player_" + ev.EventName).OrderBy(o => Guid.NewGuid()).First();
 					if (ev.Random && StaticRandom.Int(0, (int)Math.Pow(chance, selectedEvents.Count + 1)) != 0)
 					{
 						continue;
@@ -141,7 +135,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					switch (selected.NextState.Replace("Player_", string.Empty))
 					{
 						case "PW":
-							//for this event, select a crew member who is placed in the wrong position or, if all are placed correctly, a crew member who is not placed
+							//for this event, select a crew member who feels that they were placed in the wrong position
 							var betterPlace = new List<KeyValuePair<CrewMember, Position>>();
 							foreach (var pair in team.LineUpHistory.Last().PositionCrew)
 							{
@@ -150,12 +144,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 								{
 									betterPlace.Add(new KeyValuePair<CrewMember, Position>(pair.Value, betterPosition.Key));
 								}
-								allCrew.Remove(pair.Value.Name);
+								eventCrew.Remove(pair.Value.Name);
 							}
 							//if nobody currently placed can be pout into a better position, select a placed crew member and position at random
 							if (!betterPlace.Any())
 							{
-								var selectedCrewMember = allCrew.OrderBy(c => Guid.NewGuid()).First().Value;
+								var selectedCrewMember = eventCrew.OrderBy(c => Guid.NewGuid()).First().Value;
 								betterPlace.Add(new KeyValuePair<CrewMember, Position>(selectedCrewMember, CrewMemberBestPosition(selectedCrewMember, team).Key));
 							}
 							betterPlace = betterPlace.OrderBy(c => Guid.NewGuid()).ToList();
@@ -164,15 +158,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						case "OO":
 							//for this event, select a crew member who is placed with someone they do not get on with
 							var selectedAgainst = team.CrewMembers.OrderByDescending(c => c.Value.RevealedSkills.Values.Sum()).First();
-							if (allCrew.ContainsKey(selectedAgainst.Key))
+							if (eventCrew.ContainsKey(selectedAgainst.Key))
 							{
-								allCrew.Remove(selectedAgainst.Key);
-								if (allCrew.Count == 0)
+								eventCrew.Remove(selectedAgainst.Key);
+								if (eventCrew.Count == 0)
 								{
 									continue;
 								}
 							}
-							var selectedFor = allCrew.OrderBy(c => Guid.NewGuid()).First();
+							var selectedFor = eventCrew.OrderBy(c => Guid.NewGuid()).First();
 							selectedFor.Value.AddOrUpdateOpinion(selectedAgainst.Key, -10);
 							selectedFor.Value.AddOrUpdateRevealedOpinion(selectedAgainst.Key, selectedFor.Value.CrewOpinions[selectedAgainst.Key]);
 							selectedFor.Value.SaveStatus();
@@ -190,43 +184,39 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							//for this event, select a crew member who was not selected
 							foreach (var pair in team.LineUpHistory.Last().PositionCrew)
 							{
-								allCrew.Remove(pair.Value.Name);
+								eventCrew.Remove(pair.Value.Name);
 							}
-							if (allCrew.Count == 0)
+							if (eventCrew.Count == 0)
 							{
 								continue;
 							}
-							allCrew = allCrew.OrderBy(c => Guid.NewGuid()).ToDictionary(d => d.Key, d => d.Value);
-							var randomCrewMember = allCrew.First();
+							var randomCrewMember = eventCrew.OrderBy(c => Guid.NewGuid()).First();
 							var randomBestPosition = CrewMemberBestPosition(randomCrewMember.Value, team);
 							var randomPositionCurrent = team.LineUpHistory.Last().PositionCrew[randomBestPosition.Key].Name;
-							eventSelected.Add(new PostRaceEventState(randomCrewMember.Value, selected,
-												new[] { randomBestPosition.Key.ToString(), randomPositionCurrent.NoSpaces() }.ToList()));
+							eventSelected.Add(new PostRaceEventState(randomCrewMember.Value, selected, new[] { randomBestPosition.Key.ToString(), randomPositionCurrent.NoSpaces() }.ToList()));
 							break;
 						case "IPC":
-							//for this event, select a crew member to have a conflict with another crew member
+							//for this event, select a crew member to have a conflict with the skipper
 							if (!team.LineUpHistory.Last().PositionCrew.ContainsKey(Position.Skipper))
 							{
 								continue;
 							}
 							var skipper = team.LineUpHistory.Last().PositionCrew[Position.Skipper].Name;
-							if (allCrew.ContainsKey(skipper))
+							if (eventCrew.ContainsKey(skipper))
 							{
-								allCrew.Remove(skipper);
+								eventCrew.Remove(skipper);
 							}
-							if (allCrew.Count == 0)
-							{
-								continue;
-							}
-							var randomAdditional = allCrew.OrderBy(c => Guid.NewGuid()).First();
-							allCrew.Remove(randomAdditional.Key);
-							if (allCrew.Count == 0)
+							if (eventCrew.Count == 0)
 							{
 								continue;
 							}
-							allCrew = allCrew.OrderBy(c => Guid.NewGuid()).ToDictionary(d => d.Key, d => d.Value);
-							eventSelected.Add(new PostRaceEventState(allCrew.First().Value, selected,
-												new[] { skipper.NoSpaces(), randomAdditional.Key.NoSpaces() }.ToList()));
+							var randomAdditional = eventCrew.OrderBy(c => Guid.NewGuid()).First();
+							eventCrew.Remove(randomAdditional.Key);
+							if (eventCrew.Count == 0)
+							{
+								continue;
+							}
+							eventSelected.Add(new PostRaceEventState(eventCrew.OrderBy(c => Guid.NewGuid()).First().Value, selected, new[] { skipper.NoSpaces(), randomAdditional.Key.NoSpaces() }.ToList()));
 							break;
 					}
 					eventSelected.ForEach(es => allCrew.Remove(es.CrewMember.Name));
@@ -238,7 +228,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Get the best possible position for a crew member
+		/// Get the best possible position for a crew member ohter than their current position
 		/// </summary>
 		private KeyValuePair<Position, int> CrewMemberBestPosition(CrewMember cm, Team team)
 		{
@@ -264,9 +254,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal List<DialogueStateActionDTO> GetPossiblePostRaceDialogue()
 		{
-			var dialogueOptions = iat.GetDialogueActionsByState("NPC_PostRaceEventStart").OrderBy(c => Guid.NewGuid()).ToList();
-			dialogueOptions = dialogueOptions.Where(dia => dia.Style.Contains("Race")).ToList();
-			return dialogueOptions;
+			return iat.GetDialogueActionsByState("NPC_PostRaceEventStart").Where(dia => dia.Style.Contains("Race")).OrderBy(c => Guid.NewGuid()).ToList();
 		}
 
 		/// <summary>
@@ -274,18 +262,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal List<DialogueStateActionDTO> GetPossibleAgentDialogue(string eventName)
 		{
-			return iat.GetAllDialogueActions().Where(d => d.NextState.ToString() == eventName).OrderBy(c => Guid.NewGuid()).ToList();
-		}
-
-		/// <summary>
-		/// Check the currently running events for all CrewMembers
-		/// </summary>
-		private void CheckLastingEvents(Team team)
-		{
-			foreach (var crewMember in team.CrewMembers.Values)
-			{
-				crewMember.CurrentEventCheck(team, iat);
-			}
+			return iat.GetAllDialogueActions().Where(d => d.NextState == eventName).OrderBy(c => Guid.NewGuid()).ToList();
 		}
 
 		/// <summary>
@@ -354,7 +331,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				var replyCount = PostRaceEvents[0].FindIndex(pre => pre.CrewMember == response.CrewMember);
 				var reply = response.CrewMember.SendPostRaceEvent(iat, response.Dialogue, team, response.Subjects);
-				manager.UpdateSingleBelief($"PRECrew0({replyCount})", response.CrewMember.Name.NoSpaces());
+				manager.UpdateSingleBelief($"PRECrew0({replyCount})", response.CrewMember.Name);
 				var subjects = response.Subjects.Count > 0 ? string.Join("_", response.Subjects.ToArray()) : null;
 				manager.UpdateSingleBelief($"PRESubject0({replyCount})", subjects);
 				SaveMeaningSelected(manager, response.Dialogue.Meaning.Split('_').Where(sp => !string.IsNullOrEmpty(sp)).ToArray());
@@ -384,16 +361,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				for (var j = 0; j < PostRaceEvents[i].Count; j++)
 				{
-					manager.UpdateSingleBelief($"PRECrew{i}({j})", null);
-					manager.UpdateSingleBelief($"PREEvent{i}({j})", null);
-					manager.UpdateSingleBelief($"PRESubject{i}({j})", null);
+					manager.UpdateSingleBelief($"PRECrew{i}({j})");
+					manager.UpdateSingleBelief($"PREEvent{i}({j})");
+					manager.UpdateSingleBelief($"PRESubject{i}({j})");
 				}
 			}
-			manager.SaveStatus();
+			PostRaceEvents.RemoveAt(0);
+			SaveEvents(manager);
 		}
 
 		/// <summary>
-		/// Update the count of possible replies of each meaning based on the possible reopies that could have been given
+		/// Update the count of possible replies of each meaning based on the possible replies that could have been given
 		/// </summary>
 		private void SavePossibleMeaningCount(Person manager, List<string[]> possibleMeanings)
 		{
@@ -401,12 +379,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				foreach (var meaning in meanings)
 				{
-					if (meaning == "-")
-					{
-						continue;
-					}
-					int.TryParse(manager.LoadBelief($"PossibleMeaning({meaning})"), out var currentCount);
-					manager.UpdateSingleBelief($"PossibleMeaning({meaning})", (currentCount + 1).ToString());
+					SaveBelief(manager, "PossibleMeaning({0})", meaning);
 				}
 			}
 		}
@@ -420,12 +393,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				foreach (var style in styles)
 				{
-					if (style == "-")
-					{
-						continue;
-					}
-					int.TryParse(manager.LoadBelief($"PossibleStyle({style})"), out var currentCount);
-					manager.UpdateSingleBelief($"PossibleStyle({style})", (currentCount + 1).ToString());
+					SaveBelief(manager, "PossibleStyle({0})", style);
 				}
 			}
 		}
@@ -437,12 +405,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			foreach (var meaning in meanings)
 			{
-				if (meaning == "-")
-				{
-					continue;
-				}
-				int.TryParse(manager.LoadBelief($"Meaning({meaning})"), out var currentCount);
-				manager.UpdateSingleBelief($"Meaning({meaning})", (currentCount + 1).ToString());
+				SaveBelief(manager, "Meaning({0})", meaning);
 			}
 		}
 
@@ -453,13 +416,18 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			foreach (var style in styles)
 			{
-				if (style == "-")
-				{
-					continue;
-				}
-				int.TryParse(manager.LoadBelief($"Style({style})"), out var currentCount);
-				manager.UpdateSingleBelief($"Style({style})", (currentCount + 1).ToString());
+				SaveBelief(manager, "Style({0})", style);
 			}
+		}
+
+		private void SaveBelief(Person manager, string saveType, string saveValue)
+		{
+			if (saveValue == Name.NIL_STRING)
+			{
+				return;
+			}
+			int.TryParse(manager.LoadBelief(string.Format(saveType, saveValue)), out var currentCount);
+			manager.UpdateSingleBelief(string.Format(saveType, saveValue), (currentCount + 1));
 		}
 
 		/// <summary>
@@ -471,9 +439,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				for (var j = 0; j < PostRaceEvents[i].Count; j++)
 				{
-					manager.UpdateSingleBelief($"PRECrew{i}({j})", PostRaceEvents[i][j].CrewMember.Name.NoSpaces());
-					manager.UpdateSingleBelief($"PREEvent{i}({j})", PostRaceEvents[i][j].Dialogue.NextState != "-" ?
-												PostRaceEvents[i][j].Dialogue.NextState : PostRaceEvents[i][j].Dialogue.CurrentState);
+					manager.UpdateSingleBelief($"PRECrew{i}({j})", PostRaceEvents[i][j].CrewMember.Name);
+					manager.UpdateSingleBelief($"PREEvent{i}({j})", PostRaceEvents[i][j].Dialogue.NextState != Name.NIL_STRING ? PostRaceEvents[i][j].Dialogue.NextState : PostRaceEvents[i][j].Dialogue.CurrentState);
 					var subjects = PostRaceEvents[i][j].Subjects.Count > 0 ? string.Join("_", PostRaceEvents[i][j].Subjects.ToArray()) : null;
 					manager.UpdateSingleBelief($"PRESubject{i}({j})", subjects);
 				}
@@ -483,8 +450,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public string GetNotes(string subject)
 		{
-			var savedNote = iat.GetDialogueActionsByState("Player_Note").FirstOrDefault(s => s.NextState == subject.NoSpaces());
-			return savedNote != null ? savedNote.Utterance : string.Empty;
+			return iat.GetDialogueActionsByState("Player_Note").FirstOrDefault(s => s.NextState == subject.NoSpaces())?.Utterance ?? string.Empty;
 		}
 
 		public void SaveNote(string subject, string note)
@@ -493,8 +459,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				CurrentState = "Player_Note",
 				NextState = subject.NoSpaces(),
-				Meaning = "-",
-				Style = "-",
+				Meaning = Name.NIL_STRING,
+				Style = Name.NIL_STRING,
 				Utterance = note
 			};
 			var savedNote = iat.GetDialogueActionsByState("Player_Note").FirstOrDefault(s => s.NextState == subject.NoSpaces());

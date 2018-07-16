@@ -9,7 +9,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	{
 		public byte R, G, B, A;
 
-		public Color(byte red, byte green, byte blue)
+		internal Color(byte red, byte green, byte blue)
 		{
 			R = red;
 			G = green;
@@ -17,7 +17,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			A = byte.MaxValue;
 		}
 
-		public Color(byte red, byte green, byte blue, byte alpha)
+		internal Color(byte red, byte green, byte blue, byte alpha)
 		{
 			R = red;
 			G = green;
@@ -25,7 +25,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			A = alpha;
 		}
 
-		public Color(int red, int green, int blue)
+		internal Color(int red, int green, int blue)
 		{
 			R = LimitToByteRange(red);
 			G = LimitToByteRange(green);
@@ -33,7 +33,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			A = byte.MaxValue;
 		}
 
-		public Color(int red, int green, int blue, int alpha)
+		internal Color(int red, int green, int blue, int alpha)
 		{
 			R = LimitToByteRange(red);
 			G = LimitToByteRange(green);
@@ -93,9 +93,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 	}
 
-	public static class ColorExtensions
+	internal static class ColorExtensions
 	{
-		public static Color RandomVariation(this Color original, int min, int max)
+		internal static Color RandomVariation(this Color original, int min, int max)
 		{
 			var change = StaticRandom.Int(-50, 50);
 			var colorRed = original.R + change;

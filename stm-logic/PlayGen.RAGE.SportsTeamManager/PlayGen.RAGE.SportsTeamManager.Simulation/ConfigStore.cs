@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
 using AssetManagerPackage;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking;
@@ -10,17 +12,18 @@ using Newtonsoft.Json;
 using RolePlayCharacter;
 using SocialImportance;
 
+[assembly: InternalsVisibleTo("PlayGen.RAGE.SportsTeamManager.UnitTest")]
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	/// <summary>
 	/// Used to access values related to functionality
 	/// </summary>
-	public class ConfigStore
+	internal class ConfigStore
 	{
-		internal Dictionary<ConfigKeys, float> ConfigValues { get; set; }
-		internal Dictionary<string, List<Position>> BoatTypes { get; set; }
-		internal GameConfig GameConfig { get; set; }
-		internal NameConfig NameConfig { get; set; }
+		internal static Dictionary<ConfigKeys, float> ConfigValues { get; set; }
+		internal static Dictionary<string, List<Position>> BoatTypes { get; set; }
+		internal static GameConfig GameConfig { get; set; }
+		internal static NameConfig NameConfig { get; set; }
 		internal static IntegratedAuthoringToolAsset IntegratedAuthoringTool { get; set; }
 		internal static IntegratedAuthoringToolAsset HelpIntegratedAuthoringTool { get; set; }
 		internal static RolePlayCharacterAsset RolePlayCharacter { get; set; }
@@ -29,7 +32,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal static SocialImportanceAsset SocialImportance { get; set; }
 		internal static Platform Platform { get; set; }
 
-		public ConfigStore(Platform platform = Platform.Windows)
+		internal ConfigStore(Platform platform = Platform.Windows)
 		{
 			Platform = platform;
 			ConfigValues = new Dictionary<ConfigKeys, float>();
@@ -68,6 +71,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					AssetManager.Instance.Bridge = new BaseBridge();
 					break;
 			}
+		}
+	}
+
+	internal static class ConfigExtensions
+	{
+		internal static float GetValue(this ConfigKeys key)
+		{
+			return ConfigStore.ConfigValues[key];
+		}
+
+		internal static int GetIntValue(this ConfigKeys key)
+		{
+			return (int)ConfigStore.ConfigValues[key];
 		}
 	}
 }

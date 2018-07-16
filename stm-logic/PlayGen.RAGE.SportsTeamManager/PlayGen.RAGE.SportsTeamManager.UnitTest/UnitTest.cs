@@ -616,10 +616,10 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 			randomMouthColor = randomMouthColor.OrderBy(r => r.Value).ToDictionary(c => c.Key, c => c.Value);
 		}
 
-		public List<CrewMember> CreateInitialCrew(ConfigStore config)
+		internal List<CrewMember> CreateInitialCrew(ConfigStore config)
 		{
 			CrewMember[] crew = {
-			new CrewMember (config)
+			new CrewMember
 			{
 				Name = "Skippy Skip",
 				Age = 35,
@@ -634,7 +634,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 					{CrewMemberSkill.Willpower, 10}
 				}
 			},
-			new CrewMember (config)
+			new CrewMember 
 			{
 				Name = "Wise Nav",
 				Age = 28,
@@ -649,7 +649,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 					{CrewMemberSkill.Willpower, 2}
 				}
 			},
-			new CrewMember (config)
+			new CrewMember
 			{
 				Name = "Dim Wobnam",
 				Age = 19,
@@ -664,7 +664,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 					{CrewMemberSkill.Willpower, 10}
 				}
 			},
-			new CrewMember (config)
+			new CrewMember
 			{
 				Name = "Rav Age",
 				Age = 25,
@@ -679,7 +679,7 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 					{CrewMemberSkill.Willpower, 5}
 				}
 			},
-			new CrewMember (config)
+			new CrewMember
 			{
 				Name = "Nick Pony",
 				Age = 32,

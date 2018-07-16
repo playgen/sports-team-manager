@@ -1510,19 +1510,19 @@
 					"UtteranceId": "TTS-E47CA7A09CF6781E29634502345930A7"
 				}, 
 				{
-					"CurrentState": "NPC_StrongDisagree",
+					"CurrentState": "NPC_StronglyDisagree",
 					"NextState": "-",
-					"Meaning": "StrongDisagree",
-					"Style": "StrongDisagree",
-					"Utterance": "StrongDisagree",
+					"Meaning": "StronglyDisagree",
+					"Style": "StronglyDisagree",
+					"Utterance": "StronglyDisagree",
 					"UtteranceId": "TTS-D39E20FA85E77FC215CF0CB0460D4FCD"
 				}, 
 				{
-					"CurrentState": "NPC_StrongAgree",
+					"CurrentState": "NPC_StronglyAgree",
 					"NextState": "-",
-					"Meaning": "StrongAgree",
-					"Style": "StrongAgree",
-					"Utterance": "StrongAgree",
+					"Meaning": "StronglyAgree",
+					"Style": "StronglyAgree",
+					"Utterance": "StronglyAgree",
 					"UtteranceId": "TTS-D5E21304256B86378063BCA9D458F7E7"
 				}, 
 				{

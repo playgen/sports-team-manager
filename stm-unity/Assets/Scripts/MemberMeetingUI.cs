@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Assets.Scripts;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using PlayGen.SUGAR.Unity;
 using UnityEngine;

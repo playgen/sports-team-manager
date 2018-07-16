@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27703.2026
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stm-unity", "stm-unity.csproj", "{7CB73DD1-ED31-84B9-D8F5-66803C4ECDA8}"
 EndProject
@@ -30,6 +30,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {00A62D15-9B88-4FC2-8054-174075376F4C}
+		SolutionGuid = {67E50DB4-90AA-4F02-AB4C-F9ED3D7E9D48}
 	EndGlobalSection
 EndGlobal

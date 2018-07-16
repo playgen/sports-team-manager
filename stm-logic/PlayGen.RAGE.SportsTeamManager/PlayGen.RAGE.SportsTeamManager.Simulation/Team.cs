@@ -12,7 +12,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	{
 		private readonly IntegratedAuthoringToolAsset iat;
 		private readonly string storageLocation;
-		private readonly ConfigStore config;
 		private readonly Dictionary<string, CrewMember> crewMembers;
 
 		public Boat Boat { get; }
@@ -42,11 +41,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Team constructor
 		/// </summary>
-		internal Team (IntegratedAuthoringToolAsset i, string storage, ConfigStore con, string name, string nation, Boat boat)
+		internal Team (IntegratedAuthoringToolAsset i, string storage, string name, string nation, Boat boat)
 		{
 			iat = i;
 			storageLocation = Path.Combine(storage, name);
-			config = con;
 			Name = name;
 			Nationality = nation;
 			Boat = boat;
@@ -141,7 +139,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				var path = Path.Combine(storageLocation, member.Value.RolePlayCharacter.VoiceName + ".rpc").Replace("\\", "/");
 				iat.RemoveCharacters(new List<int> { iat.GetAllCharacterSources().First(c => c.Source.Replace("\\", "/") == path).Id });
-				if (StaticRandom.Int(0, 100) % (int)config.ConfigValues[ConfigKeys.RecruitChangeChance] != 0)
+				if (StaticRandom.Int(0, 100) % ConfigKeys.RecruitChangeChance.GetIntValue() != 0)
 				{
 					recuritsToRemove.Add(member.Key);
 				}
@@ -152,11 +150,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 
 			//for the amount of empty recruit spaces, create a new recruit
-			var amount = (int)config.ConfigValues[ConfigKeys.RecruitCount] - Recruits.Count;
+			var amount = ConfigKeys.RecruitCount.GetIntValue() - Recruits.Count;
 			for (var i = 0; i < amount; i++)
 			{
 				var position = Boat.GetWeakestPosition(CrewMembers.Values.Concat(Recruits.Values).ToList());
-				var newMember = new CrewMember(position, Nationality, config);
+				var newMember = new CrewMember(position, Nationality);
 				UniqueNameCheck(newMember);
 				Recruits.Add(newMember.Name, newMember);
 			}
@@ -267,7 +265,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return;
 			}
 			//store that the boat type has been changed
-			Manager.UpdateSingleBelief(NPCBeliefs.BoatType.GetDescription(), Boat.Type);
+			Manager.UpdateSingleBelief(NPCBeliefs.BoatType, Boat.Type);
 			//calculate how many new members should be created
 			extraMembers = (Boat.Positions.Count - extraMembers) * 2;
 			//reset the positions on the boat to those for the new type
@@ -279,7 +277,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (CanAddToCrew())
 				{
 					var position = Boat.GetWeakestPosition(CrewMembers.Values.Concat(Recruits.Values).ToList());
-					var newMember = new CrewMember(position, Nationality, config);
+					var newMember = new CrewMember(position, Nationality);
 					UniqueNameCheck(newMember);
 					newMember.CreateTeamMemberFile(iat, storageLocation, currentNames, TeamColorsPrimary, TeamColorsSecondary);
 					foreach (var cm in crewMembers.Values)
@@ -298,7 +296,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		private string PromotionTriggerCheck()
 		{
-			var possibleTypes = config.GameConfig.PromotionTriggers.Where(pt => pt.StartType == Boat.Type);
+			var possibleTypes = ConfigStore.GameConfig.PromotionTriggers.Where(pt => pt.StartType == Boat.Type);
 			var validRaces = RaceHistory.Where(pb => pb.Type == Boat.Type).ToList();
 			foreach (var type in possibleTypes)
 			{
