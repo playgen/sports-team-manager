@@ -8,9 +8,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	internal class NameConfig
 	{
-		internal Dictionary<string, List<string>> MaleForename { get; set; }
-		internal Dictionary<string, List<string>> FemaleForename { get; set; }
-		internal Dictionary<string, List<string>> Surname { get; set; }
+		public Dictionary<string, List<string>> MaleForename { get; set; }
+		public Dictionary<string, List<string>> FemaleForename { get; set; }
+		public Dictionary<string, List<string>> Surname { get; set; }
 
 		//get and return values for avatar configs
 		internal NameConfig GetConfig()

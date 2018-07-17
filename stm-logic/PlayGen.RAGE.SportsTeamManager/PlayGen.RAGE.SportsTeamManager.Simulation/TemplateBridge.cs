@@ -7,22 +7,22 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	public class TemplateBridge : IBridge, IDataStorage
 	{
-		public bool Delete(string fileId)
+		public virtual bool Delete(string fileId)
 		{
 			throw new NotImplementedException();
 		}
 
-		public bool Exists(string fileId)
+		public virtual bool Exists(string fileId)
 		{
 			return true;
 		}
 
-		public string[] Files()
+		public virtual string[] Files()
 		{
 			throw new NotImplementedException();
 		}
 
-		public string Load(string fileId)
+		public virtual string Load(string fileId)
 		{
 			fileId = fileId.Replace(".", "_").ToLower();
 			fileId = fileId.Split(ConfigStore.Platform == Platform.Windows ? '\\' : '/').Last();
@@ -30,7 +30,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return obj;
 		}
 
-		public void Save(string fileId, string fileData)
+		public virtual void Save(string fileId, string fileData)
 		{
 			throw new NotImplementedException();
 		}

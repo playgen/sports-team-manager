@@ -9,22 +9,22 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	internal class BaseBridge : IBridge, IDataStorage, IWebServiceRequest
 	{
-		public bool Delete(string fileId)
+		public virtual bool Delete(string fileId)
 		{
 			throw new NotImplementedException();
 		}
 
-		public bool Exists(string fileId)
+		public virtual bool Exists(string fileId)
 		{
 			return File.Exists(fileId);
 		}
 
-		public string[] Files()
+		public virtual string[] Files()
 		{
 			throw new NotImplementedException();
 		}
 
-		public string Load(string fileId)
+		public virtual string Load(string fileId)
 		{
 			using (var reader = File.OpenText(fileId))
 			{
@@ -32,7 +32,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
-		public void Save(string fileId, string fileData)
+		public virtual void Save(string fileId, string fileData)
 		{
 			using (var writer = File.CreateText(fileId))
 			{
@@ -40,7 +40,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
-		public void WebServiceRequest(RequestSetttings requestSettings, out RequestResponse requestResponse)
+		public virtual void WebServiceRequest(RequestSetttings requestSettings, out RequestResponse requestResponse)
 		{
 			var result = new RequestResponse(requestSettings);
 

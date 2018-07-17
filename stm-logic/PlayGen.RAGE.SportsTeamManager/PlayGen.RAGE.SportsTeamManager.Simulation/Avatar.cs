@@ -24,8 +24,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public bool IsMale => _gender == "M";
 
-		public Skill BestSkill { get; private set; }
-
 		public bool CustomOutfitColor { get; }
 
 		public Color SkinColor { get; private set; }
@@ -36,6 +34,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Color SecondaryOutfitColor { get; set; }
 
 		private readonly string _gender;
+		private Skill _bestSkill;
+		private string _bodyType;
 
 		internal Avatar (CrewMember crewMember, bool isActive = true)
 		{
@@ -46,16 +46,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//attempt to recreate pre-existing avatar if one already exists, create new avatar otherwise
 			CreateAvatar(crewMember);
 			//set outfit according to type, best skill and gender
-			OutfitBaseType = $"Outfit{_gender}_Base_{GetBodyType(BestSkill)}_{outfit}";
-			OutfitHighlightType = $"Outfit{_gender}_Highlight_{GetBodyType(BestSkill)}_{outfit}";
-			OutfitShadowType = $"Outfit{_gender}_Shadow_{GetBodyType(BestSkill)}_{outfit}";
+			OutfitBaseType = $"Outfit{_gender}_Base_{_bodyType}_{outfit}";
+			OutfitHighlightType = $"Outfit{_gender}_Highlight_{_bodyType}_{outfit}";
+			OutfitShadowType = $"Outfit{_gender}_Shadow_{_bodyType}_{outfit}";
 		}
 
 		private void CreateAvatar(CrewMember crewMember)
 		{
 			//Get Best Skill
 			var currentBestSkill = crewMember.LoadBelief(NPCBelief.AvatarBestSkill);
-			BestSkill = Enum.TryParse<Skill>(currentBestSkill, out var loadedBestSkill) ? loadedBestSkill : GetBestSkill(crewMember);
+			_bestSkill = Enum.TryParse<Skill>(currentBestSkill, out var loadedBestSkill) ? loadedBestSkill : GetBestSkill(crewMember);
+			_bodyType = GetBodyType(_bestSkill);
 
 			//Set Skin Color
 			var loadedMouthColor = crewMember.LoadBelief(NPCBelief.AvatarMouthColor);
@@ -85,13 +86,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			
 			//Set Body Type
-			BodyType = crewMember.LoadBelief(NPCBelief.AvatarBodyType) ?? $"Body{_gender}_{GetBodyType(BestSkill)}";
+			BodyType = crewMember.LoadBelief(NPCBelief.AvatarBodyType) ?? $"Body{_gender}_{_bodyType}";
 
 			//Set Hair Type
 			HairType = crewMember.LoadBelief(NPCBelief.AvatarHairType) ?? $"Hair{StaticRandom.Int(1, Config.HairTypesCount + 1):00}{_gender}";
 
 			//Set Eye Type
-			EyeType = crewMember.LoadBelief(NPCBelief.AvatarEyeType) ?? $"Eye{_gender}_{BestSkill}";
+			EyeType = crewMember.LoadBelief(NPCBelief.AvatarEyeType) ?? $"Eye{_gender}_{_bestSkill}";
 
 			//Set Eye Color
 			var textEyeColor = crewMember.LoadBelief(NPCBelief.AvatarEyeColor);
@@ -114,17 +115,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 
 			//Set Face type
-			EyebrowType = crewMember.LoadBelief(NPCBelief.AvatarEyebrowType) ?? $"Face{_gender}_{BestSkill}_Eyebrows";
-			NoseType = crewMember.LoadBelief(NPCBelief.AvatarNoseType) ?? $"Face{_gender}_{BestSkill}_Nose";
+			EyebrowType = crewMember.LoadBelief(NPCBelief.AvatarEyebrowType) ?? $"Face{_gender}_{_bestSkill}_Eyebrows";
+			NoseType = crewMember.LoadBelief(NPCBelief.AvatarNoseType) ?? $"Face{_gender}_{_bestSkill}_Nose";
 
 			//Specify the teeth for male avatars
 			if (IsMale)
 			{
-				TeethType = crewMember.LoadBelief(NPCBelief.AvatarTeethType) ?? $"Face{_gender}_{BestSkill}_Teeth";
+				TeethType = crewMember.LoadBelief(NPCBelief.AvatarTeethType) ?? $"Face{_gender}_{_bestSkill}_Teeth";
 			}
 
 			//Set Mouth Type
-			MouthType = crewMember.LoadBelief(NPCBelief.AvatarMouthType) ?? $"Face{_gender}_{BestSkill}_Mouth";
+			MouthType = crewMember.LoadBelief(NPCBelief.AvatarMouthType) ?? $"Face{_gender}_{_bestSkill}_Mouth";
 
 			// Set Height and Width
 			if (float.TryParse(crewMember.LoadBelief(NPCBelief.AvatarHeight), out var loadedHeight))
@@ -311,7 +312,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void UpdateAvatarBeliefs(CrewMember crewMember)
 		{
-			crewMember.UpdateSingleBelief(NPCBelief.AvatarBestSkill, BestSkill);
+			crewMember.UpdateSingleBelief(NPCBelief.AvatarBestSkill, _bestSkill);
 			crewMember.UpdateSingleBelief(NPCBelief.AvatarBodyType, BodyType);
 			crewMember.UpdateSingleBelief(NPCBelief.AvatarEyebrowType, EyebrowType);
 			crewMember.UpdateSingleBelief(NPCBelief.AvatarEyeType, EyeType);

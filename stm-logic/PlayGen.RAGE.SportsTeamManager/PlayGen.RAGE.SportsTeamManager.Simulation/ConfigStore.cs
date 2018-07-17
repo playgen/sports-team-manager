@@ -37,7 +37,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Platform = platform;
 			ConfigValues = new Dictionary<ConfigKey, float>();
 			var configText = Templates.ResourceManager.GetString("config");
-			ConfigValues = JsonConvert.DeserializeObject<Dictionary<ConfigKey, float>>(configText);
+			var contractResolver = new PrivatePropertyResolver();
+			var settings = new JsonSerializerSettings
+			{
+				ContractResolver = contractResolver
+			};
+			ConfigValues = JsonConvert.DeserializeObject<Dictionary<ConfigKey, float>>(configText, settings);
 			foreach (var key in (ConfigKey[])Enum.GetValues(typeof(ConfigKey)))
 			{
 				if (!ConfigValues.ContainsKey(key))

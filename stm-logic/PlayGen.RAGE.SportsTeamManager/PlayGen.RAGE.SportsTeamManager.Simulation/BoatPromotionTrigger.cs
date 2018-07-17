@@ -5,9 +5,9 @@
 	/// </summary>
 	internal class BoatPromotionTrigger
 	{
-		internal string StartType { get; set; }
-		internal string NewType { get; set; }
-		internal int ScoreRequired { get; set; }
-		internal int ScoreMetSinceLast { get; set; }
+		public string StartType { get; set; }
+		public string NewType { get; set; }
+		public int ScoreRequired { get; set; }
+		public int ScoreMetSinceLast { get; set; }
 	}
 }
