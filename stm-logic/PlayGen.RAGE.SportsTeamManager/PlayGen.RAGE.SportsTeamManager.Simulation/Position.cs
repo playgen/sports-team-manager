@@ -9,21 +9,21 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	public enum Position
 	{
 		Null = 0,
-		[RequiredSkills(CrewMemberSkill.Charisma | CrewMemberSkill.Willpower | CrewMemberSkill.Wisdom)]
+		[RequiredSkills(Skill.Charisma | Skill.Willpower | Skill.Wisdom)]
 		Skipper = 1,
-		[RequiredSkills(CrewMemberSkill.Perception | CrewMemberSkill.Quickness)]
+		[RequiredSkills(Skill.Perception | Skill.Quickness)]
 		Helmsman = 2,
-		[RequiredSkills(CrewMemberSkill.Body | CrewMemberSkill.Quickness | CrewMemberSkill.Willpower)]
+		[RequiredSkills(Skill.Body | Skill.Quickness | Skill.Willpower)]
 		MidBowman = 4,
-		[RequiredSkills(CrewMemberSkill.Perception | CrewMemberSkill.Wisdom)]
+		[RequiredSkills(Skill.Perception | Skill.Wisdom)]
 		Navigator = 8,
-		[RequiredSkills(CrewMemberSkill.Body | CrewMemberSkill.Charisma | CrewMemberSkill.Perception)]
+		[RequiredSkills(Skill.Body | Skill.Charisma | Skill.Perception)]
 		Pitman = 16,
-		[RequiredSkills(CrewMemberSkill.Body | CrewMemberSkill.Perception)]
+		[RequiredSkills(Skill.Body | Skill.Perception)]
 		Trimmer = 32,
-		[RequiredSkills(CrewMemberSkill.Body)]
+		[RequiredSkills(Skill.Body)]
 		Grinder = 64,
-		[RequiredSkills(CrewMemberSkill.Perception | CrewMemberSkill.Quickness | CrewMemberSkill.Willpower)]
+		[RequiredSkills(Skill.Perception | Skill.Quickness | Skill.Willpower)]
 		Bowman = 128
 	}
 }

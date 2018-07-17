@@ -10,9 +10,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	internal class PrivatePropertyResolver : DefaultContractResolver
 	{
-		protected override JsonProperty CreateProperty(
-		MemberInfo member,
-		MemberSerialization memberSerialization)
+		protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
 		{
 			var prop = base.CreateProperty(member, memberSerialization);
 

@@ -91,12 +91,12 @@ public static class GameManagement
 
 	public static int StartingCrewEditAllowance => GameManager.GetStartingCrewEditAllowance();
 
-	public static float Value(this ConfigKeys key, CrewMember member = null)
+	public static float Value(this ConfigKey key, CrewMember member = null)
 	{
 		return GameManager.GetConfigValue(key, member);
 	}
 
-	public static bool Affordable(this ConfigKeys key, CrewMember member = null)
+	public static bool Affordable(this ConfigKey key, CrewMember member = null)
 	{
 		return ActionAllowance >= key.Value(member);
 	}

@@ -5,11 +5,11 @@
 	/// </summary>
 	internal class PostSessionEventTrigger
 	{
-		public string EventName { get; set; }
-		public string StartBoatType { get; set; }
-		public string EndBoatType { get; set; }
-		public bool Random { get; set; }
-		public int RaceTrigger { get; set; }
-		public int RepeatEvery { get; set; }
+		internal string EventName { get; set; }
+		internal string StartBoatType { get; set; }
+		internal string EndBoatType { get; set; }
+		internal bool Random { get; set; }
+		internal int RaceTrigger { get; set; }
+		internal int RepeatEvery { get; set; }
 	}
 }

@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Enum of keys used in config
 	/// </summary>
-	public enum ConfigKeys
+	public enum ConfigKey
 	{
 		GoodPositionRating,
 		BadPositionRating,

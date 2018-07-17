@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.RAGE.SportsTeamManager.Simulation", "PlayGen.RAGE.SportsTeamManager.Simulation\PlayGen.RAGE.SportsTeamManager.Simulation.csproj", "{ECD832F3-06F2-40D8-A5AC-83CEDE295FFF}"
 EndProject
@@ -24,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A44B63F7-E25B-4BB4-9761-A8D4A5D7088B}
 	EndGlobalSection
 EndGlobal

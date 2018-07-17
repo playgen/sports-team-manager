@@ -139,7 +139,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				var path = Path.Combine(storageLocation, member.Value.RolePlayCharacter.VoiceName + ".rpc").Replace("\\", "/");
 				iat.RemoveCharacters(new List<int> { iat.GetAllCharacterSources().First(c => c.Source.Replace("\\", "/") == path).Id });
-				if (StaticRandom.Int(0, 100) % ConfigKeys.RecruitChangeChance.GetIntValue() != 0)
+				if (StaticRandom.Int(0, 100) % ConfigKey.RecruitChangeChance.GetIntValue() != 0)
 				{
 					recuritsToRemove.Add(member.Key);
 				}
@@ -150,7 +150,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 
 			//for the amount of empty recruit spaces, create a new recruit
-			var amount = ConfigKeys.RecruitCount.GetIntValue() - Recruits.Count;
+			var amount = ConfigKey.RecruitCount.GetIntValue() - Recruits.Count;
 			for (var i = 0; i < amount; i++)
 			{
 				var position = Boat.GetWeakestPosition(CrewMembers.Values.Concat(Recruits.Values).ToList());
@@ -250,7 +250,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Update the current type of Boat to use for this Team
 		/// </summary>
-		public void PromoteBoat()
+		internal void PromoteBoat()
 		{
 			var extraMembers = Boat.Positions.Count;
 			var newType = PromotionTriggerCheck();
@@ -265,7 +265,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return;
 			}
 			//store that the boat type has been changed
-			Manager.UpdateSingleBelief(NPCBeliefs.BoatType, Boat.Type);
+			Manager.UpdateSingleBelief(NPCBelief.BoatType, Boat.Type);
 			//calculate how many new members should be created
 			extraMembers = (Boat.Positions.Count - extraMembers) * 2;
 			//reset the positions on the boat to those for the new type

@@ -133,11 +133,11 @@ public class RecruitMemberUI : MonoBehaviour
 				_recruitUI[i].transform.FindText("Dialogue Box/Dialogue").text += Localization.Get("EXCLAIMATION_MARK");
 			}
 			_recruitUI[i].transform.FindImage("Dialogue Box/Image").enabled = false;
-			_recruitUI[i].transform.FindText("Cost Image/Text").text = ConfigKeys.RecruitmentCost.Value().ToString(Localization.SpecificSelectedLanguage);
+			_recruitUI[i].transform.FindText("Cost Image/Text").text = ConfigKey.RecruitmentCost.Value().ToString(Localization.SpecificSelectedLanguage);
 			_recruitUI[i].name = recruits[i].Name;
 		}
 		//set-up question text and click handlers
-		var skills = (CrewMemberSkill[])Enum.GetValues(typeof(CrewMemberSkill));
+		var skills = (Skill[])Enum.GetValues(typeof(Skill));
 		for (var i = 0; i < _questionButtons.Length; i++)
 		{
 			if (skills.Length <= i)
@@ -150,7 +150,7 @@ public class RecruitMemberUI : MonoBehaviour
 			_questionButtons[i].interactable = true;
 			var questionText = ("Recruit" + selected).EventString(false);
 			_questionButtons[i].transform.FindText("Text").text = Localization.Get(questionText);
-			_questionButtons[i].transform.FindText("Image/Text").text = ConfigKeys.SendRecruitmentQuestionCost.Value().ToString(Localization.SpecificSelectedLanguage);
+			_questionButtons[i].transform.FindText("Image/Text").text = ConfigKey.SendRecruitmentQuestionCost.Value().ToString(Localization.SpecificSelectedLanguage);
 			_questionButtons[i].onClick.RemoveAllListeners();
 			_questionButtons[i].onClick.AddListener(() => AskQuestion(selected, questionText));
 		}
@@ -166,7 +166,7 @@ public class RecruitMemberUI : MonoBehaviour
 	{
 		_allowanceBar.fillAmount = GameManagement.ActionAllowancePercentage;
 		_allowanceText.text = GameManagement.ActionAllowance.ToString();
-		if (!ConfigKeys.SendRecruitmentQuestionCost.Affordable())
+		if (!ConfigKey.SendRecruitmentQuestionCost.Affordable())
 		{
 			_questionButtons.ToList().ForEach(qb => qb.interactable = false);
 		}
@@ -175,7 +175,7 @@ public class RecruitMemberUI : MonoBehaviour
 	/// <summary>
 	/// Send a question to all recruits and get their replies in response
 	/// </summary>
-	public void AskQuestion(CrewMemberSkill skill, string questionText)
+	public void AskQuestion(Skill skill, string questionText)
 	{
 		SetDialogueText(questionText);
 		_lastQuestion = questionText;
@@ -203,7 +203,7 @@ public class RecruitMemberUI : MonoBehaviour
 			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
 			{ TrackerContextKey.CurrentSession.ToString(), GameManagement.CurrentSessionString },
 			{ TrackerContextKey.QuestionAsked.ToString(), skill.ToString() },
-			{ TrackerContextKey.QuestionCost.ToString(), ConfigKeys.SendRecruitmentQuestionCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKey.QuestionCost.ToString(), ConfigKey.SendRecruitmentQuestionCost.Value().ToString(CultureInfo.InvariantCulture) },
 			{ TrackerContextKey.RaceStartTalkTime.ToString(), GameManagement.StartingActionAllowance.ToString() }
 		}, skill.ToString(), AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
@@ -228,7 +228,7 @@ public class RecruitMemberUI : MonoBehaviour
 		_hireWarningPopUp.Active(true);
 		_hireWarningPopUp.transform.EnableBlocker(() => CloseHireCrewWarning(TrackerTriggerSource.PopUpBlocker.ToString()));
 		//adjust text, button text and button positioning based on context
-		if (!ConfigKeys.RecruitmentCost.Affordable())
+		if (!ConfigKey.RecruitmentCost.Affordable())
 		{
 			_hireWarningText.text = Localization.Get("HIRE_WARNING_NOT_POSSIBLE");
 			_hireWarningAccept.gameObject.Active(false);
@@ -257,7 +257,7 @@ public class RecruitMemberUI : MonoBehaviour
 		{
 			{ TrackerContextKey.CrewMemberName.ToString(), recruit.Name },
 			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKey.HiringCost.ToString(), ConfigKeys.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) }
+			{ TrackerContextKey.HiringCost.ToString(), ConfigKey.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) }
 		}, AccessibleTracker.Accessible.Screen));
 	}
 
@@ -279,7 +279,7 @@ public class RecruitMemberUI : MonoBehaviour
 		{
 			{ TrackerContextKey.CrewMemberName.ToString(), _currentSelected },
 			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKey.HiringCost.ToString(), ConfigKeys.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKey.HiringCost.ToString(), ConfigKey.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
 			{ TrackerContextKey.TriggerUI.ToString(), source }
 		}, AccessibleTracker.Accessible.Screen));
 		_currentSelected = string.Empty;
@@ -298,7 +298,7 @@ public class RecruitMemberUI : MonoBehaviour
 		{
 			{ TrackerContextKey.CrewMemberName.ToString(), crewMember.Name },
 			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKey.HiringCost.ToString(), ConfigKeys.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKey.HiringCost.ToString(), ConfigKey.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
 			{ TrackerContextKey.TriggerUI.ToString(), source }
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Hired", true);
@@ -340,7 +340,7 @@ public class RecruitMemberUI : MonoBehaviour
 	private void OnLanguageChange()
 	{
 		SetDialogueText(_lastQuestion ?? "RECRUITMENT_INTRO");
-		if (!ConfigKeys.RecruitmentCost.Affordable())
+		if (!ConfigKey.RecruitmentCost.Affordable())
 		{
 			_hireWarningText.text = Localization.Get("HIRE_WARNING_NOT_POSSIBLE");
 			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("OK");
@@ -350,7 +350,7 @@ public class RecruitMemberUI : MonoBehaviour
 			_hireWarningText.text = Localization.GetAndFormat("HIRE_WARNING_POSSIBLE", false, _currentSelected);
 			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("NO");
 		}
-		var skills = (CrewMemberSkill[])Enum.GetValues(typeof(CrewMemberSkill));
+		var skills = (Skill[])Enum.GetValues(typeof(Skill));
 		for (var i = 0; i < _questionButtons.Length; i++)
 		{
 			var selected = skills[i];

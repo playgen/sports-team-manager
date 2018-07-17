@@ -175,7 +175,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//set up initial values
 			ActionAllowance = GetStartingActionAllowance();
 			CrewEditAllowance = GetStartingCrewEditAllowance();
-			RaceSessionLength = showTutorial ? ConfigKeys.TutorialRaceSessionLength.GetIntValue() : ConfigKeys.RaceSessionLength.GetIntValue();
+			RaceSessionLength = showTutorial ? ConfigKey.TutorialRaceSessionLength.GetIntValue() : ConfigKey.RaceSessionLength.GetIntValue();
 			CurrentRaceSession = 0;
 			ShowTutorial = showTutorial;
 			TutorialStage = 0;
@@ -183,20 +183,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			QuestionnaireCompleted = false;
 			//create manager files and store game attribute details
 			manager.CreateFile(iat, combinedStorageLocation);
-			manager.UpdateSingleBelief(NPCBeliefs.Position, "Manager");
-			manager.UpdateSingleBelief(NPCBeliefs.BoatType, boat.Type);
-			manager.UpdateSingleBelief(NPCBeliefs.ShowTutorial, ShowTutorial);
-			manager.UpdateSingleBelief(NPCBeliefs.QuestionnaireCompleted, QuestionnaireCompleted);
-			manager.UpdateSingleBelief(NPCBeliefs.TutorialStage, TutorialStage);
-			manager.UpdateSingleBelief(NPCBeliefs.Nationality, nation);
-			manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance, ActionAllowance);
-			manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance, CrewEditAllowance);
-			manager.UpdateSingleBelief(NPCBeliefs.TeamColorRedPrimary, teamColorsPrimary[0]);
-			manager.UpdateSingleBelief(NPCBeliefs.TeamColorGreenPrimary, teamColorsPrimary[1]);
-			manager.UpdateSingleBelief(NPCBeliefs.TeamColorBluePrimary, teamColorsPrimary[2]);
-			manager.UpdateSingleBelief(NPCBeliefs.TeamColorRedSecondary, teamColorsSecondary[0]);
-			manager.UpdateSingleBelief(NPCBeliefs.TeamColorGreenSecondary, teamColorsSecondary[1]);
-			manager.UpdateSingleBelief(NPCBeliefs.TeamColorBlueSecondary, teamColorsSecondary[2]);
+			manager.UpdateSingleBelief(NPCBelief.Position, "Manager");
+			manager.UpdateSingleBelief(NPCBelief.BoatType, boat.Type);
+			manager.UpdateSingleBelief(NPCBelief.ShowTutorial, ShowTutorial);
+			manager.UpdateSingleBelief(NPCBelief.QuestionnaireCompleted, QuestionnaireCompleted);
+			manager.UpdateSingleBelief(NPCBelief.TutorialStage, TutorialStage);
+			manager.UpdateSingleBelief(NPCBelief.Nationality, nation);
+			manager.UpdateSingleBelief(NPCBelief.ActionAllowance, ActionAllowance);
+			manager.UpdateSingleBelief(NPCBelief.CrewEditAllowance, CrewEditAllowance);
+			manager.UpdateSingleBelief(NPCBelief.TeamColorRedPrimary, teamColorsPrimary[0]);
+			manager.UpdateSingleBelief(NPCBelief.TeamColorGreenPrimary, teamColorsPrimary[1]);
+			manager.UpdateSingleBelief(NPCBelief.TeamColorBluePrimary, teamColorsPrimary[2]);
+			manager.UpdateSingleBelief(NPCBelief.TeamColorRedSecondary, teamColorsSecondary[0]);
+			manager.UpdateSingleBelief(NPCBelief.TeamColorGreenSecondary, teamColorsSecondary[1]);
+			manager.UpdateSingleBelief(NPCBelief.TeamColorBlueSecondary, teamColorsSecondary[2]);
 			manager.SaveStatus();
 
 			var names = Team.CrewMembers.Keys.ToList();
@@ -306,28 +306,28 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			foreach (var character in characterList)
 			{
 				var rpc = RolePlayCharacterAsset.LoadFromFile(character.Source);
-				var position = rpc.GetBeliefValue(NPCBeliefs.Position.GetDescription());
+				var position = rpc.GetBeliefValue(NPCBelief.Position.Description());
 				nameList.Add(rpc.BodyName);
 				//if this character is the manager, load the game details from this file and set this character as the manager
 				if (position == "Manager")
 				{
 					var person = new Person(rpc);
-					var boat = new Boat(person.LoadBelief(NPCBeliefs.BoatType));
-					var nation = person.LoadBelief(NPCBeliefs.Nationality);
-					ShowTutorial = bool.Parse(person.LoadBelief(NPCBeliefs.ShowTutorial));
-					TutorialStage = Convert.ToInt32(person.LoadBelief(NPCBeliefs.TutorialStage));
+					var boat = new Boat(person.LoadBelief(NPCBelief.BoatType));
+					var nation = person.LoadBelief(NPCBelief.Nationality);
+					ShowTutorial = bool.Parse(person.LoadBelief(NPCBelief.ShowTutorial));
+					TutorialStage = Convert.ToInt32(person.LoadBelief(NPCBelief.TutorialStage));
 					_customTutorialAttributes = new Dictionary<int, Dictionary<string, string>>();
-					QuestionnaireCompleted = bool.Parse(person.LoadBelief(NPCBeliefs.QuestionnaireCompleted) ?? "false");
+					QuestionnaireCompleted = bool.Parse(person.LoadBelief(NPCBelief.QuestionnaireCompleted) ?? "false");
 					Team = new Team(iat, storageLocation, iat.ScenarioName, nation, boat);
 					if (boat.Type == "Finish")
 					{
 						Team.Finished = true;
 					}
-					ActionAllowance = Convert.ToInt32(person.LoadBelief(NPCBeliefs.ActionAllowance));
-					CrewEditAllowance = Convert.ToInt32(person.LoadBelief(NPCBeliefs.CrewEditAllowance));
-					RaceSessionLength = ShowTutorial ? ConfigKeys.TutorialRaceSessionLength.GetIntValue() : ConfigKeys.RaceSessionLength.GetIntValue();
-					Team.TeamColorsPrimary = new Color(Convert.ToInt32(person.LoadBelief(NPCBeliefs.TeamColorRedPrimary)), Convert.ToInt32(person.LoadBelief(NPCBeliefs.TeamColorGreenPrimary)), Convert.ToInt32(person.LoadBelief(NPCBeliefs.TeamColorBluePrimary)));
-					Team.TeamColorsSecondary = new Color(Convert.ToInt32(person.LoadBelief(NPCBeliefs.TeamColorRedSecondary)), Convert.ToInt32(person.LoadBelief(NPCBeliefs.TeamColorGreenSecondary)), Convert.ToInt32(person.LoadBelief(NPCBeliefs.TeamColorBlueSecondary)));
+					ActionAllowance = Convert.ToInt32(person.LoadBelief(NPCBelief.ActionAllowance));
+					CrewEditAllowance = Convert.ToInt32(person.LoadBelief(NPCBelief.CrewEditAllowance));
+					RaceSessionLength = ShowTutorial ? ConfigKey.TutorialRaceSessionLength.GetIntValue() : ConfigKey.RaceSessionLength.GetIntValue();
+					Team.TeamColorsPrimary = new Color(Convert.ToInt32(person.LoadBelief(NPCBelief.TeamColorRedPrimary)), Convert.ToInt32(person.LoadBelief(NPCBelief.TeamColorGreenPrimary)), Convert.ToInt32(person.LoadBelief(NPCBelief.TeamColorBluePrimary)));
+					Team.TeamColorsSecondary = new Color(Convert.ToInt32(person.LoadBelief(NPCBelief.TeamColorRedSecondary)), Convert.ToInt32(person.LoadBelief(NPCBelief.TeamColorGreenSecondary)), Convert.ToInt32(person.LoadBelief(NPCBelief.TeamColorBlueSecondary)));
 					Team.Manager = person;
 					continue;
 				}
@@ -533,8 +533,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Team.HistoricSessionNumber.Add(CurrentRaceSession);
 			if (CurrentRaceSession == 0)
 			{
-				Team.TickCrewMembers(ConfigKeys.TicksPerSession.GetIntValue(), false);
-				EventController.SelectPostRaceEvents(Team, ConfigKeys.EventChance.GetIntValue());
+				Team.TickCrewMembers(ConfigKey.TicksPerSession.GetIntValue(), false);
+				EventController.SelectPostRaceEvents(Team, ConfigKey.EventChance.GetIntValue());
 				Team.ConfirmChanges();
 				ResetAllowances();
 			}
@@ -559,8 +559,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		{
 			ActionAllowance = GetStartingActionAllowance();
 			CrewEditAllowance = GetStartingCrewEditAllowance();
-			Team.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance, ActionAllowance);
-			Team.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance, CrewEditAllowance);
+			Team.Manager.UpdateSingleBelief(NPCBelief.ActionAllowance, ActionAllowance);
+			Team.Manager.UpdateSingleBelief(NPCBelief.CrewEditAllowance, CrewEditAllowance);
 			Team.Manager.SaveStatus();
 		}
 
@@ -574,7 +574,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return;
 			}
 			ActionAllowance -= cost;
-			Team.Manager.UpdateSingleBelief(NPCBeliefs.ActionAllowance, ActionAllowance);
+			Team.Manager.UpdateSingleBelief(NPCBelief.ActionAllowance, ActionAllowance);
 		}
 
 		/// <summary>
@@ -586,7 +586,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				return 0;
 			}
-			return ConfigKeys.DefaultActionAllowance.GetIntValue() + (ConfigKeys.ActionAllowancePerPosition.GetIntValue() * Team.Boat.Positions.Count);
+			return ConfigKey.DefaultActionAllowance.GetIntValue() + (ConfigKey.ActionAllowancePerPosition.GetIntValue() * Team.Boat.Positions.Count);
 		}
 
 		/// <summary>
@@ -595,7 +595,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private void DeductCrewEditAllowance()
 		{
 			CrewEditAllowance--;
-			Team.Manager.UpdateSingleBelief(NPCBeliefs.CrewEditAllowance, CrewEditAllowance);
+			Team.Manager.UpdateSingleBelief(NPCBelief.CrewEditAllowance, CrewEditAllowance);
 		}
 
 		/// <summary>
@@ -607,7 +607,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				return 0;
 			}
-			return ConfigKeys.CrewEditAllowancePerPosition.GetIntValue() * Team.Boat.Positions.Count;
+			return ConfigKey.CrewEditAllowancePerPosition.GetIntValue() * Team.Boat.Positions.Count;
 		}
 
 		/// <summary>
@@ -616,7 +616,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void AddRecruit(CrewMember member)
 		{
 			//if the player is able to take this action
-			var cost = ConfigKeys.RecruitmentCost.GetIntValue();
+			var cost = ConfigKey.RecruitmentCost.GetIntValue();
 			if (cost <= ActionAllowance && CrewEditAllowance > 0 && Team.CanAddToCrew())
 			{
 				Team.AddRecruit(member);
@@ -631,7 +631,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public void RetireCrewMember(CrewMember crewMember)
 		{
-			var cost = ConfigKeys.FiringCost.GetIntValue();
+			var cost = ConfigKey.FiringCost.GetIntValue();
 			if (cost <= ActionAllowance && CrewEditAllowance > 0 && Team.CanRemoveFromCrew())
 			{
 				Team.RetireCrew(crewMember);
@@ -646,7 +646,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public List<string> SendMeetingEvent(string eventName, CrewMember member)
 		{
-			var cost = (int)GetConfigValue((ConfigKeys)Enum.Parse(typeof(ConfigKeys), eventName + "Cost"), member);
+			var cost = (int)GetConfigValue((ConfigKey)Enum.Parse(typeof(ConfigKey), eventName + "Cost"), member);
 			if (cost <= ActionAllowance)
 			{
 				var reply = EventController.SendMeetingEvent(eventName, member, Team);
@@ -660,11 +660,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the value from the config
 		/// </summary>
-		public float GetConfigValue(ConfigKeys eventKey, CrewMember member = null)
+		public float GetConfigValue(ConfigKey eventKey, CrewMember member = null)
 		{
-			if (eventKey == ConfigKeys.StatRevealCost && member != null)
+			if (eventKey == ConfigKey.StatRevealCost && member != null)
 			{
-				return (int)(member.RevealedSkills.Count(s => s.Value != 0) * GetConfigValue(ConfigKeys.StatRevealCost)) + (member.RevealedSkills.All(s => s.Value != 0) ? 0 : 1);
+				return (int)(member.RevealedSkills.Count(s => s.Value != 0) * GetConfigValue(ConfigKey.StatRevealCost)) + (member.RevealedSkills.All(s => s.Value != 0) ? 0 : 1);
 			}
 			return eventKey.GetValue();
 		}
@@ -672,9 +672,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send an event to the EventController that'll be triggered for all recruits
 		/// </summary>
-		public Dictionary<CrewMember, string> SendRecruitMembersEvent(CrewMemberSkill skill, List<CrewMember> members)
+		public Dictionary<CrewMember, string> SendRecruitMembersEvent(Skill skill, List<CrewMember> members)
 		{
-			var cost = ConfigKeys.SendRecruitmentQuestionCost.GetIntValue();
+			var cost = ConfigKey.SendRecruitmentQuestionCost.GetIntValue();
 			if (cost <= ActionAllowance)
 			{
 				DeductCost(cost);
@@ -714,13 +714,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public void SaveTutorialProgress(int saveIndex, bool finished = false)
 		{
 			var stageToSave = saveIndex;
-			Team.Manager.UpdateSingleBelief(NPCBeliefs.TutorialStage, stageToSave);
+			Team.Manager.UpdateSingleBelief(NPCBelief.TutorialStage, stageToSave);
 			TutorialStage++;
 			if (finished)
 			{
 				ShowTutorial = false;
-				RaceSessionLength = ConfigKeys.RaceSessionLength.GetIntValue();
-				Team.Manager.UpdateSingleBelief(NPCBeliefs.ShowTutorial, ShowTutorial);
+				RaceSessionLength = ConfigKey.RaceSessionLength.GetIntValue();
+				Team.Manager.UpdateSingleBelief(NPCBelief.ShowTutorial, ShowTutorial);
 				_customTutorialAttributes.Clear();
 			}
 			Team.Manager.SaveStatus();
@@ -736,7 +736,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				Team.Manager.UpdateSingleBelief($"QuestionnaireMeaning({result.Key})", result.Value);
 			}
 			QuestionnaireCompleted = true;
-			Team.Manager.UpdateSingleBelief(NPCBeliefs.QuestionnaireCompleted, QuestionnaireCompleted);
+			Team.Manager.UpdateSingleBelief(NPCBelief.QuestionnaireCompleted, QuestionnaireCompleted);
 			Team.Manager.SaveStatus();
 		}
 

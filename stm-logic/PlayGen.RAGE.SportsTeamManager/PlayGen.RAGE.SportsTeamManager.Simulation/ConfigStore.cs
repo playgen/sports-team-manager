@@ -20,7 +20,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	internal class ConfigStore
 	{
-		internal static Dictionary<ConfigKeys, float> ConfigValues { get; set; }
+		internal static Dictionary<ConfigKey, float> ConfigValues { get; set; }
 		internal static Dictionary<string, List<Position>> BoatTypes { get; set; }
 		internal static GameConfig GameConfig { get; set; }
 		internal static NameConfig NameConfig { get; set; }
@@ -35,10 +35,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		internal ConfigStore(Platform platform = Platform.Windows)
 		{
 			Platform = platform;
-			ConfigValues = new Dictionary<ConfigKeys, float>();
+			ConfigValues = new Dictionary<ConfigKey, float>();
 			var configText = Templates.ResourceManager.GetString("config");
-			ConfigValues = JsonConvert.DeserializeObject<Dictionary<ConfigKeys, float>>(configText);
-			foreach (var key in (ConfigKeys[])Enum.GetValues(typeof(ConfigKeys)))
+			ConfigValues = JsonConvert.DeserializeObject<Dictionary<ConfigKey, float>>(configText);
+			foreach (var key in (ConfigKey[])Enum.GetValues(typeof(ConfigKey)))
 			{
 				if (!ConfigValues.ContainsKey(key))
 				{
@@ -71,19 +71,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					AssetManager.Instance.Bridge = new BaseBridge();
 					break;
 			}
-		}
-	}
-
-	internal static class ConfigExtensions
-	{
-		internal static float GetValue(this ConfigKeys key)
-		{
-			return ConfigStore.ConfigValues[key];
-		}
-
-		internal static int GetIntValue(this ConfigKeys key)
-		{
-			return (int)ConfigStore.ConfigValues[key];
 		}
 	}
 }

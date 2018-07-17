@@ -83,7 +83,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Send recruitment dialogue, getting their responses in return
 		/// </summary>
-		internal Dictionary<CrewMember, string> SendRecruitEvent(CrewMemberSkill skill, List<CrewMember> members)
+		internal Dictionary<CrewMember, string> SendRecruitEvent(Skill skill, List<CrewMember> members)
 		{
 			return members.ToDictionary(m => m, m => m.SendRecruitEvent(iat, skill) ?? string.Empty);
 		}
@@ -110,9 +110,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				//remove those already involved in a running event to not be selected
 				foreach (var crewMember in allCrewInitial.Values)
 				{
-					var expectsPos = crewMember.LoadBelief(NPCBeliefs.ExpectedPosition);
-					var expectsPosAfter = crewMember.LoadBelief(NPCBeliefs.ExpectedPosition);
-					var expectsSelection = crewMember.LoadBelief(NPCBeliefs.ExpectedSelection);
+					var expectsPos = crewMember.LoadBelief(NPCBelief.ExpectedPosition);
+					var expectsPosAfter = crewMember.LoadBelief(NPCBelief.ExpectedPosition);
+					var expectsSelection = crewMember.LoadBelief(NPCBelief.ExpectedSelection);
 					if (expectsPos == null && expectsPosAfter == null && expectsSelection == null)
 					{
 						allCrew.Add(crewMember.Name, crewMember);

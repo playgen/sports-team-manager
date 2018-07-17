@@ -1,30 +1,47 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
-namespace System
+namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	public static class ObjectExtensions
 	{
 		private static readonly MethodInfo CloneMethod = typeof(object).GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance);
 		private static readonly ReferenceEqualityComparer ReferenceEqualityComparer = new ReferenceEqualityComparer();
 
-		public static bool IsPrimitive(this Type type)
+		internal static bool IsPrimitive(this Type type)
 		{
-			if (type == typeof(string)) return true;
-			return (type.IsValueType & type.IsPrimitive);
+			if (type == typeof(string))
+			{
+				return true;
+			}
+			return type.IsValueType & type.IsPrimitive;
 		}
 
-		public static object Copy(this object originalObject)
+		internal static object Copy(this object originalObject)
 		{
 			return InternalCopy(originalObject, new Dictionary<object, object>(ReferenceEqualityComparer));
 		}
+
 		private static object InternalCopy(object originalObject, IDictionary<object, object> visited)
 		{
-			if (originalObject == null) return null;
+			if (originalObject == null)
+			{
+				return null;
+			}
 			var typeToReflect = originalObject.GetType();
-			if (IsPrimitive(typeToReflect)) return originalObject;
-			if (visited.ContainsKey(originalObject)) return visited[originalObject];
-			if (typeof(Delegate).IsAssignableFrom(typeToReflect)) return originalObject;
+			if (IsPrimitive(typeToReflect))
+			{
+				return originalObject;
+			}
+			if (visited.ContainsKey(originalObject))
+			{
+				return visited[originalObject];
+			}
+			if (typeof(Delegate).IsAssignableFrom(typeToReflect))
+			{
+				return originalObject;
+			}
 			var cloneObject = CloneMethod.Invoke(originalObject, null);
 			visited.Add(originalObject, cloneObject);
 			CopyFields(originalObject, visited, cloneObject, typeToReflect);
@@ -48,19 +65,23 @@ namespace System
 		{
 			foreach (var fieldInfo in typeToReflect.GetFields(bindingFlags))
 			{
-				if (IsPrimitive(fieldInfo.FieldType)) continue;
+				if (IsPrimitive(fieldInfo.FieldType))
+				{
+					continue;
+				}
 				var originalFieldValue = fieldInfo.GetValue(originalObject);
 				var clonedFieldValue = InternalCopy(originalFieldValue, visited);
 				fieldInfo.SetValue(cloneObject, clonedFieldValue);
 			}
 		}
-		public static T Copy<T>(this T original)
+
+		internal static T Copy<T>(this T original)
 		{
 			return (T)Copy((object)original);
 		}
 	}
 
-	public class ReferenceEqualityComparer : EqualityComparer<object>
+	internal class ReferenceEqualityComparer : EqualityComparer<object>
 	{
 		public override bool Equals(object x, object y)
 		{

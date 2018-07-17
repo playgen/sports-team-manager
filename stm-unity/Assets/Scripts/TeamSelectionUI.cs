@@ -140,7 +140,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		if (_recruitButtons.Count > 0)
 		{
-			if (ConfigKeys.RecruitmentCost.Affordable() && GameManagement.CrewEditAllowed && GameManagement.Team.CanAddToCrew())
+			if (ConfigKey.RecruitmentCost.Affordable() && GameManagement.CrewEditAllowed && GameManagement.Team.CanAddToCrew())
 			{
 				if (!_recruitButtons[0].IsInteractable())
 				{
@@ -158,7 +158,7 @@ public class TeamSelectionUI : MonoBehaviour {
 					foreach (var b in _recruitButtons)
 					{
 						b.interactable = false;
-						if (!ConfigKeys.RecruitmentCost.Affordable())
+						if (!ConfigKey.RecruitmentCost.Affordable())
 						{
 							FeedbackHoverOver(b.transform, "RECRUIT_BUTTON_HOVER_ALLOWANCE");
 						}
@@ -420,34 +420,34 @@ public class TeamSelectionUI : MonoBehaviour {
 				currentMembers.ForEach(c => c.SetSortValue(string.Empty));
 				break;
 			case 1:
-				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Charisma]).ToList();
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[Skill.Charisma]).ToList();
 				sortType = "Charisma";
-				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[CrewMemberSkill.Charisma] == 0 ? "?" : c.CrewMember.RevealedSkills[CrewMemberSkill.Charisma].ToString()));
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[Skill.Charisma] == 0 ? "?" : c.CrewMember.RevealedSkills[Skill.Charisma].ToString()));
 				break;
 			case 2:
-				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Perception]).ToList();
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[Skill.Perception]).ToList();
 				sortType = "Perception";
-				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[CrewMemberSkill.Perception] == 0 ? "?" : c.CrewMember.RevealedSkills[CrewMemberSkill.Perception].ToString()));
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[Skill.Perception] == 0 ? "?" : c.CrewMember.RevealedSkills[Skill.Perception].ToString()));
 				break;
 			case 3:
-				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Quickness]).ToList();
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[Skill.Quickness]).ToList();
 				sortType = "Quickness";
-				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[CrewMemberSkill.Quickness] == 0 ? "?" : c.CrewMember.RevealedSkills[CrewMemberSkill.Quickness].ToString()));
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[Skill.Quickness] == 0 ? "?" : c.CrewMember.RevealedSkills[Skill.Quickness].ToString()));
 				break;
 			case 4:
-				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Body]).ToList();
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[Skill.Body]).ToList();
 				sortType = "Strength";
-				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[CrewMemberSkill.Body] == 0 ? "?" : c.CrewMember.RevealedSkills[CrewMemberSkill.Body].ToString()));
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[Skill.Body] == 0 ? "?" : c.CrewMember.RevealedSkills[Skill.Body].ToString()));
 				break;
 			case 5:
-				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Willpower]).ToList();
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[Skill.Willpower]).ToList();
 				sortType = "Willpower";
-				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[CrewMemberSkill.Willpower] == 0 ? "?" : c.CrewMember.RevealedSkills[CrewMemberSkill.Willpower].ToString()));
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[Skill.Willpower] == 0 ? "?" : c.CrewMember.RevealedSkills[Skill.Willpower].ToString()));
 				break;
 			case 6:
-				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[CrewMemberSkill.Wisdom]).ToList();
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedSkills[Skill.Wisdom]).ToList();
 				sortType = "Wisdom";
-				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[CrewMemberSkill.Wisdom] == 0 ? "?" : c.CrewMember.RevealedSkills[CrewMemberSkill.Wisdom].ToString()));
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RevealedSkills[Skill.Wisdom] == 0 ? "?" : c.CrewMember.RevealedSkills[Skill.Wisdom].ToString()));
 				break;
 			case 7:
 				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.GetMood()).ToList();

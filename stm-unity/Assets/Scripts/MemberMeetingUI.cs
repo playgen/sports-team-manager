@@ -164,9 +164,9 @@ public class MemberMeetingUI : MonoBehaviour
 		//set stat bar fill amount (foreground) and sprite (background)
 		for (var i = 0; i < _barForegrounds.Length; i++)
 		{
-			_barForegrounds[i].fillAmount = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] * 0.1f;
-			_barForegrounds[i].transform.parent.FindImage("Hidden Image").enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] == 0;
-			_barForegrounds[i].transform.parent.FindImage("Skill Image").enabled = _currentMember.RevealedSkills[(CrewMemberSkill)Mathf.Pow(2, i)] != 0;
+			_barForegrounds[i].fillAmount = _currentMember.RevealedSkills[(Skill)Mathf.Pow(2, i)] * 0.1f;
+			_barForegrounds[i].transform.parent.FindImage("Hidden Image").enabled = _currentMember.RevealedSkills[(Skill)Mathf.Pow(2, i)] == 0;
+			_barForegrounds[i].transform.parent.FindImage("Skill Image").enabled = _currentMember.RevealedSkills[(Skill)Mathf.Pow(2, i)] != 0;
 		}
 		//set default starting dialogue
 		_dialogueText.text = Localization.Get("MEETING_INTRO_" + _currentMember.GetSocialImportanceRating(GameManagement.Manager.Name));
@@ -176,20 +176,20 @@ public class MemberMeetingUI : MonoBehaviour
 		_opinionPositiveQuestion.text = "OpinionRevealPositive".EventString();
 		_opinionNegativeQuestion.text = "OpinionRevealNegative".EventString();
 		//set the cost shown for each question and for firing
-		_statQuestion.transform.parent.FindText("Image/Text").text = ConfigKeys.StatRevealCost.Value(_currentMember).ToString(Localization.SpecificSelectedLanguage);
-		_roleQuestion.transform.parent.FindText("Image/Text").text = ConfigKeys.RoleRevealCost.Value().ToString(Localization.SpecificSelectedLanguage);
-		_opinionPositiveQuestion.transform.parent.FindText("Image/Text").text = ConfigKeys.OpinionRevealPositiveCost.Value().ToString(Localization.SpecificSelectedLanguage);
-		_opinionNegativeQuestion.transform.parent.FindText("Image/Text").text = ConfigKeys.OpinionRevealNegativeCost.Value().ToString(Localization.SpecificSelectedLanguage);
-		_fireButton.transform.FindText("Image/Text").text = ConfigKeys.FiringCost.Value().ToString(Localization.SpecificSelectedLanguage);
+		_statQuestion.transform.parent.FindText("Image/Text").text = ConfigKey.StatRevealCost.Value(_currentMember).ToString(Localization.SpecificSelectedLanguage);
+		_roleQuestion.transform.parent.FindText("Image/Text").text = ConfigKey.RoleRevealCost.Value().ToString(Localization.SpecificSelectedLanguage);
+		_opinionPositiveQuestion.transform.parent.FindText("Image/Text").text = ConfigKey.OpinionRevealPositiveCost.Value().ToString(Localization.SpecificSelectedLanguage);
+		_opinionNegativeQuestion.transform.parent.FindText("Image/Text").text = ConfigKey.OpinionRevealNegativeCost.Value().ToString(Localization.SpecificSelectedLanguage);
+		_fireButton.transform.FindText("Image/Text").text = ConfigKey.FiringCost.Value().ToString(Localization.SpecificSelectedLanguage);
 		//set if each button is interactable according to if the player has enough allowance
-		_fireButton.interactable = ConfigKeys.FiringCost.Affordable() && GameManagement.CrewEditAllowed && GameManagement.Team.CanRemoveFromCrew() && !GameManagement.ShowTutorial;
-		_statQuestion.GetComponentInParent<Button>().interactable = ConfigKeys.StatRevealCost.Affordable(_currentMember);
-		_roleQuestion.GetComponentInParent<Button>().interactable = ConfigKeys.RoleRevealCost.Affordable();
-		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = ConfigKeys.OpinionRevealPositiveCost.Affordable();
-		_opinionNegativeQuestion.GetComponentInParent<Button>().interactable = ConfigKeys.OpinionRevealNegativeCost.Affordable();
+		_fireButton.interactable = ConfigKey.FiringCost.Affordable() && GameManagement.CrewEditAllowed && GameManagement.Team.CanRemoveFromCrew() && !GameManagement.ShowTutorial;
+		_statQuestion.GetComponentInParent<Button>().interactable = ConfigKey.StatRevealCost.Affordable(_currentMember);
+		_roleQuestion.GetComponentInParent<Button>().interactable = ConfigKey.RoleRevealCost.Affordable();
+		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = ConfigKey.OpinionRevealPositiveCost.Affordable();
+		_opinionNegativeQuestion.GetComponentInParent<Button>().interactable = ConfigKey.OpinionRevealNegativeCost.Affordable();
 		if (!_fireButton.interactable)
 		{
-			if (!ConfigKeys.FiringCost.Affordable())
+			if (!ConfigKey.FiringCost.Affordable())
 			{
 				FeedbackHoverOver(_fireButton.transform, "FIRE_BUTTON_HOVER_ALLOWANCE");
 			}
@@ -337,7 +337,7 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKey.CurrentSession.ToString(), GameManagement.CurrentSessionString },
 			{ TrackerContextKey.CrewMemberPosition.ToString(), _currentMember.BoatPosition().ToString() },
 			{ TrackerContextKey.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
-			{ TrackerContextKey.FiringCost.ToString(), ConfigKeys.FiringCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKey.FiringCost.ToString(), ConfigKey.FiringCost.Value().ToString(CultureInfo.InvariantCulture) },
 			{ TrackerContextKey.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(_currentMember.Name) }
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Fired", true);

@@ -583,9 +583,9 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 					randomCrewFirst[split[0]] = (randomCrewFirst.ContainsKey(split[0]) ? randomCrewFirst[split[0]] : 0) + 1;
 					randomCrewLast[split[1]] = (randomCrewLast.ContainsKey(split[1]) ? randomCrewLast[split[1]] : 0) + 1;
 					randomCrewAge[newCrewMember.Age] = (randomCrewAge.ContainsKey(newCrewMember.Age) ? randomCrewAge[newCrewMember.Age] : 0) + 1;
-					randomCrewBody[newCrewMember.Skills[CrewMemberSkill.Body]] = (randomCrewBody.ContainsKey(newCrewMember.Skills[CrewMemberSkill.Body]) ? randomCrewBody[newCrewMember.Skills[CrewMemberSkill.Body]] : 0) + 1;
-					randomCrewPerception[newCrewMember.Skills[CrewMemberSkill.Perception]] = (randomCrewPerception.ContainsKey(newCrewMember.Skills[CrewMemberSkill.Perception]) ? randomCrewPerception[newCrewMember.Skills[CrewMemberSkill.Perception]] : 0) + 1;
-					randomCrewWisdom[newCrewMember.Skills[CrewMemberSkill.Wisdom]] = (randomCrewWisdom.ContainsKey(newCrewMember.Skills[CrewMemberSkill.Wisdom]) ? randomCrewWisdom[newCrewMember.Skills[CrewMemberSkill.Wisdom]] : 0) + 1;
+					randomCrewBody[newCrewMember.Skills[Skill.Body]] = (randomCrewBody.ContainsKey(newCrewMember.Skills[Skill.Body]) ? randomCrewBody[newCrewMember.Skills[Skill.Body]] : 0) + 1;
+					randomCrewPerception[newCrewMember.Skills[Skill.Perception]] = (randomCrewPerception.ContainsKey(newCrewMember.Skills[Skill.Perception]) ? randomCrewPerception[newCrewMember.Skills[Skill.Perception]] : 0) + 1;
+					randomCrewWisdom[newCrewMember.Skills[Skill.Wisdom]] = (randomCrewWisdom.ContainsKey(newCrewMember.Skills[Skill.Wisdom]) ? randomCrewWisdom[newCrewMember.Skills[Skill.Wisdom]] : 0) + 1;
 
 					var newCrew = newCrewMember.Avatar;
 
@@ -624,14 +624,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				Name = "Skippy Skip",
 				Age = 35,
 				Gender = "M",
-				Skills = new Dictionary<CrewMemberSkill, int>()
+				Skills = new Dictionary<Skill, int>()
 				{
-					{CrewMemberSkill.Body, 2},
-					{CrewMemberSkill.Charisma, 10},
-					{CrewMemberSkill.Perception, 2},
-					{CrewMemberSkill.Quickness, 2},
-					{CrewMemberSkill.Wisdom, 10},
-					{CrewMemberSkill.Willpower, 10}
+					{Skill.Body, 2},
+					{Skill.Charisma, 10},
+					{Skill.Perception, 2},
+					{Skill.Quickness, 2},
+					{Skill.Wisdom, 10},
+					{Skill.Willpower, 10}
 				}
 			},
 			new CrewMember 
@@ -639,14 +639,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				Name = "Wise Nav",
 				Age = 28,
 				Gender = "M",
-				Skills = new Dictionary<CrewMemberSkill, int>()
+				Skills = new Dictionary<Skill, int>()
 				{
-					{CrewMemberSkill.Body, 2},
-					{CrewMemberSkill.Charisma, 2},
-					{CrewMemberSkill.Perception, 10},
-					{CrewMemberSkill.Quickness, 2},
-					{CrewMemberSkill.Wisdom, 10},
-					{CrewMemberSkill.Willpower, 2}
+					{Skill.Body, 2},
+					{Skill.Charisma, 2},
+					{Skill.Perception, 10},
+					{Skill.Quickness, 2},
+					{Skill.Wisdom, 10},
+					{Skill.Willpower, 2}
 				}
 			},
 			new CrewMember
@@ -654,14 +654,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				Name = "Dim Wobnam",
 				Age = 19,
 				Gender = "M",
-				Skills = new Dictionary<CrewMemberSkill, int>()
+				Skills = new Dictionary<Skill, int>()
 				{
-					{CrewMemberSkill.Body, 10},
-					{CrewMemberSkill.Charisma, 2},
-					{CrewMemberSkill.Perception, 2},
-					{CrewMemberSkill.Quickness, 10},
-					{CrewMemberSkill.Wisdom, 2},
-					{CrewMemberSkill.Willpower, 10}
+					{Skill.Body, 10},
+					{Skill.Charisma, 2},
+					{Skill.Perception, 2},
+					{Skill.Quickness, 10},
+					{Skill.Wisdom, 2},
+					{Skill.Willpower, 10}
 				}
 			},
 			new CrewMember
@@ -669,14 +669,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				Name = "Rav Age",
 				Age = 25,
 				Gender = "M",
-				Skills = new Dictionary<CrewMemberSkill, int>()
+				Skills = new Dictionary<Skill, int>()
 				{
-					{CrewMemberSkill.Body, 5},
-					{CrewMemberSkill.Charisma, 5},
-					{CrewMemberSkill.Perception, 5},
-					{CrewMemberSkill.Quickness, 5},
-					{CrewMemberSkill.Wisdom, 5},
-					{CrewMemberSkill.Willpower, 5}
+					{Skill.Body, 5},
+					{Skill.Charisma, 5},
+					{Skill.Perception, 5},
+					{Skill.Quickness, 5},
+					{Skill.Wisdom, 5},
+					{Skill.Willpower, 5}
 				}
 			},
 			new CrewMember
@@ -684,14 +684,14 @@ namespace PlayGen.RAGE.SportsTeamManager.UnitTest
 				Name = "Nick Pony",
 				Age = 32,
 				Gender = "M",
-				Skills = new Dictionary<CrewMemberSkill, int>()
+				Skills = new Dictionary<Skill, int>()
 				{
-					{CrewMemberSkill.Body, 7},
-					{CrewMemberSkill.Charisma, 7},
-					{CrewMemberSkill.Perception, 7},
-					{CrewMemberSkill.Quickness, 3},
-					{CrewMemberSkill.Wisdom, 3},
-					{CrewMemberSkill.Willpower, 3}
+					{Skill.Body, 7},
+					{Skill.Charisma, 7},
+					{Skill.Perception, 7},
+					{Skill.Quickness, 3},
+					{Skill.Wisdom, 3},
+					{Skill.Willpower, 3}
 				}
 			}
 			};

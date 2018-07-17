@@ -208,16 +208,11 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	private void SetIconProperties(Avatar a)
 	{
-		Debug.Log(_spriteParent != null);
 		if (!_spriteParent)
 		{
 			return;
 		}
-		Debug.Log(a.IsMale);
-		Debug.Log(_spriteParent.offsetMax.x + " " +  -1f * (_spriteParent.rect.height / _maleOffsetPercent));
-		_spriteParent.offsetMax = a.IsMale ? 
-			new Vector2(_spriteParent.offsetMax.x, -1f * (_spriteParent.rect.height / _maleOffsetPercent)) 
-			: new Vector2(_spriteParent.offsetMax.x, 0);
+		_spriteParent.offsetMax = a.IsMale ? new Vector2(_spriteParent.offsetMax.x, -1f * (_spriteParent.rect.height / _maleOffsetPercent)) : new Vector2(_spriteParent.offsetMax.x, 0);
 	}
 
 	/// <summary>

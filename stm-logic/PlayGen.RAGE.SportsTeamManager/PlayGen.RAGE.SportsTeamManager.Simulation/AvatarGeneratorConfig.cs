@@ -7,20 +7,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 	/// </summary>
 	internal class AvatarGeneratorConfig
 	{
-		public bool RandomHairColor { get; set; }
-		public int HairTypesCount { get; set; }
-		public int OutfitTypesCount { get; set; }
+		internal bool RandomHairColor { get; set; }
+		internal int HairTypesCount { get; set; }
+		internal int OutfitTypesCount { get; set; }
 
-		public Color LightSkinColor { get; private set; }
-		public Color MediumSkinColor { get; private set; }
-		public Color DarkSkinColor { get; private set; }
-		public Color BlondeHairColor { get; private set; }
-		public Color BrownHairColor { get; private set; }
-		public Color BlackHairColor { get; private set; }
-		public Color GingerHairColor { get; private set; }
-		public Color BlueEyeColor { get; private set; }
-		public Color BrownEyeColor { get; private set; }
-		public Color GreenEyeColor { get; private set; }
+		internal Color LightSkinColor { get; set; }
+		internal Color MediumSkinColor { get; set; }
+		internal Color DarkSkinColor { get; set; }
+		internal Color BlondeHairColor { get; set; }
+		internal Color BrownHairColor { get; set; }
+		internal Color BlackHairColor { get; set; }
+		internal Color GingerHairColor { get; set; }
+		internal Color BlueEyeColor { get; set; }
+		internal Color BrownEyeColor { get; set; }
+		internal Color GreenEyeColor { get; set; }
 
 		//get and return values for avatar configs
 		internal AvatarGeneratorConfig GetConfig()
