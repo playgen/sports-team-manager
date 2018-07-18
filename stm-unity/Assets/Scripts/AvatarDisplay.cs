@@ -38,12 +38,13 @@ public class AvatarDisplay : MonoBehaviour
 
 	private readonly string _avatarImagePrefix = "AvatarSprites";
 	private string _avatarPrefix => "IconMask/" + _avatarImagePrefix;
+
 	/// <summary>
 	/// Load all avatar sprites from resources.
 	/// </summary>
 	public static void LoadSprites()
 	{
-		avatarSprites = Resources.LoadAll(string.Empty, typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name, a => a, StringComparer.OrdinalIgnoreCase);
+		avatarSprites = Resources.LoadAll("Avatars", typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name, a => a, StringComparer.OrdinalIgnoreCase);
 	}
 
 	public static Color MoodColor(string value)

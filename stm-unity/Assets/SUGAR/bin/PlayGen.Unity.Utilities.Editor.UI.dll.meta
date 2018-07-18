@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 865dc2f38cf7d6c4e86e4ef44317a095
-timeCreated: 1529672770
-licenseType: Free
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -122,7 +120,7 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: AnyCPU
-        DontProcess: False
+        DontProcess: false
         PlaceholderPath: 
         SDK: AnySDK
         ScriptingBackend: AnyScriptingBackend
@@ -131,6 +129,7 @@ PluginImporter:
     second:
       enabled: 0
       settings:
+        AddToEmbeddedBinaries: false
         CompileFlags: 
         FrameworkDependencies: 
   - first:

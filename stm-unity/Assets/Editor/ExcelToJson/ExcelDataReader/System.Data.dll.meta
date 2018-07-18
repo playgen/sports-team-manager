@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 5c47bd148e54551458959a3113ecabd5
-timeCreated: 1526984222
-licenseType: Free
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -10,6 +8,23 @@ PluginImporter:
   isPreloaded: 0
   isOverridable: 0
   platformData:
+  - first:
+      '': Any
+    second:
+      enabled: 0
+      settings:
+        Exclude Android: 1
+        Exclude Editor: 0
+        Exclude Linux: 1
+        Exclude Linux64: 1
+        Exclude LinuxUniversal: 1
+        Exclude OSXUniversal: 1
+        Exclude WebGL: 1
+        Exclude Win: 1
+        Exclude Win64: 1
+        Exclude WindowsStoreApps: 1
+        Exclude iOS: 1
+        Exclude tvOS: 1
   - first:
       Any: 
     second:

@@ -284,7 +284,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		//set size and position
 		transform.SetParent(positionTransform, false);
 		transform.RectTransform().sizeDelta = positionTransform.sizeDelta;
-		transform.RectTransform().anchoredPosition = new Vector2(0, -transform.RectTransform().sizeDelta.y * 0.5f);
+		transform.position = positionTransform.position;
 		GameManagement.Boat.AssignCrewMember(currentPosition, CrewMember);
 		positionComp.LinkCrew(this);
 		if (!swap)
