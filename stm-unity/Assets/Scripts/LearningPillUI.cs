@@ -36,13 +36,13 @@ public class LearningPillUI : MonoBehaviour {
 	public void SetHelp(List<string> keys, bool further = false)
 	{
 		_currentHelp = keys[0];
-		var tip = GameManagement.EventController.GetHelpText(keys[0].Split('_')[1]);
+		var tip = keys[0].Split('_')[1].HelpText();
 		keys.RemoveAt(0);
 		_furtherHelp = keys;
 		if (tip != null)
 		{
 			transform.EnableBlocker();
-			StartCoroutine(Animate(true, further, Localization.Get(tip)));
+			StartCoroutine(Animate(true, further, tip));
 		}
 	}
 
@@ -119,9 +119,9 @@ public class LearningPillUI : MonoBehaviour {
 
 	private void OnLanguageChange()
 	{
-		if (_currentHelp != null) {
-			var tip = GameManagement.EventController.GetHelpText(_currentHelp);
-			_helpText.text = Localization.Get(tip);
+		if (_currentHelp != null)
+		{
+			_helpText.text = _currentHelp.HelpText();
 		}
 	}
 }

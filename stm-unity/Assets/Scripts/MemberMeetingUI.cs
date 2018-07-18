@@ -112,7 +112,7 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKey.CrewMemberPosition.ToString(), crewMember.BoatPosition().ToString() },
 			{ TrackerContextKey.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
 			{ TrackerContextKey.TriggerUI.ToString(), source },
-			{ TrackerContextKey.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(crewMember.Name) }
+			{ TrackerContextKey.CrewMemberSessionsInTeam.ToString(), crewMember.SessionsIncluded().ToString() }
 		}, AccessibleTracker.Accessible.Screen));
 		SUGARManager.GameData.Send("View Crew Member Screen", crewMember.Name);
 		Display();
@@ -182,7 +182,7 @@ public class MemberMeetingUI : MonoBehaviour
 		_opinionNegativeQuestion.transform.parent.FindText("Image/Text").text = ConfigKey.OpinionRevealNegativeCost.Value().ToString(Localization.SpecificSelectedLanguage);
 		_fireButton.transform.FindText("Image/Text").text = ConfigKey.FiringCost.Value().ToString(Localization.SpecificSelectedLanguage);
 		//set if each button is interactable according to if the player has enough allowance
-		_fireButton.interactable = ConfigKey.FiringCost.Affordable() && GameManagement.CrewEditAllowed && GameManagement.Team.CanRemoveFromCrew() && !GameManagement.ShowTutorial;
+		_fireButton.interactable = ConfigKey.FiringCost.Affordable() && GameManagement.CrewEditAllowed && GameManagement.CanRemoveFromCrew && !GameManagement.ShowTutorial;
 		_statQuestion.GetComponentInParent<Button>().interactable = ConfigKey.StatRevealCost.Affordable(_currentMember);
 		_roleQuestion.GetComponentInParent<Button>().interactable = ConfigKey.RoleRevealCost.Affordable();
 		_opinionPositiveQuestion.GetComponentInParent<Button>().interactable = ConfigKey.OpinionRevealPositiveCost.Affordable();
@@ -197,7 +197,7 @@ public class MemberMeetingUI : MonoBehaviour
 			{
 				FeedbackHoverOver(_fireButton.transform, Localization.GetAndFormat("FIRE_BUTTON_HOVER_LIMIT", false, GameManagement.StartingCrewEditAllowance));
 			}
-			else if (GameManagement.Team.CanRemoveFromCrew())
+			else if (GameManagement.CanRemoveFromCrew)
 			{
 				FeedbackHoverOver(_fireButton.transform, "FIRE_BUTTON_HOVER_CREW_LIMIT");
 			}
@@ -280,11 +280,6 @@ public class MemberMeetingUI : MonoBehaviour
 		SUGARManager.GameData.Send("Meeting Question Asked", questionType);
 	}
 
-	private string MemberTimeInTeam(string memberName)
-	{
-		return GameManagement.LineUpHistory.Count(boat => boat.PositionCrew.Values.ToList().Any(c => c.Name == memberName)).ToString();
-	}
-
 	/// <summary>
 	/// Triggered by button. Display warning to player that they are about to fire a character.
 	/// </summary>
@@ -297,7 +292,7 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKey.CurrentSession.ToString(), GameManagement.CurrentSessionString },
 			{ TrackerContextKey.CrewMemberPosition.ToString(), _currentMember.BoatPosition().ToString() },
 			{ TrackerContextKey.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
-			{ TrackerContextKey.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(_currentMember.Name) }
+			{ TrackerContextKey.CrewMemberSessionsInTeam.ToString(), _currentMember.SessionsIncluded().ToString() }
 		}, AccessibleTracker.Accessible.Screen));
 		_fireWarningPopUp.Active(true);
 		_fireWarningPopUp.transform.EnableSmallBlocker(() => CloseFireCrewWarning(TrackerTriggerSource.PopUpBlocker.ToString()));
@@ -338,7 +333,7 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKey.CrewMemberPosition.ToString(), _currentMember.BoatPosition().ToString() },
 			{ TrackerContextKey.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
 			{ TrackerContextKey.FiringCost.ToString(), ConfigKey.FiringCost.Value().ToString(CultureInfo.InvariantCulture) },
-			{ TrackerContextKey.CrewMemberSessionsInTeam.ToString(), MemberTimeInTeam(_currentMember.Name) }
+			{ TrackerContextKey.CrewMemberSessionsInTeam.ToString(), _currentMember.SessionsIncluded().ToString() }
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Fired", true);
 		GameManagement.GameManager.RetireCrewMember(_currentMember);

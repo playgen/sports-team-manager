@@ -37,7 +37,7 @@ public class TrackerEventSender {
 	{
 		try
 		{
-			if (!GameManagement.PlatformSettings.Rage)
+			if (!GameManagement.RageMode)
 			{
 				return;
 			}
@@ -142,7 +142,7 @@ public class TrackerEventSender {
 					if (trace.Params.Length > 0 && trace.Params[0].GetType() == typeof(CompletableTracker.Completable))
 					{
 						Tracker.T.Completable.Completed(trace.Key, (CompletableTracker.Completable)Enum.Parse(typeof(CompletableTracker.Completable), trace.Params[0].ToString()));
-						SendEvaluationEvent(TrackerEvalautionEvent.GameFlow, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.PieceType, trace.Key }, { TrackerEvaluationKey.PieceId, GameManagement.LineUpHistory.Count.ToString() }, { TrackerEvaluationKey.PieceCompleted, "success" } });
+						SendEvaluationEvent(TrackerEvalautionEvent.GameFlow, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.PieceType, trace.Key }, { TrackerEvaluationKey.PieceId, GameManagement.SessionCount.ToString() }, { TrackerEvaluationKey.PieceCompleted, "success" } });
 						break;
 					}
 					Tracker.T.Completable.Completed(trace.Key);
@@ -181,7 +181,7 @@ public class TrackerEventSender {
 	{
 		try
 		{
-			if (!GameManagement.PlatformSettings.Rage)
+			if (!GameManagement.RageMode)
 			{
 				return;
 			}

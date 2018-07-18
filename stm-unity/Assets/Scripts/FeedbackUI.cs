@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 using PlayGen.Unity.Utilities.Localization;
 using System.Linq;
 using System.Security.Cryptography;
@@ -16,8 +18,8 @@ using UnityEngine.Video;
 /// <summary>
 /// Contains all logic relating to displaying post-game feedback
 /// </summary>
-public class FeedbackUI : MonoBehaviour {
-
+public class FeedbackUI : MonoBehaviour
+{
 	private int _pageNumber;
 	[SerializeField]
 	private GameObject[] _pages;
@@ -36,6 +38,8 @@ public class FeedbackUI : MonoBehaviour {
 	[SerializeField]
 	private Text _finalResultText;
 
+	private Dictionary<string, float> _managementStyles = new Dictionary<string, float>();
+
 	private void OnEnable()
 	{
 		Localization.LanguageChange += OnLanguageChange;
@@ -47,6 +51,7 @@ public class FeedbackUI : MonoBehaviour {
 			page.Active(false);
 		}
 		ChangePage(0);
+		_managementStyles = GameManagement.GameManager.GatherManagementStyles();
 		DrawGraph();
 		GetPrevalentLeadershipStyle();
 		SetPrevalentStyleText();
@@ -95,8 +100,7 @@ public class FeedbackUI : MonoBehaviour {
 			Destroy(child.gameObject);
 		}
 
-		var styles = GameManagement.GameManager.GatherManagementStyles();
-		foreach (var style in styles)
+		foreach (var style in _managementStyles)
 		{
 			var styleObj = Instantiate(_selectionPrefab, _selectionGraph.transform, false);
 			styleObj.transform.FindText("Style").text = Localization.Get(style.Key);
@@ -130,12 +134,11 @@ public class FeedbackUI : MonoBehaviour {
 	/// </summary>
 	private void SetPrevalentStyleText()
 	{
-		var styles = GameManagement.GameManager.GatherManagementStyles();
 		foreach (var button in _managementButtons)
 		{
-			if (styles.ContainsKey(button.name.ToLower()))
+			if (_managementStyles.ContainsKey(button.name.ToLower()))
 			{
-				button.transform.FindText("Percentage").text = (Mathf.Round(styles[button.name.ToLower()] * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
+				button.transform.FindText("Percentage").text = (Mathf.Round(_managementStyles[button.name.ToLower()] * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
 			}
 			else
 			{
@@ -164,13 +167,12 @@ public class FeedbackUI : MonoBehaviour {
 	{
 		if (SUGARManager.CurrentUser != null)
 		{
-			var url = "username=" + SUGARManager.CurrentUser.Name; 
-			var styles = GameManagement.GameManager.GatherManagementStyles();
-			url += "&par1=" + Mathf.Round(styles["competing"] * 100000f);
-			url += "&par2=" + Mathf.Round(styles["avoiding"] * 100000f);
-			url += "&par3=" + Mathf.Round(styles["accommodating"] * 100000f);
-			url += "&par4=" + Mathf.Round(styles["collaborating"] * 100000f);
-			url += "&par5=" + Mathf.Round(styles["compromising"] * 100000f);
+			var url = "username=" + SUGARManager.CurrentUser.Name;
+			url += "&par1=" + Mathf.Round(_managementStyles["competing"] * 100000f);
+			url += "&par2=" + Mathf.Round(_managementStyles["avoiding"] * 100000f);
+			url += "&par3=" + Mathf.Round(_managementStyles["accommodating"] * 100000f);
+			url += "&par4=" + Mathf.Round(_managementStyles["collaborating"] * 100000f);
+			url += "&par5=" + Mathf.Round(_managementStyles["compromising"] * 100000f);
 			url += "&tstamp=" + DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
 			var intputBytes = Encoding.UTF8.GetBytes(url + "&hash=XWtliQQYvsK91kHGcEBg0FrRyOnj6h8w0DNtf5HrmYPSI8eq1fnryIFfLsai");
 			var hashProvider = new SHA1Managed();
@@ -191,7 +193,8 @@ public class FeedbackUI : MonoBehaviour {
 
 	private void DoBestFit()
 	{
-		if (_selectionGraph.activeSelf) {
+		if (_selectionGraph.activeSelf)
+		{
 			LayoutRebuilder.ForceRebuildLayoutImmediate(_selectionGraph.RectTransform());
 			var text = _selectionGraph.GetComponentsInChildren<Text>().ToList();
 			text.Where(t => t.name == "Style" || t.name == "Percentage").BestFit();

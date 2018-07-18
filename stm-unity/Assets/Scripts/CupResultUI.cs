@@ -31,7 +31,7 @@ public class CupResultUI : MonoBehaviour
 	{
 		_cupPosition = 0;
 		gameObject.Active(true);
-		if (GameManagement.PlatformSettings.Rage)
+		if (GameManagement.RageMode)
 		{
 			transform.EnableBlocker();
 		}
@@ -68,12 +68,12 @@ public class CupResultUI : MonoBehaviour
 		{
 			{ TrackerContextKey.CupFinishingPosition.ToString(), _cupPosition.ToString() }
 		}, AccessibleTracker.Accessible.Screen));
-		if (!GameManagement.PlatformSettings.Rage)
+		if (!GameManagement.RageMode)
 		{
 			transform.FindText("Outro").text = "Thanks for playing!";
 		}
-		transform.FindObject("Questionnaire").Active(GameManagement.PlatformSettings.Rage);
-		transform.FindObject("OK").Active(!GameManagement.PlatformSettings.Rage);
+		transform.FindObject("Questionnaire").Active(GameManagement.RageMode);
+		transform.FindObject("OK").Active(!GameManagement.RageMode);
 	}
 
 	/// <summary>
@@ -90,7 +90,7 @@ public class CupResultUI : MonoBehaviour
 				{ TrackerContextKey.CupFinishingPosition.ToString(), _cupPosition.ToString() },
 				{ TrackerContextKey.TriggerUI.ToString(), source }
 			}, AccessibleTracker.Accessible.Screen));
-			if (GameManagement.PlatformSettings.Rage)
+			if (GameManagement.RageMode)
 			{
 				UIStateManager.StaticGoToQuestionnaire();
 			}

@@ -93,10 +93,10 @@ public class TeamSelectionUI : MonoBehaviour {
 		BestFit.ResolutionChange += DoBestFit;
 		if (!GameManagement.SeasonOngoing)
 		{
-			if (GameManagement.PlatformSettings.Rage)
+			if (GameManagement.RageMode)
 			{
 				_feedbackButton.onClick.RemoveAllListeners();
-				if (GameManagement.GameManager.QuestionnaireCompleted)
+				if (GameManagement.QuestionnaireCompleted)
 				{
 					_feedbackButton.onClick.AddListener(TriggerFeedback);
 					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
@@ -140,7 +140,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		if (_recruitButtons.Count > 0)
 		{
-			if (ConfigKey.RecruitmentCost.Affordable() && GameManagement.CrewEditAllowed && GameManagement.Team.CanAddToCrew())
+			if (ConfigKey.RecruitmentCost.Affordable() && GameManagement.CrewEditAllowed && GameManagement.CanAddToCrew)
 			{
 				if (!_recruitButtons[0].IsInteractable())
 				{
@@ -230,14 +230,13 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			Destroy(child.gameObject);
 		}
-		var raceHistory = GameManagement.Team.RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList();
 		for (var i = 0; i < GameManagement.GameManager.GetTotalRaceCount(); i++)
 		{
 			var resultObj = Instantiate(_resultPrefab, _ongoingResultContainer.transform, false);
 			resultObj.GetComponentInChildren<Text>().color = UnityEngine.Color.black;
-			if (raceHistory.Count > i)
+			if (GameManagement.RaceScorePositionCountPairs.Count > i)
 			{
-				var position = GameManagement.GetRacePosition(raceHistory[i].Key, raceHistory[i].Value);
+				var position = GameManagement.GetRacePosition(GameManagement.RaceScorePositionCountPairs[i].Key, GameManagement.RaceScorePositionCountPairs[i].Value);
 				resultObj.GetComponent<Image>().fillAmount = 1;
 				resultObj.GetComponentInChildren<Text>().gameObject.AddComponent<TextLocalization>();
 				resultObj.GetComponentInChildren<TextLocalization>().Key = "POSITION_" + position;
@@ -245,7 +244,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			}
 			else
 			{
-				resultObj.GetComponent<Image>().fillAmount = raceHistory.Count == i ? (GameManagement.CurrentRaceSession - 1) / (float)GameManagement.RaceSessionLength : 0;
+				resultObj.GetComponent<Image>().fillAmount = GameManagement.RaceScorePositionCountPairs.Count == i ? (GameManagement.CurrentRaceSession - 1) / (float)GameManagement.RaceSessionLength : 0;
 				resultObj.GetComponentInChildren<Text>().text = string.Empty;
 			}
 		}
@@ -268,10 +267,10 @@ public class TeamSelectionUI : MonoBehaviour {
 		else
 		{
 			stageIcon.gameObject.Active(false);
-			if (GameManagement.PlatformSettings.Rage)
+			if (GameManagement.RageMode)
 			{
 				_feedbackButton.onClick.RemoveAllListeners();
-				if (GameManagement.GameManager.QuestionnaireCompleted)
+				if (GameManagement.QuestionnaireCompleted)
 				{
 					_feedbackButton.onClick.AddListener(TriggerFeedback);
 					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
@@ -286,7 +285,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			{
 				Destroy(child.gameObject);
 			}
-			foreach (var result in GameManagement.Team.RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList())
+			foreach (var result in GameManagement.RaceScorePositionCountPairs)
 			{
 				var position = GameManagement.GetRacePosition(result.Key, result.Value);
 				var resultObj = Instantiate(_resultPrefab, _resultContainer.transform, false);
@@ -299,7 +298,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			_finalPlacementText.GetComponent<TextLocalization>().Set();
 
 			_endRace.gameObject.Active(true);
-			_feedbackButton.gameObject.Active(GameManagement.PlatformSettings.Rage);
+			_feedbackButton.gameObject.Active(GameManagement.RageMode);
 			_boatMain.gameObject.Active(false);
 		}
 		_boatMain.transform.FindText("Stage Number").text = GameManagement.IsRace || !GameManagement.SeasonOngoing ? string.Empty : GameManagement.CurrentRaceSession.ToString();
@@ -465,14 +464,14 @@ public class TeamSelectionUI : MonoBehaviour {
 				currentMembers.ForEach(c => c.SetSortValue(string.Empty));
 				break;
 			case 10:
-				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => GameManagement.LineUpHistory.Count(boat => boat.PositionCrew.Values.Any(cm => c.CrewMember.Name == cm.Name))).ToList();
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.SessionsIncluded()).ToList();
 				sortType = "Races";
-				currentMembers.ForEach(c => c.SetSortValue(GameManagement.LineUpHistory.Count(boat => boat.PositionCrew.Values.Any(cm => c.CrewMember.Name == cm.Name)).ToString()));
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.SessionsIncluded().ToString()));
 				break;
 			case 11:
-				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => GameManagement.Team.RaceHistory.Count(boat => boat.PositionCrew.Values.Any(cm => c.CrewMember.Name == cm.Name) && GameManagement.GetRacePosition(boat.Score, boat.Positions.Count) == 1)).ToList();
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RacesWon()).ToList();
 				sortType = "Wins";
-				currentMembers.ForEach(c => c.SetSortValue(GameManagement.Team.RaceHistory.Count(boat => boat.PositionCrew.Values.Any(cm => c.CrewMember.Name == cm.Name) && GameManagement.GetRacePosition(boat.Score, boat.Positions.Count) == 1).ToString()));
+				currentMembers.ForEach(c => c.SetSortValue(c.CrewMember.RacesWon().ToString()));
 				break;
 			case 12:
 				sortedCrewMembers = sortedCrewMembers.OrderBy(c => c.CrewMember.Age).ToList();
@@ -535,7 +534,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// </summary>
 	public List<KeyValuePair<Boat, KeyValuePair<int, int>>> GetLineUpHistory(int skipAmount, int takeAmount)
 	{
-		var boats = GameManagement.LineUpHistory.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
+		var boats = GameManagement.ReverseLineUpHistory.Skip(skipAmount).Take(takeAmount).ToList();
 		var offsets = GameManagement.Team.HistoricTimeOffset.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
 		var sessions = GameManagement.Team.HistoricSessionNumber.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
 		var boatOffsets = new List<KeyValuePair<Boat, KeyValuePair<int, int>>>();
@@ -561,7 +560,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		oldBoat.transform.FindText("Stage Number").text = isRace ? string.Empty : stageNumber.ToString();
 		//get selection mistakes for this line-up and set-up feedback UI
 		var mistakeList = boat.GetAssignmentMistakes(3);
-		if (GameManagement.ShowTutorial && GameManagement.LineUpHistory.Count == 1)
+		if (GameManagement.ShowTutorial && GameManagement.SessionCount == 1)
 		{
 			mistakeList = _mistakeIcons.Select(m => m.Name).Where(m => m != "Correct" && m != "Hidden").OrderBy(m => Guid.NewGuid()).Take(2).ToList();
 			mistakeList.Add("Hidden");
@@ -671,7 +670,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	public void ChangeVisibleBoats(int amount)
 	{
 		_previousScrollValue += amount;
-		_previousScrollValue = _previousScrollValue > GameManagement.LineUpHistory.Count - 4 ? GameManagement.LineUpHistory.Count - 4 : _previousScrollValue;
+		_previousScrollValue = _previousScrollValue > GameManagement.SessionCount - 4 ? GameManagement.SessionCount - 4 : _previousScrollValue;
 		_previousScrollValue = _previousScrollValue < 0 ? 0 : _previousScrollValue;
 		var setUpCount = 0;
 		foreach (var boat in GetLineUpHistory(_previousScrollValue, 4))
@@ -686,7 +685,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			_boatPool[i].Active(false);
 		}
 		_boatPagingButtons[1].Active(_previousScrollValue > 0);
-		_boatPagingButtons[0].Active(_previousScrollValue < GameManagement.LineUpHistory.Count - 4);
+		_boatPagingButtons[0].Active(_previousScrollValue < GameManagement.SessionCount - 4);
 	}
 
 	/// <summary>
@@ -712,7 +711,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			if (success)
 			{
 				ResetScrollbar();
-				GetResult(GameManagement.CurrentRaceSession - 1 == 0, GameManagement.LineUpHistory.Last(), offset, _raceButton.GetComponentInChildren<Text>(), true);
+				GetResult(GameManagement.CurrentRaceSession - 1 == 0, GameManagement.PreviousSession, offset, _raceButton.GetComponentInChildren<Text>(), true);
 				//set-up next boat
 				CreateNewBoat();
 				UIManagement.Tutorial.ShareEvent(GetType().Name, "ConfirmLineUp");
@@ -838,7 +837,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			var newString = string.Join(",", boat.Positions.Select(pos => pos.ToString()).ToArray());
 			TrackerEventSender.SendEvent(new TraceEvent("RaceResult", TrackerAsset.Verb.Completed, new Dictionary<string, string>
 			{
-				{ TrackerContextKey.RaceNumber.ToString(), (GameManagement.Team.RaceHistory.Count + 1).ToString() },
+				{ TrackerContextKey.RaceNumber.ToString(), (GameManagement.RaceCount + 1).ToString() },
 				{ TrackerContextKey.CurrentSession.ToString(), (isRace ? GameManagement.RaceSessionLength : GameManagement.CurrentRaceSession - 1) + "/" + GameManagement.RaceSessionLength },
 				{ TrackerContextKey.SessionType.ToString(), isRace ? "Race" : "Practice" },
 				{ TrackerContextKey.BoatLayout.ToString(), newString },
@@ -854,9 +853,9 @@ public class TeamSelectionUI : MonoBehaviour {
 			SUGARManager.GameData.Send("Race Session Score Average", (float)boat.Score / boat.Positions.Count);
 			SUGARManager.GameData.Send("Race Session Perfect Selection Average", boat.PerfectSelections / boat.Positions.Count);
 			SUGARManager.GameData.Send("Race Time", (long)timeTaken.TotalSeconds);
-			SUGARManager.GameData.Send("Post Race Crew Average Mood", GameManagement.Team.AverageTeamMood());
-			SUGARManager.GameData.Send("Post Race Crew Average Manager Opinion", GameManagement.Team.AverageTeamManagerOpinion());
-			SUGARManager.GameData.Send("Post Race Crew Average Opinion", GameManagement.Team.AverageTeamOpinion());
+			SUGARManager.GameData.Send("Post Race Crew Average Mood", GameManagement.AverageTeamMood);
+			SUGARManager.GameData.Send("Post Race Crew Average Manager Opinion", GameManagement.AverageTeamManagerOpinion);
+			SUGARManager.GameData.Send("Post Race Crew Average Opinion", GameManagement.AverageTeamOpinion);
 			SUGARManager.GameData.Send("Post Race Boat Average Mood", GameManagement.Boat.AverageBoatMood());
 			SUGARManager.GameData.Send("Post Race Boat Average Manager Opinion", GameManagement.Boat.AverageBoatManagerOpinion(GameManagement.Manager.Name));
 			SUGARManager.GameData.Send("Post Race Boat Average Opinion", GameManagement.Boat.AverageBoatOpinion());
@@ -877,7 +876,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	{
 		if (result > 0)
 		{
-			var progressBar = _ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count - 1);
+			var progressBar = _ongoingResultContainer.transform.GetChild(GameManagement.RaceCount - 1);
 			progressBar.GetComponent<Image>().fillAmount = 1;
 			var positionText = progressBar.GetComponentInChildren<Text>().gameObject.AddComponent<TextLocalization>();
 			positionText.Key = "POSITION_" + result;
@@ -885,7 +884,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 		else
 		{
-			_ongoingResultContainer.transform.GetChild(GameManagement.Team.RaceHistory.Count).GetComponent<Image>().fillAmount = (GameManagement.CurrentRaceSession - 1) / (float)GameManagement.RaceSessionLength;
+			_ongoingResultContainer.transform.GetChild(GameManagement.RaceCount).GetComponent<Image>().fillAmount = (GameManagement.CurrentRaceSession - 1) / (float)GameManagement.RaceSessionLength;
 		}
 	}
 
@@ -898,7 +897,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			_quitBlocker.onClick.Invoke();
 		}
-		else if (GameManagement.PlatformSettings.Rage && !SUGARManager.Unity.AnyActiveUI)
+		else if (GameManagement.RageMode && !SUGARManager.Unity.AnyActiveUI)
 		{
 			FindObjectOfType<ScreenSideUI>().DisplayQuitWarning();
 		}
@@ -914,9 +913,9 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 		_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat(GameManagement.IsRace ? "RACE_BUTTON_RACE" : "RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
 		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE");
-		if (_endRace.gameObject.activeSelf && GameManagement.PlatformSettings.Rage)
+		if (_endRace.gameObject.activeSelf && GameManagement.RageMode)
 		{
-			_feedbackButton.GetComponentInChildren<Text>(true).text = Localization.Get(GameManagement.GameManager.QuestionnaireCompleted ? "FEEDBACK_BUTTON" : "CONFLICT_QUESTIONNAIRE");
+			_feedbackButton.GetComponentInChildren<Text>(true).text = Localization.Get(GameManagement.QuestionnaireCompleted ? "FEEDBACK_BUTTON" : "CONFLICT_QUESTIONNAIRE");
 		}
 		DoBestFit();
 	}
@@ -942,7 +941,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// </summary>
 	private void TriggerQuestionnaire()
 	{
-		if (GameManagement.PlatformSettings.Rage)
+		if (GameManagement.RageMode)
 		{
 			UIStateManager.StaticGoToQuestionnaire();
 		}
@@ -953,7 +952,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// </summary>
 	private void TriggerFeedback()
 	{
-		if (GameManagement.PlatformSettings.Rage)
+		if (GameManagement.RageMode)
 		{
 			UIStateManager.StaticGoToFeedback();
 		}

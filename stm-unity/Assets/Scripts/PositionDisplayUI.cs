@@ -113,7 +113,7 @@ public class PositionDisplayUI : MonoBehaviour
 			{ TrackerContextKey.PositionCrewMember.ToString(), currentCrew != null ? currentCrew.Name : "None" },
 			{ TrackerContextKey.BoatLayout.ToString(), boatPos },
 			{ TrackerContextKey.TriggerUI.ToString(), source },
-			{ TrackerContextKey.SessionsIncludedCount.ToString(), (GameManagement.LineUpHistory.Sum(boat => boat.Positions.Count(pos => pos == position)) + 1).ToString() }
+			{ TrackerContextKey.SessionsIncludedCount.ToString(), position.SessionsIncluded().ToString() }
 		}, AccessibleTracker.Accessible.Screen));
 		SUGARManager.GameData.Send("View Position Screen", position.ToString());
 		gameObject.Active(true);

@@ -110,7 +110,7 @@ public class PreRaceConfirmUI : MonoBehaviour
 	/// </summary>
 	public void ConfirmLineUpCheck()
 	{
-		var lastRace = GameManagement.LineUpHistory.LastOrDefault();
+		var lastRace = GameManagement.PreviousSession;
 		if (lastRace != null)
 		{
 			if (GameManagement.Positions.SequenceEqual(lastRace.Positions) && GameManagement.PositionCrew.OrderBy(pc => pc.Key.ToString()).SequenceEqual(lastRace.PositionCrew.OrderBy(pc => pc.Key.ToString())))

@@ -61,22 +61,22 @@ public class NewGameUI : MonoBehaviour {
 
 	private void OnEnable()
 	{
-		if (GameManagement.PlatformSettings.DemoMode)
+		if (GameManagement.DemoMode)
 		{
 			_tutorialToggle.transform.Parent().Active(false);
 			_tutorialToggle.isOn = false;
 			if (string.IsNullOrEmpty(_boatName.text))
 			{
-				_boatName.text = "Demo" + (GameManagement.GameNames.Count + 1);
+				_boatName.text = "Demo" + (GameManagement.GameCount + 1);
 			}
 			if (string.IsNullOrEmpty(_managerName.text))
 			{
-				_managerName.text = "Demo" + (GameManagement.GameNames.Count + 1);
+				_managerName.text = "Demo" + (GameManagement.GameCount + 1);
 			}
 		}
 		else
 		{
-			_tutorialToggle.enabled = GameManagement.GameNames.Count != 0;
+			_tutorialToggle.enabled = GameManagement.GameCount != 0;
 			_tutorialToggle.isOn = true;
 		}
 		BestFit.ResolutionChange += DoBestFit;

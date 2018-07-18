@@ -88,7 +88,7 @@ public class PostRaceEventUI : MonoBehaviour
 			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
 			{
 				{ TrackerContextKey.TriggerUI.ToString(), source },
-				{ TrackerContextKey.EventID.ToString(), GameManagement.EventController.GetEventKeys().First(_lastStates[0].Split('_')[1].StartsWith) }
+				{ TrackerContextKey.EventID.ToString(), _lastStates[0].EventKeys() }
 			}, AccessibleTracker.Accessible.Screen));
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
@@ -145,9 +145,9 @@ public class PostRaceEventUI : MonoBehaviour
 			if (replyDict.Values.Sum(dos => dos.Count) == 0)
 			{
 				SetBlockerOnClick();
-				SUGARManager.GameData.Send("Post Event Crew Average Mood", GameManagement.Team.AverageTeamMood());
-				SUGARManager.GameData.Send("Post Event Crew Average Manager Opinion", GameManagement.Team.AverageTeamManagerOpinion());
-				SUGARManager.GameData.Send("Post Event Crew Average Opinion", GameManagement.Team.AverageTeamOpinion());
+				SUGARManager.GameData.Send("Post Event Crew Average Mood", GameManagement.AverageTeamMood);
+				SUGARManager.GameData.Send("Post Event Crew Average Manager Opinion", GameManagement.AverageTeamManagerOpinion);
+				SUGARManager.GameData.Send("Post Event Crew Average Opinion", GameManagement.AverageTeamOpinion);
 			}
 			else
 			{
@@ -205,18 +205,18 @@ public class PostRaceEventUI : MonoBehaviour
 				{
 					{ TrackerContextKey.DialogueID.ToString(), res.Dialogue.NextState },
 					{ TrackerContextKey.DialogueStyle.ToString(), res.Dialogue.Meaning.Split('_').First(sp => !string.IsNullOrEmpty(sp)) },
-					{ TrackerContextKey.EventID.ToString(), GameManagement.EventController.GetEventKeys().First(res.Dialogue.NextState.Split('_')[1].StartsWith) }
+					{ TrackerContextKey.EventID.ToString(), res.Dialogue.NextState.EventKeys() }
 				}, res.Dialogue.NextState, AlternativeTracker.Alternative.Dialog));
 				SUGARManager.GameData.Send("Post Race Event Reply", res.Dialogue.NextState);
 			}
-			var beforeValues = GameManagement.Team.AverageTeamMood() + GameManagement.Team.AverageTeamManagerOpinion() + GameManagement.Team.AverageTeamOpinion();
+			var beforeValues = GameManagement.AverageTeamMood + GameManagement.AverageTeamManagerOpinion + GameManagement.AverageTeamOpinion;
 			foreach (var res in _selectedResponses)
 			{
 				ReactionSoundControl.PlaySound(res.Value.Dialogue.Meaning.Split('_').First(sp => !string.IsNullOrEmpty(sp)), res.Key.Gender == "Male", res.Key.Avatar.Height, res.Key.Avatar.Weight);
 			}
 			var replies = GameManagement.GameManager.SendPostRaceEvent(_selectedResponses.Values.ToList());
 			_selectedResponses = null;
-			var afterValues = GameManagement.Team.AverageTeamMood() + GameManagement.Team.AverageTeamManagerOpinion() + GameManagement.Team.AverageTeamOpinion();
+			var afterValues = GameManagement.AverageTeamMood + GameManagement.AverageTeamManagerOpinion + GameManagement.AverageTeamOpinion;
 			if (afterValues > beforeValues)
 			{
 				SUGARManager.GameData.Send("Post Race Event Positive Outcome", true);

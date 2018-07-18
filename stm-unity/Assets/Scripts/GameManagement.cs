@@ -35,7 +35,13 @@ public static class GameManagement
 
 	public static PlatformSettings PlatformSettings { get; } = (PlatformSettings)Resources.Load("PlatformSettings", typeof(PlatformSettings));
 
+	public static bool RageMode => PlatformSettings.Rage;
+
+	public static bool DemoMode => PlatformSettings.DemoMode;
+
 	public static List<string> GameNames => GameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves"));
+
+	public static int GameCount => GameNames.Count;
 
 	public static Team Team => GameManager.Team;
 
@@ -46,6 +52,18 @@ public static class GameManagement
 	public static int CrewCount => CrewMembers.Count;
 
 	public static List<Boat> LineUpHistory => Team.LineUpHistory;
+
+	public static List<Boat> ReverseLineUpHistory => LineUpHistory.AsEnumerable().Reverse().ToList();
+
+	public static Boat PreviousSession => LineUpHistory.LastOrDefault();
+
+	public static int SessionCount => LineUpHistory.Count;
+
+	public static List<Boat> RaceHistory => Team.RaceHistory;
+
+	public static int RaceCount => RaceHistory.Count;
+
+	public static List<KeyValuePair<int, int>> RaceScorePositionCountPairs => RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList();
 
 	public static Person Manager => Team.Manager;
 
@@ -87,9 +105,21 @@ public static class GameManagement
 
 	public static bool CrewEditAllowed => GameManager.CrewEditAllowance > 0;
 
+	public static bool CanAddToCrew => Team.CanAddToCrew();
+
+	public static bool CanRemoveFromCrew => Team.CanRemoveFromCrew();
+
+	public static float AverageTeamMood => Team.AverageTeamMood();
+
+	public static float AverageTeamManagerOpinion => Team.AverageTeamManagerOpinion();
+
+	public static float AverageTeamOpinion => Team.AverageTeamOpinion();
+
 	public static int StartingActionAllowance => GameManager.GetStartingActionAllowance();
 
 	public static int StartingCrewEditAllowance => GameManager.GetStartingCrewEditAllowance();
+
+	public static bool QuestionnaireCompleted => GameManager.QuestionnaireCompleted;
 
 	public static float Value(this ConfigKey key, CrewMember member = null)
 	{
@@ -107,9 +137,34 @@ public static class GameManagement
 		return localize ? Localization.Get(eventString) : eventString;
 	}
 
+	public static string EventKeys(this string state)
+	{
+		return EventController.GetEventKeys().First(state.Split('_')[1].StartsWith);
+	}
+
+	public static string HelpText(this string key)
+	{
+		return Localization.Get(EventController.GetHelpText(key));
+	}
+
 	public static Position BoatPosition(this CrewMember member)
 	{
 		return Boat.GetCrewMemberPosition(member);
+	}
+
+	public static int RacesWon(this CrewMember member)
+	{
+		return RaceHistory.Count(boat => boat.PositionCrew.Values.Any(cm => member.Name == cm.Name) && GetRacePosition(boat.Score, boat.Positions.Count) == 1);
+	}
+
+	public static int SessionsIncluded(this CrewMember member)
+	{
+		return LineUpHistory.Count(boat => boat.PositionCrew.Values.ToList().Any(c => c.Name == member.Name));
+	}
+
+	public static int SessionsIncluded(this Position position)
+	{
+		return LineUpHistory.Sum(boat => boat.Positions.Count(pos => pos == position)) + (Positions.Contains(position) ? 1 : 0);
 	}
 
 	/// <summary>
@@ -141,7 +196,7 @@ public static class GameManagement
 	public static int GetCupPosition()
 	{
 		var totalScore = 0;
-		var raceResults = Team.RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList();
+		var raceResults = RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList();
 		var racePositions = new List<int>();
 		var finalPosition = 1;
 		var finalPositionLocked = false;

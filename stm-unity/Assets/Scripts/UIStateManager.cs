@@ -55,7 +55,7 @@ public class UIStateManager : MonoBehaviour {
 		UIManagement.Initialize();
 		AvatarDisplay.LoadSprites();
 		BackToMenu();
-		if (GameManagement.PlatformSettings.DemoMode)
+		if (GameManagement.DemoMode)
 		{
 			foreach (Transform child in _mainMenu.transform.Find("Buttons"))
 			{
@@ -63,7 +63,7 @@ public class UIStateManager : MonoBehaviour {
 			}
 			_mainMenu.transform.FindObject("Buttons/New Game").Active(true);
 		}
-		else if (GameManagement.PlatformSettings.Rage)
+		else if (GameManagement.RageMode)
 		{
 			foreach (var obj in GameManagement.PlatformSettings.RageObjects)
 			{
@@ -89,14 +89,14 @@ public class UIStateManager : MonoBehaviour {
 		{
 			_mainMenu.transform.FindObject("Buttons/SUGAR Sign-In").Active(false);
 		}
-		if (GameManagement.PlatformSettings.DemoMode || Application.platform != RuntimePlatform.WindowsPlayer)
+		if (GameManagement.DemoMode || Application.platform != RuntimePlatform.WindowsPlayer)
 		{
 			_mainMenu.transform.FindObject("Buttons/Exit").Active(false);
 		}
 		if (_reload)
 		{
 			Loading.Start();
-			GameManagement.GameManager.LoadGameTask(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.Team.Name, success =>
+			GameManagement.GameManager.LoadGameTask(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.TeamName, success =>
 			{
 				if (success)
 				{
@@ -177,7 +177,7 @@ public class UIStateManager : MonoBehaviour {
 		_feedback.Active(false);
 		_mainMenu.Active(true);
 		DoBestFit();
-		_mainMenu.transform.FindButton("Buttons/Load Game").interactable = GameManagement.GameNames.Count != 0;
+		_mainMenu.transform.FindButton("Buttons/Load Game").interactable = GameManagement.GameCount != 0;
 	}
 
 	/// <summary>
@@ -271,7 +271,7 @@ public class UIStateManager : MonoBehaviour {
 
 	private void OnLanguageChange()
 	{
-		if (GameManagement.PlatformSettings.Rage && SUGARManager.CurrentUser != null)
+		if (GameManagement.RageMode && SUGARManager.CurrentUser != null)
 		{
 			_userSignedInText.gameObject.Active(true);
 			_userSignedInText.text = Localization.Get("SIGNED_IN_AS") + " " + SUGARManager.CurrentUser.Name;

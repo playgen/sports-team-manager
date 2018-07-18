@@ -45,7 +45,7 @@ public class RecruitMemberUI : MonoBehaviour
 
 	private void OnEnable()
 	{
-		var history = GameManagement.LineUpHistory.AsEnumerable().Reverse().ToList();
+		var history = GameManagement.ReverseLineUpHistory;
 		var firstMismatch = history.FirstOrDefault(b => b.Type != GameManagement.Boat.Type);
 		var sessionsSinceLastChange = firstMismatch != null ? history.IndexOf(firstMismatch) : 0;
 		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>

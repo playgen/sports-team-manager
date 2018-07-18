@@ -29,9 +29,9 @@ public class BoatPromotionUI : MonoBehaviour
 	/// </summary>
 	public void Display()
 	{
-		if (!GameManagement.ShowTutorial && GameManagement.SeasonOngoing && GameManagement.Boat.Type != GameManagement.LineUpHistory.Last().Type)
+		if (!GameManagement.ShowTutorial && GameManagement.SeasonOngoing && GameManagement.Boat.Type != GameManagement.PreviousSession.Type)
 		{
-			var oldPos = GameManagement.LineUpHistory.Last().Positions;
+			var oldPos = GameManagement.PreviousSession.Positions;
 			var newPos = GameManagement.Positions;
 			gameObject.Active(true);
 			transform.EnableBlocker(() => Close(TrackerTriggerSource.PopUpBlocker.ToString()));

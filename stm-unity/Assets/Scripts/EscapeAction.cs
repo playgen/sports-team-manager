@@ -6,14 +6,16 @@ using UnityEngine.UI;
 /// <summary>
 /// Manages menu state changes when escape key is pressed
 /// </summary>
-public class EscapeAction : MonoBehaviour {
-	private void Update () {
+public class EscapeAction : MonoBehaviour
+{
+	private void Update()
+	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			//if settings panel is open, close settings panel
 			if (UIManagement.Settings.gameObject.activeInHierarchy)
 			{
-			    UIManagement.Settings.transform.Parent().Active(false);
+				UIManagement.Settings.Parent().Active(false);
 				return;
 			}
 			//if tutorial quitting pop-up is open, close this pop-up
@@ -31,7 +33,7 @@ public class EscapeAction : MonoBehaviour {
 			{
 				if (!UIManagement.Tutorial.gameObject.activeInHierarchy)
 				{
-				    UIManagement.Recruitment.OnEscape();
+					UIManagement.Recruitment.OnEscape();
 				}
 				return;
 			}
@@ -40,7 +42,7 @@ public class EscapeAction : MonoBehaviour {
 			{
 				if (UIManagement.PositionDisplay.transform.GetSiblingIndex() == UIManagement.PositionDisplay.transform.parent.childCount - 1)
 				{
-				    UIManagement.PositionDisplay.ClosePositionPopUp(TrackerTriggerSource.EscapeKey.ToString());
+					UIManagement.PositionDisplay.ClosePositionPopUp(TrackerTriggerSource.EscapeKey.ToString());
 					return;
 				}
 			}
@@ -49,7 +51,7 @@ public class EscapeAction : MonoBehaviour {
 			{
 				if (!UIManagement.Tutorial.gameObject.activeInHierarchy)
 				{
-				    UIManagement.MemberMeeting.OnEscape();
+					UIManagement.MemberMeeting.OnEscape();
 				}
 				return;
 			}
@@ -58,7 +60,7 @@ public class EscapeAction : MonoBehaviour {
 			{
 				if (UIManagement.RaceResult.transform.GetSiblingIndex() == UIManagement.RaceResult.transform.parent.childCount - 1)
 				{
-				    UIManagement.RaceResult.Close(TrackerTriggerSource.EscapeKey.ToString());
+					UIManagement.RaceResult.Close(TrackerTriggerSource.EscapeKey.ToString());
 					return;
 				}
 			}
@@ -67,7 +69,7 @@ public class EscapeAction : MonoBehaviour {
 			{
 				if (UIManagement.Promotion.transform.GetSiblingIndex() == UIManagement.Promotion.transform.parent.childCount - 1)
 				{
-				    UIManagement.Promotion.Close(TrackerTriggerSource.EscapeKey.ToString());
+					UIManagement.Promotion.Close(TrackerTriggerSource.EscapeKey.ToString());
 					return;
 				}
 			}
@@ -76,18 +78,18 @@ public class EscapeAction : MonoBehaviour {
 			{
 				if (UIManagement.PreRace.GetComponentInChildren<Text>().text == Localization.Get("REPEAT_CONFIRM"))
 				{
-				    UIManagement.PreRace.CloseRepeatWarning(TrackerTriggerSource.EscapeKey.ToString());
+					UIManagement.PreRace.CloseRepeatWarning(TrackerTriggerSource.EscapeKey.ToString());
 				}
 				else
 				{
-				    UIManagement.PreRace.CloseConfirmPopUp(TrackerTriggerSource.EscapeKey.ToString());
+					UIManagement.PreRace.CloseConfirmPopUp(TrackerTriggerSource.EscapeKey.ToString());
 				}
 				return;
 			}
 			//if no pop-ups are open, trigger the OnEscape method in TeamSelectionUI
 			if (UIManagement.TeamSelection.gameObject.activeInHierarchy)
 			{
-			    UIManagement.TeamSelection.OnEscape();
+				UIManagement.TeamSelection.OnEscape();
 			}
 		}
 	}
