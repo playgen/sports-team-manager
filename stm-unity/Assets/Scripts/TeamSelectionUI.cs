@@ -403,7 +403,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		crewMember.transform.FindText("Name").text = SplitName(cm.Name, true);
 		crewMember.name = SplitName(cm.Name);
 		crewMember.GetComponent<CrewMemberUI>().SetUp(usable, current, cm, parent);
-		crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(cm.Avatar, cm.GetMood(), true);
+		crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(cm.Avatar, cm.GetMood());
 		return crewMember;
 	}
 
@@ -578,7 +578,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			crewMember.Active(true);
 			var current = GameManagement.CrewMembers.ContainsKey(pair.Value.Name);
 			crewMember.transform.FindText("Name").text = SplitName(pair.Value.Name, true);
-			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, -(GameManagement.GetRacePosition(boat.Score, boat.Positions.Count) - 3) * 2, true);
+			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, -(GameManagement.GetRacePosition(boat.Score, boat.Positions.Count) - 3) * 2);
 			crewMember.GetComponent<CrewMemberUI>().SetUp(false, current, pair.Value, crewContainer);
 
 			var positionImage = crewMember.transform.FindObject("Position");
@@ -751,7 +751,7 @@ public class TeamSelectionUI : MonoBehaviour {
 				if (crewMember.name == SplitName(member.Name))
 				{
 					position.RemoveCrew();
-					crewMember.Place(position.gameObject);
+					crewMember.Place(position);
 					crewMembers.Remove(crewMember);
 					currentPositions.Remove(position.Position);
 					break;
@@ -784,7 +784,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			//destroy CrewMemberUI (making them unclickable) from those that are no longer in the currentCrew. Update avatar so they change into their causal outfit
 			if (GameManagement.CrewMembers.All(cm => cm.Key != crewMember.CrewMember.Name))
 			{
-				crewMember.GetComponentInChildren<AvatarDisplay>().UpdateAvatar(crewMember.CrewMember.Avatar, true);
+				crewMember.GetComponentInChildren<AvatarDisplay>().UpdateAvatar(crewMember.CrewMember.Avatar);
 				crewMember.NotCurrent();
 			}
 		}

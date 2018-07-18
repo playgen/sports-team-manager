@@ -17,17 +17,27 @@ using TrackerAssetPackage;
 /// </summary>
 public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHandler
 {
+	private static readonly List<RaycastResult> _raycastResults = new List<RaycastResult>();
+
 	private bool _beingClicked;
 	private bool _beingDragged;
-	private Vector2 _dragPosition;
+	private Vector2 _dragLocalPosition;
+	private Vector2 _dragStartPosition;
 	private Transform _defaultParent;
 	private PositionUI _currentPlacement;
-	private Vector2 _currentPositon;
 	private string _sortValue;
+
+	private Image _backImage;
+	private Image _borderImage;
+	private Button _button;
+	private AvatarDisplay _avatarDisplay;
+	private Image _positionImage;
+	private Button _positionButton;
 
 	public CrewMember CrewMember { get; private set; }
 	public bool Usable { get; private set; }
 	public bool Current { get; private set; }
+	private bool ShowEmotion => Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport");
 
 	private const float _clickedDistance = 15;
 
@@ -40,21 +50,17 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		_defaultParent = parent;
 		Usable = usable;
 		Current = current;
-		transform.FindImage("AvatarIcon").color = 
-			Usable ? 
-				new Color(0, 1, 1) 
-				: Current ? 
-					new Color(0, 0.5f, 0.5f) 
-					: Color.white;
+		_borderImage = GetComponent<Image>();
+		_backImage = transform.FindImage("AvatarIcon");
+		_button = GetComponent<Button>();
+		_avatarDisplay = GetComponentInChildren<AvatarDisplay>();
+		_positionImage = transform.FindImage("Position");
+		_positionButton = transform.FindButton("Position");
 
-		GetComponent<Image>().color = 
-			Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport") ?
-				AvatarDisplay.MoodColor(AvatarMoodConfig.GetMood(CrewMember.GetMood())) 
-				: Current ? 
-					Color.grey 
-					: Color.black;
+		_backImage.color = Usable ? new Color(0, 1, 1) : Current ? new Color(0, 0.5f, 0.5f) : Color.white;
+		_borderImage.color = ShowEmotion ? AvatarDisplay.MoodColor(CrewMember.GetMood()) : Current ? Color.grey : Color.black;
+		_button.enabled = Current;
 
-		GetComponent<Button>().enabled = Current;
 		if (!GameManagement.SeasonOngoing)
 		{
 			foreach (var button in GetComponentsInChildren<Button>())
@@ -67,7 +73,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	public void SetSortValue(string value)
 	{
 		_sortValue = value;
-		var isEnabled = !string.IsNullOrEmpty(_sortValue) && transform.parent == _defaultParent;
+		var isEnabled = !string.IsNullOrEmpty(_sortValue) && _currentPlacement == null;
 		var sortImage = transform.FindImage("Sort");
 		var sortText = transform.FindText("Sort/Sort Text");
 
@@ -79,8 +85,9 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	public void NotCurrent()
 	{
 		Current = false;
-		transform.FindImage("AvatarIcon").color = Color.white;
-		GetComponent<Button>().enabled = false;
+		_backImage.color = Color.white;
+		_borderImage.color = Color.black;
+		_button.enabled = false;
 	}
 
 	/// <summary>
@@ -110,18 +117,16 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// </summary>
 	private void BeginDrag()
 	{
-		GetComponent<Button>().enabled = false;
-		_currentPositon = transform.position;
+		_button.enabled = false;
+		_dragStartPosition = transform.position;
 		_beingDragged = true;
 		_beingClicked = true;
-		//_dragPosition is used to offset according to where the click occurred
-		_dragPosition = Input.mousePosition - transform.position;
+		//_dragLocalPosition is used to offset according to where the click occurred
+		_dragLocalPosition = Input.mousePosition - transform.position;
 		//set as child of parent many levels up so this displays above all other CrewMember objects
-		transform.SetParent(GameObject.Find("Drag Canvas").transform, false);
-		transform.position = (Vector2)Input.mousePosition - _dragPosition;
-		//set as last sibling so this always appears in front of other UI objects (except pop-ups)
-		transform.SetAsLastSibling();
-		transform.FindImage("AvatarIcon").color = new Color(0, 0.25f, 0.25f);
+		transform.SetParent(UIManagement.DragCanvas, false);
+		transform.position = (Vector2)Input.mousePosition - _dragLocalPosition;
+		_backImage.color = new Color(0, 0.25f, 0.25f);
 	}
 
 	/// <summary>
@@ -147,76 +152,63 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			ForcedMoodChange("accurate");
 		}
 #endif
-		if (_beingDragged)
-		{
-			transform.position = (Vector2)Input.mousePosition - _dragPosition;
-			var raycastResults = new List<RaycastResult>();
-			//gets all UI objects below the cursor
-			EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
-			if (Input.GetMouseButtonUp(0))
-			{
-				EndDrag(raycastResults);
-			}
-			//end drag if currently under a blocker
-			foreach (var result in raycastResults)
-			{
-				if (result.gameObject.layer == 8)
-				{
-					EndDrag(raycastResults);
-				}
-			}
-		}
 		if (_beingClicked)
 		{
-			if (Vector2.Distance(Input.mousePosition, _currentPositon + _dragPosition) > _clickedDistance)
+			if (Vector2.Distance(Input.mousePosition, _dragStartPosition + _dragLocalPosition) > _clickedDistance)
 			{
 				_beingClicked = false;
+			}
+		}
+		if (_beingDragged)
+		{
+			transform.position = (Vector2)Input.mousePosition - _dragLocalPosition;
+			//gets all UI objects below the cursor
+			EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, _raycastResults);
+			//end drag if mouse up or currently over a blocker
+			if (Input.GetMouseButtonUp(0) || _raycastResults.Any(r => r.gameObject.layer == LayerMask.NameToLayer("Blocker")))
+			{
+				EndDrag();
 			}
 		}
 	}
 
 	public void ForcedMoodChange(string moodChange)
 	{
-		var usable  = Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport");
-		string mood;
-
+		var mood = AvatarMood.Neutral;
 
 		switch (moodChange)
 		{
 			case "negative":
-				mood = CrewMember.Name.Length % 2 == 0 ? "StronglyDisagree" : "Disagree";
+				mood = CrewMember.Name.Length % 2 == 0 ? AvatarMood.StronglyDisagree : AvatarMood.Disagree;
 				break;
 			case "positive":
-				mood = CrewMember.Name.Length % 2 == 0 ? "StronglyAgree" : "Agree";
+				mood = CrewMember.Name.Length % 2 == 0 ? AvatarMood.StronglyAgree : AvatarMood.Agree;
 				break;
 			case "accurate":
-				mood = AvatarMoodConfig.GetMood(CrewMember.GetMood());
-				break;
-			default:
-				mood = "Neutral";
+				mood = AvatarDisplay.GetMood(CrewMember.GetMood());
 				break;
 		}
-		GetComponentInChildren<AvatarDisplay>().UpdateMood(CrewMember.Avatar, mood);
-		GetComponent<Image>().color = Usable || usable ? 
-			AvatarDisplay.MoodColor(mood) 
-			: Current ? 
-				Color.grey 
-				: Color.black;
+		_avatarDisplay.UpdateMood(CrewMember.Avatar, mood);
+		_borderImage.color = ShowEmotion ? AvatarDisplay.MoodColor(mood) : Current ? Color.grey : Color.black;
 	}
 
 	/// <summary>
 	/// MouseUp ends the current drag. Check if the CrewMember has been placed into a position. If beingClicked is true, the CrewMember pop-up is displayed.
 	/// </summary>
-	private void EndDrag(List<RaycastResult> raycastResults)
+	private void EndDrag()
 	{
-		GetComponent<Button>().enabled = true;
+		_backImage.color = new Color(0, 1, 1);
+		_button.enabled = true;
 		_beingDragged = false;
-		CheckPlacement(raycastResults);
-		if (_beingClicked) {
+		if (_beingClicked)
+		{
 			ShowPopUp();
 		}
+		else
+		{
+			CheckPlacement();
+		}
 		_beingClicked = false;
-		transform.FindImage("AvatarIcon").color = new Color(0, 1, 1);
 	}
 
 	/// <summary>
@@ -226,75 +218,74 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	{
 		UIManagement.MemberMeeting.SetUpDisplay(CrewMember, TrackerTriggerSource.TeamManagementScreen.ToString());
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, CrewMember.Name);
+		if (Usable)
+		{
+			transform.SetParent(_currentPlacement?.RectTransform() ?? _defaultParent, false);
+			transform.position = transform.parent.position;
+		}
 	}
 
 	/// <summary>
 	/// Check if the drag stopped over a Position UI element.
 	/// </summary>
-	private void CheckPlacement(List<RaycastResult> raycastResults)
+	private void CheckPlacement()
 	{
-		foreach (var result in raycastResults)
+		foreach (var result in _raycastResults)
 		{
-			if (result.gameObject.GetComponent<PositionUI>())
+			var positionUI = result.gameObject.GetComponent<PositionUI>();
+			if (positionUI != null)
 			{
-				var pos = result.gameObject.GetComponent<PositionUI>().Position;
-				var crewMember = result.gameObject.GetComponent<PositionUI>().CrewMemberUI;
+				var position = positionUI.Position;
+				var crewMember = positionUI.CrewMemberUI;
 				TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPositioned", TrackerAsset.Verb.Interacted, new Dictionary<string, string>
 				{
 					{ TrackerContextKey.CrewMemberName.ToString(), CrewMember.Name },
-					{ TrackerContextKey.PositionName.ToString(), pos.ToString()},
+					{ TrackerContextKey.PositionName.ToString(), position.ToString()},
 					{ TrackerContextKey.PreviousCrewMemberInPosition.ToString(), crewMember != null ? crewMember.CrewMember.Name : "Null"},
 					{ TrackerContextKey.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()}
 				}, GameObjectTracker.TrackedGameObject.Npc));
 				SUGARManager.GameData.Send("Place Crew Member", CrewMember.Name);
-				SUGARManager.GameData.Send("Fill Position", pos.ToString());
-				Place(result.gameObject);
-				break;
-			}
-			if (result.Equals(raycastResults.Last()))
-			{
-				//remove this CrewMember from their position if they were in one
-				GameManagement.Boat.AssignCrewMember(0, CrewMember);
-				OnReset();
+				SUGARManager.GameData.Send("Fill Position", position.ToString());
+				Place(positionUI);
+				//reset the position and meeting UIs
+				UIManagement.PositionDisplay.UpdateDisplay();
+				UIManagement.MemberMeeting.Display();
+				return;
 			}
 		}
-		if (raycastResults.Count == 0)
-		{
-			//remove this CrewMember from their position if they were in one
-			GameManagement.Boat.AssignCrewMember(0, CrewMember);
-			OnReset();
-		}
-		//reset the meeting UI
+		//remove this CrewMember from their position if they were in one
+		GameManagement.Boat.AssignCrewMember(Position.Null, CrewMember);
+		OnReset();
+		//reset the position and meeting UIs
+		UIManagement.PositionDisplay.UpdateDisplay();
 		UIManagement.MemberMeeting.Display();
 	}
 
 	/// <summary>
 	/// Place the CrewMember to be in-line with the Position it is now paired with
 	/// </summary>
-	public void Place(GameObject position, bool swap = false)
+	public void Place(PositionUI positionUI, bool swap = false)
 	{
 		if (!swap && _currentPlacement)
 		{
 			_currentPlacement.RemoveCrew();
 		}
-		var positionComp = position.gameObject.GetComponent<PositionUI>();
-		var currentPosition = positionComp.Position;
-		var currentPositionCrew = positionComp.CrewMemberUI;
-		var positionTransform = position.RectTransform();
+		var currentPosition = positionUI.Position;
+		var currentPositionCrew = positionUI.CrewMemberUI;
+		var positionTransform = positionUI.RectTransform();
 		//set size and position
 		transform.SetParent(positionTransform, false);
 		transform.RectTransform().sizeDelta = positionTransform.sizeDelta;
 		transform.position = positionTransform.position;
 		GameManagement.Boat.AssignCrewMember(currentPosition, CrewMember);
-		positionComp.LinkCrew(this);
+		positionUI.LinkCrew(this);
 		if (!swap)
 		{
 			if (currentPositionCrew != null)
 			{
 				if (_currentPlacement != null)
 				{
-					var currentPos = _currentPlacement.gameObject;
-					currentPositionCrew.Place(currentPos, true);
+					currentPositionCrew.Place(_currentPlacement, true);
 				}
 				else
 				{
@@ -302,14 +293,12 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 				}
 			}
 		}
-		_currentPlacement = positionComp;
-		var positionImage = transform.FindObject("Position");
+		_currentPlacement = positionUI;
 		//update current position button
-		positionImage.GetComponent<Image>().enabled = true;
-		positionImage.GetComponent<Image>().sprite = UIManagement.TeamSelection.RoleIcons.First(mo => mo.Name == currentPosition.ToString()).Image;
-		UIManagement.PositionDisplay.UpdateDisplay();
-		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
-		positionImage.GetComponent<Button>().onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentPosition, TrackerTriggerSource.CrewMemberPopUp.ToString()));
+		_positionImage.enabled = true;
+		_positionImage.sprite = UIManagement.TeamSelection.RoleIcons.First(mo => mo.Name == currentPosition.ToString()).Image;
+		_positionButton.onClick.RemoveAllListeners();
+		_positionButton.onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentPosition, TrackerTriggerSource.CrewMemberPopUp.ToString()));
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, CrewMember.Name);
 		SetSortValue(_sortValue);
 	}
@@ -320,10 +309,10 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	public void OnReset()
 	{
 		//set back to default parent and position
-		transform.SetParent(_defaultParent, true);
+		transform.SetParent(_defaultParent, false);
 		transform.position = _defaultParent.position;
 		transform.SetAsLastSibling();
-		if (_currentPositon != (Vector2)transform.position)
+		if (_dragStartPosition != (Vector2)transform.position)
 		{
 			TrackerEventSender.SendEvent(new TraceEvent("CrewMemberUnpositioned", TrackerAsset.Verb.Interacted, new Dictionary<string, string>
 			{
@@ -336,12 +325,10 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			_currentPlacement.RemoveCrew();
 			_currentPlacement = null;
 		}
-		var positionImage = transform.FindObject("Position");
 		//hide current position button and remove all listeners
-		positionImage.GetComponent<Image>().enabled = false;
-		positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
+		_positionImage.enabled = false;
+		_positionButton.onClick.RemoveAllListeners();
 		//reset position pop-up if it is currently being shown
-		UIManagement.PositionDisplay.UpdateDisplay();
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, CrewMember.Name);
 		SetSortValue(_sortValue);
 	}

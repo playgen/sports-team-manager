@@ -114,7 +114,7 @@ public class RecruitMemberUI : MonoBehaviour
 			var formattedName = lastName + firstName;
 			_recruitUI[i].transform.FindText("Name").text = formattedName;
 			//set-up avatar for this recruit
-			_recruitUI[i].transform.FindComponentInChildren<AvatarDisplay>("Image").SetAvatar(thisRecruit.Avatar, 0);
+			_recruitUI[i].transform.FindComponentInChildren<AvatarDisplay>("Image").SetAvatar(thisRecruit.Avatar, 0f);
 			//flip direction they are facing for every other recruit
 			if (i % 2 != 0)
 			{

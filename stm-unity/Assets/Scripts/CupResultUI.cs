@@ -40,7 +40,9 @@ public class CupResultUI : MonoBehaviour
 			transform.EnableBlocker(() => Close(TrackerTriggerSource.PopUpBlocker.ToString()));
 		}
 
-		foreach (Transform child in transform.Find("Crew"))
+		var crewTransform = transform.Find("Crew");
+
+		foreach (Transform child in crewTransform)
 		{
 			Destroy(child.gameObject);
 		}
@@ -50,14 +52,13 @@ public class CupResultUI : MonoBehaviour
 		foreach (var crewMember in GameManagement.CrewMembers.Values.ToList())
 		{
 			var memberObject = Instantiate(_postRaceCrewPrefab);
-			memberObject.transform.SetParent(transform.Find("Crew"), false);
+			memberObject.transform.SetParent(crewTransform, false);
 			memberObject.name = crewMember.Name;
 			memberObject.transform.FindComponentInChildren<AvatarDisplay>("Avatar").SetAvatar(crewMember.Avatar, -(_cupPosition - 3) * 2);
 			memberObject.transform.FindImage("Position").enabled = false;
 			if (crewCount % 2 != 0)
 			{
-				var currentScale = memberObject.transform.Find("Avatar").localScale;
-				memberObject.transform.Find("Avatar").localScale = new Vector3(-currentScale.x, currentScale.y, currentScale.z);
+				memberObject.transform.localScale = Vector3.Reflect(memberObject.transform.localScale, Vector3.left);
 			}
 			crewCount++;
 			memberObject.transform.SetAsLastSibling();

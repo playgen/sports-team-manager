@@ -136,7 +136,7 @@ public class MemberMeetingUI : MonoBehaviour
 		//CrewMember avatar
 		_avatarDisplay.SetAvatar(_currentMember.Avatar, _currentMember.GetMood());
 		_avatarDisplay.GetComponent<Image>().color = new UnityEngine.Color(0, 1, 1);
-		_avatarDisplay.transform.parent.GetComponent<Image>().color = AvatarDisplay.MoodColor(AvatarMoodConfig.GetMood(_currentMember.GetMood()));
+		_avatarDisplay.transform.parent.GetComponent<Image>().color = AvatarDisplay.MoodColor(_currentMember.GetMood());
 		//CrewMember information
 		var currentRole = _currentMember.BoatPosition();
 		_textList[0].text = _currentMember.Name;

@@ -12,10 +12,27 @@ using Avatar = PlayGen.RAGE.SportsTeamManager.Simulation.Avatar;
 /// </summary>
 public class AvatarDisplay : MonoBehaviour
 {
+	private static readonly Dictionary<AvatarMood, int> AvatarMoodMapping = new Dictionary<AvatarMood, int>
+	{
+		{AvatarMood.StronglyAgree, 3},
+		{AvatarMood.Agree, 1},
+		{AvatarMood.Neutral, 0},
+		{AvatarMood.Disagree, -1},
+		{AvatarMood.StronglyDisagree, -3}
+	};
+
+	private static readonly Color _veryGood = Color.green;
+	private static readonly Color _good = new Color(0, 1, 0.5f);
+	private static readonly Color _neutral = Color.cyan;
+	private static readonly Color _bad = new Color(1, 0.5f, 0);
+	private static readonly Color _veryBad = Color.red;
 	private const byte _eyebrowAlpha = 128;
-	private const float _maleOffsetPercent = 18f;
+	private const float _maleOffsetPercent = 15.5f;
+	private readonly string _avatarPrefix = "AvatarSprites";
+	private string _avatarIconPrefix => "IconMask/" + _avatarPrefix;
+
 	private static Dictionary<string, Sprite> avatarSprites;
-	private float _lastMood;
+	private AvatarMood _lastMood;
 	private Image _body;
 	private Image _hairBack;
 	private Image _hairFront;
@@ -29,15 +46,7 @@ public class AvatarDisplay : MonoBehaviour
 	private Image _outfitHighlight;
 	private Image _outfitShadow;
 	private RectTransform _spriteParent;
-
-	private static readonly Color _veryGood = Color.green;
-	private static readonly Color _good = new Color(0, 1, 0.5f);
-	private static readonly Color _neutral = Color.cyan;
-	private static readonly Color _bad = new Color(1, 0.5f, 0);
-	private static readonly Color _veryBad = Color.red;
-
-	private readonly string _avatarImagePrefix = "AvatarSprites";
-	private string _avatarPrefix => "IconMask/" + _avatarImagePrefix;
+	private bool _isIcon;
 
 	/// <summary>
 	/// Load all avatar sprites from resources.
@@ -47,32 +56,32 @@ public class AvatarDisplay : MonoBehaviour
 		avatarSprites = Resources.LoadAll("Avatars", typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name, a => a, StringComparer.OrdinalIgnoreCase);
 	}
 
-	public static Color MoodColor(string value)
+	public void SetAvatar(Avatar avatar, float mood)
 	{
-		var avatarMood = (AvatarMoodConfig.AvatarMood)Enum.Parse(typeof(AvatarMoodConfig.AvatarMood), value);
-		switch (avatarMood)
-		{
-			case AvatarMoodConfig.AvatarMood.StronglyAgree:
-				return _veryGood;
-			case AvatarMoodConfig.AvatarMood.Agree:
-				return _good;
-			case AvatarMoodConfig.AvatarMood.Disagree:
-				return _bad;
-			case AvatarMoodConfig.AvatarMood.StronglyDisagree:
-				return _veryBad;
-			default:
-				return _neutral;
-		}
+		SetAvatar(avatar);
+		UpdateMood(avatar, mood);
+	}
+
+	public void SetAvatar(Avatar avatar, AvatarMood mood)
+	{
+		SetAvatar(avatar);
+		UpdateMood(avatar, mood);
 	}
 
 	/// <summary>
 	/// Load the images for each part of the avatar.
 	/// </summary>
-	public void SetAvatar(Avatar avatar, float mood, bool isIcon = false)
+	private void SetAvatar(Avatar avatar)
 	{
 		if (!_body)
 		{
-			_spriteParent = transform.FindRect(_avatarPrefix) ?? transform.FindRect(_avatarImagePrefix);
+			_spriteParent = transform.FindRect(_avatarIconPrefix);
+			_isIcon = true;
+			if (!_spriteParent)
+			{
+				_spriteParent = transform.FindRect(_avatarPrefix);
+				_isIcon = false;
+			}
 
 			_body = GetAvatarImage("Body");
 			_hairBack = GetAvatarImage("HairBack");
@@ -113,12 +122,11 @@ public class AvatarDisplay : MonoBehaviour
 		_body.color = skinColor;
 		_nose.color = skinColor;
 
-		_mouth.color = avatar.IsMale ? hairColor : (Color32)Color.white;
+		_mouth.color = avatar.IsMale ? skinColor : (Color32)Color.white;
 		_eyePupils.color = eyeColor;
 		_hairFront.color = hairColor;
 		_hairBack.color = hairColor;
 		_eyebrow.color = eyebrowColor;
-
 
 		// Check the current outfit is not the casual one, we should not be changing the color of casual
 		if (avatar.CustomOutfitColor)
@@ -135,7 +143,7 @@ public class AvatarDisplay : MonoBehaviour
 		_outfitHighlight.gameObject.Active(avatar.CustomOutfitColor);
 		_outfitShadow.gameObject.Active(avatar.CustomOutfitColor);
 
-		if (isIcon)
+		if (_isIcon)
 		{
 			SetIconProperties(avatar);	
 		}
@@ -143,24 +151,51 @@ public class AvatarDisplay : MonoBehaviour
 		{
 			SetFullBodyProperties(avatar);
 		}
-		//update avatar facial expression
-		UpdateMood(avatar, mood);
+	}
+
+	public static AvatarMood GetMood(float mood)
+	{
+		if (Mathf.Approximately(mood, AvatarMoodMapping[AvatarMood.Neutral]))
+		{
+			return AvatarMood.Neutral;
+		}
+		if (mood > AvatarMoodMapping[AvatarMood.Neutral])
+		{
+			// Positive
+			return mood < AvatarMoodMapping[AvatarMood.StronglyAgree] ? AvatarMood.Agree : AvatarMood.StronglyAgree;
+		}
+		// Negative
+		return mood > AvatarMoodMapping[AvatarMood.StronglyDisagree] ? AvatarMood.Disagree : AvatarMood.StronglyDisagree;
+	}
+
+	public static Color MoodColor(AvatarMood avatarMood)
+	{
+		switch (avatarMood)
+		{
+			case AvatarMood.StronglyAgree:
+				return _veryGood;
+			case AvatarMood.Agree:
+				return _good;
+			case AvatarMood.Disagree:
+				return _bad;
+			case AvatarMood.StronglyDisagree:
+				return _veryBad;
+			default:
+				return _neutral;
+		}
+	}
+
+	public static Color MoodColor(float avatarMood)
+	{
+		return MoodColor(GetMood(avatarMood));
 	}
 
 	/// <summary>
 	/// update the displayed avatar to currently stored values (usually used to switch between causal and non-causal outfits)
 	/// </summary>
-	public void UpdateAvatar(Avatar avatar, bool isIcon = false)
+	public void UpdateAvatar(Avatar avatar)
 	{
-		SetAvatar(avatar, _lastMood, isIcon);
-	}
-
-	/// <summary>
-	/// Get the an image from the avatar, checks which version is currently shown, masked or normal
-	/// </summary>
-	private Image GetAvatarImage(string image)
-	{
-		return transform.FindImage(_avatarPrefix + "/" + image) ?? transform.FindImage(_avatarImagePrefix + "/" + image);
+		SetAvatar(avatar, _lastMood);
 	}
 
 	/// <summary>
@@ -168,18 +203,24 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	public void UpdateMood(Avatar avatar, string reaction)
 	{
-		reaction = reaction.Replace(" ", string.Empty);
+		UpdateMood(avatar, (AvatarMood)Enum.Parse(typeof(AvatarMood), reaction));
+	}
 
-		var mood = AvatarMoodConfig.GetMood(reaction);
-		UpdateMood(avatar, mood);
+	/// <summary>
+	/// update the avatar's facial expression based on their agreement with the statement passed to them
+	/// </summary>
+	public void UpdateMood(Avatar avatar, float mood)
+	{
+		var moodStr = GetMood(mood);
+		UpdateMood(avatar, moodStr);
 	}
 
 	/// <summary>
 	/// update the avatar's facial expression based on the mood value provided
 	/// </summary>
-	public void UpdateMood(Avatar avatar, float mood)
+	public void UpdateMood(Avatar avatar, AvatarMood mood)
 	{
-		var moodStr = AvatarMoodConfig.GetMood(mood);
+		var moodStr = mood.ToString();
 
 		if (avatarSprites.ContainsKey($"{avatar.EyeType}_Brown_{moodStr}"))
 		{
@@ -205,15 +246,22 @@ public class AvatarDisplay : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Get the an image from the avatar, checks which version is currently shown, masked or normal
+	/// </summary>
+	private Image GetAvatarImage(string image)
+	{
+		return _spriteParent.FindImage(image);
+	}
+
+	/// <summary>
 	/// Setup avatar properties that are only common in icons
 	/// </summary>
 	private void SetIconProperties(Avatar a)
 	{
-		if (!_spriteParent)
+		if (_spriteParent)
 		{
-			return;
+			_spriteParent.offsetMax = a.IsMale ? new Vector2(_spriteParent.offsetMax.x, -1f * (_spriteParent.rect.height / _maleOffsetPercent)) : new Vector2(_spriteParent.offsetMax.x, 0);
 		}
-		_spriteParent.offsetMax = a.IsMale ? new Vector2(_spriteParent.offsetMax.x, -1f * (_spriteParent.rect.height / _maleOffsetPercent)) : new Vector2(_spriteParent.offsetMax.x, 0);
 	}
 
 	/// <summary>

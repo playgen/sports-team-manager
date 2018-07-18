@@ -147,7 +147,7 @@ public class PositionDisplayUI : MonoBehaviour
 		//set-up avatar, name and onclick handler if CrewMember is in this position
 		if (currentCrew != null)
 		{
-			_currentAvatar.SetAvatar(currentCrew.Avatar, currentCrew.GetMood(), true);
+			_currentAvatar.SetAvatar(currentCrew.Avatar, currentCrew.GetMood());
 			_currentName.text = currentCrew.Name;
 			_currentButton.onClick.AddListener(() => UIManagement.MemberMeeting.SetUpDisplay(currentCrew, TrackerTriggerSource.PositionPopUp.ToString()));
 		}
@@ -204,7 +204,7 @@ public class PositionDisplayUI : MonoBehaviour
 				positionHistory.GetComponentInChildren<Button>().interactable = false;
 				positionHistory.transform.FindImage("AvatarIcon").color = UnityEngine.Color.white;
 			}
-			positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, member.Key.GetMood(), true);
+			positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, member.Key.GetMood());
 			positionHistory.transform.FindText("Session Back/Sessions").text = member.Value.ToString();
 		}
 	}

@@ -25,6 +25,7 @@ public static class UIManagement
 	public static LearningPillUI LearningPill { get; private set; }
 	public static HoverPopUpUI Hover { get; private set; }
 	public static PostRaceEventImpactUI EventImpact { get; private set; }
+	public static Transform DragCanvas { get; private set; }
 	public static Button SmallBlocker { get; private set; }
 	public static Button Blocker { get; private set; }
 
@@ -48,6 +49,7 @@ public static class UIManagement
 		Hover = _rootObjects.SelectMany(g => g.GetComponentsInChildren<HoverPopUpUI>(true)).First();
 		EventImpact = _rootObjects.SelectMany(g => g.GetComponentsInChildren<PostRaceEventImpactUI>(true)).First();
 
+		DragCanvas = GameObject.Find("Drag Canvas").transform;
 		SmallBlocker = _rootObjects.Single(g => g.name == "Canvas").transform.FindButton("Team Management/Pop-up Bounds/Blocker");
 		Blocker = _rootObjects.Single(g => g.name == "Canvas").transform.FindButton("Team Management/Pop-up Bounds/Bigger Blocker");
 	}
