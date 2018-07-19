@@ -74,7 +74,7 @@ public class PostRaceEventImpactUI : MonoBehaviour
 				gameObject.Active(true);
 				transform.EnableBlocker(() => Close(TrackerTriggerSource.PopUpBlocker.ToString()));
 			}
-			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventImpactPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>(), AccessibleTracker.Accessible.Screen));
+			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventImpactPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>(), AccessibleTracker.Accessible.Screen));
 		}
 		if (string.IsNullOrEmpty(_impactText.text))
 		{
@@ -94,9 +94,9 @@ public class PostRaceEventImpactUI : MonoBehaviour
 			UIManagement.DisableBlocker();
 			if (!string.IsNullOrEmpty(source))
 			{
-				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventImpactPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventImpactPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 				{
-					{ TrackerContextKey.TriggerUI.ToString(), source }
+					{ TrackerContextKey.TriggerUI, source }
 				}, AccessibleTracker.Accessible.Screen));
 				UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 			}

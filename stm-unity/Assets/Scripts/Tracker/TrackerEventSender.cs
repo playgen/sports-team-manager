@@ -18,9 +18,9 @@ public class TraceEvent
 	public string Key;
 	public TrackerAsset.Verb ActionType;
 	public object[] Params;
-	public Dictionary<string, string> Values;
+	public Dictionary<TrackerContextKey, object> Values;
 
-	public TraceEvent(string key, TrackerAsset.Verb verb, Dictionary<string, string> values, params object[] param)
+	public TraceEvent(string key, TrackerAsset.Verb verb, Dictionary<TrackerContextKey, object> values, params object[] param)
 	{
 		Key = key;
 		ActionType = verb;
@@ -43,19 +43,19 @@ public class TrackerEventSender {
 			}
 			foreach (var v in trace.Values.OrderBy(v => v.Key))
 			{
-				if (v.Key == TrackerContextKey.TriggerUI.ToString())
+				if (v.Key == TrackerContextKey.TriggerUI)
 				{
-					if (string.IsNullOrEmpty(v.Value))
+					if (string.IsNullOrEmpty(v.Value.ToString()))
 					{
 						Debug.LogWarning(trace.Key + " event not tracked due to null TriggerUI value. If not caused by internal game event, this is a bug!");
 						return;
 					}
-					if (!Enum.IsDefined(typeof(TrackerTriggerSource), v.Value))
+					if (!Enum.IsDefined(typeof(TrackerTriggerSource), v.Value.ToString()))
 					{
 						Debug.LogWarning("TrackerTriggerSource does not contain key " + v.Value + ". This is likely due to a typo in the inspector.");
 					}
 				}
-				Tracker.T.setVar(v.Key, v.Value);
+				Tracker.T.setVar(v.Key.ToString(), v.Value.ToString());
 			}
 			if (SUGARManager.CurrentUser != null)
 			{

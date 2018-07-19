@@ -69,13 +69,13 @@ public class PositionDisplayUI : MonoBehaviour
 		}
 		var currentCrew = position.Current() ? position.CurrentCrewMember() : null;
 		var boatPos = GameManagement.PositionString;
-		TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.PositionName.ToString(), position.ToString() },
-			{ TrackerContextKey.PositionCrewMember.ToString(), currentCrew != null ? currentCrew.Name : "None" },
-			{ TrackerContextKey.BoatLayout.ToString(), boatPos },
-			{ TrackerContextKey.TriggerUI.ToString(), source },
-			{ TrackerContextKey.SessionsIncludedCount.ToString(), position.SessionsIncluded().ToString() }
+			{ TrackerContextKey.PositionName, position },
+			{ TrackerContextKey.PositionCrewMember, currentCrew != null ? currentCrew.Name : "None" },
+			{ TrackerContextKey.BoatLayout, boatPos },
+			{ TrackerContextKey.TriggerUI, source },
+			{ TrackerContextKey.SessionsIncludedCount, position.SessionsIncluded() }
 		}, AccessibleTracker.Accessible.Screen));
 		SUGARManager.GameData.Send("View Position Screen", position.ToString());
 		gameObject.Active(true);
@@ -161,10 +161,10 @@ public class PositionDisplayUI : MonoBehaviour
 	{
 		if (gameObject.activeInHierarchy)
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpClosed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpClosed", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.PositionName.ToString(), _current.ToString() },
-				{ TrackerContextKey.TriggerUI.ToString(), source }
+				{ TrackerContextKey.PositionName, _current },
+				{ TrackerContextKey.TriggerUI, source }
 			}, AccessibleTracker.Accessible.Screen));
 			gameObject.Active(false);
 			if (UIManagement.MemberMeeting.gameObject.activeInHierarchy)

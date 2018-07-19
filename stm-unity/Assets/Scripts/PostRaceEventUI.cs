@@ -85,10 +85,10 @@ public class PostRaceEventUI : MonoBehaviour
 		gameObject.Active(false);
 		if (!string.IsNullOrEmpty(source))
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.TriggerUI.ToString(), source },
-				{ TrackerContextKey.EventID.ToString(), _lastStates[0].EventKeys() }
+				{ TrackerContextKey.TriggerUI, source },
+				{ TrackerContextKey.EventID, _lastStates[0].EventKeys() }
 			}, AccessibleTracker.Accessible.Screen));
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 		}
@@ -201,11 +201,11 @@ public class PostRaceEventUI : MonoBehaviour
 		{
 			foreach (var res in _selectedResponses.Values)
 			{
-				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventDialogueSelected", TrackerAsset.Verb.Selected, new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("PostRaceEventDialogueSelected", TrackerAsset.Verb.Selected, new Dictionary<TrackerContextKey, object>
 				{
-					{ TrackerContextKey.DialogueID.ToString(), res.Dialogue.NextState },
-					{ TrackerContextKey.DialogueStyle.ToString(), res.Dialogue.Meaning.Split('_').First(sp => !string.IsNullOrEmpty(sp)) },
-					{ TrackerContextKey.EventID.ToString(), res.Dialogue.NextState.EventKeys() }
+					{ TrackerContextKey.DialogueID, res.Dialogue.NextState },
+					{ TrackerContextKey.DialogueStyle, res.Dialogue.Meaning.Split('_').First(sp => !string.IsNullOrEmpty(sp)) },
+					{ TrackerContextKey.EventID, res.Dialogue.NextState.EventKeys() }
 				}, res.Dialogue.NextState, AlternativeTracker.Alternative.Dialog));
 				SUGARManager.GameData.Send("Post Race Event Reply", res.Dialogue.NextState);
 			}

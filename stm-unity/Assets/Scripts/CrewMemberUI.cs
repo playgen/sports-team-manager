@@ -237,12 +237,12 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			{
 				var position = positionUI.Position;
 				var crewMember = positionUI.CrewMemberUI;
-				TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPositioned", TrackerAsset.Verb.Interacted, new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPositioned", TrackerAsset.Verb.Interacted, new Dictionary<TrackerContextKey, object>
 				{
-					{ TrackerContextKey.CrewMemberName.ToString(), CrewMember.Name },
-					{ TrackerContextKey.PositionName.ToString(), position.ToString()},
-					{ TrackerContextKey.PreviousCrewMemberInPosition.ToString(), crewMember != null ? crewMember.CrewMember.Name : "Null"},
-					{ TrackerContextKey.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()}
+					{ TrackerContextKey.CrewMemberName, CrewMember.Name },
+					{ TrackerContextKey.PositionName, position},
+					{ TrackerContextKey.PreviousCrewMemberInPosition, crewMember != null ? crewMember.CrewMember.Name : "Null"},
+					{ TrackerContextKey.PreviousCrewMemberPosition, _currentPlacement != null ? _currentPlacement.Position : Position.Null}
 				}, GameObjectTracker.TrackedGameObject.Npc));
 				SUGARManager.GameData.Send("Place Crew Member", CrewMember.Name);
 				SUGARManager.GameData.Send("Fill Position", position.ToString());
@@ -314,10 +314,10 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		transform.SetAsLastSibling();
 		if (_dragStartPosition != (Vector2)transform.position)
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("CrewMemberUnpositioned", TrackerAsset.Verb.Interacted, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("CrewMemberUnpositioned", TrackerAsset.Verb.Interacted, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.CrewMemberName.ToString(), CrewMember.Name },
-				{ TrackerContextKey.PreviousCrewMemberPosition.ToString(), _currentPlacement != null ? _currentPlacement.Position.ToString() : Position.Null.ToString()}
+				{ TrackerContextKey.CrewMemberName, CrewMember.Name },
+				{ TrackerContextKey.PreviousCrewMemberPosition, _currentPlacement != null ? _currentPlacement.Position : Position.Null}
 			}, GameObjectTracker.TrackedGameObject.Npc));
 		}
 		if (_currentPlacement != null)

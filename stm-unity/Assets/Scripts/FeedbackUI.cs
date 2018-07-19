@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using PlayGen.Unity.Utilities.Localization;
 using System.Linq;
 using System.Security.Cryptography;
@@ -9,10 +8,8 @@ using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.Text;
 using UnityEngine;
 using UnityEngine.UI;
-
 using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Video;
-
 using UnityEngine.Video;
 
 /// <summary>
@@ -24,11 +21,11 @@ public class FeedbackUI : MonoBehaviour
 	[SerializeField]
 	private GameObject[] _pages;
 	[SerializeField]
-	private GameObject[] _managementButtons;
+	private Text[] _managementButtonPercentageText;
 	[SerializeField]
-	private GameObject[] _leadershipButtons;
+	private Text[] _leadershipButtonPercentageText;
 	[SerializeField]
-	private GameObject _selectionGraph;
+	private Transform _selectionGraph;
 	[SerializeField]
 	private GameObject _selectionPrefab;
 	[SerializeField]
@@ -71,10 +68,7 @@ public class FeedbackUI : MonoBehaviour
 		_pages[_pageNumber].Active(false);
 		_pageNumber += amount;
 		_pages[_pageNumber].Active(true);
-		if (_pageNumber == 0)
-		{
-			DoBestFit();
-		}
+		DoBestFit();
 	}
 
 	/// <summary>
@@ -82,11 +76,12 @@ public class FeedbackUI : MonoBehaviour
 	/// </summary>
 	public void ShowDescription(string descriptionType)
 	{
-		_descriptionPopUp.transform.FindComponent<TextLocalization>("Description Pop-Up/Header").Key = descriptionType;
-		_descriptionPopUp.transform.FindComponent<TextLocalization>("Description Pop-Up/Text").Key = descriptionType + "_Description";
-		_descriptionPopUp.transform.FindComponent<VideoPlayerUI>("Description Pop-Up/Video Display").SetClip(_videos.First(v => string.Equals(v.name, descriptionType, StringComparison.CurrentCultureIgnoreCase)));
+		var popUp = _descriptionPopUp.transform.Find("Description Pop-Up");
+		popUp.FindComponent<TextLocalization>("Header").Key = descriptionType;
+		popUp.FindComponent<TextLocalization>("Text").Key = descriptionType + "_Description";
+		popUp.FindComponent<VideoPlayerUI>("Video Display").SetClip(_videos.First(v => string.Equals(v.name, descriptionType, StringComparison.CurrentCultureIgnoreCase)));
 		_descriptionPopUp.Active(true);
-		_descriptionPopUp.transform.FindObject("Description Pop-Up/Video Display").Active(false);
+		popUp.FindObject("Video Display").Active(false);
 	}
 
 	/// <summary>
@@ -95,20 +90,21 @@ public class FeedbackUI : MonoBehaviour
 	private void DrawGraph()
 	{
 		//destroy elements already on graph
-		foreach (Transform child in _selectionGraph.transform)
+		foreach (Transform child in _selectionGraph)
 		{
 			Destroy(child.gameObject);
 		}
 
 		foreach (var style in _managementStyles)
 		{
-			var styleObj = Instantiate(_selectionPrefab, _selectionGraph.transform, false);
-			styleObj.transform.FindText("Style").text = Localization.Get(style.Key);
-			styleObj.transform.FindComponent<TextLocalization>("Style").Key = style.Key;
-			styleObj.transform.FindImage("Amount").fillAmount = style.Value;
-			styleObj.transform.FindText("Percentage").text = (Mathf.Round(style.Value * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
+			var styleObj = Instantiate(_selectionPrefab, _selectionGraph, false).transform;
+			var styleLocalization = styleObj.FindComponent<TextLocalization>("Style");
+			styleLocalization.Key = style.Key;
+			styleLocalization.Set();
+			styleObj.FindImage("Amount").fillAmount = style.Value;
+			styleObj.FindText("Percentage").text = (Mathf.Round(style.Value * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
 		}
-		Invoke("DoBestFit", 0);
+		DoBestFit();
 	}
 
 	/// <summary>
@@ -117,16 +113,8 @@ public class FeedbackUI : MonoBehaviour
 	private void GetPrevalentLeadershipStyle()
 	{
 		var style = GameManagement.GameManager.GetPrevalentLeadershipStyle();
-		var styleString = string.Empty;
-		foreach (var s in style)
-		{
-			styleString += Localization.Get(s);
-			if (s != style.Last())
-			{
-				styleString += "\n";
-			}
-		}
-		_finalResultText.text = styleString;
+		style = style.Select(s => Localization.Get(s)).ToArray();
+		_finalResultText.text = string.Join("\n", style);
 	}
 
 	/// <summary>
@@ -134,29 +122,16 @@ public class FeedbackUI : MonoBehaviour
 	/// </summary>
 	private void SetPrevalentStyleText()
 	{
-		foreach (var button in _managementButtons)
+		float value;
+		foreach (var perText in _managementButtonPercentageText)
 		{
-			if (_managementStyles.ContainsKey(button.name.ToLower()))
-			{
-				button.transform.FindText("Percentage").text = (Mathf.Round(_managementStyles[button.name.ToLower()] * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
-			}
-			else
-			{
-				button.transform.FindText("Percentage").text = "0%";
-			}
+			perText.text = $"{(Mathf.Round((_managementStyles.TryGetValue(perText.Parent().name.ToLower(), out value) ? value : 0) * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage)}%";
 		}
 
 		var leaderStyles = GameManagement.GameManager.GatherLeadershipStyles();
-		foreach (var button in _leadershipButtons)
+		foreach (var perText in _leadershipButtonPercentageText)
 		{
-			if (leaderStyles.ContainsKey(button.name.ToLower()))
-			{
-				button.transform.FindText("Percentage").text = (Mathf.Round(leaderStyles[button.name.ToLower()] * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage) + "%";
-			}
-			else
-			{
-				button.transform.FindText("Percentage").text = "0%";
-			}
+			perText.text = $"{(Mathf.Round((leaderStyles.TryGetValue(perText.Parent().name.ToLower(), out value) ? value : 0) * 1000) * 0.1f).ToString(Localization.SpecificSelectedLanguage)}%";
 		}
 	}
 
@@ -167,18 +142,18 @@ public class FeedbackUI : MonoBehaviour
 	{
 		if (SUGARManager.CurrentUser != null)
 		{
-			var url = "username=" + SUGARManager.CurrentUser.Name;
-			url += "&par1=" + Mathf.Round(_managementStyles["competing"] * 100000f);
-			url += "&par2=" + Mathf.Round(_managementStyles["avoiding"] * 100000f);
-			url += "&par3=" + Mathf.Round(_managementStyles["accommodating"] * 100000f);
-			url += "&par4=" + Mathf.Round(_managementStyles["collaborating"] * 100000f);
-			url += "&par5=" + Mathf.Round(_managementStyles["compromising"] * 100000f);
-			url += "&tstamp=" + DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+			var url = $"username={SUGARManager.CurrentUser.Name}";
+			url += $"&par1={Mathf.Round(_managementStyles["competing"] * 100000f)}";
+			url += $"&par2={Mathf.Round(_managementStyles["avoiding"] * 100000f)}";
+			url += $"&par3={Mathf.Round(_managementStyles["accommodating"] * 100000f)}";
+			url += $"&par4={Mathf.Round(_managementStyles["collaborating"] * 100000f)}";
+			url += $"&par5={Mathf.Round(_managementStyles["compromising"] * 100000f)}";
+			url += $"&tstamp={DateTime.Now:yyyy-MM-ddTHH:mm}";
 			var intputBytes = Encoding.UTF8.GetBytes(url + "&hash=XWtliQQYvsK91kHGcEBg0FrRyOnj6h8w0DNtf5HrmYPSI8eq1fnryIFfLsai");
 			var hashProvider = new SHA1Managed();
 			var hashed = hashProvider.ComputeHash(intputBytes);
 			var hashValue = BitConverter.ToString(hashed).Replace("-", string.Empty);
-			url += "&hash=" + hashValue;
+			url += $"&hash={hashValue}";
 			url = "http://comunitaonline.unitn.it/Modules/Games/Rage.aspx?" + url;
 			Application.OpenURL(url);
 			Application.Quit();
@@ -193,9 +168,8 @@ public class FeedbackUI : MonoBehaviour
 
 	private void DoBestFit()
 	{
-		if (_selectionGraph.activeSelf)
+		if (_selectionGraph.gameObject.activeSelf)
 		{
-			LayoutRebuilder.ForceRebuildLayoutImmediate(_selectionGraph.RectTransform());
 			var text = _selectionGraph.GetComponentsInChildren<Text>().ToList();
 			text.Where(t => t.name == "Style" || t.name == "Percentage").BestFit();
 			text.Where(t => t.name == "Questions").BestFit();

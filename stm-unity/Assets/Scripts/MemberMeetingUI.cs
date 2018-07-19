@@ -104,15 +104,15 @@ public class MemberMeetingUI : MonoBehaviour
 				cmui.transform.FindImage("Opinion").enabled = false;
 			}
 		}
-		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.CrewMemberName.ToString(), crewMember.Name },
-			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKey.CurrentSession.ToString(), GameManagement.CurrentSessionString },
-			{ TrackerContextKey.CrewMemberPosition.ToString(), crewMember.BoatPosition().ToString() },
-			{ TrackerContextKey.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
-			{ TrackerContextKey.TriggerUI.ToString(), source },
-			{ TrackerContextKey.CrewMemberSessionsInTeam.ToString(), crewMember.SessionsIncluded().ToString() }
+			{ TrackerContextKey.CrewMemberName, crewMember.Name },
+			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
+			{ TrackerContextKey.CurrentSession, GameManagement.CurrentSessionString },
+			{ TrackerContextKey.CrewMemberPosition, crewMember.BoatPosition() },
+			{ TrackerContextKey.SizeOfTeam, GameManagement.CrewCount },
+			{ TrackerContextKey.TriggerUI, source },
+			{ TrackerContextKey.CrewMemberSessionsInTeam, crewMember.SessionsIncluded() }
 		}, AccessibleTracker.Accessible.Screen));
 		SUGARManager.GameData.Send("View Crew Member Screen", crewMember.Name);
 		Display();
@@ -191,24 +191,24 @@ public class MemberMeetingUI : MonoBehaviour
 		{
 			if (!ConfigKey.FiringCost.Affordable())
 			{
-				FeedbackHoverOver(_fireButton.transform, "FIRE_BUTTON_HOVER_ALLOWANCE");
+				FeedbackHoverOver("FIRE_BUTTON_HOVER_ALLOWANCE");
 			}
 			else if (!GameManagement.CrewEditAllowed)
 			{
-				FeedbackHoverOver(_fireButton.transform, Localization.GetAndFormat("FIRE_BUTTON_HOVER_LIMIT", false, GameManagement.StartingCrewEditAllowance));
+				FeedbackHoverOver(Localization.GetAndFormat("FIRE_BUTTON_HOVER_LIMIT", false, GameManagement.StartingCrewEditAllowance));
 			}
 			else if (GameManagement.CanRemoveFromCrew)
 			{
-				FeedbackHoverOver(_fireButton.transform, "FIRE_BUTTON_HOVER_CREW_LIMIT");
+				FeedbackHoverOver("FIRE_BUTTON_HOVER_CREW_LIMIT");
 			}
 			else if (!GameManagement.ShowTutorial)
 			{
-				FeedbackHoverOver(_fireButton.transform, "FIRE_BUTTON_HOVER_TUTORIAL");
+				FeedbackHoverOver("FIRE_BUTTON_HOVER_TUTORIAL");
 			}
 		}
 		else
 		{
-			_fireButton.GetComponent<HoverObject>().Enabled = false;
+			FeedbackHoverOver();
 		}
 
 		//set closing text
@@ -267,13 +267,13 @@ public class MemberMeetingUI : MonoBehaviour
 		var replyExtras = reply.Count > 0 ? reply.Where(r => r != reply.First()).Select(r => Localization.Get(r)).ToArray() : new string[0];
 		_dialogueText.text = reply.Count > 0 ? Localization.GetAndFormat(reply.First(), false, replyExtras) : string.Empty;
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
-		TrackerEventSender.SendEvent(new TraceEvent("MeetingQuestionAsked", TrackerAsset.Verb.Selected, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("MeetingQuestionAsked", TrackerAsset.Verb.Selected, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.QuestionAsked.ToString(), questionType },
-			{ TrackerContextKey.QuestionCost.ToString(), (allowanceBefore - GameManagement.ActionAllowance).ToString() },
-			{ TrackerContextKey.CrewMemberName.ToString(), _currentMember.Name },
-			{ TrackerContextKey.CurrentTalkTime.ToString(), allowanceBefore.ToString() },
-			{ TrackerContextKey.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() }
+			{ TrackerContextKey.QuestionAsked, questionType },
+			{ TrackerContextKey.QuestionCost, allowanceBefore - GameManagement.ActionAllowance },
+			{ TrackerContextKey.CrewMemberName, _currentMember.Name },
+			{ TrackerContextKey.CurrentTalkTime, allowanceBefore },
+			{ TrackerContextKey.SizeOfTeam, GameManagement.CrewCount }
 		}, questionType, AlternativeTracker.Alternative.Question));
 		UIManagement.TeamSelection.SortCrew();
 		SUGARManager.GameData.Send("Meeting Question Directed At", _currentMember.Name);
@@ -285,14 +285,14 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void FireCrewWarning()
 	{
-		TrackerEventSender.SendEvent(new TraceEvent("FirePopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("FirePopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.CrewMemberName.ToString(), _currentMember.Name },
-			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKey.CurrentSession.ToString(), GameManagement.CurrentSessionString },
-			{ TrackerContextKey.CrewMemberPosition.ToString(), _currentMember.BoatPosition().ToString() },
-			{ TrackerContextKey.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
-			{ TrackerContextKey.CrewMemberSessionsInTeam.ToString(), _currentMember.SessionsIncluded().ToString() }
+			{ TrackerContextKey.CrewMemberName, _currentMember.Name },
+			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
+			{ TrackerContextKey.CurrentSession, GameManagement.CurrentSessionString },
+			{ TrackerContextKey.CrewMemberPosition, _currentMember.BoatPosition() },
+			{ TrackerContextKey.SizeOfTeam, GameManagement.CrewCount },
+			{ TrackerContextKey.CrewMemberSessionsInTeam, _currentMember.SessionsIncluded() }
 		}, AccessibleTracker.Accessible.Screen));
 		_fireWarningPopUp.Active(true);
 		_fireWarningPopUp.transform.EnableSmallBlocker(() => CloseFireCrewWarning(TrackerTriggerSource.PopUpBlocker.ToString()));
@@ -304,10 +304,10 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void CloseFireCrewWarning(string source)
 	{
-		TrackerEventSender.SendEvent(new TraceEvent("FirePopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("FirePopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.PositionName.ToString(), _currentMember.Name },
-			{ TrackerContextKey.TriggerUI.ToString(), source }
+			{ TrackerContextKey.PositionName, _currentMember.Name },
+			{ TrackerContextKey.TriggerUI, source }
 		}, AccessibleTracker.Accessible.Screen));
 		_fireWarningPopUp.Active(false);
 		if (gameObject.activeInHierarchy)
@@ -325,15 +325,15 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void FireCrew()
 	{
-		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberFired", TrackerAsset.Verb.Interacted, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberFired", TrackerAsset.Verb.Interacted, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.CrewMemberName.ToString(), _currentMember.Name },
-			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKey.CurrentSession.ToString(), GameManagement.CurrentSessionString },
-			{ TrackerContextKey.CrewMemberPosition.ToString(), _currentMember.BoatPosition().ToString() },
-			{ TrackerContextKey.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
-			{ TrackerContextKey.FiringCost.ToString(), ConfigKey.FiringCost.Value().ToString(CultureInfo.InvariantCulture) },
-			{ TrackerContextKey.CrewMemberSessionsInTeam.ToString(), _currentMember.SessionsIncluded().ToString() }
+			{ TrackerContextKey.CrewMemberName, _currentMember.Name },
+			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
+			{ TrackerContextKey.CurrentSession, GameManagement.CurrentSessionString },
+			{ TrackerContextKey.CrewMemberPosition, _currentMember.BoatPosition() },
+			{ TrackerContextKey.SizeOfTeam, GameManagement.CrewCount },
+			{ TrackerContextKey.FiringCost, ConfigKey.FiringCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKey.CrewMemberSessionsInTeam, _currentMember.SessionsIncluded() }
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Fired", true);
 		GameManagement.GameManager.RetireCrewMember(_currentMember);
@@ -349,10 +349,10 @@ public class MemberMeetingUI : MonoBehaviour
 	{
 		if (gameObject.activeInHierarchy)
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("CrewMemberPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.PositionName.ToString(), _currentMember.Name },
-				{ TrackerContextKey.TriggerUI.ToString(), source }
+				{ TrackerContextKey.PositionName, _currentMember.Name },
+				{ TrackerContextKey.TriggerUI, source }
 			}, AccessibleTracker.Accessible.Screen));
 			gameObject.Active(false);
 			foreach (var crewMember in UIManagement.CrewMemberUI)
@@ -409,10 +409,9 @@ public class MemberMeetingUI : MonoBehaviour
 	/// <summary>
 	/// Set up pointer enter and exit events for created objects that can be hovered over
 	/// </summary>
-	private void FeedbackHoverOver(Transform feedback, string text)
+	private void FeedbackHoverOver(string text = "")
 	{
-		feedback.GetComponent<HoverObject>().Enabled = true;
-		feedback.GetComponent<HoverObject>().SetHoverText(text);
+		_fireButton.transform.GetComponent<HoverObject>().SetHoverText(text);
 	}
 
 	private void DoBestFit()

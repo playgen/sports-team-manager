@@ -70,9 +70,9 @@ public class RaceResultUI : MonoBehaviour
 		}
 		transform.FindText("Result").text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, GameManagement.TeamName, finishPositionText);
 		DoBestFit();
-		TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.FinishingPosition.ToString(), finishPosition.ToString() }
+			{ TrackerContextKey.FinishingPosition, finishPosition }
 		}, AccessibleTracker.Accessible.Screen));
 	}
 
@@ -85,10 +85,10 @@ public class RaceResultUI : MonoBehaviour
 		{
 			gameObject.Active(false);
 			UIManagement.DisableBlocker();
-			TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.FinishingPosition.ToString(), _lastRaceFinishPosition.ToString() },
-				{ TrackerContextKey.TriggerUI.ToString(), source }
+				{ TrackerContextKey.FinishingPosition, _lastRaceFinishPosition },
+				{ TrackerContextKey.TriggerUI, source }
 			}, AccessibleTracker.Accessible.Screen));
 			if (!GameManagement.SeasonOngoing)
 			{

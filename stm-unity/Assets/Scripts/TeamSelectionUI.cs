@@ -93,10 +93,10 @@ public class TeamSelectionUI : MonoBehaviour {
 		BestFit.ResolutionChange += DoBestFit;
 		if (!GameManagement.SeasonOngoing)
 		{
-			if (GameManagement.RageMode)
+			if (!GameManagement.RageMode)
 			{
 				_feedbackButton.onClick.RemoveAllListeners();
-				if (GameManagement.QuestionnaireCompleted)
+				if (!GameManagement.QuestionnaireCompleted)
 				{
 					_feedbackButton.onClick.AddListener(TriggerFeedback);
 					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
@@ -147,7 +147,7 @@ public class TeamSelectionUI : MonoBehaviour {
 					foreach (var b in _recruitButtons)
 					{
 						b.interactable = true;
-						b.GetComponent<HoverObject>().Enabled = false;
+						FeedbackHoverOver(b.transform);
 					}
 				}
 			}
@@ -237,10 +237,10 @@ public class TeamSelectionUI : MonoBehaviour {
 		else
 		{
 			stageIcon.gameObject.Active(false);
-			if (GameManagement.RageMode)
+			if (!GameManagement.RageMode)
 			{
 				_feedbackButton.onClick.RemoveAllListeners();
-				if (GameManagement.QuestionnaireCompleted)
+				if (!GameManagement.QuestionnaireCompleted)
 				{
 					_feedbackButton.onClick.AddListener(TriggerFeedback);
 					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
@@ -268,7 +268,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			_finalPlacementText.GetComponent<TextLocalization>().Set();
 
 			_endRace.gameObject.Active(true);
-			_feedbackButton.gameObject.Active(GameManagement.RageMode);
+			_feedbackButton.gameObject.Active(!GameManagement.RageMode);
 			_boatMain.gameObject.Active(false);
 		}
 		_boatMain.transform.FindText("Stage Number").text = GameManagement.IsRace || !GameManagement.SeasonOngoing ? string.Empty : GameManagement.CurrentRaceSession.ToString();
@@ -465,7 +465,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 		if (playerTriggered)
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("CrewSortChanged", TrackerAsset.Verb.Selected, new Dictionary<string, string>(), sortType, AlternativeTracker.Alternative.Dialog));
+			TrackerEventSender.SendEvent(new TraceEvent("CrewSortChanged", TrackerAsset.Verb.Selected, new Dictionary<TrackerContextKey, object>(), sortType, AlternativeTracker.Alternative.Dialog));
 		}
 	}
 
@@ -602,9 +602,8 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Set up pointer enter and exit events for created objects that can be hovered over
 	/// </summary>
-	private void FeedbackHoverOver(Transform feedback, string text)
+	private void FeedbackHoverOver(Transform feedback, string text = "")
 	{
-		feedback.GetComponent<HoverObject>().Enabled = true;
 		feedback.GetComponent<HoverObject>().SetHoverText(text);
 	}
 
@@ -805,17 +804,17 @@ public class TeamSelectionUI : MonoBehaviour {
 		if (current)
 		{
 			var newString = string.Join(",", boat.Positions.Select(pos => pos.ToString()).ToArray());
-			TrackerEventSender.SendEvent(new TraceEvent("RaceResult", TrackerAsset.Verb.Completed, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("RaceResult", TrackerAsset.Verb.Completed, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.RaceNumber.ToString(), (GameManagement.RaceCount + 1).ToString() },
-				{ TrackerContextKey.CurrentSession.ToString(), (isRace ? GameManagement.RaceSessionLength : GameManagement.CurrentRaceSession - 1) + "/" + GameManagement.RaceSessionLength },
-				{ TrackerContextKey.SessionType.ToString(), isRace ? "Race" : "Practice" },
-				{ TrackerContextKey.BoatLayout.ToString(), newString },
-				{ TrackerContextKey.Score.ToString(), boat.Score.ToString() },
-				{ TrackerContextKey.ScoreAverage.ToString(), ((float)boat.Score / boat.PositionCount).ToString(CultureInfo.InvariantCulture) },
-				{ TrackerContextKey.IdealCorrectPlacement.ToString(), boat.PerfectSelections.ToString() },
-				{ TrackerContextKey.IdealCorrectMemberWrongPosition.ToString(), boat.ImperfectSelections.ToString() },
-				{ TrackerContextKey.IdealIncorrectPlacement.ToString(), boat.IncorrectSelections.ToString() }
+				{ TrackerContextKey.RaceNumber, GameManagement.RaceCount + 1 },
+				{ TrackerContextKey.CurrentSession, (isRace ? GameManagement.RaceSessionLength : GameManagement.CurrentRaceSession - 1) + "/" + GameManagement.RaceSessionLength },
+				{ TrackerContextKey.SessionType, isRace ? "Race" : "Practice" },
+				{ TrackerContextKey.BoatLayout, newString },
+				{ TrackerContextKey.Score, boat.Score },
+				{ TrackerContextKey.ScoreAverage, ((float)boat.Score / boat.PositionCount).ToString(CultureInfo.InvariantCulture) },
+				{ TrackerContextKey.IdealCorrectPlacement, boat.PerfectSelections },
+				{ TrackerContextKey.IdealCorrectMemberWrongPosition, boat.ImperfectSelections },
+				{ TrackerContextKey.IdealIncorrectPlacement, boat.IncorrectSelections }
 			}, CompletableTracker.Completable.Race));
 
 			SUGARManager.GameData.Send("Race Session Score", boat.Score);
@@ -922,7 +921,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// </summary>
 	private void TriggerFeedback()
 	{
-		if (GameManagement.RageMode)
+		if (!GameManagement.RageMode)
 		{
 			UIStateManager.StaticGoToFeedback();
 		}

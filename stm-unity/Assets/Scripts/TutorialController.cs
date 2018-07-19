@@ -168,13 +168,13 @@ public class TutorialController : MonoBehaviour
 	{
 		if (SectionCount <= GameManagement.TutorialStage + 1)
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("TutorialFinished", TrackerAsset.Verb.Completed, new Dictionary<string, string>(), CompletableTracker.Completable.Completable));
+			TrackerEventSender.SendEvent(new TraceEvent("TutorialFinished", TrackerAsset.Verb.Completed, new Dictionary<TrackerContextKey, object>(), CompletableTracker.Completable.Completable));
 		}
 		else
 		{
-			TrackerEventSender.SendEvent(new TraceEvent("TutorialExited", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("TutorialExited", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.TutorialStage.ToString(), (GameManagement.TutorialStage + 1).ToString() }
+				{ TrackerContextKey.TutorialStage, GameManagement.TutorialStage + 1 }
 			}, CompletableTracker.Completable.Completable));
 		}
 		GameManagement.GameManager.SaveTutorialProgress(0, true);

@@ -6,8 +6,8 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class HoverObject : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
+	[SerializeField]
 	private string _hoverText;
-	public bool Enabled;
 
 	/// <summary>
 	/// Set text and pop-up for this object
@@ -22,10 +22,9 @@ public class HoverObject : MonoBehaviour, IPointerEnterHandler, IPointerClickHan
 	/// </summary>
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		if (Enabled)
+		if (!string.IsNullOrEmpty(_hoverText))
 		{
-		    UIManagement.Hover.SetHoverObject(transform);
-		    UIManagement.Hover.DisplayHoverNoDelay(_hoverText);
+		    UIManagement.Hover.DisplayHoverNoDelay(transform, _hoverText);
 		}
 	}
 
@@ -34,16 +33,15 @@ public class HoverObject : MonoBehaviour, IPointerEnterHandler, IPointerClickHan
 	/// </summary>
 	public void OnPointerEnter(PointerEventData eventData)
 	{
-		if (Enabled)
+		if (!string.IsNullOrEmpty(_hoverText))
 		{
-		    UIManagement.Hover.SetHoverObject(transform);
 			if (Application.isMobilePlatform)
 			{
-				UIManagement.Hover.DisplayHoverNoDelay(_hoverText);
+				UIManagement.Hover.DisplayHoverNoDelay(transform, _hoverText);
 			}
 			else
 			{
-				UIManagement.Hover.DisplayHover(_hoverText);
+				UIManagement.Hover.DisplayHover(transform, _hoverText);
 			}
 		}
 	}
@@ -53,9 +51,6 @@ public class HoverObject : MonoBehaviour, IPointerEnterHandler, IPointerClickHan
 	/// </summary>
 	public void OnPointerExit(PointerEventData eventData)
 	{
-		if (Enabled)
-		{
-		    UIManagement.Hover.HideHover();
-		}
+		UIManagement.Hover.HideHover();
 	}
 }

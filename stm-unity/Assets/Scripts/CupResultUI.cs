@@ -64,9 +64,9 @@ public class CupResultUI : MonoBehaviour
 			memberObject.transform.SetAsLastSibling();
 		}
 		transform.FindText("Result").text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, GameManagement.TeamName, finalPositionText);
-		TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.CupFinishingPosition.ToString(), _cupPosition.ToString() }
+			{ TrackerContextKey.CupFinishingPosition, _cupPosition }
 		}, AccessibleTracker.Accessible.Screen));
 		if (!GameManagement.RageMode)
 		{
@@ -85,10 +85,10 @@ public class CupResultUI : MonoBehaviour
 		{
 			gameObject.Active(false);
 			UIManagement.DisableBlocker();
-			TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.CupFinishingPosition.ToString(), _cupPosition.ToString() },
-				{ TrackerContextKey.TriggerUI.ToString(), source }
+				{ TrackerContextKey.CupFinishingPosition, _cupPosition },
+				{ TrackerContextKey.TriggerUI, source }
 			}, AccessibleTracker.Accessible.Screen));
 			if (GameManagement.RageMode)
 			{

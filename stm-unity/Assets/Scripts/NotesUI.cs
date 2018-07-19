@@ -41,9 +41,9 @@ public class NotesUI : MonoBehaviour {
 		_notesField.text = GameManagement.EventController.GetNotes(_notesSubject);
 		transform.EnableBlocker(() => Close(TrackerTriggerSource.PopUpBlocker.ToString()));
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
-		TrackerEventSender.SendEvent(new TraceEvent("NotesPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("NotesPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.TriggerUI.ToString(), _notesSubject }
+			{ TrackerContextKey.TriggerUI, _notesSubject }
 		}, AccessibleTracker.Accessible.Screen));
 	}
 
@@ -61,9 +61,9 @@ public class NotesUI : MonoBehaviour {
 			UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 			if (!string.IsNullOrEmpty(source))
 			{
-				TrackerEventSender.SendEvent(new TraceEvent("NotesPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("NotesPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 				{
-					{ TrackerContextKey.TriggerUI.ToString(), source }
+					{ TrackerContextKey.TriggerUI, source }
 				}, AccessibleTracker.Accessible.Screen));
 			}
 		}

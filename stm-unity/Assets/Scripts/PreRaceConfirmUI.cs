@@ -36,16 +36,16 @@ public class PreRaceConfirmUI : MonoBehaviour
 		if (!GameManagement.IsRace)
 		{
 			GetComponentInChildren<Text>().text = GameManagement.ActionRemaining ? Localization.GetAndFormat("RACE_SKIP_CONFIRM_ALLOWANCE_REMAINING", false, GameManagement.ActionAllowance) : Localization.Get("RACE_SKIP_CONFIRM_NO_ALLOWANCE");
-			TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceConfirmPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceConfirmPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-				{ TrackerContextKey.RemainingSessions.ToString(), GameManagement.SessionsRemaining.ToString() }
+				{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
+				{ TrackerContextKey.RemainingSessions, GameManagement.SessionsRemaining }
 			}, AccessibleTracker.Accessible.Screen));
 			yesButton.onClick.AddListener(() =>
-				TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceApproved", TrackerAsset.Verb.Selected, new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceApproved", TrackerAsset.Verb.Selected, new Dictionary<TrackerContextKey, object>
 				{
-					{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-					{ TrackerContextKey.RemainingSessions.ToString(), GameManagement.SessionsRemaining.ToString() }
+					{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
+					{ TrackerContextKey.RemainingSessions, GameManagement.SessionsRemaining }
 				}, "SkipToRace", AlternativeTracker.Alternative.Menu))
 			);
 			yesButton.onClick.AddListener(() => SUGARManager.GameData.Send("Practice Sessions Skipped", GameManagement.SessionsRemaining));
@@ -53,14 +53,14 @@ public class PreRaceConfirmUI : MonoBehaviour
 		else
 		{
 			GetComponentInChildren<Text>().text = GameManagement.ActionRemaining ? Localization.GetAndFormat("RACE_CONFIRM_ALLOWANCE_REMAINING", false, GameManagement.ActionAllowance) : Localization.Get("RACE_CONFIRM_NO_ALLOWANCE");
-			TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() }
+				{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance }
 			}, AccessibleTracker.Accessible.Screen));
 			yesButton.onClick.AddListener(() =>
-				TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmApproved", TrackerAsset.Verb.Selected, new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmApproved", TrackerAsset.Verb.Selected, new Dictionary<TrackerContextKey, object>
 				{
-					{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() }
+					{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance }
 				}, "RaceConfirm", AlternativeTracker.Alternative.Menu))
 			);
 		}
@@ -86,19 +86,19 @@ public class PreRaceConfirmUI : MonoBehaviour
 			{
 				if (!GameManagement.IsRace)
 				{
-					TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceDeclined", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+					TrackerEventSender.SendEvent(new TraceEvent("SkipToRaceDeclined", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 				{
-					{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-					{ TrackerContextKey.RemainingSessions.ToString(), GameManagement.SessionsRemaining.ToString() },
-					{ TrackerContextKey.TriggerUI.ToString(), source }
+					{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
+					{ TrackerContextKey.RemainingSessions, GameManagement.SessionsRemaining },
+					{ TrackerContextKey.TriggerUI, source }
 				}, AccessibleTracker.Accessible.Screen));
 				}
 				else
 				{
-					TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmDeclined", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+					TrackerEventSender.SendEvent(new TraceEvent("RaceConfirmDeclined", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 				{
-					{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-					{ TrackerContextKey.TriggerUI.ToString(), source }
+					{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
+					{ TrackerContextKey.TriggerUI, source }
 				}, AccessibleTracker.Accessible.Screen));
 				}
 			}
@@ -130,13 +130,13 @@ public class PreRaceConfirmUI : MonoBehaviour
 	{
 		gameObject.Active(true);
 		GetComponentInChildren<Text>().text = Localization.Get("REPEAT_CONFIRM");
-		TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpConfirmPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>(), AccessibleTracker.Accessible.Screen));
+		TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpConfirmPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>(), AccessibleTracker.Accessible.Screen));
 		var yesButton = transform.FindButton("Yes");
 		var noButton = transform.FindButton("No");
 		yesButton.onClick.RemoveAllListeners();
 		yesButton.onClick.AddListener(UIManagement.TeamSelection.ConfirmLineUp);
 		yesButton.onClick.AddListener(() => CloseConfirmPopUp(string.Empty));
-		yesButton.onClick.AddListener(() => TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpApproved", TrackerAsset.Verb.Selected, new Dictionary<string, string>(), "RepeatLineUp", AlternativeTracker.Alternative.Menu)));
+		yesButton.onClick.AddListener(() => TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpApproved", TrackerAsset.Verb.Selected, new Dictionary<TrackerContextKey, object>(), "RepeatLineUp", AlternativeTracker.Alternative.Menu)));
 
 		noButton.onClick.RemoveAllListeners();
 		noButton.onClick.AddListener(() => CloseRepeatWarning(TrackerTriggerSource.NoButtonSelected.ToString()));
@@ -153,9 +153,9 @@ public class PreRaceConfirmUI : MonoBehaviour
 		{
 			gameObject.Active(false);
 		    UIManagement.DisableBlocker();
-			TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpDeclined", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("RepeatLineUpDeclined", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.TriggerUI.ToString(), source }
+				{ TrackerContextKey.TriggerUI, source }
 			}, AccessibleTracker.Accessible.Screen));
 		}
 	}

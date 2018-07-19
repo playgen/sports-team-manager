@@ -10,8 +10,8 @@ using TrackerAssetPackage;
 /// <summary>
 /// Contains all logic relating to displaying post-race event 'learning pills'
 /// </summary>
-public class LearningPillUI : MonoBehaviour {
-
+public class LearningPillUI : MonoBehaviour
+{
 	[SerializeField]
 	private Text _helpText;
 	[SerializeField]
@@ -73,16 +73,16 @@ public class LearningPillUI : MonoBehaviour {
 		if (_furtherHelp.Count > 0)
 		{
 			StartCoroutine(Animate(false, true));
-			Invoke("SetFurtherHelp", 1.1f);
+			Invoke(nameof(SetFurtherHelp), 1.1f);
 		}
 		else
 		{
 			UIManagement.EventImpact.Display();
 		}
-		TrackerEventSender.SendEvent(new TraceEvent("LearningPillClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("LearningPillClosed", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.LearningPillID.ToString(), _currentHelp },
-			{ TrackerContextKey.TriggerUI.ToString(), source }
+			{ TrackerContextKey.LearningPillID, _currentHelp },
+			{ TrackerContextKey.TriggerUI, source }
 		}, AccessibleTracker.Accessible.Accessible));
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
@@ -96,7 +96,7 @@ public class LearningPillUI : MonoBehaviour {
 		var endFrame = new WaitForEndOfFrame();
 		var start = upward ? keep ? 1 : 0 : 2;
 		var limit = keep ? 1 : 2;
-		_popUpAnim["LearningPill"].speed = 2;
+		_popUpAnim["LearningPill"].speed = 1;
 		_popUpAnim["LearningPill"].time = start;
 		_popUpAnim.Play();
 		while (_popUpAnim["LearningPill"].time <= start + limit)
@@ -109,9 +109,9 @@ public class LearningPillUI : MonoBehaviour {
 		if (upward)
 		{
 			_helpText.text = tip;
-			TrackerEventSender.SendEvent(new TraceEvent("LearningPillDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("LearningPillDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.LearningPillID.ToString(), _currentHelp }
+				{ TrackerContextKey.LearningPillID, _currentHelp }
 			}, AccessibleTracker.Accessible.Accessible));
 			transform.EnableBlocker(() => ClosePill(TrackerTriggerSource.PopUpBlocker.ToString()));
 		}

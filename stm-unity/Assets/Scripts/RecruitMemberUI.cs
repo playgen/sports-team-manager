@@ -48,12 +48,12 @@ public class RecruitMemberUI : MonoBehaviour
 		var history = GameManagement.ReverseLineUpHistory;
 		var firstMismatch = history.FirstOrDefault(b => b.Type != GameManagement.BoatType);
 		var sessionsSinceLastChange = firstMismatch != null ? history.IndexOf(firstMismatch) : 0;
-		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKey.CurrentSession.ToString(), GameManagement.CurrentSessionString },
-			{ TrackerContextKey.SizeOfTeam.ToString(), GameManagement.CrewCount.ToString() },
-			{ TrackerContextKey.SessionsSinceBoatLayoutChange.ToString(), sessionsSinceLastChange.ToString() }
+			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
+			{ TrackerContextKey.CurrentSession, GameManagement.CurrentSessionString },
+			{ TrackerContextKey.SizeOfTeam, GameManagement.CrewCount },
+			{ TrackerContextKey.SessionsSinceBoatLayoutChange, sessionsSinceLastChange }
 		}, AccessibleTracker.Accessible.Screen));
 		_lastQuestion = null;
 		_lastAnswers = null;
@@ -184,13 +184,13 @@ public class RecruitMemberUI : MonoBehaviour
 		}
 		DoBestFit();
 		CostCheck();
-		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentQuestionAsked", TrackerAsset.Verb.Selected, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentQuestionAsked", TrackerAsset.Verb.Selected, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKey.CurrentSession.ToString(), GameManagement.CurrentSessionString },
-			{ TrackerContextKey.QuestionAsked.ToString(), skill.ToString() },
-			{ TrackerContextKey.QuestionCost.ToString(), ConfigKey.SendRecruitmentQuestionCost.Value().ToString(CultureInfo.InvariantCulture) },
-			{ TrackerContextKey.RaceStartTalkTime.ToString(), GameManagement.StartingActionAllowance.ToString() }
+			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
+			{ TrackerContextKey.CurrentSession, GameManagement.CurrentSessionString },
+			{ TrackerContextKey.QuestionAsked, skill },
+			{ TrackerContextKey.QuestionCost, ConfigKey.SendRecruitmentQuestionCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKey.RaceStartTalkTime, GameManagement.StartingActionAllowance }
 		}, skill.ToString(), AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill.ToString());
@@ -239,11 +239,11 @@ public class RecruitMemberUI : MonoBehaviour
 			_hireWarningReject.onClick.AddListener(() => CloseHireCrewWarning(TrackerTriggerSource.NoButtonSelected.ToString()));
 		}
 		DoBestFit();
-		TrackerEventSender.SendEvent(new TraceEvent("HirePopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("HirePopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.CrewMemberName.ToString(), recruit.Name },
-			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKey.HiringCost.ToString(), ConfigKey.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) }
+			{ TrackerContextKey.CrewMemberName, recruit.Name },
+			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
+			{ TrackerContextKey.HiringCost, ConfigKey.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) }
 		}, AccessibleTracker.Accessible.Screen));
 	}
 
@@ -261,12 +261,12 @@ public class RecruitMemberUI : MonoBehaviour
 		{
 			UIManagement.DisableBlocker();
 		}
-		TrackerEventSender.SendEvent(new TraceEvent("HirePopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("HirePopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.CrewMemberName.ToString(), _currentSelected },
-			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKey.HiringCost.ToString(), ConfigKey.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
-			{ TrackerContextKey.TriggerUI.ToString(), source }
+			{ TrackerContextKey.CrewMemberName, _currentSelected },
+			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
+			{ TrackerContextKey.HiringCost, ConfigKey.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKey.TriggerUI, source }
 		}, AccessibleTracker.Accessible.Screen));
 		_currentSelected = string.Empty;
 	}
@@ -280,12 +280,12 @@ public class RecruitMemberUI : MonoBehaviour
 		UIManagement.TeamSelection.ResetCrew();
 		CloseRecruitmentPopUp(string.Empty);
 		CloseHireCrewWarning(string.Empty);
-		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberHired", TrackerAsset.Verb.Interacted, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("CrewMemberHired", TrackerAsset.Verb.Interacted, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.CrewMemberName.ToString(), crewMember.Name },
-			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKey.HiringCost.ToString(), ConfigKey.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
-			{ TrackerContextKey.TriggerUI.ToString(), source }
+			{ TrackerContextKey.CrewMemberName, crewMember.Name },
+			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
+			{ TrackerContextKey.HiringCost, ConfigKey.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKey.TriggerUI, source }
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Hired", true);
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
@@ -296,10 +296,10 @@ public class RecruitMemberUI : MonoBehaviour
 	/// </summary>
 	public void CloseRecruitmentPopUp(string source)
 	{
-		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 		{
-			{ TrackerContextKey.CurrentTalkTime.ToString(), GameManagement.ActionAllowance.ToString() },
-			{ TrackerContextKey.TriggerUI.ToString(), source }
+			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
+			{ TrackerContextKey.TriggerUI, source }
 		}, AccessibleTracker.Accessible.Screen));
 		UIManagement.MemberMeeting.Display();
 		gameObject.Active(false);

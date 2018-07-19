@@ -43,10 +43,9 @@ public class BoatPromotionUI : MonoBehaviour
 			var oldList = string.Join("\n", oldPositions);
 			addedText.text = newList;
 			removedText.text = oldList;
-			var newString = string.Join(",", newPos.Select(pos => pos.ToString()).ToArray());
-			TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
+			TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.BoatLayout.ToString(), newString }
+				{ TrackerContextKey.BoatLayout, GameManagement.PositionString }
 			}, AccessibleTracker.Accessible.Screen));
 		}
 		else
@@ -66,11 +65,10 @@ public class BoatPromotionUI : MonoBehaviour
 			UIManagement.DisableBlocker();
 			if (!string.IsNullOrEmpty(source))
 			{
-				var newString = GameManagement.PositionString;
-				TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<string, string>
+				TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpClosed", TrackerAsset.Verb.Skipped, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.BoatLayout.ToString(), newString },
-				{ TrackerContextKey.TriggerUI.ToString(), source }
+				{ TrackerContextKey.BoatLayout, GameManagement.PositionString },
+				{ TrackerContextKey.TriggerUI, source }
 			}, AccessibleTracker.Accessible.Screen));
 			}
 		}
