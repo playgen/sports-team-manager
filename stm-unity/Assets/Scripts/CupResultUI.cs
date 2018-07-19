@@ -49,7 +49,7 @@ public class CupResultUI : MonoBehaviour
 		_cupPosition = GameManagement.GetCupPosition();
 		var finalPositionText = Localization.Get("POSITION_" + _cupPosition);
 		var crewCount = 0;
-		foreach (var crewMember in GameManagement.CrewMembers.Values.ToList())
+		foreach (var crewMember in GameManagement.CrewMemberList)
 		{
 			var memberObject = Instantiate(_postRaceCrewPrefab);
 			memberObject.transform.SetParent(crewTransform, false);

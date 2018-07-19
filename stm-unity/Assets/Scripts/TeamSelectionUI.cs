@@ -189,39 +189,9 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// <summary>
 	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last names, first names
 	/// </summary>
-	private string SplitName(string original, bool shortName = false)
+	private string SplitName(CrewMember member, bool shortName = false)
 	{
-		var splitName = original.Split(' ');
-		if (shortName)
-		{
-			var formattedName = splitName.First()[0] + ".";
-			foreach (var split in splitName)
-			{
-				if (split != splitName.First())
-				{
-					formattedName += split;
-					if (split != splitName.Last())
-					{
-						formattedName += " ";
-					}
-				}
-			}
-			return formattedName;
-		}
-		var firstName = ",\n" + splitName.First();
-		var lastName = string.Empty;
-		foreach (var split in splitName)
-		{
-			if (split != splitName.First())
-			{
-				lastName += split;
-				if (split != splitName.Last())
-				{
-					lastName += " ";
-				}
-			}
-		}
-		return lastName + firstName;
+		return shortName ? member.FirstName[0] + "." + member.LastName : member.LastName + ",\n" + member.FirstName;
 	}
 
 	private void CreateSeasonProgress()
@@ -234,7 +204,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		{
 			var resultObj = Instantiate(_resultPrefab, _ongoingResultContainer.transform, false);
 			resultObj.GetComponentInChildren<Text>().color = UnityEngine.Color.black;
-			if (GameManagement.RaceScorePositionCountPairs.Count > i)
+			if (GameManagement.RaceCount > i)
 			{
 				var position = GameManagement.GetRacePosition(GameManagement.RaceScorePositionCountPairs[i].Key, GameManagement.RaceScorePositionCountPairs[i].Value);
 				resultObj.GetComponent<Image>().fillAmount = 1;
@@ -244,7 +214,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			}
 			else
 			{
-				resultObj.GetComponent<Image>().fillAmount = GameManagement.RaceScorePositionCountPairs.Count == i ? (GameManagement.CurrentRaceSession - 1) / (float)GameManagement.RaceSessionLength : 0;
+				resultObj.GetComponent<Image>().fillAmount = GameManagement.RaceCount == i ? (GameManagement.CurrentRaceSession - 1) / (float)GameManagement.RaceSessionLength : 0;
 				resultObj.GetComponentInChildren<Text>().text = string.Empty;
 			}
 		}
@@ -348,7 +318,7 @@ public class TeamSelectionUI : MonoBehaviour {
 				{
 					break;
 				}
-				if (session.Key.PerfectSelections == session.Key.Positions.Count)
+				if (session.Key.PerfectSelections == session.Key.PositionCount)
 				{
 					_skipToRaceButton.gameObject.Active(true);
 					break;
@@ -365,7 +335,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	/// </summary>
 	private void CreateCrew()
 	{
-		foreach (var cm in GameManagement.CrewMembers.Values.ToList())
+		foreach (var cm in GameManagement.CrewMemberList)
 		{
 			//create the static CrewMember UI (aka, the one that remains greyed out within the container at all times)
 			var crewMember = CreateCrewMember(cm, _crewContainer.transform, false, true);
@@ -399,8 +369,8 @@ public class TeamSelectionUI : MonoBehaviour {
 	private GameObject CreateCrewMember(CrewMember cm, Transform parent, bool usable, bool current)
 	{
 		var crewMember = Instantiate(_crewPrefab, parent, false);
-		crewMember.transform.FindText("Name").text = SplitName(cm.Name, true);
-		crewMember.name = SplitName(cm.Name);
+		crewMember.transform.FindText("Name").text = SplitName(cm, true);
+		crewMember.name = SplitName(cm);
 		crewMember.GetComponent<CrewMemberUI>().SetUp(usable, current, cm, parent);
 		crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(cm.Avatar, cm.GetMood());
 		return crewMember;
@@ -459,7 +429,7 @@ public class TeamSelectionUI : MonoBehaviour {
 				currentMembers.ForEach(c => c.SetSortValue(string.Empty));
 				break;
 			case 9:
-				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedCrewOpinions[GameManagement.Manager.Name]).ToList();
+				sortedCrewMembers = sortedCrewMembers.OrderByDescending(c => c.CrewMember.RevealedCrewOpinions[GameManagement.ManagerName]).ToList();
 				sortType = "Manager Opinion";
 				currentMembers.ForEach(c => c.SetSortValue(string.Empty));
 				break;
@@ -575,9 +545,9 @@ public class TeamSelectionUI : MonoBehaviour {
 			//create CrewMember UI object for the CrewMember that was in this position
 			var crewMember = crewContainer.FindObject("Crew Member " + crewCount);
 			crewMember.Active(true);
-			var current = GameManagement.CrewMembers.ContainsKey(pair.Value.Name);
-			crewMember.transform.FindText("Name").text = SplitName(pair.Value.Name, true);
-			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, -(GameManagement.GetRacePosition(boat.Score, boat.Positions.Count) - 3) * 2);
+			var current = pair.Value.Current();
+			crewMember.transform.FindText("Name").text = SplitName(pair.Value, true);
+			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, -(GameManagement.GetRacePosition(boat.Score, boat.PositionCount) - 3) * 2);
 			crewMember.GetComponent<CrewMemberUI>().SetUp(false, current, pair.Value, crewContainer);
 
 			var positionImage = crewMember.transform.FindObject("Position");
@@ -711,7 +681,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			if (success)
 			{
 				ResetScrollbar();
-				GetResult(GameManagement.CurrentRaceSession - 1 == 0, GameManagement.PreviousSession, offset, _raceButton.GetComponentInChildren<Text>(), true);
+				GetResult(GameManagement.CurrentRaceSession == 1, GameManagement.PreviousSession, offset, _raceButton.GetComponentInChildren<Text>(), true);
 				//set-up next boat
 				CreateNewBoat();
 				UIManagement.Tutorial.ShareEvent(GetType().Name, "ConfirmLineUp");
@@ -747,7 +717,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			foreach (var crewMember in crewMembers)
 			{
 				//if this UI is for the positioned CrewMember, place and remove the CrewMemberUI and Position from their lists to remove their availability
-				if (crewMember.name == SplitName(member.Name))
+				if (crewMember.name == SplitName(member))
 				{
 					position.RemoveCrew();
 					crewMember.Place(position);
@@ -781,7 +751,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		foreach (var crewMember in UIManagement.CrewMemberUI)
 		{
 			//destroy CrewMemberUI (making them unclickable) from those that are no longer in the currentCrew. Update avatar so they change into their causal outfit
-			if (GameManagement.CrewMembers.All(cm => cm.Key != crewMember.CrewMember.Name))
+			if (!crewMember.CrewMember.Current())
 			{
 				crewMember.GetComponentInChildren<AvatarDisplay>().UpdateAvatar(crewMember.CrewMember.Avatar);
 				crewMember.NotCurrent();
@@ -823,7 +793,7 @@ public class TeamSelectionUI : MonoBehaviour {
 		}
 		else
 		{
-			finishPosition = GameManagement.GetRacePosition(boat.Score, boat.Positions.Count);
+			finishPosition = GameManagement.GetRacePosition(boat.Score, boat.PositionCount);
 			var finishPositionText = Localization.Get("POSITION_" + finishPosition);
 			scoreText.text = string.Format("{0} {1}", Localization.Get("RACE_POSITION"), finishPositionText);
 			if (current)
@@ -842,23 +812,23 @@ public class TeamSelectionUI : MonoBehaviour {
 				{ TrackerContextKey.SessionType.ToString(), isRace ? "Race" : "Practice" },
 				{ TrackerContextKey.BoatLayout.ToString(), newString },
 				{ TrackerContextKey.Score.ToString(), boat.Score.ToString() },
-				{ TrackerContextKey.ScoreAverage.ToString(), ((float)boat.Score / boat.Positions.Count).ToString(CultureInfo.InvariantCulture) },
+				{ TrackerContextKey.ScoreAverage.ToString(), ((float)boat.Score / boat.PositionCount).ToString(CultureInfo.InvariantCulture) },
 				{ TrackerContextKey.IdealCorrectPlacement.ToString(), boat.PerfectSelections.ToString() },
 				{ TrackerContextKey.IdealCorrectMemberWrongPosition.ToString(), boat.ImperfectSelections.ToString() },
 				{ TrackerContextKey.IdealIncorrectPlacement.ToString(), boat.IncorrectSelections.ToString() }
 			}, CompletableTracker.Completable.Race));
 
 			SUGARManager.GameData.Send("Race Session Score", boat.Score);
-			SUGARManager.GameData.Send("Current Boat Size", boat.Positions.Count);
-			SUGARManager.GameData.Send("Race Session Score Average", (float)boat.Score / boat.Positions.Count);
-			SUGARManager.GameData.Send("Race Session Perfect Selection Average", boat.PerfectSelections / boat.Positions.Count);
+			SUGARManager.GameData.Send("Current Boat Size", boat.PositionCount);
+			SUGARManager.GameData.Send("Race Session Score Average", (float)boat.Score / boat.PositionCount);
+			SUGARManager.GameData.Send("Race Session Perfect Selection Average", boat.PerfectSelections / boat.PositionCount);
 			SUGARManager.GameData.Send("Race Time", (long)timeTaken.TotalSeconds);
 			SUGARManager.GameData.Send("Post Race Crew Average Mood", GameManagement.AverageTeamMood);
 			SUGARManager.GameData.Send("Post Race Crew Average Manager Opinion", GameManagement.AverageTeamManagerOpinion);
 			SUGARManager.GameData.Send("Post Race Crew Average Opinion", GameManagement.AverageTeamOpinion);
-			SUGARManager.GameData.Send("Post Race Boat Average Mood", GameManagement.Boat.AverageBoatMood());
-			SUGARManager.GameData.Send("Post Race Boat Average Manager Opinion", GameManagement.Boat.AverageBoatManagerOpinion(GameManagement.Manager.Name));
-			SUGARManager.GameData.Send("Post Race Boat Average Opinion", GameManagement.Boat.AverageBoatOpinion());
+			SUGARManager.GameData.Send("Post Race Boat Average Mood", GameManagement.AverageBoatMood);
+			SUGARManager.GameData.Send("Post Race Boat Average Manager Opinion", GameManagement.AverageBoatManagerOpinion);
+			SUGARManager.GameData.Send("Post Race Boat Average Opinion", GameManagement.AverageBoatOpinion);
 			foreach (var feedback in boat.SelectionMistakes)
 			{
 				SUGARManager.GameData.Send("Race Session Feedback", feedback);

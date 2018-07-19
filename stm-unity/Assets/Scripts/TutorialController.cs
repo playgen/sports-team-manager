@@ -145,20 +145,10 @@ public class TutorialController : MonoBehaviour
 	public void RestartGame()
 	{
 		var language = string.IsNullOrEmpty(Localization.SelectedLanguage.Parent.Name) ? Localization.SelectedLanguage.EnglishName : Localization.SelectedLanguage.Parent.EnglishName;
-		var colorsPri = new[]
-			{
-				GameManagement.Team.TeamColorsPrimary.R,
-				GameManagement.Team.TeamColorsPrimary.G,
-				GameManagement.Team.TeamColorsPrimary.B
-			};
-		var colorsSec = new[]
-		{
-			GameManagement.Team.TeamColorsSecondary.R,
-			GameManagement.Team.TeamColorsSecondary.G,
-			GameManagement.Team.TeamColorsSecondary.B
-		};
+		var colorsPri = GameManagement.Team.TeamColorsPrimary;
+		var colorsSec = GameManagement.Team.TeamColorsSecondary;
 		Loading.Start();
-		GameManagement.GameManager.NewGameTask(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.TeamName, colorsPri, colorsSec, GameManagement.Manager.Name, false, language, success =>
+		GameManagement.GameManager.NewGameTask(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.TeamName, colorsPri, colorsSec, GameManagement.ManagerName, false, language, success =>
 		{
 			Loading.Stop();
 			if (success)

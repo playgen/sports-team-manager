@@ -29,7 +29,7 @@ public class BoatPromotionUI : MonoBehaviour
 	/// </summary>
 	public void Display()
 	{
-		if (!GameManagement.ShowTutorial && GameManagement.SeasonOngoing && GameManagement.Boat.Type != GameManagement.PreviousSession.Type)
+		if (!GameManagement.ShowTutorial && GameManagement.SeasonOngoing && GameManagement.BoatType != GameManagement.PreviousSession.Type)
 		{
 			var oldPos = GameManagement.PreviousSession.Positions;
 			var newPos = GameManagement.Positions;

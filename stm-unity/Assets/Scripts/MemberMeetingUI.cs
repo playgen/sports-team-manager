@@ -169,7 +169,7 @@ public class MemberMeetingUI : MonoBehaviour
 			_barForegrounds[i].transform.parent.FindImage("Skill Image").enabled = _currentMember.RevealedSkills[(Skill)Mathf.Pow(2, i)] != 0;
 		}
 		//set default starting dialogue
-		_dialogueText.text = Localization.Get("MEETING_INTRO_" + _currentMember.GetSocialImportanceRating(GameManagement.Manager.Name));
+		_dialogueText.text = Localization.Get("MEETING_INTRO_" + _currentMember.GetSocialImportanceRating(GameManagement.ManagerName));
 		//set question text for the player
 		_statQuestion.text = "StatReveal".EventString();
 		_roleQuestion.text = "RoleReveal".EventString();
@@ -222,7 +222,7 @@ public class MemberMeetingUI : MonoBehaviour
 		var managerOpinionImage = transform.FindComponentInChildren<Image>("Manager Opinion");
 		managerOpinionImage.enabled = true;
 		managerOpinionImage.sprite = null;
-		var managerOpinion = _currentMember.RevealedCrewOpinions[GameManagement.Manager.Name];
+		var managerOpinion = _currentMember.RevealedCrewOpinions[GameManagement.ManagerName];
 		managerOpinionImage.sprite = _opinionIcons[(managerOpinion > 0 ? Mathf.CeilToInt(managerOpinion / 3f) : Mathf.FloorToInt(managerOpinion / 3f)) + 2];
 		DoBestFit();
 	}
@@ -402,7 +402,7 @@ public class MemberMeetingUI : MonoBehaviour
 		_roleQuestion.text = "RoleReveal".EventString();
 		_opinionPositiveQuestion.text = "OpinionRevealPositive".EventString();
 		_opinionNegativeQuestion.text = "OpinionRevealNegative".EventString();
-		_dialogueText.text = _lastReply != null ? Localization.GetAndFormat(_lastReply.First(), false, _lastReply.Where(r => r != _lastReply.First()).ToArray()) : Localization.Get("MEETING_INTRO_" + _currentMember.GetSocialImportanceRating(GameManagement.Manager.Name));
+		_dialogueText.text = _lastReply != null ? Localization.GetAndFormat(_lastReply.First(), false, _lastReply.Where(r => r != _lastReply.First()).ToArray()) : Localization.Get("MEETING_INTRO_" + _currentMember.GetSocialImportanceRating(GameManagement.ManagerName));
 		DoBestFit();
 	}
 

@@ -55,7 +55,7 @@ public class PostRaceEventUI : MonoBehaviour
 		{
 			_postRacePeople = GetComponentsInChildren<PostRacePersonUI>(true);
 		}
-		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
+		if (GameManagement.CurrentEventCount == _postRacePeople.Length)
 		{
 			gameObject.Active(true);
 			ResetDisplay();
@@ -99,11 +99,11 @@ public class PostRaceEventUI : MonoBehaviour
 	/// </summary>
 	private void ResetQuestions()
 	{
-		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
+		if (GameManagement.CurrentEventCount == _postRacePeople.Length)
 		{
 			var replies = GameManagement.EventController.GetEventDialogues(GameManagement.Manager);
 			var replyDict = new Dictionary<CrewMember, List<PostRaceEventState>>();
-			if (GameManagement.CurrentEvent != null)
+			if (GameManagement.OngoingEvent)
 			{
 				foreach (var ev in GameManagement.CurrentEvent)
 				{
@@ -128,7 +128,7 @@ public class PostRaceEventUI : MonoBehaviour
 					}
 				}
 			}
-			if (GameManagement.CurrentEvent != null)
+			if (GameManagement.OngoingEvent)
 			{
 				for (var i = 0; i < _postRacePeople.Length; i++)
 				{
@@ -197,7 +197,7 @@ public class PostRaceEventUI : MonoBehaviour
 		{
 			_selectedResponses.Add(response.CrewMember, response);
 		}
-		if (GameManagement.CurrentEvent != null && _selectedResponses.Count == GameManagement.CurrentEvent.Count)
+		if (_selectedResponses.Count == GameManagement.CurrentEventCount)
 		{
 			foreach (var res in _selectedResponses.Values)
 			{
@@ -274,7 +274,7 @@ public class PostRaceEventUI : MonoBehaviour
 	private void OnLanguageChange()
 	{
 		//if there is an event
-		if (GameManagement.CurrentEvent != null && GameManagement.CurrentEvent.Count == _postRacePeople.Length)
+		if (GameManagement.CurrentEventCount == _postRacePeople.Length)
 		{
 			for (var i = 0; i < _postRacePeople.Length; i++)
 			{

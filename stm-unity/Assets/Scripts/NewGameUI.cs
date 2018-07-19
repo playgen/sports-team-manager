@@ -169,18 +169,8 @@ public class NewGameUI : MonoBehaviour {
 	public void NewGame()
 	{
 		//convert selected colors to bytes
-		var colorsPri = new []
-			{
-				(byte)(_colorImagePrimary.color.r * 255),
-				(byte)(_colorImagePrimary.color.g * 255),
-				(byte)(_colorImagePrimary.color.b * 255)
-			};
-		var colorsSec = new []
-		{
-				(byte)(_colorImageSecondary.color.r * 255),
-				(byte)(_colorImageSecondary.color.g * 255),
-				(byte)(_colorImageSecondary.color.b * 255)
-		};
+		var colorsPri = new PlayGen.RAGE.SportsTeamManager.Simulation.Color((int)(_colorImagePrimary.color.r * 255), (int)(_colorImagePrimary.color.g * 255), (int)(_colorImagePrimary.color.b * 255));
+		var colorsSec = new PlayGen.RAGE.SportsTeamManager.Simulation.Color((int)(_colorImageSecondary.color.r * 255), (int)(_colorImageSecondary.color.g * 255), (int)(_colorImageSecondary.color.b * 255));
 		_boatName.text = _boatName.text.TrimEnd();
 		_managerName.text = _managerName.text.TrimEnd();
 		var language = string.IsNullOrEmpty(Localization.SelectedLanguage.Parent.Name) ? Localization.SelectedLanguage.EnglishName : Localization.SelectedLanguage.Parent.EnglishName;

@@ -16,26 +16,19 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public Boat Boat { get; }
 		public List<Boat> LineUpHistory { get; internal set; }
+		public Boat PreviousSession => LineUpHistory.LastOrDefault();
 		public List<int> HistoricTimeOffset { get; internal set; }
 		public List<int> HistoricSessionNumber { get; internal set; }
-		public List<Boat> RaceHistory
-		{
-			get
-			{
-				return LineUpHistory.Where((boat, i) => HistoricSessionNumber[i] == 0).ToList();
-			}
-		}
+		public List<Boat> RaceHistory => LineUpHistory.Where((boat, i) => HistoricSessionNumber[i] == 0).ToList();
 		public string Name { get; }
 		public string Nationality { get; }
 		public Color TeamColorsPrimary { get; internal set; }
 		public Color TeamColorsSecondary { get; internal set; }
-		public Dictionary<string, CrewMember> CrewMembers
-		{
-			get { return crewMembers.OrderBy(c => c.Key).ToDictionary(c => c.Key, c => c.Value); }
-		}
+		public Dictionary<string, CrewMember> CrewMembers => crewMembers.OrderBy(c => c.Key).ToDictionary(c => c.Key, c => c.Value);
 		public Dictionary<string, CrewMember> RetiredCrew { get; }
 		public Dictionary<string, CrewMember> Recruits { get; }
 		public Person Manager { get; internal set; }
+		public string ManagerName => Manager.Name;
 		public bool Finished { get; internal set; }
 
 		/// <summary>
@@ -77,11 +70,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (partialFailCount < 5)
 				{
 					partialFailCount++;
-					var splitName = cm.Name.Split(new [] { ' ' }, 2);
-					var currentNames = crewMembers.Keys.Concat(RetiredCrew.Keys).Concat(Recruits.Keys).ToList();
-					var firstNames = currentNames.Select(c => c.Split(new[] { ' ' }, 2)[0]).ToList();
-					var lastNames = currentNames.Select(c => c.Split(new[] { ' ' }, 2)[1]).ToList();
-					if (firstNames.Contains(splitName[0]) || lastNames.Contains(splitName[1]) || cm.Name == Manager.Name)
+					var firstNames = crewMembers.Select(c => c.Value.FirstName).Concat(RetiredCrew.Select(c => c.Value.FirstName)).Concat(Recruits.Select(c => c.Value.FirstName)).ToList();
+					var lastNames = crewMembers.Select(c => c.Value.LastName).Concat(RetiredCrew.Select(c => c.Value.LastName)).Concat(Recruits.Select(c => c.Value.LastName)).ToList();
+					if (firstNames.Contains(cm.FirstName) || lastNames.Contains(cm.LastName) || cm.Name == ManagerName)
 					{
 						cm.Name = cm.SelectRandomName();
 					}
@@ -92,7 +83,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				else
 				{
-					if (crewMembers.ContainsKey(cm.Name) || RetiredCrew.ContainsKey(cm.Name) || Recruits.ContainsKey(cm.Name) || cm.Name == Manager.Name)
+					if (crewMembers.ContainsKey(cm.Name) || RetiredCrew.ContainsKey(cm.Name) || Recruits.ContainsKey(cm.Name) || cm.Name == ManagerName)
 					{
 						cm.Name = cm.SelectRandomName();
 					}
@@ -109,11 +100,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public bool CanAddToCrew()
 		{
-			if (Boat.Positions.Count == 0)
+			if (Boat.PositionCount == 0)
 			{
 				return false;
 			}
-			return crewMembers.Count + 1 <= (Boat.Positions.Count + 1) * 2 && Recruits.Count != 0;
+			return crewMembers.Count + 1 <= (Boat.PositionCount + 1) * 2 && Recruits.Count != 0;
 		}
 
 		/// <summary>
@@ -121,11 +112,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public int CrewLimitLeft()
 		{
-			if (Boat.Positions.Count == 0)
+			if (Boat.PositionCount == 0)
 			{
 				return 0;
 			}
-			return ((Boat.Positions.Count + 1) * 2) - crewMembers.Count;
+			return ((Boat.PositionCount + 1) * 2) - crewMembers.Count;
 		}
 
 		/// <summary>
@@ -178,7 +169,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			iat.RemoveCharacters(new List<int> { iat.GetAllCharacterSources().First(c => c.Source.Replace("\\", "/") == path).Id });
 			//set up recruit as a 'proper' character in the game
 			var currentNames = crewMembers.Keys.ToList();
-			currentNames.Add(Manager.Name);
+			currentNames.Add(ManagerName);
 			member.CreateTeamMemberFile(iat, storageLocation, currentNames, TeamColorsPrimary, TeamColorsSecondary);
 			foreach (var cm in crewMembers.Values)
 			{
@@ -194,11 +185,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		public bool CanRemoveFromCrew()
 		{
-			if (Boat.Positions.Count == 0)
+			if (Boat.PositionCount == 0)
 			{
 				return false;
 			}
-			return CrewMembers.Count - 1 >= Boat.Positions.Count;
+			return CrewMembers.Count - 1 >= Boat.PositionCount;
 		}
 
 		/// <summary>
@@ -252,7 +243,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void PromoteBoat()
 		{
-			var extraMembers = Boat.Positions.Count;
+			var extraMembers = Boat.PositionCount;
 			var newType = PromotionTriggerCheck();
 			if (string.IsNullOrEmpty(newType))
 			{
@@ -267,12 +258,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//store that the boat type has been changed
 			Manager.UpdateSingleBelief(NPCBelief.BoatType, Boat.Type);
 			//calculate how many new members should be created
-			extraMembers = (Boat.Positions.Count - extraMembers) * 2;
+			extraMembers = (Boat.PositionCount - extraMembers) * 2;
 			//reset the positions on the boat to those for the new type
 			for (var i = 0; i < extraMembers; i++)
 			{
 				var currentNames = crewMembers.Keys.ToList();
-				currentNames.Add(Manager.Name);
+				currentNames.Add(ManagerName);
 				//only create a new CrewMember if the crew limit can support it
 				if (CanAddToCrew())
 				{
@@ -323,7 +314,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the average mood of the crew
 		/// </summary>
-		public float AverageTeamMood()
+		public float AverageMood()
 		{
 			var mood = 0f;
 			foreach (var crewMember in crewMembers.Values)
@@ -337,14 +328,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the average manager opinion of the crew
 		/// </summary>
-		public float AverageTeamManagerOpinion()
+		public float AverageManagerOpinion()
 		{
 			var opinion = 0f;
 			foreach (var crewMember in crewMembers.Values)
 			{
-				if (crewMember.CrewOpinions.ContainsKey(Manager.Name))
+				if (crewMember.CrewOpinions.ContainsKey(ManagerName))
 				{
-					opinion += crewMember.CrewOpinions[Manager.Name];
+					opinion += crewMember.CrewOpinions[ManagerName];
 				}
 			}
 			opinion = opinion / crewMembers.Count;
@@ -354,7 +345,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the average opinion of the crew
 		/// </summary>
-		public float AverageTeamOpinion()
+		public float AverageOpinion()
 		{
 			var opinion = 0f;
 			foreach (var crewMember in crewMembers.Values)

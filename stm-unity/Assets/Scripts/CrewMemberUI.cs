@@ -254,7 +254,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			}
 		}
 		//remove this CrewMember from their position if they were in one
-		GameManagement.Boat.AssignCrewMember(Position.Null, CrewMember);
+		CrewMember.Assign(Position.Null);
 		OnReset();
 		//reset the position and meeting UIs
 		UIManagement.PositionDisplay.UpdateDisplay();
@@ -277,7 +277,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		transform.SetParent(positionTransform, false);
 		transform.RectTransform().sizeDelta = positionTransform.sizeDelta;
 		transform.position = positionTransform.position;
-		GameManagement.Boat.AssignCrewMember(currentPosition, CrewMember);
+		CrewMember.Assign(currentPosition);
 		positionUI.LinkCrew(this);
 		if (!swap)
 		{

@@ -22,6 +22,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public int RestCount { get; private set; }
 		public Avatar Avatar { get; set; }
 
+		public string FirstName => Name.Split(new[] { ' ' }, 2).First();
+		public string LastName => Name.Split(new[] { ' ' }, 2).Last();
+
 		/// <summary>
 		/// Base constructor for creating a CrewMember
 		/// </summary>
@@ -144,7 +147,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				}
 				AddOrUpdateOpinion(person, StaticRandom.Int(ConfigKey.DefaultOpinionMin.GetIntValue(), ConfigKey.DefaultOpinionMax.GetIntValue() + 1));
 				//if the two people share the same last name, give the bonus stated in the config to their opinion
-				if (person.GetType() == typeof(CrewMember) && Name.Split(new[] { ' ' }, 2).Last() == person.Split(new[] { ' ' }, 2).Last())
+				if (person.GetType() == typeof(CrewMember) && LastName == person.Split(new[] { ' ' }, 2).Last())
 				{
 					AddOrUpdateOpinion(person, ConfigKey.LastNameBonusOpinion.GetIntValue());
 				}
@@ -301,7 +304,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					break;
 				case "RoleReveal":
 					//select a random position
-					var pos = team.Boat.Positions[StaticRandom.Int(0, team.Boat.Positions.Count)];
+					var pos = team.Boat.Positions[StaticRandom.Int(0, team.Boat.PositionCount)];
 					//get dialogue based on if they would be above or below mid-range in this position
 					style += pos.GetPositionRating(this) <= 5 ? "Bad" : "Good";
 					reply.Add(pos.ToString());
@@ -309,7 +312,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				case "OpinionRevealPositive":
 					//get all opinions for active crewmembers and the manager
 					var crewOpinionsPositive = CrewOpinions.Where(c => team.CrewMembers.ContainsKey(c.Key)).ToDictionary(p => p.Key, p => p.Value);
-					crewOpinionsPositive.Add(team.Manager.Name, CrewOpinions[team.Manager.Name]);
+					crewOpinionsPositive.Add(team.ManagerName, CrewOpinions[team.ManagerName]);
 					//get all opinions where the value is equal/greater than the OpinionLike value in the config
 					var opinionsPositive = crewOpinionsPositive.Where(co => co.Value >= ConfigKey.OpinionLike.GetIntValue()).ToDictionary(o => o.Key, o => o.Value);
 					//if there are any positive opinions
@@ -321,7 +324,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						{
 							style += "High";
 						}
-						reply.Add(pickedOpinionPositive.Key != team.Manager.Name ? pickedOpinionPositive.Key : "you");
+						reply.Add(pickedOpinionPositive.Key != team.ManagerName ? pickedOpinionPositive.Key : "you");
 						AddOrUpdateRevealedOpinion(pickedOpinionPositive.Key, pickedOpinionPositive.Value);
 					}
 					//if there are no positive opinions, get dialogue based on that
@@ -332,7 +335,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					break;
 				case "OpinionRevealNegative":
 					var crewOpinionsNegative = CrewOpinions.Where(c => team.CrewMembers.ContainsKey(c.Key)).ToDictionary(p => p.Key, p => p.Value);
-					crewOpinionsNegative.Add(team.Manager.Name, CrewOpinions[team.Manager.Name]);
+					crewOpinionsNegative.Add(team.ManagerName, CrewOpinions[team.ManagerName]);
 					var opinionsNegative = crewOpinionsNegative.Where(co => co.Value <= ConfigKey.OpinionDislike.GetIntValue()).ToDictionary(o => o.Key, o => o.Value);
 					if (opinionsNegative.Any())
 					{
@@ -341,7 +344,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						{
 							style += "High";
 						}
-						reply.Add(pickedOpinionNegative.Key != team.Manager.Name ? pickedOpinionNegative.Key : "you");
+						reply.Add(pickedOpinionNegative.Key != team.ManagerName ? pickedOpinionNegative.Key : "you");
 						AddOrUpdateRevealedOpinion(pickedOpinionNegative.Key, pickedOpinionNegative.Value);
 					}
 					else
@@ -404,7 +407,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				if (team.Boat.GetCrewMemberPosition(this) == Position.Null)
 				{
 					//reduce opinion of the manager
-					AddOrUpdateOpinion(team.Manager.Name, -3);
+					AddOrUpdateOpinion(team.ManagerName, -3);
 					//send event on record that this happened
 					var eventString = EventHelper.ActionStart("Player", "PostRace(NotPickedNotDone)", spacelessName);
 					RolePlayCharacter.Perceive(eventString);
@@ -425,7 +428,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					if (team.Boat.GetCrewMemberPosition(this).ToString() != expected)
 					{
 						//reduce opinion of the manager
-						AddOrUpdateOpinion(team.Manager.Name, -3);
+						AddOrUpdateOpinion(team.ManagerName, -3);
 						//send event on record that this happened
 						var eventString = EventHelper.ActionStart("Player", "PostRace(PWNotDone)", spacelessName);
 						RolePlayCharacter.Perceive(eventString);
@@ -496,41 +499,41 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				switch ((PostRaceEventImpact)Enum.Parse(typeof(PostRaceEventImpact), ev))
 				{
 					case PostRaceEventImpact.ExpectedPosition:
-						AddOrUpdateOpinion(team.Manager.Name, 1);
+						AddOrUpdateOpinion(team.ManagerName, 1);
 						UpdateSingleBelief(NPCBelief.ExpectedPosition, subjects[0]);
 						break;
 					case PostRaceEventImpact.ExpectedPositionAfter:
-						AddOrUpdateOpinion(team.Manager.Name, 1);
+						AddOrUpdateOpinion(team.ManagerName, 1);
 						UpdateSingleBelief(NPCBelief.ExpectedPositionAfter, subjects[0]);
 						break;
 					case PostRaceEventImpact.ManagerOpinionWorse:
-						AddOrUpdateOpinion(team.Manager.Name, -1);
+						AddOrUpdateOpinion(team.ManagerName, -1);
 						break;
 					case PostRaceEventImpact.ManagerOpinionAllCrewWorse:
 						foreach (var cm in team.CrewMembers)
 						{
-							cm.Value.AddOrUpdateOpinion(team.Manager.Name, -2);
+							cm.Value.AddOrUpdateOpinion(team.ManagerName, -2);
 							cm.Value.SaveStatus();
 						}
 						break;
 					case PostRaceEventImpact.ManagerOpinionBetter:
-						AddOrUpdateOpinion(team.Manager.Name, 1);
+						AddOrUpdateOpinion(team.ManagerName, 1);
 						break;
 					case PostRaceEventImpact.ManagerOpinionAllCrewBetter:
 						foreach (var cm in team.CrewMembers)
 						{
-							cm.Value.AddOrUpdateOpinion(team.Manager.Name, 2);
+							cm.Value.AddOrUpdateOpinion(team.ManagerName, 2);
 							cm.Value.SaveStatus();
 						}
 						break;
 					case PostRaceEventImpact.ManagerOpinionMuchBetter:
-						AddOrUpdateOpinion(team.Manager.Name, 5);
+						AddOrUpdateOpinion(team.ManagerName, 5);
 						break;
 					case PostRaceEventImpact.ManagerOpinionMuchWorse:
-						AddOrUpdateOpinion(team.Manager.Name, -5);
+						AddOrUpdateOpinion(team.ManagerName, -5);
 						break;
 					case PostRaceEventImpact.RevealTwoSkills:
-						AddOrUpdateOpinion(team.Manager.Name, 1);
+						AddOrUpdateOpinion(team.ManagerName, 1);
 						for (var i = 0; i < 2; i++)
 						{
 							var randomStat = Math.Pow(2, StaticRandom.Int(0, Skills.Count));
@@ -541,7 +544,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						break;
 					case PostRaceEventImpact.RevealFourSkills:
-						AddOrUpdateOpinion(team.Manager.Name, 3);
+						AddOrUpdateOpinion(team.ManagerName, 3);
 						for (var i = 0; i < 4; i++)
 						{
 							var randomStat = Math.Pow(2, StaticRandom.Int(0, Skills.Count));
@@ -577,7 +580,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						break;
 					case PostRaceEventImpact.ImproveConflictKnowledge:
 						var subKnow = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
-						AddOrUpdateOpinion(team.Manager.Name, 1);
+						AddOrUpdateOpinion(team.ManagerName, 1);
 						foreach (var cm in team.CrewMembers)
 						{
 							if (cm.Key != subKnow)
@@ -588,20 +591,20 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 						break;
 					case PostRaceEventImpact.CausesSelectionAfter:
-						AddOrUpdateOpinion(team.Manager.Name, 1);
+						AddOrUpdateOpinion(team.ManagerName, 1);
 						UpdateSingleBelief(NPCBelief.ExpectedPosition, subjects[0]);
 						var otherPlayer = Regex.Replace(subjects[1], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
-						team.CrewMembers[otherPlayer].AddOrUpdateOpinion(team.Manager.Name, 1);
+						team.CrewMembers[otherPlayer].AddOrUpdateOpinion(team.ManagerName, 1);
 						team.CrewMembers[otherPlayer].UpdateSingleBelief(NPCBelief.ExpectedPositionAfter, subjects[0]);
 						team.CrewMembers[otherPlayer].SaveStatus();
 						break;
 					case PostRaceEventImpact.WholeTeamChange:
-						AddOrUpdateOpinion(team.Manager.Name, 4);
+						AddOrUpdateOpinion(team.ManagerName, 4);
 						foreach (var cm in team.CrewMembers)
 						{
-							if (!team.LineUpHistory.Last().PositionCrew.Values.Select(v => v.Name).Contains(cm.Key))
+							if (!team.PreviousSession.PositionCrew.Values.Select(v => v.Name).Contains(cm.Key))
 							{
-								cm.Value.AddOrUpdateOpinion(team.Manager.Name, 1);
+								cm.Value.AddOrUpdateOpinion(team.ManagerName, 1);
 								cm.Value.UpdateSingleBelief(NPCBelief.ExpectedSelection, "true");
 								cm.Value.SaveStatus();
 							}

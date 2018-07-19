@@ -49,13 +49,15 @@ public static class GameManagement
 
 	public static Dictionary<string, CrewMember> CrewMembers => Team.CrewMembers;
 
+	public static List<CrewMember> CrewMemberList => CrewMembers.Values.ToList();
+
 	public static int CrewCount => CrewMembers.Count;
+
+	public static Boat PreviousSession => Team.PreviousSession;
 
 	public static List<Boat> LineUpHistory => Team.LineUpHistory;
 
 	public static List<Boat> ReverseLineUpHistory => LineUpHistory.AsEnumerable().Reverse().ToList();
-
-	public static Boat PreviousSession => LineUpHistory.LastOrDefault();
 
 	public static int SessionCount => LineUpHistory.Count;
 
@@ -63,25 +65,31 @@ public static class GameManagement
 
 	public static int RaceCount => RaceHistory.Count;
 
-	public static List<KeyValuePair<int, int>> RaceScorePositionCountPairs => RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList();
+	public static List<KeyValuePair<int, int>> RaceScorePositionCountPairs => RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.PositionCount)).ToList();
 
 	public static Person Manager => Team.Manager;
 
+	public static string ManagerName => Team.ManagerName;
+
+	public static bool SeasonOngoing => !Team.Finished;
+
 	public static Boat Boat => Team.Boat;
+
+	public static string BoatType => Boat.Type;
 
 	public static Dictionary<Position, CrewMember> PositionCrew => Boat.PositionCrew;
 
 	public static List<Position> Positions => Boat.Positions;
 
-	public static string PositionString
-	{
-		get { return string.Join(",", Positions.Select(pos => pos.ToString()).ToArray()); }
-	}
-	public static int PositionCount => Positions.Count;
+	public static string PositionString => string.Join(",", Positions.Select(pos => pos.ToString()).ToArray());
 
-	public static bool SeasonOngoing => PositionCount > 0;
+	public static int PositionCount => Boat.PositionCount;
 
 	public static List<PostRaceEventState> CurrentEvent => EventController.PostRaceEvents.FirstOrDefault();
+
+	public static bool OngoingEvent => CurrentEvent != null;
+
+	public static int CurrentEventCount => OngoingEvent ? CurrentEvent.Count : 0;
 
 	public static bool ShowTutorial => GameManager.ShowTutorial;
 
@@ -101,7 +109,7 @@ public static class GameManagement
 
 	public static bool ActionRemaining => ActionAllowance > 0;
 
-	public static float ActionAllowancePercentage => ActionAllowance / (float)GameManager.GetStartingActionAllowance();
+	public static float ActionAllowancePercentage => ActionAllowance / (float)StartingActionAllowance;
 
 	public static bool CrewEditAllowed => GameManager.CrewEditAllowance > 0;
 
@@ -109,11 +117,17 @@ public static class GameManagement
 
 	public static bool CanRemoveFromCrew => Team.CanRemoveFromCrew();
 
-	public static float AverageTeamMood => Team.AverageTeamMood();
+	public static float AverageTeamMood => Team.AverageMood();
 
-	public static float AverageTeamManagerOpinion => Team.AverageTeamManagerOpinion();
+	public static float AverageTeamManagerOpinion => Team.AverageManagerOpinion();
 
-	public static float AverageTeamOpinion => Team.AverageTeamOpinion();
+	public static float AverageTeamOpinion => Team.AverageOpinion();
+
+	public static float AverageBoatMood => Boat.AverageMood();
+
+	public static float AverageBoatManagerOpinion => Boat.AverageOpinion(ManagerName);
+
+	public static float AverageBoatOpinion => Boat.AverageOpinion();
 
 	public static int StartingActionAllowance => GameManager.GetStartingActionAllowance();
 
@@ -147,14 +161,24 @@ public static class GameManagement
 		return Localization.Get(EventController.GetHelpText(key));
 	}
 
+	public static void Assign(this CrewMember crewMember, Position position)
+	{
+		Boat.AssignCrewMember(position, crewMember);
+	}
+
 	public static Position BoatPosition(this CrewMember member)
 	{
 		return Boat.GetCrewMemberPosition(member);
 	}
 
+	public static bool Current(this CrewMember member)
+	{
+		return CrewMembers.ContainsKey(member.Name);
+	}
+
 	public static int RacesWon(this CrewMember member)
 	{
-		return RaceHistory.Count(boat => boat.PositionCrew.Values.Any(cm => member.Name == cm.Name) && GetRacePosition(boat.Score, boat.Positions.Count) == 1);
+		return RaceHistory.Count(boat => boat.PositionCrew.Values.Any(cm => member.Name == cm.Name) && GetRacePosition(boat.Score, boat.PositionCount) == 1);
 	}
 
 	public static int SessionsIncluded(this CrewMember member)
@@ -162,9 +186,40 @@ public static class GameManagement
 		return LineUpHistory.Count(boat => boat.PositionCrew.Values.ToList().Any(c => c.Name == member.Name));
 	}
 
+	public static bool Current(this Position position)
+	{
+		return Positions.Contains(position);
+	}
+
+	public static CrewMember CurrentCrewMember(this Position position)
+	{
+		return PositionCrew.ContainsKey(position) ? PositionCrew[position] : null;
+	}
+
 	public static int SessionsIncluded(this Position position)
 	{
-		return LineUpHistory.Sum(boat => boat.Positions.Count(pos => pos == position)) + (Positions.Contains(position) ? 1 : 0);
+		return LineUpHistory.Sum(boat => boat.Positions.Count(pos => pos == position)) + (position.Current() ? 1 : 0);
+	}
+
+	public static List<KeyValuePair<CrewMember, int>> Placements(this Position position)
+	{
+		var positionMembers = new Dictionary<CrewMember, int>();
+		foreach (var boat in LineUpHistory)
+		{
+			var positionMember = boat.PositionCrew.ContainsKey(position) ? boat.PositionCrew[position] : null;
+			if (positionMember != null)
+			{
+				if (positionMembers.ContainsKey(positionMember))
+				{
+					positionMembers[positionMember]++;
+				}
+				else
+				{
+					positionMembers.Add(positionMember, 1);
+				}
+			}
+		}
+		return positionMembers.OrderByDescending(pm => pm.Value).ThenBy(pm => pm.Key.LastName).ThenBy(pm => pm.Key.FirstName).ToList();
 	}
 
 	/// <summary>
@@ -196,7 +251,7 @@ public static class GameManagement
 	public static int GetCupPosition()
 	{
 		var totalScore = 0;
-		var raceResults = RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.Positions.Count)).ToList();
+		var raceResults = RaceHistory.Select(r => new KeyValuePair<int, int>(r.Score, r.PositionCount)).ToList();
 		var racePositions = new List<int>();
 		var finalPosition = 1;
 		var finalPositionLocked = false;

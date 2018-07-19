@@ -48,44 +48,6 @@ public class PositionDisplayUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last names, first names
-	/// </summary>
-	private string SplitName(string original, bool shortName = true)
-	{
-		var splitName = original.Split(' ');
-		if (shortName)
-		{
-			var formattedName = splitName.First()[0] + ".";
-			foreach (var split in splitName)
-			{
-				if (split != splitName.First())
-				{
-					formattedName += split;
-					if (split != splitName.Last())
-					{
-						formattedName += " ";
-					}
-				}
-			}
-			return formattedName;
-		}
-		var firstName = ",\n" + splitName.First();
-		var lastName = string.Empty;
-		foreach (var split in splitName)
-		{
-			if (split != splitName.First())
-			{
-				lastName += split;
-				if (split != splitName.Last())
-				{
-					lastName += " ";
-				}
-			}
-		}
-		return lastName + firstName;
-	}
-
-	/// <summary>
 	/// If the pop-up is already active, update UI elements to match current information
 	/// </summary>
 	public void UpdateDisplay()
@@ -105,7 +67,7 @@ public class PositionDisplayUI : MonoBehaviour
 		{
 			return;
 		}
-		var currentCrew = GameManagement.PositionCrew.ContainsKey(position) ? GameManagement.PositionCrew[position] : null;
+		var currentCrew = position.Current() ? position.CurrentCrewMember() : null;
 		var boatPos = GameManagement.PositionString;
 		TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
 		{
@@ -129,9 +91,9 @@ public class PositionDisplayUI : MonoBehaviour
 		_current = position;
 		CrewMember currentCrew = null;
 		//get current CrewMember in this position if any
-		if (GameManagement.PositionCrew.ContainsKey(position))
+		if (position.Current())
 		{
-			currentCrew = GameManagement.PositionCrew[position];
+			currentCrew = position.CurrentCrewMember();
 		}
 		//set title and description text
 		_textList[0].text = Localization.Get(position.ToString());
@@ -169,31 +131,14 @@ public class PositionDisplayUI : MonoBehaviour
 			}
 		}
 		//gather a count of how many times CrewMembers have been placed in this position
-		var positionMembers = new Dictionary<CrewMember, int>();
-		foreach (var boat in GameManagement.LineUpHistory)
-		{
-			var positions = boat.Positions.Where(pos => pos == position).ToArray();
-			foreach (var pos in positions)
-			{
-				var positionMember = boat.PositionCrew[pos];
-				if (positionMembers.ContainsKey(positionMember))
-				{
-					positionMembers[positionMember]++;
-				}
-				else
-				{
-					positionMembers.Add(positionMember, 1);
-				}
-			}
-		}
-		var orderedMembers = positionMembers.OrderByDescending(pm => pm.Value).ThenBy(pm => SplitName(pm.Key.Name, false));
+		var positionMembers = position.Placements();
 		//for every CrewMember ever placed in this position, create a Position History object displaying their avatar and their number of appearences
-		foreach (var member in orderedMembers)
+		foreach (var member in positionMembers)
 		{
 			var positionHistory = Instantiate(_historyPrefab);
 			positionHistory.transform.SetParent(_historyContainer.transform, false);
-			positionHistory.transform.FindText("Name").text = SplitName(member.Key.Name);
-			if (GameManagement.CrewMembers.ContainsKey(member.Key.Name))
+			positionHistory.transform.FindText("Name").text = member.Key.FirstName[0] + "." + member.Key.LastName;
+			if (member.Key.Current())
 			{
 				var current = member.Key;
 				positionHistory.GetComponentInChildren<Button>().onClick.AddListener(() => UIManagement.MemberMeeting.SetUpDisplay(current, TrackerTriggerSource.PositionPopUp.ToString()));

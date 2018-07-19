@@ -46,7 +46,7 @@ public class RecruitMemberUI : MonoBehaviour
 	private void OnEnable()
 	{
 		var history = GameManagement.ReverseLineUpHistory;
-		var firstMismatch = history.FirstOrDefault(b => b.Type != GameManagement.Boat.Type);
+		var firstMismatch = history.FirstOrDefault(b => b.Type != GameManagement.BoatType);
 		var sessionsSinceLastChange = firstMismatch != null ? history.IndexOf(firstMismatch) : 0;
 		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<string, string>
 		{
@@ -83,7 +83,7 @@ public class RecruitMemberUI : MonoBehaviour
 		//set initial text displayed in center of pop-up
 		SetDialogueText("RECRUITMENT_INTRO");
 		//get recruits
-		var recruits = GameManagement.Team.Recruits.Values.ToList().OrderBy(r => Guid.NewGuid()).ToList();
+		var recruits = GameManagement.Team.Recruits.Values.OrderBy(r => Guid.NewGuid()).ToList();
 		//for each recruitUI element
 		for (var i = 0; i < _recruitUI.Length; i++)
 		{
@@ -97,21 +97,7 @@ public class RecruitMemberUI : MonoBehaviour
 			var thisRecruit = recruits[i];
 			_recruitUI[i].Active(true);
 			//set-up displayed name
-			var splitName = thisRecruit.Name.Split(' ');
-			var firstName =  ",\n" + splitName.First();
-			var lastName = string.Empty;
-			foreach (var split in splitName)
-			{
-				if (split != splitName.First())
-				{
-					lastName += split;
-					if (split != splitName.Last())
-					{
-						lastName += " ";
-					}
-				}
-			}
-			var formattedName = lastName + firstName;
+			var formattedName = thisRecruit.LastName + ",\n" + thisRecruit.FirstName;
 			_recruitUI[i].transform.FindText("Name").text = formattedName;
 			//set-up avatar for this recruit
 			_recruitUI[i].transform.FindComponentInChildren<AvatarDisplay>("Image").SetAvatar(thisRecruit.Avatar, 0f);
@@ -179,7 +165,7 @@ public class RecruitMemberUI : MonoBehaviour
 	{
 		SetDialogueText(questionText);
 		_lastQuestion = questionText;
-		var replies = GameManagement.GameManager.SendRecruitMembersEvent(skill, GameManagement.Team.Recruits.Values.ToList());
+		var replies = GameManagement.GameManager.SendRecruitmentEvent(skill);
 		_lastAnswers = replies;
 		foreach (var recruit in _recruitUI)
 		{

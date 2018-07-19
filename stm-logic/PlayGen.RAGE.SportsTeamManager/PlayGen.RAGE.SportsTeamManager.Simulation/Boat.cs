@@ -17,12 +17,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 
 		public string Type { get; private set; }
 		public List<Position> Positions { get; private set; }
+		public int PositionCount => Positions.Count;
 		public Dictionary<Position, CrewMember> PositionCrew { get; internal set; }
 		public Dictionary<Position, int> PositionScores { get; internal set; }
 		public int Score { get; internal set; }
 		public int PerfectSelections { get; internal set; }
 		public int ImperfectSelections { get; internal set; }
-		public int IncorrectSelections => Positions.Count - PerfectSelections - ImperfectSelections;
+		public int IncorrectSelections => PositionCount - PerfectSelections - ImperfectSelections;
 		public List<string> SelectionMistakes { get; internal set; }
 
 		/// <summary>
@@ -110,7 +111,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal Position GetWeakestPosition(List<CrewMember> crewMembers)
 		{
-			if (Positions.Count == 0)
+			if (PositionCount == 0)
 			{
 				return Position.Null;
 			}
@@ -141,7 +142,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Update the score in each Position in order to get the score for this Boat
 		/// </summary>
-		internal void UpdateBoatScore(string managerName)
+		internal void UpdateScore(string managerName)
 		{
 			foreach (var position in Positions)
 			{
@@ -177,7 +178,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void GetIdealCrew(Dictionary<string, CrewMember> crewMembers, string managerName)
 		{
-			if (Positions.Count == 0)
+			if (PositionCount == 0)
 			{
 				return;
 			}
@@ -185,7 +186,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//remove CrewMembers that are currently resting
 			var availableCrew = crewMembers.Where(cm => cm.Value.RestCount <= 0).ToDictionary(ac => ac.Key, ac => ac.Value);
 			//if there are not enough active CrewMembers to race,do not perform the rest of the method
-			if (availableCrew.Count < Positions.Count)
+			if (availableCrew.Count < PositionCount)
 			{
 				return;
 			}
@@ -208,7 +209,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 			//get every crewmember combination (unordered)
 			var sortedCrew = availableCrew.Keys.OrderBy(c => c).ToList();
-			var crewCombos = GetPermutations(sortedCrew, Positions.Count - 1).ToList();
+			var crewCombos = GetPermutations(sortedCrew, PositionCount - 1).ToList();
 			//get the combined average opinion for every combination
 			var crewOpinions = new Dictionary<string, int>();
 			var crewMaxScores = new Dictionary<List<string>, int>();
@@ -321,7 +322,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			var imperfectCount = 0;
 			var nearestIdealMatch = new List<CrewMember>();
 			//if not enough crewmembers are currently positioned, do not perform the rest of this method
-			if (PositionCrew.Count < Positions.Count)
+			if (PositionCrew.Count < PositionCount)
 			{
 				return nearestIdealMatch;
 			}
@@ -370,7 +371,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		private void FindAssignmentMistakes(List<CrewMember> nearestIdealMatch, string managerName)
 		{
-			if (PositionCrew.Count < Positions.Count)
+			if (PositionCrew.Count < PositionCount)
 			{
 				return;
 			}
@@ -388,7 +389,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			hiddenScores.Add("CrewOpinion", 0);
 			hiddenScores.Add("ManagerOpinion", 0);
 			hiddenScores.Add("Mood", 0);
-			for (var i = 0; i < Positions.Count; i++)
+			for (var i = 0; i < PositionCount; i++)
 			{
 				//if the position is correctly assigned, there's no need for further checks
 				if (PositionCrew[Positions[i]] == nearestIdealMatch[i])
@@ -424,7 +425,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						idealOpinion += crewMember.CrewOpinions[nearestIdealMatch[i].Name];
 					}
 				}
-				idealOpinion /= (Positions.Count - 1) * 2;
+				idealOpinion /= (PositionCount - 1) * 2;
 				idealOpinion = (float)Math.Round(idealOpinion);
 				//calculate the average opinion for this position in the current crew and how many opinions are currently unknown
 				var currentOpinion = 0f;
@@ -445,12 +446,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 				}
-				currentOpinion /= (Positions.Count - 1) * 2;
+				currentOpinion /= (PositionCount - 1) * 2;
 				currentOpinion = (float)Math.Round(currentOpinion);
 				//add the difference to mistakeScores
 				mistakeScores["CrewOpinion"] += (int)((idealOpinion - currentOpinion) * ConfigKey.OpinionRatingWeighting.GetValue());
 				//if the percentage of unknown opinions is above the given amount, add the difference to hiddenScores
-				if (unknownCrewOpinions >= ((Positions.Count - 1) * 2) * ConfigKey.HiddenOpinionLimit.GetValue())
+				if (unknownCrewOpinions >= ((PositionCount - 1) * 2) * ConfigKey.HiddenOpinionLimit.GetValue())
 				{
 					hiddenScores["CrewOpinion"] += (int)((idealOpinion - currentOpinion) * ConfigKey.OpinionRatingWeighting.GetValue());
 				}
@@ -542,7 +543,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the average mood of the selected crew
 		/// </summary>
-		public float AverageBoatMood()
+		public float AverageMood()
 		{
 			var mood = 0f;
 			foreach (var crewMember in PositionCrew.Values)
@@ -554,16 +555,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Get the average manager opinion of the selected crew
+		/// Get the average opinion of the selected crew of a person
 		/// </summary>
-		public float AverageBoatManagerOpinion(string managerName)
+		public float AverageOpinion(string name)
 		{
 			var opinion = 0f;
 			foreach (var crewMember in PositionCrew.Values)
 			{
-				if (crewMember.CrewOpinions.ContainsKey(managerName))
+				if (crewMember.CrewOpinions.ContainsKey(name))
 				{
-					opinion += crewMember.CrewOpinions[managerName];
+					opinion += crewMember.CrewOpinions[name];
 				}
 			}
 			opinion = opinion / PositionCrew.Count;
@@ -573,7 +574,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get the average opinion of the selected crew
 		/// </summary>
-		public float AverageBoatOpinion()
+		public float AverageOpinion()
 		{
 			var opinion = 0f;
 			foreach (var crewMember in PositionCrew.Values)

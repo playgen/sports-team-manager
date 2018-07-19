@@ -137,7 +137,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						case "PW":
 							//for this event, select a crew member who feels that they were placed in the wrong position
 							var betterPlace = new List<KeyValuePair<CrewMember, Position>>();
-							foreach (var pair in team.LineUpHistory.Last().PositionCrew)
+							foreach (var pair in team.PreviousSession.PositionCrew)
 							{
 								var betterPosition = CrewMemberBestPosition(pair.Value, team);
 								if (betterPosition.Key != Position.Null)
@@ -182,7 +182,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							break;
 						case "NotPicked":
 							//for this event, select a crew member who was not selected
-							foreach (var pair in team.LineUpHistory.Last().PositionCrew)
+							foreach (var pair in team.PreviousSession.PositionCrew)
 							{
 								eventCrew.Remove(pair.Value.Name);
 							}
@@ -192,16 +192,16 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							}
 							var randomCrewMember = eventCrew.OrderBy(c => Guid.NewGuid()).First();
 							var randomBestPosition = CrewMemberBestPosition(randomCrewMember.Value, team);
-							var randomPositionCurrent = team.LineUpHistory.Last().PositionCrew[randomBestPosition.Key].Name;
+							var randomPositionCurrent = team.PreviousSession.PositionCrew[randomBestPosition.Key].Name;
 							eventSelected.Add(new PostRaceEventState(randomCrewMember.Value, selected, new[] { randomBestPosition.Key.ToString(), randomPositionCurrent.NoSpaces() }.ToList()));
 							break;
 						case "IPC":
 							//for this event, select a crew member to have a conflict with the skipper
-							if (!team.LineUpHistory.Last().PositionCrew.ContainsKey(Position.Skipper))
+							if (!team.PreviousSession.PositionCrew.ContainsKey(Position.Skipper))
 							{
 								continue;
 							}
-							var skipper = team.LineUpHistory.Last().PositionCrew[Position.Skipper].Name;
+							var skipper = team.PreviousSession.PositionCrew[Position.Skipper].Name;
 							if (eventCrew.ContainsKey(skipper))
 							{
 								eventCrew.Remove(skipper);
@@ -233,15 +233,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		private KeyValuePair<Position, int> CrewMemberBestPosition(CrewMember cm, Team team)
 		{
 			var betterPosition = new KeyValuePair<Position, int>(Position.Null, 0);
-			var currentPosition = team.LineUpHistory.Last().PositionCrew.SingleOrDefault(pair => pair.Value == cm).Key;
-			foreach (var boatPosition in team.LineUpHistory.Last().Positions)
+			var currentPosition = team.PreviousSession.PositionCrew.SingleOrDefault(pair => pair.Value == cm).Key;
+			foreach (var boatPosition in team.PreviousSession.Positions)
 			{
 				if (boatPosition == currentPosition)
 				{
 					continue;
 				}
 				var possiblePositionScore = boatPosition.GetPositionRating(cm);
-				if ((currentPosition != Position.Null && possiblePositionScore > team.LineUpHistory.Last().PositionScores[currentPosition]) || possiblePositionScore > betterPosition.Value)
+				if ((currentPosition != Position.Null && possiblePositionScore > team.PreviousSession.PositionScores[currentPosition]) || possiblePositionScore > betterPosition.Value)
 				{
 					betterPosition = new KeyValuePair<Position, int>(boatPosition, possiblePositionScore);
 				}
