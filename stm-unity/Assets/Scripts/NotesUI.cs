@@ -10,8 +10,8 @@ using PlayGen.Unity.Utilities.Extensions;
 
 using TrackerAssetPackage;
 
-public class NotesUI : MonoBehaviour {
-
+public class NotesUI : MonoBehaviour
+{
 	[SerializeField]
 	private Text _title;
 	[SerializeField]

@@ -210,10 +210,6 @@ public class PostRaceEventUI : MonoBehaviour
 				SUGARManager.GameData.Send("Post Race Event Reply", res.Dialogue.NextState);
 			}
 			var beforeValues = GameManagement.AverageTeamMood + GameManagement.AverageTeamManagerOpinion + GameManagement.AverageTeamOpinion;
-			foreach (var res in _selectedResponses)
-			{
-				ReactionSoundControl.PlaySound(res.Value.Dialogue.Meaning.Split('_').First(sp => !string.IsNullOrEmpty(sp)), res.Key.Gender == "Male", res.Key.Avatar.Height, res.Key.Avatar.Weight);
-			}
 			var replies = GameManagement.GameManager.SendPostRaceEvent(_selectedResponses.Values.ToList());
 			_selectedResponses = null;
 			var afterValues = GameManagement.AverageTeamMood + GameManagement.AverageTeamManagerOpinion + GameManagement.AverageTeamOpinion;

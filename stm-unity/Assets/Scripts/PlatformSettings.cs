@@ -10,8 +10,6 @@ public class PlatformSettings : ScriptableObject {
 	[SerializeField]
 	private GameObject[] _rageObjects;
 	public bool Rage => _rage;
-
 	public bool DemoMode => _demoMode;
-
 	public GameObject[] RageObjects => _rageObjects;
 }

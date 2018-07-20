@@ -24,6 +24,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	private Vector2 _dragLocalPosition;
 	private Vector2 _dragStartPosition;
 	private Transform _defaultParent;
+	private TrackerTriggerSource _source;
 	private PositionUI _currentPlacement;
 	private string _sortValue;
 
@@ -33,6 +34,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	private AvatarDisplay _avatarDisplay;
 	private Image _positionImage;
 	private Button _positionButton;
+	private AspectRatioFitter _aspectFitter;
 
 	public CrewMember CrewMember { get; private set; }
 	public bool Usable { get; private set; }
@@ -44,22 +46,25 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// <summary>
 	/// Bring in elements that need to be known to this object
 	/// </summary>
-	public void SetUp(bool usable, bool current, CrewMember crewMember, Transform parent)
+	public void SetUp(bool usable, bool current, CrewMember crewMember, Transform parent, TrackerTriggerSource source = TrackerTriggerSource.TeamManagementScreen)
 	{
 		CrewMember = crewMember;
 		_defaultParent = parent;
 		Usable = usable;
 		Current = current;
+		_source = source;
 		_borderImage = GetComponent<Image>();
 		_backImage = transform.FindImage("AvatarIcon");
 		_button = GetComponent<Button>();
 		_avatarDisplay = GetComponentInChildren<AvatarDisplay>();
 		_positionImage = transform.FindImage("Position");
 		_positionButton = transform.FindButton("Position");
+		_aspectFitter = GetComponent<AspectRatioFitter>();
 
 		_backImage.color = Usable ? new Color(0, 1, 1) : Current ? new Color(0, 0.5f, 0.5f) : Color.white;
 		_borderImage.color = ShowEmotion ? AvatarDisplay.MoodColor(CrewMember.GetMood()) : Current ? Color.grey : Color.black;
 		_button.enabled = Current;
+		_aspectFitter.aspectMode = Usable ? AspectRatioFitter.AspectMode.FitInParent : AspectRatioFitter.AspectMode.WidthControlsHeight;
 
 		if (!GameManagement.SeasonOngoing)
 		{
@@ -121,11 +126,15 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		_dragStartPosition = transform.position;
 		_beingDragged = true;
 		_beingClicked = true;
+		_aspectFitter.aspectMode = AspectRatioFitter.AspectMode.None;
 		//_dragLocalPosition is used to offset according to where the click occurred
 		_dragLocalPosition = Input.mousePosition - transform.position;
 		//set as child of parent many levels up so this displays above all other CrewMember objects
 		transform.SetParent(UIManagement.DragCanvas, false);
 		transform.position = (Vector2)Input.mousePosition - _dragLocalPosition;
+		transform.RectTransform().anchorMin = Vector3.one * 0.5f;
+		transform.RectTransform().anchorMax = Vector3.one * 0.5f;
+		transform.RectTransform().sizeDelta = _defaultParent.RectTransform().sizeDelta;
 		_backImage.color = new Color(0, 0.25f, 0.25f);
 	}
 
@@ -216,7 +225,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// </summary>
 	private void ShowPopUp()
 	{
-		UIManagement.MemberMeeting.SetUpDisplay(CrewMember, TrackerTriggerSource.TeamManagementScreen.ToString());
+		UIManagement.MemberMeeting.SetUpDisplay(CrewMember, _source.ToString());
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, CrewMember.Name);
 		if (Usable)
 		{
@@ -248,7 +257,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 				SUGARManager.GameData.Send("Fill Position", position.ToString());
 				Place(positionUI);
 				//reset the position and meeting UIs
-				UIManagement.PositionDisplay.UpdateDisplay();
+				UIManagement.PositionDisplay.Display();
 				UIManagement.MemberMeeting.Display();
 				return;
 			}
@@ -257,7 +266,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		CrewMember.Assign(Position.Null);
 		OnReset();
 		//reset the position and meeting UIs
-		UIManagement.PositionDisplay.UpdateDisplay();
+		UIManagement.PositionDisplay.Display();
 		UIManagement.MemberMeeting.Display();
 	}
 
@@ -273,10 +282,8 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		var currentPosition = positionUI.Position;
 		var currentPositionCrew = positionUI.CrewMemberUI;
 		var positionTransform = positionUI.RectTransform();
+		transform.SetParent(null, false);
 		//set size and position
-		transform.SetParent(positionTransform, false);
-		transform.RectTransform().sizeDelta = positionTransform.sizeDelta;
-		transform.position = positionTransform.position;
 		CrewMember.Assign(currentPosition);
 		positionUI.LinkCrew(this);
 		if (!swap)
@@ -293,6 +300,10 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 				}
 			}
 		}
+		transform.SetParent(positionTransform, false);
+		_aspectFitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+		transform.position = positionTransform.position;
+		transform.RectTransform().anchoredPosition = Vector2.zero;
 		_currentPlacement = positionUI;
 		//update current position button
 		_positionImage.enabled = true;
@@ -311,6 +322,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		//set back to default parent and position
 		transform.SetParent(_defaultParent, false);
 		transform.position = _defaultParent.position;
+		_aspectFitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
 		transform.SetAsLastSibling();
 		if (_dragStartPosition != (Vector2)transform.position)
 		{

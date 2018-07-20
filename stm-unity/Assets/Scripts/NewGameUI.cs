@@ -15,8 +15,8 @@ using TrackerAssetPackage;
 /// <summary>
 /// Contains all UI logic related to creating new games
 /// </summary>
-public class NewGameUI : MonoBehaviour {
-
+public class NewGameUI : MonoBehaviour
+{
 	[SerializeField]
 	private InputField _boatName;
 	[SerializeField]
@@ -43,6 +43,8 @@ public class NewGameUI : MonoBehaviour {
 		RandomColor();
 		_boatName.onValidateInput += (input, charIndex, addedChar) => InvalidFlash(addedChar, _boatName);
 		_managerName.onValidateInput += (input, charIndex, addedChar) => InvalidFlash(addedChar, _managerName);
+		_boatName.onValueChanged.AddListener(s => WarningDisable());
+		_managerName.onValueChanged.AddListener(s => WarningDisable());
 	}
 
 	/// <summary>
@@ -54,7 +56,7 @@ public class NewGameUI : MonoBehaviour {
 		{
 			newChar = '\0';
 			inputField.transform.FindObject("Warning").Active(true);
-			Invoke("WarningDisable", 0.02f);
+			Invoke(nameof(WarningDisable), 0.25f);
 		}
 		return newChar;
 	}
@@ -80,7 +82,7 @@ public class NewGameUI : MonoBehaviour {
 			_tutorialToggle.isOn = true;
 		}
 		BestFit.ResolutionChange += DoBestFit;
-		Invoke("DoBestFit", 0f);
+		DoBestFit();
 	}
 
 	private void OnDisable()
@@ -96,8 +98,8 @@ public class NewGameUI : MonoBehaviour {
 		_colorSliderPrimary.value = Random.Range(0, 1f);
 		_colorSliderSecondary.value = Random.Range(0, 1f);
 		_colorSliderPrimary.GetComponentInParent<ColorPickerControl>().AssignColor(ColorValues.Hue, _colorSliderPrimary.value);
-		UpdatePrimaryColor(_colorSliderPrimary.GetComponentInParent<ColorPickerControl>().CurrentColor);
 		_colorSliderSecondary.GetComponentInParent<ColorPickerControl>().AssignColor(ColorValues.Hue, _colorSliderSecondary.value);
+		UpdatePrimaryColor(_colorSliderPrimary.GetComponentInParent<ColorPickerControl>().CurrentColor);
 		UpdateSecondaryColor(_colorSliderSecondary.GetComponentInParent<ColorPickerControl>().CurrentColor);
 	}
 
@@ -132,35 +134,31 @@ public class NewGameUI : MonoBehaviour {
 	public void ExistingGameCheck()
 	{
 		WarningDisable();
-		var valid = true;
 		if (string.IsNullOrEmpty(_boatName.text) || _boatName.text.Trim().Length == 0)
 		{
-			valid = false;
 			_boatName.transform.FindObject("Required Warning").Active(true);
+			return;
 		}
 		if (string.IsNullOrEmpty(_managerName.text) || _managerName.text.Trim().Length == 0)
 		{
-			valid = false;
 			_managerName.transform.FindObject("Required Warning").Active(true);
+			return;
 		}
-		if (valid)
+		GameManagement.GameManager.CheckIfGameExistsTask(Path.Combine(Application.persistentDataPath, "GameSaves"), _boatName.text, (completed, exists) =>
 		{
-			GameManagement.GameManager.CheckIfGameExistsTask(Path.Combine(Application.persistentDataPath, "GameSaves"), _boatName.text, (completed, exists) =>
+			if (completed)
 			{
-				if (completed)
+				if (exists)
 				{
-					if (exists)
-					{
-						_overwritePopUp.Active(true);
-						DoBestFit();
-					}
-					else
-					{
-						NewGame();
-					}
+					_overwritePopUp.Active(true);
+					DoBestFit();
 				}
-			});
-		}
+				else
+				{
+					NewGame();
+				}
+			}
+		});
 	}
 
 	/// <summary>
@@ -204,7 +202,9 @@ public class NewGameUI : MonoBehaviour {
 
 	private void DoBestFit()
 	{
-		GetComponentsInChildren<Text>().Where(t => t.text.Length > 0 || t.GetComponentInParent<InputField>()).BestFit(false);
+		var size = GetComponentsInChildren<InputField>().ToList().BestFit();
+		GetComponentsInChildren<Text>().ToList().ForEach(t => t.fontSize = size);
+		transform.Find("Buttons").BestFit();
 		_overwritePopUp.GetComponentsInChildren<Button>().Where(t => t.gameObject != _overwritePopUp).ToList().BestFit();
 	}
 }

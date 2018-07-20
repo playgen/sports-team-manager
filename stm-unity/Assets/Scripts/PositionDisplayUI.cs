@@ -17,7 +17,9 @@ using TrackerAssetPackage;
 public class PositionDisplayUI : MonoBehaviour
 {
 	[SerializeField]
-	private Text[] _textList;
+	private Text _nameText;
+	[SerializeField]
+	private Text _descriptionText;
 	[SerializeField]
 	private Image[] _skillImages;
 	[SerializeField]
@@ -27,15 +29,13 @@ public class PositionDisplayUI : MonoBehaviour
 	[SerializeField]
 	private Button _currentButton;
 	[SerializeField]
-	private Button _notesButton;
-	[SerializeField]
 	private Image _roleImage;
 	[SerializeField]
 	private GameObject _historyContainer;
 	[SerializeField]
-	private GameObject _historyPrefab;
+	private CrewMemberUI _historyPrefab;
 
-	private Position _current;
+	private Position _currentPosition;
 
 	private void OnEnable()
 	{
@@ -48,17 +48,6 @@ public class PositionDisplayUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// If the pop-up is already active, update UI elements to match current information
-	/// </summary>
-	public void UpdateDisplay()
-	{
-		if (gameObject.activeInHierarchy)
-		{
-			Display(_current);
-		}
-	}
-
-	/// <summary>
 	/// Activate the pop-up and the blocker
 	/// </summary>
 	public void SetUpDisplay(Position position, string source)
@@ -67,6 +56,7 @@ public class PositionDisplayUI : MonoBehaviour
 		{
 			return;
 		}
+		_currentPosition = position;
 		var currentCrew = position.Current() ? position.CurrentCrewMember() : null;
 		var boatPos = GameManagement.PositionString;
 		TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
@@ -80,28 +70,21 @@ public class PositionDisplayUI : MonoBehaviour
 		SUGARManager.GameData.Send("View Position Screen", position.ToString());
 		gameObject.Active(true);
 		transform.EnableSmallBlocker(() => ClosePositionPopUp(TrackerTriggerSource.PopUpBlocker.ToString()));
-		Display(position);
+		Display();
 	}
 
 	/// <summary>
 	/// Populate the information required in the pop-up
 	/// </summary>
-	private void Display(Position position)
+	public void Display()
 	{
-		_current = position;
-		CrewMember currentCrew = null;
-		//get current CrewMember in this position if any
-		if (position.Current())
+		if (!gameObject.activeInHierarchy)
 		{
-			currentCrew = position.CurrentCrewMember();
+			return;
 		}
-		//set title and description text
-		_textList[0].text = Localization.Get(position.ToString());
-		_textList[1].text = Localization.Get(position + "_DESCRIPTION");
+		var currentCrew = _currentPosition.Current() ? _currentPosition.CurrentCrewMember() : null;
 		//set role image (displayed if no-one is in this position)
-		_roleImage.sprite = UIManagement.TeamSelection.RoleLogos[position.ToString()];
-		_notesButton.onClick.RemoveAllListeners();
-		_notesButton.onClick.AddListener(() => UIManagement.Notes.Display(position.ToString()));
+		_roleImage.sprite = currentCrew == null ? UIManagement.TeamSelection.RoleLogos[_currentPosition.ToString()] : null;
 		_currentButton.onClick.RemoveAllListeners();
 		//display avatar and CrewMember name accordingly
 		_currentAvatar.gameObject.Active(currentCrew != null);
@@ -113,45 +96,27 @@ public class PositionDisplayUI : MonoBehaviour
 			_currentName.text = currentCrew.Name;
 			_currentButton.onClick.AddListener(() => UIManagement.MemberMeeting.SetUpDisplay(currentCrew, TrackerTriggerSource.PositionPopUp.ToString()));
 		}
+		//display skill images for this position
+		_skillImages.ToList().ForEach(image => image.enabled = _currentPosition.RequiredSkills().ToList().Any(s => s.ToString() == image.name));
 		//wipe previous position history objects
 		foreach (Transform child in _historyContainer.transform)
 		{
 			Destroy(child.gameObject);
 		}
-		//display skill images for this position
-		foreach (var skill in _skillImages)
-		{
-			skill.enabled = false;
-			foreach (var actualSkill in position.RequiredSkills())
-			{
-				if (skill.name == actualSkill.ToString())
-				{
-					skill.enabled = true;
-				}
-			}
-		}
 		//gather a count of how many times CrewMembers have been placed in this position
-		var positionMembers = position.Placements();
+		var positionMembers = _currentPosition.Placements();
 		//for every CrewMember ever placed in this position, create a Position History object displaying their avatar and their number of appearences
 		foreach (var member in positionMembers)
 		{
-			var positionHistory = Instantiate(_historyPrefab);
-			positionHistory.transform.SetParent(_historyContainer.transform, false);
+			var positionHistory = Instantiate(_historyPrefab, _historyContainer.transform, false);
 			positionHistory.transform.FindText("Name").text = member.Key.FirstName[0] + "." + member.Key.LastName;
-			if (member.Key.Current())
-			{
-				var current = member.Key;
-				positionHistory.GetComponentInChildren<Button>().onClick.AddListener(() => UIManagement.MemberMeeting.SetUpDisplay(current, TrackerTriggerSource.PositionPopUp.ToString()));
-				positionHistory.transform.FindImage("AvatarIcon").color = new UnityEngine.Color(0, 0.5f, 0.5f);
-			}
-			else
-			{
-				positionHistory.GetComponentInChildren<Button>().interactable = false;
-				positionHistory.transform.FindImage("AvatarIcon").color = UnityEngine.Color.white;
-			}
-			positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, member.Key.GetMood());
-			positionHistory.transform.FindText("Session Back/Sessions").text = member.Value.ToString();
+			positionHistory.GetComponent<CrewMemberUI>().SetUp(false, member.Key.Current(), member.Key, _historyContainer.transform, TrackerTriggerSource.PositionPopUp);
+			var mood = member.Key.GetMood();
+			positionHistory.GetComponent<Image>().color = AvatarDisplay.MoodColor(mood);
+			positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, mood);
+			positionHistory.transform.FindText("Sort/Sort Text").text = member.Value.ToString();
 		}
+		OnLanguageChange();
 	}
 
 	/// <summary>
@@ -163,7 +128,7 @@ public class PositionDisplayUI : MonoBehaviour
 		{
 			TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpClosed", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 			{
-				{ TrackerContextKey.PositionName, _current },
+				{ TrackerContextKey.PositionName, _currentPosition },
 				{ TrackerContextKey.TriggerUI, source }
 			}, AccessibleTracker.Accessible.Screen));
 			gameObject.Active(false);
@@ -194,9 +159,18 @@ public class PositionDisplayUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Triggered by button. Displays the Notes UI for the currently selected crew member.
+	/// </summary>
+	public void DisplayNotes()
+	{
+		UIManagement.Notes.Display(_currentPosition.ToString());
+	}
+
 	private void OnLanguageChange()
 	{
-		_textList[0].text = Localization.Get(_current.ToString());
-		_textList[1].text = Localization.Get(_current + "_DESCRIPTION");
+		//set title and description text
+		_nameText.text = Localization.Get(_currentPosition.ToString());
+		_descriptionText.text = Localization.Get(_currentPosition + "_DESCRIPTION");
 	}
 }

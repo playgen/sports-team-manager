@@ -107,7 +107,6 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void Display()
 	{
-		//TODO try to simplify this as much as possible
 		if (!gameObject.activeInHierarchy)
 		{
 			return;
@@ -212,11 +211,7 @@ public class MemberMeetingUI : MonoBehaviour
 		{
 			return _opinionIconDict["Disagree"];
 		}
-		if (opinion <= ConfigKey.OpinionStrongDislike.Value())
-		{
-			return _opinionIconDict["Strongly_Disagree"];
-		}
-		return _opinionIconDict["Neutral"];
+		return opinion <= ConfigKey.OpinionStrongDislike.Value() ? _opinionIconDict["Strongly_Disagree"] : _opinionIconDict["Neutral"];
 	}
 
 	/// <summary>
