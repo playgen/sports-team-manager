@@ -90,7 +90,7 @@ public class TutorialSectionUI : MonoBehaviour
 			}
 			if (_attributeDict["part" + _currentText].Contains("opinion"))
 			{
-				UIManagement.MemberMeeting.ForcedOpinionChange(_attributeDict["part" + _currentText].Replace("opinion-", string.Empty));
+				UIManagement.MemberMeeting.DisplayOpinions(_attributeDict["part" + _currentText].Replace("opinion-", string.Empty) == "accurate");
 			}
 		}
 		var reverseRaycast = GetComponentInChildren<ReverseRaycastTarget>();

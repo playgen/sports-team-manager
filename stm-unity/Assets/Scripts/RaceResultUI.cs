@@ -57,7 +57,7 @@ public class RaceResultUI : MonoBehaviour
 			memberObject.transform.SetParent(transform.Find("Crew"), false);
 			memberObject.name = pair.Value.Name;
 			memberObject.transform.FindComponentInChildren<AvatarDisplay>("Avatar").SetAvatar(pair.Value.Avatar, -(finishPosition - 3) * 2);
-			memberObject.transform.FindImage("Position").sprite = UIManagement.TeamSelection.RoleLogos.First(mo => mo.Name == pair.Key.ToString()).Image;
+			memberObject.transform.FindImage("Position").sprite = UIManagement.TeamSelection.RoleLogos[pair.Key.ToString()];
 			memberObject.transform.FindRect("Position").offsetMin = new Vector2(10, 0);
 			if (crewCount % 2 != 0)
 			{

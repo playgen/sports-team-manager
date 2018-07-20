@@ -2245,7 +2245,7 @@ GameObject:
   - component: {fileID: 63214455}
   - component: {fileID: 63214454}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4207,7 +4207,7 @@ GameObject:
   - component: {fileID: 97704935}
   - component: {fileID: 97704938}
   m_Layer: 5
-  m_Name: Opinion Reveal
+  m_Name: OpinionRevealNegative
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4274,10 +4274,10 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1950819050}
         m_MethodName: AskQuestion
-        m_Mode: 5
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 97704933}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: OpinionRevealNegative
@@ -6098,7 +6098,7 @@ GameObject:
   - component: {fileID: 177904817}
   - component: {fileID: 177904816}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6397,7 +6397,7 @@ GameObject:
   - component: {fileID: 192195127}
   - component: {fileID: 192195126}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8038,7 +8038,7 @@ GameObject:
   - component: {fileID: 253989104}
   - component: {fileID: 253989103}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8651,7 +8651,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 80.38928}
+  m_SizeDelta: {x: 0, y: -222.68289}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &287409924
 MonoBehaviour:
@@ -9195,7 +9195,7 @@ RectTransform:
   m_AnchorMin: {x: 0.75, y: 0.025}
   m_AnchorMax: {x: 1, y: 0.975}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -60.163803, y: 0}
+  m_SizeDelta: {x: -60.117477, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!95 &301398406
 Animator:
@@ -10383,6 +10383,7 @@ GameObject:
   - component: {fileID: 309076662}
   - component: {fileID: 309076664}
   - component: {fileID: 309076663}
+  - component: {fileID: 309076665}
   m_Layer: 5
   m_Name: Name Title
   m_TagString: Untagged
@@ -10448,6 +10449,20 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 309076661}
   m_CullTransparentMesh: 0
+--- !u!114 &309076665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 309076661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1807221761, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LanguageOverride: 
+  Key: NAME_WITH_COLON
+  ToUpper: 0
 --- !u!1 &310833414
 GameObject:
   m_ObjectHideFlags: 0
@@ -10461,7 +10476,7 @@ GameObject:
   - component: {fileID: 310833416}
   - component: {fileID: 310833419}
   m_Layer: 5
-  m_Name: Opinion Reveal
+  m_Name: OpinionRevealPositive
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10528,10 +10543,10 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1950819050}
         m_MethodName: AskQuestion
-        m_Mode: 5
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 310833414}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: OpinionRevealPositive
@@ -10601,6 +10616,7 @@ GameObject:
   - component: {fileID: 314443200}
   - component: {fileID: 314443202}
   - component: {fileID: 314443201}
+  - component: {fileID: 314443203}
   m_Layer: 5
   m_Name: Age Title
   m_TagString: Untagged
@@ -10666,6 +10682,20 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 314443199}
   m_CullTransparentMesh: 0
+--- !u!114 &314443203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 314443199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1807221761, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LanguageOverride: 
+  Key: AGE_WITH_COLON
+  ToUpper: 0
 --- !u!1 &324309958
 GameObject:
   m_ObjectHideFlags: 0
@@ -17718,7 +17748,7 @@ GameObject:
   - component: {fileID: 585712155}
   - component: {fileID: 585712154}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Question
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18419,7 +18449,7 @@ GameObject:
   - component: {fileID: 613524166}
   - component: {fileID: 613524165}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20939,7 +20969,7 @@ GameObject:
   - component: {fileID: 715883219}
   - component: {fileID: 715883218}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21349,7 +21379,7 @@ GameObject:
   - component: {fileID: 739039008}
   - component: {fileID: 739039007}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23720,7 +23750,7 @@ GameObject:
   - component: {fileID: 784060694}
   - component: {fileID: 784060693}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Question
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23824,8 +23854,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 480.14017, y: -416.625}
-  m_SizeDelta: {x: 960.28033, y: 75.75}
+  m_AnchoredPosition: {x: 480.04752, y: -113.625}
+  m_SizeDelta: {x: 960.09503, y: 75.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &788607234
 CanvasGroup:
@@ -25145,7 +25175,7 @@ GameObject:
   - component: {fileID: 838314069}
   - component: {fileID: 838314072}
   m_Layer: 5
-  m_Name: Role Reveal
+  m_Name: RoleReveal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25212,10 +25242,10 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1950819050}
         m_MethodName: AskQuestion
-        m_Mode: 5
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 838314067}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: RoleReveal
@@ -30501,15 +30531,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22411208, guid: 755fefc16ab02ff4eba8a2c8bce60a4e, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 480.14017
+      value: 480.04752
       objectReference: {fileID: 0}
     - target: {fileID: 22411208, guid: 755fefc16ab02ff4eba8a2c8bce60a4e, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -340.875
+      value: -37.875
       objectReference: {fileID: 0}
     - target: {fileID: 22411208, guid: 755fefc16ab02ff4eba8a2c8bce60a4e, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 960.28033
+      value: 960.09503
       objectReference: {fileID: 0}
     - target: {fileID: 22411208, guid: 755fefc16ab02ff4eba8a2c8bce60a4e, type: 2}
       propertyPath: m_SizeDelta.y
@@ -30542,61 +30572,61 @@ Prefab:
     - target: {fileID: 224000012203504126, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 224000011014635542, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 224000013968138758, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 224000011516846804, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 224000011153524994, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 224000013789421484, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 224000012737263600, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 224000013135355590, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 224354591038945014, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: -37.338768
+      value: -37.34619
       objectReference: {fileID: 0}
     - target: {fileID: 22489638, guid: 755fefc16ab02ff4eba8a2c8bce60a4e, type: 2}
       propertyPath: m_SizeDelta.y
-      value: -37.338768
+      value: -37.34619
       objectReference: {fileID: 0}
     - target: {fileID: 224000011516846804, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 444.0946
+      value: 444.03207
       objectReference: {fileID: 0}
     - target: {fileID: 224000012203504126, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 124.094604
+      value: 124.032074
       objectReference: {fileID: 0}
     - target: {fileID: 224000012737263600, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
@@ -30611,7 +30641,7 @@ Prefab:
     - target: {fileID: 224000012737263600, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 44.094604
+      value: 44.032074
       objectReference: {fileID: 0}
     - target: {fileID: 224000012737263600, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
@@ -30646,7 +30676,7 @@ Prefab:
     - target: {fileID: 224000013789421484, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 204.0946
+      value: 204.03207
       objectReference: {fileID: 0}
     - target: {fileID: 224000013789421484, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
@@ -30666,7 +30696,7 @@ Prefab:
     - target: {fileID: 224000013968138758, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 284.0946
+      value: 284.03207
       objectReference: {fileID: 0}
     - target: {fileID: 224000013968138758, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
@@ -30686,7 +30716,7 @@ Prefab:
     - target: {fileID: 224000011014635542, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 364.0946
+      value: 364.03207
       objectReference: {fileID: 0}
     - target: {fileID: 224000011014635542, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
@@ -30721,7 +30751,7 @@ Prefab:
     - target: {fileID: 224000011153524994, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 524.0946
+      value: 524.0321
       objectReference: {fileID: 0}
     - target: {fileID: 224000011153524994, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
@@ -30741,7 +30771,7 @@ Prefab:
     - target: {fileID: 224000013135355590, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 604.0946
+      value: 604.0321
       objectReference: {fileID: 0}
     - target: {fileID: 224000013135355590, guid: 755fefc16ab02ff4eba8a2c8bce60a4e,
         type: 2}
@@ -31728,7 +31758,7 @@ GameObject:
   - component: {fileID: 1102365754}
   - component: {fileID: 1102365753}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Question
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33107,7 +33137,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1052340415}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1950819050}
+        m_MethodName: DisplayNotes
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1167657275
@@ -33896,7 +33937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 1500588851}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 0
   m_MovementType: 2
   m_Elasticity: 0
@@ -36614,6 +36655,7 @@ GameObject:
   - component: {fileID: 1300946145}
   - component: {fileID: 1300946147}
   - component: {fileID: 1300946146}
+  - component: {fileID: 1300946148}
   m_Layer: 5
   m_Name: Role Title
   m_TagString: Untagged
@@ -36679,6 +36721,20 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1300946144}
   m_CullTransparentMesh: 0
+--- !u!114 &1300946148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1300946144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1807221761, guid: af75e3018e40c7546b2d53c46b2cc9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LanguageOverride: 
+  Key: ROLE_WITH_COLON
+  ToUpper: 0
 --- !u!1 &1302108837
 GameObject:
   m_ObjectHideFlags: 0
@@ -39845,7 +39901,7 @@ RectTransform:
   m_AnchorMin: {x: 0.96, y: 0.95}
   m_AnchorMax: {x: 0.99, y: 0.99}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 11.305265}
+  m_SizeDelta: {x: 0, y: 1.7548399}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1377872060
 MonoBehaviour:
@@ -43335,7 +43391,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -645.47424, y: 0}
+  m_SizeDelta: {x: -645.3458, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1500588852
 MonoBehaviour:
@@ -43699,7 +43755,7 @@ GameObject:
   - component: {fileID: 1514634577}
   - component: {fileID: 1514634576}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47214,7 +47270,7 @@ GameObject:
   - component: {fileID: 1672117939}
   - component: {fileID: 1672117938}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Question
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47381,7 +47437,7 @@ GameObject:
   - component: {fileID: 1679758280}
   - component: {fileID: 1679758283}
   m_Layer: 5
-  m_Name: Stat Reveal
+  m_Name: StatReveal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47448,10 +47504,10 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1950819050}
         m_MethodName: AskQuestion
-        m_Mode: 5
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1679758278}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: StatReveal
@@ -52051,7 +52107,7 @@ GameObject:
   - component: {fileID: 1828167506}
   - component: {fileID: 1828167505}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53218,7 +53274,7 @@ GameObject:
   - component: {fileID: 1861172598}
   - component: {fileID: 1861172597}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55602,7 +55658,7 @@ RectTransform:
   m_AnchorMin: {x: 0.97, y: 0.94}
   m_AnchorMax: {x: 0.99, y: 0.97}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -27.5523}
+  m_SizeDelta: {x: 0, y: 3.0034323}
   m_Pivot: {x: 1, y: 1}
 --- !u!95 &1941228541
 Animator:
@@ -55806,7 +55862,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -548.68567, y: 0}
+  m_SizeDelta: {x: -423.64716, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1950819050
 MonoBehaviour:
@@ -55820,26 +55876,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _avatarDisplay: {fileID: 64453451}
-  _textList:
-  - {fileID: 994816216}
-  - {fileID: 1027082278}
-  - {fileID: 1204848451}
-  - {fileID: 309076663}
-  - {fileID: 314443201}
-  - {fileID: 1300946146}
+  _nameText: {fileID: 994816216}
+  _ageText: {fileID: 1027082278}
+  _roleText: {fileID: 1204848451}
   _roleButton: {fileID: 863895115}
-  _barForegrounds:
-  - {fileID: 1644573942}
-  - {fileID: 1280740808}
-  - {fileID: 1988280019}
-  - {fileID: 234253203}
-  - {fileID: 1740980383}
-  - {fileID: 341909293}
+  _skills:
+  - {fileID: 205444507}
+  - {fileID: 593587089}
+  - {fileID: 1851510437}
+  - {fileID: 2069764317}
+  - {fileID: 1850422427}
+  - {fileID: 2078748417}
   _dialogueText: {fileID: 1732577634}
-  _statQuestion: {fileID: 1102365753}
-  _roleQuestion: {fileID: 585712154}
-  _opinionPositiveQuestion: {fileID: 784060693}
-  _opinionNegativeQuestion: {fileID: 1672117938}
+  _questions:
+  - {fileID: 1679758279}
+  - {fileID: 838314068}
+  - {fileID: 310833415}
+  - {fileID: 97704934}
   _opinionIcons:
   - {fileID: 21300000, guid: e7fa7ee478ebc3f4d9ac98cb5bac5120, type: 3}
   - {fileID: 21300000, guid: 0369e602c3f2f5e41ae90d0be6328fc2, type: 3}
@@ -55847,12 +55900,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5747ff95395c4ad42a2524dcca13cb1d, type: 3}
   - {fileID: 21300000, guid: 749965791696af14097647bb31c18b71, type: 3}
   _closeText: {fileID: 1015216150}
-  _notesButton: {fileID: 1167657274}
   _fireWarningPopUp: {fileID: 351043587}
   _fireButton: {fileID: 1112984671}
   _allowanceBar: {fileID: 1972574781}
   _allowanceText: {fileID: 835265187}
-  _crewContainer: {fileID: 1197197874}
 --- !u!114 &1950819052
 MonoBehaviour:
   m_ObjectHideFlags: 0

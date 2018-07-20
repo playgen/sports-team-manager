@@ -296,7 +296,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		_currentPlacement = positionUI;
 		//update current position button
 		_positionImage.enabled = true;
-		_positionImage.sprite = UIManagement.TeamSelection.RoleIcons.First(mo => mo.Name == currentPosition.ToString()).Image;
+		_positionImage.sprite = UIManagement.TeamSelection.RoleIcons[currentPosition.ToString()];
 		_positionButton.onClick.RemoveAllListeners();
 		_positionButton.onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentPosition, TrackerTriggerSource.CrewMemberPopUp.ToString()));
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, CrewMember.Name);

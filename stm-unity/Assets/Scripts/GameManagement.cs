@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using UnityEngine;
@@ -115,7 +116,7 @@ public static class GameManagement
 
 	public static bool CanAddToCrew => Team.CanAddToCrew();
 
-	public static bool CanRemoveFromCrew => Team.CanRemoveFromCrew();
+	public static bool CanRemoveFromCrew => ConfigKey.FiringCost.Affordable() && CrewEditAllowed && Team.CanRemoveFromCrew() && !ShowTutorial;
 
 	public static float AverageTeamMood => Team.AverageMood();
 
@@ -140,9 +141,14 @@ public static class GameManagement
 		return GameManager.GetConfigValue(key, member);
 	}
 
+	public static string ValueString(this ConfigKey key, bool localize = true, CrewMember member = null)
+	{
+		return Value(key, member).ToString(localize ? Localization.SpecificSelectedLanguage : CultureInfo.InvariantCulture);
+	}
+
 	public static bool Affordable(this ConfigKey key, CrewMember member = null)
 	{
-		return ActionAllowance >= key.Value(member);
+		return ActionAllowance >= Value(key, member);
 	}
 
 	public static string EventString(this string key, bool localize = true)

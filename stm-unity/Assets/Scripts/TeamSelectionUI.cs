@@ -28,7 +28,8 @@ public class Icon
 /// <summary>
 /// Contains all UI logic related to the Team Management screen
 /// </summary>
-public class TeamSelectionUI : MonoBehaviour {
+public class TeamSelectionUI : MonoBehaviour
+{
 	[SerializeField]
 	private GameObject _boatContainer;
 	[SerializeField]
@@ -40,6 +41,7 @@ public class TeamSelectionUI : MonoBehaviour {
 	private int _previousScrollValue;
 	[SerializeField]
 	private GameObject _crewContainer;
+	public GameObject CrewContainer => _crewContainer;
 	[SerializeField]
 	private GameObject[] _crewPagingButtons;
 	[SerializeField]
@@ -48,12 +50,10 @@ public class TeamSelectionUI : MonoBehaviour {
 	private Icon[] _mistakeIcons;
 	[SerializeField]
 	private Icon[] _roleIcons;
-	public Icon[] RoleIcons => _roleIcons;
-
+	public Dictionary<string, Sprite> RoleIcons => _roleIcons.ToDictionary(r => r.Name, r => r.Image);
 	[SerializeField]
-	public Icon[] _roleLogos;
-	public Icon[] RoleLogos => _roleLogos;
-
+	private Icon[] _roleLogos;
+	public Dictionary<string, Sprite> RoleLogos => _roleLogos.ToDictionary(r => r.Name, r => r.Image);
 	[SerializeField]
 	private GameObject _crewPrefab;
 	[SerializeField]
@@ -305,7 +305,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			positionObject.Active(true);
 			var pos = GameManagement.Positions[i];
 			positionObject.transform.FindText("Text").text = Localization.Get(pos.ToString());
-			positionObject.transform.FindImage("Image").sprite = _roleLogos.First(mo => mo.Name == pos.ToString()).Image;
+			positionObject.transform.FindImage("Image").sprite = RoleLogos[pos.ToString()];
 			positionObject.GetComponent<PositionUI>().SetUp(pos);
 		}
 		_raceButton.gameObject.Active(GameManagement.SeasonOngoing);
@@ -553,7 +553,7 @@ public class TeamSelectionUI : MonoBehaviour {
 			var positionImage = crewMember.transform.FindObject("Position");
 			//update current position button
 			positionImage.GetComponent<Image>().enabled = true;
-			positionImage.GetComponent<Image>().sprite = _roleIcons.First(mo => mo.Name == pair.Key.ToString()).Image;
+			positionImage.GetComponent<Image>().sprite = RoleIcons[pair.Key.ToString()];
 			positionImage.GetComponent<Button>().onClick.RemoveAllListeners();
 			var currentPosition = pair.Key;
 			positionImage.GetComponent<Button>().onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentPosition, TrackerTriggerSource.TeamManagementScreen.ToString()));

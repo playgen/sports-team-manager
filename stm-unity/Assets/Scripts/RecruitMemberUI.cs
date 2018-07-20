@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
@@ -119,7 +118,7 @@ public class RecruitMemberUI : MonoBehaviour
 				_recruitUI[i].transform.FindText("Dialogue Box/Dialogue").text += Localization.Get("EXCLAIMATION_MARK");
 			}
 			_recruitUI[i].transform.FindImage("Dialogue Box/Image").enabled = false;
-			_recruitUI[i].transform.FindText("Cost Image/Text").text = ConfigKey.RecruitmentCost.Value().ToString(Localization.SpecificSelectedLanguage);
+			_recruitUI[i].transform.FindText("Cost Image/Text").text = ConfigKey.RecruitmentCost.ValueString();
 			_recruitUI[i].name = recruits[i].Name;
 		}
 		//set-up question text and click handlers
@@ -136,7 +135,7 @@ public class RecruitMemberUI : MonoBehaviour
 			_questionButtons[i].interactable = true;
 			var questionText = ("Recruit" + selected).EventString(false);
 			_questionButtons[i].transform.FindText("Text").text = Localization.Get(questionText);
-			_questionButtons[i].transform.FindText("Image/Text").text = ConfigKey.SendRecruitmentQuestionCost.Value().ToString(Localization.SpecificSelectedLanguage);
+			_questionButtons[i].transform.FindText("Image/Text").text = ConfigKey.SendRecruitmentQuestionCost.ValueString();
 			_questionButtons[i].onClick.RemoveAllListeners();
 			_questionButtons[i].onClick.AddListener(() => AskQuestion(selected, questionText));
 		}
@@ -189,7 +188,7 @@ public class RecruitMemberUI : MonoBehaviour
 			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
 			{ TrackerContextKey.CurrentSession, GameManagement.CurrentSessionString },
 			{ TrackerContextKey.QuestionAsked, skill },
-			{ TrackerContextKey.QuestionCost, ConfigKey.SendRecruitmentQuestionCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKey.QuestionCost, ConfigKey.SendRecruitmentQuestionCost.ValueString(false) },
 			{ TrackerContextKey.RaceStartTalkTime, GameManagement.StartingActionAllowance }
 		}, skill.ToString(), AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
@@ -243,7 +242,7 @@ public class RecruitMemberUI : MonoBehaviour
 		{
 			{ TrackerContextKey.CrewMemberName, recruit.Name },
 			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
-			{ TrackerContextKey.HiringCost, ConfigKey.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) }
+			{ TrackerContextKey.HiringCost, ConfigKey.RecruitmentCost.ValueString(false) }
 		}, AccessibleTracker.Accessible.Screen));
 	}
 
@@ -265,7 +264,7 @@ public class RecruitMemberUI : MonoBehaviour
 		{
 			{ TrackerContextKey.CrewMemberName, _currentSelected },
 			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
-			{ TrackerContextKey.HiringCost, ConfigKey.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKey.HiringCost, ConfigKey.RecruitmentCost.ValueString(false) },
 			{ TrackerContextKey.TriggerUI, source }
 		}, AccessibleTracker.Accessible.Screen));
 		_currentSelected = string.Empty;
@@ -284,7 +283,7 @@ public class RecruitMemberUI : MonoBehaviour
 		{
 			{ TrackerContextKey.CrewMemberName, crewMember.Name },
 			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
-			{ TrackerContextKey.HiringCost, ConfigKey.RecruitmentCost.Value().ToString(CultureInfo.InvariantCulture) },
+			{ TrackerContextKey.HiringCost, ConfigKey.RecruitmentCost.ValueString(false) },
 			{ TrackerContextKey.TriggerUI, source }
 		}, GameObjectTracker.TrackedGameObject.Npc));
 		SUGARManager.GameData.Send("Crew Member Hired", true);

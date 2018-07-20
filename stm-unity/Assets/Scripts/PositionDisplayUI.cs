@@ -99,7 +99,7 @@ public class PositionDisplayUI : MonoBehaviour
 		_textList[0].text = Localization.Get(position.ToString());
 		_textList[1].text = Localization.Get(position + "_DESCRIPTION");
 		//set role image (displayed if no-one is in this position)
-		_roleImage.sprite = UIManagement.TeamSelection.RoleLogos.First(mo => mo.Name == position.ToString()).Image;
+		_roleImage.sprite = UIManagement.TeamSelection.RoleLogos[position.ToString()];
 		_notesButton.onClick.RemoveAllListeners();
 		_notesButton.onClick.AddListener(() => UIManagement.Notes.Display(position.ToString()));
 		_currentButton.onClick.RemoveAllListeners();
