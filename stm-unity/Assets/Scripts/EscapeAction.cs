@@ -1,4 +1,6 @@
-﻿using PlayGen.Unity.Utilities.Extensions;
+﻿using System.Linq;
+
+using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,9 +15,9 @@ public class EscapeAction : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			//if settings panel is open, close settings panel
-			if (UIManagement.Settings.gameObject.activeInHierarchy)
+			if (UIManagement.Settings.Any(s => s.gameObject.activeInHierarchy))
 			{
-				UIManagement.Settings.Parent().Active(false);
+				UIManagement.Settings.ToList().ForEach(s => s.Parent().Active(false));
 				return;
 			}
 			//if tutorial quitting pop-up is open, close this pop-up

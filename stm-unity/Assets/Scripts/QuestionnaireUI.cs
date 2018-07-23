@@ -152,7 +152,7 @@ public class QuestionnaireUI : MonoBehaviour
 	public void SubmitAnswers()
 	{
 		var results = new Dictionary<string, int>();
-		foreach (Question question in _questions)
+		foreach (var question in _questions)
 		{
 			var style = question.AnswerAToggle.isOn ? question.AnswerA.Style : question.AnswerBToggle.isOn ? question.AnswerB.Style : string.Empty;
 			if (results.ContainsKey(style))
@@ -165,13 +165,18 @@ public class QuestionnaireUI : MonoBehaviour
 			}
 		}
 		GameManagement.GameManager.SaveQuestionnaireResults(results);
-		UIStateManager.StaticGoToFeedback();
+		UIManagement.StateManager.GoToState(State.Feedback);
+	}
+
+	public void GoToTeamManagement()
+	{
+		UIManagement.StateManager.GoToState(State.TeamManagement);
 	}
 
 	private void OnLanguageChange()
 	{
 		var questionCount = 0;
-		foreach (Question question in _questions)
+		foreach (var question in _questions)
 		{
 			questionCount++;
 			question.QuestionText.text = $"{Localization.Get("QUESTION")} {questionCount}";

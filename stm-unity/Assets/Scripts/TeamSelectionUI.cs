@@ -360,7 +360,7 @@ public class TeamSelectionUI : MonoBehaviour
 			_recruitButtons.Add(recruit.GetComponent<Button>());
 		}
 		SortCrew();
-		Invoke("CrewContainerPaging", Time.smoothDeltaTime * 2);
+		Invoke(nameof(CrewContainerPaging), Time.smoothDeltaTime * 2);
 	}
 
 	/// <summary>
@@ -469,12 +469,7 @@ public class TeamSelectionUI : MonoBehaviour
 		}
 	}
 
-	private void CrewContainerPaging()
-	{
-		CrewContainerPaging(0);
-	}
-
-	public void CrewContainerPaging(int page)
+	public void CrewContainerPaging(int page = 0)
 	{
 		if (_crewContainer.transform.RectTransform().rect.width > _crewContainer.transform.parent.RectTransform().rect.width)
 		{
@@ -799,7 +794,7 @@ public class TeamSelectionUI : MonoBehaviour
 			if (current)
 			{
 				UpdateSeasonProgress(finishPosition);
-				UIManagement.RaceResult.Display(boat.PositionCrew, finishPosition, finishPositionText.ToLower());
+				UIManagement.RaceResult.Display(boat.PositionCrew, finishPosition);
 			}
 		}
 		if (current)
@@ -913,7 +908,7 @@ public class TeamSelectionUI : MonoBehaviour
 	{
 		if (GameManagement.RageMode)
 		{
-			UIStateManager.StaticGoToQuestionnaire();
+			UIManagement.StateManager.GoToState(State.Questionnaire);
 		}
 	}
 
@@ -924,7 +919,7 @@ public class TeamSelectionUI : MonoBehaviour
 	{
 		if (GameManagement.RageMode)
 		{
-			UIStateManager.StaticGoToFeedback();
+			UIManagement.StateManager.GoToState(State.Feedback);
 		}
 	}
 }

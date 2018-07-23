@@ -91,7 +91,7 @@ public class CupResultUI : MonoBehaviour
 			}, AccessibleTracker.Accessible.Screen));
 			if (GameManagement.RageMode)
 			{
-				UIStateManager.StaticGoToQuestionnaire();
+				UIManagement.StateManager.GoToState(State.Questionnaire);
 			}
 		}
 	}

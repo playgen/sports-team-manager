@@ -250,7 +250,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return;
 			}
 			Boat.Promote(newType);
-			if (Boat.Type == "Finished")
+			if (Boat.Type == "Finish")
 			{
 				Finished = true;
 				return;

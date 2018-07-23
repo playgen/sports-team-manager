@@ -161,6 +161,11 @@ public class FeedbackUI : MonoBehaviour
 		}
 	}
 
+	public void GoToTeamManagement()
+	{
+		UIManagement.StateManager.GoToState(State.TeamManagement);
+	}
+
 	private void OnLanguageChange()
 	{
 		DrawGraph();

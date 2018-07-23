@@ -14,17 +14,16 @@ public class RaceResultUI : MonoBehaviour
 {
 	[SerializeField]
 	private GameObject _postRaceCrewPrefab;
-	private Dictionary<Position, CrewMember> _lastRacePositions;
+	[SerializeField]
+	private Transform _crewContainer;
+	[SerializeField]
+	private Text _resultText;
 	private int _lastRaceFinishPosition;
-	private string _lastRaceFinishPositionText;
 
 	private void OnEnable()
 	{
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
-		_lastRacePositions = new Dictionary<Position, CrewMember>();
-		_lastRaceFinishPosition = 0;
-		_lastRaceFinishPositionText = string.Empty;
 	}
 
 	private void OnDisable()
@@ -36,40 +35,32 @@ public class RaceResultUI : MonoBehaviour
 	/// <summary>
 	/// Display pop-up which shows the race result
 	/// </summary>
-	public void Display(Dictionary<Position, CrewMember> currentPositions, int finishPosition, string finishPositionText)
+	public void Display(Dictionary<Position, CrewMember> currentPositions, int finishPosition)
 	{
 		UIManagement.PositionDisplay.ClosePositionPopUp(string.Empty);
 		UIManagement.MemberMeeting.CloseCrewMemberPopUp(string.Empty);
 		UIManagement.DisableSmallBlocker();
 		gameObject.Active(true);
 		transform.EnableBlocker(() => Close(TrackerTriggerSource.PopUpBlocker.ToString()));
-		_lastRacePositions = new Dictionary<Position, CrewMember>(currentPositions);
 		_lastRaceFinishPosition = finishPosition;
-		_lastRaceFinishPositionText = finishPositionText;
-		foreach (Transform child in transform.Find("Crew"))
+		foreach (Transform child in _crewContainer)
 		{
 			Destroy(child.gameObject);
 		}
 		var crewCount = 0;
 		foreach (var pair in currentPositions)
 		{
-			var memberObject = Instantiate(_postRaceCrewPrefab);
-			memberObject.transform.SetParent(transform.Find("Crew"), false);
+			var memberObject = Instantiate(_postRaceCrewPrefab, _crewContainer, false).transform;
 			memberObject.name = pair.Value.Name;
-			memberObject.transform.FindComponentInChildren<AvatarDisplay>("Avatar").SetAvatar(pair.Value.Avatar, -(finishPosition - 3) * 2);
-			memberObject.transform.FindImage("Position").sprite = UIManagement.TeamSelection.RoleLogos[pair.Key.ToString()];
-			memberObject.transform.FindRect("Position").offsetMin = new Vector2(10, 0);
-			if (crewCount % 2 != 0)
-			{
-				var currentScale = memberObject.transform.Find("Avatar").localScale;
-				memberObject.transform.Find("Avatar").localScale = new Vector3(-currentScale.x, currentScale.y, currentScale.z);
-				memberObject.transform.FindRect("Position").offsetMin = new Vector2(-10, 0);
-			}
+			var avatar = memberObject.Find("Avatar");
+			avatar.GetComponent<AvatarDisplay>().SetAvatar(pair.Value.Avatar, -(finishPosition - 3) * 2);
+			avatar.localScale = crewCount % 2 == 0 ? avatar.localScale : new Vector3(-avatar.localScale.x, avatar.localScale.y, avatar.localScale.z);
+			memberObject.FindImage("Position").sprite = UIManagement.TeamSelection.RoleLogos[pair.Key.ToString()];
+			memberObject.FindRect("Position").offsetMin = crewCount % 2 == 0 ? new Vector2(10, 0) : new Vector2(-10, 0);
 			crewCount++;
-			memberObject.transform.SetAsLastSibling();
+			memberObject.SetAsLastSibling();
 		}
-		transform.FindText("Result").text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, GameManagement.TeamName, finishPositionText);
-		DoBestFit();
+		OnLanguageChange();
 		TrackerEventSender.SendEvent(new TraceEvent("ResultPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 		{
 			{ TrackerContextKey.FinishingPosition, finishPosition }
@@ -107,7 +98,7 @@ public class RaceResultUI : MonoBehaviour
 	/// </summary>
 	private void OnLanguageChange()
 	{
-		Display(_lastRacePositions, _lastRaceFinishPosition, _lastRaceFinishPositionText);
+		_resultText.text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, GameManagement.TeamName, Localization.Get("POSITION_" + _lastRaceFinishPosition));
 		DoBestFit();
 	}
 

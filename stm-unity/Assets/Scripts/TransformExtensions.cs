@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+
+using UnityEngine;
 
 public static class TransformExtensions
 {
@@ -9,15 +11,6 @@ public static class TransformExtensions
 	{
 		var objCorners = new Vector3[4];
 		obj.GetWorldCorners(objCorners);
-		var isVisible = true;
-		foreach (var corner in objCorners)
-		{
-		    if (!RectTransformUtility.RectangleContainsScreenPoint(visibleRect, corner, null))
-		    {
-		        isVisible = false;
-		        break;
-		    }
-		}
-		return isVisible;
+		return objCorners.All(corner => RectTransformUtility.RectangleContainsScreenPoint(visibleRect, corner, null));
 	}
 }

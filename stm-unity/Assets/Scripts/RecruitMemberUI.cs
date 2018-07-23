@@ -18,9 +18,9 @@ using TrackerAssetPackage;
 public class RecruitMemberUI : MonoBehaviour
 {
 	[SerializeField]
-	private GameObject[] _recruitUI;
+	private Transform[] _recruitUI;
 	[SerializeField]
-	private Button[] _questionButtons;
+	private List<Button> _questionButtons;
 	[SerializeField]
 	private Text _dialogueText;
 	[SerializeField]
@@ -45,8 +45,7 @@ public class RecruitMemberUI : MonoBehaviour
 	private void OnEnable()
 	{
 		var history = GameManagement.ReverseLineUpHistory;
-		var firstMismatch = history.FirstOrDefault(b => b.Type != GameManagement.BoatType);
-		var sessionsSinceLastChange = firstMismatch != null ? history.IndexOf(firstMismatch) : 0;
+		var sessionsSinceLastChange = Mathf.Max(0, history.FindIndex(b => b.Type != GameManagement.BoatType));
 		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 		{
 			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
@@ -76,11 +75,6 @@ public class RecruitMemberUI : MonoBehaviour
 	/// </summary>
 	private void ResetDisplay()
 	{
-		//ActionAllowance display
-		_allowanceBar.fillAmount = GameManagement.ActionAllowancePercentage;
-		_allowanceText.text = GameManagement.ActionAllowance.ToString();
-		//set initial text displayed in center of pop-up
-		SetDialogueText("RECRUITMENT_INTRO");
 		//get recruits
 		var recruits = GameManagement.Team.Recruits.Values.OrderBy(r => Guid.NewGuid()).ToList();
 		//for each recruitUI element
@@ -89,57 +83,35 @@ public class RecruitMemberUI : MonoBehaviour
 			//hide display if not needed
 			if (recruits.Count <= i)
 			{
-				_recruitUI[i].Active(false);
+				_recruitUI[i].gameObject.Active(false);
 				continue;
 			}
 			//make UI element active
 			var thisRecruit = recruits[i];
-			_recruitUI[i].Active(true);
+			_recruitUI[i].gameObject.Active(true);
 			//set-up displayed name
 			var formattedName = thisRecruit.LastName + ",\n" + thisRecruit.FirstName;
-			_recruitUI[i].transform.FindText("Name").text = formattedName;
+			_recruitUI[i].FindText("Name").text = formattedName;
 			//set-up avatar for this recruit
-			_recruitUI[i].transform.FindComponentInChildren<AvatarDisplay>("Image").SetAvatar(thisRecruit.Avatar, 0f);
+			_recruitUI[i].GetComponentInChildren<AvatarDisplay>().SetAvatar(thisRecruit.Avatar, 0f);
 			//flip direction they are facing for every other recruit
 			if (i % 2 != 0)
 			{
-				_recruitUI[i].transform.Find("Image").localScale = new Vector3(-1, 1, 1);
+				_recruitUI[i].Find("Image").localScale = new Vector3(-1, 1, 1);
 			}
 			//set-up button onclick handler
-			var button = _recruitUI[i].transform.FindButton("Button");
+			var button = _recruitUI[i].FindButton("Button");
 			button.interactable = true;
 			button.onClick.RemoveAllListeners();
 			button.onClick.AddListener(() => HireCrewWarning(thisRecruit));
 			var rand = UnityEngine.Random.Range(0, 8);
 			//set initial greeting dialogue
-			_recruitUI[i].transform.FindText("Dialogue Box/Dialogue").text = Localization.Get("RECRUIT_GREETING_" + (rand % 4));
-			if (rand / 4 > 0)
-			{
-				_recruitUI[i].transform.FindText("Dialogue Box/Dialogue").text += Localization.Get("EXCLAIMATION_MARK");
-			}
-			_recruitUI[i].transform.FindImage("Dialogue Box/Image").enabled = false;
-			_recruitUI[i].transform.FindText("Cost Image/Text").text = ConfigKey.RecruitmentCost.ValueString();
+			_recruitUI[i].FindText("Dialogue Box/Dialogue").text = Localization.Get("RECRUIT_GREETING_" + (rand % 4)) + (rand / 4 > 0 ? Localization.Get("EXCLAIMATION_MARK") : string.Empty);
+			_recruitUI[i].FindImage("Dialogue Box/Image").enabled = false;
+			_recruitUI[i].FindText("Cost Image/Text").text = ConfigKey.RecruitmentCost.ValueString();
 			_recruitUI[i].name = recruits[i].Name;
 		}
-		//set-up question text and click handlers
-		var skills = (Skill[])Enum.GetValues(typeof(Skill));
-		for (var i = 0; i < _questionButtons.Length; i++)
-		{
-			if (skills.Length <= i)
-			{
-				_questionButtons[i].gameObject.Active(false);
-				continue;
-			}
-			var selected = skills[i];
-			_questionButtons[i].gameObject.Active(true);
-			_questionButtons[i].interactable = true;
-			var questionText = ("Recruit" + selected).EventString(false);
-			_questionButtons[i].transform.FindText("Text").text = Localization.Get(questionText);
-			_questionButtons[i].transform.FindText("Image/Text").text = ConfigKey.SendRecruitmentQuestionCost.ValueString();
-			_questionButtons[i].onClick.RemoveAllListeners();
-			_questionButtons[i].onClick.AddListener(() => AskQuestion(selected, questionText));
-		}
-		DoBestFit();
+		OnLanguageChange();
 		CostCheck();
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
@@ -151,56 +123,31 @@ public class RecruitMemberUI : MonoBehaviour
 	{
 		_allowanceBar.fillAmount = GameManagement.ActionAllowancePercentage;
 		_allowanceText.text = GameManagement.ActionAllowance.ToString();
-		if (!ConfigKey.SendRecruitmentQuestionCost.Affordable())
-		{
-			_questionButtons.ToList().ForEach(qb => qb.interactable = false);
-		}
+		_questionButtons.ForEach(qb => qb.transform.FindText("Image/Text").text = ConfigKey.SendRecruitmentQuestionCost.ValueString());
+		_questionButtons.ForEach(qb => qb.interactable = ConfigKey.SendRecruitmentQuestionCost.Affordable());
 	}
 
 	/// <summary>
 	/// Send a question to all recruits and get their replies in response
 	/// </summary>
-	public void AskQuestion(Skill skill, string questionText)
+	public void AskQuestion(string skillName)
 	{
-		SetDialogueText(questionText);
-		_lastQuestion = questionText;
+		var skill = (Skill)Enum.Parse(typeof(Skill), skillName);
+		_lastQuestion = skillName;
 		var replies = GameManagement.GameManager.SendRecruitmentEvent(skill);
 		_lastAnswers = replies;
-		foreach (var recruit in _recruitUI)
-		{
-			var reply = replies.FirstOrDefault(r => r.Key.Name == recruit.name);
-			if (reply.Key != null)
-			{
-				recruit.transform.FindText("Dialogue Box/Dialogue").text = Localization.Get(reply.Value);
-				recruit.transform.FindImage("Dialogue Box/Image").enabled = true;
-				var opinionSprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value);
-				if (opinionSprite != null)
-				{
-					recruit.transform.FindImage("Dialogue Box/Image").sprite = opinionSprite.Image;
-				}
-				recruit.transform.FindComponentInChildren<AvatarDisplay>("Image").UpdateMood(reply.Key.Avatar, reply.Value);
-			}
-		}
-		DoBestFit();
+		OnLanguageChange();
 		CostCheck();
 		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentQuestionAsked", TrackerAsset.Verb.Selected, new Dictionary<TrackerContextKey, object>
 		{
 			{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance },
 			{ TrackerContextKey.CurrentSession, GameManagement.CurrentSessionString },
-			{ TrackerContextKey.QuestionAsked, skill },
+			{ TrackerContextKey.QuestionAsked, skillName },
 			{ TrackerContextKey.QuestionCost, ConfigKey.SendRecruitmentQuestionCost.ValueString(false) },
 			{ TrackerContextKey.RaceStartTalkTime, GameManagement.StartingActionAllowance }
 		}, skill.ToString(), AlternativeTracker.Alternative.Question));
 		SUGARManager.GameData.Send("Recruitment Question Asked", skill.ToString());
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, skill.ToString());
-	}
-
-	/// <summary>
-	/// Set the previously asked question to be displayed
-	/// </summary>
-	private void SetDialogueText(string text)
-	{
-		_dialogueText.text = Localization.Get(text);
 	}
 
 	/// <summary>
@@ -213,31 +160,15 @@ public class RecruitMemberUI : MonoBehaviour
 		_hireWarningPopUp.Active(true);
 		_hireWarningPopUp.transform.EnableBlocker(() => CloseHireCrewWarning(TrackerTriggerSource.PopUpBlocker.ToString()));
 		//adjust text, button text and button positioning based on context
-		if (!ConfigKey.RecruitmentCost.Affordable())
-		{
-			_hireWarningText.text = Localization.Get("HIRE_WARNING_NOT_POSSIBLE");
-			_hireWarningAccept.gameObject.Active(false);
-			_hireWarningReject.RectTransform().anchorMin = new Vector2(0.375f, 0.02f);
-			_hireWarningReject.RectTransform().anchorMax = new Vector2(0.625f, 0.2f);
-			_hireWarningReject.RectTransform().anchoredPosition = Vector2.zero;
-			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("OK");
-			_hireWarningReject.onClick.RemoveAllListeners();
-			_hireWarningReject.onClick.AddListener(() => CloseHireCrewWarning( TrackerTriggerSource.OKButtonSelected.ToString()));
-		}
-		else
-		{
-			_hireWarningAccept.onClick.RemoveAllListeners();
-			_hireWarningAccept.onClick.AddListener(() => Recruit(recruit, TrackerTriggerSource.YesButtonSelected.ToString()));
-			_hireWarningAccept.gameObject.Active(true);
-			_hireWarningText.text = Localization.GetAndFormat("HIRE_WARNING_POSSIBLE", false, recruit.Name);
-			_hireWarningReject.RectTransform().anchorMin = new Vector2(0.525f, 0.02f);
-			_hireWarningReject.RectTransform().anchorMax = new Vector2(0.85f, 0.27f);
-			_hireWarningReject.RectTransform().anchoredPosition = Vector2.zero;
-			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("NO");
-			_hireWarningReject.onClick.RemoveAllListeners();
-			_hireWarningReject.onClick.AddListener(() => CloseHireCrewWarning(TrackerTriggerSource.NoButtonSelected.ToString()));
-		}
-		DoBestFit();
+		_hireWarningAccept.onClick.RemoveAllListeners();
+		_hireWarningAccept.onClick.AddListener(() => Recruit(recruit, TrackerTriggerSource.YesButtonSelected.ToString()));
+		_hireWarningAccept.gameObject.Active(ConfigKey.RecruitmentCost.Affordable());
+		_hireWarningReject.RectTransform().anchorMin = ConfigKey.RecruitmentCost.Affordable() ? new Vector2(0.525f, 0.02f) : new Vector2(0.375f, 0.02f);
+		_hireWarningReject.RectTransform().anchorMax = ConfigKey.RecruitmentCost.Affordable() ? new Vector2(0.85f, 0.27f) : new Vector2(0.625f, 0.2f);
+		_hireWarningReject.RectTransform().anchoredPosition = Vector2.zero;
+		_hireWarningReject.onClick.RemoveAllListeners();
+		_hireWarningReject.onClick.AddListener(() => CloseHireCrewWarning(ConfigKey.RecruitmentCost.Affordable() ? TrackerTriggerSource.NoButtonSelected.ToString() : TrackerTriggerSource.OKButtonSelected.ToString()));
+		OnLanguageChange();
 		TrackerEventSender.SendEvent(new TraceEvent("HirePopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 		{
 			{ TrackerContextKey.CrewMemberName, recruit.Name },
@@ -324,23 +255,10 @@ public class RecruitMemberUI : MonoBehaviour
 	/// </summary>
 	private void OnLanguageChange()
 	{
-		SetDialogueText(_lastQuestion ?? "RECRUITMENT_INTRO");
-		if (!ConfigKey.RecruitmentCost.Affordable())
-		{
-			_hireWarningText.text = Localization.Get("HIRE_WARNING_NOT_POSSIBLE");
-			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("OK");
-		}
-		else
-		{
-			_hireWarningText.text = Localization.GetAndFormat("HIRE_WARNING_POSSIBLE", false, _currentSelected);
-			_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get("NO");
-		}
-		var skills = (Skill[])Enum.GetValues(typeof(Skill));
-		for (var i = 0; i < _questionButtons.Length; i++)
-		{
-			var selected = skills[i];
-			_questionButtons[i].transform.FindText("Text").text = ("Recruit" + selected).EventString();
-		}
+		_dialogueText.text = _lastQuestion != null ? ("Recruit" + _lastQuestion).EventString() : Localization.Get("RECRUITMENT_INTRO");
+		_hireWarningText.text = Localization.GetAndFormat(ConfigKey.RecruitmentCost.Affordable() ? "HIRE_WARNING_POSSIBLE" : "HIRE_WARNING_NOT_POSSIBLE", false, _currentSelected);
+		_hireWarningReject.GetComponentInChildren<Text>().text = Localization.Get(ConfigKey.RecruitmentCost.Affordable() ? "NO" : "OK");
+		_questionButtons.ForEach(b => b.transform.FindText("Text").text = ("Recruit" + b.name).EventString());
 		if (_lastAnswers != null)
 		{
 			foreach (var recruit in _recruitUI)
@@ -350,11 +268,7 @@ public class RecruitMemberUI : MonoBehaviour
 				{
 					recruit.transform.FindText("Dialogue Box/Dialogue").text = Localization.Get(reply.Value);
 					recruit.transform.FindImage("Dialogue Box/Image").enabled = true;
-					var opinionSprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value);
-					if (opinionSprite != null)
-					{
-						recruit.transform.FindImage("Dialogue Box/Image").sprite = opinionSprite.Image;
-					}
+					recruit.transform.FindImage("Dialogue Box/Image").sprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value)?.Image;
 					recruit.transform.FindComponentInChildren<AvatarDisplay>("Image").UpdateMood(reply.Key.Avatar, reply.Value);
 				}
 			}
@@ -364,11 +278,9 @@ public class RecruitMemberUI : MonoBehaviour
 
 	private void DoBestFit()
 	{
-		_recruitUI.Select(r => r.transform.FindObject("Name")).BestFit();
+		_recruitUI.Select(r => r.transform.FindObject("Name")).BestFit(false);
 		_recruitUI.Select(r => r.transform.FindObject("Dialogue Box/Dialogue")).BestFit(false);
-		var questionList = _questionButtons.Select(q => q.gameObject).ToList();
-		questionList.Add(transform.FindObject("Close"));
-		questionList.BestFit();
+		_questionButtons.Concat(new [] { transform.FindButton("Close") }).BestFit();
 		new Component[] { _hireWarningAccept, _hireWarningReject }.BestFit();
 	}
 }

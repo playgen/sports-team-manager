@@ -6,44 +6,44 @@ using UnityEngine;
 [Serializable]
 public class LanguageKeyValuePair
 {
-    public string Key;
-    [TextArea]
-    public List<string> Value;
+	public string Key;
+	[TextArea]
+	public List<string> Value;
 
-    public LanguageKeyValuePair(string k, List<string> v)
-    {
-        Key = k;
-        Value = v;
-    }
+	public LanguageKeyValuePair(string k, List<string> v)
+	{
+		Key = k;
+		Value = v;
+	}
 }
 [Serializable]
 public class TriggerKeyValuePair
 {
-    public string Key;
-    public string Value;
+	public string Key;
+	public string Value;
 
-    public TriggerKeyValuePair(string k, string v)
-    {
-        Key = k;
-        Value = v;
-    }
+	public TriggerKeyValuePair(string k, string v)
+	{
+		Key = k;
+		Value = v;
+	}
 }
 
 [Serializable]
 public class StringList
 {
 	[TextArea]
-    public List<string> List;
+	public List<string> List;
 
 	public StringList(List<string> l)
-    {
-        List = l;
-    }
+	{
+		List = l;
+	}
 
 	public StringList(string[] l)
-    {
-        List = l.ToList();
-    }
+	{
+		List = l.ToList();
+	}
 }
 
 [Serializable]
@@ -56,7 +56,7 @@ public class TutorialObject
 	/// <summary>
 	/// Text to be displayed to the user
 	/// </summary>
-    public List<LanguageKeyValuePair> SectionTextHolder;
+	public List<LanguageKeyValuePair> SectionTextHolder;
 	/// <summary>
 	/// If the popup should be shown on the left side of the screen
 	/// </summary>
@@ -91,29 +91,29 @@ public class TutorialObject
 	/// </summary>
 	public List<string> CustomAttributes;
 
-    public TutorialObject(Dictionary<string, List<string>> text, List<string> highlightObjs, bool showOnLeft, KeyValuePair<string, string>[] triggers, int triggerCount, bool uniqueTriggers, bool safeToSave, List<List<string>> blacklist, List<string> attributes, string sectionName)
-    {
-	    SectionName = sectionName;
-        SectionTextHolder = new List<LanguageKeyValuePair>();
-        foreach (var kvp in text)
-        {
-            SectionTextHolder.Add(new LanguageKeyValuePair(kvp.Key, kvp.Value));
-        }
-        Triggers = new List<TriggerKeyValuePair>();
-        foreach (var kvp in triggers)
-        {
-            Triggers.Add(new TriggerKeyValuePair(kvp.Key, kvp.Value));
-        }
-	    HighlightedObject = highlightObjs;
-        ShowOnLeft = showOnLeft;
-        EventTriggerCountRequired = triggerCount;
-        UniqueEvents = uniqueTriggers;
-        SafeToSave = safeToSave;
-        BlacklistButtons = new List<StringList>();
-        foreach (var obj in blacklist)
-        {
-            BlacklistButtons.Add(new StringList(obj));
-        }
-        CustomAttributes = attributes;
-    }
+	public TutorialObject(Dictionary<string, List<string>> text, List<string> highlightObjs, bool showOnLeft, KeyValuePair<string, string>[] triggers, int triggerCount, bool uniqueTriggers, bool safeToSave, List<List<string>> blacklist, List<string> attributes, string sectionName)
+	{
+		SectionName = sectionName;
+		SectionTextHolder = new List<LanguageKeyValuePair>();
+		foreach (var kvp in text)
+		{
+			SectionTextHolder.Add(new LanguageKeyValuePair(kvp.Key, kvp.Value));
+		}
+		Triggers = new List<TriggerKeyValuePair>();
+		foreach (var kvp in triggers)
+		{
+			Triggers.Add(new TriggerKeyValuePair(kvp.Key, kvp.Value));
+		}
+		HighlightedObject = highlightObjs;
+		ShowOnLeft = showOnLeft;
+		EventTriggerCountRequired = triggerCount;
+		UniqueEvents = uniqueTriggers;
+		SafeToSave = safeToSave;
+		BlacklistButtons = new List<StringList>();
+		foreach (var obj in blacklist)
+		{
+			BlacklistButtons.Add(new StringList(obj));
+		}
+		CustomAttributes = attributes;
+	}
 }

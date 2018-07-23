@@ -54,7 +54,7 @@ public class LoadGameUI : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			UIStateManager.StaticBackToMenu();
+			GoToMainMenu();
 		}
 	}
 
@@ -116,7 +116,7 @@ public class LoadGameUI : MonoBehaviour
 							{ TrackerContextKey.BoatLayout, string.IsNullOrEmpty(newString) ? "NullAsGameFinished" : newString }
 						}, CompletableTracker.Completable.Game));
 						TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvent.UserProfile, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, "loadedoldteam" } });
-						UIStateManager.StaticGoToGame();
+						UIManagement.StateManager.GoToState(State.TeamManagement);
 					}
 					else
 					{
@@ -132,6 +132,11 @@ public class LoadGameUI : MonoBehaviour
 				Loading.Stop();
 			});
 		}
+	}
+
+	public void GoToMainMenu()
+	{
+		UIManagement.StateManager.GoToState(State.MainMenu);
 	}
 
 	private void DoBestFit()

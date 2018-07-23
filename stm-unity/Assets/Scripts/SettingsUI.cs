@@ -8,7 +8,8 @@ using UnityEngine.UI;
 /// <summary>
 ///  Contains all logic relating to displaying the settings pop-up
 /// </summary>
-public class SettingsUI : MonoBehaviour {
+public class SettingsUI : MonoBehaviour
+{
 	[SerializeField]
 	private Dropdown _languageDropdown;
 
@@ -52,8 +53,7 @@ public class SettingsUI : MonoBehaviour {
 	public void ChangeLanguage()
 	{
 		Localization.UpdateLanguage(Localization.Languages[_languageDropdown.value]);
-		gameObject.Active(false);
-		gameObject.Active(true);
+		DoBestFit();
 	}
 
 	private void DoBestFit()

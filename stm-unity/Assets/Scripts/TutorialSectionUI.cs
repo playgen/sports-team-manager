@@ -47,7 +47,7 @@ public class TutorialSectionUI : MonoBehaviour
 		_eventTriggerCount = 0;
 		_triggeredObjects.Clear();
 		_unblocked = false;
-		Invoke("SetUp", 0f);
+		Invoke(nameof(SetUp), 0f);
 	}
 
 	/// <summary>
@@ -219,7 +219,7 @@ public class TutorialSectionUI : MonoBehaviour
 		}
 		var speechBubble = _tutorialObject.transform.Find("Image");
 		LayoutRebuilder.ForceRebuildLayoutImmediate(speechBubble.RectTransform());
-		Invoke("PaddingSetUp", 0f);
+		Invoke(nameof(PaddingSetUp), 0f);
 	}
 
 	/// <summary>

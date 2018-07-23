@@ -53,7 +53,10 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	public static void LoadSprites()
 	{
-		avatarSprites = Resources.LoadAll("Avatars", typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name, a => a, StringComparer.OrdinalIgnoreCase);
+		if (avatarSprites == null)
+		{
+			avatarSprites = Resources.LoadAll("Avatars", typeof(Sprite)).Cast<Sprite>().ToDictionary(a => a.name, a => a, StringComparer.OrdinalIgnoreCase);
+		}
 	}
 
 	public void SetAvatar(Avatar avatar, float mood)

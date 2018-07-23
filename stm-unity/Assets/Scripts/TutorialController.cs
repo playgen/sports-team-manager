@@ -155,7 +155,7 @@ public class TutorialController : MonoBehaviour
 			{
 				SUGARManager.GameData.Send("Tutorial Finished", true);
 				QuitTutorial();
-				UIStateManager.ReloadGame();
+				UIManagement.StateManager.ReloadScene();
 			}
 		});
 

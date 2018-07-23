@@ -151,10 +151,9 @@ public static class GameManagement
 		return ActionAllowance >= Value(key, member);
 	}
 
-	public static string EventString(this string key, bool localize = true)
+	public static string EventString(this string key)
 	{
-		var eventString = EventController.GetEventStrings(key).OrderBy(s => Guid.NewGuid()).First();
-		return localize ? Localization.Get(eventString) : eventString;
+		return Localization.Get(EventController.GetEventStrings(key).OrderBy(s => Guid.NewGuid()).First());
 	}
 
 	public static string EventKeys(this string state)

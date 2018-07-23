@@ -1,16 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-
-using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Text;
 
 /// <summary>
 /// Controls the UI displayed at the top of the screen
 /// </summary>
-public class ScreenSideUI : MonoBehaviour {
+public class ScreenSideUI : MonoBehaviour
+{
 	[SerializeField]
 	private Text _nameText;
+	[SerializeField]
+	private GameObject _settings;
+	[SerializeField]
+	private GameObject _teamManagement;
+	[SerializeField]
+	private GameObject _achievements;
+	[SerializeField]
+	private GameObject _leaderboards;
 	[SerializeField]
 	private GameObject _quitWarningPopUp;
 	[SerializeField]
@@ -23,11 +30,11 @@ public class ScreenSideUI : MonoBehaviour {
 	{
 		_nameText.text = GameManagement.TeamName;
 		BestFit.ResolutionChange += DoBestFit;
-		transform.FindObject("Side Menu/Settings").Active(!GameManagement.DemoMode);
-		transform.FindObject("Side Menu/Team Management").Active(GameManagement.RageMode);
-		transform.FindObject("Side Menu/Achievements").Active(GameManagement.RageMode);
-		transform.FindObject("Side Menu/Leaderboards").Active(GameManagement.RageMode);
-		Invoke("DoBestFit", 0f);
+		_settings.Active(!GameManagement.DemoMode);
+		_teamManagement.Active(GameManagement.RageMode);
+		_achievements.Active(GameManagement.RageMode);
+		_leaderboards.Active(GameManagement.RageMode);
+		DoBestFit();
 	}
 
 	private void OnDisable()
@@ -54,6 +61,6 @@ public class ScreenSideUI : MonoBehaviour {
 
 	private void DoBestFit()
 	{
-		transform.Find("Side Menu").BestFit();
+		new[] { _teamManagement, _achievements, _leaderboards }.BestFit();
 	}
 }

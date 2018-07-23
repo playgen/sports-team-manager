@@ -184,7 +184,7 @@ public class NewGameUI : MonoBehaviour
 						{ TrackerContextKey.BoatLayout, GameManagement.PositionString }
 					}, CompletableTracker.Completable.Game));
 					TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvent.UserProfile, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, "setupnewteam" } });
-					UIStateManager.StaticGoToGame();
+					UIManagement.StateManager.GoToState(State.TeamManagement);
 					Loading.Stop();
 					return;
 				}
@@ -200,5 +200,10 @@ public class NewGameUI : MonoBehaviour
 		GetComponentsInChildren<Text>().ToList().ForEach(t => t.fontSize = size);
 		transform.Find("Buttons").BestFit();
 		_overwritePopUp.GetComponentsInChildren<Button>().Where(t => t.gameObject != _overwritePopUp).ToList().BestFit();
+	}
+
+	public void GoToMainMenu()
+	{
+		UIManagement.StateManager.GoToState(State.MainMenu);
 	}
 }
