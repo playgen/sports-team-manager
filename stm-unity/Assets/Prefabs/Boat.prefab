@@ -1046,8 +1046,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: 65
   m_MinHeight: 65
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
+  m_PreferredWidth: 65
+  m_PreferredHeight: 65
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -1108,7 +1108,7 @@ MonoBehaviour:
   m_Script: {fileID: -1254083943, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AspectMode: 2
+  m_AspectMode: 1
   m_AspectRatio: 1
 --- !u!114 &114000010321735164
 MonoBehaviour:
@@ -1208,7 +1208,7 @@ MonoBehaviour:
   m_Script: {fileID: -1254083943, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AspectMode: 2
+  m_AspectMode: 1
   m_AspectRatio: 1
 --- !u!114 &114000010570149290
 MonoBehaviour:
@@ -1232,7 +1232,7 @@ MonoBehaviour:
   m_Script: {fileID: -1254083943, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AspectMode: 2
+  m_AspectMode: 1
   m_AspectRatio: 1
 --- !u!114 &114000010669649258
 MonoBehaviour:
@@ -1311,7 +1311,7 @@ MonoBehaviour:
   m_Script: {fileID: -1254083943, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AspectMode: 2
+  m_AspectMode: 1
   m_AspectRatio: 1
 --- !u!114 &114000010780788292
 MonoBehaviour:
@@ -1327,8 +1327,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: 65
   m_MinHeight: 65
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
+  m_PreferredWidth: 65
+  m_PreferredHeight: 65
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -1346,8 +1346,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: 65
   m_MinHeight: 65
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
+  m_PreferredWidth: 65
+  m_PreferredHeight: 65
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -1449,7 +1449,7 @@ MonoBehaviour:
   m_Script: {fileID: -1254083943, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AspectMode: 2
+  m_AspectMode: 1
   m_AspectRatio: 1
 --- !u!114 &114000011538132204
 MonoBehaviour:
@@ -1549,7 +1549,7 @@ MonoBehaviour:
   m_Script: {fileID: -1254083943, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AspectMode: 2
+  m_AspectMode: 1
   m_AspectRatio: 1
 --- !u!114 &114000011716803422
 MonoBehaviour:
@@ -1565,8 +1565,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: 65
   m_MinHeight: 65
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
+  m_PreferredWidth: 65
+  m_PreferredHeight: 65
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -1728,8 +1728,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: 65
   m_MinHeight: 65
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
+  m_PreferredWidth: 65
+  m_PreferredHeight: 65
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -1909,7 +1909,7 @@ MonoBehaviour:
     m_Bottom: 5
   m_ChildAlignment: 4
   m_Spacing: 15
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 0
@@ -1927,8 +1927,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: 65
   m_MinHeight: 65
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
+  m_PreferredWidth: 65
+  m_PreferredHeight: 65
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -1995,8 +1995,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: 65
   m_MinHeight: 65
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
+  m_PreferredWidth: 65
+  m_PreferredHeight: 65
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -2038,7 +2038,7 @@ MonoBehaviour:
   m_Script: {fileID: -1254083943, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AspectMode: 2
+  m_AspectMode: 1
   m_AspectRatio: 1
 --- !u!114 &114000013546020336
 MonoBehaviour:
@@ -2051,7 +2051,7 @@ MonoBehaviour:
   m_Script: {fileID: -1254083943, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AspectMode: 2
+  m_AspectMode: 1
   m_AspectRatio: 1
 --- !u!114 &114000013628029596
 MonoBehaviour:
@@ -2067,8 +2067,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: 65
   m_MinHeight: 65
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
+  m_PreferredWidth: 65
+  m_PreferredHeight: 65
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1

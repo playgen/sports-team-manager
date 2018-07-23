@@ -93,10 +93,10 @@ public class TeamSelectionUI : MonoBehaviour
 		BestFit.ResolutionChange += DoBestFit;
 		if (!GameManagement.SeasonOngoing)
 		{
-			if (!GameManagement.RageMode)
+			if (GameManagement.RageMode)
 			{
 				_feedbackButton.onClick.RemoveAllListeners();
-				if (!GameManagement.QuestionnaireCompleted)
+				if (GameManagement.QuestionnaireCompleted)
 				{
 					_feedbackButton.onClick.AddListener(TriggerFeedback);
 					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
@@ -237,10 +237,10 @@ public class TeamSelectionUI : MonoBehaviour
 		else
 		{
 			stageIcon.gameObject.Active(false);
-			if (!GameManagement.RageMode)
+			if (GameManagement.RageMode)
 			{
 				_feedbackButton.onClick.RemoveAllListeners();
-				if (!GameManagement.QuestionnaireCompleted)
+				if (GameManagement.QuestionnaireCompleted)
 				{
 					_feedbackButton.onClick.AddListener(TriggerFeedback);
 					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
@@ -268,7 +268,7 @@ public class TeamSelectionUI : MonoBehaviour
 			_finalPlacementText.GetComponent<TextLocalization>().Set();
 
 			_endRace.gameObject.Active(true);
-			_feedbackButton.gameObject.Active(!GameManagement.RageMode);
+			_feedbackButton.gameObject.Active(GameManagement.RageMode);
 			_boatMain.gameObject.Active(false);
 		}
 		_boatMain.transform.FindText("Stage Number").text = GameManagement.IsRace || !GameManagement.SeasonOngoing ? string.Empty : GameManagement.CurrentRaceSession.ToString();
@@ -663,6 +663,7 @@ public class TeamSelectionUI : MonoBehaviour
 	public void SkipToRace()
 	{
 		GameManagement.GameManager.SkipToRace();
+		ConfirmLineUp();
 	}
 
 	/// <summary>
@@ -921,7 +922,7 @@ public class TeamSelectionUI : MonoBehaviour
 	/// </summary>
 	private void TriggerFeedback()
 	{
-		if (!GameManagement.RageMode)
+		if (GameManagement.RageMode)
 		{
 			UIStateManager.StaticGoToFeedback();
 		}

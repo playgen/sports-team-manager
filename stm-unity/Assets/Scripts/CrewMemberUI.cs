@@ -231,6 +231,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		{
 			transform.SetParent(_currentPlacement?.RectTransform() ?? _defaultParent, false);
 			transform.position = transform.parent.position;
+			transform.RectTransform().anchoredPosition = Vector2.zero;
 		}
 	}
 

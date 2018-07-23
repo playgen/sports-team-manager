@@ -20,6 +20,13 @@ public class QuestionnaireUI : MonoBehaviour
 
 	private class Question
 	{
+		public GameObject GameObject;
+		public ToggleGroup ToggleGroup;
+		public Text QuestionText;
+		public Text AnswerAText;
+		public Text AnswerBText;
+		public Toggle AnswerAToggle;
+		public Toggle AnswerBToggle;
 		public Answer AnswerA;
 		public Answer AnswerB;
 	}
@@ -33,9 +40,8 @@ public class QuestionnaireUI : MonoBehaviour
 	[SerializeField]
 	private GameObject _questionPrefab;
 	[SerializeField]
-	private GameObject _submitButton;
-	private readonly List<GameObject> _questionObjs = new List<GameObject>();
-	private List<Question> _questions;
+	private Button _submitButton;
+	private List<Question> _questions = new List<Question>();
 
 	/// <summary>
 	/// On Enable, clear questionnaire and recreate
@@ -43,33 +49,26 @@ public class QuestionnaireUI : MonoBehaviour
 	private void OnEnable()
 	{
 		Localization.LanguageChange += OnLanguageChange;
-		BestFit.ResolutionChange += DoBestFitDelay;
-		foreach (var obj in _questionObjs)
-		{
-			Destroy(obj);
-		}
-		_questionObjs.Clear();
-		GetQuestionniare(_questionAsset, _answerStyleAsset);
-		foreach (var question in _questions)
-		{
-			var questionObj = Instantiate(_questionPrefab, _questionnairePanel.transform, false);
-			questionObj.name = _questionPrefab.name;
-			questionObj.transform.FindText("Question").text = Localization.Get("QUESTION") + " " + (_questionObjs.Count + 1);
-			questionObj.transform.FindText("Answer A/Label").text = "A. " + question.AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
-			questionObj.transform.FindText("Answer B/Label").text = "B. " + question.AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
-			questionObj.transform.FindComponentInChildren<Toggle>("Answer A").onValueChanged.AddListener(CheckAllToggled);
-			questionObj.transform.FindComponentInChildren<Toggle>("Answer B").onValueChanged.AddListener(CheckAllToggled);
-			_questionObjs.Add(questionObj);
-		}
-		CheckAllToggled();
-		LayoutRebuilder.ForceRebuildLayoutImmediate(_questionnairePanel.RectTransform());
-		Invoke("DoBestFitDelay", 0);
+		BestFit.ResolutionChange += DoBestFit;
+		CreateQuestionnaire();
 	}
 
 	private void OnDisable()
 	{
 		Localization.LanguageChange -= OnLanguageChange;
-		BestFit.ResolutionChange -= DoBestFitDelay;
+		BestFit.ResolutionChange -= DoBestFit;
+	}
+
+	private void CreateQuestionnaire()
+	{
+		foreach (var obj in _questions)
+		{
+			Destroy(obj.GameObject);
+		}
+		_questions.Clear();
+		GetQuestionniare(_questionAsset, _answerStyleAsset);
+		CheckAllToggled();
+		OnLanguageChange();
 	}
 
 	/// <summary>
@@ -83,12 +82,7 @@ public class QuestionnaireUI : MonoBehaviour
 		var questionDict = new Dictionary<string, Dictionary<string, string>>();
 		for (var i = 0; i < parsedQuestionAsset.Count; i++)
 		{
-			var questionLangDict = new Dictionary<string, string>();
-			foreach (var lang in Localization.Languages)
-			{
-				var langName = lang.Name.ToLower();
-			    questionLangDict.Add(langName, (parsedQuestionAsset[i][langName] != null ? parsedQuestionAsset[i][langName] : parsedQuestionAsset[i][0]).Value.Replace("\"", ""));
-			}
+			var questionLangDict = Localization.Languages.ToDictionary(langName => langName.Name.ToLower(), langName => (parsedQuestionAsset[i][langName.Name.ToLower()] ?? parsedQuestionAsset[i][0]).Value.Replace("\"", string.Empty));
 			questionDict.Add(parsedQuestionAsset[i][0], questionLangDict);
 		}
 
@@ -98,8 +92,8 @@ public class QuestionnaireUI : MonoBehaviour
 		{
 			var questionStyleDict = new Dictionary<string, string>
 			{
-				{ "A", parsedStyleAsset[i]["A"].Value.Replace("\"", "") },
-				{ "B", parsedStyleAsset[i]["B"].Value.Replace("\"", "") }
+				{ "A", parsedStyleAsset[i]["A"].Value.Replace("\"", string.Empty) },
+				{ "B", parsedStyleAsset[i]["B"].Value.Replace("\"", string.Empty) }
 			};
 			styleDict.Add(parsedStyleAsset[i][0], questionStyleDict);
 		}
@@ -107,10 +101,10 @@ public class QuestionnaireUI : MonoBehaviour
 		var questionFound = true;
 		while (questionFound)
 		{
-			var currentQuestion = string.Format("QUESTION_{0}", questions.Count + 1);
+			var currentQuestion = $"QUESTION_{questions.Count + 1}";
 			if (questionDict.ContainsKey(currentQuestion + "_A") && questionDict.ContainsKey(currentQuestion + "_B") && styleDict.ContainsKey(currentQuestion))
 			{
-				var q = new Question
+				var newQuestion = new Question
 				{
 					AnswerA = new Answer(),
 					AnswerB = new Answer()
@@ -118,12 +112,23 @@ public class QuestionnaireUI : MonoBehaviour
 				foreach (var lang in Localization.Languages)
 				{
 					var langName = lang.Name.ToLower();
-				    q.AnswerA.Text.Add(langName, (questionDict[currentQuestion + "_A"][langName] != null ? questionDict[currentQuestion + "_A"][langName] : questionDict[currentQuestion + "_A"][questionDict[currentQuestion + "_A"].Keys.ToList()[0]]).RemoveJSONNodeChars());
-				    q.AnswerB.Text.Add(langName, (questionDict[currentQuestion + "_B"][langName] != null ? questionDict[currentQuestion + "_B"][langName] : questionDict[currentQuestion + "_B"][questionDict[currentQuestion + "_B"].Keys.ToList()[0]]).RemoveJSONNodeChars());
+					newQuestion.AnswerA.Text.Add(langName, (questionDict[currentQuestion + "_A"][langName] ?? questionDict[currentQuestion + "_A"][questionDict[currentQuestion + "_A"].Keys.ToList()[0]]).RemoveJSONNodeChars());
+					newQuestion.AnswerB.Text.Add(langName, (questionDict[currentQuestion + "_B"][langName] ?? questionDict[currentQuestion + "_B"][questionDict[currentQuestion + "_B"].Keys.ToList()[0]]).RemoveJSONNodeChars());
 				}
-				q.AnswerA.Style = styleDict[currentQuestion]["A"].RemoveJSONNodeChars();
-				q.AnswerB.Style = styleDict[currentQuestion]["B"].RemoveJSONNodeChars();
-				questions.Add(q);
+				newQuestion.AnswerA.Style = styleDict[currentQuestion]["A"].RemoveJSONNodeChars();
+				newQuestion.AnswerB.Style = styleDict[currentQuestion]["B"].RemoveJSONNodeChars();
+				var questionObj = Instantiate(_questionPrefab, _questionnairePanel.transform, false);
+				questionObj.name = _questionPrefab.name;
+				newQuestion.GameObject = questionObj;
+				newQuestion.ToggleGroup = questionObj.GetComponent<ToggleGroup>();
+				newQuestion.QuestionText = newQuestion.GameObject.transform.FindText("Question");
+				newQuestion.AnswerAText = newQuestion.GameObject.transform.FindText("Answer A/Label");
+				newQuestion.AnswerBText = newQuestion.GameObject.transform.FindText("Answer B/Label");
+				newQuestion.AnswerAToggle = newQuestion.GameObject.transform.FindComponentInChildren<Toggle>("Answer A");
+				newQuestion.AnswerBToggle = newQuestion.GameObject.transform.FindComponentInChildren<Toggle>("Answer B");
+				newQuestion.AnswerAToggle.onValueChanged.AddListener(CheckAllToggled);
+				newQuestion.AnswerBToggle.onValueChanged.AddListener(CheckAllToggled);
+				questions.Add(newQuestion);
 			}
 			else
 			{
@@ -138,26 +143,18 @@ public class QuestionnaireUI : MonoBehaviour
 	/// </summary>
 	private void CheckAllToggled(bool toggle = false)
 	{
-		_submitButton.GetComponent<Button>().interactable = (_questionObjs.All(q => q.GetComponent<ToggleGroup>().AnyTogglesOn()));
+		_submitButton.interactable = _questions.All(q => q.ToggleGroup.AnyTogglesOn());
 	}
 
 	/// <summary>
-	/// Collect the amount of each style answered and sne dthis information on to be saved
+	/// Collect the amount of each style answered and send this information on to be saved
 	/// </summary>
 	public void SubmitAnswers()
 	{
 		var results = new Dictionary<string, int>();
-		for (var i = 0; i < _questionObjs.Count; i++)
+		foreach (Question question in _questions)
 		{
-			var style = string.Empty;
-			if (_questionObjs[i].transform.FindComponentInChildren<Toggle>("Answer A").isOn)
-			{
-				style = _questions[i].AnswerA.Style;
-			}
-			else if (_questionObjs[i].transform.FindComponentInChildren<Toggle>("Answer B").isOn)
-			{
-				style = _questions[i].AnswerB.Style;
-			}
+			var style = question.AnswerAToggle.isOn ? question.AnswerA.Style : question.AnswerBToggle.isOn ? question.AnswerB.Style : string.Empty;
 			if (results.ContainsKey(style))
 			{
 				results[style]++;
@@ -173,29 +170,24 @@ public class QuestionnaireUI : MonoBehaviour
 
 	private void OnLanguageChange()
 	{
-		for (var i = 0; i < _questionObjs.Count; i++)
+		var questionCount = 0;
+		foreach (Question question in _questions)
 		{
-			_questionObjs[i].transform.FindText("Question").text = Localization.Get("QUESTION") + " " + (i + 1);
-			_questionObjs[i].transform.FindText("Answer A/Label").text = "A. " + _questions[i].AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()];
-			_questionObjs[i].transform.FindText("Answer B/Label").text = "B. " + _questions[i].AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()];
+			questionCount++;
+			question.QuestionText.text = $"{Localization.Get("QUESTION")} {questionCount}";
+			question.AnswerAText.text = $"A. {question.AnswerA.Text[Localization.SelectedLanguage.Name.ToLower()]}";
+			question.AnswerBText.text = $"B. {question.AnswerB.Text[Localization.SelectedLanguage.Name.ToLower()]}";
 		}
 		DoBestFit();
 	}
 
-	private void DoBestFitDelay()
-	{
-		Invoke("DoBestFitSecondDelay", 0);
-	}
-
-	private void DoBestFitSecondDelay()
-	{
-		Invoke("DoBestFit", 0);
-	}
-
 	private void DoBestFit()
 	{
-		LayoutRebuilder.ForceRebuildLayoutImmediate(transform.RectTransform());
-		_questionObjs.SelectMany(s => s.GetComponentsInChildren<Text>(true).Where(t => !t.name.Contains("Checkmark"))).BestFit();
-		_questionObjs.ForEach(q => q.transform.FindText("Question").fontSize = (int)(q.transform.FindText("Question").fontSize * 1.5f));
+		var fontSize = _questions.SelectMany(s => new Component[] { s.AnswerAText, s.AnswerBText, s.QuestionText }).BestFit();
+		_questions.ForEach(q => q.QuestionText.fontSize = (int)(q.QuestionText.fontSize * 1.5f));
+		if (fontSize == 0)
+		{
+			Invoke(nameof(DoBestFit), 0f);
+		}
 	}
 }

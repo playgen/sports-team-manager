@@ -57,12 +57,12 @@ public class PositionDisplayUI : MonoBehaviour
 			return;
 		}
 		_currentPosition = position;
-		var currentCrew = position.Current() ? position.CurrentCrewMember() : null;
+		var currentCrew = position.CurrentCrewMember();
 		var boatPos = GameManagement.PositionString;
 		TrackerEventSender.SendEvent(new TraceEvent("PositionPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 		{
 			{ TrackerContextKey.PositionName, position },
-			{ TrackerContextKey.PositionCrewMember, currentCrew != null ? currentCrew.Name : "None" },
+			{ TrackerContextKey.PositionCrewMember, currentCrew?.Name ?? "None" },
 			{ TrackerContextKey.BoatLayout, boatPos },
 			{ TrackerContextKey.TriggerUI, source },
 			{ TrackerContextKey.SessionsIncludedCount, position.SessionsIncluded() }
@@ -82,7 +82,7 @@ public class PositionDisplayUI : MonoBehaviour
 		{
 			return;
 		}
-		var currentCrew = _currentPosition.Current() ? _currentPosition.CurrentCrewMember() : null;
+		var currentCrew = _currentPosition.CurrentCrewMember();
 		//set role image (displayed if no-one is in this position)
 		_roleImage.sprite = currentCrew == null ? UIManagement.TeamSelection.RoleLogos[_currentPosition.ToString()] : null;
 		_currentButton.onClick.RemoveAllListeners();
@@ -111,6 +111,7 @@ public class PositionDisplayUI : MonoBehaviour
 			var positionHistory = Instantiate(_historyPrefab, _historyContainer.transform, false);
 			positionHistory.transform.FindText("Name").text = member.Key.FirstName[0] + "." + member.Key.LastName;
 			positionHistory.GetComponent<CrewMemberUI>().SetUp(false, member.Key.Current(), member.Key, _historyContainer.transform, TrackerTriggerSource.PositionPopUp);
+			positionHistory.GetComponent<AspectRatioFitter>().aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
 			var mood = member.Key.GetMood();
 			positionHistory.GetComponent<Image>().color = AvatarDisplay.MoodColor(mood);
 			positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, mood);

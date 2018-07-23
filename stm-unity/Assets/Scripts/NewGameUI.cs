@@ -166,7 +166,6 @@ public class NewGameUI : MonoBehaviour
 	/// </summary>
 	public void NewGame()
 	{
-		//convert selected colors to bytes
 		var colorsPri = new PlayGen.RAGE.SportsTeamManager.Simulation.Color((int)(_colorImagePrimary.color.r * 255), (int)(_colorImagePrimary.color.g * 255), (int)(_colorImagePrimary.color.b * 255));
 		var colorsSec = new PlayGen.RAGE.SportsTeamManager.Simulation.Color((int)(_colorImageSecondary.color.r * 255), (int)(_colorImageSecondary.color.g * 255), (int)(_colorImageSecondary.color.b * 255));
 		_boatName.text = _boatName.text.TrimEnd();
@@ -186,16 +185,11 @@ public class NewGameUI : MonoBehaviour
 					}, CompletableTracker.Completable.Game));
 					TrackerEventSender.SendEvaluationEvent(TrackerEvalautionEvent.UserProfile, new Dictionary<TrackerEvaluationKey, string> { { TrackerEvaluationKey.Event, "setupnewteam" } });
 					UIStateManager.StaticGoToGame();
-				}
-				else
-				{
-					_errorText.text = Localization.Get("NEW_GAME_CREATION_ERROR");
+					Loading.Stop();
+					return;
 				}
 			}
-			else
-			{
-				_errorText.text = Localization.Get("NEW_GAME_CREATION_ERROR");
-			}
+			_errorText.text = Localization.Get("NEW_GAME_CREATION_ERROR");
 			Loading.Stop();
 		});
 	}
