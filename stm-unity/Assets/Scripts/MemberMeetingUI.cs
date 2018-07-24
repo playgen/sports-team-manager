@@ -157,11 +157,11 @@ public class MemberMeetingUI : MonoBehaviour
 			{
 				FeedbackHoverOver(Localization.GetAndFormat("FIRE_BUTTON_HOVER_LIMIT", false, GameManagement.StartingCrewEditAllowance));
 			}
-			else if (GameManagement.Team.CanRemoveFromCrew())
+			else if (!GameManagement.Team.CanRemoveFromCrew())
 			{
 				FeedbackHoverOver("FIRE_BUTTON_HOVER_CREW_LIMIT");
 			}
-			else if (!GameManagement.ShowTutorial)
+			else if (GameManagement.ShowTutorial)
 			{
 				FeedbackHoverOver("FIRE_BUTTON_HOVER_TUTORIAL");
 			}
@@ -245,7 +245,7 @@ public class MemberMeetingUI : MonoBehaviour
 		var memberTransform = UIManagement.TeamSelection.CrewContainer.GetComponentsInChildren<CrewMemberUI>().First(c => c.CrewMember == _currentMember && !c.Usable).RectTransform();
 		if (!memberTransform.IsRectTransformVisible(memberTransform.parent.parent.RectTransform()))
 		{
-			UIManagement.TeamSelection.CrewContainerPaging(0);
+			UIManagement.TeamSelection.CrewContainerPaging();
 		}
 		if (!memberTransform.IsRectTransformVisible(memberTransform.parent.parent.RectTransform()))
 		{

@@ -17,7 +17,12 @@ public class TutorialSectionUI : MonoBehaviour
 	private TutorialObject _tutorialObj;
 
 	private Dictionary<string, List<string>> _sectionText;
+	[SerializeField]
 	private RectTransform _menuHighlighted;
+	[SerializeField]
+	private ReverseRaycastTarget _reverseRaycast;
+	[SerializeField]
+	private SoftMaskScript _softMaskScript;
 	private GameObject _tutorialObject;
 	private Text _tutorialText;
 	private Transform _buttons;
@@ -37,7 +42,6 @@ public class TutorialSectionUI : MonoBehaviour
 
 		_sectionText = new Dictionary<string, List<string>>();
 		tutObj.SectionTextHolder.ForEach(st => _sectionText.Add(st.Key, st.Value));
-		_menuHighlighted = transform.FindRect("Menu Highlighted");
 		_tutorialObject = UIManagement.Tutorial.SectionCount == GameManagement.TutorialStage + 1 ? transform.parent.FindObject("End Close/Tutorial Helper") : transform.FindObject("Tutorial Helper");
 		_buttons = _tutorialObject.transform.FindRect("Buttons");
 		_tutorialText = _tutorialObject.GetComponentInChildren<Text>();
@@ -47,7 +51,7 @@ public class TutorialSectionUI : MonoBehaviour
 		_eventTriggerCount = 0;
 		_triggeredObjects.Clear();
 		_unblocked = false;
-		Invoke(nameof(SetUp), 0f);
+		SetUp();
 	}
 
 	/// <summary>
@@ -65,15 +69,9 @@ public class TutorialSectionUI : MonoBehaviour
 		BestFit.ResolutionChange -= SetUp;
 	}
 
-	public void Back()
+	public void ChangePage(int change)
 	{
-		_currentText--;
-		SetUp();
-	}
-
-	public void Forward()
-	{
-		_currentText++;
+		_currentText += change;
 		SetUp();
 	}
 
@@ -93,37 +91,34 @@ public class TutorialSectionUI : MonoBehaviour
 				UIManagement.MemberMeeting.DisplayOpinions(_attributeDict["part" + _currentText].Replace("opinion-", string.Empty) == "accurate");
 			}
 		}
-		var reverseRaycast = GetComponentInChildren<ReverseRaycastTarget>();
-		reverseRaycast.MaskRect.Clear();
-		reverseRaycast.MaskRect.Add(_menuHighlighted);
-		var anchorObject = transform.root.RectTransform();
-		var softMaskScript = GetComponentInChildren <SoftMaskScript>();
+		_reverseRaycast.MaskRect.Clear();
+		_reverseRaycast.MaskRect.Add(_menuHighlighted);
 
 		if (_tutorialObj.HighlightedObject[_currentText].Length > 0)
 		{
-			softMaskScript.FlipAlphaMask = false;
-			anchorObject = anchorObject.Find(_tutorialObj.HighlightedObject[_currentText]).RectTransform() ?? anchorObject;
-			softMaskScript.maskScalingRect = anchorObject;
-			reverseRaycast.MaskRect.Add(anchorObject);
+			_softMaskScript.FlipAlphaMask = false;
+			var anchorObject = UIManagement.Canvas.transform.Find(_tutorialObj.HighlightedObject[_currentText]).RectTransform() ?? UIManagement.Canvas.RectTransform();
+			_softMaskScript.maskScalingRect = anchorObject;
+			_reverseRaycast.MaskRect.Add(anchorObject);
 		}
 		else
 		{
-			softMaskScript.FlipAlphaMask = true;
-			softMaskScript.maskScalingRect = null;
+			_softMaskScript.FlipAlphaMask = true;
+			_softMaskScript.maskScalingRect = null;
 		}
 
 		if (_tutorialObj.BlacklistButtons[_currentText] != null)
 		{
-			var blacklistButtons = _tutorialObj.BlacklistButtons[_currentText].List.Select(blb => reverseRaycast.MaskRect[1].FindAll(blb)).SelectMany(x => x).Select(x => x.RectTransform()).ToList();
-			reverseRaycast.BlacklistRect.Clear();
-			reverseRaycast.BlacklistRect.AddRange(blacklistButtons);
-			var whiteList = new List<RectTransform>(reverseRaycast.MaskRect);
+			var blacklistButtons = _tutorialObj.BlacklistButtons[_currentText].List.Select(blb => _reverseRaycast.MaskRect[1].FindAll(blb)).SelectMany(x => x).Where(x => x.GetComponent<Selectable>()).Select(x => x.RectTransform()).ToList();
+			_reverseRaycast.BlacklistRect.Clear();
+			_reverseRaycast.BlacklistRect.AddRange(blacklistButtons);
+			var whiteList = new List<RectTransform>(_reverseRaycast.MaskRect);
 			whiteList.RemoveAt(0);
 			foreach (var trans in whiteList)
 			{
 				if (!trans.GetComponent<Canvas>())
 				{
-					reverseRaycast.BlacklistRect.Add(trans);
+					_reverseRaycast.BlacklistRect.Add(trans);
 				}
 			}
 		}
@@ -136,46 +131,25 @@ public class TutorialSectionUI : MonoBehaviour
 		else
 		{
 			//draw UI differently according to if the side displaying the helper is reversed
-			if (_tutorialObj.ShowOnLeft)
+			transform.localScale = _tutorialObj.ShowOnLeft ? new Vector2(-1, 1) : Vector2.one;
+			_tutorialText.transform.localScale = _tutorialObj.ShowOnLeft ? new Vector2(-1, 1) : Vector2.one;
+			_buttons.transform.localScale = _tutorialObj.ShowOnLeft ? new Vector2(-1, 1) : Vector2.one;
+
+			var mhMin = _menuHighlighted.anchorMin.x;
+			if ((_tutorialObj.ShowOnLeft && mhMin < 0) || (!_tutorialObj.ShowOnLeft && mhMin > 0))
 			{
-				transform.localScale = new Vector2(-1, 1);
-				_tutorialText.transform.localScale = new Vector2(-1, 1);
-				_buttons.transform.localScale = new Vector2(-1, 1);
-
-				var mhMin = _menuHighlighted.anchorMin.x;
-				if (mhMin < 0)
-				{
-					var mhMax = _menuHighlighted.anchorMax.x;
-					_menuHighlighted.anchorMin = new Vector2(1 - mhMax, _menuHighlighted.anchorMin.y);
-					_menuHighlighted.anchorMax = new Vector2(1 - mhMin, _menuHighlighted.anchorMax.y);
-					GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.UpperRight;
-				}
+				var mhMax = _menuHighlighted.anchorMax.x;
+				_menuHighlighted.anchorMin = new Vector2(1 - mhMax, _menuHighlighted.anchorMin.y);
+				_menuHighlighted.anchorMax = new Vector2(1 - mhMin, _menuHighlighted.anchorMax.y);
 			}
-			else
-			{
-				transform.localScale = Vector2.one;
-				_tutorialText.transform.localScale = Vector2.one;
-				_buttons.transform.localScale = Vector2.one;
+			GetComponentInChildren<LayoutGroup>().childAlignment = _tutorialObj.ShowOnLeft ? TextAnchor.UpperRight : TextAnchor.UpperLeft;
 
-				var mhMin = _menuHighlighted.anchorMin.x;
-				if (mhMin > 0)
-				{
-					var mhMax = _menuHighlighted.anchorMax.x;
-					_menuHighlighted.anchorMin = new Vector2(1 - mhMax, _menuHighlighted.anchorMin.y);
-					_menuHighlighted.anchorMax = new Vector2(1 - mhMin, _menuHighlighted.anchorMax.y);
-					GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.UpperRight;
-				}
-				GetComponentInChildren<LayoutGroup>().childAlignment = TextAnchor.UpperLeft;
-			}
-
-			var back = _buttons.FindObject("Back");
-			var forward = _buttons.FindObject("Forward");
 			var pageNumber = _buttons.FindText("Page Number");
 			//if text is provided, display the tutorial helper
 			if (_sectionText[Localization.SelectedLanguage.Name].Count == 0)
 			{
 				_tutorialObject.Active(false);
-				GetComponentInChildren<ReverseRaycastTarget>().UnblockWhitelisted();
+				_reverseRaycast.UnblockWhitelisted();
 				pageNumber.text = string.Empty;
 			}
 			else
@@ -183,52 +157,22 @@ public class TutorialSectionUI : MonoBehaviour
 				//display different buttons and sections according to what oart should be displayed
 				_tutorialObject.Active(true);
 				_tutorialText.text = _sectionText[Localization.SelectedLanguage.Name][_currentText];
-				back.Active(true);
-				forward.Active(true);
-				if (_currentText == 0)
+				_buttons.FindObject("Back").Active(_currentText != 0);
+				var lastPage = _currentText == _sectionText[Localization.SelectedLanguage.Name].Count - 1;
+				_buttons.FindObject("Forward").Active(!lastPage);
+				if (lastPage)
 				{
-					back.Active(false);
-				}
-				if (_currentText == _sectionText[Localization.SelectedLanguage.Name].Count - 1)
-				{
-					forward.Active(false);
-					GetComponentInChildren<ReverseRaycastTarget>().UnblockWhitelisted();
+					_reverseRaycast.UnblockWhitelisted();
 					_unblocked = true;
 				}
-				if (_sectionText[Localization.SelectedLanguage.Name].Count == 1)
-				{
-					pageNumber.text = string.Empty;
-				}
-				else
-				{
-					pageNumber.text = _currentText + 1 + "/" + _sectionText[Localization.SelectedLanguage.Name].Count;
-				}
+				pageNumber.text = _sectionText[Localization.SelectedLanguage.Name].Count == 1 ? string.Empty : _currentText + 1 + "/" + _sectionText[Localization.SelectedLanguage.Name].Count;
 			}
-			if (_tutorialObj.EventTriggerCountRequired > 1 && _unblocked)
-			{
-				_buttons.FindText("Progress Count").text = (_tutorialObj.EventTriggerCountRequired - _eventTriggerCount).ToString();
-				pageNumber.RectTransform().anchorMin = new Vector2(0.375f, 0);
-				pageNumber.RectTransform().anchorMax = new Vector2(0.575f, 1);
-			}
-			else
-			{
-				_buttons.FindText("Progress Count").text = string.Empty;
-				pageNumber.RectTransform().anchorMin = new Vector2(0.45f, 0);
-				pageNumber.RectTransform().anchorMax = new Vector2(0.65f, 1);
-			}
+			var showProgress = _tutorialObj.EventTriggerCountRequired > 1 && _unblocked;
+			_buttons.FindText("Progress Count").text = showProgress ? (_tutorialObj.EventTriggerCountRequired - _eventTriggerCount).ToString() : string.Empty;
+			pageNumber.RectTransform().anchorMin = showProgress ? new Vector2(0.375f, 0) : new Vector2(0.45f, 0);
+			pageNumber.RectTransform().anchorMax = showProgress ? new Vector2(0.575f, 1) : new Vector2(0.65f, 1);
 		}
-		var speechBubble = _tutorialObject.transform.Find("Image");
-		LayoutRebuilder.ForceRebuildLayoutImmediate(speechBubble.RectTransform());
-		Invoke(nameof(PaddingSetUp), 0f);
-	}
-
-	/// <summary>
-	/// Set up padding for text
-	/// </summary>
-	private void PaddingSetUp()
-	{
-		var speechBubble = _tutorialObject.transform.Find("Image");
-		LayoutRebuilder.ForceRebuildLayoutImmediate(speechBubble.RectTransform());
+		LayoutRebuilder.ForceRebuildLayoutImmediate(_tutorialObject.transform.FindRect("Image"));
 	}
 
 	/// <summary>

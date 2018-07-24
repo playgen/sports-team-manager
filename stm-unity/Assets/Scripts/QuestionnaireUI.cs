@@ -92,8 +92,8 @@ public class QuestionnaireUI : MonoBehaviour
 		{
 			var questionStyleDict = new Dictionary<string, string>
 			{
-				{ "A", parsedStyleAsset[i]["A"].Value.Replace("\"", string.Empty) },
-				{ "B", parsedStyleAsset[i]["B"].Value.Replace("\"", string.Empty) }
+				{ "A", parsedStyleAsset[i]["A"].Value.RemoveJSONNodeChars() },
+				{ "B", parsedStyleAsset[i]["B"].Value.RemoveJSONNodeChars() }
 			};
 			styleDict.Add(parsedStyleAsset[i][0], questionStyleDict);
 		}

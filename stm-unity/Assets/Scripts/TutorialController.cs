@@ -36,7 +36,7 @@ public class TutorialController : MonoBehaviour
 		var parsedAsset = JSON.Parse(textAsset.text);
 		_tutorialSections = new List<TutorialObject>();
 		var textDict = new Dictionary<string, List<string>>();
-		Localization.Get("Tutorial");
+		Localization.Initialize();
 		foreach (var langName in Localization.Languages)
 		{
 			textDict.Add(langName.Name, new List<string>());
@@ -62,7 +62,7 @@ public class TutorialController : MonoBehaviour
 			var triggers = triggerSplit.Count > 0 ? triggerSplit.Select(ts => ts.NoSpaces().Split(',')).Select(ts => new KeyValuePair<string, string>(ts[0], ts[1])).ToArray() : new KeyValuePair<string, string>[0];
 			var triggerCount = parsedAsset[i]["Trigger Count Required"].Value.Length > 0 ? int.Parse(parsedAsset[i]["Trigger Count Required"].RemoveJSONNodeChars()) : 0;
 			var uniqueTriggers = parsedAsset[i]["Unique Triggers"].Value.Length > 0 && bool.Parse(parsedAsset[i]["Unique Triggers"].RemoveJSONNodeChars());
-			var safeToSave = parsedAsset[i]["Safe To Save"].Value.Length > 0 && bool.Parse(parsedAsset[i]["Safe To Save"].RemoveJSONNodeChars());
+			var safeToSave = parsedAsset[i]["Safe To Save"].RemoveJSONNodeChars().ToLower();
 			var customAttributes = parsedAsset[i]["Custom Attributes"].RemoveJSONNodeChars().Split('\n').Where(s => !string.IsNullOrEmpty(s)).ToList();
 			var sectionName = parsedAsset[i]["Section Name"].RemoveJSONNodeChars();
 			if (i + 1 < parsedAsset.Count && parsedAsset[i + 1][0].Value.RemoveJSONNodeChars() == "BREAK")
@@ -72,7 +72,7 @@ public class TutorialController : MonoBehaviour
 				{
 					textDict[langName.Name] = new List<string>();
 				}
-				objectNames= new List<string>();
+				objectNames = new List<string>();
 				blacklistNames = new List<List<string>>();
 			}
 		}
@@ -80,7 +80,7 @@ public class TutorialController : MonoBehaviour
 
 	private void Start()
 	{
-		_tutorialDisplay = GetComponentsInChildren<TutorialSectionUI>(true).First();
+		_tutorialDisplay = GetComponentInChildren<TutorialSectionUI>(true);
 		_tutorialDisplay.gameObject.Active(GameManagement.ShowTutorial);
 		gameObject.Active(GameManagement.ShowTutorial);
 		_tutorialQuitButton.Active(GameManagement.ShowTutorial);
@@ -130,16 +130,31 @@ public class TutorialController : MonoBehaviour
 
 	private int GetLastSafeStage(int currentStage)
 	{
-		// fall back to the last stage that is safe to save from
-		for (var i = currentStage; i > 0; i--)
+		if (currentStage + 1 < SectionCount)
 		{
-			if (_tutorialSections[i].SafeToSave)
+			if (_tutorialSections[currentStage + 1].SafeToSave == "skip")
 			{
-				return i;
+				for (var i = currentStage + 1; i < SectionCount; i++)
+				{
+					if (_tutorialSections[i].SafeToSave == "true")
+					{
+						return i;
+					}
+				}
+			}
+			else
+			{
+				// fall back to the last stage that is safe to save from
+				for (var i = currentStage + 1; i >= 0; i--)
+				{
+					if (_tutorialSections[i].SafeToSave == "true")
+					{
+						return i;
+					}
+				}
 			}
 		}
 		return 0;
-		
 	}
 
 	public void RestartGame()
@@ -188,14 +203,14 @@ public static class JSONStringParse
 {
 	public static string RemoveJSONNodeChars(this string text)
 	{
-		text = text.Replace("\"", "");
+		text = text.Replace("\"", string.Empty);
 		text = text.Replace("\\\\n", "\n");
 		return text;
 	}
 
 	public static string RemoveJSONNodeChars(this JSONNode node)
 	{
-		var text = node.Value.Replace("\"", "");
+		var text = node.Value.Replace("\"", string.Empty);
 		text = text.Replace("\\\\n", "\n");
 		return text;
 	}

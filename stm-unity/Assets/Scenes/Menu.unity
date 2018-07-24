@@ -9368,7 +9368,7 @@ MonoBehaviour:
   _tutorialQuitButton: {fileID: 1941228535}
   _tutorialExitBlocker: {fileID: 515993620}
   _tutorialSections:
-  - SectionName: Welcome and Position Pop up
+  - SectionName: Welcome & Position pop-up
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -9391,12 +9391,12 @@ MonoBehaviour:
       Value: ShowPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 0
+    SafeToSave: false
     BlacklistButtons:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionName: Position Pop up (Skills)
+  - SectionName: Position pop-up (skills)
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -9419,13 +9419,13 @@ MonoBehaviour:
       Value: ClosePositionPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 0
+    SafeToSave: false
     BlacklistButtons:
     - List:
       - Close
     - List: []
     CustomAttributes: []
-  - SectionName: Crew, mood and crew pop up
+  - SectionName: Crew, mood & meeting pop-up
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -9468,21 +9468,21 @@ MonoBehaviour:
       Value: ShowPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: true
     BlacklistButtons:
     - List: []
     - List: []
     - List: []
     - List: []
     - List:
-      - zz Recruit
+      - Recruit
     CustomAttributes:
     - part0=mood-accurate
     - part1=mood-neutral
     - part2=mood-positive
     - part3=mood-negative
     - part4=mood-accurate
-  - SectionName: Crew pop up, talk to
+  - SectionName: Meeting pop-up (talking)
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -9542,7 +9542,7 @@ MonoBehaviour:
       Value: AskQuestion
     UniqueEvents: 0
     EventTriggerCountRequired: 6
-    SafeToSave: 0
+    SafeToSave: false
     BlacklistButtons:
     - List: []
     - List: []
@@ -9557,7 +9557,7 @@ MonoBehaviour:
     - part0=opinion-accurate
     - part1=opinion-inaccurate
     - part2=opinion-accurate
-  - SectionName: Crew Notes
+  - SectionName: Introduction to notes
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -9586,13 +9586,13 @@ MonoBehaviour:
       Value: Display
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 0
+    SafeToSave: false
     BlacklistButtons:
     - List: []
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionName: Inputting Notes
+  - SectionName: Inputting notes
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -9615,12 +9615,12 @@ MonoBehaviour:
       Value: Close
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 0
+    SafeToSave: false
     BlacklistButtons:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionName: Crew Pop up (exit)
+  - SectionName: Exitting the meeting pop-up
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -9637,7 +9637,7 @@ MonoBehaviour:
       Value: OnDisable
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 0
+    SafeToSave: skip
     BlacklistButtons:
     - List: []
     CustomAttributes: []
@@ -9666,11 +9666,11 @@ MonoBehaviour:
       Value: Place
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: true
     BlacklistButtons:
     - List: []
     - List:
-      - zz Recruit
+      - Recruit
     CustomAttributes: []
   - SectionName: Removing crew from positions
     SectionTextHolder:
@@ -9689,7 +9689,7 @@ MonoBehaviour:
       Value: OnReset
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 0
+    SafeToSave: false
     BlacklistButtons:
     - List: []
     CustomAttributes: []
@@ -9711,10 +9711,10 @@ MonoBehaviour:
       Value: EnableRacing
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 0
+    SafeToSave: false
     BlacklistButtons:
     - List:
-      - zz Recruit
+      - Recruit
     CustomAttributes: []
   - SectionName: Crew performance, start session
     SectionTextHolder:
@@ -9747,7 +9747,7 @@ MonoBehaviour:
       Value: ConfirmLineUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: false
     BlacklistButtons:
     - List: []
     - List: []
@@ -9779,7 +9779,7 @@ MonoBehaviour:
       Value: HoverCheck
     UniqueEvents: 1
     EventTriggerCountRequired: 3
-    SafeToSave: 0
+    SafeToSave: true
     BlacklistButtons:
     - List: []
     - List: []
@@ -9802,7 +9802,7 @@ MonoBehaviour:
       Value: HideHover
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 0
+    SafeToSave: false
     BlacklistButtons:
     - List: []
     CustomAttributes: []
@@ -9843,7 +9843,7 @@ MonoBehaviour:
       Value: HoverCheck
     UniqueEvents: 1
     EventTriggerCountRequired: 3
-    SafeToSave: 1
+    SafeToSave: true
     BlacklistButtons:
     - List: []
     - List: []
@@ -9868,7 +9868,7 @@ MonoBehaviour:
       Value: HideHover
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 0
+    SafeToSave: false
     BlacklistButtons:
     - List: []
     CustomAttributes: []
@@ -9896,11 +9896,11 @@ MonoBehaviour:
       Value: ConfirmLineUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: true
     BlacklistButtons:
     - List: []
     - List:
-      - zz Recruit
+      - Recruit
     CustomAttributes: []
   - SectionName: Prepare for race
     SectionTextHolder:
@@ -9922,10 +9922,10 @@ MonoBehaviour:
       Value: ConfirmLineUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 0
+    SafeToSave: true
     BlacklistButtons:
     - List:
-      - zz Recruit
+      - Recruit
     CustomAttributes: []
   - SectionName: Race results
     SectionTextHolder:
@@ -9945,7 +9945,7 @@ MonoBehaviour:
       Value: Close
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: skip
     BlacklistButtons:
     - List: []
     CustomAttributes: []
@@ -9979,13 +9979,13 @@ MonoBehaviour:
       Value: ShowPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: true
     BlacklistButtons:
     - List: []
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionName: Close new position popup
+  - SectionName: Close new position pop-up
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10003,11 +10003,11 @@ MonoBehaviour:
       Value: ClosePositionPopUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 0
+    SafeToSave: false
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionName: Recruitment Screen
+  - SectionName: Recruitment pop-up
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10019,17 +10019,17 @@ MonoBehaviour:
         neri sulla destra dell'area evidenziata.
     ShowOnLeft: 1
     HighlightedObject:
-    - Team Management/Crew Container/zz Recruit
+    - Team Management/Crew Container/Recruit
     Triggers:
     - Key: RecruitMemberUI
       Value: ResetDisplay
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: true
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionName: Recruitment Process
+  - SectionName: Recruitment process
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10054,7 +10054,7 @@ MonoBehaviour:
       Value: AskQuestion
     UniqueEvents: 1
     EventTriggerCountRequired: 2
-    SafeToSave: 0
+    SafeToSave: false
     BlacklistButtons:
     - List: []
     - List:
@@ -10063,7 +10063,7 @@ MonoBehaviour:
       - Button
     CustomAttributes:
     - cost=false
-  - SectionName: Hiring New Crew
+  - SectionName: Hiring new crew
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10081,20 +10081,20 @@ MonoBehaviour:
       Value: Recruit
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 0
+    SafeToSave: false
     BlacklistButtons:
     - List:
       - Close
       - Close (1)
-      - Question 1
-      - Question 2
-      - Question 3
-      - Question 4
-      - Question 5
-      - Question 6
+      - Charisma
+      - Perception
+      - Quickness
+      - Body
+      - Willpower
+      - Wisdom
     CustomAttributes:
     - cost=false
-  - SectionName: New Set of Sessions
+  - SectionName: New set of sessions
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10112,11 +10112,12 @@ MonoBehaviour:
       Value: ConfirmLineUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: true
     BlacklistButtons:
-    - List: []
+    - List:
+      - Recruit
     CustomAttributes: []
-  - SectionName: Post Practice 2
+  - SectionName: Post practice 2
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10135,12 +10136,12 @@ MonoBehaviour:
       Value: ConfirmLineUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: true
     BlacklistButtons:
     - List:
-      - zz Recruit
+      - Recruit
     CustomAttributes: []
-  - SectionName: Pre Race 2
+  - SectionName: Pre-race 2
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10158,11 +10159,12 @@ MonoBehaviour:
       Value: ConfirmLineUp
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: true
     BlacklistButtons:
-    - List: []
+    - List:
+      - Recruit
     CustomAttributes: []
-  - SectionName: Post Race Feeback 2
+  - SectionName: Post race feeback 2
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10178,11 +10180,11 @@ MonoBehaviour:
       Value: Close
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: skip
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionName: Crew Request meeting
+  - SectionName: Post-race conflict event
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10207,12 +10209,12 @@ MonoBehaviour:
       Value: SetBlockerOnClick
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: true
     BlacklistButtons:
     - List: []
     - List: []
     CustomAttributes: []
-  - SectionName: Exit Conversation
+  - SectionName: End the event
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10230,11 +10232,11 @@ MonoBehaviour:
       Value: Close
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 0
+    SafeToSave: skip
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionName: Situation Feedback
+  - SectionName: Learning pill
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10246,7 +10248,7 @@ MonoBehaviour:
       - "Al termine di ciascun evento comparir\xF2 per darti un feedback su come hai
         gestito la situazione."
       - Per chiudere questo feedback, clicca in qualunque punto dello schermo.
-    ShowOnLeft: 0
+    ShowOnLeft: 1
     HighlightedObject:
     - Team Management
     - Team Management
@@ -10255,7 +10257,7 @@ MonoBehaviour:
       Value: ClosePill
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: skip
     BlacklistButtons:
     - List: []
     - List: []
@@ -10270,7 +10272,7 @@ MonoBehaviour:
       Value:
       - "Dopo ciascuna conversazione, ti verr\xE0 data una lista che specifica l'impatto
         delle tue risposte."
-    ShowOnLeft: 0
+    ShowOnLeft: 1
     HighlightedObject:
     - Team Management/Pop-up Bounds/Event Impact Pop-Up
     Triggers:
@@ -10278,11 +10280,11 @@ MonoBehaviour:
       Value: Close
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: skip
     BlacklistButtons:
     - List: []
     CustomAttributes: []
-  - SectionName: Your on your own now!
+  - SectionName: You're on your own now!
     SectionTextHolder:
     - Key: en-GB
       Value:
@@ -10298,7 +10300,7 @@ MonoBehaviour:
     Triggers: []
     UniqueEvents: 0
     EventTriggerCountRequired: 1
-    SafeToSave: 1
+    SafeToSave: true
     BlacklistButtons:
     - List: []
     CustomAttributes: []
@@ -17969,12 +17971,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1782845105}
-        m_MethodName: Back
-        m_Mode: 1
+        m_MethodName: ChangePage
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: -1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -48619,6 +48621,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2caf71bacc480a049be32749926481b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _menuHighlighted: {fileID: 285518218}
+  _reverseRaycast: {fileID: 627986619}
+  _softMaskScript: {fileID: 627986620}
 --- !u!1 &1788092355
 GameObject:
   m_ObjectHideFlags: 0
@@ -50885,12 +50890,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1782845105}
-        m_MethodName: Forward
-        m_Mode: 1
+        m_MethodName: ChangePage
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

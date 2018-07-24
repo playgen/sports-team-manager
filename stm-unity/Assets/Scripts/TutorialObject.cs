@@ -81,7 +81,7 @@ public class TutorialObject
 	/// <summary>
 	/// If the current step in the tutorial can be saved, sometimes UI must be open for the current step to activate/finish properly
 	/// </summary>
-	public bool SafeToSave;
+	public string SafeToSave;
 	/// <summary>
 	/// Buttons which cannot be interacted with at this stage in the tutorial
 	/// </summary>
@@ -91,7 +91,7 @@ public class TutorialObject
 	/// </summary>
 	public List<string> CustomAttributes;
 
-	public TutorialObject(Dictionary<string, List<string>> text, List<string> highlightObjs, bool showOnLeft, KeyValuePair<string, string>[] triggers, int triggerCount, bool uniqueTriggers, bool safeToSave, List<List<string>> blacklist, List<string> attributes, string sectionName)
+	public TutorialObject(Dictionary<string, List<string>> text, List<string> highlightObjs, bool showOnLeft, KeyValuePair<string, string>[] triggers, int triggerCount, bool uniqueTriggers, string safeToSave, List<List<string>> blacklist, List<string> attributes, string sectionName)
 	{
 		SectionName = sectionName;
 		SectionTextHolder = new List<LanguageKeyValuePair>();

@@ -49,7 +49,7 @@ public static class UIManagement
 		CupResult = Canvas.GetComponentInChildren<CupResultUI>(true);
 		Promotion = Canvas.GetComponentInChildren<BoatPromotionUI>(true);
 		PreRace = Canvas.GetComponentInChildren<PreRaceConfirmUI>(true);
-		LearningPill = Canvas.GetComponentInChildren<LearningPillUI>(true);
+		LearningPill = GameObject.Find("Learning Pill Canvas").GetComponentInChildren<LearningPillUI>(true);
 		Hover = Canvas.GetComponentInChildren<HoverPopUpUI>(true);
 		EventImpact = Canvas.GetComponentInChildren<PostRaceEventImpactUI>(true);
 
