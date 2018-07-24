@@ -40,7 +40,7 @@ public class PositionUI : MonoBehaviour
 			}
 			RemoveCrew();
 			CrewMemberUI = crewMember;
-		    UIManagement.TeamSelection.PositionChange(1);
+		    UIManagement.TeamSelection.PositionChange();
 		}
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, Position.ToString(), crewMember);
 	}
@@ -52,7 +52,7 @@ public class PositionUI : MonoBehaviour
 	{
 		if (CrewMemberUI != null)
 		{
-		    UIManagement.TeamSelection.PositionChange(-1);
+		    UIManagement.TeamSelection.PositionChange();
 			CrewMemberUI = null;
 		}
 	}

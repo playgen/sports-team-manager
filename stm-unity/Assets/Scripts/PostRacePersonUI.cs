@@ -123,7 +123,7 @@ public class PostRacePersonUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Turn qall question buttons on
+	/// Turn all question buttons on
 	/// </summary>
 	public void EnableQuestions()
 	{

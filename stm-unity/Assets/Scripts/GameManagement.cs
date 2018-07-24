@@ -191,6 +191,16 @@ public static class GameManagement
 		return LineUpHistory.Count(boat => boat.PositionCrew.Values.ToList().Any(c => c.Name == member.Name));
 	}
 
+	public static string FirstInitialLastName(this CrewMember member)
+	{
+		return $"{member.FirstName[0]}.{member.LastName}";
+	}
+
+	public static string SplitName(this CrewMember member)
+	{
+		return $"{member.LastName},\n{member.FirstName}";
+	}
+
 	public static bool Current(this Position position)
 	{
 		return Positions.Contains(position);

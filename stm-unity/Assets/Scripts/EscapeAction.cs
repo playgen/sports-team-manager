@@ -78,14 +78,7 @@ public class EscapeAction : MonoBehaviour
 			//if the pre-race pop-up is open and the current top pop-up, close this pop-up
 			if (UIManagement.PreRace.gameObject.activeInHierarchy)
 			{
-				if (UIManagement.PreRace.GetComponentInChildren<Text>().text == Localization.Get("REPEAT_CONFIRM"))
-				{
-					UIManagement.PreRace.CloseRepeatWarning(TrackerTriggerSource.EscapeKey.ToString());
-				}
-				else
-				{
-					UIManagement.PreRace.CloseConfirmPopUp(TrackerTriggerSource.EscapeKey.ToString());
-				}
+				UIManagement.PreRace.CloseConfirmPopUp(TrackerTriggerSource.EscapeKey.ToString());
 				return;
 			}
 			//if no pop-ups are open, trigger the OnEscape method in TeamSelectionUI

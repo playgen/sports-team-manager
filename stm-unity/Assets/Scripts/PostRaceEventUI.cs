@@ -32,10 +32,10 @@ public class PostRaceEventUI : MonoBehaviour
 
 	private void OnDisable()
 	{
+		Localization.LanguageChange -= OnLanguageChange;
+		BestFit.ResolutionChange -= DoBestFit;
 		if (_closeButton.activeSelf)
 		{
-			Localization.LanguageChange -= OnLanguageChange;
-			BestFit.ResolutionChange -= DoBestFit;
 			foreach (var person in _postRacePeople)
 			{
 				person.EnableQuestions();
@@ -113,7 +113,6 @@ public class PostRaceEventUI : MonoBehaviour
 					}
 				}
 			}
-			//if there are no replies, reset the current event
 			if (replies.Count != 0)
 			{
 				foreach (var reply in replies)
@@ -283,7 +282,7 @@ public class PostRaceEventUI : MonoBehaviour
 	private void DoBestFit()
 	{
 		var peopleLayout = _postRacePeople.Select(p => p.GetComponentInChildren<LayoutGroup>()).ToList();
+		peopleLayout.ForEach(p => p.BestFit());
 		peopleLayout.ForEach(p => p.GetComponentsInChildren<Text>().ToList().ForEach(t => t.fontSize = 15));
-		peopleLayout.ForEach(p => LayoutRebuilder.ForceRebuildLayoutImmediate(p.RectTransform()));
 	}
 }

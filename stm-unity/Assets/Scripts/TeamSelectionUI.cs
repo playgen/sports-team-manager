@@ -76,7 +76,6 @@ public class TeamSelectionUI : MonoBehaviour
 	private Text _finalPlacementText;
 	private readonly List<GameObject> _currentCrewButtons = new List<GameObject>();
 	private readonly List<Button> _recruitButtons = new List<Button>();
-	private int _positionsEmpty;
 	[SerializeField]
 	private Button _quitBlocker;
 	[SerializeField]
@@ -91,46 +90,15 @@ public class TeamSelectionUI : MonoBehaviour
 	{
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
-		if (!GameManagement.SeasonOngoing)
-		{
-			if (GameManagement.RageMode)
-			{
-				_feedbackButton.onClick.RemoveAllListeners();
-				if (GameManagement.QuestionnaireCompleted)
-				{
-					_feedbackButton.onClick.AddListener(TriggerFeedback);
-					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
-				}
-				else
-				{
-					_feedbackButton.onClick.AddListener(TriggerQuestionnaire);
-					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("CONFLICT_QUESTIONNAIRE");
-				}
-			}
-			else
-			{
-				_feedbackButton.gameObject.Active(false);
-			}
-			_endRace.gameObject.Active(true);
-			_boatMain.gameObject.Active(false);
-		}
+		UIManagement.PostRaceEvents.ToList().ForEach(e => e.Display());
+		CreateSeasonProgress();
+		CreateNewBoat();
 	}
 
 	private void OnDisable()
 	{
 		Localization.LanguageChange -= OnLanguageChange;
 		BestFit.ResolutionChange -= DoBestFit;
-	}
-
-	/// <summary>
-	/// Create UI for the previous four line-ups and one for the next line-up
-	/// </summary>
-	private void Start()
-	{
-		UIManagement.PostRaceEvents.ToList().ForEach(e => e.Display());
-		ResetScrollbar();
-		CreateSeasonProgress();
-		CreateNewBoat();
 	}
 
 	/// <summary>
@@ -186,14 +154,6 @@ public class TeamSelectionUI : MonoBehaviour
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
-	/// <summary>
-	/// Used to rearrange CrewMember names. shortName set to true results in first initial and last name, set to false results in last names, first names
-	/// </summary>
-	private string SplitName(CrewMember member, bool shortName = false)
-	{
-		return shortName ? member.FirstName[0] + "." + member.LastName : member.LastName + ",\n" + member.FirstName;
-	}
-
 	private void CreateSeasonProgress()
 	{
 		foreach (Transform child in _ongoingResultContainer.transform)
@@ -203,21 +163,14 @@ public class TeamSelectionUI : MonoBehaviour
 		for (var i = 0; i < GameManagement.GameManager.GetTotalRaceCount(); i++)
 		{
 			var resultObj = Instantiate(_resultPrefab, _ongoingResultContainer.transform, false);
-			resultObj.GetComponentInChildren<Text>().color = UnityEngine.Color.black;
+			var objText = resultObj.GetComponentInChildren<Text>();
+			objText.color = UnityEngine.Color.black;
 			if (GameManagement.RaceCount > i)
 			{
-				var position = GameManagement.GetRacePosition(GameManagement.RaceScorePositionCountPairs[i].Key, GameManagement.RaceScorePositionCountPairs[i].Value);
-				resultObj.GetComponent<Image>().fillAmount = 1;
-				resultObj.GetComponentInChildren<Text>().gameObject.AddComponent<TextLocalization>();
-				resultObj.GetComponentInChildren<TextLocalization>().Key = "POSITION_" + position;
-				resultObj.GetComponentInChildren<TextLocalization>().Set();
-			}
-			else
-			{
-				resultObj.GetComponent<Image>().fillAmount = GameManagement.RaceCount == i ? (GameManagement.CurrentRaceSession - 1) / (float)GameManagement.RaceSessionLength : 0;
-				resultObj.GetComponentInChildren<Text>().text = string.Empty;
+				UpdateSeasonProgress(GameManagement.GetRacePosition(GameManagement.RaceScorePositionCountPairs[i].Key, GameManagement.RaceScorePositionCountPairs[i].Value), i + 1);
 			}
 		}
+		UpdateSeasonProgress();
 	}
 
 	/// <summary>
@@ -225,31 +178,53 @@ public class TeamSelectionUI : MonoBehaviour
 	/// </summary>
 	private void CreateNewBoat()
 	{
-		var stageIcon = _boatMain.transform.FindImage("Stage");
+		_previousScrollValue = 0;
+		ChangeVisibleBoats(0);
+		_boatMain.transform.FindImage("Stage").sprite = GameManagement.SeasonOngoing ? GameManagement.IsRace ? _raceIcon : _practiceIcon : null;
+		_boatMain.transform.FindText("Stage Number").text = GameManagement.IsRace || !GameManagement.SeasonOngoing ? string.Empty : GameManagement.CurrentRaceSession.ToString();
+		_endRace.gameObject.Active(!GameManagement.SeasonOngoing);
+		_boatMain.gameObject.Active(GameManagement.SeasonOngoing);
+		_raceButton.gameObject.Active(GameManagement.SeasonOngoing);
+		_skipToRaceButton.gameObject.Active(false);
+		//set up buttons and race result UI if player has completed all races
 		if (GameManagement.SeasonOngoing)
 		{
-			stageIcon.sprite = GameManagement.IsRace ? _raceIcon : _practiceIcon;
-			stageIcon.gameObject.Active(true);
-			_endRace.gameObject.Active(false);
-			_boatMain.gameObject.Active(true);
+			_raceButton.onClick.RemoveAllListeners();
+			_skipToRaceButton.onClick.RemoveAllListeners();
+			_raceButton.onClick.AddListener(() => UIManagement.PreRace.ConfirmPopUp(GameManagement.IsRace));
+			//add click handler to raceButton according to session taking place
+			if (!GameManagement.IsRace && !GameManagement.ShowTutorial && GetLineUpHistory(0, GameManagement.RaceSessionLength).TakeWhile(session => session.Value.Value != 0).Any(session => session.Key.PerfectSelections == session.Key.PositionCount))
+			{
+				_skipToRaceButton.gameObject.Active(true);
+				_skipToRaceButton.onClick.AddListener(() => UIManagement.PreRace.ConfirmPopUp(true));
+				_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE");
+				_skipToRaceButton.GetComponentInChildren<Text>().fontSize = 20;
+			}
+			var positionContainer = _boatMain.transform.Find("Position Container");
+			//set up position containers
+			for (var i = 0; i < positionContainer.childCount; i++)
+			{
+				var positionObject = positionContainer.FindObject("Position " + i);
+				if (GameManagement.PositionCount <= i)
+				{
+					positionObject.Active(false);
+					continue;
+				}
+				positionObject.Active(true);
+				var pos = GameManagement.Positions[i];
+				positionObject.transform.FindText("Text").text = Localization.Get(pos.ToString());
+				positionObject.transform.FindImage("Image").sprite = RoleLogos[pos.ToString()];
+				positionObject.GetComponent<PositionUI>().SetUp(pos);
+			}
 		}
-		//set up buttons and race result UI if player has completed all races
 		else
 		{
-			stageIcon.gameObject.Active(false);
+			_feedbackButton.gameObject.Active(GameManagement.RageMode);
 			if (GameManagement.RageMode)
 			{
 				_feedbackButton.onClick.RemoveAllListeners();
-				if (GameManagement.QuestionnaireCompleted)
-				{
-					_feedbackButton.onClick.AddListener(TriggerFeedback);
-					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("FEEDBACK_BUTTON");
-				}
-				else
-				{
-					_feedbackButton.onClick.AddListener(TriggerQuestionnaire);
-					_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get("CONFLICT_QUESTIONNAIRE");
-				}
+				_feedbackButton.onClick.AddListener(() => TriggerState(GameManagement.QuestionnaireCompleted ? State.Feedback : State.Questionnaire));
+				_feedbackButton.GetComponentInChildren<Text>().text = Localization.Get(GameManagement.QuestionnaireCompleted ? "FEEDBACK_BUTTON" : "CONFLICT_QUESTIONNAIRE");
 			}
 			foreach (Transform child in _resultContainer.transform)
 			{
@@ -259,73 +234,14 @@ public class TeamSelectionUI : MonoBehaviour
 			{
 				var position = GameManagement.GetRacePosition(result.Key, result.Value);
 				var resultObj = Instantiate(_resultPrefab, _resultContainer.transform, false);
-				resultObj.GetComponent<Image>().fillAmount = 0;
 				resultObj.GetComponentInChildren<Text>().text = position.ToString();
 			}
 			_ongoingResultContainer.Parent().Active(false);
 			var finalPosition = GameManagement.GetCupPosition();
 			_finalPlacementText.GetComponent<TextLocalization>().Key = "POSITION_" + finalPosition;
 			_finalPlacementText.GetComponent<TextLocalization>().Set();
-
-			_endRace.gameObject.Active(true);
-			_feedbackButton.gameObject.Active(GameManagement.RageMode);
-			_boatMain.gameObject.Active(false);
 		}
-		_boatMain.transform.FindText("Stage Number").text = GameManagement.IsRace || !GameManagement.SeasonOngoing ? string.Empty : GameManagement.CurrentRaceSession.ToString();
-		_positionsEmpty = GameManagement.PositionCount;
-		_raceButton.onClick.RemoveAllListeners();
-		_skipToRaceButton.onClick.RemoveAllListeners();
-		//add click handler to raceButton according to session taking place
-		if (!GameManagement.IsRace)
-		{
-			_raceButton.onClick.AddListener(UIManagement.PreRace.ConfirmLineUpCheck);
-			_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat("RACE_BUTTON_PRACTICE", false, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
-			_raceButton.GetComponentInChildren<Text>().fontSize = 16;
-		}
-		else
-		{
-			_raceButton.onClick.AddListener(UIManagement.PreRace.ConfirmPopUp);
-			_raceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE");
-			_raceButton.GetComponentInChildren<Text>().fontSize = 20;
-		}
-		_raceButton.onClick.AddListener(() => Invoke("QuickClickDisable", 0.5f));
-		_skipToRaceButton.onClick.AddListener(UIManagement.PreRace.ConfirmPopUp);
-		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE");
-		_skipToRaceButton.GetComponentInChildren<Text>().fontSize = 20;
-		var positionContainer = _boatMain.transform.Find("Position Container");
-		//set up position containers
-		for (var i = 0; i < positionContainer.childCount; i++)
-		{
-			var positionObject = positionContainer.FindObject("Position " + i);
-			if (GameManagement.PositionCount <= i)
-			{
-				positionObject.Active(false);
-				continue;
-			}
-			positionObject.Active(true);
-			var pos = GameManagement.Positions[i];
-			positionObject.transform.FindText("Text").text = Localization.Get(pos.ToString());
-			positionObject.transform.FindImage("Image").sprite = RoleLogos[pos.ToString()];
-			positionObject.GetComponent<PositionUI>().SetUp(pos);
-		}
-		_raceButton.gameObject.Active(GameManagement.SeasonOngoing);
-		_skipToRaceButton.gameObject.Active(false);
-		if (GameManagement.SeasonOngoing && !GameManagement.IsRace && !GameManagement.ShowTutorial) {
-			var previousSessions = GetLineUpHistory(0, GameManagement.RaceSessionLength);
-			foreach (var session in previousSessions)
-			{
-				if (session.Value.Value == 0)
-				{
-					break;
-				}
-				if (session.Key.PerfectSelections == session.Key.PositionCount)
-				{
-					_skipToRaceButton.gameObject.Active(true);
-					break;
-				}
-			}
-		}
-		DoBestFit();
+		OnLanguageChange();
 		ResetCrew();
 		RepeatLineUp();
 	}
@@ -338,48 +254,45 @@ public class TeamSelectionUI : MonoBehaviour
 		foreach (var cm in GameManagement.CrewMemberList)
 		{
 			//create the static CrewMember UI (aka, the one that remains greyed out within the container at all times)
-			var crewMember = CreateCrewMember(cm, _crewContainer.transform, false, true);
-			//set anchoredPosition so that they are positioned correctly within the container at the bottom of the screen
-			crewMember.RectTransform().anchoredPosition = Vector2.zero;
+			var crewMember = CreateCrewMember(cm, _crewContainer.transform, false);
 			_currentCrewButtons.Add(crewMember);
 			//create the draggable copy of the above
 			if (GameManagement.SeasonOngoing)
 			{
-				var crewMemberDraggable = CreateCrewMember(cm, crewMember.transform, true, true);
-				crewMemberDraggable.transform.position = crewMember.transform.position;
+				var crewMemberDraggable = CreateCrewMember(cm, crewMember.transform, true);
+				//crewMemberDraggable.transform.position = crewMember.transform.position;
 				_currentCrewButtons.Add(crewMemberDraggable);
 			}
 		}
 		//create a recruitment UI object for each empty spot in the crew
 		for (var i = 0; i < GameManagement.Team.CrewLimitLeft(); i++)
 		{
-			var recruit = Instantiate(_recruitPrefab);
-			recruit.transform.SetParent(_crewContainer.transform, false);
+			var recruit = Instantiate(_recruitPrefab, _crewContainer.transform, false);
 			recruit.name = "Recruit";
 			recruit.GetComponent<Button>().onClick.AddListener(() => UIManagement.Recruitment.gameObject.Active(true));
 			_recruitButtons.Add(recruit.GetComponent<Button>());
 		}
 		SortCrew();
-		Invoke(nameof(CrewContainerPaging), Time.smoothDeltaTime * 2);
+		CrewContainerPaging();
 	}
 
 	/// <summary>
 	/// Create a new CrewMember object
 	/// </summary>
-	private GameObject CreateCrewMember(CrewMember cm, Transform parent, bool usable, bool current)
+	private GameObject CreateCrewMember(CrewMember cm, Transform parent, bool usable)
 	{
 		var crewMember = Instantiate(_crewPrefab, parent, false);
-		crewMember.transform.FindText("Name").text = SplitName(cm, true);
-		crewMember.name = SplitName(cm);
-		crewMember.GetComponent<CrewMemberUI>().SetUp(usable, current, cm, parent);
+		crewMember.transform.FindText("Name").text = cm.FirstInitialLastName();
+		crewMember.name = cm.SplitName();
+		crewMember.GetComponent<CrewMemberUI>().SetUp(usable, true, cm, parent);
 		crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(cm.Avatar, cm.GetMood());
 		return crewMember;
 	}
 
 	public void SortCrew(bool playerTriggered = false)
 	{
-		var sortedCrewMembers = _crewContainer.GetComponentsInChildren<CrewMemberUI>().Where(c => c.transform.parent == _crewContainer.transform).ToList();
-		var currentMembers = sortedCrewMembers.Concat(UIManagement.CrewMemberUI.Where(c => c.Usable)).ToList();
+		var currentMembers = _currentCrewButtons.Select(c => c.GetComponent<CrewMemberUI>()).ToList();
+		var sortedCrewMembers = currentMembers.Where(c => c.transform.parent == _crewContainer.transform).ToList();
 		var sortType = string.Empty;
 		switch (_crewSort.value)
 		{
@@ -455,14 +368,8 @@ public class TeamSelectionUI : MonoBehaviour
 				break;
 		}
 		var sortedCrew = sortedCrewMembers.Select(c => c.transform).ToList();
-		foreach (var recruit in _recruitButtons)
-		{
-			sortedCrew.Add(recruit.transform);
-		}
-		foreach (var crewMember in sortedCrew)
-		{
-			crewMember.SetAsLastSibling();
-		}
+		sortedCrew.AddRange(_recruitButtons.Select(recruit => recruit.transform));
+		sortedCrew.ForEach(c => c.SetAsLastSibling());
 		if (playerTriggered)
 		{
 			TrackerEventSender.SendEvent(new TraceEvent("CrewSortChanged", TrackerAsset.Verb.Selected, new Dictionary<TrackerContextKey, object>(), sortType, AlternativeTracker.Alternative.Dialog));
@@ -541,7 +448,7 @@ public class TeamSelectionUI : MonoBehaviour
 			var crewMember = crewContainer.FindObject("Crew Member " + crewCount);
 			crewMember.Active(true);
 			var current = pair.Value.Current();
-			crewMember.transform.FindText("Name").text = SplitName(pair.Value, true);
+			crewMember.transform.FindText("Name").text = pair.Value.FirstInitialLastName();
 			crewMember.GetComponentInChildren<AvatarDisplay>().SetAvatar(pair.Value.Avatar, -(GameManagement.GetRacePosition(boat.Score, boat.PositionCount) - 3) * 2);
 			crewMember.GetComponent<CrewMemberUI>().SetUp(false, current, pair.Value, crewContainer);
 
@@ -605,27 +512,18 @@ public class TeamSelectionUI : MonoBehaviour
 	/// <summary>
 	/// Adjust the number of positions on the currentBoat that has not been given a CrewMember
 	/// </summary>
-	public void PositionChange(int change)
+	public void PositionChange()
 	{
-		_positionsEmpty -= change;
-		//enable race button if all positions are filled and QuickClickDisable isn't being invoked
-		if ((_positionsEmpty > 0 && _raceButton.interactable) || IsInvoking("QuickClickDisable"))
+		var positionsEmpty = GameManagement.PositionCount - GameManagement.PositionCrew.Values.Count(c => c != null);
+		//enable race button if all positions are filled
+		if (positionsEmpty > 0 && _raceButton.interactable)
 		{
 			DisableRacing();
 		}
-		else if (_positionsEmpty == 0 && !_raceButton.interactable)
+		else if (positionsEmpty == 0 && !_raceButton.interactable)
 		{
 			EnableRacing();
 		}
-	}
-
-	/// <summary>
-	/// Reset the scrollbar position
-	/// </summary>
-	public void ResetScrollbar()
-	{
-		_previousScrollValue = 0;
-		ChangeVisibleBoats(0);
 	}
 
 	/// <summary>
@@ -675,7 +573,6 @@ public class TeamSelectionUI : MonoBehaviour
 		{
 			if (success)
 			{
-				ResetScrollbar();
 				GetResult(GameManagement.CurrentRaceSession == 1, GameManagement.PreviousSession, offset, _raceButton.GetComponentInChildren<Text>(), true);
 				//set-up next boat
 				CreateNewBoat();
@@ -712,7 +609,7 @@ public class TeamSelectionUI : MonoBehaviour
 			foreach (var crewMember in crewMembers)
 			{
 				//if this UI is for the positioned CrewMember, place and remove the CrewMemberUI and Position from their lists to remove their availability
-				if (crewMember.name == SplitName(member))
+				if (crewMember.name == member.SplitName())
 				{
 					position.RemoveCrew();
 					crewMember.Place(position);
@@ -722,10 +619,7 @@ public class TeamSelectionUI : MonoBehaviour
 				}
 			}
 		}
-		if (_positionsEmpty == 0)
-		{
-			EnableRacing();
-		}
+		PositionChange();
 	}
 
 	/// <summary>
@@ -759,8 +653,6 @@ public class TeamSelectionUI : MonoBehaviour
 		}
 		_currentCrewButtons.Clear();
 		_recruitButtons.Clear();
-		//reset empty positions
-		_positionsEmpty = GameManagement.PositionCount;
 		//recreate crew and repeat previous line-up
 		CreateCrew();
 		RepeatLineUp();
@@ -837,11 +729,15 @@ public class TeamSelectionUI : MonoBehaviour
 		}
 	}
 
-	private void UpdateSeasonProgress(int result = 0)
+	private void UpdateSeasonProgress(int result = 0, int raceNumber = -1)
 	{
+		if (raceNumber < 0)
+		{
+			raceNumber = GameManagement.RaceCount;
+		}
 		if (result > 0)
 		{
-			var progressBar = _ongoingResultContainer.transform.GetChild(GameManagement.RaceCount - 1);
+			var progressBar = _ongoingResultContainer.transform.GetChild(raceNumber - 1);
 			progressBar.GetComponent<Image>().fillAmount = 1;
 			var positionText = progressBar.GetComponentInChildren<Text>().gameObject.AddComponent<TextLocalization>();
 			positionText.Key = "POSITION_" + result;
@@ -849,7 +745,7 @@ public class TeamSelectionUI : MonoBehaviour
 		}
 		else
 		{
-			_ongoingResultContainer.transform.GetChild(GameManagement.RaceCount).GetComponent<Image>().fillAmount = (GameManagement.CurrentRaceSession - 1) / (float)GameManagement.RaceSessionLength;
+			_ongoingResultContainer.transform.GetChild(raceNumber).GetComponent<Image>().fillAmount = (GameManagement.CurrentRaceSession - 1) / (float)GameManagement.RaceSessionLength;
 		}
 	}
 
@@ -873,10 +769,12 @@ public class TeamSelectionUI : MonoBehaviour
 	/// </summary>
 	private void OnLanguageChange()
 	{
-		foreach (var position in _boatMain.GetComponentsInChildren<PositionUI>()) {
+		foreach (var position in _boatMain.GetComponentsInChildren<PositionUI>())
+		{
 			position.transform.FindText("Text").text = Localization.Get(position.Position.ToString());
 		}
 		_raceButton.GetComponentInChildren<Text>().text = Localization.GetAndFormat(GameManagement.IsRace ? "RACE_BUTTON_RACE" : "RACE_BUTTON_PRACTICE", true, GameManagement.CurrentRaceSession, GameManagement.RaceSessionLength - 1);
+		_raceButton.GetComponentInChildren<Text>().fontSize = GameManagement.IsRace ? 20 : 16;
 		_skipToRaceButton.GetComponentInChildren<Text>().text = Localization.Get("RACE_BUTTON_RACE");
 		if (_endRace.gameObject.activeSelf && GameManagement.RageMode)
 		{
@@ -904,22 +802,11 @@ public class TeamSelectionUI : MonoBehaviour
 	/// <summary>
 	/// Go to questionnaire state
 	/// </summary>
-	private void TriggerQuestionnaire()
+	private void TriggerState(State state)
 	{
 		if (GameManagement.RageMode)
 		{
-			UIManagement.StateManager.GoToState(State.Questionnaire);
-		}
-	}
-
-	/// <summary>
-	/// Go to feedback state
-	/// </summary>
-	private void TriggerFeedback()
-	{
-		if (GameManagement.RageMode)
-		{
-			UIManagement.StateManager.GoToState(State.Feedback);
+			UIManagement.StateManager.GoToState(state);
 		}
 	}
 }

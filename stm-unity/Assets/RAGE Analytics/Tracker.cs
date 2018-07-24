@@ -57,6 +57,10 @@ namespace RAGE.Analytics
 
 		void Awake()
 		{
+			if (TrackerAsset.Instance.Started)
+			{
+				Destroy(gameObject);
+			}
 			string domain = "";
 			int port = 80;
 			bool secure = false;

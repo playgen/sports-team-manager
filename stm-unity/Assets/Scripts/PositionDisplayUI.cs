@@ -109,7 +109,7 @@ public class PositionDisplayUI : MonoBehaviour
 		foreach (var member in positionMembers)
 		{
 			var positionHistory = Instantiate(_historyPrefab, _historyContainer.transform, false);
-			positionHistory.transform.FindText("Name").text = member.Key.FirstName[0] + "." + member.Key.LastName;
+			positionHistory.transform.FindText("Name").text = member.Key.FirstInitialLastName();
 			positionHistory.GetComponent<CrewMemberUI>().SetUp(false, member.Key.Current(), member.Key, _historyContainer.transform, TrackerTriggerSource.PositionPopUp);
 			positionHistory.GetComponent<AspectRatioFitter>().aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
 			var mood = member.Key.GetMood();

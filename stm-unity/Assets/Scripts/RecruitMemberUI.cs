@@ -90,8 +90,7 @@ public class RecruitMemberUI : MonoBehaviour
 			var thisRecruit = recruits[i];
 			_recruitUI[i].gameObject.Active(true);
 			//set-up displayed name
-			var formattedName = thisRecruit.LastName + ",\n" + thisRecruit.FirstName;
-			_recruitUI[i].FindText("Name").text = formattedName;
+			_recruitUI[i].FindText("Name").text = thisRecruit.SplitName();
 			//set-up avatar for this recruit
 			_recruitUI[i].GetComponentInChildren<AvatarDisplay>().SetAvatar(thisRecruit.Avatar, 0f);
 			//flip direction they are facing for every other recruit
