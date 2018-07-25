@@ -46,12 +46,12 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// <summary>
 	/// Bring in elements that need to be known to this object
 	/// </summary>
-	public void SetUp(bool usable, bool current, CrewMember crewMember, Transform parent, TrackerTriggerSource source = TrackerTriggerSource.TeamManagementScreen)
+	public void SetUp(bool usable, CrewMember crewMember, Transform parent, TrackerTriggerSource source = TrackerTriggerSource.TeamManagementScreen)
 	{
 		CrewMember = crewMember;
 		_defaultParent = parent;
 		Usable = usable;
-		Current = current;
+		Current = crewMember.Current();
 		_source = source;
 		_borderImage = GetComponent<Image>();
 		_backImage = transform.FindImage("AvatarIcon");
@@ -87,12 +87,15 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		sortText.text = _sortValue;
 	}
 
-	public void NotCurrent()
+	public void CurrentUpdate()
 	{
-		Current = false;
-		_backImage.color = Color.white;
-		_borderImage.color = Color.black;
-		_button.enabled = false;
+		if (Current && !CrewMember.Current())
+		{
+			Current = false;
+			_backImage.color = Color.white;
+			_borderImage.color = Color.black;
+			_button.enabled = false;
+		}
 	}
 
 	/// <summary>
