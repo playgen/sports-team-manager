@@ -108,14 +108,11 @@ public class PositionDisplayUI : MonoBehaviour
 		//for every CrewMember ever placed in this position, create a Position History object displaying their avatar and their number of appearences
 		foreach (var member in positionMembers)
 		{
-			var positionHistory = Instantiate(_historyPrefab, _historyContainer.transform, false);
-			positionHistory.transform.FindText("Name").text = member.Key.FirstInitialLastName();
-			positionHistory.GetComponent<CrewMemberUI>().SetUp(false, member.Key, _historyContainer.transform, TrackerTriggerSource.PositionPopUp);
-			positionHistory.GetComponent<AspectRatioFitter>().aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
 			var mood = member.Key.GetMood();
-			positionHistory.GetComponent<Image>().color = AvatarDisplay.MoodColor(mood);
-			positionHistory.GetComponentInChildren<AvatarDisplay>().SetAvatar(member.Key.Avatar, mood);
-			positionHistory.transform.FindText("Sort/Sort Text").text = member.Value.ToString();
+			var positionHistory = Instantiate(_historyPrefab, _historyContainer.transform, false);
+			positionHistory.GetComponent<CrewMemberUI>().SetUp(false, member.Key, _historyContainer.transform, mood, TrackerTriggerSource.PositionPopUp);
+			positionHistory.GetComponent<AspectRatioFitter>().aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
+			positionHistory.SetSortValue(member.Value.ToString());
 		}
 		OnLanguageChange();
 	}

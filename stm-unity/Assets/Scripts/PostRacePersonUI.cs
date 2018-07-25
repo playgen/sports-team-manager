@@ -79,12 +79,9 @@ public class PostRacePersonUI : MonoBehaviour
 			{
 				_avatarDisplay.UpdateMood(eventMember.Avatar, eventMember.GetMood());
 			}
-			foreach (var crewMember in UIManagement.CrewMemberUI)
+			foreach (var crewMember in UIManagement.TeamSelection.CrewMembers)
 			{
-				if (crewMember.Usable || crewMember.transform.parent.parent.name == "Viewport")
-				{
-					crewMember.GetComponentInChildren<AvatarDisplay>().UpdateMood(crewMember.CrewMember.Avatar, crewMember.CrewMember.GetMood());
-				}
+				crewMember.UpdateAvatar(crewMember.CrewMember.GetMood());
 			}
 		}
 	}

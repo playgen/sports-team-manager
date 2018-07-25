@@ -39,14 +39,14 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	public CrewMember CrewMember { get; private set; }
 	public bool Usable { get; private set; }
 	public bool Current { get; private set; }
-	private bool ShowEmotion => Usable || (transform.parent.name == "Crew Container" && transform.parent.parent.name == "Viewport");
+	private bool ShowEmotion => Usable || UIManagement.TeamSelection.CrewMembers.Contains(this);
 
 	private const float _clickedDistance = 15;
 
 	/// <summary>
 	/// Bring in elements that need to be known to this object
 	/// </summary>
-	public void SetUp(bool usable, CrewMember crewMember, Transform parent, TrackerTriggerSource source = TrackerTriggerSource.TeamManagementScreen)
+	public void SetUp(bool usable, CrewMember crewMember, Transform parent, int mood, TrackerTriggerSource source = TrackerTriggerSource.TeamManagementScreen)
 	{
 		CrewMember = crewMember;
 		_defaultParent = parent;
@@ -61,8 +61,10 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		_positionButton = transform.FindButton("Position");
 		_aspectFitter = GetComponent<AspectRatioFitter>();
 
+		transform.FindText("Name").text = CrewMember.FirstInitialLastName();
 		_backImage.color = Usable ? new Color(0, 1, 1) : Current ? new Color(0, 0.5f, 0.5f) : Color.white;
-		_borderImage.color = ShowEmotion ? AvatarDisplay.MoodColor(CrewMember.GetMood()) : Current ? Color.grey : Color.black;
+		_borderImage.color = ShowEmotion ? AvatarDisplay.MoodColor(mood) : Current ? Color.grey : Color.black;
+		UpdateAvatar(mood);
 		_button.enabled = Current;
 		_aspectFitter.aspectMode = Usable ? AspectRatioFitter.AspectMode.FitInParent : AspectRatioFitter.AspectMode.WidthControlsHeight;
 
@@ -95,6 +97,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			_backImage.color = Color.white;
 			_borderImage.color = Color.black;
 			_button.enabled = false;
+			_avatarDisplay.UpdateAvatar(CrewMember.Avatar);
 		}
 	}
 
@@ -182,6 +185,11 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 				EndDrag();
 			}
 		}
+	}
+
+	public void UpdateAvatar(int mood)
+	{
+		_avatarDisplay.SetAvatar(CrewMember.Avatar, mood);
 	}
 
 	public void ForcedMoodChange(string moodChange)
@@ -283,12 +291,11 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		{
 			_currentPlacement.RemoveCrew();
 		}
-		var currentPosition = positionUI.Position;
 		var currentPositionCrew = positionUI.CrewMemberUI;
 		var positionTransform = positionUI.RectTransform();
 		transform.SetParent(null, false);
 		//set size and position
-		CrewMember.Assign(currentPosition);
+		CrewMember.Assign(positionUI.Position);
 		positionUI.LinkCrew(this);
 		if (!swap)
 		{
@@ -309,13 +316,18 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		transform.position = positionTransform.position;
 		transform.RectTransform().anchoredPosition = Vector2.zero;
 		_currentPlacement = positionUI;
+		SetPosition(positionUI.Position);
 		//update current position button
-		_positionImage.enabled = true;
-		_positionImage.sprite = UIManagement.TeamSelection.RoleIcons[currentPosition.ToString()];
-		_positionButton.onClick.RemoveAllListeners();
-		_positionButton.onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(currentPosition, TrackerTriggerSource.CrewMemberPopUp.ToString()));
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name, CrewMember.Name);
 		SetSortValue(_sortValue);
+	}
+
+	public void SetPosition(Position position)
+	{
+		_positionImage.enabled = true;
+		_positionImage.sprite = UIManagement.TeamSelection.RoleIcons[position.ToString()];
+		_positionButton.onClick.RemoveAllListeners();
+		_positionButton.onClick.AddListener(() => UIManagement.PositionDisplay.SetUpDisplay(position, TrackerTriggerSource.TeamManagementScreen.ToString()));
 	}
 
 	/// <summary>

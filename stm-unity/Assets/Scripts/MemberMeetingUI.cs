@@ -80,7 +80,7 @@ public class MemberMeetingUI : MonoBehaviour
 			_opinionIconDict = _opinionIcons.ToDictionary(o => o.name.Replace("Icon_Box_", string.Empty), o => o);
 		}
 		_currentMember = crewMember;
-		EnsureVisible();
+		UIManagement.TeamSelection.EnsureVisible(_currentMember);
 		//make pop-up visible and firing warning not visible
 		gameObject.Active(true);
 		_fireWarningPopUp.Active(false);
@@ -234,23 +234,9 @@ public class MemberMeetingUI : MonoBehaviour
 			{ TrackerContextKey.SizeOfTeam, GameManagement.CrewCount }
 		}, questionType, AlternativeTracker.Alternative.Question));
 		UIManagement.TeamSelection.SortCrew();
-		EnsureVisible();
+		UIManagement.TeamSelection.EnsureVisible(_currentMember);
 		SUGARManager.GameData.Send("Meeting Question Directed At", _currentMember.Name);
 		SUGARManager.GameData.Send("Meeting Question Asked", questionType);
-	}
-
-	private void EnsureVisible()
-	{
-		//adjust the crew member scroll rect position to ensure this crew member is shown
-		var memberTransform = UIManagement.TeamSelection.CrewContainer.GetComponentsInChildren<CrewMemberUI>().First(c => c.CrewMember == _currentMember && !c.Usable).RectTransform();
-		if (!memberTransform.IsRectTransformVisible(memberTransform.parent.parent.RectTransform()))
-		{
-			UIManagement.TeamSelection.CrewContainerPaging();
-		}
-		if (!memberTransform.IsRectTransformVisible(memberTransform.parent.parent.RectTransform()))
-		{
-			UIManagement.TeamSelection.CrewContainerPaging(1);
-		}
 	}
 
 	/// <summary>
