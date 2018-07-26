@@ -48,6 +48,8 @@ public class AvatarDisplay : MonoBehaviour
 	private RectTransform _spriteParent;
 	private bool _isIcon;
 
+	private Avatar _avatar;
+
 	/// <summary>
 	/// Load all avatar sprites from resources.
 	/// </summary>
@@ -62,13 +64,13 @@ public class AvatarDisplay : MonoBehaviour
 	public void SetAvatar(Avatar avatar, float mood)
 	{
 		SetAvatar(avatar);
-		UpdateMood(avatar, mood);
+		UpdateMood(mood);
 	}
 
 	public void SetAvatar(Avatar avatar, AvatarMood mood)
 	{
 		SetAvatar(avatar);
-		UpdateMood(avatar, mood);
+		UpdateMood(mood);
 	}
 
 	/// <summary>
@@ -76,6 +78,7 @@ public class AvatarDisplay : MonoBehaviour
 	/// </summary>
 	private void SetAvatar(Avatar avatar)
 	{
+		_avatar = avatar;
 		if (!_body)
 		{
 			_spriteParent = transform.FindRect(_avatarIconPrefix);
@@ -148,11 +151,11 @@ public class AvatarDisplay : MonoBehaviour
 
 		if (_isIcon)
 		{
-			SetIconProperties(avatar);	
+			SetIconProperties();	
 		}
 		else
 		{
-			SetFullBodyProperties(avatar);
+			SetFullBodyProperties();
 		}
 	}
 
@@ -196,53 +199,52 @@ public class AvatarDisplay : MonoBehaviour
 	/// <summary>
 	/// update the displayed avatar to currently stored values (usually used to switch between causal and non-causal outfits)
 	/// </summary>
-	public void UpdateAvatar(Avatar avatar)
+	public void UpdateAvatar()
 	{
-		SetAvatar(avatar, _lastMood);
+		SetAvatar(_avatar, _lastMood);
 	}
 
 	/// <summary>
 	/// update the avatar's facial expression based on their agreement with the statement passed to them
 	/// </summary>
-	public void UpdateMood(Avatar avatar, string reaction)
+	public void UpdateMood(string reaction)
 	{
-		UpdateMood(avatar, (AvatarMood)Enum.Parse(typeof(AvatarMood), reaction));
+		UpdateMood((AvatarMood)Enum.Parse(typeof(AvatarMood), reaction));
 	}
 
 	/// <summary>
 	/// update the avatar's facial expression based on their agreement with the statement passed to them
 	/// </summary>
-	public void UpdateMood(Avatar avatar, float mood)
+	public void UpdateMood(float mood)
 	{
-		var moodStr = GetMood(mood);
-		UpdateMood(avatar, moodStr);
+		UpdateMood(GetMood(mood));
 	}
 
 	/// <summary>
 	/// update the avatar's facial expression based on the mood value provided
 	/// </summary>
-	public void UpdateMood(Avatar avatar, AvatarMood mood)
+	public void UpdateMood(AvatarMood mood)
 	{
 		var moodStr = mood.ToString();
 
-		if (avatarSprites.ContainsKey($"{avatar.EyeType}_Brown_{moodStr}"))
+		if (avatarSprites.ContainsKey($"{_avatar.EyeType}_Brown_{moodStr}"))
 		{
-			_eyes.sprite = avatarSprites[$"{avatar.EyeType}_Brown_{moodStr}"];
+			_eyes.sprite = avatarSprites[$"{_avatar.EyeType}_Brown_{moodStr}"];
 		}
-		else if (avatarSprites.ContainsKey($"{avatar.EyeType}_{moodStr}"))
+		else if (avatarSprites.ContainsKey($"{_avatar.EyeType}_{moodStr}"))
 		{
-			_eyes.sprite = avatarSprites[$"{avatar.EyeType}_{moodStr}"];
+			_eyes.sprite = avatarSprites[$"{_avatar.EyeType}_{moodStr}"];
 		}
 		else
 		{
 			// No disagree eyes, so default to neutral
-			_eyes.sprite = avatarSprites[$"{avatar.EyeType}_Brown_Neutral"];
+			_eyes.sprite = avatarSprites[$"{_avatar.EyeType}_Brown_Neutral"];
 		}
 
 		_eyePupils.sprite = _eyes.sprite.name.Contains("Brown") ? avatarSprites.ContainsKey(_eyes.sprite.name.Replace("Brown", "Pupil")) ? avatarSprites[_eyes.sprite.name.Replace("Brown", "Pupil")] : null : null;
-		_eyebrow.sprite = avatarSprites[$"{avatar.EyebrowType}_{moodStr}"];
-		_mouth.sprite = avatarSprites[$"{avatar.MouthType}_{moodStr}"];
-		_teeth.sprite = avatarSprites.ContainsKey($"{avatar.TeethType}_{moodStr}") ? avatarSprites[$"{avatar.TeethType}_{moodStr}"] : null;
+		_eyebrow.sprite = avatarSprites[$"{_avatar.EyebrowType}_{moodStr}"];
+		_mouth.sprite = avatarSprites[$"{_avatar.MouthType}_{moodStr}"];
+		_teeth.sprite = avatarSprites.ContainsKey($"{_avatar.TeethType}_{moodStr}") ? avatarSprites[$"{_avatar.TeethType}_{moodStr}"] : null;
 		_eyePupils.enabled = _eyePupils.sprite != null;
 		_teeth.enabled = _teeth.sprite != null;
 		_lastMood = mood;
@@ -259,19 +261,19 @@ public class AvatarDisplay : MonoBehaviour
 	/// <summary>
 	/// Setup avatar properties that are only common in icons
 	/// </summary>
-	private void SetIconProperties(Avatar a)
+	private void SetIconProperties()
 	{
 		if (_spriteParent)
 		{
-			_spriteParent.offsetMax = a.IsMale ? new Vector2(_spriteParent.offsetMax.x, -1f * (_spriteParent.rect.height / _maleOffsetPercent)) : new Vector2(_spriteParent.offsetMax.x, 0);
+			_spriteParent.offsetMax = _avatar.IsMale ? new Vector2(_spriteParent.offsetMax.x, -1f * (_spriteParent.rect.height / _maleOffsetPercent)) : new Vector2(_spriteParent.offsetMax.x, 0);
 		}
 	}
 
 	/// <summary>
 	/// Setup avatar properties that are only common in full body avatars
 	/// </summary>
-	private void SetFullBodyProperties(Avatar a)
+	private void SetFullBodyProperties()
 	{
-		_spriteParent.localScale = new Vector3(a.Weight, a.Height, 1f);
+		_spriteParent.localScale = new Vector3(_avatar.Weight, _avatar.Height, 1f);
 	}
 }

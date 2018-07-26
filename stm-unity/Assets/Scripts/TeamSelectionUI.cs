@@ -61,6 +61,7 @@ public class TeamSelectionUI : MonoBehaviour
 	private Dropdown _crewSort;
 	[SerializeField]
 	private Icon[] _mistakeIcons;
+	private Dictionary<string, Sprite> _mistakeIconDict = new Dictionary<string, Sprite>();
 	[SerializeField]
 	private Icon[] _roleIcons;
 	public Dictionary<string, Sprite> RoleIcons => _roleIcons.ToDictionary(r => r.Name, r => r.Image);
@@ -101,6 +102,10 @@ public class TeamSelectionUI : MonoBehaviour
 	/// </summary>
 	private void OnEnable()
 	{
+		if (_mistakeIconDict.Count != _mistakeIcons.Length)
+		{
+			_mistakeIconDict = _mistakeIcons.ToDictionary(o => o.Name, o => o.Image);
+		}
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
 		UIManagement.PostRaceEvents.ToList().ForEach(e => e.Display());
@@ -398,7 +403,7 @@ public class TeamSelectionUI : MonoBehaviour
 
 	public void CrewContainerPaging(int page = 0)
 	{
-		var multiplePages = _crewContainer.transform.RectTransform().rect.width > _crewContainer.transform.parent.RectTransform().rect.width;
+		var multiplePages = !_crewContainer.transform.RectTransform().IsRectTransformVisible(_crewContainer.transform.parent.RectTransform());
 		_crewContainer.GetComponentInParent<ScrollRect>().horizontalNormalizedPosition = multiplePages ? page : 0;
 		_crewContainer.transform.parent.RectTransform().anchorMin = multiplePages ? new Vector2(page * 0.05f, 0) : new Vector2(0, 0);
 		_crewContainer.transform.parent.RectTransform().anchorMax = multiplePages ? new Vector2(0.95f + (page * 0.05f), 1) : new Vector2(1, 1);
@@ -474,7 +479,7 @@ public class TeamSelectionUI : MonoBehaviour
 			}
 			mistakeImage.gameObject.Active(true);
 			//set image based on mistake name
-			var mistakeIcon = _mistakeIcons.First(mo => mo.Name == mistakes[i]).Image;
+			var mistakeIcon = _mistakeIconDict[mistakes[i]];
 			mistakeImage.GetComponent<Image>().sprite = mistakeIcon;
 			mistakeImage.GetComponent<Image>().color = mistakes[i] != "Hidden" ? new UnityEngine.Color((i + 1) * 0.33f, (i + 1) * 0.33f, 0.875f + (i * 0.125f)) : UnityEngine.Color.white;
 			//add spaces between words where needed

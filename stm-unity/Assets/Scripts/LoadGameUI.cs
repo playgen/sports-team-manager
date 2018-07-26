@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using PlayGen.Unity.Utilities.Extensions;
 using UnityEngine;
@@ -102,7 +101,7 @@ public class LoadGameUI : MonoBehaviour
 			_errorText.text = string.Empty;
 			//check if the game exists
 			Loading.Start();
-			GameManagement.GameManager.LoadGameTask(Path.Combine(Application.persistentDataPath, "GameSaves"), _selectedName, success =>
+			GameManagement.GameManager.LoadGameTask(GameManagement.GameSavePath, _selectedName, success =>
 			{
 				if (success)
 				{

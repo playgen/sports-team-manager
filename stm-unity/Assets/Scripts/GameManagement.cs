@@ -40,7 +40,9 @@ public static class GameManagement
 
 	public static bool DemoMode => PlatformSettings.DemoMode;
 
-	public static List<string> GameNames => GameManager.GetGameNames(Path.Combine(Application.persistentDataPath, "GameSaves"));
+	public static string GameSavePath => Path.Combine(Application.persistentDataPath, "GameSaves");
+
+	public static List<string> GameNames => GameManager.GetGameNames(GameSavePath);
 
 	public static int GameCount => GameNames.Count;
 

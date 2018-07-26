@@ -1,5 +1,4 @@
-﻿using System.IO;
-using PlayGen.SUGAR.Unity;
+﻿using PlayGen.SUGAR.Unity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -46,7 +45,7 @@ public class UIStateManager : MonoBehaviour
 		if (_reload)
 		{
 			Loading.Start();
-			GameManagement.GameManager.LoadGameTask(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.TeamName, success =>
+			GameManagement.GameManager.LoadGameTask(GameManagement.GameSavePath, GameManagement.TeamName, success =>
 			{
 				if (success)
 				{

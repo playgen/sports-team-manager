@@ -36,13 +36,18 @@ public class RecruitMemberUI : MonoBehaviour
 	private Text _allowanceText;
 	[SerializeField]
 	private Icon[] _opinionSprites;
+	private Dictionary<string, Sprite> _opinionSpriteDict = new Dictionary<string, Sprite>();
 
 	private string _lastQuestion;
-	private Dictionary<CrewMember, string> _lastAnswers;
+	private Dictionary<string, string> _lastAnswers;
 	private string _currentSelected;
 
 	private void OnEnable()
 	{
+		if (_opinionSpriteDict.Count != _opinionSprites.Length)
+		{
+			_opinionSpriteDict = _opinionSprites.ToDictionary(o => o.Name, o => o.Image);
+		}
 		var history = GameManagement.ReverseLineUpHistory;
 		var sessionsSinceLastChange = Mathf.Max(0, history.FindIndex(b => b.Type != GameManagement.BoatType));
 		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentPopUpOpened", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
@@ -133,7 +138,7 @@ public class RecruitMemberUI : MonoBehaviour
 		var skill = (Skill)Enum.Parse(typeof(Skill), skillName);
 		_lastQuestion = skillName;
 		var replies = GameManagement.GameManager.SendRecruitmentEvent(skill);
-		_lastAnswers = replies;
+		_lastAnswers = replies.ToDictionary(r => r.Key.Name, r => r.Value);
 		OnLanguageChange();
 		CostCheck();
 		TrackerEventSender.SendEvent(new TraceEvent("RecruitmentQuestionAsked", TrackerAsset.Verb.Selected, new Dictionary<TrackerContextKey, object>
@@ -261,13 +266,14 @@ public class RecruitMemberUI : MonoBehaviour
 		{
 			foreach (var recruit in _recruitUI)
 			{
-				var reply = _lastAnswers.FirstOrDefault(r => r.Key.Name == recruit.name);
-				if (reply.Key != null)
+				string reply;
+				_lastAnswers.TryGetValue(recruit.name, out reply);
+				if (reply != null)
 				{
-					recruit.transform.FindText("Dialogue Box/Dialogue").text = Localization.Get(reply.Value);
+					recruit.transform.FindText("Dialogue Box/Dialogue").text = Localization.Get(reply);
 					recruit.transform.FindImage("Dialogue Box/Image").enabled = true;
-					recruit.transform.FindImage("Dialogue Box/Image").sprite = _opinionSprites.FirstOrDefault(o => o.Name == reply.Value)?.Image;
-					recruit.transform.FindComponentInChildren<AvatarDisplay>("Image").UpdateMood(reply.Key.Avatar, reply.Value);
+					recruit.transform.FindImage("Dialogue Box/Image").sprite = _opinionSpriteDict[reply];
+					recruit.transform.FindComponentInChildren<AvatarDisplay>("Image").UpdateMood(reply);
 				}
 			}
 		}

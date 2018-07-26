@@ -32,6 +32,7 @@ public class FeedbackUI : MonoBehaviour
 	private GameObject _descriptionPopUp;
 	[SerializeField]
 	private VideoClip[] _videos;
+	private Dictionary<string, VideoClip> _videoDict = new Dictionary<string, VideoClip>();
 	[SerializeField]
 	private Text _finalResultText;
 
@@ -39,6 +40,10 @@ public class FeedbackUI : MonoBehaviour
 
 	private void OnEnable()
 	{
+		if (_videoDict.Count != _videos.Length)
+		{
+			_videoDict = _videos.ToDictionary(v => v.name, v => v, StringComparer.OrdinalIgnoreCase);
+		}
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
 		//reset displayed UI
@@ -79,7 +84,7 @@ public class FeedbackUI : MonoBehaviour
 		var popUp = _descriptionPopUp.transform.Find("Description Pop-Up");
 		popUp.FindComponent<TextLocalization>("Header").Key = descriptionType;
 		popUp.FindComponent<TextLocalization>("Text").Key = descriptionType + "_Description";
-		popUp.FindComponent<VideoPlayerUI>("Video Display").SetClip(_videos.First(v => string.Equals(v.name, descriptionType, StringComparison.CurrentCultureIgnoreCase)));
+		popUp.FindComponent<VideoPlayerUI>("Video Display").SetClip(_videoDict[descriptionType]);
 		_descriptionPopUp.Active(true);
 		popUp.FindObject("Video Display").Active(false);
 	}

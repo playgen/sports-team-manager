@@ -78,7 +78,7 @@ public class PostRacePersonUI : MonoBehaviour
 			//update displayed avatar moods
 			if (eventMember != null)
 			{
-				_avatarDisplay.UpdateMood(eventMember.Avatar, eventMember.GetMood());
+				_avatarDisplay.UpdateMood(eventMember.GetMood());
 			}
 			foreach (var crewMember in UIManagement.TeamSelection.CrewMembers)
 			{

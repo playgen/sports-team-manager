@@ -92,7 +92,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 			_backImage.color = Color.white;
 			_borderImage.color = Color.black;
 			_button.enabled = false;
-			_avatarDisplay.UpdateAvatar(CrewMember.Avatar);
+			_avatarDisplay.UpdateAvatar();
 		}
 	}
 
@@ -203,7 +203,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 				mood = AvatarDisplay.GetMood(CrewMember.GetMood());
 				break;
 		}
-		_avatarDisplay.UpdateMood(CrewMember.Avatar, mood);
+		_avatarDisplay.UpdateMood(mood);
 		_borderImage.color = ShowEmotion ? AvatarDisplay.MoodColor(mood) : Current ? Color.grey : Color.black;
 	}
 

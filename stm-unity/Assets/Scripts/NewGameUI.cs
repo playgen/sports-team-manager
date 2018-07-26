@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -142,7 +141,7 @@ public class NewGameUI : MonoBehaviour
 			_managerName.transform.FindObject("Required Warning").Active(true);
 			return;
 		}
-		GameManagement.GameManager.CheckIfGameExistsTask(Path.Combine(Application.persistentDataPath, "GameSaves"), _boatName.text, (completed, exists) =>
+		GameManagement.GameManager.CheckIfGameExistsTask(GameManagement.GameSavePath, _boatName.text, (completed, exists) =>
 		{
 			if (completed)
 			{
@@ -170,7 +169,7 @@ public class NewGameUI : MonoBehaviour
 		_managerName.text = _managerName.text.TrimEnd();
 		var language = string.IsNullOrEmpty(Localization.SelectedLanguage.Parent.Name) ? Localization.SelectedLanguage.EnglishName : Localization.SelectedLanguage.Parent.EnglishName;
 		Loading.Start();
-		GameManagement.GameManager.NewGameTask(Path.Combine(Application.persistentDataPath, "GameSaves"), _boatName.text, colorsPri, colorsSec, _managerName.text, _tutorialToggle.isOn, language, success =>
+		GameManagement.GameManager.NewGameTask(GameManagement.GameSavePath, _boatName.text, colorsPri, colorsSec, _managerName.text, _tutorialToggle.isOn, language, success =>
 		{
 			if (success)
 			{

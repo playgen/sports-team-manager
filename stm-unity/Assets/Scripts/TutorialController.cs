@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using SimpleJSON;
 using UnityEngine;
@@ -157,7 +156,7 @@ public class TutorialController : MonoBehaviour
 		var colorsPri = GameManagement.Team.TeamColorsPrimary;
 		var colorsSec = GameManagement.Team.TeamColorsSecondary;
 		Loading.Start();
-		GameManagement.GameManager.NewGameTask(Path.Combine(Application.persistentDataPath, "GameSaves"), GameManagement.TeamName, colorsPri, colorsSec, GameManagement.ManagerName, false, language, success =>
+		GameManagement.GameManager.NewGameTask(GameManagement.GameSavePath, GameManagement.TeamName, colorsPri, colorsSec, GameManagement.ManagerName, false, language, success =>
 		{
 			Loading.Stop();
 			if (success)
