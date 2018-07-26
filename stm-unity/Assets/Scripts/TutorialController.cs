@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using SimpleJSON;
 using UnityEngine;
@@ -8,7 +7,6 @@ using System.Linq;
 using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.Loading;
 using PlayGen.Unity.Utilities.Localization;
-
 using TrackerAssetPackage;
 
 /// <summary>
@@ -23,6 +21,7 @@ public class TutorialController : MonoBehaviour
 
 	[SerializeField]
 	private List<TutorialObject> _tutorialSections;
+	[SerializeField]
 	private TutorialSectionUI _tutorialDisplay;
 	public int SectionCount => _tutorialSections.Count;
 
@@ -35,12 +34,8 @@ public class TutorialController : MonoBehaviour
 		var textAsset = (TextAsset)Resources.Load("Tutorial/Tutorial");
 		var parsedAsset = JSON.Parse(textAsset.text);
 		_tutorialSections = new List<TutorialObject>();
-		var textDict = new Dictionary<string, List<string>>();
 		Localization.Initialize();
-		foreach (var langName in Localization.Languages)
-		{
-			textDict.Add(langName.Name, new List<string>());
-		}
+		var textDict = Localization.Languages.ToDictionary(langName => langName.Name, langName => new List<string>());
 		var objectNames = new List<string>();
 		var blacklistNames = new List<List<string>>();
 		for (var i = 0; i < parsedAsset.Count; i++)
@@ -80,7 +75,6 @@ public class TutorialController : MonoBehaviour
 
 	private void Start()
 	{
-		_tutorialDisplay = GetComponentInChildren<TutorialSectionUI>(true);
 		_tutorialDisplay.gameObject.Active(GameManagement.ShowTutorial);
 		gameObject.Active(GameManagement.ShowTutorial);
 		_tutorialQuitButton.Active(GameManagement.ShowTutorial);

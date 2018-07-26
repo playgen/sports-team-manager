@@ -2,9 +2,7 @@
 using PlayGen.Unity.Utilities.Localization;
 using System.Collections.Generic;
 using System.Linq;
-
 using PlayGen.Unity.Utilities.Extensions;
-
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;

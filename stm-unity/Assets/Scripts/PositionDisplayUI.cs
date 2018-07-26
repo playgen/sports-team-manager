@@ -6,7 +6,6 @@ using PlayGen.SUGAR.Unity;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
-
 using TrackerAssetPackage;
 
 /// <summary>
@@ -108,7 +107,7 @@ public class PositionDisplayUI : MonoBehaviour
 		{
 			var mood = member.Key.GetMood();
 			var positionHistory = Instantiate(_historyPrefab, _historyContainer.transform, false);
-			positionHistory.GetComponent<CrewMemberUI>().SetUp(false, member.Key, _historyContainer.transform, mood, TrackerTriggerSource.PositionPopUp);
+			positionHistory.SetUp(false, member.Key, mood, TrackerTriggerSource.PositionPopUp);
 			positionHistory.GetComponent<AspectRatioFitter>().aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
 			positionHistory.SetSortValue(member.Value.ToString());
 		}

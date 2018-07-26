@@ -10325,6 +10325,7 @@ MonoBehaviour:
     BlacklistButtons:
     - List: []
     CustomAttributes: []
+  _tutorialDisplay: {fileID: 1782845105}
 --- !u!1 &303733851
 GameObject:
   m_ObjectHideFlags: 0
@@ -23922,6 +23923,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f7be6d800fb5f4aa9357d706577851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _addedText: {fileID: 1514036747}
+  _removedText: {fileID: 723494373}
 --- !u!1 &811391326
 GameObject:
   m_ObjectHideFlags: 0
@@ -32752,6 +32755,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _postRaceCrewPrefab: {fileID: 1000011329384166, guid: 395ae411659436545aa216ec076e029b,
     type: 2}
+  _crewTransform: {fileID: 612899836}
+  _resultText: {fileID: 872824511}
+  _outroText: {fileID: 829980541}
+  _questionnaireButton: {fileID: 1701749210}
+  _okButton: {fileID: 1741969411}
 --- !u!1 &1176562619
 GameObject:
   m_ObjectHideFlags: 0

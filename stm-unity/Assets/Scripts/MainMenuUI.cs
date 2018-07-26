@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
-
 using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.Text;
-
 using RAGE.EvaluationAsset;
-
 using UnityEngine;
 using UnityEngine.UI;
 

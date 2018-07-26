@@ -23,14 +23,7 @@ public class ReverseRaycastTarget : MonoBehaviour, ICanvasRaycastFilter
 	/// </summary>
 	public void UnblockWhitelisted()
 	{
-		var whitelisted = new List<RectTransform>();
-		foreach (var trans in BlacklistRect)
-		{
-			if (MaskRect.Contains(trans))
-			{
-				whitelisted.Add(trans);
-			}
-		}
+		var whitelisted = BlacklistRect.Where(trans => MaskRect.Contains(trans)).ToList();
 		foreach (var trans in whitelisted)
 		{
 			BlacklistRect.Remove(trans);

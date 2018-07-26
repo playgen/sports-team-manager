@@ -1,16 +1,24 @@
 ﻿using System.Collections.Generic;
-
 using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
-
 using TrackerAssetPackage;
-
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CupResultUI : MonoBehaviour
 {
 	[SerializeField]
 	private GameObject _postRaceCrewPrefab;
+	[SerializeField]
+	private Transform _crewTransform;
+	[SerializeField]
+	private Text _resultText;
+	[SerializeField]
+	private GameObject _outroText;
+	[SerializeField]
+	private GameObject _questionnaireButton;
+	[SerializeField]
+	private GameObject _okButton;
 	private int _cupPosition;
 
 	private void OnEnable()
@@ -39,9 +47,7 @@ public class CupResultUI : MonoBehaviour
 			transform.EnableBlocker(() => Close(TrackerTriggerSource.PopUpBlocker.ToString()));
 		}
 
-		var crewTransform = transform.Find("Crew");
-
-		foreach (Transform child in crewTransform)
+		foreach (Transform child in _crewTransform)
 		{
 			Destroy(child.gameObject);
 		}
@@ -50,8 +56,7 @@ public class CupResultUI : MonoBehaviour
 		var crewCount = 0;
 		foreach (var crewMember in GameManagement.CrewMemberList)
 		{
-			var memberObject = Instantiate(_postRaceCrewPrefab);
-			memberObject.transform.SetParent(crewTransform, false);
+			var memberObject = Instantiate(_postRaceCrewPrefab, _crewTransform, false);
 			memberObject.name = crewMember.Name;
 			memberObject.transform.FindComponentInChildren<AvatarDisplay>("Avatar").SetAvatar(crewMember.Avatar, -(_cupPosition - 3) * 2);
 			memberObject.transform.FindImage("Position").enabled = false;
@@ -62,17 +67,14 @@ public class CupResultUI : MonoBehaviour
 			crewCount++;
 			memberObject.transform.SetAsLastSibling();
 		}
-		transform.FindText("Result").text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, GameManagement.TeamName, finalPositionText);
+		_resultText.text = Localization.GetAndFormat("RACE_RESULT_POSITION", false, GameManagement.TeamName, finalPositionText);
 		TrackerEventSender.SendEvent(new TraceEvent("CupResultPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 		{
 			{ TrackerContextKey.CupFinishingPosition, _cupPosition }
 		}, AccessibleTracker.Accessible.Screen));
-		if (!GameManagement.RageMode)
-		{
-			transform.FindText("Outro").text = "Thanks for playing!";
-		}
-		transform.FindObject("Questionnaire").Active(GameManagement.RageMode);
-		transform.FindObject("OK").Active(!GameManagement.RageMode);
+		_outroText.Active(GameManagement.RageMode);
+		_questionnaireButton.Active(GameManagement.RageMode);
+		_okButton.Active(!GameManagement.RageMode);
 	}
 
 	/// <summary>

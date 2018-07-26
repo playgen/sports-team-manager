@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
-using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Localization;
-
 using TrackerAssetPackage;
-
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BoatPromotionUI : MonoBehaviour
 {
+	[SerializeField]
+	private Text _addedText;
+	[SerializeField]
+	private Text _removedText;
+
 	private void OnEnable()
 	{
 		Localization.LanguageChange += OnLanguageChange;
@@ -35,14 +36,12 @@ public class BoatPromotionUI : MonoBehaviour
 			var newPos = GameManagement.Positions;
 			gameObject.Active(true);
 			transform.EnableBlocker(() => Close(TrackerTriggerSource.PopUpBlocker.ToString()));
-			var addedText = transform.FindText("Added List");
-			var removedText = transform.FindText("Removed List");
 			var newPositions = newPos.Where(n => !oldPos.Contains(n)).Select(n => Localization.Get(n.ToString())).ToArray();
 			var oldPositions = oldPos.Where(o => !newPos.Contains(o)).Select(o => Localization.Get(o.ToString())).ToArray();
 			var newList = string.Join("\n", newPositions);
 			var oldList = string.Join("\n", oldPositions);
-			addedText.text = newList;
-			removedText.text = oldList;
+			_addedText.text = newList;
+			_removedText.text = oldList;
 			TrackerEventSender.SendEvent(new TraceEvent("PromotionPopUpDisplayed", TrackerAsset.Verb.Accessed, new Dictionary<TrackerContextKey, object>
 			{
 				{ TrackerContextKey.BoatLayout, GameManagement.PositionString }

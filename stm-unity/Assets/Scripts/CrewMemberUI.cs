@@ -6,11 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using PlayGen.SUGAR.Unity;
+using PlayGen.Unity.Utilities.Extensions;
+using TrackerAssetPackage;
 
 using Color = UnityEngine.Color;
-using PlayGen.Unity.Utilities.Extensions;
-
-using TrackerAssetPackage;
 
 /// <summary>
 /// Contains all logic related to CrewMember prefabs
@@ -34,6 +33,9 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	private AvatarDisplay _avatarDisplay;
 	private Image _positionImage;
 	private Button _positionButton;
+	private Text _nameText;
+	private Image _sortImage;
+	private Text _sortText;
 	private AspectRatioFitter _aspectFitter;
 
 	public CrewMember CrewMember { get; private set; }
@@ -46,47 +48,40 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	/// <summary>
 	/// Bring in elements that need to be known to this object
 	/// </summary>
-	public void SetUp(bool usable, CrewMember crewMember, Transform parent, int mood, TrackerTriggerSource source = TrackerTriggerSource.TeamManagementScreen)
+	public void SetUp(bool usable, CrewMember crewMember, int mood, TrackerTriggerSource source = TrackerTriggerSource.TeamManagementScreen)
 	{
-		CrewMember = crewMember;
-		_defaultParent = parent;
-		Usable = usable;
-		Current = crewMember.Current();
-		_source = source;
 		_borderImage = GetComponent<Image>();
 		_backImage = transform.FindImage("AvatarIcon");
 		_button = GetComponent<Button>();
 		_avatarDisplay = GetComponentInChildren<AvatarDisplay>();
 		_positionImage = transform.FindImage("Position");
 		_positionButton = transform.FindButton("Position");
+		_nameText = transform.FindText("Name");
+		_sortImage = transform.FindImage("Sort");
+		_sortText = transform.FindText("Sort/Sort Text");
 		_aspectFitter = GetComponent<AspectRatioFitter>();
 
-		transform.FindText("Name").text = CrewMember.FirstInitialLastName();
+		CrewMember = crewMember;
+		Current = crewMember.Current();
+		Usable = usable;
+		_source = source;
+		_defaultParent = transform.parent;
+		_nameText.text = CrewMember.FirstInitialLastName();
 		_backImage.color = Usable ? new Color(0, 1, 1) : Current ? new Color(0, 0.5f, 0.5f) : Color.white;
 		_borderImage.color = ShowEmotion ? AvatarDisplay.MoodColor(mood) : Current ? Color.grey : Color.black;
 		UpdateAvatar(mood);
-		_button.enabled = Current;
+		_button.enabled = Current && GameManagement.SeasonOngoing;
+		_positionButton.enabled = GameManagement.SeasonOngoing;
 		_aspectFitter.aspectMode = Usable ? AspectRatioFitter.AspectMode.FitInParent : AspectRatioFitter.AspectMode.WidthControlsHeight;
-
-		if (!GameManagement.SeasonOngoing)
-		{
-			foreach (var button in GetComponentsInChildren<Button>())
-			{
-				button.enabled = false;
-			}
-		}
 	}
 
 	public void SetSortValue(string value)
 	{
 		_sortValue = value;
 		var isEnabled = !string.IsNullOrEmpty(_sortValue) && _currentPlacement == null;
-		var sortImage = transform.FindImage("Sort");
-		var sortText = transform.FindText("Sort/Sort Text");
-
-		sortImage.enabled = isEnabled;
-		sortText.enabled = isEnabled;
-		sortText.text = _sortValue;
+		_sortImage.enabled = isEnabled;
+		_sortText.enabled = isEnabled;
+		_sortText.text = _sortValue;
 	}
 
 	public void CurrentUpdate()

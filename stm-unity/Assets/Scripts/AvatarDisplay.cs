@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using PlayGen.Unity.Utilities.Extensions;
-
 using UnityEngine;
 using UnityEngine.UI;
 using Avatar = PlayGen.RAGE.SportsTeamManager.Simulation.Avatar;
@@ -28,8 +27,9 @@ public class AvatarDisplay : MonoBehaviour
 	private static readonly Color _veryBad = Color.red;
 	private const byte _eyebrowAlpha = 128;
 	private const float _maleOffsetPercent = 15.5f;
-	private readonly string _avatarPrefix = "AvatarSprites";
-	private string _avatarIconPrefix => "IconMask/" + _avatarPrefix;
+
+	private const string _avatarPrefix = "AvatarSprites";
+	private const string _avatarIconPrefix = "IconMask/" + _avatarPrefix;
 
 	private static Dictionary<string, Sprite> avatarSprites;
 	private AvatarMood _lastMood;

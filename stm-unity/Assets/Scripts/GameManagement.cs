@@ -279,11 +279,7 @@ public static class GameManagement
 
 		while (!finalPositionLocked && finalPosition < 10)
 		{
-			var otherTeamTotal = 0;
-			foreach (var r in racePositions)
-			{
-				otherTeamTotal += (finalPosition < r ? finalPosition : finalPosition + 1);
-			}
+			var otherTeamTotal = racePositions.Sum(r => finalPosition < r ? finalPosition : finalPosition + 1);
 			if (otherTeamTotal < totalScore)
 			{
 				finalPosition++;

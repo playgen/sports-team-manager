@@ -9,7 +9,6 @@ using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Extensions;
-
 using TrackerAssetPackage;
 
 /// <summary>
@@ -359,7 +358,7 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	private void FeedbackHoverOver(string text = "")
 	{
-		_fireButton.transform.GetComponent<HoverObject>().SetHoverText(text);
+		_fireButton.GetComponent<HoverObject>().SetHoverText(text);
 	}
 
 	/// <summary>

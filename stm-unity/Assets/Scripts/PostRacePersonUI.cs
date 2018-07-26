@@ -5,6 +5,7 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using UnityEngine.UI;
 using System.Linq;
 using System.Text.RegularExpressions;
+using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 
 /// <summary>
@@ -40,7 +41,7 @@ public class PostRacePersonUI : MonoBehaviour
 			_dialogueText.text = Localization.GetAndFormat(current.Dialogue.Utterance, false, subjects);
 		}
 		_avatarDisplay.SetAvatar(current.CrewMember.Avatar, current.CrewMember.GetMood());
-		_avatarDisplay.transform.parent.GetComponent<Image>().color = AvatarDisplay.MoodColor(current.CrewMember.GetMood());
+		_avatarDisplay.Parent().GetComponent<Image>().color = AvatarDisplay.MoodColor(current.CrewMember.GetMood());
 		CurrentCrewMember = current.CrewMember;
 		_nameText.text = current.CrewMember.Name;
 	}

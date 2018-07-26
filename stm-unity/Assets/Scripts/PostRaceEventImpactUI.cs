@@ -1,16 +1,12 @@
 ﻿using System.Collections.Generic;
 using PlayGen.Unity.Utilities.Localization;
-
 using UnityEngine;
 using System.Linq;
-
 using UnityEngine.UI;
 using System;
 using System.Text.RegularExpressions;
-
 using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Reflection;
-
 using TrackerAssetPackage;
 
 public class PostRaceEventImpactUI : MonoBehaviour
@@ -44,11 +40,7 @@ public class PostRaceEventImpactUI : MonoBehaviour
 		{
 			foreach (var impact in _impacts)
 			{
-				var subList = new List<string>();
-				foreach (var sub in impact.Value)
-				{
-					subList.Add(Regex.Replace(sub, @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0").Replace("  ", " "));
-				}
+				var subList = impact.Value.Select(sub => Regex.Replace(sub, @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0").Replace("  ", " ")).ToList();
 				if (impact.Key.Contains(PostRaceEventImpact.MoodChange.ToString()))
 				{
 					_impactText.text += (_impactText.text.Length > 0 ? "\n\n" : string.Empty) + Localization.GetAndFormat("IMPACT_MOOD_" + (int.Parse(Regex.Match(impact.Key, @"-?\d+").Value) > 0 ? "BETTER" : "WORSE"), false, subList.ToArray());

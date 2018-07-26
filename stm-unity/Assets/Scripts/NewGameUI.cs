@@ -6,10 +6,8 @@ using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Loading;
 using PlayGen.Unity.Utilities.Localization;
-
 using UnityEngine.UI.Extensions.ColorPicker;
 using PlayGen.Unity.Utilities.Extensions;
-
 using TrackerAssetPackage;
 
 /// <summary>

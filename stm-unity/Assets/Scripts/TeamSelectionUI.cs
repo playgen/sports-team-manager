@@ -12,7 +12,6 @@ using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Loading;
 using PlayGen.Unity.Utilities.Extensions;
-
 using TrackerAssetPackage;
 
 /// <summary>
@@ -284,8 +283,6 @@ public class TeamSelectionUI : MonoBehaviour
 			recruit.GetComponent<Button>().onClick.AddListener(() => UIManagement.Recruitment.gameObject.Active(true));
 			_recruitButtons.Add(recruit.GetComponent<Button>());
 		}
-		SortCrew();
-		CrewContainerPaging();
 	}
 
 	/// <summary>
@@ -295,7 +292,7 @@ public class TeamSelectionUI : MonoBehaviour
 	{
 		var crewMember = Instantiate(_crewPrefab, parent, false);
 		crewMember.name = cm.SplitName();
-		crewMember.SetUp(usable, cm, parent, cm.GetMood());
+		crewMember.SetUp(usable, cm, cm.GetMood());
 		return crewMember;
 	}
 
@@ -409,7 +406,7 @@ public class TeamSelectionUI : MonoBehaviour
 		{
 			button.Active(multiplePages);
 		}
-		_crewPagingButtons[page].Active(multiplePages);
+		_crewPagingButtons[page].Active(false);
 	}
 
 	/// <summary>
@@ -420,12 +417,7 @@ public class TeamSelectionUI : MonoBehaviour
 		var boats = GameManagement.ReverseLineUpHistory.Skip(skipAmount).Take(takeAmount).ToList();
 		var offsets = GameManagement.Team.HistoricTimeOffset.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
 		var sessions = GameManagement.Team.HistoricSessionNumber.AsEnumerable().Reverse().Skip(skipAmount).Take(takeAmount).ToList();
-		var historicBoats = new List<HistoricBoat>();
-		for (var i = 0; i < boats.Count; i++)
-		{
-			historicBoats.Add(new HistoricBoat(boats[i], offsets[i], sessions[i]));
-		}
-		return historicBoats;
+		return boats.Select((boat, i) => new HistoricBoat(boat, offsets[i], sessions[i])).ToList();
 	}
 
 	/// <summary>
@@ -453,7 +445,7 @@ public class TeamSelectionUI : MonoBehaviour
 			//create CrewMember UI object for the CrewMember that was in this position
 			var crewMember = crewContainer.FindComponent<CrewMemberUI>($"Crew Member {crewCount}");
 			crewMember.gameObject.Active(true);
-			crewMember.SetUp(false, pair.Value, crewContainer, -(GameManagement.GetRacePosition(historicBoat.Boat.Score, historicBoat.Boat.PositionCount) - 3) * 2);
+			crewMember.SetUp(false, pair.Value, -(GameManagement.GetRacePosition(historicBoat.Boat.Score, historicBoat.Boat.PositionCount) - 3) * 2);
 			//update current position button
 			crewMember.SetPosition(pair.Key);
 			crewCount++;
@@ -648,6 +640,8 @@ public class TeamSelectionUI : MonoBehaviour
 		UIManagement.MemberMeeting.CloseCrewMemberPopUp(string.Empty);
 		UIManagement.DisableSmallBlocker();
 		DoBestFit();
+		SortCrew();
+		CrewContainerPaging();
 	}
 
 	/// <summary>

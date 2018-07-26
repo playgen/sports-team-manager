@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
 using PlayGen.Unity.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.UI;

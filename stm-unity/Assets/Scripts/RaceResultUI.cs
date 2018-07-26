@@ -7,7 +7,6 @@ using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Extensions;
-
 using TrackerAssetPackage;
 
 public class RaceResultUI : MonoBehaviour

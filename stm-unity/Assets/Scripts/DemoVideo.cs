@@ -14,7 +14,10 @@ public class DemoVideo : VideoPlayerUI
 
 	protected override void OnEnable()
 	{
-		_canvasGroup = GetComponentInParent<CanvasGroup>();
+		if (!_canvasGroup)
+		{
+			_canvasGroup = GetComponentInParent<CanvasGroup>();
+		}
 		base.OnEnable();
 	}
 
