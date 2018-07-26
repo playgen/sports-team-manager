@@ -1,15 +1,10 @@
 ﻿using PlayGen.Unity.Utilities.Extensions;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public static class UIManagement
 {
-	private static List<GameObject> _rootObjects = new List<GameObject>();
-
 	public static UIStateManager StateManager { get; private set; }
 	public static PostRaceEventUI[] PostRaceEvents { get; private set; }
 	public static MemberMeetingUI MemberMeeting { get; private set; }
@@ -33,9 +28,7 @@ public static class UIManagement
 
 	public static void Initialize()
 	{
-		_rootObjects.Clear();
-		_rootObjects = SceneManager.GetActiveScene().GetRootGameObjects().Where(r => r.gameObject != null).ToList();
-		Canvas = _rootObjects.Single(g => g.name == "Canvas");
+		Canvas = GameObject.Find("Canvas");
 		StateManager = Canvas.GetComponentInChildren<UIStateManager>(true);
 		PostRaceEvents = Canvas.GetComponentsInChildren<PostRaceEventUI>(true);
 		MemberMeeting = Canvas.GetComponentInChildren<MemberMeetingUI>(true);
@@ -54,8 +47,8 @@ public static class UIManagement
 		EventImpact = Canvas.GetComponentInChildren<PostRaceEventImpactUI>(true);
 
 		DragCanvas = GameObject.Find("Drag Canvas").transform;
-		SmallBlocker = _rootObjects.Single(g => g.name == "Canvas").transform.FindButton("Team Management/Pop-up Bounds/Blocker");
-		Blocker = _rootObjects.Single(g => g.name == "Canvas").transform.FindButton("Team Management/Pop-up Bounds/Bigger Blocker");
+		SmallBlocker = Canvas.transform.FindButton("Team Management/Pop-up Bounds/Blocker");
+		Blocker = Canvas.transform.FindButton("Team Management/Pop-up Bounds/Bigger Blocker");
 	}
 
 	public static CrewMemberUI[] CrewMemberUI => Canvas.GetComponentsInChildren<CrewMemberUI>();

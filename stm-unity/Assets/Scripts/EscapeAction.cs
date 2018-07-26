@@ -1,9 +1,6 @@
 ﻿using System.Linq;
-
 using PlayGen.Unity.Utilities.Extensions;
-using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
-using UnityEngine.UI;
 
 /// <summary>
 /// Manages menu state changes when escape key is pressed

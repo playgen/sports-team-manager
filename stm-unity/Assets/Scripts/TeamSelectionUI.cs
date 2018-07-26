@@ -88,8 +88,7 @@ public class TeamSelectionUI : MonoBehaviour
 	private GameObject _resultPrefab;
 	[SerializeField]
 	private Text _finalPlacementText;
-	private readonly List<CrewMemberUI> _currentCrewButtons = new List<CrewMemberUI>();
-	public List<CrewMemberUI> CrewMembers => _currentCrewButtons;
+	public List<CrewMemberUI> CrewMembers { get; } = new List<CrewMemberUI>();
 	private readonly List<Button> _recruitButtons = new List<Button>();
 	[SerializeField]
 	private Button _quitBlocker;
@@ -268,13 +267,13 @@ public class TeamSelectionUI : MonoBehaviour
 		{
 			//create the static CrewMember UI (aka, the one that remains greyed out within the container at all times)
 			var crewMember = CreateCrewMember(cm, _crewContainer.transform, false);
-			_currentCrewButtons.Add(crewMember);
+			CrewMembers.Add(crewMember);
 			//create the draggable copy of the above
 			if (GameManagement.SeasonOngoing)
 			{
 				var crewMemberDraggable = CreateCrewMember(cm, crewMember.transform, true);
 				//crewMemberDraggable.transform.position = crewMember.transform.position;
-				_currentCrewButtons.Add(crewMemberDraggable);
+				CrewMembers.Add(crewMemberDraggable);
 			}
 		}
 		//create a recruitment UI object for each empty spot in the crew
@@ -626,7 +625,7 @@ public class TeamSelectionUI : MonoBehaviour
 			position.RemoveCrew();
 		}
 		//destroy recruitment buttons
-		foreach (var b in _currentCrewButtons)
+		foreach (var b in CrewMembers)
 		{
 			Destroy(b.gameObject);
 		}
@@ -639,7 +638,7 @@ public class TeamSelectionUI : MonoBehaviour
 		{
 			Destroy(b.gameObject);
 		}
-		_currentCrewButtons.Clear();
+		CrewMembers.Clear();
 		_recruitButtons.Clear();
 		//recreate crew and repeat previous line-up
 		CreateCrew();

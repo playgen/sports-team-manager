@@ -7,7 +7,6 @@ using UnityEngine.UI;
 using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.Text;
-using PlayGen.Unity.Utilities.Extensions;
 
 using TrackerAssetPackage;
 
