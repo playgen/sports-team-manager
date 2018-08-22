@@ -69,6 +69,7 @@ Below are more details about getting started when making changes in Sports Team 
 - [**PostRaceEventUI**](stm-unity/Assets/Scripts/PostRaceEventUI.cs): Class which manages the post-race event interface.
 - [**PostRacePersonUI**](stm-unity/Assets/Scripts/PostRacePersonUI.cs): Class which manages the post-race event interface for each NPC involved in the event.
 - [**RecruitMemberUI**](stm-unity/Assets/Scripts/RecruitMemberUI.cs): Class which manages the recruitment interface.
+- [**State**](stm-unity/Assets/Scripts/State.cs): Enum of possible UI states.
 - [**TeamSelectionUI**](stm-unity/Assets/Scripts/TeamSelectionUI.cs): This is the main class on the Unity side. Manages displaying historical session information, including placed crew members, scores and feedback, the instantiation and sorting of CrewMemberUIs and triggering sessions to be performed.
 - [**TutorialController**](stm-unity/Assets/Scripts/TutorialController.cs): Handles the generation, displaying and progression of the tutorial.
 - [**UIManagement**](stm-unity/Assets/Scripts/UIManagement.cs): Static class which makes all UI classes and the blockers more easily accessible to all other classes.

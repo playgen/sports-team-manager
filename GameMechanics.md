@@ -10,14 +10,18 @@ Each save file must have the following data to be able to continue from the righ
 - The manager RolePlayCharacterAsset data, which contains information relating to the team 'beliefs' and stores a record of all session results.
 
 ## State Manager
-The [UIStateManager](stm-unity/Assets/Scripts/UIStateManager.cs) contains reference to all the states that are present in the game, and contains explicit calls to move between states. In order to create a new state, and follow the current design, the UIStateManager must be edited to include the new state and its transitions specified using the GoToState() and StaticGoToState() format. Then the menu should be added in the inspector. 
+The [State](stm-unity/Assets/Scripts/State.cs) enum is used to reference all of the UI states within the game. The [UIStateManager](stm-unity/Assets/Scripts/UIStateManager.cs), a component on the 'Canvas' GameObject, contains reference to all the states and their relevant GameObjects. In order to add a new state, a new value will need to be added to the State enum, with an item relating to this also added to the [UIStateManager](stm-unity/Assets/Scripts/UIStateManager.cs) States list with a reference to the GameObject related to this state. In order to change state, use the following method call:
+
+```c#
+UIManagement.StateManager.GoToState(State state)
+```
 
 ## Position Configurations
 Sports Team Manager contains four different position configurations with differing number of positions. All available configurations are added to the [BoatConfig](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/BoatConfig.json).
 
 At the moment, the game does not support having two of the same position in the same configuration. The skills required for each position are defined in an attribute for each value in the [Position](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/Position.cs) enum.
 
-When a configuration should be used is defined in the [GameConfig](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/GameConfig.json) using [BoatPormotionTriggers]((stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/BoatPromotionTriggers.cs), with ScoreMetSinceLast used to evaluate whether the player has earned the promotion. There is also a ScoreRequired requirement if the player has to perform to a certain standard to be promoted, but at the moment that value is not set and as such is set to 0.
+When a configuration should be used is defined in the [GameConfig](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/GameConfig.json) using [BoatPromotionTriggers](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/BoatPromotionTriggers.cs), with ScoreMetSinceLast used to evaluate whether the player has earned the promotion. There is also a ScoreRequired requirement if the player has to perform to a certain standard to be promoted, but at the moment that value is not set and as such is set to 0.
 
 ## Team Management
 In order to manage effectively, players must understand the dynamics between crew members, their skillsets and their opinion of the manager and how that will affect their performance.
@@ -63,7 +67,6 @@ Chance of recruits being replaced | RecruitChangeChance | [Config.json](stm-logi
 ### Scoring and Post-Race Standings
 Once a line-up has been selected and submitted, a score is calculated for each crew member selected, with all of these scores combined to make a team score, for sailing edition, this is referred to as a 'boat score'. A crew member's score is calculated by adding together their average rating for all the skills required for the position, their current mood value, their average opinion of the other crew members selected and their opinion of the manager. All of these values also have a weighting set in the [Config](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/config.json) that they are multipled by before they are combined into one score. 
 
-- [Calculate Boat Score](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/Boat.cs) - UpdateBoatScore()
 - [Calculate Crew Member Score](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/Boat.cs) - UpdateCrewMemberScore()
 - [Calculate Crew Member Position Score](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/Position.cs) - GetPositionRating()
 - [Get Crew Member Mood](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation/CrewMember.cs) - GetMood()

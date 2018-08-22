@@ -2,38 +2,43 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
     <ProductVersion>0.1</ProductVersion>
     <ProjectGuid>1fbe9655-0f22-42c0-b38e-41ee7690ec91</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>Sports_Team_Manager_Setup</OutputName>
+    <OutputName>PlayGen.SportsTeamManager.Installer</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <DefineConstants>Debug;SourcePath=$(SolutionDir)Build\Sports Team Manager\SportsTeamManager_Data</DefineConstants>
+    <DefineConstants>Debug;SourcePath=$(SolutionDir)..\stm-unity\Build\SportsTeamManager\Sports Team Manager Sailing Edition_Data;MonoPath=$(SolutionDir)..\stm-unity\Build\SportsTeamManager\MonoBleedingEdge</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="mono.wxs" />
     <Compile Include="Product.wxs" />
     <Compile Include="source.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
     <WixExtension Include="WixUtilExtension">
       <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
       <Name>WixUtilExtension</Name>
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\stm-unity\stm-unity.csproj">
-      <Name>stm-unity</Name>
-      <Project>{7cb73dd1-ed31-84b9-d8f5-66803c4ecda8}</Project>
+    <ProjectReference Include="..\stm-gameinstaller\SportsTeamManager.csproj">
+      <Name>SportsTeamManager</Name>
+      <Project>{38380c16-ba32-43d5-a2d8-5dbc49845811}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -42,7 +47,8 @@
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>
-    <PreBuildEvent>"%25WIX%25\bin\heat.exe" dir "$(SolutionDir)Build\Sports Team Manager\SportsTeamManager_Data" -dr stmDIR -cg SourceComponentGroup -var var.SourcePath -gg -out "$(ProjectDir).\source.wxs"</PreBuildEvent>
+    <PreBuildEvent>"%25WIX%25\bin\heat.exe" dir "$(SolutionDir)..\stm-unity\Build\SportsTeamManager\Sports Team Manager Sailing Edition_Data" -dr GameDIR -cg SourceComponentGroup -var var.SourcePath -gg -out "$(ProjectDir).\source.wxs"
+"%25WIX%25\bin\heat.exe" dir "$(SolutionDir)..\stm-unity\Build\SportsTeamManager\MonoBleedingEdge" -dr GameDIR -cg MonoComponentGroup -var var.MonoPath -gg -out "$(ProjectDir).\mono.wxs"</PreBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

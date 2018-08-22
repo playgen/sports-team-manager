@@ -46,8 +46,9 @@ See the [LICENCE](LICENCE.md) file included in this project.
 
 # Development
 ## Requirements
-- Windows OS
-- Unity Editor *(Version 2017.2.3f1) - Known bug in later versions of Unity with UI Anchoring.*
+- Windows
+- Visual Studio 2017
+- Unity Editor
 
 ## Process
 1. Build the [stm-logic solution](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.sln).
@@ -101,8 +102,6 @@ Using the [Game Launcher](https://gitlab.com/playgen/game-launcher) repository, 
 
 ## Process
 The process for setting up a game installer is detailed within the [Game Launcher documentation](https://gitlab.com/playgen/game-launcher/blob/master/ReadMe.md#game-installer).
-
-Note that the current stm-installer structure, rather than that found within the Game Launcher project, should be used until the project is updated to Unity 2018.
 
 ## Developer Guide
 See the [Developer Guide](DeveloperGuide.md) for further details about the game.

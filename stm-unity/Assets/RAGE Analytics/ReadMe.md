@@ -2,7 +2,6 @@
 The RAGE Analytics asset allows for tracking of player activity and performance.
 - **[The GitHub for RAGE Analytics](https://github.com/e-ucm/unity-tracker)**
 
-
 From this repo, the following should be copied in order to use RAGE Analytics:
 - The '*Tracker.cs*', '*Tracker.prefab*' and '*UnityBridge.cs*' files in the root of the project.
 - All of the C# files found in '*csharp-tracker\AssetManager\RageAssetManager*'.

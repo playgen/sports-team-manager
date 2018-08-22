@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+		 xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+	<Product Id="*" Name="Sports Team Manager" Language="1033" Version="!(bind.FileVersion.SportsTeamManagerDLL)" Manufacturer="PlayGen" UpgradeCode="E2D42595-0FBD-46E1-BB6C-AED6BC51F0F5">
+		<Package Id="*" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<Condition Message="You need to be an administrator to install this product.">
+			Privileged
+		</Condition>
+
+		<MajorUpgrade AllowDowngrades="yes" Schedule="afterInstallInitialize" />
+		<MediaTemplate EmbedCab="yes" />
+
+		<Property Id="INSTALLDIR">
+			<RegistrySearch Id="PlayGenRageLauncherRegistry" Type="raw" Root="HKLM" Key="SOFTWARE\[Manufacturer]\RAGE Launcher" Name="InstallDir"/>
+		</Property>
+
+		<Property Id="GAMEID">STM</Property>
+
+		<Condition Message="Launcher not found. Please install the Launcher before installing games.">
+			Installed OR INSTALLDIR
+		</Condition>
+
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="INSTALLDIR">
+				<Directory Id="GameDIR" Name="SportsTeamManager">
+					<Component Id="VersioningAssembly" Guid="3B9634A6-C93C-4DDC-80DB-28B3C99E1561">
+						<File Id="SportsTeamManagerDLL" Source="$(var.SportsTeamManager.TargetPath)" KeyPath="yes" />
+					</Component>
+          <Component Id="UnityPlayer" Guid="A2C567F0-512E-48F8-85F0-FDBED2FC9DE2">
+						<File Id="UnityPlayerDLL" Source="$(var.SportsTeamManager.ProjectDir)..\stm-unity\Build\SportsTeamManager\UnityPlayer.dll" KeyPath="yes" />
+					</Component>
+					<Component Id="MainExecutable" Guid="10BFD277-5EC3-48F8-BD54-BC99E76ABFFA">
+						<File Id="GameEXE" Source="$(var.SportsTeamManager.ProjectDir)..\stm-unity\Build\SportsTeamManager\Sports Team Manager Sailing Edition.exe" KeyPath="yes" />
+					</Component>
+          <Component Id="CrashHandler" Guid="E818F91F-E30C-4820-86A9-667BAD89D2E7">
+            <File Id="CrashHandlerEXE" Source="$(var.SportsTeamManager.ProjectDir)..\stm-unity\Build\SportsTeamManager\UnityCrashHandler32.exe" KeyPath="yes" />
+          </Component>
+					<Component Id="ChangeConfig" Guid="7D3A2C2A-40BF-4D84-893A-7E81DE698A81" KeyPath="yes">
+						<util:XmlConfig Id="elem1"
+							Action="create"
+							ElementPath="/configuration/LauncherConfiguration/games"
+							File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"
+							Node="element"
+							On="install"
+							Name="add"
+							Sequence="1">
+							<util:XmlConfig Id="elem11"
+											ElementId="elem1"
+											Name="id"
+											Value="[GAMEID]"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+              <util:XmlConfig Id="elem12"
+											ElementId="elem1"
+											Name="path"
+											Value="[GameDIR]UnityPlayer.dll"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+              <util:XmlConfig Id="elem13"
+											ElementId="elem1"
+											Name="path"
+											Value="[GameDIR]Sports Team Manager Sailing Edition.exe"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+							<util:XmlConfig Id="elem14"
+											ElementId="elem1"
+											Name="key"
+											Value="XWtliQQYvsK91kHGcEBg0FrRyOnj6h8w0DNtf5HrmYPSI8eq1fnryIFfLsai"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+						</util:XmlConfig>
+						<util:XmlConfig Id="param"
+										Action="create"
+										ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]"
+										File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"
+										Node="element"
+										On="install"
+										Name="parameters"
+										Sequence="2">
+						</util:XmlConfig>
+
+						<util:XmlConfig Id="param5"
+									Action="create"
+									ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]/parameters"
+									File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"
+									Node="element"
+									On="install"
+									Name="add"
+									Sequence="3">
+							<util:XmlConfig Id="param51"
+											ElementId="param5"
+											Name="urlParameter"
+											Value="autologin"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+							<util:XmlConfig Id="param52"
+											ElementId="param5"
+											Name="commandParameter"
+											Value="a"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+							<util:XmlConfig Id="param53"
+											ElementId="param5"
+											Name="requiredParameter"
+											Value="true"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+							<util:XmlConfig Id="param54"
+											ElementId="param5"
+											Name="defaultValue"
+											Value="true"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+						</util:XmlConfig>
+
+						<util:XmlConfig Id="param1"
+										Action="create"
+										ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]/parameters"
+										File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"
+										Node="element"
+										On="install"
+										Name="add"
+										Sequence="6">
+							<util:XmlConfig Id="param11"
+											ElementId="param1"
+											Name="urlParameter"
+											Value="username"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+							<util:XmlConfig Id="param12"
+											ElementId="param1"
+											Name="commandParameter"
+											Value="u"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+							<util:XmlConfig Id="param13"
+											ElementId="param1"
+											Name="requiredParameter"
+											Value="true"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+						</util:XmlConfig>
+            
+						<util:XmlConfig Id="param3"
+										Action="create"
+										ElementPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]/parameters"
+										File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"
+										Node="element"
+										On="install"
+										Name="add"
+										Sequence="4">
+							<util:XmlConfig Id="param31"
+											ElementId="param3"
+											Name="urlParameter"
+											Value="source"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+							<util:XmlConfig Id="param32"
+											ElementId="param3"
+											Name="commandParameter"
+											Value="s"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+							<util:XmlConfig Id="param33"
+											ElementId="param3"
+											Name="requiredParameter"
+											Value="true"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+							<util:XmlConfig Id="param34"
+											ElementId="param3"
+											Name="defaultValue"
+											Value="OKKAM"
+											File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"/>
+						</util:XmlConfig>
+
+						<util:XmlConfig   Id="elem1Delete"
+															Action="delete"
+															ElementPath="/configuration/LauncherConfiguration/games"
+															VerifyPath="/configuration/LauncherConfiguration/games/add[\[]@id='[GAMEID]'[\]]"
+															File="[INSTALLDIR]PlayGen.RAGE.Launcher.exe.config"
+															Node="element"
+															On="uninstall"
+															Sequence="100" />
+					</Component>
+				</Directory>
+			</Directory>
+		</Directory>
+
+		<Feature Id="ProductFeature" Title="PlayGen.SportsTeamManager.Installer" Level="1">
+			<ComponentRef Id="VersioningAssembly" />
+      <ComponentRef Id="UnityPlayer" />
+			<ComponentRef Id="MainExecutable" />
+      <ComponentRef Id="CrashHandler" />
+			<ComponentRef Id="ChangeConfig"/>
+			<ComponentGroupRef Id="SourceComponentGroup"/>
+      <ComponentGroupRef Id="MonoComponentGroup"/>
+		</Feature>
+	</Product>
+
+</Wix>

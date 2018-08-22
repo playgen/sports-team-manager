@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="GameDIR">
+            <Directory Id="dir420609E6F8C5969C548A513B27D46C72" Name="MonoBleedingEdge" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="MonoComponentGroup">
+            <Component Id="cmp66B80095499DB4F2ADC5D3A221C6700C" Directory="dir28FCFA5CD3B06577FDA84F3BDB421E78" Guid="{49B9F0B9-20B0-4C44-97D3-F0D55051C099}">
+                <File Id="fil96524314CFE35B22BDA8BE5D2085A131" KeyPath="yes" Source="$(var.MonoPath)\EmbedRuntime\mono-2.0-bdwgc.dll" />
+            </Component>
+            <Component Id="cmp45E6F35169CB288C44AFAEBA87EA585B" Directory="dir28FCFA5CD3B06577FDA84F3BDB421E78" Guid="{D36BB23A-CF95-4B13-84DC-CF9CEE0E1199}">
+                <File Id="filB9B9E706003B83FFF3254731796FE8B3" KeyPath="yes" Source="$(var.MonoPath)\EmbedRuntime\MonoPosixHelper.dll" />
+            </Component>
+            <Component Id="cmpA786881EE54C1CC2559AA7BB9BA3AA29" Directory="dir00FB8CCB4226D216CDC36B50420AE984" Guid="{961355BC-0DDE-4DB4-805C-31A104B9CE72}">
+                <File Id="fil1C0717CD65B50925B284D9CEEB557637" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\browscap.ini" />
+            </Component>
+            <Component Id="cmp5C64B80480AEF2A1FF5C5E2DC9F4A010" Directory="dir00FB8CCB4226D216CDC36B50420AE984" Guid="{98763C21-845B-483E-B28F-2AE346A20F3A}">
+                <File Id="fil714DB30C41C7921DD0798B3255EEF1CE" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\config" />
+            </Component>
+            <Component Id="cmpCDBD9894271405B65351FE62D00C6324" Directory="dirE3F40CE251A5ABD74944B2492283D974" Guid="{2A5E764C-775B-4CEE-ADD7-108DC1F94AC9}">
+                <File Id="fil8B49AFD11B7DA819D8CB2DD7D031B62E" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\2.0\DefaultWsdlHelpGenerator.aspx" />
+            </Component>
+            <Component Id="cmpC4DAB2A046B768BFAAA451BA617EABD1" Directory="dirE3F40CE251A5ABD74944B2492283D974" Guid="{3E22DC23-0CCD-4245-B5FC-F7D9DBB47E33}">
+                <File Id="filF36BC70F9521FE7881A8070AA097CD11" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\2.0\machine.config" />
+            </Component>
+            <Component Id="cmpB645FA19C17D6B7199920B09AE2EF774" Directory="dirE3F40CE251A5ABD74944B2492283D974" Guid="{63694EEC-0823-4C5F-B21A-54F5D937BAE2}">
+                <File Id="filD139E46A3E2B7BECDBE686C0550FA194" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\2.0\settings.map" />
+            </Component>
+            <Component Id="cmp48CB24974830B6C0A2EC2DA235648984" Directory="dirE3F40CE251A5ABD74944B2492283D974" Guid="{8202F9A0-387D-437E-9A4B-E617F62E158F}">
+                <File Id="fil1212198AF2AB07214FEA7374FE975AB8" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\2.0\web.config" />
+            </Component>
+            <Component Id="cmp94267BC0380BFE673E249019FF22FD8B" Directory="dirC6557636E9CA8AD9E5F4793F982C2A4C" Guid="{D95CE1BB-6535-4AC7-8FE7-83241591D60B}">
+                <File Id="fil43639FFB1B8ACF40DB3F05B6EE5D0025" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\2.0\Browsers\Compat.browser" />
+            </Component>
+            <Component Id="cmp2CF807F8FCAFEACE8D44F83B22F50719" Directory="dirFEAD88A9D867F0E0E3EAF3615D7AE039" Guid="{D67DE16F-79CE-45FF-998C-966864D13287}">
+                <File Id="fil916FAD0BA54B044766300A4F03933FE5" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\4.0\DefaultWsdlHelpGenerator.aspx" />
+            </Component>
+            <Component Id="cmp10BD1C5169A90B33C5BBB0C956F247FC" Directory="dirFEAD88A9D867F0E0E3EAF3615D7AE039" Guid="{8832D1B5-E548-4233-8276-301C889FEB3D}">
+                <File Id="filCC8F7D3D5DFA8F0184474E0D48BD10B9" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\4.0\machine.config" />
+            </Component>
+            <Component Id="cmpD2E87656ED6DF783A615CA7F1C57B919" Directory="dirFEAD88A9D867F0E0E3EAF3615D7AE039" Guid="{5A789BE5-8614-4E1D-87AF-EF299E0D6A1F}">
+                <File Id="filFA4A257D9CDACBB1F83691C0859EDF65" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\4.0\settings.map" />
+            </Component>
+            <Component Id="cmp40E7847956B506352E8B15333E984796" Directory="dirFEAD88A9D867F0E0E3EAF3615D7AE039" Guid="{AC3E0885-68EC-4935-9AD5-45F203E5E62F}">
+                <File Id="fil45F153614B5D1993981458AFCF3D8B52" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\4.0\web.config" />
+            </Component>
+            <Component Id="cmp764B495401CE40F208385B4550EE0D16" Directory="dir9F556558B7AF6C35E4A38C9B30384DA3" Guid="{4D206F52-28D1-4B10-8A23-E92E62A616BF}">
+                <File Id="fil648843373518D7EFBB2EBB57ED2D4A2E" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\4.0\Browsers\Compat.browser" />
+            </Component>
+            <Component Id="cmp898E3DDAD6F6E228C157EA358B4A9DC7" Directory="dirF826DD65B7D107EEC5E523BC63D85AAA" Guid="{77F72A5E-7112-4053-B5EE-5C0EE21F863D}">
+                <File Id="filBDFED2EAF2D9C5E9C3A1DD84EC0295FB" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\4.5\DefaultWsdlHelpGenerator.aspx" />
+            </Component>
+            <Component Id="cmp78301D78E18CDA008E25E3C4FC4B0C64" Directory="dirF826DD65B7D107EEC5E523BC63D85AAA" Guid="{D1B3F42B-BE07-4855-ABE7-C7A5955801EA}">
+                <File Id="filB234751AB10194ED9BF07410D89DE549" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\4.5\machine.config" />
+            </Component>
+            <Component Id="cmpC6538597663056278B653C986502B2FC" Directory="dirF826DD65B7D107EEC5E523BC63D85AAA" Guid="{23540BF1-B318-4D7F-9BA6-E25FBBFA6869}">
+                <File Id="filCE51B63D5CAE270C81576BC48DF023F9" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\4.5\settings.map" />
+            </Component>
+            <Component Id="cmpFDB604861895FAB98F1B472BCFE4DA99" Directory="dirF826DD65B7D107EEC5E523BC63D85AAA" Guid="{C3324ED8-C0E7-4B76-B2F7-B4EA0EF9CB64}">
+                <File Id="filF4DED6FFE0DF983FB8311EB386BA95CA" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\4.5\web.config" />
+            </Component>
+            <Component Id="cmp1ABF16C93D8A8ACB09CC54711E45AAD9" Directory="dir86586C3977482138F2A4EEB4F3DAE2C0" Guid="{C2D59BE1-F649-4A33-928E-4DD675D8C3BE}">
+                <File Id="fil08E500BB8E3F3273ADA061FD5374E012" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\4.5\Browsers\Compat.browser" />
+            </Component>
+            <Component Id="cmp903D80E8FB3463B19B33A8F1988B8AD3" Directory="dirD29A3D9E6922BFC6ECA13D69B7F23ED3" Guid="{CA0DB47F-C1E1-4742-AB66-5B7749382932}">
+                <File Id="filE275C7D6EEF9939F97B11DEA67D9DE8C" KeyPath="yes" Source="$(var.MonoPath)\etc\mono\mconfig\config.xml" />
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir46199164BA49192A9826E151DF044D49">
+            <Directory Id="dir00FB8CCB4226D216CDC36B50420AE984" Name="mono" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir420609E6F8C5969C548A513B27D46C72">
+            <Directory Id="dir28FCFA5CD3B06577FDA84F3BDB421E78" Name="EmbedRuntime" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir420609E6F8C5969C548A513B27D46C72">
+            <Directory Id="dir46199164BA49192A9826E151DF044D49" Name="etc" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirF826DD65B7D107EEC5E523BC63D85AAA">
+            <Directory Id="dir86586C3977482138F2A4EEB4F3DAE2C0" Name="Browsers" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirFEAD88A9D867F0E0E3EAF3615D7AE039">
+            <Directory Id="dir9F556558B7AF6C35E4A38C9B30384DA3" Name="Browsers" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE3F40CE251A5ABD74944B2492283D974">
+            <Directory Id="dirC6557636E9CA8AD9E5F4793F982C2A4C" Name="Browsers" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir00FB8CCB4226D216CDC36B50420AE984">
+            <Directory Id="dirD29A3D9E6922BFC6ECA13D69B7F23ED3" Name="mconfig" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir00FB8CCB4226D216CDC36B50420AE984">
+            <Directory Id="dirE3F40CE251A5ABD74944B2492283D974" Name="2.0" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir00FB8CCB4226D216CDC36B50420AE984">
+            <Directory Id="dirF826DD65B7D107EEC5E523BC63D85AAA" Name="4.5" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir00FB8CCB4226D216CDC36B50420AE984">
+            <Directory Id="dirFEAD88A9D867F0E0E3EAF3615D7AE039" Name="4.0" />
+        </DirectoryRef>
+    </Fragment>
+</Wix>
