@@ -77,7 +77,7 @@ Below are more details about getting started when making changes in Sports Team 
 
 ## Other Key Details
 - All of the default assets used by the FAtiMA Toolkit can be found in the [NPC Templates folder](stm-logic/PlayGen.RAGE.SportsTeamManager/PlayGen.RAGE.SportsTeamManager.Simulation).
-- The tutorial is managed by the [Tutorial.json file](stm-unity/Assets/Resources/Tutorial/Tutorial.json). To recreate the tutorial, use the option available on the Canvas\Team Management\Tutorial\Tutorial Collection object.
+- The tutorial is managed by the [Tutorial.json file](stm-unity/Assets/Resources/Tutorial/Tutorial.json). To recreate the tutorial, use the option available on the Canvas\Team Management\Tutorial object, using the TutorialController. Text for tutorials is located in the SportsTeamManagerTutorial Spreadsheet in Resources/Tutorial/SportsTeamManagerTutorial.xlsx
 
 ## Setting up your game with SUGAR
 For information on setting up Sports Team Manager to use SUGAR, see the [SUGAR Quick Start Guide](http://api.sugarengine.org/v1/unity-client/tutorials/quick-start.html). **Make sure that [*Assets\StreamingAssets\SUGAR.config.json*](stm-unity/Assets/StreamingAssets/SUGAR.config.json) exists and the BaseUri value matches the Base Address in the SUGAR Prefab.** 

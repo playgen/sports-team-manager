@@ -10,7 +10,9 @@ Each save file must have the following data to be able to continue from the righ
 - The manager RolePlayCharacterAsset data, which contains information relating to the team 'beliefs' and stores a record of all session results.
 
 ## State Manager
-The [State](stm-unity/Assets/Scripts/State.cs) enum is used to reference all of the UI states within the game. The [UIStateManager](stm-unity/Assets/Scripts/UIStateManager.cs), a component on the 'Canvas' GameObject, contains reference to all the states and their relevant GameObjects. In order to add a new state, a new value will need to be added to the State enum, with an item relating to this also added to the [UIStateManager](stm-unity/Assets/Scripts/UIStateManager.cs) States list with a reference to the GameObject related to this state. In order to change state, use the following method call:
+The [State](stm-unity/Assets/Scripts/State.cs) enum is used to reference all of the UI states within the game. The [UIStateManager](stm-unity/Assets/Scripts/UIStateManager.cs), a component on the 'Canvas' GameObject, contains reference to all the states and their relevant GameObjects. In order to add a new state, a new value will need to be added to the State enum, with an item relating to this also added to the [UIStateManager](stm-unity/Assets/Scripts/UIStateManager.cs) States list with a reference to the GameObject related to this state. 
+
+In order to change state, use the following method call:
 
 ```c#
 UIManagement.StateManager.GoToState(State state)
