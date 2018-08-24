@@ -56,8 +56,8 @@ MonoBehaviour:
   checkInterval: 3
   storageType: local
   traceFormat: csv
-  host: https://tracker.playgen.com/api/proxy/gleaner/collector/
-  trackingCode: 5a15a3e254021b006cc26f6fhf12gg2icf9cz0k9
+  host: 
+  trackingCode: 
   debug: 1
   username: 
   password: 

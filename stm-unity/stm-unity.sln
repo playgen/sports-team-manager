@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stm-unity", "stm-unity.csproj", "{7CB73DD1-ED31-84B9-D8F5-66803C4ECDA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stm-unity.Editor", "stm-unity.Editor.csproj", "{CF22CDFD-1219-1CBC-64DC-5FCCCBDD2789}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.PackageManagerUI.Editor", "Unity.PackageManagerUI.Editor.csproj", "{6877705C-FBD9-0C4F-5AFB-6FB431E5D39D}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "stm-setup", "stm-installer\stm-setup.wixproj", "{1FBE9655-0F22-42C0-B38E-41EE7690EC91}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stm-unity.Editor", "stm-unity.Editor.csproj", "{CF22CDFD-1219-1CBC-64DC-5FCCCBDD2789}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,14 +17,14 @@ Global
 		{7CB73DD1-ED31-84B9-D8F5-66803C4ECDA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CB73DD1-ED31-84B9-D8F5-66803C4ECDA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CB73DD1-ED31-84B9-D8F5-66803C4ECDA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6877705C-FBD9-0C4F-5AFB-6FB431E5D39D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6877705C-FBD9-0C4F-5AFB-6FB431E5D39D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6877705C-FBD9-0C4F-5AFB-6FB431E5D39D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6877705C-FBD9-0C4F-5AFB-6FB431E5D39D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CF22CDFD-1219-1CBC-64DC-5FCCCBDD2789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CF22CDFD-1219-1CBC-64DC-5FCCCBDD2789}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF22CDFD-1219-1CBC-64DC-5FCCCBDD2789}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF22CDFD-1219-1CBC-64DC-5FCCCBDD2789}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1FBE9655-0F22-42C0-B38E-41EE7690EC91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1FBE9655-0F22-42C0-B38E-41EE7690EC91}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1FBE9655-0F22-42C0-B38E-41EE7690EC91}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1FBE9655-0F22-42C0-B38E-41EE7690EC91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
