@@ -506,6 +506,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			boat.SelectionMistakes.ForEach(sm => crew += "," + sm);
 			//add time offset to the string 
 			crew += "," + offset;
+			//add to CurrentRaceSession and add to string
 			CurrentRaceSession++;
 			if (RaceSessionLength == CurrentRaceSession)
 			{
@@ -797,6 +798,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return managementStyles.Where(m => Math.Abs(m.Value - managementStyles.Values.Max()) < 0.01f).ToDictionary(b => b.Key, b => b.Value).Keys.ToArray();
 		}
 
+		/// <summary>
+		/// Get the total number of races based on the promotion triggers in use
+		/// </summary>
 		public int GetTotalRaceCount()
 		{
 			return ConfigStore.GameConfig.PromotionTriggers.Sum(p => p.ScoreMetSinceLast);

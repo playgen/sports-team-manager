@@ -101,6 +101,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Get the current Position (if any) of a CrewMember
+		/// </summary>
 		public Position GetCrewMemberPosition(CrewMember crewMember)
 		{
 			return PositionCrew.SingleOrDefault(pair => pair.Value == crewMember).Key;
@@ -168,6 +171,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			PositionScores[position] = crewScore;
 		}
 
+		/// <summary>
+		/// Get the current score for this Position on this Boat for this CrewMember, excluding the effect opinion on other crew members has on the score
+		/// </summary>
 		internal int GetPositionRating(CrewMember member, Position pos, string managerName)
 		{
 			return pos.GetPositionRating(member) + (int)(member.GetMood() * ConfigKey.MoodRatingWeighting.GetValue()) + (int)(member.CrewOpinions[managerName] * ConfigKey.ManagerOpinionRatingWeighting.GetValue());
@@ -333,12 +339,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				var currentImperfectCount = 0;
 				for (var i = 0; i < crew.Count; i++)
 				{
-					//if the CrewMembers match in both the current and the ideal, add 1 to the currentIdealMatch score
+					//if the CrewMembers match in both the current and the ideal, add 1 to the currentPerfectCount score
 					if (crew[i] == PositionCrew[Positions[i]])
 					{
-						currentPerfectCount ++;
+						currentPerfectCount++;
 					}
-					//otherwise, check if this CrewMember is meant to be positioned elsewhere in an ideal set-up. If so, add 0.1f to the currentIdealMatch score
+					//otherwise, check if this CrewMember is meant to be positioned elsewhere in an ideal set-up. If so, add 1 to the currentImperfectCount score
 					else
 					{
 						foreach (var ideal in crew)
@@ -350,7 +356,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 				}
-				//if the final currentIdealMatch score is higher than the current IdealMatchScore, or nearestIdealMatch is null (meaning no other ideals have been checked), set this ideal crew to the nearest match
+				//if the final currentPerfectCount score is higher than the current perfectCount, or nearestIdealMatch is null (meaning no other ideals have been checked), set this ideal crew to the nearest match
 				if (currentPerfectCount + currentImperfectCount >= perfectCount + imperfectCount || nearestIdealMatch.Count == 0)
 				{
 					if (currentPerfectCount + currentImperfectCount > perfectCount + imperfectCount || currentPerfectCount > perfectCount || nearestIdealMatch.Count == 0)

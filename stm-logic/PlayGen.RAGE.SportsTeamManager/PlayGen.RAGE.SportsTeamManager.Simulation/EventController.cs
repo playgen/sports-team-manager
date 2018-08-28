@@ -448,11 +448,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			manager.SaveStatus();
 		}
 
+		/// <summary>
+		/// Get the available notes made for this crew member or position
+		/// </summary>
 		public string GetNotes(string subject)
 		{
 			return iat.GetDialogueActionsByState("Player_Note").FirstOrDefault(s => s.NextState == subject.NoSpaces())?.Utterance ?? string.Empty;
 		}
 
+		/// <summary>
+		/// Save the notes for this crew member or position
+		/// </summary>
 		public void SaveNote(string subject, string note)
 		{
 			var newNote = new DialogueStateActionDTO

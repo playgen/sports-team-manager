@@ -22,7 +22,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Color BrownEyeColor { get; set; }
 		public Color GreenEyeColor { get; set; }
 
-		//get and return values for avatar configs
+		//
+		/// <summary>
+		/// Get and return values for avatar configs
+		/// </summary>
 		internal AvatarGeneratorConfig GetConfig()
 		{
 			var configText = Templates.ResourceManager.GetString("avatar_config");

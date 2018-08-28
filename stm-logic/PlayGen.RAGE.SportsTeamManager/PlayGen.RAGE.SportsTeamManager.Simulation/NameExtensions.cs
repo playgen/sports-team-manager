@@ -4,6 +4,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
 	public static class NameExtensions
 	{
+		/// <summary>
+		/// Extension for converting a string into a Name.
+		/// </summary>
 		internal static Name ToName(this string value)
 		{
 			return Name.BuildName(value);

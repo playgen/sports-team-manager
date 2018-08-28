@@ -57,6 +57,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			iat.AddNewCharacterSourceWithoutCheck(new CharacterSourceDTO { Source = RolePlayCharacter.AssetFilePath });
 		}
 
+		/// <summary>
+		/// Set the other FAtiMA assets directly
+		/// </summary>
 		internal void SetRelations()
 		{
 			RolePlayCharacter.SetEmotionalAppraisalAsset(ConfigStore.EmotionalAppraisal.Copy());

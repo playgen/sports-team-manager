@@ -308,7 +308,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// save the current attributes of the CrewMember to their EmotionalAppraisal Asset
+		/// Save the current attributes of the CrewMember to their EmotionalAppraisal Asset
 		/// </summary>
 		internal void UpdateAvatarBeliefs(CrewMember crewMember)
 		{

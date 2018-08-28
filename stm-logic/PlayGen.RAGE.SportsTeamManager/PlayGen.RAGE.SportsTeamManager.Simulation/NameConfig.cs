@@ -12,7 +12,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public Dictionary<string, List<string>> FemaleForename { get; set; }
 		public Dictionary<string, List<string>> Surname { get; set; }
 
-		//get and return values for avatar configs
+		/// <summary>
+		/// Get and return possible names for each language
+		/// </summary>
 		internal NameConfig GetConfig()
 		{
 			var configText = Templates.ResourceManager.GetString("name_config");

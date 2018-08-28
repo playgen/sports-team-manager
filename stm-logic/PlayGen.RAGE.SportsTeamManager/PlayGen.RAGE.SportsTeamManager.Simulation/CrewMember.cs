@@ -9,7 +9,6 @@ using RolePlayCharacter;
 
 namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
-	//Decision Feedback functionality to adjust opinions/mood based on placement currently commented out
 	/// <summary>
 	/// Stores values and functionality related to crew members
 	/// </summary>
@@ -84,6 +83,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return name;
 		}
 
+		/// <summary>
+		/// Create the FAtiMA files for this crew member, set belief values and create an avatar
+		/// </summary>
 		private void CreateFile(IntegratedAuthoringToolAsset iat, string storageLocation, string fileName = "", bool recruit = false)
 		{
 			base.CreateFile(iat, storageLocation, fileName);
@@ -106,6 +108,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Set up a new crew member that is part of the team
+		/// </summary>
 		internal void CreateTeamMemberFile(IntegratedAuthoringToolAsset iat, string storageLocation, List<string> crewNames, Color primary, Color secondary, bool setOpinions = true, string fileName = "")
 		{
 			CreateFile(iat, storageLocation, fileName);
@@ -128,6 +133,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			SaveStatus();
 		}
 
+		/// <summary>
+		/// Set up a new crew member that is a recruit
+		/// </summary>
 		internal void CreateRecruitFile(IntegratedAuthoringToolAsset iat, string storageLocation, int recruitNumber)
 		{
 			CreateFile(iat, storageLocation, "Recruit" + recruitNumber, true);
@@ -232,6 +240,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return mood;
 		}
 
+		/// <summary>
+		/// Get this crew member's average opinion of the other crew members and the manager
+		/// </summary>
 		internal int GetOpinionRating(List<string> names)
 		{
 			var opinion = 0f;
@@ -629,7 +640,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Get the current social importance rating fir this crew member
+		/// Get the current social importance rating for this crew member
 		/// </summary>
 		public string GetSocialImportanceRating(string name)
 		{
@@ -654,7 +665,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Compare this crew member to anothe by checking their names
+		/// Compare this crew member to another by checking their names
 		/// </summary>
 		public int CompareTo(CrewMember other)
 		{

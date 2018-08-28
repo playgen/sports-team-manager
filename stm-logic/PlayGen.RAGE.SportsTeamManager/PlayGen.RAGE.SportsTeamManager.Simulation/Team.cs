@@ -212,7 +212,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
-		//Tick all CrewMembers in crewMembers and Retired
+		/// <summary>
+		/// Tick all CrewMembers in crewMembers and Retired
+		/// </summary>
 		internal void TickCrewMembers(int amount = 0, bool save = true)
 		{
 			foreach (var cm in crewMembers.Values)
@@ -285,6 +287,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			}
 		}
 
+		/// <summary>
+		/// Check if the next PromotionTrigger criteria has been completed
+		/// </summary>
 		private string PromotionTriggerCheck()
 		{
 			var possibleTypes = ConfigStore.GameConfig.PromotionTriggers.Where(pt => pt.StartType == Boat.Type);
