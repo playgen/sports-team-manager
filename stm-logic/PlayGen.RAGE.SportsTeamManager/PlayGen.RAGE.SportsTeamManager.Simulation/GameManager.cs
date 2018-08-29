@@ -52,12 +52,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			
 			foreach (var promotion in promotionTriggers)
 			{
-				//is there a promotion trigger that has a StartType of 'Start' and has a value less than 0 for ScoreMetSinceLast?
+				//is there a promotion trigger that doesn't have a StartType of 'Start' and has a value less than 0 for ScoreMetSinceLast?
 				if (promotion.StartType != "Start" && promotion.ScoreMetSinceLast <= 0)
 				{
 					invalidString += $"ScoreMetSinceLast for StartType {promotion.StartType} and NewType {promotion.NewType} should be greater than 0.\n";
 				}
-				//is there a promotion trigger that has a StartType that is the same as it's NewType?
+				//is there a promotion trigger that has a StartType that is the same as its NewType?
 				if (promotion.StartType == promotion.NewType)
 				{
 					invalidString += $"Invalid PromotionTrigger in Game Config for {promotion.StartType}, will result in changing to same boat type.\n";
@@ -138,6 +138,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//create folder and iat file for game
 			var combinedStorageLocation = Path.Combine(storageLocation, name);
 			Directory.CreateDirectory(combinedStorageLocation);
+			//create a copy of the template IntegratedAuthoringTool
 			var iat = ConfigStore.IntegratedAuthoringTool.Copy();
 			EventController = new EventController(iat);
 			ValidateGameConfig();
@@ -296,11 +297,10 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				return;
 			}
-			//get the iat file and all characters for this game
 			EventController = new EventController(iat);
 			ValidateGameConfig();
+			//get the iat file and all characters for this game
 			var characterList = iat.GetAllCharacterSources();
-
 			var crewList = new List<CrewMember>();
 			var nameList = new List<string>();
 			foreach (var character in characterList)
@@ -477,6 +477,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//set-up boat for saving
 			var boat = Team.Boat;
 			var manager = Team.Manager;
+			//get results
 			boat.UpdateScore(manager.Name);
 			boat.GetIdealCrew(Team.CrewMembers, manager.Name);
 			var boatType = boat.Type;
@@ -500,7 +501,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					crew += "null,0";
 				}
 			}
-			//add idealmatchscore to the string
+			//add PerfectSelections and ImperfectSelections to the string
 			crew += "," + boat.PerfectSelections + "," + boat.ImperfectSelections;
 			//add every selection mistake to the string 
 			boat.SelectionMistakes.ForEach(sm => crew += "," + sm);

@@ -18,6 +18,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			return type.IsValueType & type.IsPrimitive;
 		}
 
+		/// <summary>
+		/// Create a copy of an object.
+		/// </summary>
 		internal static object Copy(this object originalObject)
 		{
 			return InternalCopy(originalObject, new Dictionary<object, object>(ReferenceEqualityComparer));

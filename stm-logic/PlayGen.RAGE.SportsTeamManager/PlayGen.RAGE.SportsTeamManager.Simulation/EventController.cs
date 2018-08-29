@@ -36,14 +36,17 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		public List<PostRaceEventState> GetEventDialogues(Person manager)
 		{
 			var dialogueOptions = new List<PostRaceEventState>();
-			foreach (var current in PostRaceEvents.First())
+			if (PostRaceEvents.Count > 0)
 			{
-				var dialogues = iat.GetDialogueActionsByState(current.Dialogue.NextState).OrderBy(c => Guid.NewGuid()).ToList();
-				dialogueOptions.AddRange(dialogues.Select(d => new PostRaceEventState(current.CrewMember, d, current.Subjects)).ToList());
-			}
-			if (dialogueOptions.Count == 0)
-			{
-				RemoveEvents(manager);
+				foreach (var current in PostRaceEvents.First())
+				{
+					var dialogues = iat.GetDialogueActionsByState(current.Dialogue.NextState).OrderBy(c => Guid.NewGuid()).ToList();
+					dialogueOptions.AddRange(dialogues.Select(d => new PostRaceEventState(current.CrewMember, d, current.Subjects)).ToList());
+				}
+				if (dialogueOptions.Count == 0)
+				{
+					RemoveEvents(manager);
+				}
 			}
 			return dialogueOptions;
 		}
@@ -102,7 +105,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//get all possible post-race event starting dialogue
 			var dialogueOptions = GetPossiblePostRaceDialogue();
 			//get events that can be fired according to the game config
-			var events = GetEvents(dialogueOptions, ConfigStore.GameConfig.EventTriggers.ToList(), team);
+			var events = GetEvents(dialogueOptions, team);
 			if (events.Any())
 			{
 				var allCrewInitial = team.CrewMembers;
@@ -146,7 +149,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 								}
 								eventCrew.Remove(pair.Value.Name);
 							}
-							//if nobody currently placed can be pout into a better position, select a placed crew member and position at random
+							//if nobody currently placed can be put into a better position, select a placed crew member and position at random
 							if (!betterPlace.Any())
 							{
 								var selectedCrewMember = eventCrew.OrderBy(c => Guid.NewGuid()).First().Value;
@@ -167,9 +170,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 								}
 							}
 							var selectedFor = eventCrew.OrderBy(c => Guid.NewGuid()).First();
+							//make it so selectedFor has the worst possible opinion of selectedAgainst
 							selectedFor.Value.AddOrUpdateOpinion(selectedAgainst.Key, -10);
 							selectedFor.Value.AddOrUpdateRevealedOpinion(selectedAgainst.Key, selectedFor.Value.CrewOpinions[selectedAgainst.Key]);
 							selectedFor.Value.SaveStatus();
+							//randomly adjusted everyone else's opinion of selectedAgainst
 							foreach (var cm in team.CrewMembers)
 							{
 								if (cm.Key != selectedFor.Key && cm.Key != selectedAgainst.Key)
@@ -268,13 +273,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get a list of events that should be triggered
 		/// </summary>
-		private List<PostSessionEventTrigger> GetEvents(List<DialogueStateActionDTO> available, List<PostSessionEventTrigger> triggers, Team team)
+		private List<PostSessionEventTrigger> GetEvents(List<DialogueStateActionDTO> available, Team team)
 		{
 			var raceHistory = team.RaceHistory;
 			var setEvents = new List<PostSessionEventTrigger>();
 			var repeatedEvents = new List<PostSessionEventTrigger>();
 			var randomEvents = new List<PostSessionEventTrigger>();
-			foreach (var trigger in triggers)
+			foreach (var trigger in ConfigStore.GameConfig.EventTriggers)
 			{
 				if (available.Any(a => a.NextState == "Player_" + trigger.EventName))
 				{

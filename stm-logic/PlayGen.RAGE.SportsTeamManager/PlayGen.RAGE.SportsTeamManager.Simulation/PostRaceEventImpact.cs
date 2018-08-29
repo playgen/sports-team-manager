@@ -1,5 +1,8 @@
 ﻿namespace PlayGen.RAGE.SportsTeamManager.Simulation
 {
+	/// <summary>
+	/// Enum of possible strings used as a post race event impact
+	/// </summary>
 	public enum PostRaceEventImpact
 	{
 		MoodChange,

@@ -51,12 +51,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			OutfitShadowType = $"Outfit{_gender}_Shadow_{_bodyType}_{outfit}";
 		}
 
+		/// <summary>
+		/// Create a new Avatar based on randomness and this Crew Member's best skill or load the existing Avatar for this Crew Member
+		/// </summary>
 		private void CreateAvatar(CrewMember crewMember)
 		{
 			//Get Best Skill
 			var currentBestSkill = crewMember.LoadBelief(NPCBelief.AvatarBestSkill);
 			_bestSkill = Enum.TryParse<Skill>(currentBestSkill, out var loadedBestSkill) ? loadedBestSkill : GetBestSkill(crewMember);
-			_bodyType = GetBodyType(_bestSkill);
+			_bodyType = GetBodyType();
 
 			//Set Skin Color
 			var loadedMouthColor = crewMember.LoadBelief(NPCBelief.AvatarMouthColor);
@@ -127,7 +130,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			//Set Mouth Type
 			MouthType = crewMember.LoadBelief(NPCBelief.AvatarMouthType) ?? $"Face{_gender}_{_bestSkill}_Mouth";
 
-			// Set Height and Width
+			// Set Height and Width (Weight)
 			if (float.TryParse(crewMember.LoadBelief(NPCBelief.AvatarHeight), out var loadedHeight))
 			{
 				Height = loadedHeight;
@@ -187,7 +190,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get a random skil colour, from config values
 		/// </summary>
-		/// <returns></returns>
 		private Color GetRandomSkinColor()
 		{
 			switch (StaticRandom.Int(0, 3))
@@ -207,8 +209,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get a suitable hair colour for the skin colour, prevents returning hair which is unusual for certain skin colours
 		/// </summary>
-		/// <param name="skin"></param>
-		/// <returns></returns>
 		private Color GetHairColorForSkin(Color skin)
 		{
 			// We want to limit the hair colors that are available, so dark skin does not give bright colored hair
@@ -229,7 +229,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get a random hair colour from all the available colours specified in config
 		/// </summary>
-		/// <returns></returns>
 		private Color GetRandomHairColor()
 		{
 			switch (StaticRandom.Int(0, 4))
@@ -248,11 +247,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get a body type by skill
 		/// </summary>
-		/// <param name="skill">The most prominent skill for the avatar</param>
-		/// <returns></returns>
-		private string GetBodyType(Skill skill)
+		private string GetBodyType()
 		{
-			switch (skill)
+			switch (_bestSkill)
 			{
 				case Skill.Quickness:
 					return "Skinny";
@@ -266,7 +263,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Gets a random eye color from those specified in the config
 		/// </summary>
-		/// <returns></returns>
 		private Color GetRandomEyeColor()
 		{
 			switch (StaticRandom.Int(0, 3))
@@ -283,8 +279,6 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Get a saved eye color
 		/// </summary>
-		/// <param name="color"></param>
-		/// <returns></returns>
 		private Color GetEyeColorFromText(string color)
 		{
 			switch (color)

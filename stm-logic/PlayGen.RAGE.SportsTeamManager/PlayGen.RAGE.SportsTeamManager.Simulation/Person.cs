@@ -41,7 +41,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void CreateFile(IntegratedAuthoringToolAsset iat, string storageLocation, string fileName = "")
 		{
-			//Get Storytelling Framework files
+			//Copy FAtiMA template files for this Person
 			RolePlayCharacter = ConfigStore.RolePlayCharacter.Copy();
 			SetRelations();
 			RolePlayCharacter.BodyName = Name;
@@ -54,6 +54,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			RolePlayCharacter.VoiceName = fileName;
 			RolePlayCharacter.SetFutureFilePath(Path.Combine(storageLocation, fileName + ".rpc"));
 			RolePlayCharacter.Save();
+			//add without check to adjust saving when adding (saves a bit of time on mobile platforms)
 			iat.AddNewCharacterSourceWithoutCheck(new CharacterSourceDTO { Source = RolePlayCharacter.AssetFilePath });
 		}
 
@@ -62,6 +63,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// </summary>
 		internal void SetRelations()
 		{
+			//direct set used so unsaved copies can be used instead of saved versions that have to be constantly saved and loaded
 			RolePlayCharacter.SetEmotionalAppraisalAsset(ConfigStore.EmotionalAppraisal.Copy());
 			RolePlayCharacter.SetEmotionalDecisionMakingAsset(ConfigStore.EmotionalDecisionMaking.Copy());
 			RolePlayCharacter.SetSocialImportanceAsset(ConfigStore.SocialImportance.Copy());

@@ -48,7 +48,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			Gender = SelectGender();
 			Age = StaticRandom.Int(18, 45);
 			Nationality = nationality;
-			Name = SelectRandomName();
+			SelectRandomName();
 			foreach (Skill skill in Enum.GetValues(typeof(Skill)))
 			{
 				if (position != Position.Null)
@@ -73,14 +73,14 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		/// <summary>
 		/// Randomly select a name for this CrewMember
 		/// </summary>
-		internal string SelectRandomName()
+		internal void SelectRandomName()
 		{
 			var names = Gender == "M" ? ConfigStore.NameConfig.MaleForename.ContainsKey(Nationality) ? ConfigStore.NameConfig.MaleForename[Nationality] : ConfigStore.NameConfig.MaleForename.Values.ToList().SelectMany(n => n).ToList() :
 						ConfigStore.NameConfig.FemaleForename.ContainsKey(Nationality) ? ConfigStore.NameConfig.FemaleForename[Nationality] : ConfigStore.NameConfig.FemaleForename.Values.ToList().SelectMany(n => n).ToList();
 			var name = names[StaticRandom.Int(0, names.Count)] + " ";
 			names = ConfigStore.NameConfig.Surname.ContainsKey(Nationality) ? ConfigStore.NameConfig.Surname[Nationality] : ConfigStore.NameConfig.Surname.Values.ToList().SelectMany(n => n).ToList();
 			name += names[StaticRandom.Int(0, names.Count)];
-			return name;
+			Name = name;
 		}
 
 		/// <summary>
@@ -503,23 +503,28 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 			{
 				eventString = EventHelper.ActionStart("Player", ev, spacelessName);
 			}
+			//event perceived to trigger any mood change events kept in the EA file
 			RolePlayCharacter.Perceive(eventString);
 			if (Enum.IsDefined(typeof(PostRaceEventImpact), ev))
 			{
 				//trigger different changes based off of what dialogue the player last picked
 				switch ((PostRaceEventImpact)Enum.Parse(typeof(PostRaceEventImpact), ev))
 				{
+					//improve opinion of manager, crew member now expects to be picked in the selected position (subjects[0]) next race
 					case PostRaceEventImpact.ExpectedPosition:
 						AddOrUpdateOpinion(team.ManagerName, 1);
 						UpdateSingleBelief(NPCBelief.ExpectedPosition, subjects[0]);
 						break;
+					//improve opinion of manager, crew member now expects to be picked in the selected position (subjects[0]) in two races time
 					case PostRaceEventImpact.ExpectedPositionAfter:
 						AddOrUpdateOpinion(team.ManagerName, 1);
 						UpdateSingleBelief(NPCBelief.ExpectedPositionAfter, subjects[0]);
 						break;
+					//make opinion of manager worse
 					case PostRaceEventImpact.ManagerOpinionWorse:
 						AddOrUpdateOpinion(team.ManagerName, -1);
 						break;
+					//make all crew members' opinion of manager worse
 					case PostRaceEventImpact.ManagerOpinionAllCrewWorse:
 						foreach (var cm in team.CrewMembers)
 						{
@@ -527,9 +532,11 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							cm.Value.SaveStatus();
 						}
 						break;
+					//improve opinion of manager
 					case PostRaceEventImpact.ManagerOpinionBetter:
 						AddOrUpdateOpinion(team.ManagerName, 1);
 						break;
+					//make all crew members' opinion of manager better
 					case PostRaceEventImpact.ManagerOpinionAllCrewBetter:
 						foreach (var cm in team.CrewMembers)
 						{
@@ -537,12 +544,15 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							cm.Value.SaveStatus();
 						}
 						break;
+					//improve opinion of manager greatly
 					case PostRaceEventImpact.ManagerOpinionMuchBetter:
 						AddOrUpdateOpinion(team.ManagerName, 5);
 						break;
+					//make opinion of manager much worse
 					case PostRaceEventImpact.ManagerOpinionMuchWorse:
 						AddOrUpdateOpinion(team.ManagerName, -5);
 						break;
+					//reveal two random skills for this crew member (can be already revealed skills)
 					case PostRaceEventImpact.RevealTwoSkills:
 						AddOrUpdateOpinion(team.ManagerName, 1);
 						for (var i = 0; i < 2; i++)
@@ -554,6 +564,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							UpdateSingleBelief(NPCBelief.RevealedSkill, statValue, statName);
 						}
 						break;
+					//reveal four random skills for this crew member (can be already revealed skills)
 					case PostRaceEventImpact.RevealFourSkills:
 						AddOrUpdateOpinion(team.ManagerName, 3);
 						for (var i = 0; i < 4; i++)
@@ -565,6 +576,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							UpdateSingleBelief(NPCBelief.RevealedSkill, statValue, statName);
 						}
 						break;
+					//improve all crew members' opinion of the crew member who was the subject of the event (subjects[0]) greatly and reveals their opinion.
+					//Regex adds spaces back before each capital letter
 					case PostRaceEventImpact.ImproveConflictOpinionGreatly:
 						var subGreatHelp = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
 						foreach (var cm in team.CrewMembers)
@@ -577,6 +590,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							}
 						}
 						break;
+					//improve all crew members' opinion of the crew member who was the subject of the event (subjects[0]) and reveals their opinion.
+					//Regex adds spaces back before each capital letter
 					case PostRaceEventImpact.ImproveConflictTeamOpinion:
 						var subHelp = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
 						foreach (var cm in team.CrewMembers)
@@ -589,6 +604,8 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							}
 						}
 						break;
+					//reveals all crew members' opinion of the crew member who was the subject of the event (subjects[0]) and slightly improves this the opinion of the manager for this crew member.
+					//Regex adds spaces back before each capital letter
 					case PostRaceEventImpact.ImproveConflictKnowledge:
 						var subKnow = Regex.Replace(subjects[0], @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0");
 						AddOrUpdateOpinion(team.ManagerName, 1);
@@ -601,6 +618,9 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 							}
 						}
 						break;
+					//improve opinion of manager, expects to be placed in perferred position (subjects[0]) next race
+					//other crew member involved in this event (subjects[1]) - improve opinion of manager, expects to be placed in perferred position (subjects[0]) in two races times
+					//Regex adds spaces back before each capital letter
 					case PostRaceEventImpact.CausesSelectionAfter:
 						AddOrUpdateOpinion(team.ManagerName, 1);
 						UpdateSingleBelief(NPCBelief.ExpectedPosition, subjects[0]);
@@ -609,6 +629,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						team.CrewMembers[otherPlayer].UpdateSingleBelief(NPCBelief.ExpectedPositionAfter, subjects[0]);
 						team.CrewMembers[otherPlayer].SaveStatus();
 						break;
+					//improves opinion of manager greatly, all unselected crew members' opinion of manager improves and expect to be selected next race
 					case PostRaceEventImpact.WholeTeamChange:
 						AddOrUpdateOpinion(team.ManagerName, 4);
 						foreach (var cm in team.CrewMembers)

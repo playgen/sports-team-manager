@@ -40,7 +40,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Get the positions for this boat type, keeping crew members in existing positions in the process
+		/// Get the positions for this boat type, removing crew members from positions that no longer exist
 		/// </summary>
 		private void GetPositions()
 		{
@@ -172,7 +172,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 		}
 
 		/// <summary>
-		/// Get the current score for this Position on this Boat for this CrewMember, excluding the effect opinion on other crew members has on the score
+		/// Get the combined average skill rating, mood and manager opinion for this CrewMember in this Position
 		/// </summary>
 		internal int GetPositionRating(CrewMember member, Position pos, string managerName)
 		{
@@ -356,15 +356,12 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 						}
 					}
 				}
-				//if the final currentPerfectCount score is higher than the current perfectCount, or nearestIdealMatch is null (meaning no other ideals have been checked), set this ideal crew to the nearest match
-				if (currentPerfectCount + currentImperfectCount >= perfectCount + imperfectCount || nearestIdealMatch.Count == 0)
+				//if this crew is more 'ideal' than the current, or the length of the nearestIdealMatch list is 0 (meaning no other ideals have been checked), set this ideal crew to the nearest match
+				if (currentPerfectCount > perfectCount || (currentPerfectCount == perfectCount && currentImperfectCount > imperfectCount) || nearestIdealMatch.Count == 0)
 				{
-					if (currentPerfectCount + currentImperfectCount > perfectCount + imperfectCount || currentPerfectCount > perfectCount || nearestIdealMatch.Count == 0)
-					{
-						perfectCount = currentPerfectCount;
-						imperfectCount = currentImperfectCount;
-						nearestIdealMatch = crew;
-					}
+					perfectCount = currentPerfectCount;
+					imperfectCount = currentImperfectCount;
+					nearestIdealMatch = crew;
 				}
 			}
 			PerfectSelections = perfectCount;

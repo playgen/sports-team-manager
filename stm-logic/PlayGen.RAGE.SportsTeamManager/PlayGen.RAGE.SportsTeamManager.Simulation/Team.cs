@@ -74,7 +74,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 					var lastNames = crewMembers.Select(c => c.Value.LastName).Concat(RetiredCrew.Select(c => c.Value.LastName)).Concat(Recruits.Select(c => c.Value.LastName)).ToList();
 					if (firstNames.Contains(cm.FirstName) || lastNames.Contains(cm.LastName) || cm.Name == ManagerName)
 					{
-						cm.Name = cm.SelectRandomName();
+						cm.SelectRandomName();
 					}
 					else
 					{
@@ -85,7 +85,7 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				{
 					if (crewMembers.ContainsKey(cm.Name) || RetiredCrew.ContainsKey(cm.Name) || Recruits.ContainsKey(cm.Name) || cm.Name == ManagerName)
 					{
-						cm.Name = cm.SelectRandomName();
+						cm.SelectRandomName();
 					}
 					else
 					{

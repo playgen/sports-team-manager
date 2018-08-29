@@ -676,7 +676,7 @@ public class TeamSelectionUI : MonoBehaviour
 				{ TrackerContextKey.CurrentSession, (isRace ? GameManagement.RaceSessionLength : GameManagement.CurrentRaceSession - 1) + "/" + GameManagement.RaceSessionLength },
 				{ TrackerContextKey.SessionType, isRace ? "Race" : "Practice" },
 				{ TrackerContextKey.BoatLayout, newString },
-				{ TrackerContextKey.Score, boat.Score },
+				{ TrackerContextKey.SessionScore, boat.Score },
 				{ TrackerContextKey.ScoreAverage, ((float)boat.Score / boat.PositionCount).ToString(CultureInfo.InvariantCulture) },
 				{ TrackerContextKey.IdealCorrectPlacement, boat.PerfectSelections },
 				{ TrackerContextKey.IdealCorrectMemberWrongPosition, boat.ImperfectSelections },
