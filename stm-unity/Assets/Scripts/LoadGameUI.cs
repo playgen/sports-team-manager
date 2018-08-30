@@ -132,6 +132,9 @@ public class LoadGameUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Triggered by button click. Return back to showing the Main Menu UI
+	/// </summary>
 	public void GoToMainMenu()
 	{
 		UIManagement.StateManager.GoToState(State.MainMenu);

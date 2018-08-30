@@ -51,7 +51,7 @@ public class AvatarDisplay : MonoBehaviour
 	private Avatar _avatar;
 
 	/// <summary>
-	/// Load all avatar sprites from resources.
+	/// Load all avatar sprites from resources. Triggered at start-up.
 	/// </summary>
 	public static void LoadSprites()
 	{
@@ -61,12 +61,18 @@ public class AvatarDisplay : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Set the avatar sprites to match the charactistics of this Avatar and the mood value provided
+	/// </summary>
 	public void SetAvatar(Avatar avatar, float mood)
 	{
 		SetAvatar(avatar);
 		UpdateMood(mood);
 	}
 
+	/// <summary>
+	/// Set the avatar sprites to match the charactistics of this Avatar and the AvatarMood provided
+	/// </summary>
 	public void SetAvatar(Avatar avatar, AvatarMood mood)
 	{
 		SetAvatar(avatar);
@@ -159,6 +165,9 @@ public class AvatarDisplay : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Get the AvatarMood for the mood value provided
+	/// </summary>
 	public static AvatarMood GetMood(float mood)
 	{
 		if (Mathf.Approximately(mood, AvatarMoodMapping[AvatarMood.Neutral]))
@@ -174,6 +183,9 @@ public class AvatarDisplay : MonoBehaviour
 		return mood > AvatarMoodMapping[AvatarMood.StronglyDisagree] ? AvatarMood.Disagree : AvatarMood.StronglyDisagree;
 	}
 
+	/// <summary>
+	/// Get the color for the AvatarMood provided
+	/// </summary>
 	public static Color MoodColor(AvatarMood avatarMood)
 	{
 		switch (avatarMood)
@@ -191,13 +203,16 @@ public class AvatarDisplay : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Get the color for the mood value provided
+	/// </summary>
 	public static Color MoodColor(float avatarMood)
 	{
 		return MoodColor(GetMood(avatarMood));
 	}
 
 	/// <summary>
-	/// update the displayed avatar to currently stored values (usually used to switch between causal and non-causal outfits)
+	/// Update the displayed avatar to currently stored values (usually used to switch between causal and non-causal outfits)
 	/// </summary>
 	public void UpdateAvatar()
 	{
@@ -205,7 +220,7 @@ public class AvatarDisplay : MonoBehaviour
 	}
 
 	/// <summary>
-	/// update the avatar's facial expression based on their agreement with the statement passed to them
+	/// Update the avatar's facial expression based on their agreement with the statement passed to them
 	/// </summary>
 	public void UpdateMood(string reaction)
 	{
@@ -213,7 +228,7 @@ public class AvatarDisplay : MonoBehaviour
 	}
 
 	/// <summary>
-	/// update the avatar's facial expression based on their agreement with the statement passed to them
+	/// Update the avatar's facial expression based on their agreement with the statement passed to them
 	/// </summary>
 	public void UpdateMood(float mood)
 	{
@@ -221,7 +236,7 @@ public class AvatarDisplay : MonoBehaviour
 	}
 
 	/// <summary>
-	/// update the avatar's facial expression based on the mood value provided
+	/// Update the avatar's facial expression based on the AvatarMood value provided
 	/// </summary>
 	public void UpdateMood(AvatarMood mood)
 	{
@@ -251,7 +266,7 @@ public class AvatarDisplay : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Get the an image from the avatar, checks which version is currently shown, masked or normal
+	/// Get an image from the avatar relative to its parent object
 	/// </summary>
 	private Image GetAvatarImage(string image)
 	{

@@ -138,86 +138,137 @@ public static class GameManagement
 
 	public static bool QuestionnaireCompleted => GameManager.QuestionnaireCompleted;
 
+	/// <summary>
+	/// Get the config value for this ConfigKey
+	/// </summary>
 	public static float Value(this ConfigKey key, CrewMember member = null)
 	{
 		return GameManager.GetConfigValue(key, member);
 	}
 
+	/// <summary>
+	/// Get the string config value for this ConfigKey. Will use string as a Localization key if localize is true.
+	/// </summary>
 	public static string ValueString(this ConfigKey key, bool localize = true, CrewMember member = null)
 	{
 		return Value(key, member).ToString(localize ? Localization.SpecificSelectedLanguage : CultureInfo.InvariantCulture);
 	}
 
+	/// <summary>
+	/// Is ActionAllowance greater than or equal to the value of this ConfigKey
+	/// </summary>
 	public static bool Affordable(this ConfigKey key, CrewMember member = null)
 	{
 		return ActionAllowance >= Value(key, member);
 	}
 
+	/// <summary>
+	/// Get the Localized strings for this event key
+	/// </summary>
 	public static string EventString(this string key)
 	{
 		return Localization.Get(EventController.GetEventStrings(key).OrderBy(s => Guid.NewGuid()).First());
 	}
 
+	/// <summary>
+	/// Get the event key that this state starts with
+	/// </summary>
 	public static string EventKeys(this string state)
 	{
 		return EventController.GetEventKeys().First(state.Split('_')[1].StartsWith);
 	}
 
+	/// <summary>
+	/// Get the localized help text for this key
+	/// </summary>
 	public static string HelpText(this string key)
 	{
 		return Localization.Get(EventController.GetHelpText(key));
 	}
 
+	/// <summary>
+	/// Assign this CrewMember to the provided position
+	/// </summary>
 	public static void Assign(this CrewMember crewMember, Position position)
 	{
 		Boat.AssignCrewMember(position, crewMember);
 	}
 
+	/// <summary>
+	/// Get this CrewMember's current position
+	/// </summary>
 	public static Position BoatPosition(this CrewMember member)
 	{
 		return Boat.GetCrewMemberPosition(member);
 	}
 
+	/// <summary>
+	/// Get if this CrewMember is a current member of the team
+	/// </summary>
 	public static bool Current(this CrewMember member)
 	{
 		return CrewMembers.ContainsKey(member.Name);
 	}
 
+	/// <summary>
+	/// Get how many races this CrewMember has won
+	/// </summary>
 	public static int RacesWon(this CrewMember member)
 	{
 		return RaceHistory.Count(boat => boat.PositionCrew.Values.Any(cm => member.Name == cm.Name) && GetRacePosition(boat.Score, boat.PositionCount) == 1);
 	}
 
+	/// <summary>
+	/// Get how many sessions this CrewMember has featured in
+	/// </summary>
 	public static int SessionsIncluded(this CrewMember member)
 	{
 		return LineUpHistory.Count(boat => boat.PositionCrew.Values.ToList().Any(c => c.Name == member.Name));
 	}
 
+	/// <summary>
+	/// Get this CrewMember's name formatted as first initial and last name (i.e. F.LastName)
+	/// </summary>
 	public static string FirstInitialLastName(this CrewMember member)
 	{
 		return $"{member.FirstName[0]}.{member.LastName}";
 	}
 
+	/// <summary>
+	/// Get this CrewMember's name formatted as last name comma new line first name (i.e. LastName, \nFirstName)
+	/// </summary>
 	public static string SplitName(this CrewMember member)
 	{
 		return $"{member.LastName},\n{member.FirstName}";
 	}
 
+	/// <summary>
+	/// Get if this Position is currently in use
+	/// </summary>
 	public static bool Current(this Position position)
 	{
 		return Positions.Contains(position);
 	}
 
+	/// <summary>
+	/// Get the CrewMember (if any) in this Position
+	/// </summary>
 	public static CrewMember CurrentCrewMember(this Position position)
 	{
 		return PositionCrew.ContainsKey(position) ? PositionCrew[position] : null;
 	}
 
+	/// <summary>
+	/// Get how many sessions this Positions has been featured in
+	/// </summary>
 	public static int SessionsIncluded(this Position position)
 	{
 		return LineUpHistory.Sum(boat => boat.Positions.Count(pos => pos == position)) + (position.Current() ? 1 : 0);
 	}
 
+	/// <summary>
+	/// Get how many times CrewMembers have been placed in this Position, sorted from most to least
+	/// </summary>
 	public static List<KeyValuePair<CrewMember, int>> Placements(this Position position)
 	{
 		var positionMembers = new Dictionary<CrewMember, int>();

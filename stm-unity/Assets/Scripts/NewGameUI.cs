@@ -33,6 +33,9 @@ public class NewGameUI : MonoBehaviour
 	[SerializeField]
 	private Toggle _tutorialToggle;
 
+	/// <summary>
+	/// Set a random starting color and set up input field validation
+	/// </summary>
 	private void Awake()
 	{
 		_overwritePopUp.Active(false);
@@ -60,6 +63,7 @@ public class NewGameUI : MonoBehaviour
 
 	private void OnEnable()
 	{
+		//set tutorial to off and hidden and set a generic name in demo mode, force tutorial on if not in demo mode and no existing saves are found
 		if (GameManagement.DemoMode)
 		{
 			_tutorialToggle.transform.Parent().Active(false);
@@ -108,6 +112,9 @@ public class NewGameUI : MonoBehaviour
 		_colorImagePrimary.color = color;
 	}
 
+	/// <summary>
+	/// Update the displayed color to match what has been selected using the sliders
+	/// </summary>
 	public void UpdateSecondaryColor(Color color)
 	{
 		_colorImageSecondary.color = color;

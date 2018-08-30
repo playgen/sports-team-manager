@@ -70,15 +70,18 @@ public class MemberMeetingUI : MonoBehaviour
 	/// </summary>
 	public void SetUpDisplay(CrewMember crewMember, string source)
 	{
+		//do not display if the season has finished
 		if (!GameManagement.SeasonOngoing)
 		{
 			return;
 		}
+		//Change the opinion icon dictionary from the available array if not already done
 		if (_opinionIconDict == null)
 		{
 			_opinionIconDict = _opinionIcons.ToDictionary(o => o.name.Replace("Icon_Box_", string.Empty), o => o);
 		}
 		_currentMember = crewMember;
+		//ensure that the crew member is visible on the crew container at the bottom
 		UIManagement.TeamSelection.EnsureVisible(_currentMember);
 		//make pop-up visible and firing warning not visible
 		gameObject.Active(true);
@@ -177,6 +180,9 @@ public class MemberMeetingUI : MonoBehaviour
 		OnLanguageChange();
 	}
 
+	/// <summary>
+	/// Display the opinion of this CrewMember on CrewMemberUIs
+	/// </summary>
 	public void DisplayOpinions(bool accurate = true)
 	{
 		var forceCycle = 0;
@@ -196,6 +202,9 @@ public class MemberMeetingUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Get the opinion icon for the opinion value provided
+	/// </summary>
 	private Sprite GetOpinionIcon(int opinion)
 	{
 		if (opinion >= ConfigKey.OpinionStrongLike.Value())
@@ -327,6 +336,9 @@ public class MemberMeetingUI : MonoBehaviour
 		UIManagement.PositionDisplay.ChangeBlockerOrder();
 	}
 
+	/// <summary>
+	/// Disable the opinion icons
+	/// </summary>
 	private static void ResetOpinionIcons()
 	{
 		foreach (var crewMember in UIManagement.CrewMemberUI)

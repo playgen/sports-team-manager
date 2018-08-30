@@ -5,6 +5,9 @@ using TrackerAssetPackage;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// UI displayed at the end of a season, displaying the team's final position
+/// </summary>
 public class CupResultUI : MonoBehaviour
 {
 	[SerializeField]

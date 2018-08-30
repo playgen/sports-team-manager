@@ -1,6 +1,9 @@
 ﻿using PlayGen.Unity.Utilities.Video;
 using UnityEngine;
 
+/// <summary>
+/// UI for displaying/hiding and playing the demo video when the game is in demo mode
+/// </summary>
 public class DemoVideo : VideoPlayerUI
 {
 	[SerializeField]

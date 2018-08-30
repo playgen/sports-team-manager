@@ -7,6 +7,9 @@ using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Extensions;
 using TrackerAssetPackage;
 
+/// <summary>
+/// UI related to taking notes on crew members or positions
+/// </summary>
 public class NotesUI : MonoBehaviour
 {
 	[SerializeField]
@@ -28,7 +31,7 @@ public class NotesUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Display pop-up which shows the boat promotion
+	/// Display pop-up which shows the notes for this entity
 	/// </summary>
 	public void Display(string subject)
 	{
@@ -45,7 +48,7 @@ public class NotesUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Close the promotion pop-up
+	/// Close the pop-up and trigger the notes to be resaved for this entity
 	/// </summary>
 	public void Close(string source)
 	{

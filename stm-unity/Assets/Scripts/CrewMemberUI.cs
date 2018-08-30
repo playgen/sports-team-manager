@@ -46,10 +46,15 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	private const float _clickedDistance = 15;
 
 	/// <summary>
-	/// Bring in elements that need to be known to this object
+	/// Bring in elements that need to be known to this object, set properties related to this object and set the UI accordingly
 	/// </summary>
 	public void SetUp(bool usable, CrewMember crewMember, int mood, TrackerTriggerSource source = TrackerTriggerSource.TeamManagementScreen)
 	{
+		CrewMember = crewMember;
+		Current = crewMember.Current();
+		Usable = usable;
+		_source = source;
+
 		_borderImage = GetComponent<Image>();
 		_backImage = transform.FindImage("AvatarIcon");
 		_button = GetComponent<Button>();
@@ -61,10 +66,6 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		_sortText = transform.FindText("Sort/Sort Text");
 		_aspectFitter = GetComponent<AspectRatioFitter>();
 
-		CrewMember = crewMember;
-		Current = crewMember.Current();
-		Usable = usable;
-		_source = source;
 		_defaultParent = transform.parent;
 		_nameText.text = CrewMember.FirstInitialLastName();
 		_backImage.color = Usable ? new Color(0, 1, 1) : Current ? new Color(0, 0.5f, 0.5f) : Color.white;
@@ -75,6 +76,9 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		_aspectFitter.aspectMode = Usable ? AspectRatioFitter.AspectMode.FitInParent : AspectRatioFitter.AspectMode.WidthControlsHeight;
 	}
 
+	/// <summary>
+	/// Set the value displayed in the top left corner when not positioned. If no value, also hide backer image.
+	/// </summary>
 	public void SetSortValue(string value)
 	{
 		_sortValue = value;
@@ -84,6 +88,9 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		_sortText.text = _sortValue;
 	}
 
+	/// <summary>
+	/// Set this CrewMemberUI to no longer be 'Current', meaning the border, background and avatar clothing gets changed as a result
+	/// </summary>
 	public void CurrentUpdate()
 	{
 		if (Current && !CrewMember.Current())
@@ -127,15 +134,19 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		_dragStartPosition = transform.position;
 		_beingDragged = true;
 		_beingClicked = true;
+		//set aspectmode to none so that it doesn't try to resize to fit its new parent
 		_aspectFitter.aspectMode = AspectRatioFitter.AspectMode.None;
 		//_dragLocalPosition is used to offset according to where the click occurred
 		_dragLocalPosition = Input.mousePosition - transform.position;
-		//set as child of parent many levels up so this displays above all other CrewMember objects
+		//set as child of drag canvas to reduce lag on mobile platforms
 		transform.SetParent(UIManagement.DragCanvas, false);
+		//set position to where the mouse position is minus the offset
 		transform.position = (Vector2)Input.mousePosition - _dragLocalPosition;
+		//set anchoring to center and size to the same as the unmovable default parent so that the icon remains the correct size
 		transform.RectTransform().anchorMin = Vector3.one * 0.5f;
 		transform.RectTransform().anchorMax = Vector3.one * 0.5f;
 		transform.RectTransform().sizeDelta = _defaultParent.RectTransform().sizeDelta;
+		//change backer color to show that this is currently being selected
 		_backImage.color = new Color(0, 0.25f, 0.25f);
 	}
 
@@ -145,6 +156,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	private void Update ()
 	{
 #if UNITY_EDITOR
+		//debug buttons to change all avatar moods
 		if (Input.GetKeyDown("1"))
 		{
 			ForcedMoodChange("negative");
@@ -182,11 +194,17 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		}
 	}
 
+	/// <summary>
+	/// Get avatar expression to match value provided
+	/// </summary>
 	public void UpdateAvatar(int mood)
 	{
 		_avatarDisplay.SetAvatar(CrewMember.Avatar, mood);
 	}
 
+	/// <summary>
+	/// Update the avatar expression and border color using the string provided. Partially used for debugging
+	/// </summary>
 	public void ForcedMoodChange(string moodChange)
 	{
 		var mood = AvatarMood.Neutral;
@@ -208,7 +226,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 	}
 
 	/// <summary>
-	/// MouseUp ends the current drag. Check if the CrewMember has been placed into a position. If beingClicked is true, the CrewMember pop-up is displayed.
+	/// MouseUp or blockers end the current drag. Check if the CrewMember has been placed into a position. If beingClicked is true, the CrewMember pop-up is displayed.
 	/// </summary>
 	private void EndDrag()
 	{
@@ -289,9 +307,9 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		var currentPositionCrew = positionUI.CrewMemberUI;
 		var positionTransform = positionUI.RectTransform();
 		transform.SetParent(null, false);
-		//set size and position
 		CrewMember.Assign(positionUI.Position);
 		positionUI.LinkCrew(this);
+		//if this CrewMember isn't being placed due to a swap, check if there's a CrewMember in this position and cause a swap
 		if (!swap)
 		{
 			if (currentPositionCrew != null)
@@ -306,6 +324,7 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 				}
 			}
 		}
+		//set size and position
 		transform.SetParent(positionTransform, false);
 		_aspectFitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
 		transform.position = positionTransform.position;
@@ -317,6 +336,9 @@ public class CrewMemberUI : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 		SetSortValue(_sortValue);
 	}
 
+	/// <summary>
+	/// Set the position icon for this CrewMember
+	/// </summary>
 	public void SetPosition(Position position)
 	{
 		_positionImage.enabled = true;

@@ -7,6 +7,9 @@ using RAGE.EvaluationAsset;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Opening and default UI
+/// </summary>
 public class MainMenuUI : MonoBehaviour
 {
 	[SerializeField]
@@ -25,6 +28,9 @@ public class MainMenuUI : MonoBehaviour
 	private GameObject _exitButton;
 	private static bool _loaded;
 
+	/// <summary>
+	/// Hide buttons accordingly to mode and current signed in state for SUGAR
+	/// </summary>
 	private void Start()
 	{
 		_logo.enabled = true;
@@ -84,18 +90,24 @@ public class MainMenuUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Triggered by button click. Go to New Game UI
+	/// </summary>
 	public void GoToNewGame()
 	{
 		UIManagement.StateManager.GoToState(State.NewGame);
 	}
 
+	/// <summary>
+	/// Triggered by button click. Go to Load Game UI
+	/// </summary>
 	public void GoToLoadGame()
 	{
 		UIManagement.StateManager.GoToState(State.LoadGame);
 	}
 
 	/// <summary>
-	/// Close the game
+	/// Can be triggered by button click. Close the game
 	/// </summary>
 	public void CloseGame()
 	{

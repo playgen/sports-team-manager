@@ -40,6 +40,7 @@ public class FeedbackUI : MonoBehaviour
 
 	private void OnEnable()
 	{
+		//set the array of video clips into a dictionary if not already done
 		if (_videoDict.Count != _videos.Length)
 		{
 			_videoDict = _videos.ToDictionary(v => v.name, v => v, StringComparer.OrdinalIgnoreCase);
@@ -166,16 +167,25 @@ public class FeedbackUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// return to the Team Management UI. Triggered by Unity event
+	/// </summary>
 	public void GoToTeamManagement()
 	{
 		UIManagement.StateManager.GoToState(State.TeamManagement);
 	}
 
+	/// <summary>
+	/// Redraw the graph when the language is changed
+	/// </summary>
 	private void OnLanguageChange()
 	{
 		DrawGraph();
 	}
 
+	/// <summary>
+	/// Resize the graph text if the graph is currently active
+	/// </summary>
 	private void DoBestFit()
 	{
 		if (_selectionGraph.gameObject.activeSelf)
