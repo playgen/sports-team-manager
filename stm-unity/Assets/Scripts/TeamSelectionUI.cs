@@ -744,6 +744,10 @@ public class TeamSelectionUI : MonoBehaviour
 			positionText.Key = "POSITION_" + result;
 			positionText.Set();
 		}
+		else if (raceNumber == _ongoingResultContainer.transform.childCount)
+		{
+			_ongoingResultContainer.transform.GetChild(GameManagement.RaceCount - 1).GetComponent<Image>().fillAmount = 1;
+		}
 		else
 		{
 			_ongoingResultContainer.transform.GetChild(raceNumber).GetComponent<Image>().fillAmount = (GameManagement.CurrentRaceSession - 1) / (float)GameManagement.RaceSessionLength;

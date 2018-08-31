@@ -252,13 +252,13 @@ namespace PlayGen.RAGE.SportsTeamManager.Simulation
 				return;
 			}
 			Boat.Promote(newType);
+			//store that the boat type has been changed
+			Manager.UpdateSingleBelief(NPCBelief.BoatType, Boat.Type);
 			if (Boat.Type == "Finish")
 			{
 				Finished = true;
 				return;
 			}
-			//store that the boat type has been changed
-			Manager.UpdateSingleBelief(NPCBelief.BoatType, Boat.Type);
 			//calculate how many new members should be created
 			extraMembers = (Boat.PositionCount - extraMembers) * 2;
 			//reset the positions on the boat to those for the new type
