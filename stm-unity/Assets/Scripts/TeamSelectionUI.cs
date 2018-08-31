@@ -774,6 +774,7 @@ public class TeamSelectionUI : MonoBehaviour
 	/// </summary>
 	private void OnLanguageChange()
 	{
+		ChangeVisibleBoats(0);
 		foreach (var position in _boatMain.GetComponentsInChildren<PositionUI>())
 		{
 			position.transform.FindText("Text").text = Localization.Get(position.Position.ToString());
