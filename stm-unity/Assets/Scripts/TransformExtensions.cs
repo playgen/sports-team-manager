@@ -4,7 +4,7 @@ using UnityEngine;
 public static class TransformExtensions
 {
 	/// <summary>
-	/// Find if provided recttransform is currently visible within the provided rect
+	/// Find if RectTransform is currently visible within the provided RectTransform
 	/// </summary>
 	public static bool IsRectTransformVisible(this RectTransform obj, RectTransform visibleRect)
 	{

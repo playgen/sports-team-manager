@@ -24,7 +24,6 @@ public class PostRaceEventUI : MonoBehaviour
 	{
 		Localization.LanguageChange += OnLanguageChange;
 		BestFit.ResolutionChange += DoBestFit;
-		//reorder pop-ups and blockers
 		transform.parent.EnableBlocker();
 	}
 
@@ -32,6 +31,7 @@ public class PostRaceEventUI : MonoBehaviour
 	{
 		Localization.LanguageChange -= OnLanguageChange;
 		BestFit.ResolutionChange -= DoBestFit;
+		//if the close button is active, hide all dialogue options (helps with best fit sometimes) and disable the blocker if this pop-up is actually using it
 		if (_closeButton.activeSelf)
 		{
 			foreach (var person in _postRacePeople)
@@ -47,6 +47,9 @@ public class PostRaceEventUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Show the post-race event pop-up if there is currently an event with the same number of characters involved as this pop-up can show
+	/// </summary>
 	public void Display()
 	{
 		if (_postRacePeople == null)
@@ -66,11 +69,11 @@ public class PostRaceEventUI : MonoBehaviour
 	public void ResetDisplay()
 	{
 		_closeButton.Active(false);
+		//set current NPC dialogue and possible dialogue options
 		for (var i = 0; i < _postRacePeople.Length; i++)
 		{
 			_postRacePeople[i].ResetDisplay(GameManagement.CurrentEvent[i]);
 		}
-		//set current NPC dialogue
 		ResetQuestions();
 		SUGARManager.GameData.Send("Post Race Event Start", GameManagement.CurrentEvent[0].Dialogue.NextState);
 	}
@@ -97,10 +100,12 @@ public class PostRaceEventUI : MonoBehaviour
 	/// </summary>
 	private void ResetQuestions()
 	{
+		//only do this if the current event if for this pop-up
 		if (GameManagement.CurrentEventCount == _postRacePeople.Length)
 		{
 			var replies = GameManagement.EventController.GetEventDialogues(GameManagement.Manager);
 			var replyDict = new Dictionary<CrewMember, List<PostRaceEventState>>();
+			//if there is an ongoing event, add to the reply dictionary for each crew member involved
 			if (GameManagement.OngoingEvent)
 			{
 				foreach (var ev in GameManagement.CurrentEvent)
@@ -111,6 +116,7 @@ public class PostRaceEventUI : MonoBehaviour
 					}
 				}
 			}
+			//add all possible dialogue options to reply dictionary
 			if (replies.Count != 0)
 			{
 				foreach (var reply in replies)
@@ -125,6 +131,7 @@ public class PostRaceEventUI : MonoBehaviour
 					}
 				}
 			}
+			//reset dialogue option UI
 			if (GameManagement.OngoingEvent)
 			{
 				for (var i = 0; i < _postRacePeople.Length; i++)
@@ -139,6 +146,7 @@ public class PostRaceEventUI : MonoBehaviour
 					p.ResetQuestions(new PostRaceEventState(p.CurrentCrewMember, null), new List<PostRaceEventState>());
 				}
 			}
+			//set the blocker to be clickable if there are no dialogue options (meaning the event has finished)
 			if (replyDict.Values.Sum(dos => dos.Count) == 0)
 			{
 				SetBlockerOnClick();
@@ -181,6 +189,7 @@ public class PostRaceEventUI : MonoBehaviour
 	/// </summary>
 	public Dictionary<CrewMember, PostRaceEventState> AddReply(PostRaceEventState response)
 	{
+		//create dictionary if null
 		if (_selectedResponses == null)
 		{
 			_selectedResponses = new Dictionary<CrewMember, PostRaceEventState>();
@@ -207,6 +216,7 @@ public class PostRaceEventUI : MonoBehaviour
 				SUGARManager.GameData.Send("Post Race Event Reply", res.Dialogue.NextState);
 			}
 			var beforeValues = GameManagement.AverageTeamMood + GameManagement.AverageTeamManagerOpinion + GameManagement.AverageTeamOpinion;
+			//send chosen dialogue and get response
 			var replies = GameManagement.GameManager.SendPostRaceEvent(_selectedResponses.Values.ToList());
 			_selectedResponses = null;
 			var afterValues = GameManagement.AverageTeamMood + GameManagement.AverageTeamManagerOpinion + GameManagement.AverageTeamOpinion;
@@ -279,6 +289,7 @@ public class PostRaceEventUI : MonoBehaviour
 
 	private void DoBestFit()
 	{
+		//best fit called even though font size is kept the same as this forces a redraw of the layout groups, which includes the dialogue buttons
 		var peopleLayout = _postRacePeople.Select(p => p.GetComponentInChildren<LayoutGroup>()).ToList();
 		peopleLayout.ForEach(p => p.BestFit());
 		peopleLayout.ForEach(p => p.GetComponentsInChildren<Text>().ToList().ForEach(t => t.fontSize = 15));

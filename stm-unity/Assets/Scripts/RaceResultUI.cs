@@ -9,6 +9,9 @@ using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Extensions;
 using TrackerAssetPackage;
 
+/// <summary>
+/// UI displayed after a race has been completed
+/// </summary>
 public class RaceResultUI : MonoBehaviour
 {
 	[SerializeField]
@@ -36,16 +39,21 @@ public class RaceResultUI : MonoBehaviour
 	/// </summary>
 	public void Display(Dictionary<Position, CrewMember> currentPositions, int finishPosition)
 	{
+		//hide other pop-ups and disable the other blocker
 		UIManagement.PositionDisplay.ClosePositionPopUp(string.Empty);
 		UIManagement.MemberMeeting.CloseCrewMemberPopUp(string.Empty);
 		UIManagement.DisableSmallBlocker();
+		//enable object and blocker
 		gameObject.Active(true);
 		transform.EnableBlocker(() => Close(TrackerTriggerSource.PopUpBlocker.ToString()));
+		//store the finishing position in case of redraws
 		_lastRaceFinishPosition = finishPosition;
+		//wipe previous crew
 		foreach (Transform child in _crewContainer)
 		{
 			Destroy(child.gameObject);
 		}
+		//draw selected crew with expression matching the result
 		var crewCount = 0;
 		foreach (var pair in currentPositions)
 		{

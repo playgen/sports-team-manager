@@ -1,4 +1,7 @@
-﻿public enum State
+﻿/// <summary>
+/// Enum of possible UI states
+/// </summary>
+public enum State
 {
 	MainMenu = 0,
 	NewGame,

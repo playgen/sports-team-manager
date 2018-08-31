@@ -68,6 +68,7 @@ public class QuestionnaireUI : MonoBehaviour
 		_questions.Clear();
 		GetQuestionniare(_questionAsset, _answerStyleAsset);
 		CheckAllToggled();
+		//question and answer text is only set in OnLanguageChange, which is why this is called here
 		OnLanguageChange();
 	}
 
@@ -80,6 +81,7 @@ public class QuestionnaireUI : MonoBehaviour
 
 		var parsedQuestionAsset = JSON.Parse(question.text);
 		var questionDict = new Dictionary<string, Dictionary<string, string>>();
+		//parse the questionnaire JSON into a dictionary
 		for (var i = 0; i < parsedQuestionAsset.Count; i++)
 		{
 			var questionLangDict = Localization.Languages.ToDictionary(langName => langName.Name.ToLower(), langName => (parsedQuestionAsset[i][langName.Name.ToLower()] ?? parsedQuestionAsset[i][0]).Value.Replace("\"", string.Empty));
@@ -88,6 +90,7 @@ public class QuestionnaireUI : MonoBehaviour
 
 		var parsedStyleAsset = JSON.Parse(answer.text);
 		var styleDict = new Dictionary<string, Dictionary<string, string>>();
+		//parse the answer JSON into a dictionary
 		for (var i = 0; i < parsedStyleAsset.Count; i++)
 		{
 			var questionStyleDict = new Dictionary<string, string>
@@ -99,6 +102,7 @@ public class QuestionnaireUI : MonoBehaviour
 		}
 
 		var questionFound = true;
+		//while there continue to be undrawn questions, draw the next question
 		while (questionFound)
 		{
 			var currentQuestion = $"QUESTION_{questions.Count + 1}";
@@ -168,6 +172,9 @@ public class QuestionnaireUI : MonoBehaviour
 		UIManagement.StateManager.GoToState(State.Feedback);
 	}
 
+	/// <summary>
+	/// Return back to the team management state
+	/// </summary>
 	public void GoToTeamManagement()
 	{
 		UIManagement.StateManager.GoToState(State.TeamManagement);

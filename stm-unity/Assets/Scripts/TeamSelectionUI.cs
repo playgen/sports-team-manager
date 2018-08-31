@@ -24,6 +24,9 @@ public class Icon
 	public Sprite Image;
 }
 
+/// <summary>
+/// A class used for grouping together information related to past sessions
+/// </summary>
 public class HistoricBoat
 {
 	public Boat Boat;
@@ -120,7 +123,7 @@ public class TeamSelectionUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Toggle interactivity of race and recruitment buttons by if they are currently allowable 
+	/// Toggle interactivity of recruitment buttons by if they are currently affordable to use 
 	/// </summary>
 	private void Update()
 	{
@@ -158,6 +161,9 @@ public class TeamSelectionUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Enable the buttons used to race
+	/// </summary>
 	private void EnableRacing()
 	{
 		_raceButton.interactable = true;
@@ -165,6 +171,9 @@ public class TeamSelectionUI : MonoBehaviour
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
+	/// <summary>
+	/// Disable the buttons used to race
+	/// </summary>
 	private void DisableRacing()
 	{
 		_raceButton.interactable = false;
@@ -172,6 +181,9 @@ public class TeamSelectionUI : MonoBehaviour
 		UIManagement.Tutorial.ShareEvent(GetType().Name, MethodBase.GetCurrentMethod().Name);
 	}
 
+	/// <summary>
+	/// Create the object used to display current progress through the season of races
+	/// </summary>
 	private void CreateSeasonProgress()
 	{
 		foreach (Transform child in _ongoingResultContainer.transform)
@@ -276,7 +288,6 @@ public class TeamSelectionUI : MonoBehaviour
 			if (GameManagement.SeasonOngoing)
 			{
 				var crewMemberDraggable = CreateCrewMember(cm, crewMember.transform, true);
-				//crewMemberDraggable.transform.position = crewMember.transform.position;
 				CrewMembers.Add(crewMemberDraggable);
 			}
 		}
@@ -301,6 +312,9 @@ public class TeamSelectionUI : MonoBehaviour
 		return crewMember;
 	}
 
+	/// <summary>
+	/// Sort the crew members in the container by the current value in the dropdown. Triggered by a change of value on the dropdown.
+	/// </summary>
 	public void SortCrew(bool playerTriggered = false)
 	{
 		var sortedCrewMembers = CrewMembers.Where(c => c.transform.parent == _crewContainer.transform).ToList();
@@ -387,9 +401,11 @@ public class TeamSelectionUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Adjust the crew member scroll rect position to ensure this crew member is shown
+	/// </summary>
 	public void EnsureVisible(CrewMember crewMember)
 	{
-		//adjust the crew member scroll rect position to ensure this crew member is shown
 		var memberTransform = CrewMembers.First(c => c.CrewMember == crewMember && !c.Usable).RectTransform();
 		if (!memberTransform.IsRectTransformVisible(memberTransform.parent.parent.RectTransform()))
 		{
@@ -401,6 +417,9 @@ public class TeamSelectionUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Change the scroll value of the crew container by using buttons. Should not display buttons if all crew fit on screen.
+	/// </summary>
 	public void CrewContainerPaging(int page = 0)
 	{
 		var multiplePages = !_crewContainer.transform.RectTransform().IsRectTransformVisible(_crewContainer.transform.parent.RectTransform());
@@ -708,6 +727,9 @@ public class TeamSelectionUI : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Update the UI used to display current progress and results through the season
+	/// </summary>
 	private void UpdateSeasonProgress(int result = 0, int raceNumber = -1)
 	{
 		if (raceNumber < 0)
@@ -779,7 +801,7 @@ public class TeamSelectionUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Go to questionnaire state
+	/// Go to state provided
 	/// </summary>
 	private void TriggerState(State state)
 	{

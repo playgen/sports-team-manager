@@ -254,7 +254,7 @@ public class RecruitMemberUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Upon language change redraw UI
+	/// Upon language change redraw UI. Some text is only set here, which is why it is also called in other methods directly
 	/// </summary>
 	private void OnLanguageChange()
 	{

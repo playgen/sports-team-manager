@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 
 /// <summary>
-/// A piece of the in-game tutorial UI
+/// The displayed tutorial UI
 /// </summary>
 public class TutorialSectionUI : MonoBehaviour
 {
@@ -31,7 +31,7 @@ public class TutorialSectionUI : MonoBehaviour
 	private bool _unblocked;
 
 	/// <summary>
-	/// Set-up the values required for creating this piece of the tutorial
+	/// Set-up the values required for displaying this part of the tutorial
 	/// </summary>
 	public void Construct(TutorialObject tutObj)
 	{
@@ -52,9 +52,6 @@ public class TutorialSectionUI : MonoBehaviour
 		SetUp();
 	}
 
-	/// <summary>
-	/// Set-up connections to UI elements for this piece of the tutorial
-	/// </summary>
 	protected void OnEnable()
 	{
 		Localization.LanguageChange += OnLanguageChange;
@@ -67,6 +64,9 @@ public class TutorialSectionUI : MonoBehaviour
 		BestFit.ResolutionChange -= SetUp;
 	}
 
+	/// <summary>
+	/// Change the currently displayed tutorial text
+	/// </summary>
 	public void ChangePage(int change)
 	{
 		_currentText += change;
@@ -78,6 +78,7 @@ public class TutorialSectionUI : MonoBehaviour
 	/// </summary>
 	private void SetUp()
 	{
+		//set UI to display differently if certain attributes are set
 		if (_attributeDict.ContainsKey("part" + _currentText))
 		{
 			if (_attributeDict["part" + _currentText].Contains("mood"))
@@ -91,7 +92,7 @@ public class TutorialSectionUI : MonoBehaviour
 		}
 		_reverseRaycast.MaskRect.Clear();
 		_reverseRaycast.MaskRect.Add(_menuHighlighted);
-
+		//set which objects should be highlighted and blocked from interactions
 		if (_tutorialObj.HighlightedObject[_currentText].Length > 0)
 		{
 			_softMaskScript.FlipAlphaMask = false;
@@ -120,7 +121,7 @@ public class TutorialSectionUI : MonoBehaviour
 				}
 			}
 		}
-
+		//display different object if it is the last part of the tutorial
 		if (UIManagement.Tutorial.SectionCount == GameManagement.TutorialStage + 1)
 		{
 			transform.FindObject("Tutorial Helper").Active(false);

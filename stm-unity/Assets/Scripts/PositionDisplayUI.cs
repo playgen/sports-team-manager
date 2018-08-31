@@ -75,6 +75,7 @@ public class PositionDisplayUI : MonoBehaviour
 	/// </summary>
 	public void Display()
 	{
+		//do not continue if the pop-up is not already active from the SetUpDisplay method
 		if (!gameObject.activeInHierarchy)
 		{
 			return;
@@ -155,16 +156,18 @@ public class PositionDisplayUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Triggered by button. Displays the Notes UI for the currently selected crew member.
+	/// Triggered by button. Displays the Notes UI for the currently selected position.
 	/// </summary>
 	public void DisplayNotes()
 	{
 		UIManagement.Notes.Display(_currentPosition.ToString());
 	}
 
+	/// <summary>
+	/// Set title and description text
+	/// </summary>
 	private void OnLanguageChange()
 	{
-		//set title and description text
 		_nameText.text = Localization.Get(_currentPosition.ToString());
 		_descriptionText.text = Localization.Get(_currentPosition + "_DESCRIPTION");
 	}

@@ -9,6 +9,9 @@ using PlayGen.RAGE.SportsTeamManager.Simulation;
 using System.Reflection;
 using TrackerAssetPackage;
 
+/// <summary>
+/// UI that displays the effects of a post-race event after it has been completed
+/// </summary>
 public class PostRaceEventImpactUI : MonoBehaviour
 {
 	private readonly List<KeyValuePair<string, List<string>>> _impacts = new List<KeyValuePair<string, List<string>>>();
@@ -25,22 +28,28 @@ public class PostRaceEventImpactUI : MonoBehaviour
 		Localization.LanguageChange -= OnLanguageChange;
 	}
 
+	/// <summary>
+	/// Add an impact to the list to display when the pop-up is next shown
+	/// </summary>
 	public void AddImpact(string impactKey, List<string> additonal)
 	{
 		_impacts.Add(new KeyValuePair<string, List<string>>(impactKey, additonal));
 	}
 
 	/// <summary>
-	/// Display pop-up which shows the cup result
+	/// Display pop-up which shows the impact of the post race event
 	/// </summary>
 	public void Display()
 	{
 		_impactText.text = string.Empty;
+		//only display if there are any impacts
 		if (_impacts.Any())
 		{
 			foreach (var impact in _impacts)
 			{
+				//add a space before capital letters and account for any double spacing created as a result
 				var subList = impact.Value.Select(sub => Regex.Replace(sub, @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0").Replace("  ", " ")).ToList();
+				//set text according to what type of event the impact was for
 				if (impact.Key.Contains(PostRaceEventImpact.MoodChange.ToString()))
 				{
 					_impactText.text += (_impactText.text.Length > 0 ? "\n\n" : string.Empty) + Localization.GetAndFormat("IMPACT_MOOD_" + (int.Parse(Regex.Match(impact.Key, @"-?\d+").Value) > 0 ? "BETTER" : "WORSE"), false, subList.ToArray());
@@ -75,7 +84,7 @@ public class PostRaceEventImpactUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Close the promotion pop-up
+	/// Clear and close the impact pop-up
 	/// </summary>
 	public void Close(string source)
 	{

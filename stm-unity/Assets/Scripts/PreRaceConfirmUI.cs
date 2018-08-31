@@ -7,6 +7,9 @@ using TrackerAssetPackage;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// UI displayed before a session is completed if a repeat line-up is used or the session is a race
+/// </summary>
 public class PreRaceConfirmUI : MonoBehaviour
 {
 	[SerializeField]
@@ -37,8 +40,10 @@ public class PreRaceConfirmUI : MonoBehaviour
 	{
 		gameObject.Active(true);
 		_isRace = race;
+		//set different text depending on if this is for a race
 		if (_isRace)
 		{
+			//if the next session is a race, show text depending asking the player to confirm and warn if action allowance is remaining
 			if (GameManagement.IsRace)
 			{
 				_localizationKey = GameManagement.ActionRemaining ? "RACE_CONFIRM_ALLOWANCE_REMAINING" : "RACE_CONFIRM_NO_ALLOWANCE";
@@ -47,6 +52,7 @@ public class PreRaceConfirmUI : MonoBehaviour
 					{ TrackerContextKey.CurrentTalkTime, GameManagement.ActionAllowance }
 				}, AccessibleTracker.Accessible.Screen));
 			}
+			//if the next session is practice, meaning the player is skipping to the race, show text depending asking the player to confirm and warn if action allowance is remaining
 			else
 			{
 				_localizationKey = GameManagement.ActionRemaining ? "RACE_SKIP_CONFIRM_ALLOWANCE_REMAINING" : "RACE_SKIP_CONFIRM_NO_ALLOWANCE";
@@ -57,6 +63,7 @@ public class PreRaceConfirmUI : MonoBehaviour
 				}, AccessibleTracker.Accessible.Screen));
 			}
 		}
+		//if the next session is not a race, show this pop-up if the same line-up as the previous session has been selected
 		else
 		{
 			if (GameManagement.PreviousSession != null && GameManagement.Positions.SequenceEqual(GameManagement.PreviousSession.Positions) && GameManagement.PositionCrew.OrderBy(pc => pc.Key.ToString()).SequenceEqual(GameManagement.PreviousSession.PositionCrew.OrderBy(pc => pc.Key.ToString())))
@@ -80,6 +87,9 @@ public class PreRaceConfirmUI : MonoBehaviour
 		transform.EnableBlocker(() => CloseConfirmPopUp(TrackerTriggerSource.PopUpBlocker.ToString()));
 	}
 
+	/// <summary>
+	/// Triggered by Unity event. Player has confirmed and session can proceed
+	/// </summary>
 	private void ConfirmPopUpYesSelected()
 	{
 		if (_isRace)
@@ -111,7 +121,7 @@ public class PreRaceConfirmUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Close the race confirm pop-up
+	/// triggered by Unity event. Player has declined, so close this pop-up and allow them to continue playing before racing
 	/// </summary>
 	public void CloseConfirmPopUp(string source)
 	{

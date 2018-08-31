@@ -9,7 +9,7 @@ using PlayGen.Unity.Utilities.Localization;
 using TrackerAssetPackage;
 
 /// <summary>
-/// Connecting class between GameManager in logic and the Tutorial Section UIs
+/// Connecting class between GameManager in logic and the Tutorial Section UI
 /// </summary>
 public class TutorialController : MonoBehaviour
 {
@@ -25,7 +25,7 @@ public class TutorialController : MonoBehaviour
 	public int SectionCount => _tutorialSections.Count;
 
 	/// <summary>
-	/// Load and parse tutorial JSON, creating a new game object for each 
+	/// Load and parse tutorial JSON
 	/// </summary>
 	[ContextMenu("Create Tutorial")]
 	public void CreateTutorial()
@@ -72,6 +72,9 @@ public class TutorialController : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Display the tutorial UI only if it is currently meant to show
+	/// </summary>
 	private void Start()
 	{
 		_tutorialDisplay.gameObject.Active(GameManagement.ShowTutorial);
@@ -79,6 +82,7 @@ public class TutorialController : MonoBehaviour
 		_tutorialQuitButton.Active(GameManagement.ShowTutorial);
 		if (GameManagement.ShowTutorial)
 		{
+			//display the current tutorial section
 			_tutorialDisplay.Construct(_tutorialSections[GameManagement.TutorialStage]);
 			for (var i = 0; i < SectionCount; i++)
 			{
@@ -92,6 +96,9 @@ public class TutorialController : MonoBehaviour
 		_tutorialExitBlocker.Active(SectionCount == GameManagement.TutorialStage + 1);
 	}
 
+	/// <summary>
+	/// Call this method to share that an event has been triggered with the tutorial system
+	/// </summary>
 	public void ShareEvent(string typeName, string methodName, params object[] passed)
 	{
 		if (GameManagement.ShowTutorial && _tutorialDisplay)
@@ -121,6 +128,9 @@ public class TutorialController : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Get the stage that the tutorial should fall back to if the game is exited mid-tutorial
+	/// </summary>
 	private int GetLastSafeStage(int currentStage)
 	{
 		if (currentStage + 1 < SectionCount)
@@ -150,6 +160,9 @@ public class TutorialController : MonoBehaviour
 		return 0;
 	}
 
+	/// <summary>
+	/// At the end of the tutorial force the game to be reset, wiping all progress made in the tutorial
+	/// </summary>
 	public void RestartGame()
 	{
 		var language = string.IsNullOrEmpty(Localization.SelectedLanguage.Parent.Name) ? Localization.SelectedLanguage.EnglishName : Localization.SelectedLanguage.Parent.EnglishName;
@@ -194,6 +207,9 @@ public class TutorialController : MonoBehaviour
 
 public static class JSONStringParse
 {
+	/// <summary>
+	/// Remove extra slashes
+	/// </summary>
 	public static string RemoveJSONNodeChars(this string text)
 	{
 		text = text.Replace("\"", string.Empty);
@@ -201,6 +217,9 @@ public static class JSONStringParse
 		return text;
 	}
 
+	/// <summary>
+	/// Remove extra slashes
+	/// </summary>
 	public static string RemoveJSONNodeChars(this JSONNode node)
 	{
 		var text = node.Value.Replace("\"", string.Empty);

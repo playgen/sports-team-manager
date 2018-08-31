@@ -26,6 +26,9 @@ public static class UIManagement
 	public static Button SmallBlocker { get; private set; }
 	public static Button Blocker { get; private set; }
 
+	/// <summary>
+	/// Set all of the object references
+	/// </summary>
 	public static void Initialize()
 	{
 		Canvas = GameObject.Find("Canvas");
@@ -51,8 +54,14 @@ public static class UIManagement
 		Blocker = Canvas.transform.FindButton("Team Management/Pop-up Bounds/Bigger Blocker");
 	}
 
+	/// <summary>
+	/// Array of all CrewMemberUI objects in the scene
+	/// </summary>
 	public static CrewMemberUI[] CrewMemberUI => Canvas.GetComponentsInChildren<CrewMemberUI>();
 
+	/// <summary>
+	/// Enable the small blocker, rearrange transform children so that all other objects are blocked and set the blocker to trigger the provided actions
+	/// </summary>
 	public static void EnableSmallBlocker(this Transform obj, params UnityAction[] actions)
 	{
 		SmallBlocker.transform.SetAsLastSibling();
@@ -65,6 +74,9 @@ public static class UIManagement
 		}
 	}
 
+	/// <summary>
+	/// Enable the larger blocker, rearrange transform children so that all other objects are blocked and set the blocker to trigger the provided actions
+	/// </summary>
 	public static void EnableBlocker(this Transform obj, params UnityAction[] actions)
 	{
 		Blocker.transform.SetAsLastSibling();
@@ -78,16 +90,25 @@ public static class UIManagement
 		}
 	}
 
+	/// <summary>
+	/// Disable the small blocker
+	/// </summary>
 	public static void DisableSmallBlocker()
 	{
 		SmallBlocker.gameObject.Active(false);
 	}
 
+	/// <summary>
+	/// Disable the larger blocker
+	/// </summary>
 	public static void DisableBlocker()
 	{
 		Blocker.gameObject.Active(false);
 	}
 
+	/// <summary>
+	/// Set this object to be active if it isn't already active in the hierarchy
+	/// </summary>
 	public static void Active(this GameObject go, bool active)
 	{
 		if (go.activeInHierarchy != active)

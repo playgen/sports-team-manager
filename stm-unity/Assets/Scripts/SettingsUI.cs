@@ -30,8 +30,11 @@ public class SettingsUI : MonoBehaviour
 	private void Setup()
 	{
 		_languageDropdown.ClearOptions();
+		//get the English name of each language, using the parent name if they have one (changes English (British) to just English)
 		var languages = Localization.Languages.Select(l => string.IsNullOrEmpty(l.Parent.Name) ? l.EnglishName : l.Parent.EnglishName).ToList();
+		//set these language names to be used as Localization keys on the Dropdown
 		_languageDropdown.GetComponent<DropdownLocalization>().SetOptions(languages);
+		//set the dropdown value to match the currently used language
 		var selectedIndex = Localization.Languages.IndexOf(Localization.SelectedLanguage);
 		if (selectedIndex == -1)
 		{

@@ -43,7 +43,7 @@ public class ScreenSideUI : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Change the position of the selected object to match the current UI screen
+	/// Display pop-up asking the player if they reaully want to leave the current game
 	/// </summary>
 	public void DisplayQuitWarning()
 	{

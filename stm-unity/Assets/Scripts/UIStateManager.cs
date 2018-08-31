@@ -25,15 +25,17 @@ public class UIStateManager : MonoBehaviour
 	private Dictionary<State, GameObject> _stateDict;
 	private static bool _reload;
 
-	/// <summary>
-	/// Trigger SUGAR sign-in on first load
-	/// </summary>
 	private void Awake()
 	{
+		//initialize the object references in UIManagement
 		UIManagement.Initialize();
+		//load the avatar sprites from Resources
 		AvatarDisplay.LoadSprites();
+		//set the state list into a dictionary
 		_stateDict = _states.ToDictionary(s => s.Name, s => s.GameObject);
+		//default to the main menu state
 		GoToState(State.MainMenu);
+		//instantiate RAGE objects if in RAGE mode
 		if (GameManagement.RageMode)
 		{
 			foreach (var obj in GameManagement.PlatformSettings.RageObjects)
@@ -42,6 +44,7 @@ public class UIStateManager : MonoBehaviour
 				newObj.name = obj.name;
 			}
 		}
+		//if this is a reload after a tutorial, attempt to reload straight away
 		if (_reload)
 		{
 			Loading.Start();
@@ -59,6 +62,7 @@ public class UIStateManager : MonoBehaviour
 
 	private void Update()
 	{
+		//ensure no UI object is ever selected
 		if (EventSystem.current.currentSelectedGameObject && !EventSystem.current.currentSelectedGameObject.GetComponent<InputField>())
 		{
 			EventSystem.current.SetSelectedGameObject(null);
@@ -72,6 +76,9 @@ public class UIStateManager : MonoBehaviour
 #endif
 	}
 
+	/// <summary>
+	/// Display the State provided
+	/// </summary>
 	public void GoToState(State newState)
 	{
 		foreach (var state in _stateDict.Values)
@@ -82,7 +89,7 @@ public class UIStateManager : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Reload the scene
+	/// Reload the scene, setting reload to be true
 	/// </summary>
 	public void ReloadScene()
 	{
